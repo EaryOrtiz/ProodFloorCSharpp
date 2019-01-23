@@ -21,7 +21,7 @@ namespace ProdFloor.Models
         [Required(ErrorMessage = "Please enter a name")]
         public string Name { get; set; }
 
-        [Display(Name = "Job #")]
+        [Display(Name = "Job Number")]
         [Range(2015000000, 2021000000, ErrorMessage = "Job number is out of range")]
         [Required(ErrorMessage = "Please enter a Job Num")]
         public int JobNum { get; set; }

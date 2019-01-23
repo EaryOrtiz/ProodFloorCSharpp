@@ -13027,11 +13027,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\eary.ortiz\\Documents\\ProdFloorVersions\\ProdFloor_CSharp-master\\ProdFloor\\ProdFloor.csproj",
+      "projectUniqueName": "C:\\Users\\eary.ortiz\\Documents\\GitHub\\ProodFloorCSharpp\\ProdFloor\\ProdFloor.csproj",
       "projectName": "ProdFloor",
-      "projectPath": "C:\\Users\\eary.ortiz\\Documents\\ProdFloorVersions\\ProdFloor_CSharp-master\\ProdFloor\\ProdFloor.csproj",
+      "projectPath": "C:\\Users\\eary.ortiz\\Documents\\GitHub\\ProodFloorCSharpp\\ProdFloor\\ProdFloor.csproj",
       "packagesPath": "C:\\Users\\eary.ortiz\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\eary.ortiz\\Documents\\ProdFloorVersions\\ProdFloor_CSharp-master\\ProdFloor\\obj\\",
+      "outputPath": "C:\\Users\\eary.ortiz\\Documents\\GitHub\\ProodFloorCSharpp\\ProdFloor\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
