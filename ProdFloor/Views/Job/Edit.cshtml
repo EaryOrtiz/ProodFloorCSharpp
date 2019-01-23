@@ -1,0 +1,66 @@
+﻿@model JobViewModel
+@{
+    Layout = "_AdminLayoutWO";
+}
+<ul class="nav nav-tabs col-sm-10" role="tablist">
+    <li class="nav-item">
+        <a class="nav-link @(Model.CurrentTab == "Main" || Model.CurrentTab == "" || Model.CurrentTab == null ? "active" : " ")" data-toggle="tab" href="#home" role="tab">Job</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link @(Model.CurrentTab == "Extension" ? "active" : " ")  @(Model.CurrentJobExtension.JobID == 0 ? "disabled" : " ")" data-toggle="tab" href="#jobextension" role="tab">Add. Job Info</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link @(Model.CurrentTab == "HydroSpecifics" ? "active" : " ")  @(Model.CurrentHydroSpecific.JobID == 0 ? "disabled" : " ")" data-toggle="tab" href="#hydrospecifics" role="tab">Hydro Specifics</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link @(Model.CurrentTab == "GenericFeatures" ? "active" : " ")  @(Model.CurrentGenericFeatures.JobID == 0 ? "disabled" : " ")" data-toggle="tab" href="#genericfeatures" role="tab">Generic Features</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link @(Model.CurrentTab == "Indicator" ? "active" : " ")  @(Model.CurrentIndicator.JobID == 0 ? "disabled" : " ")" data-toggle="tab" href="#indicators" role="tab">Indicators</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link @(Model.CurrentTab == "HoistWayData" ? "active" : " ")  @(Model.CurrentHoistWayData.JobID == 0 ? "disabled" : " ")" data-toggle="tab" href="#hoistwaydata" role="tab">Hoistway Data</a>
+    </li>
+</ul>
+<!-- Tab panes -->
+<form asp-action="Edit" method="post">
+    <div class="tab-content" style="padding:20px">
+        <div class="tab-pane @(Model.CurrentTab == "Main" || Model.CurrentTab == "" || Model.CurrentTab == null ? "active" : " ")" id="home" role="tabpanel">
+            @Html.Partial("JobForm", Model)
+        </div>
+        <div class="tab-pane @(Model.CurrentTab == "Extension" ? "active" : " ")" id="jobextension" role="tabpanel">
+            @if (Model.CurrentJobExtension.JobID != 0)
+            {
+                @Html.Partial("JobExtensionForm", Model)
+            }
+        </div>
+        <div class="tab-pane @(Model.CurrentTab == "HydroSpecifics" ? "active" : " ")" id="hydrospecifics" role="tabpanel">
+            @if (Model.CurrentHydroSpecific.JobID != 0)
+            {
+                @Html.Partial("HydroSpecificForm", Model)
+            }
+        </div>
+        <div class="tab-pane @(Model.CurrentTab == "GenericFeatures" ? "active" : " ")" id="genericfeatures" role="tabpanel">
+            @if (Model.CurrentGenericFeatures.JobID != 0)
+            {
+                @Html.Partial("GenericInfoForm", Model)
+            }
+        </div>
+        <div class="tab-pane @(Model.CurrentTab == "Indicator" ? "active" : " ")" id="indicators" role="tabpanel">
+            @if (Model.CurrentIndicator.JobID != 0)
+            {
+                @Html.Partial("IndicatorsForm", Model)
+            }
+        </div>
+        <div class="tab-pane @(Model.CurrentTab == "HoistWayData" ? "active" : " ")" id="hoistwaydata" role="tabpanel">
+            @if (Model.CurrentHoistWayData.JobID != 0)
+            {
+                @Html.Partial("HoistWayDataForm", Model)
+            }
+        </div>
+        <div class="text-center">
+            <button class="btn btn-primary" type="submit">Save</button>
+            <a asp-action="List" class="btn btn-secondary">Cancel</a>
+        </div>
+    </div>
+</form>

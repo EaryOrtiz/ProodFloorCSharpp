@@ -1,0 +1,87 @@
+﻿@model JobViewModel
+<input type="hidden" asp-for="CurrentJob.JobID" />
+<input type="hidden" asp-for="CurrentJob.Status" />
+<input type="hidden" asp-for="CurrentJob.EngID" />
+<div class="form-group row">
+    <label asp-for="CurrentJob.Name" class="col-sm-2 col-form-label"></label>
+    <div>
+        <input asp-for="CurrentJob.Name" class="form-control col-sm-7" />
+        <span asp-validation-for="CurrentJob.Name" class="text-danger"></span>
+    </div>
+</div>
+<div class="form-group row">
+    <label asp-for="CurrentJob.JobNum" class="col-sm-2 col-form-label"></label>
+    <div>
+        <input asp-for="CurrentJob.JobNum" class="form-control" style="width:auto" />
+        <span asp-validation-for="CurrentJob.JobNum" class="text-danger"></span>
+    </div>
+</div>
+<div class="form-group row">
+    <label asp-for="CurrentJob.JobTypeID" class="col-sm-2 col-form-label"></label>
+    <div>
+        <custom-select select-for="JobType" asp-for="CurrentJob.JobTypeID" selected-value="@Model.CurrentJob.JobTypeID"></custom-select>
+        <span asp-validation-for="CurrentJob.JobTypeID" class="text-danger"></span>
+    </div>
+</div>
+<div class="form-group row">
+    <label asp-for="CurrentJob.PO" class="col-sm-2 col-form-label"></label>
+    <div>
+        <input asp-for="CurrentJob.PO" class="form-control col-sm-7" />
+        <span asp-validation-for="CurrentJob.PO" class="text-danger"></span>
+    </div>
+</div>
+<div class="form-group row">
+    <label asp-for="CurrentJob.ShipDate" class="col-sm-2 col-form-label"></label>
+    <div><span asp-validation-for="CurrentJob.ShipDate" class="text-danger"></span></div>
+    <input asp-for="CurrentJob.ShipDate" class="form-control col-sm-7" />
+</div>
+<div class="form-group row">
+    <label asp-for="CurrentJob.LatestFinishDate" class="col-sm-2 col-form-label"></label>
+    <div>
+        <input asp-for="CurrentJob.LatestFinishDate" class="form-control col-sm-7" />
+        <span asp-validation-for="CurrentJob.LatestFinishDate" class="text-danger"></span>
+    </div>
+</div>
+<div class="form-group row">
+    <label asp-for="CurrentJob.Cust" class="col-sm-2 col-form-label"></label>
+    <div>
+        <input asp-for="CurrentJob.Cust" class="form-control col-sm-7" />
+        <span asp-validation-for="CurrentJob.Cust" class="text-danger"></span>
+    </div>
+</div>
+<div class="form-group row">
+    <label asp-for="CurrentJob.Contractor" class="col-sm-2 col-form-label"></label>
+    <div>
+        <input asp-for="CurrentJob.Contractor" class="form-control col-sm-7" />
+        <span asp-validation-for="CurrentJob.Contractor" class="text-danger"></span>
+    </div>
+</div>
+
+<div class="form-group row">
+    <label asp-for="CurrentJob.CityID" class="col-sm-2 col-form-label"></label>
+    <div>
+        <custom-select select-for="City" selected-value="@Model.CurrentJob.CityID" asp-for="CurrentJob.CityID"></custom-select>
+        <span asp-validation-for="CurrentJob.CityID" class="text-danger"></span>
+    </div>
+</div>
+<div class="form-group row">
+    <label asp-for="CurrentJob.FireCodeID" class="col-sm-2 col-form-label"></label>
+    <div>
+        <custom-select asp-for="CurrentJob.FireCodeID" selected-value="@Model.CurrentJob.FireCodeID" select-for="FireCodeID"></custom-select>
+        <span asp-validation-for="CurrentJob.FireCodeID" class="text-danger"></span>
+    </div>
+</div>
+<div class="form-group row">
+    <label asp-for="CurrentJob.Status" class="col-sm-2 col-form-label"></label>
+    <div>
+        <custom-select asp-for="CurrentJob.Status" selected-value="@Model.CurrentJob.Status" select-for="Status"></custom-select>
+        <span asp-validation-for="CurrentJob.Status" class="text-danger"></span>
+    </div>
+</div>
+<div class="form-group row">
+    <label asp-for="CurrentJob.EngID" class="col-sm-2 col-form-label"></label>
+    <div>
+        <custom-select asp-for="CurrentJob.EngID" selected-value="@Model.CurrentJob.EngID" select-for="EngID"></custom-select>
+        <span asp-validation-for="CurrentJob.EngID" class="text-danger"></span>
+    </div>
+</div>

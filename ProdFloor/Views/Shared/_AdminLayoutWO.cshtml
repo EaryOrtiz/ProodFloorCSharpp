@@ -1,0 +1,105 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/lib/fontawesome/css/font-awesome.min.css" rel="stylesheet" />
+    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <link href="~/css/DashBoard.min.css" rel="stylesheet" />
+    <title>@ViewBag.Title</title>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+            <a class="navbar-brand" href="\">@(ViewBag.Brand == null ? "ProdFloor" : ViewBag.Brand)</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="\">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="\Page1\">All Jobs</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="\Page1\">My Jobs</a>
+                    </li>
+                    @*<li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Dropdown link
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <a class="dropdown-item" href="#">Action</a>
+                                <a class="dropdown-item" href="#">Another action</a>
+                                <a class="dropdown-item" href="#">Something else here</a>
+                            </div>
+                        </li>*@
+                </ul>
+            </div>
+            <div class="nav navbar-nav navbar-right">
+                <ul class="navbar-nav">
+                    @if (!User.Identity.IsAuthenticated)
+                    {
+
+                        <li class="nav-item">
+                            <a href="\Account\LogIn">
+                                Login <i class="fa fa-sign-in"></i>
+                            </a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item"><a class="nav-link">Hello, @User.Identity.Name</a></li>
+                        <li class="nav-item"><a class="nav-link" href="\Account\LogOut"> Log out <span class="fa fa-sign-out"></span></a></li>
+                    }
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <div class="container-fluid">
+        <div class="row">
+            <nav class="col-sm-2 col-md-2 d-none d-sm-block bg-light sidebar">
+                @if (User.IsInRole("Admin"))
+                {
+                    @await Component.InvokeAsync("AdminMenu")
+                }
+                else if (User.IsInRole("Engineer"))
+                {
+                    @await Component.InvokeAsync("EngineerMenu")
+                }
+                else if (User.IsInRole("Technician"))
+                {
+                    @await Component.InvokeAsync("TechMenu")
+                }
+                else
+                {
+                    @await Component.InvokeAsync("NavigationMenu")
+                }
+            </nav>
+
+            <main role="main" class="col-sm-10 ml-sm-auto col-md-10 pt-3">
+                @if (TempData["message"] != null)
+                {
+                <div class="alert @(TempData["alert"] == null ? "alert-success" : TempData["alert"]) alert-dismissible fade show">
+                    @TempData["message"]
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                }
+                @RenderBody()
+            </main>
+        </div>
+    </div>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="~/lib/bootstrap/assets/js/vendor/popper.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.slim.js"></script>
+    <script src="~/lib/bootstrap/assets/js/vendor/popper.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+</body>
+</html>

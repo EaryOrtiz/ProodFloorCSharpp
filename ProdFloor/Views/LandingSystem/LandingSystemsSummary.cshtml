@@ -1,0 +1,24 @@
+﻿@model LandingSystem
+
+<div class="card card-outline-primary m-1 p-1">
+    <div class="bg-faded p-1">
+        <h4>
+            @Model.Name
+            <span class="badge badge-pill badge-primary" style="float:right">
+               <small>@Model.UsedIn</small>
+            </span>
+        </h4>
+    </div>
+    <div class="card-text p-1">
+        <form asp-action="Delete" method="post">
+            <a asp-action="Edit" class="btn btn-sm btn-warning"
+               asp-route-Id="@Model.LandingSystemID">
+                Edit
+            </a>
+            <input type="hidden" name="ID" value="@Model.LandingSystemID" />
+            <button type="submit" class="btn btn-danger btn-sm">
+                Delete
+            </button>
+        </form>
+    </div>
+</div>

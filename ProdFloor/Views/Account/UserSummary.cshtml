@@ -1,0 +1,16 @@
+﻿@model AppUser
+
+<th scope="row">@Model.UserName</th>
+<td>@Model.Email</td>
+<div class="card-text p-1">
+    <form asp-action="Delete" method="post">
+        <a asp-action="Edit" class="btn btn-sm btn-warning"
+           asp-route-Id="@Model.Id">
+            Edit
+        </a>
+        <input type="hidden" name="ID" value="@Model.Id" />
+        <button type="submit" class="btn btn-danger btn-sm">
+            Delete
+        </button>
+    </form>
+</div>

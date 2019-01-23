@@ -1,0 +1,23 @@
+﻿@model LandingSystem
+@{
+    ViewBag.Title = "Edit Landing System";
+    Layout = "_AdminLayoutWO";
+}
+<div class="bg-dark m-1 p-1"><h4 style="color:white">Edit Landing System: @Model.Name</h4></div>
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="LandingSystemID" />
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <div><span asp-validation-for="Name" class="text-danger"></span></div>
+        <input asp-for="Name" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="UsedIn"></label>
+        <div><span asp-validation-for="UsedIn" class="text-danger"></span></div>
+        <input asp-for="@Model.UsedIn"class="form-control" />
+    </div>
+    <div class="text-center">
+        <button class="btn btn-primary" type="submit">Save</button>
+        <a asp-action="List" class="btn btn-secondary">Cancel</a>
+    </div>
+</form>

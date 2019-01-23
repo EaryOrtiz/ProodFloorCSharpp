@@ -1,0 +1,69 @@
+﻿@model DashboardIndexViewModel
+@{
+    ViewBag.Title = "ProdFloor";
+    Layout = "_AdminLayoutWO";
+}
+<div class="row" style="padding-right:20px">
+    <h2 class="col-sm-10">
+        Jobs Dashboard
+    </h2>
+    <a class="btn btn-success btn-sm col-sm-2" href="\Job\Add" style="padding-top:10px;min-width:100px">
+        <i class="fa fa-plus"></i> 
+        New Job
+        </a>
+</div>
+<br />
+<h4>Pending Jobs</h4>
+
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">Job#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Latest Finish</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var j in Model.PendingJobs)
+        {
+            <tr>
+                <th scope="row">@j.JobNum</th>
+                <td>@j.Name</td>
+                <td>@j.ShipDate</td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div page-model="@Model.PendingJobsPagingInfo" page-action="Index" page-classes-enabled="true"
+     page-class="btn" page-class-normal="btn-secondary" additional-page-model="@Model.ProductionJobsPagingInfo"
+     page-class-selected="btn-primary" dash-board-enabled="true" main-url-value ="pendingJobPage" 
+     add-url-value="productionJobPage" 
+     class="btn-group pull-right m-1">
+</div>
+
+<br />
+<h4>Production Jobs</h4>
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">Job#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Latest Finish</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var j in Model.ProductionJobs)
+        {
+            <tr>
+                <th scope="row">@j.JobNum</th>
+                <td>@j.Name</td>
+                <td>@j.ShipDate</td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div page-model="@Model.ProductionJobsPagingInfo" page-action="Index" page-classes-enabled="true"
+     page-class="btn" page-class-normal="btn-secondary" additional-page-model="@Model.PendingJobsPagingInfo"
+     page-class-selected="btn-primary" dash-board-enabled="true" main-url-value="productionJobPage" add-url-value ="pendingJobPage" 
+     class="btn-group pull-right m-1">
+</div>

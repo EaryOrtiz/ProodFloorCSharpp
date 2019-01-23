@@ -1,0 +1,26 @@
+﻿@model ObjListViewModel
+@{
+    ViewBag.Title = Model.Title;
+    Layout = "_AdminLayoutWO";
+}
+
+<div class="row" style="padding-right:20px">
+    <h2 class="col-sm-10">
+        @Model.Title
+    </h2>
+    <a class="btn btn-success btn-sm col-sm-2" asp-action="Add" asp-controller="City" style="padding-top:10px;min-width:100px;max-width:100px">
+        <i class="fa fa-plus"></i>
+        Add
+    </a>
+</div>
+
+@foreach (var j in Model.Objects)
+{
+    @Html.Partial(Model.ViewSummary, j)
+}
+
+<page-doorop page-model="@Model.PagingInfo" page-action="List" page-classes-enabled="true"
+     page-class="btn" page-class-normal="btn-secondary"
+     page-class-selected="btn-primary" page-url-separator="@Model.CurrentSeparator"
+     class="btn-group pull-right m-1">
+</page-doorop>

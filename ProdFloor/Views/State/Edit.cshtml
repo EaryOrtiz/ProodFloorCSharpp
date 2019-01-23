@@ -1,0 +1,23 @@
+﻿@model State
+@{
+    ViewBag.Title = "Edit State";
+    Layout = "_AdminLayoutWO";
+}
+<div class="bg-dark m-1 p-1"><h4 style="color:white">Edit State: @Model.Name</h4></div>
+<form asp-controller="State" asp-action="Edit" method="post">
+    <input type="hidden" asp-for="StateID" />
+    <div class="form-group">
+        <label asp-for="Country"></label>
+        <div><span asp-validation-for="Country" class="text-danger"></span></div>
+        <custom-select select-for="Country" asp-for="Country" selected-value="@Model.Country"></custom-select>
+    </div>
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <div><span asp-validation-for="Name" class="text-danger"></span></div>
+        <input asp-for="Name" class="form-control" />
+    </div>
+    <div class="text-center">
+        <button class="btn btn-primary" type="submit">Save</button>
+        <a asp-action="List" class="btn btn-secondary">Cancel</a>
+    </div>
+</form>

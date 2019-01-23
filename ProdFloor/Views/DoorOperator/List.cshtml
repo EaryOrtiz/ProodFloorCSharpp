@@ -1,0 +1,25 @@
+﻿@model DoorOperatorsListViewModel
+@{
+    ViewBag.Title = "DoorOperators";
+    Layout = "_AdminLayoutWO";
+}
+
+<div class="row" style="padding-right:20px">
+    <h2 class="col-sm-10">
+        Door Operators List
+    </h2>
+    <a class="btn btn-success btn-sm col-sm-2" asp-action="Add" asp-controller="DoorOperator" style="padding-top:10px;min-width:100px">
+        <i class="fa fa-plus"></i>
+        New Door Operator
+    </a>
+</div>
+@foreach (var j in Model.DoorOperators)
+{
+    @Html.Partial("DoorOperatorSummary", j)
+}
+
+<page-doorop page-model="@Model.PagingInfo" page-action="List" page-classes-enabled="true"
+     page-class="btn" page-class-normal="btn-secondary"
+     page-class-selected="btn-primary" page-url-brand="@Model.CurrentBrand"
+     class="btn-group pull-right m-1">
+</page-doorop>

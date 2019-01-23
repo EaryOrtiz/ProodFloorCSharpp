@@ -1,0 +1,181 @@
+﻿@model AdminNavMenuViewModel
+<ul class="nav nav-pills flex-column" id="accordion" role="tablist">
+    <li class="nav-item">
+        <a class="nav-link" href="\">Dashboard<span class="sr-only">(current)</span></a>
+    </li>
+    <li class="nav-item" role="tab" id="job">
+        <a data-toggle="collapse" href="#collapsejobs" role="button" aria-expanded="false" aria-controls="collapsejobs"
+           class="nav-link">Jobs</a>
+        <ul id="collapsejobs" class="collapse" role="tabpanel" aria-labelledby="collapsejobs" data-parent="#accordion">
+            @if (Model.Jobtypes == null)
+            {
+                <li class="nav-link" style="padding:4px;text-align:center;margin-bottom:5px">No job types</li>
+            }
+            else
+            {
+                <li class="nav-link"
+                    style="padding:4px;text-align:center;margin-bottom:5px">
+                    <a style="color:white" asp-action="List"
+                       asp-controller="Job"
+                       asp-route-jobType=""
+                       asp-route-jobPage="1">All</a>
+                </li>
+                @foreach (string jobType in Model.Jobtypes)
+                {
+                    <li class="nav-link"
+                        style="padding:4px;text-align:center;margin-bottom:5px">
+                        <a style="color:white" asp-action="List"
+                           asp-controller="Job"
+                           asp-route-jobType="@jobType"
+                           asp-route-jobPage="1">@jobType</a>
+                    </li>
+                }
+            }
+        </ul>
+    </li>
+    <li class="nav-item" role="tab" id="city">
+        <a data-toggle="collapse" href="#collapsecity" role="button" aria-expanded="false" aria-controls="collapsecity"
+           class="nav-link">Cities</a>
+        <ul id="collapsecity" class="collapse" role="tabpanel" aria-labelledby="collapsecity" data-parent="#accordion">
+            @if (Model.Cities.Keys == null)
+            {
+                <li class="nav-link" style="padding:4px;text-align:center;margin-bottom:5px">No cities</li>
+            }
+            else
+            {
+                <li class="nav-link"
+                    style="padding:4px;text-align:center;margin-bottom:5px">
+                    <a style="color:white" asp-action="List"
+                       asp-controller="City"
+                       asp-route-country=""
+                       asp-route-state=""
+                       asp-route-Page="1">All</a>
+                </li>
+                @foreach (var city in Model.Cities)
+                {
+                    <li class="nav-link" style="padding:4px;text-align:center;margin-bottom:5px" role="tab" id="cities">
+                        <a data-toggle="collapse" style="color:white" href="#collapsecities" role="button" aria-expanded="false" aria-controls="collapsecities"
+                           class="nav-link">@city.Key</a>
+                        <ul id="collapsecities" class="collapse" role="tabpanel" aria-labelledby="collapsecities" data-parent="#accordion">
+                            @foreach (string value in city.Value)
+                            {
+                                <li class="nav-item nav-pills bg-gray" style="background-color:gray;padding:4px;text-align:center;margin-bottom:5px">
+                                    <a style="color:white" asp-action="List"
+                                       asp-controller="Cities"
+                                       asp-route-country="@city.Key"
+                                       asp-route-state="@value"
+                                       asp-route-Page="1">@value</a>
+                                </li>
+                            }
+                        </ul>
+                    </li>
+                }
+            }
+        </ul>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" asp-controller="Country" asp-action="List">Countries</a>
+    </li>
+    <li class="nav-item" role="tab" id="dooroperators">
+        <a data-toggle="collapse" href="#collapsedooroperators" role="button" aria-expanded="false" aria-controls="collapsedooroperators"
+           class="nav-link">Door Operators</a>
+        <ul id="collapsedooroperators" class="collapse" role="tabpanel" aria-labelledby="collapsedooroperators" data-parent="#accordion">
+            @if (Model.DoorOperators == null)
+            {
+                <li class="nav-link" style="padding:4px;text-align:center;margin-bottom:5px">No door operator brands</li>
+            }
+            else
+            {
+                <li class="nav-link"
+                    style="padding:4px;text-align:center;margin-bottom:5px">
+                    <a style="color:white" asp-action="List"
+                       asp-controller="DoorOperator"
+                       asp-route-brand=""
+                       asp-route-Page="1">All</a>
+                </li>
+                @foreach (string brand in Model.DoorOperators)
+                {
+                    <li class="nav-link"
+                        style="padding:4px;text-align:center;margin-bottom:5px">
+                        <a style="color:white" asp-action="List"
+                           asp-controller="DoorOperator"
+                           asp-route-brand="@brand"
+                           asp-route-page="1">@brand</a>
+                    </li>
+                }
+            }
+        </ul>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" asp-controller="FireCode" asp-action="List">Fire Codes</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" asp-controller="JobType" asp-action="List">Job Types</a>
+    </li>
+    <li class="nav-item" role="tab" id="landing">
+        <a data-toggle="collapse" href="#collapselandings" role="button" aria-expanded="false" aria-controls="collapselandings"
+           class="nav-link">Landing Systems</a>
+        <ul id="collapselandings" class="collapse" role="tabpanel" aria-labelledby="collapselandings" data-parent="#accordion">
+            @if (Model.Jobtypes == null)
+            {
+                <li class="nav-link" style="padding:4px;text-align:center;margin-bottom:5px">No job types</li>
+            }
+            else
+            {
+                <li class="nav-link"
+                    style="padding:4px;text-align:center;margin-bottom:5px">
+                    <a style="color:white" asp-action="List"
+                       asp-controller="LandingSystem"
+                       asp-route-jobType=""
+                       asp-route-jobPage="1">All</a>
+                </li>
+                @foreach (string jobType in Model.Jobtypes)
+                {
+                    <li class="nav-link"
+                        style="padding:4px;text-align:center;margin-bottom:5px">
+                        <a style="color:white" asp-action="List"
+                           asp-controller="LandingSystem"
+                           asp-route-jobType="@jobType"
+                           asp-route-jobPage="1">@jobType</a>
+                    </li>
+                }
+            }
+        </ul>
+    </li>
+    <li class="nav-item" role="tab" id="state">
+        <a data-toggle="collapse" href="#collapsestates" role="button" aria-expanded="false" aria-controls="collapsestates"
+           class="nav-link">States</a>
+        <ul id="collapsestates" class="collapse" role="tabpanel" aria-labelledby="collapsestates" data-parent="#accordion">
+            @if (Model.States == null)
+            {
+                <li class="nav-link" style="padding:4px;text-align:center;margin-bottom:5px">No states</li>
+            }
+            else
+            {
+                <li class="nav-link"
+                    style="padding:4px;text-align:center;margin-bottom:5px">
+                    <a style="color:white" asp-action="List"
+                       asp-controller="State"
+                       asp-route-country=""
+                       asp-route-Page="1">All</a>
+                </li>
+                @foreach (string country in Model.States)
+                {
+                    <li class="nav-link"
+                        style="padding:4px;text-align:center;margin-bottom:5px">
+                        <a style="color:white" asp-action="List"
+                           asp-controller="State"
+                           asp-route-country="@country"
+                           asp-route-page="1">@country</a>
+                    </li>
+                }
+            }
+        </ul>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" asp-controller="Account" asp-action="Index">Users</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" asp-controller="RoleAdmin" asp-action="Index">Roles</a>
+    </li>
+</ul>
