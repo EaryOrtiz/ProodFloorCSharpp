@@ -14,7 +14,7 @@ namespace ProdFloor.Models
         [Required(ErrorMessage = "Please enter {0} field")]
         public string Name { get; set; }
 
-        public List<Job> Jobs { get; set; }
-        public List<City> Cities { get; set; }
+        public List<Job> _Jobs { get; set; }
+        public List<City> _Cities { get; set; }
     }
 }

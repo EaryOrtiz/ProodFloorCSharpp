@@ -16,6 +16,6 @@ namespace ProdFloor.Models
 
         public int CountryID { get; set; }
         //public string Country { get; set; }
-        public List<City> Cities { get; set; }
+        public List<City> _Cities { get; set; }
     }
 }

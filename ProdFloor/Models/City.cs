@@ -15,7 +15,7 @@ namespace ProdFloor.Models
         public string Name { get; set; }
         public int StateID { get; set; }
         public int FirecodeID { get; set; }
-        public List<Job> Jobs { get; set; }
+        public List<Job> _Jobs { get; set; }
 
 
         /*public string Country { get; set; }

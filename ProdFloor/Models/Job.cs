@@ -72,11 +72,11 @@ namespace ProdFloor.Models
 
         */
 
-        public JobExtension jobExtension { get; set; }
-        public HydroSpecific HydroSpecific { get; set; }
-        public GenericFeatures GenericFeatures { get; set; }
-        public Indicator Indicator { get; set; }
-        public HoistWayData HoistWayData { get; set; }
+        public JobExtension _jobExtension { get; set; }
+        public HydroSpecific _HydroSpecific { get; set; }
+        public GenericFeatures _GenericFeatures { get; set; }
+        public Indicator _Indicator { get; set; }
+        public HoistWayData _HoistWayData { get; set; }
         public SpecialFeatures _SpecialFeatures { get; set; }
         public int JobTypeID { get; set; }
         public int CityID { get; set; }

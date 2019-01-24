@@ -22,7 +22,7 @@ namespace ProdFloor.Models
         [Required(ErrorMessage = "Please enter {0} field")]
         public string Name { get; set; }
 
-        public List<JobExtension> JobExtensions { get; set; }
+        public List<JobExtension> _JobExtensions { get; set; }
 
     }
 }

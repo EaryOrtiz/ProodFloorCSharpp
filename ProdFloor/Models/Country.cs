@@ -12,6 +12,6 @@ namespace ProdFloor.Models
         [StringLength(50, ErrorMessage = "The maximum length of the {0} field is {1}")]
         [Required(ErrorMessage = "Please enter {0} field")]
         public string Name { get; set; }
-        public List<State> States { get; set; }
+        public List<State> _States { get; set; }
     }
 }

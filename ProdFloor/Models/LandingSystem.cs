@@ -18,6 +18,6 @@ namespace ProdFloor.Models
         [Required(ErrorMessage = "Please enter a {0}")]
         public string Name { get; set; }
 
-        public List<HoistWayData> HoistWayDatas { get; set; }
+        public List<HoistWayData> _HoistWayDatas { get; set; }
     }
 }

@@ -13,6 +13,7 @@ namespace ProdFloor.Models.ViewModels
         public GenericFeatures CurrentGenericFeatures { get; set; }
         public Indicator CurrentIndicator { get; set; }
         public HoistWayData CurrentHoistWayData { get; set; }
+        public SpecialFeatures CurrentSpecialFeatures { get; set; }
         public string CurrentTab { get; set; }
     }
 }

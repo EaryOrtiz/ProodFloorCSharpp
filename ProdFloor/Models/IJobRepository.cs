@@ -11,6 +11,7 @@ namespace ProdFloor.Models
         IQueryable<GenericFeatures> GenericFeaturesList { get; }
         IQueryable<Indicator> Indicators { get; }
         IQueryable<HoistWayData> HoistWayDatas { get; }
+        IQueryable<SpecialFeatures> SpecialFeatures { get; }
 
 
         void SaveJob(Job job);
@@ -19,6 +20,7 @@ namespace ProdFloor.Models
         void SaveGenericFeatures(GenericFeatures genericFeatures);
         void SaveIndicator(Indicator indicator);
         void SaveHoistWayData(HoistWayData hoistWayData);
+        void SaveSpecialFeatures(SpecialFeatures specialFeatures);
         void SaveEngJobView(JobViewModel viewModelToSave);
 
         Job DeleteJob(int jobID);
@@ -28,5 +30,6 @@ namespace ProdFloor.Models
         GenericFeatures DeleteGenericFeatures(int genericFeaturesID);
         Indicator DeleteIndicator(int indicatorID);
         HoistWayData DeleteHoistWayData(int hoistWatDataID);
+        SpecialFeatures DeleteSpecialFeatures(int specialFeaturesID);
     }
 }

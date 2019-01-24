@@ -35,6 +35,8 @@ namespace ProdFloor.Models
 
         public DbSet<LandingSystem> LandingSystems { get; set; }
 
+        public DbSet<SpecialFeatures> SpecialFeatures { get; set; }
+
         public class ApplicationDbContextFactory
             : IDesignTimeDbContextFactory<ApplicationDbContext>
         {

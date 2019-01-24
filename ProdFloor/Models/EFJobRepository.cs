@@ -20,6 +20,7 @@ namespace ProdFloor.Models
         public IQueryable<GenericFeatures> GenericFeaturesList => context.GenericFeaturesList;
         public IQueryable<Indicator> Indicators => context.Indicators;
         public IQueryable<HoistWayData> HoistWayDatas => context.HoistWayDatas;
+        public IQueryable<SpecialFeatures> SpecialFeatures => context.SpecialFeatures;
 
         public void SaveJob(Job job)
         {
@@ -62,6 +63,7 @@ namespace ProdFloor.Models
                 if (dbEntry != null)
                 {
                     dbEntry.JobID = jobExtension.JobID;
+                    dbEntry.DoorOperatorID = jobExtension.DoorOperatorID;
                     dbEntry.NumOfStops = jobExtension.NumOfStops;
                     dbEntry.JobTypeMain = jobExtension.JobTypeMain;
                     dbEntry.JobTypeAdd = jobExtension.JobTypeAdd;
@@ -84,6 +86,7 @@ namespace ProdFloor.Models
                     dbEntry.SHC = jobExtension.SHC;
                     dbEntry.SHCRisers = jobExtension.SHCRisers;
                     dbEntry.AUXCOP = jobExtension.AUXCOP;
+                    
                 }
             }
             context.SaveChanges();
@@ -170,6 +173,13 @@ namespace ProdFloor.Models
                     dbEntry.CallEnable = dbEntry.CallEnable;
                     dbEntry.CarCallCodeSecurity = dbEntry.CarCallCodeSecurity;
                     dbEntry.SpecialInstructions = dbEntry.SpecialInstructions;
+
+                    dbEntry.CarCallRead = dbEntry.CarCallRead;
+                    dbEntry.HallCallRead = dbEntry.HallCallRead;
+                    dbEntry.CarKey = dbEntry.CarKey;
+                    dbEntry.CRO = dbEntry.CRO;
+                    dbEntry.HCRO = dbEntry.HCRO;
+
                 }
                 else
                 {
@@ -275,6 +285,25 @@ namespace ProdFloor.Models
             }
             context.SaveChanges();
         }
+        public void SaveSpecialFeatures(SpecialFeatures specialFeatures)
+        {
+            if (specialFeatures.SpecialFeaturesID == 0)
+            {
+                context.SpecialFeatures.Add(specialFeatures);
+            }
+            else
+            {
+                SpecialFeatures dbEntry = context.SpecialFeatures
+                .FirstOrDefault(p => p.SpecialFeaturesID == specialFeatures.SpecialFeaturesID);
+                if (dbEntry != null)
+                {
+                    dbEntry.JobID = specialFeatures.JobID;
+                    dbEntry.Description= specialFeatures.Description;
+
+                }
+            }
+            context.SaveChanges();
+        }
 
         public Job DeleteJob(int JobID)
         {
@@ -300,6 +329,8 @@ namespace ProdFloor.Models
             Indicator indicator = context.Indicators
                 .FirstOrDefault(p => p.JobID == JobID);
             HoistWayData hoistWayData = context.HoistWayDatas
+                .FirstOrDefault(p => p.JobID == JobID);
+            SpecialFeatures specialFeatures = context.SpecialFeatures
                 .FirstOrDefault(p => p.JobID == JobID);
             if (dbEntry != null)
             {
@@ -329,6 +360,11 @@ namespace ProdFloor.Models
             if (hoistWayData != null)
             {
                 context.HoistWayDatas.Remove(hoistWayData);
+                context.SaveChanges();
+            }
+            if (specialFeatures != null)
+            {
+                context.SpecialFeatures.Remove(specialFeatures);
                 context.SaveChanges();
             }
             return dbEntry;
@@ -384,6 +420,18 @@ namespace ProdFloor.Models
             if (dbEntry != null)
             {
                 context.HoistWayDatas.Remove(dbEntry);
+                context.SaveChanges();
+            }
+            return dbEntry;
+        }
+
+        public SpecialFeatures DeleteSpecialFeatures(int specialFeaturesID)
+        {
+            SpecialFeatures dbEntry = context.SpecialFeatures
+                .FirstOrDefault(p => p.SpecialFeaturesID== specialFeaturesID);
+            if (dbEntry != null)
+            {
+                context.SpecialFeatures.Remove(dbEntry);
                 context.SaveChanges();
             }
             return dbEntry;
@@ -469,6 +517,23 @@ namespace ProdFloor.Models
                     {
                         viewModelToSave.CurrentHoistWayData.HoistWayDataID = hoistway.HoistWayDataID;
                         SaveHoistWayData(viewModelToSave.CurrentHoistWayData);
+                    }
+                }
+            }
+
+            if (viewModelToSave.CurrentSpecialFeatures != null)
+            {
+                if (viewModelToSave.CurrentSpecialFeatures.JobID != 0)
+                {
+                    SpecialFeatures specialF = SpecialFeatures.FirstOrDefault(j => j.JobID == viewModelToSave.CurrentSpecialFeatures.JobID);
+                    if (specialF == null)
+                    {
+                        SaveSpecialFeatures(viewModelToSave.CurrentSpecialFeatures);
+                    }
+                    else
+                    {
+                        viewModelToSave.CurrentSpecialFeatures.SpecialFeaturesID = specialF.SpecialFeaturesID;
+                        SaveSpecialFeatures(viewModelToSave.CurrentSpecialFeatures);
                     }
                 }
             }
