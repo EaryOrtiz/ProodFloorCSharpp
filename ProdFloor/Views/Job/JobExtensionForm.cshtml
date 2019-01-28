@@ -44,7 +44,12 @@
             <div><span asp-validation-for="CurrentJobExtension.DoorHoist" class="text-danger"></span></div>
             <custom-select select-for="DoorOperatorStyle" selected-value="@Model.CurrentJobExtension.DoorHoist" asp-for="CurrentJobExtension.DoorHoist"></custom-select>
         </div>
-        
+        <div class="form-group">
+            <label asp-for="CurrentJobExtension.DoorOperatorID" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <select asp-for="CurrentJobExtension.DoorOperatorID" asp-items="@(new SelectList(@ViewBag.DoorOperatorList,"DoorOperatorID","Name"))"></select>
+            </div>
+        </div>
     </div>
     <div class="col-md-6">
         @*Grid for checkboxes*@
@@ -79,6 +84,7 @@
             <div><span asp-validation-for="CurrentJobExtension.Nudging" class="text-danger"></span></div>
             <input asp-for="CurrentJobExtension.Nudging" class="form-control col-sm-3 float-left" />
         </div>
+        
         <h3 class="border-top">Serial Link</h3>
         <div class="form-inline">
             <label asp-for="CurrentJobExtension.SCOP" class="col-sm-4 col-form-label"></label>

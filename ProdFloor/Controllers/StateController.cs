@@ -44,8 +44,8 @@ namespace ProdFloor.Controllers
         public ViewResult Edit(int ID)
         {
             ViewData["Countries"] = repository.Countries;
-            return View(repository.States
-                .FirstOrDefault(j => j.StateID == ID));
+             return View(repository.States
+                 .FirstOrDefault(j => j.StateID == ID));
         }
 
         [HttpPost]
@@ -76,6 +76,15 @@ namespace ProdFloor.Controllers
             return RedirectToAction("List");
         }
 
-        public ViewResult Add() => View("Edit", new State());
+        public ViewResult Add(){
+            List<Country> CountryList = new List<Country>();
+            //Getting Data
+            CountryList = (from country in repository.Countries select country).ToList();
+            //Insert Select item in list
+            CountryList.Insert(0, new Country { CountryID = 0, Name = "Select" });
+            //Assigning categorlist to viewbag
+            ViewBag.CountryList = CountryList;
+            return View("Edit", new State());
+        } 
     }
 }

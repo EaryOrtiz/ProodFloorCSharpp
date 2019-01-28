@@ -266,7 +266,7 @@ namespace ProdFloor.Infrastructure
             m_tag.Attributes["value"] = "";
             m_tag.InnerHtml.Append("Please select one");
             result.InnerHtml.AppendHtml(m_tag);
-            foreach (string style in itemsrepository.DoorOperators.Select(d=>d.Style).Distinct())
+            foreach (string style in itemsrepository.DoorOperators.Select(d => d.Style).Distinct())
             {
                 TagBuilder tag = new TagBuilder("option");
                 tag.Attributes["value"] = style;
@@ -297,16 +297,16 @@ namespace ProdFloor.Infrastructure
             itemsrepository = itemsrepo;
         }
 
-        private IQueryable<string> CaseFor(string value)
+        private IQueryable<string> CaseFor2(string value2)
         {
-            switch (value)
+            switch (value2)
             {
                 case "FireCode":
                     return itemsrepository.FireCodes.Select(d => d.Name).Distinct();
                 case "State":
                     return itemsrepository.States.Select(d => d.Name).Distinct();
                 case "Country":
-                    return itemsrepository.Countries.Select(d => d.Name).Distinct();
+                    return itemsrepository.Countries.Select(d => new { d.Name, d.CountryID }.ToString());
                 case "City":
                     return itemsrepository.Cities.Select(d => d.Name).Distinct();
                 case "DoorOperatorName":
@@ -320,7 +320,7 @@ namespace ProdFloor.Infrastructure
                 case "JobType":
                     return itemsrepository.JobTypes.Select(d => d.Name).Distinct();
                 case "SwitchStyle":
-                    return new List<string> { "2-Position", "3-Position"}.AsQueryable();
+                    return new List<string> { "2-Position", "3-Position" }.AsQueryable();
                 default:
                     return itemsrepository.JobTypes.Select(d => d.Name).Distinct();
             }
@@ -347,16 +347,16 @@ namespace ProdFloor.Infrastructure
             m_tag.Attributes["value"] = "";
             m_tag.InnerHtml.Append("Please select one");
             result.InnerHtml.AppendHtml(m_tag);
-            IQueryable<string> options = CaseFor(SelectFor);
-            foreach (string option in options)
+            IQueryable<string> options2 = CaseFor2(SelectFor);
+            foreach (string option in options2)
             {
                 TagBuilder tag = new TagBuilder("option");
-                tag.Attributes["value"] = option;
-                if (option == SelectedValue)
+                tag.Attributes["value"] = option.ToString();
+                if (option.ToString() == SelectedValue)
                 {
                     tag.Attributes["selected"] = "selected";
                 }
-                tag.InnerHtml.Append(option);
+                tag.InnerHtml.Append(option.ToString());
                 result.InnerHtml.AppendHtml(tag);
             }
             output.Content.AppendHtml(result.InnerHtml);
@@ -392,11 +392,11 @@ namespace ProdFloor.Infrastructure
                 case "EPContact":
                     return new List<string> { "NO", "NC" }.AsQueryable();
                 case "EPCars":
-                    return new List<string> { "1","2","3","4+" }.AsQueryable();
+                    return new List<string> { "1", "2", "3", "4+" }.AsQueryable();
                 case "PIDriver":
-                    return new List<string> { "CE Electronics", "Emotive", "Discrete"}.AsQueryable();
+                    return new List<string> { "CE Electronics", "Emotive", "Discrete" }.AsQueryable();
                 case "CarPIDiscreteType":
-                    return new List<string> { "Multi-light", "One line per floor", "Binary 00" , "Binary 01" }.AsQueryable();
+                    return new List<string> { "Multi-light", "One line per floor", "Binary 00", "Binary 01" }.AsQueryable();
                 case "Monitoring":
                     return new List<string> { "MView Complete", "MView Interface", "IMonitor Complete", "IMonitor Interface", "IDS Liftnet" }.AsQueryable();
                 case "PIType":
@@ -450,4 +450,68 @@ namespace ProdFloor.Infrastructure
             output.Content.AppendHtml(result.InnerHtml);
         }
     }
-}   
+
+    public class VoltsTagHelper : TagHelper
+    {
+        private IItemRepository itemsrepository;
+
+        private IUrlHelperFactory urlHelperFactory;
+
+        public ModelExpression AspFor { get; set; }
+
+        public string SelectFor { get; set; }
+
+        public VoltsTagHelper(IUrlHelperFactory helperFactory, IItemRepository itemsrepo)
+        {
+            urlHelperFactory = helperFactory;
+            itemsrepository = itemsrepo;
+        }
+
+        private IQueryable<int> CaseFor(string value)
+        {
+            switch (value)
+            {
+                case "Volts_Value":
+                    return new List<int> { 24, 48, 120 }.AsQueryable();
+                default:
+                    return new List<int> { 24, 48, 120 }.AsQueryable();
+            }
+        }
+
+        [ViewContext]
+        [HtmlAttributeNotBound]
+        public ViewContext ViewContext { get; set; }
+
+        public int SelectedValue { get; set; }
+
+        public override void Process(TagHelperContext context, TagHelperOutput output)
+        {
+            IUrlHelper urlHelper = urlHelperFactory.GetUrlHelper(ViewContext);
+            output.TagName = "select";
+            TagBuilder result = new TagBuilder("select");
+            string name = this.AspFor.Name;
+            if (!String.IsNullOrEmpty(name))
+            {
+                output.Attributes.Add("id", name);
+                output.Attributes.Add("name", name);
+            }
+            TagBuilder m_tag = new TagBuilder("option");
+            m_tag.Attributes["value"] = "";
+            m_tag.InnerHtml.Append("---");
+            result.InnerHtml.AppendHtml(m_tag);
+            IQueryable<int> options = CaseFor(SelectFor);
+            foreach (int option in options)
+            {
+                TagBuilder tag = new TagBuilder("option");
+                tag.Attributes["value"] = option.ToString();
+                if (option == SelectedValue)
+                {
+                    tag.Attributes["selected"] = "selected";
+                }
+                tag.InnerHtml.Append(option.ToString());
+                result.InnerHtml.AppendHtml(tag);
+            }
+            output.Content.AppendHtml(result.InnerHtml);
+        }
+    }
+}

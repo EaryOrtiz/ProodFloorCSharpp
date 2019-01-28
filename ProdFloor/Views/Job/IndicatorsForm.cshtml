@@ -134,7 +134,7 @@
         <div class="input-group-prepend">
             <span class="input-group-text" id="">Voltage</span>
         </div>
-        <indicators select-for="Volts_Value" selected-value="@Model.CurrentIndicator.IndicatorsVoltage" asp-for="CurrentIndicator.IndicatorsVoltage" class="form-control col-sm-7"></indicators>
+        < select-for="Volts_Value" selected-value="@Model.CurrentIndicator.IndicatorsVoltage" asp-for="CurrentIndicator.IndicatorsVoltage" class="form-control col-sm-7"></>
         <indicators select-for="Volts_Type" selected-value="@Model.CurrentIndicator.IndicatorsVoltageType" asp-for="CurrentIndicator.IndicatorsVoltageType" class="form-control col-sm-7"></indicators>
         <div>
             <div><span asp-validation-for="CurrentIndicator.IndicatorsVoltage" class="text-danger"></span></div>

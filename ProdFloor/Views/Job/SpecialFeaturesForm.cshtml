@@ -1,0 +1,13 @@
+﻿@model JobViewModel
+<input type="hidden" asp-for="CurrentSpecialFeatures.JobID" />
+<input type="hidden" asp-for="CurrentJobExtension.JobExtensionID" />
+<div class="form-row col-sm-12" style="padding-bottom:15px">
+    <div class="col-md-6 form-line border-right">
+        <h3>Special Features</h3>
+        <div class="form-group row has-warning has-feedback">
+            <label asp-for="CurrentSpecialFeatures.Description" class="col-sm-5 col-form-label"></label>
+            <div><span asp-validation-for="CurrentSpecialFeatures.Description" class="text-danger"></span></div>
+            <input asp-for="CurrentSpecialFeatures.Description" class="form-control col-sm-6" />
+        </div>
+    </div>
+</div>

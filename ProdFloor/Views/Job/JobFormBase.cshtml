@@ -14,11 +14,11 @@
         <span asp-validation-for="JobNum" class="text-danger"></span>
     </div>
 </div>
-<div class="form-group row">
-    <label asp-for="JobType" class="col-sm-2 col-form-label"></label>
-    <div>
-        <custom-select select-for="JobType" asp-for="JobType" selected-value="@Model.JobType"></custom-select>
-        <span asp-validation-for="JobType" class="text-danger"></span>
+<div class="form-group">
+    <label asp-for="JobTypeID" class="col-md-2 control-label"></label>
+    <div class="col-md-10">
+        <select asp-for="JobTypeID" asp-items="@(new SelectList(@ViewBag.JobTypeList,"JobTypeID","Name"))"></select>
+        <span asp-validation-for="JobTypeID" class="text-danger"></span>
     </div>
 </div>
 <div class="form-group row">
@@ -31,16 +31,16 @@
 <div class="form-group row">
     <label asp-for="ShipDate" class="col-sm-2 col-form-label"></label>
     <div>
-        <input asp-for="ShipDate" class="form-control col-sm-7" />
+        <input asp-for="ShipDate" class="form-control col-sm-15" />
         <span asp-validation-for="ShipDate" class="text-danger"></span>
     </div>
-    
+
 </div>
 <div class="form-group row">
     <label asp-for="LatestFinishDate" class="col-sm-2 col-form-label"></label>
     <div>
-    <input asp-for="LatestFinishDate" class="form-control col-sm-7" />
-    <span asp-validation-for="LatestFinishDate" class="text-danger"></span>
+        <input asp-for="LatestFinishDate" class="form-control col-sm-15" />
+        <span asp-validation-for="LatestFinishDate" class="text-danger"></span>
     </div>
 </div>
 <div class="form-group row">
@@ -57,29 +57,17 @@
         <span asp-validation-for="Contractor" class="text-danger"></span>
     </div>
 </div>
-<div class="form-group row">
-    <label asp-for="JobCountry" class="col-sm-2 col-form-label"></label>
-    <div>
-        <custom-select select-for="Country" selected-value="@Model.JobCountry" asp-for="JobCountry"></custom-select>
-        <span asp-validation-for="JobCountry" class="text-danger"></span>
+<div class="form-group">
+    <label asp-for="CityID" class="col-md-2 control-label"></label>
+    <div class="col-md-10">
+        <select asp-for="CityID" asp-items="@(new SelectList(@ViewBag.CityList,"CityID","Name"))"></select>
+        <span asp-validation-for="CityID" class="text-danger"></span>
     </div>
 </div>
-<div class="form-group row">
-    <label asp-for="JobState" class="col-sm-2 col-form-label"></label>
-    <div><span asp-validation-for="JobState" class="text-danger"></span></div>
-    <custom-select select-for="State" selected-value="@Model.JobState" asp-for="JobState"></custom-select>
-</div>
-<div class="form-group row">
-    <label asp-for="JobCity" class="col-sm-2 col-form-label"></label>
-    <div>
-        <custom-select select-for="City" selected-value="@Model.JobCity" asp-for="JobCity"></custom-select>
-        <span asp-validation-for="JobCity" class="text-danger"></span>
-    </div>
-</div>
-<div class="form-group row">
-    <label asp-for="SafetyCode" class="col-sm-2 col-form-label"></label>
-    <div>
-        <custom-select asp-for="SafetyCode" selected-value="@Model.SafetyCode" select-for="FireCode"></custom-select>
-        <span asp-validation-for="SafetyCode" class="text-danger"></span>
+<div class="form-group">
+    <label asp-for="FireCodeID" class="col-md-2 control-label"></label>
+    <div class="col-md-10">
+        <select asp-for="FireCodeID" asp-items="@(new SelectList(@ViewBag.FireCodeList,"FireCodeID","Name"))"></select>
+        <span asp-validation-for="FireCodeID" class="text-danger"></span>
     </div>
 </div>

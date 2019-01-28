@@ -85,6 +85,22 @@ namespace ProdFloor.Controllers
             ViewData["States"] = repository.States;
             ViewData["FireCodes"] = repository.FireCodes;
 
+            List<State> StateList = new List<State>();
+            //Getting Data
+            StateList = (from state in repository.States select state).ToList();
+            //Insert Select item in list
+            StateList.Insert(0, new State { StateID = 0, Name = "Select" });
+            //Assigning categorlist to viewbag
+            ViewBag.StateList = StateList;
+
+            List<FireCode> FireCodeList = new List<FireCode>();
+            //Getting Data
+            FireCodeList = (from firecode in repository.FireCodes select firecode).ToList();
+            //Insert Select item in list
+            FireCodeList.Insert(0, new FireCode { FireCodeID = 0, Name = "Select" });
+            //Assigning categorlist to viewbag
+            ViewBag.FireCodeList = FireCodeList;
+
             return View("Edit", new City());
         }
     }

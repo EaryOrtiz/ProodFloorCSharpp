@@ -7,24 +7,23 @@
 <form asp-controller="City" asp-action="Edit" method="post">
     <input type="hidden" asp-for="CityID" />
     <div class="form-group">
-        <label asp-for="Country"></label>
-        <div><span asp-validation-for="Country" class="text-danger"></span></div>
-        <custom-select select-for="Country" asp-for="Country" selected-value="@Model.Country"></custom-select>
+        <label asp-for="StateID" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <select asp-for="StateID" asp-items="@(new SelectList(@ViewBag.StateList,"StateID","Name"))"></select>
+            <span asp-validation-for="StateID" class="text-danger"></span>
+        </div>
     </div>
     <div class="form-group">
-        <label asp-for="State"></label>
-        <div><span asp-validation-for="State" class="text-danger"></span></div>
-        <custom-select select-for="State" asp-for="State" selected-value="@Model.State"></custom-select>
-</div>
+        <label asp-for="FirecodeID" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <select asp-for="FirecodeID" asp-items="@(new SelectList(@ViewBag.FireCodeList,"FireCodeID","Name"))"></select>
+            <span asp-validation-for="FirecodeID" class="text-danger"></span>
+        </div>
+    </div>
     <div class="form-group">
         <label asp-for="Name"></label>
         <div><span asp-validation-for="Name" class="text-danger"></span></div>
         <input asp-for="Name" class="form-control" />
-    </div>
-    <div class="form-group">
-        <label asp-for="CurrentFireCode"></label>
-        <div><span asp-validation-for="CurrentFireCode" class="text-danger"></span></div>
-        <custom-select select-for="FireCode" asp-for="CurrentFireCode" selected-value="@Model.CurrentFireCode"></custom-select>
     </div>
     <div class=" text-center">
         <button class="btn btn-primary" type="submit">Save</button>

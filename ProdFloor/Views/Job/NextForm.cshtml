@@ -23,6 +23,9 @@
     <li class="nav-item">
         <a class="nav-link @(Model.CurrentTab == "HoistWayData" ? "active" : " ")  @(Model.CurrentHoistWayData.JobID == 0 ? "disabled" : " ")" data-toggle="tab" href="#hoistwaydata" role="tab">Hoistway Data</a>
     </li>
+    <li class="nav-item">
+        <a class="nav-link @(Model.CurrentTab == "SpecialFeatures" ? "active" : " ")  @(Model.CurrentSpecialFeatures.JobID == 0 ? "disabled" : " ")" data-toggle="tab" href="#specialfeatures" role="tab">Special Features</a>
+    </li>
 </ul>
 <!-- Tab panes -->
 <form asp-action="NextForm" method="post">
@@ -58,6 +61,12 @@
             @if (Model.CurrentHoistWayData.JobID != 0)
             {
                 @Html.Partial("HoistWayDataForm", Model)
+            }
+        </div>
+        <div class="tab-pane @(Model.CurrentTab == "SpecialFeatures" ? "active" : " ")" id="specialfeatures" role="tabpanel">
+            @if (Model.CurrentSpecialFeatures.JobID != 0)
+            {
+                @Html.Partial("SpecialFeaturesForm", Model)
             }
         </div>
         <div class="text-center">

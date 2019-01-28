@@ -12,7 +12,6 @@ namespace ProdFloor.Models
         public int JobID { get; set; }
 
         [StringLength(26, ErrorMessage = "The maximum length of the {0} field is {1}")]
-        [Required(ErrorMessage = "Please enter a {0}")]
         public string Status { get; set; }
 
         public int EngID { get; set; }
@@ -86,6 +85,7 @@ namespace ProdFloor.Models
 
     public class JobExtension
     {
+
         public int JobExtensionID { get; set; }
         public int JobID { get; set; }
 

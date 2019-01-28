@@ -67,11 +67,48 @@ namespace ProdFloor.Controllers
             return RedirectToAction("List");
         }
 
-        public ViewResult NewJob() => View(new Job());
+        public ViewResult NewJob()
+        {
+
+            List<City> CityList = new List<City>();
+            //Getting Data
+            CityList = (from city in itemsrepository.Cities select city).ToList();
+            //Insert Select item in list
+            CityList.Insert(0, new City { CityID = 0, Name = "Select" });
+            //Assigning categorlist to viewbag
+            ViewBag.CityList = CityList;
+
+            List<FireCode> FireCodeList = new List<FireCode>();
+            //Getting Data
+            FireCodeList = (from firecode in itemsrepository.FireCodes select firecode).ToList();
+            //Insert Select item in list
+            FireCodeList.Insert(0, new FireCode { FireCodeID = 0, Name = "Select" });
+            //Assigning categorlist to viewbag
+            ViewBag.FireCodeList = FireCodeList;
+
+            List<JobType> JobTypeList = new List<JobType>();
+            //Getting Data
+            JobTypeList = (from jobtype in itemsrepository.JobTypes select jobtype).ToList();
+            //Insert Select item in list
+            JobTypeList.Insert(0, new JobType { JobTypeID = 0, Name = "Select" });
+            //Assigning categorlist to viewbag
+            ViewBag.JobTypeList = JobTypeList;
+
+            return View(new Job());
+        } 
 
         [HttpPost]
         public IActionResult NewJob(Job newJob)
         {
+
+            List<DoorOperator> DoorOperatorList = new List<DoorOperator>();
+            //Getting Data
+            DoorOperatorList = (from doorOperator in itemsrepository.DoorOperators select doorOperator).ToList();
+            //Insert Select item in list
+            DoorOperatorList.Insert(0, new DoorOperator { DoorOperatorID = 0, Name = "Select" });
+            //Assigning categorlist to viewbag
+            ViewBag.DoorOperatorList = DoorOperatorList;
+
             AppUser currentUser = GetCurrentUser().Result;
             if (ModelState.IsValid)
             {
@@ -91,6 +128,8 @@ namespace ProdFloor.Controllers
                 };
                 TempData["message"] = $"Job# {newJobViewModel.CurrentJob.JobNum} has been saved...{newJobViewModel.CurrentJob.JobID}...{currentUser.EngID}";
                 return View("NextForm", newJobViewModel);
+
+
             }
             else
             {
@@ -102,6 +141,14 @@ namespace ProdFloor.Controllers
         
         public IActionResult Edit(int ID)
         {
+            List<DoorOperator> DoorOperatorList = new List<DoorOperator>();
+            //Getting Data
+            DoorOperatorList = (from doorOperator in itemsrepository.DoorOperators select doorOperator).ToList();
+            //Insert Select item in list
+            DoorOperatorList.Insert(0, new DoorOperator { DoorOperatorID = 0, Name = "Select" });
+            //Assigning categorlist to viewbag
+            ViewBag.DoorOperatorList = DoorOperatorList;
+
             Job job = repository.Jobs.FirstOrDefault(j => j.JobID == ID);
             if (job == null)
             {
@@ -127,6 +174,14 @@ namespace ProdFloor.Controllers
         [HttpPost]
         public IActionResult Edit(JobViewModel multiEditViewModel)
         {
+            List<DoorOperator> DoorOperatorList = new List<DoorOperator>();
+            //Getting Data
+            DoorOperatorList = (from doorOperator in itemsrepository.DoorOperators select doorOperator).ToList();
+            //Insert Select item in list
+            DoorOperatorList.Insert(0, new DoorOperator { DoorOperatorID = 0, Name = "Select" });
+            //Assigning categorlist to viewbag
+            ViewBag.DoorOperatorList = DoorOperatorList;
+
             if (ModelState.IsValid)
             {
                 if(multiEditViewModel.CurrentJob.Status == "" || multiEditViewModel.CurrentJob.Status == null)
@@ -149,8 +204,17 @@ namespace ProdFloor.Controllers
 
         public IActionResult Continue(int ID)
         {
-            if(repository.Jobs.FirstOrDefault(j => j.JobID == ID) != null)
+            List<DoorOperator> DoorOperatorList = new List<DoorOperator>();
+            //Getting Data
+            DoorOperatorList = (from doorOperator in itemsrepository.DoorOperators select doorOperator).ToList();
+            //Insert Select item in list
+            DoorOperatorList.Insert(0, new DoorOperator { DoorOperatorID = 0, Name = "Select" });
+            //Assigning categorlist to viewbag
+            ViewBag.DoorOperatorList = DoorOperatorList;
+
+            if (repository.Jobs.FirstOrDefault(j => j.JobID == ID) != null)
             {
+
                 JobViewModel continueJobViewModel = new JobViewModel();
                 continueJobViewModel.CurrentJob = repository.Jobs.FirstOrDefault(j => j.JobID == ID);
                 continueJobViewModel.CurrentJobExtension = (repository.JobsExtensions.FirstOrDefault(j => j.JobID == ID) ?? new JobExtension());
@@ -159,6 +223,9 @@ namespace ProdFloor.Controllers
                 continueJobViewModel.CurrentIndicator = (repository.Indicators.FirstOrDefault(j => j.JobID == ID) ?? new Indicator());
                 continueJobViewModel.CurrentHoistWayData = (repository.HoistWayDatas.FirstOrDefault(j => j.JobID == ID) ?? new HoistWayData());
                 continueJobViewModel.CurrentSpecialFeatures = (repository.SpecialFeatures.FirstOrDefault(j => j.JobID == ID) ?? new SpecialFeatures());
+
+                
+
                 return View("NextForm", continueJobViewModel);
 
             }
@@ -172,6 +239,14 @@ namespace ProdFloor.Controllers
         [HttpPost]
         public IActionResult NextForm(JobViewModel nextViewModel)
         {
+            List<DoorOperator> DoorOperatorList = new List<DoorOperator>();
+            //Getting Data
+            DoorOperatorList = (from doorOperator in itemsrepository.DoorOperators select doorOperator).ToList();
+            //Insert Select item in list
+            DoorOperatorList.Insert(0, new DoorOperator { DoorOperatorID = 0, Name = "Select" });
+            //Assigning categorlist to viewbag
+            ViewBag.DoorOperatorList = DoorOperatorList;
+
             if (ModelState.IsValid)
             {
                 if(nextViewModel.CurrentJobExtension != null)
@@ -252,6 +327,7 @@ namespace ProdFloor.Controllers
                 }
                 else
                 {
+                    
                     repository.SaveEngJobView(nextViewModel);
                     JobExtension jobExt = repository.JobsExtensions.FirstOrDefault(j => j.JobID == nextViewModel.CurrentJob.JobID);
                     nextViewModel.CurrentJobExtension = (jobExt ?? new JobExtension { JobID = nextViewModel.CurrentJob.JobID });
