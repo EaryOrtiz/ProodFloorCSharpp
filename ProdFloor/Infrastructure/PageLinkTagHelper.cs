@@ -392,7 +392,7 @@ namespace ProdFloor.Infrastructure
                 case "EPContact":
                     return new List<string> { "NO", "NC" }.AsQueryable();
                 case "EPCars":
-                    return new List<string> { "1", "2", "3", "4+" }.AsQueryable();
+                    return new List<string> { "1", "2", "3", "4" }.AsQueryable();
                 case "PIDriver":
                     return new List<string> { "CE Electronics", "Emotive", "Discrete" }.AsQueryable();
                 case "CarPIDiscreteType":

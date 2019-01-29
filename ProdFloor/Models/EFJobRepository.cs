@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProdFloor.Models.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -331,41 +332,51 @@ namespace ProdFloor.Models
                 .FirstOrDefault(p => p.JobID == JobID);
             SpecialFeatures specialFeatures = context.SpecialFeatures
                 .FirstOrDefault(p => p.JobID == JobID);
-            if (dbEntry != null)
+
+            try
             {
-                context.Jobs.Remove(dbEntry);
-                context.SaveChanges();
-            }
-            if (jobExtension != null)
+                
+                if (dbEntry != null)
+                {
+                    context.Jobs.Remove(dbEntry);
+                    context.SaveChanges();
+                }
+                if (jobExtension != null)
+                {
+                    context.JobsExtensions.Remove(jobExtension);
+                    context.SaveChanges();
+                }
+                if (hydroSpecific != null)
+                {
+                    context.HydroSpecifics.Remove(hydroSpecific);
+                    context.SaveChanges();
+                }
+                if (genericFeatures != null)
+                {
+                    context.GenericFeaturesList.Remove(genericFeatures);
+                    context.SaveChanges();
+                }
+                if (indicator != null)
+                {
+                    context.Indicators.Remove(indicator);
+                    context.SaveChanges();
+                }
+                if (hoistWayData != null)
+                {
+                    context.HoistWayDatas.Remove(hoistWayData);
+                    context.SaveChanges();
+                }
+                if (specialFeatures != null)
+                {
+                    context.SpecialFeatures.Remove(specialFeatures);
+                    context.SaveChanges();
+                }
+                
+            }catch(Exception e)
             {
-                context.JobsExtensions.Remove(jobExtension);
-                context.SaveChanges();
+
             }
-            if (hydroSpecific != null)
-            {
-                context.HydroSpecifics.Remove(hydroSpecific);
-                context.SaveChanges();
-            }
-            if (genericFeatures != null)
-            {
-                context.GenericFeaturesList.Remove(genericFeatures);
-                context.SaveChanges();
-            }
-            if (indicator != null)
-            {
-                context.Indicators.Remove(indicator);
-                context.SaveChanges();
-            }
-            if (hoistWayData != null)
-            {
-                context.HoistWayDatas.Remove(hoistWayData);
-                context.SaveChanges();
-            }
-            if (specialFeatures != null)
-            {
-                context.SpecialFeatures.Remove(specialFeatures);
-                context.SaveChanges();
-            }
+
             return dbEntry;
         }
         public JobExtension DeleteJobExtension(int jobExtensionID)

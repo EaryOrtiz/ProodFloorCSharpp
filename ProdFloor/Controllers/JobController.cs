@@ -26,24 +26,26 @@ namespace ProdFloor.Controllers
         }
         
         public ViewResult List(int jobType, int jobPage = 1)
-            => View(new JobsListViewModel
-            {//Checar si vuelve a funcionar CON JOINS!!!!!!!!!!!!
-                Jobs = repository.Jobs
-                .Where(j => jobType == null || j.JobTypeID == jobType)
-                .OrderBy(p => p.JobID)
-                .Skip((jobPage - 1) * PageSize)
-                .Take(PageSize),
-                PagingInfo = new PagingInfo
-                {
-                    CurrentPage = jobPage,
-                    ItemsPerPage = PageSize,
-                    TotalItems =jobType == null ?
-                    repository.Jobs.Count() :
-                    repository.Jobs.Where(e =>
-                    e.JobTypeID == jobType).Count()
-                },
-                CurrentJobType = jobType.ToString()
-            });
+        {
+
+            var JobCount = repository.Jobs.Count();
+
+            return View(new JobsListViewModel
+            {
+                    Jobs = repository.Jobs
+                    .OrderBy(p => p.JobID)
+                    .Skip((jobPage - 1) * PageSize)
+                    .Take(PageSize),
+                    PagingInfo = new PagingInfo
+                    {
+                       CurrentPage = jobPage,
+                       ItemsPerPage = PageSize,
+                       TotalItems = JobCount
+                    },
+                        CurrentJobType = jobType.ToString()
+             });
+        }
+            
 
         [HttpPost]
         public IActionResult Delete(int ID)
@@ -149,20 +151,29 @@ namespace ProdFloor.Controllers
         
         public IActionResult Edit(int ID)
         {
+            List<City> CityList = new List<City>();
+            CityList = (from city in itemsrepository.Cities select city).ToList();
+            CityList.Insert(0, new City { CityID = 0, Name = "Select" });
+            ViewBag.CityList = CityList;
+
+            List<FireCode> FireCodeList = new List<FireCode>();
+            FireCodeList = (from firecode in itemsrepository.FireCodes select firecode).ToList();
+            FireCodeList.Insert(0, new FireCode { FireCodeID = 0, Name = "Select" });
+            ViewBag.FireCodeList = FireCodeList;
+
+            List<JobType> JobTypeList = new List<JobType>();
+            JobTypeList = (from jobtype in itemsrepository.JobTypes select jobtype).ToList();
+            JobTypeList.Insert(0, new JobType { JobTypeID = 0, Name = "Select" });
+            ViewBag.JobTypeList = JobTypeList;
+
             List<DoorOperator> DoorOperatorList = new List<DoorOperator>();
-            //Getting Data
             DoorOperatorList = (from doorOperator in itemsrepository.DoorOperators select doorOperator).ToList();
-            //Insert Select item in list
             DoorOperatorList.Insert(0, new DoorOperator { DoorOperatorID = 0, Name = "Select" });
-            //Assigning categorlist to viewbag
             ViewBag.DoorOperatorList = DoorOperatorList;
 
             List<LandingSystem> LandingSysList = new List<LandingSystem>();
-            //Getting Data
             LandingSysList = (from landingSystem in itemsrepository.LandingSystems select landingSystem).ToList();
-            //Insert Select item in list
             LandingSysList.Insert(0, new LandingSystem { LandingSystemID = 0, Name = "Select" });
-            //Assigning categorlist to viewbag
             ViewBag.LandingSysList = LandingSysList;
 
             Job job = repository.Jobs.FirstOrDefault(j => j.JobID == ID);

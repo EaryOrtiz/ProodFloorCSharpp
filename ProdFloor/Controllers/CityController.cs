@@ -20,12 +20,13 @@ namespace ProdFloor.Controllers
             repository = repo;
 
         }
-        //Se debe arreglar con jions!!!!!!!!
         public ViewResult List(int separator, int page = 1)
-            => View(new CityListViewModel
+        {
+            var CityCount = repository.States.Count();
+
+            return View(new CityListViewModel
             {
                 Cities = repository.Cities
-                .Where(j => separator == null || j.StateID == separator)
                 .OrderBy(p => p.CityID)
                 .Skip((page - 1) * PageSize)
                 .Take(PageSize).ToList(),
@@ -33,19 +34,36 @@ namespace ProdFloor.Controllers
                 {
                     CurrentPage = page,
                     ItemsPerPage = PageSize,
-                    TotalItems = separator == null ?
-                    repository.Cities.Count() :
-                    repository.Cities.Where(e =>
-                    e.StateID == separator).Count()
+                    TotalItems = CityCount
                 },
                 CurrentSeparator = separator.ToString()
             });
+        }
+            
 
         public ViewResult Edit(int ID)
         {
+
+            List<State> StateList = new List<State>();
+            //Getting Data
+            StateList = (from state in repository.States select state).ToList();
+            //Insert Select item in list
+            StateList.Insert(0, new State { StateID = 0, Name = "Select" });
+            //Assigning categorlist to viewbag
+            ViewBag.StateList = StateList;
+
+            List<FireCode> FireCodeList = new List<FireCode>();
+            //Getting Data
+            FireCodeList = (from firecode in repository.FireCodes select firecode).ToList();
+            //Insert Select item in list
+            FireCodeList.Insert(0, new FireCode { FireCodeID = 0, Name = "Select" });
+            //Assigning categorlist to viewbag
+            ViewBag.FireCodeList = FireCodeList;
+
             ViewData["Countries"] = repository.Countries;
             ViewData["States"] = repository.States;
             ViewData["FireCodes"] = repository.FireCodes;
+
             return View(repository.Cities
                 .FirstOrDefault(j => j.CityID == ID));
         }

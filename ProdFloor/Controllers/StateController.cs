@@ -20,31 +20,41 @@ namespace ProdFloor.Controllers
             repository = repo;
 
         }
-        //Se debe arreglar con jions!!!!!!!!
         public ViewResult List(int country, int page = 1)
-            => View(new StateListViewModel
+        {
+
+            var StatesCount = repository.States.Count();
+
+            return View(new StateListViewModel
             {
                 States = repository.States
-                .Where(j => country == null || j.CountryID == country)
-                .OrderBy(p => p.Name)
-                .Skip((page - 1) * PageSize)
-                .Take(PageSize).ToList(),
+               .OrderBy(p => p.Name)
+               .Skip((page - 1) * PageSize)
+               .Take(PageSize).ToList(),
                 PagingInfo = new PagingInfo
                 {
                     CurrentPage = page,
                     ItemsPerPage = PageSize,
-                    TotalItems = country == null ?
-                    repository.States.Count() :
-                    repository.States.Where(e =>
-                    e.CountryID == country).Count()
+                    TotalItems = StatesCount
                 },
                 CurrentCountry = country.ToString()
             });
+        }
+            
 
         public ViewResult Edit(int ID)
         {
+
+            List<Country> CountryList = new List<Country>();
+            //Getting Data
+            CountryList = (from country in repository.Countries select country).ToList();
+            //Insert Select item in list
+            CountryList.Insert(0, new Country { CountryID = 0, Name = "Select" });
+            //Assigning categorlist to viewbag
+            ViewBag.CountryList = CountryList;
             ViewData["Countries"] = repository.Countries;
-             return View(repository.States
+
+            return View(repository.States
                  .FirstOrDefault(j => j.StateID == ID));
         }
 
