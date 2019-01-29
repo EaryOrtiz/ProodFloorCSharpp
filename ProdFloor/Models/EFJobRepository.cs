@@ -173,7 +173,6 @@ namespace ProdFloor.Models
                     dbEntry.CallEnable = dbEntry.CallEnable;
                     dbEntry.CarCallCodeSecurity = dbEntry.CarCallCodeSecurity;
                     dbEntry.SpecialInstructions = dbEntry.SpecialInstructions;
-
                     dbEntry.CarCallRead = dbEntry.CarCallRead;
                     dbEntry.HallCallRead = dbEntry.HallCallRead;
                     dbEntry.CarKey = dbEntry.CarKey;

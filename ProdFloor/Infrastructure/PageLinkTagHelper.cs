@@ -297,16 +297,16 @@ namespace ProdFloor.Infrastructure
             itemsrepository = itemsrepo;
         }
 
-        private IQueryable<string> CaseFor2(string value2)
+        private IQueryable<string> CaseFor(string value)
         {
-            switch (value2)
+            switch (value)
             {
                 case "FireCode":
                     return itemsrepository.FireCodes.Select(d => d.Name).Distinct();
                 case "State":
                     return itemsrepository.States.Select(d => d.Name).Distinct();
                 case "Country":
-                    return itemsrepository.Countries.Select(d => new { d.Name, d.CountryID }.ToString());
+                    return itemsrepository.Countries.Select(d => d.Name).Distinct();
                 case "City":
                     return itemsrepository.Cities.Select(d => d.Name).Distinct();
                 case "DoorOperatorName":
@@ -347,7 +347,7 @@ namespace ProdFloor.Infrastructure
             m_tag.Attributes["value"] = "";
             m_tag.InnerHtml.Append("Please select one");
             result.InnerHtml.AppendHtml(m_tag);
-            IQueryable<string> options2 = CaseFor2(SelectFor);
+            IQueryable<string> options2 = CaseFor(SelectFor);
             foreach (string option in options2)
             {
                 TagBuilder tag = new TagBuilder("option");

@@ -109,6 +109,14 @@ namespace ProdFloor.Controllers
             //Assigning categorlist to viewbag
             ViewBag.DoorOperatorList = DoorOperatorList;
 
+            List<LandingSystem> LandingSysList = new List<LandingSystem>();
+            //Getting Data
+            LandingSysList = (from landingSystem in itemsrepository.LandingSystems select landingSystem).ToList();
+            //Insert Select item in list
+            LandingSysList.Insert(0, new LandingSystem { LandingSystemID = 0, Name = "Select" });
+            //Assigning categorlist to viewbag
+            ViewBag.LandingSysList = LandingSysList;
+
             AppUser currentUser = GetCurrentUser().Result;
             if (ModelState.IsValid)
             {
@@ -149,6 +157,14 @@ namespace ProdFloor.Controllers
             //Assigning categorlist to viewbag
             ViewBag.DoorOperatorList = DoorOperatorList;
 
+            List<LandingSystem> LandingSysList = new List<LandingSystem>();
+            //Getting Data
+            LandingSysList = (from landingSystem in itemsrepository.LandingSystems select landingSystem).ToList();
+            //Insert Select item in list
+            LandingSysList.Insert(0, new LandingSystem { LandingSystemID = 0, Name = "Select" });
+            //Assigning categorlist to viewbag
+            ViewBag.LandingSysList = LandingSysList;
+
             Job job = repository.Jobs.FirstOrDefault(j => j.JobID == ID);
             if (job == null)
             {
@@ -182,6 +198,14 @@ namespace ProdFloor.Controllers
             //Assigning categorlist to viewbag
             ViewBag.DoorOperatorList = DoorOperatorList;
 
+            List<LandingSystem> LandingSysList = new List<LandingSystem>();
+            //Getting Data
+            LandingSysList = (from landingSystem in itemsrepository.LandingSystems select landingSystem).ToList();
+            //Insert Select item in list
+            LandingSysList.Insert(0, new LandingSystem { LandingSystemID = 0, Name = "Select" });
+            //Assigning categorlist to viewbag
+            ViewBag.LandingSysList = LandingSysList;
+
             if (ModelState.IsValid)
             {
                 if(multiEditViewModel.CurrentJob.Status == "" || multiEditViewModel.CurrentJob.Status == null)
@@ -211,6 +235,14 @@ namespace ProdFloor.Controllers
             DoorOperatorList.Insert(0, new DoorOperator { DoorOperatorID = 0, Name = "Select" });
             //Assigning categorlist to viewbag
             ViewBag.DoorOperatorList = DoorOperatorList;
+
+            List<LandingSystem> LandingSysList = new List<LandingSystem>();
+            //Getting Data
+            LandingSysList = (from landingSystem in itemsrepository.LandingSystems select landingSystem).ToList();
+            //Insert Select item in list
+            LandingSysList.Insert(0, new LandingSystem { LandingSystemID = 0, Name = "Select" });
+            //Assigning categorlist to viewbag
+            ViewBag.LandingSysList = LandingSysList;
 
             if (repository.Jobs.FirstOrDefault(j => j.JobID == ID) != null)
             {
@@ -246,6 +278,14 @@ namespace ProdFloor.Controllers
             DoorOperatorList.Insert(0, new DoorOperator { DoorOperatorID = 0, Name = "Select" });
             //Assigning categorlist to viewbag
             ViewBag.DoorOperatorList = DoorOperatorList;
+
+            List<LandingSystem> LandingSysList = new List<LandingSystem>();
+            //Getting Data
+            LandingSysList = (from landingSystem in itemsrepository.LandingSystems select landingSystem).ToList();
+            //Insert Select item in list
+            LandingSysList.Insert(0, new LandingSystem { LandingSystemID = 0, Name = "Select" });
+            //Assigning categorlist to viewbag
+            ViewBag.LandingSysList = LandingSysList;
 
             if (ModelState.IsValid)
             {

@@ -288,7 +288,6 @@ namespace ProdFloor.Models
         public bool INA { get; set; }
 
         [Display(Name = "Top Access Switch")] //*
-        [StringLength(25, ErrorMessage = "The maximum length of the {0} field is {1}")]
         public bool TopAccess { get; set; } //*
 
         [Display(Name = "Top Access Switch Location")]//*
