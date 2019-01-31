@@ -39,7 +39,7 @@ namespace ProdFloor.Tests
 
             // Act
             JobsListViewModel result =
-            controller.List(null, 2).ViewData.Model as JobsListViewModel;
+            controller.List(1, 2).ViewData.Model as JobsListViewModel;
 
             // Assert
             Job[] prodArray = result.Jobs.ToArray();
@@ -74,7 +74,7 @@ namespace ProdFloor.Tests
 
             // Act
             JobsListViewModel result =
-            controller.List(null, 2).ViewData.Model as JobsListViewModel;
+            controller.List(2).ViewData.Model as JobsListViewModel;
 
             // Assert
             PagingInfo pageInfo = result.PagingInfo;
@@ -98,11 +98,11 @@ namespace ProdFloor.Tests
             };
             Mock<UserManager<AppUser>> mockusers = MockUserManager<AppUser>(_users);
             mock.Setup(m => m.Jobs).Returns((new Job[] {
-                new Job {JobID = 1, Name = "P1", JobType = "Cat1"},
-                new Job {JobID = 2, Name = "P2", JobType = "Cat2"},
-                new Job {JobID = 3, Name = "P3", JobType = "Cat1"},
-                new Job {JobID = 4, Name = "P4", JobType = "Cat2"},
-                new Job {JobID = 5, Name = "P5", JobType = "Cat3"}
+                new Job {JobID = 1, Name = "P1", JobTypeID = 1},
+                new Job {JobID = 2, Name = "P2", JobTypeID = 2},
+                new Job {JobID = 3, Name = "P3", JobTypeID = 3},
+                new Job {JobID = 4, Name = "P4", JobTypeID = 4},
+                new Job {JobID = 5, Name = "P5", JobTypeID = 5}
             }).AsQueryable<Job>());
 
             // Arrange - create a controller and make the page size 3 items
@@ -111,13 +111,13 @@ namespace ProdFloor.Tests
 
             // Action
             Job[] result =
-            (controller.List("Cat2", 1).ViewData.Model as JobsListViewModel)
+            (controller.List(0, 1).ViewData.Model as JobsListViewModel)
             .Jobs.ToArray();
 
             // Assert
             Assert.Equal(2, result.Length);
-            Assert.True(result[0].Name == "P2" && result[0].JobType == "Cat2");
-            Assert.True(result[1].Name == "P4" && result[1].JobType == "Cat2");
+            Assert.True(result[0].Name == "P2" && result[0].JobTypeID == 2);
+            Assert.True(result[1].Name == "P4" && result[1].JobTypeID == 2);
         }
 
         [Fact]
@@ -133,11 +133,11 @@ namespace ProdFloor.Tests
             };
             Mock<UserManager<AppUser>> mockusers = MockUserManager<AppUser>(_users);
             mock.Setup(m => m.Jobs).Returns((new Job[] {
-                new Job {JobID = 1, Name = "P1", JobType = "Cat1"},
-                new Job {JobID = 2, Name = "P2", JobType = "Cat2"},
-                new Job {JobID = 3, Name = "P3", JobType = "Cat1"},
-                new Job {JobID = 4, Name = "P4", JobType = "Cat2"},
-                new Job {JobID = 5, Name = "P5", JobType = "Cat3"}
+                new Job {JobID = 1, Name = "P1", JobTypeID = 1},
+                new Job {JobID = 2, Name = "P2", JobTypeID = 2},
+                new Job {JobID = 3, Name = "P3", JobTypeID = 3},
+                new Job {JobID = 4, Name = "P4", JobTypeID = 4},
+                new Job {JobID = 5, Name = "P5", JobTypeID = 5}
             }).AsQueryable<Job>());
 
             JobController target = new JobController(mock.Object, mockitems.Object, mockusers.Object);
@@ -147,10 +147,10 @@ namespace ProdFloor.Tests
             result?.ViewData?.Model as JobsListViewModel;
 
             // Action
-            int? res1 = GetModel(target.List("Cat1"))?.PagingInfo.TotalItems;
-            int? res2 = GetModel(target.List("Cat2"))?.PagingInfo.TotalItems;
-            int? res3 = GetModel(target.List("Cat3"))?.PagingInfo.TotalItems;
-            int? resAll = GetModel(target.List(null))?.PagingInfo.TotalItems;
+            int? res1 = GetModel(target.List(1))?.PagingInfo.TotalItems;
+            int? res2 = GetModel(target.List(2))?.PagingInfo.TotalItems;
+            int? res3 = GetModel(target.List(3))?.PagingInfo.TotalItems;
+            int? resAll = GetModel(target.List(5))?.PagingInfo.TotalItems;
 
             // Assert
             Assert.Equal(2, res1);

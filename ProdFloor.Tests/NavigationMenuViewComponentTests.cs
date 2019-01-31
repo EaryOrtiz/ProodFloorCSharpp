@@ -18,19 +18,18 @@ namespace ProdFloor.Tests
             // Arrange
             Mock<IJobRepository> mock = new Mock<IJobRepository>();
             mock.Setup(m => m.Jobs).Returns((new Job[] {
-                new Job {JobID = 1, Name = "P1", JobType = "Apples"},
-                new Job {JobID = 2, Name = "P2", JobType = "Apples"},
-                new Job {JobID = 3, Name = "P3", JobType = "Plums"},
-                new Job {JobID = 4, Name = "P4", JobType = "Oranges"},
+                new Job {JobID = 1, Name = "P1", JobTypeID = 1},
+                new Job {JobID = 2, Name = "P2", JobTypeID = 2},
+                new Job {JobID = 3, Name = "P3", JobTypeID = 3},
             }).AsQueryable<Job>());
             NavigationMenuViewComponent target =
             new NavigationMenuViewComponent(mock.Object);
             // Act = get the set of categories
-            string[] results = ((IEnumerable<string>)(target.Invoke()
+            int[] results = ((IEnumerable<int>)(target.Invoke()
             as ViewViewComponentResult).ViewData.Model).ToArray();
             // Assert
-            Assert.True(Enumerable.SequenceEqual(new string[] { "Apples",
-                "Oranges", "Plums" }, results));
+            Assert.True(Enumerable.SequenceEqual(new int[] { 1,
+                2, 3 }, results));
         }
 
         [Fact]
@@ -40,8 +39,8 @@ namespace ProdFloor.Tests
             string JobTypeToSelect = "Apples";
             Mock<IJobRepository> mock = new Mock<IJobRepository>();
             mock.Setup(m => m.Jobs).Returns((new Job[] {
-                new Job {JobID = 1, Name = "P1", JobType = "Apples"},
-                new Job {JobID = 4, Name = "P2", JobType = "Oranges"},
+                new Job {JobID = 1, Name = "P1", JobTypeID = 1},
+                new Job {JobID = 2, Name = "P2", JobTypeID = 2},
             }).AsQueryable<Job>());
 
             NavigationMenuViewComponent target =

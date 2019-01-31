@@ -30,7 +30,7 @@ namespace ProdFloor.Tests
             StateController target = new StateController(mock.Object);
 
             // Action
-            StateListViewModel result = target.List(null,1).ViewData.Model as StateListViewModel;
+            StateListViewModel result = target.List(1,1).ViewData.Model as StateListViewModel;
 
             // Assert
             Assert.Equal(3, result.States.Count());
@@ -163,7 +163,7 @@ namespace ProdFloor.Tests
 
             // Act
             JobsListViewModel result =
-            controller.List(null, 2).ViewData.Model as JobsListViewModel;
+            controller.List(1, 2).ViewData.Model as JobsListViewModel;
 
             // Assert
             Job[] prodArray = result.Jobs.ToArray();
@@ -198,7 +198,7 @@ namespace ProdFloor.Tests
 
             // Act
             JobsListViewModel result =
-            controller.List(null, 2).ViewData.Model as JobsListViewModel;
+            controller.List(1, 2).ViewData.Model as JobsListViewModel;
 
             // Assert
             PagingInfo pageInfo = result.PagingInfo;

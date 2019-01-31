@@ -138,45 +138,31 @@ namespace ProdFloor.Tests
             // called with the correct Country
             mock.Verify(m => m.DeleteCountry(prod.CountryID));
         }
-        
+
         [Fact]
         public void Can_Paginate()
         {
             // Arrange
-            Mock<IJobRepository> mock = new Mock<IJobRepository>();
-            mock.Setup(m => m.Jobs).Returns((new Job[] {
-                new Job {JobID = 1, Name = "P1"},
-                new Job {JobID = 2, Name = "P2"},
-                new Job {JobID = 3, Name = "P3"},
-                new Job {JobID = 4, Name = "P4"},
-                new Job {JobID = 5, Name = "P5"}
-            }).AsQueryable<Job>());
+            Mock<IItemRepository> mock = new Mock<IItemRepository>();
+            mock.Setup(m => m.Countries).Returns((new Country[] {
+                new Country {CountryID = 1, Name = "Mexico"},
+                new Country {CountryID = 2, Name = "Paris"},
+                new Country {CountryID = 3, Name = "USA"},
+                new Country {CountryID = 4, Name = "Italia"},
+                new Country {CountryID = 5, Name = "Polonia"}
+            }).AsQueryable<Country>());
             Mock<IItemRepository> mockitems = new Mock<IItemRepository>();
-            List<AppUser> _users = new List<AppUser>
-            {
-                new AppUser{ EngID = 1 },
-                new AppUser{ EngID = 2 }
-            };
-            Mock<UserManager<AppUser>> mockusers = MockUserManager<AppUser>(_users);
-            mockusers.Setup(u => u.Users).Returns((new AppUser[] {
-                new AppUser {EngID = 1},
-                new AppUser {EngID = 2},
-                new AppUser {EngID = 3},
-                new AppUser {EngID = 4},
-                new AppUser {EngID = 5}
-            }).AsQueryable<AppUser>());
-            JobController controller = new JobController(mock.Object, mockitems.Object, mockusers.Object);
+            CountryController controller = new CountryController(mock.Object);
             controller.PageSize = 3;
 
             // Act
-            JobsListViewModel result =
-            controller.List(null, 2).ViewData.Model as JobsListViewModel;
+            CountryListViewModel result = controller.List(2).ViewData.Model as CountryListViewModel;
 
             // Assert
-            Job[] prodArray = result.Jobs.ToArray();
+            Country[] prodArray = result.Countries.ToArray();
             Assert.True(prodArray.Length == 2);
-            Assert.Equal("P4", prodArray[0].Name);
-            Assert.Equal("P5", prodArray[1].Name);
+            Assert.Equal("Italia", prodArray[0].Name);
+            Assert.Equal("Polonia", prodArray[1].Name);
         }
 
         [Fact]
@@ -212,7 +198,7 @@ namespace ProdFloor.Tests
 
             // Act
             JobsListViewModel result =
-            controller.List(null, 2).ViewData.Model as JobsListViewModel;
+            controller.List(1, 2).ViewData.Model as JobsListViewModel;
 
             // Assert
             PagingInfo pageInfo = result.PagingInfo;
