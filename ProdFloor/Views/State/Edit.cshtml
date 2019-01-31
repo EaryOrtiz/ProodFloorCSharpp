@@ -6,13 +6,13 @@
 <div class="bg-dark m-1 p-1"><h4 style="color:white">Edit State: @Model.Name</h4></div>
 <form asp-controller="State" asp-action="Edit" method="post">
     <input type="hidden" asp-for="StateID" />
-        <div class="form-group">
-            <label asp-for="CountryID" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <select asp-for="CountryID" asp-items="@(new SelectList(@ViewBag.CountryList,"CountryID","Name"))"></select>
-                <span asp-validation-for="CountryID" class="text-danger"></span>
-            </div>
+    <div class="form-group">
+        <label asp-for="CountryID" class="col-sm-2 col-form-label"></label>
+        <div>
+            <country-select selected-value="@Model.CountryID" asp-for="CountryID"></country-select>
+            <span asp-validation-for="CountryID" class="text-danger"></span>
         </div>
+    </div>
     <div class="form-group">
         <label asp-for="Name"></label>
         <div><span asp-validation-for="Name" class="text-danger"></span></div>

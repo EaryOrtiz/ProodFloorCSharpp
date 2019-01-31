@@ -14,10 +14,10 @@
         <span asp-validation-for="JobNum" class="text-danger"></span>
     </div>
 </div>
-<div class="form-group">
-    <label asp-for="JobTypeID" class="col-md-2 control-label"></label>
-    <div class="col-md-10">
-        <select asp-for="JobTypeID" asp-items="@(new SelectList(@ViewBag.JobTypeList,"JobTypeID","Name"))"></select>
+<div class="form-group row">
+    <label asp-for="JobTypeID" class="col-sm-2 col-form-label"></label>
+    <div>
+        <job-type-select selected-value="@Model.JobTypeID" asp-for="JobTypeID"></job-type-select>
         <span asp-validation-for="JobTypeID" class="text-danger"></span>
     </div>
 </div>
@@ -57,17 +57,54 @@
         <span asp-validation-for="Contractor" class="text-danger"></span>
     </div>
 </div>
-<div class="form-group">
-    <label asp-for="CityID" class="col-md-2 control-label"></label>
-    <div class="col-md-10">
-        <select asp-for="CityID" asp-items="@(new SelectList(@ViewBag.CityList,"CityID","Name"))"></select>
+<div class="form-group row">
+    <label asp-for="CityID" class="col-sm-2 col-form-label"></label>
+    <div>
+        <city-select selected-value="@Model.CityID" asp-for="CityID"></city-select>
         <span asp-validation-for="CityID" class="text-danger"></span>
     </div>
 </div>
-<div class="form-group">
-    <label asp-for="FireCodeID" class="col-md-2 control-label"></label>
-    <div class="col-md-10">
-        <select asp-for="FireCodeID" asp-items="@(new SelectList(@ViewBag.FireCodeList,"FireCodeID","Name"))"></select>
+<div class="form-group row">
+    <label asp-for="FireCodeID" class="col-sm-2 col-form-label"></label>
+    <div>
+        <fire-code-select selected-value="@Model.FireCodeID" asp-for="FireCodeID"></fire-code-select>
         <span asp-validation-for="FireCodeID" class="text-danger"></span>
     </div>
 </div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        $(document).ready(function () {
+            $("#StateID").prop("disabled", true);
+        });
+    </script>
+    <script>
+        $(function () {
+            $("#CountryID").change(function () {
+                var selectedContinent = $("#CountryID").val();
+                var coutriesSelectObject = $('#StateID');
+                coutriesSelectObject.empty();
+                if (selectedContinent != null && selectedContinent != '') {
+                    $.ajax({
+                        type: 'GET',
+                        url: '/Job/GetJobState',
+                        contentType: "applications/json",
+                        data: {
+                            CountryID: selectedContinent
+                        },
+                        success: function (data) {
+                            $("#StateID").prop("disabled", false);
+                            $.each(data, function (idx, country) {
+                                coutriesSelectObject.append('<option value="' + country.value + '">' + country.text + '</option>');
+                            });
+                        },
+                        error: function (exc) {
+                            alert("error");
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+}

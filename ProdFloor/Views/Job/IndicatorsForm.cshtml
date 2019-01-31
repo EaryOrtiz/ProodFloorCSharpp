@@ -114,16 +114,17 @@
         <div class="input-group-text">
             <input asp-for="CurrentIndicator.PassingFloor" />
         </div>
-        <div><span asp-validation-for="CurrentIndicator.PassingFloorType" class="text-danger"></span></div>
-        <indicators select-for="PIDriver" selected-value="@Model.CurrentIndicator.PassingFloorType" asp-for="CurrentIndicator.PassingFloorType" class="form-control col-sm-4"></indicators>
-        <div><span asp-validation-for="CurrentIndicator.PassingFloorDiscreteType" class="text-danger"></span></div>
-        <indicators select-for="PIType" selected-value="@Model.CurrentIndicator.PassingFloorDiscreteType" asp-for="CurrentIndicator.PassingFloorDiscreteType" class="form-control col-sm-2"></indicators>
         <div class="input-group-prepend">
             <span class="input-group-text" id="">Passing Floor Enable</span>
         </div>
         <div class="input-group-text">
             <input asp-for="CurrentIndicator.PassingFloorEnable" />
         </div>
+        <div><span asp-validation-for="CurrentIndicator.PassingFloorType" class="text-danger"></span></div>
+        <indicators select-for="PIDriver" selected-value="@Model.CurrentIndicator.PassingFloorType" asp-for="CurrentIndicator.PassingFloorType" class="form-control col-sm-2"></indicators>
+        <div><span asp-validation-for="CurrentIndicator.PassingFloorDiscreteType" class="text-danger"></span></div>
+        <indicators select-for="PIType" selected-value="@Model.CurrentIndicator.PassingFloorDiscreteType" asp-for="CurrentIndicator.PassingFloorDiscreteType" class="form-control col-sm-2"></indicators>
+
     </div>
 </div>
 <h2 class="col-sm-10">

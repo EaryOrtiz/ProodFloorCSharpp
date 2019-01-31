@@ -22,7 +22,7 @@ namespace ProdFloor.Controllers
         }
         public ViewResult List(int separator, int page = 1)
         {
-            var CityCount = repository.States.Count();
+            var CityCount = repository.Cities.Count();
 
             return View(new CityListViewModel
             {

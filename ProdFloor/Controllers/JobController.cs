@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ProdFloor.Controllers
 {
@@ -18,13 +19,18 @@ namespace ProdFloor.Controllers
         private UserManager<AppUser> userManager;
         public int PageSize = 4;
 
-        public JobController(IJobRepository repo,IItemRepository itemsrepo, UserManager<AppUser> userMgr)
+        public JobController(IJobRepository repo, IItemRepository itemsrepo, UserManager<AppUser> userMgr)
         {
             repository = repo;
             itemsrepository = itemsrepo;
             userManager = userMgr;
         }
-        
+
+        public void alert()
+        {
+            TempData["alert"] = $"alert-danger";
+            TempData["message"] = $"There was an error with your request";
+        }
         public ViewResult List(int jobType, int jobPage = 1)
         {
 
@@ -72,29 +78,8 @@ namespace ProdFloor.Controllers
         public ViewResult NewJob()
         {
 
-            List<City> CityList = new List<City>();
-            //Getting Data
-            CityList = (from city in itemsrepository.Cities select city).ToList();
-            //Insert Select item in list
-            CityList.Insert(0, new City { CityID = 0, Name = "Select" });
-            //Assigning categorlist to viewbag
-            ViewBag.CityList = CityList;
-
-            List<FireCode> FireCodeList = new List<FireCode>();
-            //Getting Data
-            FireCodeList = (from firecode in itemsrepository.FireCodes select firecode).ToList();
-            //Insert Select item in list
-            FireCodeList.Insert(0, new FireCode { FireCodeID = 0, Name = "Select" });
-            //Assigning categorlist to viewbag
-            ViewBag.FireCodeList = FireCodeList;
-
-            List<JobType> JobTypeList = new List<JobType>();
-            //Getting Data
-            JobTypeList = (from jobtype in itemsrepository.JobTypes select jobtype).ToList();
-            //Insert Select item in list
-            JobTypeList.Insert(0, new JobType { JobTypeID = 0, Name = "Select" });
-            //Assigning categorlist to viewbag
-            ViewBag.JobTypeList = JobTypeList;
+            ViewData["CountryID"] = new SelectList(itemsrepository.Countries, "CountryID", "Name");
+            ViewData["StateID"] = new SelectList(itemsrepository.States, "StateID", "Name");
 
             return View(new Job());
         } 
@@ -102,23 +87,6 @@ namespace ProdFloor.Controllers
         [HttpPost]
         public IActionResult NewJob(Job newJob)
         {
-
-            List<DoorOperator> DoorOperatorList = new List<DoorOperator>();
-            //Getting Data
-            DoorOperatorList = (from doorOperator in itemsrepository.DoorOperators select doorOperator).ToList();
-            //Insert Select item in list
-            DoorOperatorList.Insert(0, new DoorOperator { DoorOperatorID = 0, Name = "Select" });
-            //Assigning categorlist to viewbag
-            ViewBag.DoorOperatorList = DoorOperatorList;
-
-            List<LandingSystem> LandingSysList = new List<LandingSystem>();
-            //Getting Data
-            LandingSysList = (from landingSystem in itemsrepository.LandingSystems select landingSystem).ToList();
-            //Insert Select item in list
-            LandingSysList.Insert(0, new LandingSystem { LandingSystemID = 0, Name = "Select" });
-            //Assigning categorlist to viewbag
-            ViewBag.LandingSysList = LandingSysList;
-
             AppUser currentUser = GetCurrentUser().Result;
             if (ModelState.IsValid)
             {
@@ -151,30 +119,6 @@ namespace ProdFloor.Controllers
         
         public IActionResult Edit(int ID)
         {
-            List<City> CityList = new List<City>();
-            CityList = (from city in itemsrepository.Cities select city).ToList();
-            CityList.Insert(0, new City { CityID = 0, Name = "Select" });
-            ViewBag.CityList = CityList;
-
-            List<FireCode> FireCodeList = new List<FireCode>();
-            FireCodeList = (from firecode in itemsrepository.FireCodes select firecode).ToList();
-            FireCodeList.Insert(0, new FireCode { FireCodeID = 0, Name = "Select" });
-            ViewBag.FireCodeList = FireCodeList;
-
-            List<JobType> JobTypeList = new List<JobType>();
-            JobTypeList = (from jobtype in itemsrepository.JobTypes select jobtype).ToList();
-            JobTypeList.Insert(0, new JobType { JobTypeID = 0, Name = "Select" });
-            ViewBag.JobTypeList = JobTypeList;
-
-            List<DoorOperator> DoorOperatorList = new List<DoorOperator>();
-            DoorOperatorList = (from doorOperator in itemsrepository.DoorOperators select doorOperator).ToList();
-            DoorOperatorList.Insert(0, new DoorOperator { DoorOperatorID = 0, Name = "Select" });
-            ViewBag.DoorOperatorList = DoorOperatorList;
-
-            List<LandingSystem> LandingSysList = new List<LandingSystem>();
-            LandingSysList = (from landingSystem in itemsrepository.LandingSystems select landingSystem).ToList();
-            LandingSysList.Insert(0, new LandingSystem { LandingSystemID = 0, Name = "Select" });
-            ViewBag.LandingSysList = LandingSysList;
 
             Job job = repository.Jobs.FirstOrDefault(j => j.JobID == ID);
             if (job == null)
@@ -201,21 +145,6 @@ namespace ProdFloor.Controllers
         [HttpPost]
         public IActionResult Edit(JobViewModel multiEditViewModel)
         {
-            List<DoorOperator> DoorOperatorList = new List<DoorOperator>();
-            //Getting Data
-            DoorOperatorList = (from doorOperator in itemsrepository.DoorOperators select doorOperator).ToList();
-            //Insert Select item in list
-            DoorOperatorList.Insert(0, new DoorOperator { DoorOperatorID = 0, Name = "Select" });
-            //Assigning categorlist to viewbag
-            ViewBag.DoorOperatorList = DoorOperatorList;
-
-            List<LandingSystem> LandingSysList = new List<LandingSystem>();
-            //Getting Data
-            LandingSysList = (from landingSystem in itemsrepository.LandingSystems select landingSystem).ToList();
-            //Insert Select item in list
-            LandingSysList.Insert(0, new LandingSystem { LandingSystemID = 0, Name = "Select" });
-            //Assigning categorlist to viewbag
-            ViewBag.LandingSysList = LandingSysList;
 
             if (ModelState.IsValid)
             {
@@ -239,21 +168,6 @@ namespace ProdFloor.Controllers
 
         public IActionResult Continue(int ID)
         {
-            List<DoorOperator> DoorOperatorList = new List<DoorOperator>();
-            //Getting Data
-            DoorOperatorList = (from doorOperator in itemsrepository.DoorOperators select doorOperator).ToList();
-            //Insert Select item in list
-            DoorOperatorList.Insert(0, new DoorOperator { DoorOperatorID = 0, Name = "Select" });
-            //Assigning categorlist to viewbag
-            ViewBag.DoorOperatorList = DoorOperatorList;
-
-            List<LandingSystem> LandingSysList = new List<LandingSystem>();
-            //Getting Data
-            LandingSysList = (from landingSystem in itemsrepository.LandingSystems select landingSystem).ToList();
-            //Insert Select item in list
-            LandingSysList.Insert(0, new LandingSystem { LandingSystemID = 0, Name = "Select" });
-            //Assigning categorlist to viewbag
-            ViewBag.LandingSysList = LandingSysList;
 
             if (repository.Jobs.FirstOrDefault(j => j.JobID == ID) != null)
             {
@@ -282,21 +196,6 @@ namespace ProdFloor.Controllers
         [HttpPost]
         public IActionResult NextForm(JobViewModel nextViewModel)
         {
-            List<DoorOperator> DoorOperatorList = new List<DoorOperator>();
-            //Getting Data
-            DoorOperatorList = (from doorOperator in itemsrepository.DoorOperators select doorOperator).ToList();
-            //Insert Select item in list
-            DoorOperatorList.Insert(0, new DoorOperator { DoorOperatorID = 0, Name = "Select" });
-            //Assigning categorlist to viewbag
-            ViewBag.DoorOperatorList = DoorOperatorList;
-
-            List<LandingSystem> LandingSysList = new List<LandingSystem>();
-            //Getting Data
-            LandingSysList = (from landingSystem in itemsrepository.LandingSystems select landingSystem).ToList();
-            //Insert Select item in list
-            LandingSysList.Insert(0, new LandingSystem { LandingSystemID = 0, Name = "Select" });
-            //Assigning categorlist to viewbag
-            ViewBag.LandingSysList = LandingSysList;
 
             if (ModelState.IsValid)
             {
@@ -412,5 +311,27 @@ namespace ProdFloor.Controllers
 
             return user;
         }
+
+
+        public JsonResult GetJobState(int CountryID)
+        {
+            List<State> JobStatelist = new List<State>();
+            JobStatelist = (from state in itemsrepository.States
+                            where state.CountryID == CountryID
+                            select state).ToList();
+            JobStatelist.Insert(0, new State { StateID = 0, Name = "Select a State" });
+            return Json(new SelectList(JobStatelist, "StateID", "Name"));
+        }
+
+        public JsonResult GetJobCity(int StateID)
+        {
+            List<City> CityCascadeList = new List<City>();
+            CityCascadeList = (from city in itemsrepository.Cities
+                               where city.StateID == StateID
+                               select city).ToList();
+            CityCascadeList.Insert(0, new City { CityID = 0, Name = "Select a City" });
+            return Json(new SelectList(CityCascadeList, "CityID", "Name"));
+        }
+
     }
 }

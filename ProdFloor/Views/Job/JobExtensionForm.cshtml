@@ -45,9 +45,10 @@
             <custom-select select-for="DoorOperatorStyle" selected-value="@Model.CurrentJobExtension.DoorHoist" asp-for="CurrentJobExtension.DoorHoist"></custom-select>
         </div>
         <div class="form-group row">
-            <label asp-for="CurrentJobExtension.DoorOperatorID" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <select asp-for="CurrentJobExtension.DoorOperatorID" asp-items="@(new SelectList(@ViewBag.DoorOperatorList,"DoorOperatorID","Name"))"></select>
+            <label asp-for="CurrentJobExtension.DoorOperatorID" class="col-sm-5 col-form-label"></label>
+            <div>
+                <door-operator-select selected-value="@Model.CurrentJobExtension.DoorOperatorID" asp-for="CurrentJobExtension.DoorOperatorID"></door-operator-select>
+                <span asp-validation-for="CurrentJobExtension.DoorOperatorID" class="text-danger"></span>
             </div>
         </div>
     </div>
