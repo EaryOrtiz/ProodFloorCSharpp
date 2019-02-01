@@ -24,7 +24,7 @@ namespace ProdFloor.Controllers
                 .Where(j => brand == null || j.Brand == brand)
                 .OrderBy(p => p.DoorOperatorID)
                 .Skip((page - 1) * PageSize)
-                .Take(PageSize),
+                .Take(PageSize).ToList(),
                 PagingInfo = new PagingInfo
                 {
                     CurrentPage = page,

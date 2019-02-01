@@ -9,14 +9,14 @@ C:\Users\eary.ortiz\Documents\ProdFloorVersions\ProdFloor_CSharp-master\ProdFloo
 C:\Users\eary.ortiz\Documents\ProdFloorVersions\ProdFloor_CSharp-master\ProdFloor\obj\Debug\netcoreapp2.0\ProdFloor.AssemblyInfo.cs
 C:\Users\eary.ortiz\Documents\ProdFloorVersions\ProdFloor_CSharp-master\ProdFloor\obj\Debug\netcoreapp2.0\ProdFloor.dll
 C:\Users\eary.ortiz\Documents\ProdFloorVersions\ProdFloor_CSharp-master\ProdFloor\obj\Debug\netcoreapp2.0\ProdFloor.pdb
+C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\obj\Debug\netcoreapp2.0\ProdFloor.csproj.CoreCompileInputs.cache
+C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\obj\Debug\netcoreapp2.0\ProdFloor.AssemblyInfoInputs.cache
+C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\obj\Debug\netcoreapp2.0\ProdFloor.AssemblyInfo.cs
 C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\bin\Debug\netcoreapp2.0\ProdFloor.deps.json
 C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\bin\Debug\netcoreapp2.0\ProdFloor.runtimeconfig.json
 C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\bin\Debug\netcoreapp2.0\ProdFloor.runtimeconfig.dev.json
 C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\bin\Debug\netcoreapp2.0\ProdFloor.dll
 C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\bin\Debug\netcoreapp2.0\ProdFloor.pdb
-C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\obj\Debug\netcoreapp2.0\ProdFloor.csproj.CoreCompileInputs.cache
-C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\obj\Debug\netcoreapp2.0\ProdFloor.AssemblyInfoInputs.cache
-C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\obj\Debug\netcoreapp2.0\ProdFloor.AssemblyInfo.cs
 C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\obj\Debug\netcoreapp2.0\ProdFloor.dll
 C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\obj\Debug\netcoreapp2.0\ProdFloor.pdb
 C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\obj\Debug\netcoreapp2.0\ProdFloor.csprojAssemblyReference.cache

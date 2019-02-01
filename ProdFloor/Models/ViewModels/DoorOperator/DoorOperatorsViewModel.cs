@@ -5,7 +5,7 @@ namespace ProdFloor.Models.ViewModels
 {
     public class DoorOperatorsListViewModel
     {
-        public IEnumerable<DoorOperator> DoorOperators { get; set; }
+        public List<DoorOperator> DoorOperators { get; set; }
         public PagingInfo PagingInfo { get; set; }
         public string CurrentBrand { get; set; }
     }

@@ -12,31 +12,31 @@ using Microsoft.AspNetCore.Identity;
 
 namespace ProdFloor.Tests
 {
-    public class StateControllerTests
+    public class CityControllerTests
     {
         [Fact]
         public void Index_Contains_All_States()
         {
             // Arrange - create the mock repository
             Mock<IItemRepository> mock = new Mock<IItemRepository>();
-            mock.Setup(m => m.States).Returns(new State[]
+            mock.Setup(m => m.Cities).Returns(new City[]
             {
-                new State {StateID = 1, Name = "P1"},
-                new State {StateID = 2, Name = "P2"},
-                new State {StateID = 3, Name = "P3"},
-            }.AsQueryable<State>());
+                new City {CityID = 1, Name = "P1"},
+                new City {CityID = 2, Name = "P2"},
+                new City {CityID = 3, Name = "P3"},
+            }.AsQueryable<City>());
 
             // Arrange - create a controller
-            StateController target = new StateController(mock.Object);
+            CityController target = new CityController(mock.Object);
 
             // Action
-            StateListViewModel result = target.List(1, 1).ViewData.Model as StateListViewModel;
+            CityListViewModel result = target.List(1, 1).ViewData.Model as CityListViewModel;
 
             // Assert
-            Assert.Equal(3, result.States.Count());
-            Assert.Equal("P1", result.States[0].Name);
-            Assert.Equal("P2", result.States[1].Name);
-            Assert.Equal("P3", result.States[2].Name);
+            Assert.Equal(3, result.Cities.Count());
+            Assert.Equal("P1", result.Cities[0].Name);
+            Assert.Equal("P2", result.Cities[1].Name);
+            Assert.Equal("P3", result.Cities[2].Name);
         }
 
         [Fact]
@@ -44,25 +44,25 @@ namespace ProdFloor.Tests
         {
             // Arrange - create the mock repository
             Mock<IItemRepository> mock = new Mock<IItemRepository>();
-            mock.Setup(m => m.States).Returns(new State[]
+            mock.Setup(m => m.Cities).Returns(new City[]
             {
-                new State {StateID = 1, Name = "P1"},
-                new State {StateID = 2, Name = "P2"},
-                new State {StateID = 3, Name = "P3"},
-            }.AsQueryable<State>());
+                new City {CityID = 1, Name = "P1"},
+                new City {CityID = 2, Name = "P2"},
+                new City {CityID = 3, Name = "P3"},
+            }.AsQueryable<City>());
 
             // Arrange - create the controller
-            StateController target = new StateController(mock.Object);
+            CityController target = new CityController(mock.Object);
 
             // Act
-            State p1 = GetViewModel<State>(target.Edit(1));
-            State p2 = GetViewModel<State>(target.Edit(2));
-            State p3 = GetViewModel<State>(target.Edit(3));
+            City p1 = GetViewModel<City>(target.Edit(1));
+            City p2 = GetViewModel<City>(target.Edit(2));
+            City p3 = GetViewModel<City>(target.Edit(3));
 
             // Assert
-            Assert.Equal(1, p1.StateID);
-            Assert.Equal(2, p2.StateID);
-            Assert.Equal(3, p3.StateID);
+            Assert.Equal(1, p1.CityID);
+            Assert.Equal(2, p2.CityID);
+            Assert.Equal(3, p3.CityID);
         }
 
         [Fact]
@@ -70,18 +70,18 @@ namespace ProdFloor.Tests
         {
             // Arrange - create the mock repository
             Mock<IItemRepository> mock = new Mock<IItemRepository>();
-            mock.Setup(m => m.States).Returns(new State[]
+            mock.Setup(m => m.Cities).Returns(new City[]
             {
-                new State {StateID = 1, Name = "P1"},
-                new State {StateID = 2, Name = "P2"},
-                new State {StateID = 3, Name = "P3"},
-            }.AsQueryable<State>());
+                new City {CityID = 1, Name = "P1"},
+                new City {CityID = 2, Name = "P2"},
+                new City {CityID = 3, Name = "P3"},
+            }.AsQueryable<City>());
 
             // Arrange - create the controller
-            StateController target = new StateController(mock.Object);
+            CityController target = new CityController(mock.Object);
 
             // Act
-            State result = GetViewModel<State>(target.Edit(4));
+            City result = GetViewModel<City>(target.Edit(4));
 
             // Assert
             Assert.Null(result);
@@ -94,19 +94,19 @@ namespace ProdFloor.Tests
             Mock<IItemRepository> mock = new Mock<IItemRepository>();
 
             // Arrange - create the controller
-            StateController target = new StateController(mock.Object);
+            CityController target = new CityController(mock.Object);
 
             // Arrange - create a product
-            State state = new State { Name = "Test" };
+            City city = new City { Name = "Test" };
 
             // Arrange - add an error to the model state
             target.ModelState.AddModelError("error", "error");
 
             // Act - try to save the product
-            IActionResult result = target.Edit(state);
+            IActionResult result = target.Edit(city);
 
             // Assert - check that the repository was not called
-            mock.Verify(m => m.SaveState(state), Times.Never());
+            mock.Verify(m => m.SaveCity(city), Times.Never());
 
             // Assert - check the method result type
             Assert.IsType<ViewResult>(result);
@@ -116,26 +116,26 @@ namespace ProdFloor.Tests
         public void Can_Delete_Valid_States()
         {
             // Arrange - create a State
-            State prod = new State { StateID = 2, Name = "Test" };
+            City prod = new City { CityID = 2, Name = "Test" };
 
             // Arrange - create the mock repository
             Mock<IItemRepository> mock = new Mock<IItemRepository>();
-            mock.Setup(m => m.States).Returns(new State[]
+            mock.Setup(m => m.Cities).Returns(new City[]
             {
-                new State {StateID = 1, Name = "P1"},
+                new City {CityID = 1, Name = "P1"},
                 prod,
-                new State {StateID = 3, Name = "P3"},
-            }.AsQueryable<State>());
+                new City {CityID = 3, Name = "P3"},
+            }.AsQueryable<City>());
 
             // Arrange - create the controller
-            StateController target = new StateController(mock.Object);
+            CityController target = new CityController(mock.Object);
 
             // Act - delete the product
-            target.Delete(prod.StateID);
+            target.Delete(prod.CityID);
 
             // Assert - ensure that the repository delete method was
             // called with the correct State
-            mock.Verify(m => m.DeleteState(prod.StateID));
+            mock.Verify(m => m.DeleteCity(prod.CityID));
         }
 
         [Fact]
@@ -143,21 +143,21 @@ namespace ProdFloor.Tests
         {
             // Arrange
             Mock<IItemRepository> mock = new Mock<IItemRepository>();
-            mock.Setup(m => m.States).Returns((new State[] {
-                new State {StateID = 1, CountryID = 1, Name = "S2"},
-                new State {StateID = 2, CountryID = 2, Name = "S1"},
-                new State {StateID = 3, CountryID = 3, Name = "S3"},
-                new State {StateID = 4, CountryID = 4, Name = "S4"},
-                new State {StateID = 5, CountryID = 5, Name = "S5"}
-            }).AsQueryable<State>());
-            StateController controller = new StateController(mock.Object);
+            mock.Setup(m => m.Cities).Returns((new City[] {
+                new City {StateID = 1, CityID = 1, Name = "S2"},
+                new City {StateID = 2, CityID = 2, Name = "S1"},
+                new City {StateID = 3, CityID = 3, Name = "S3"},
+                new City {StateID = 4, CityID = 4, Name = "S4"},
+                new City {StateID = 5, CityID = 5, Name = "S5"}
+            }).AsQueryable<City>());
+            CityController controller = new CityController(mock.Object);
             controller.PageSize = 3;
 
             // Act
-            StateListViewModel result = controller.List(1,2).ViewData.Model as StateListViewModel;
+            CityListViewModel result = controller.List(1, 2).ViewData.Model as CityListViewModel;
 
             // Assert
-            State[] prodArray = result.States.ToArray();
+            City[] prodArray = result.Cities.ToArray();
             Assert.True(prodArray.Length == 2);
             Assert.Equal("S4", prodArray[0].Name);
             Assert.Equal("S5", prodArray[1].Name);
@@ -168,21 +168,21 @@ namespace ProdFloor.Tests
         {
             // Arrange
             Mock<IItemRepository> mock = new Mock<IItemRepository>();
-            mock.Setup(m => m.States).Returns((new State[] {
-                new State {StateID = 1, CountryID = 1, Name = "S2"},
-                new State {StateID = 2, CountryID = 2, Name = "S1"},
-                new State {StateID = 3, CountryID = 3, Name = "S3"},
-                new State {StateID = 4, CountryID = 4, Name = "S4"},
-                new State {StateID = 5, CountryID = 5, Name = "S5"}
-            }).AsQueryable<State>());
+            mock.Setup(m => m.Cities).Returns((new City[] {
+                new City {StateID = 1, CityID = 1, Name = "S2"},
+                new City {StateID = 2, CityID = 2, Name = "S1"},
+                new City {StateID = 3, CityID = 3, Name = "S3"},
+                new City {StateID = 4, CityID = 4, Name = "S4"},
+                new City {StateID = 5, CityID = 5, Name = "S5"}
+            }).AsQueryable<City>());
 
             // Arrange
-            StateController controller =
-            new StateController(mock.Object) { PageSize = 3 };
+            CityController controller =
+            new CityController(mock.Object) { PageSize = 3 };
 
             // Act
-            StateListViewModel result =
-            controller.List(2).ViewData.Model as StateListViewModel;
+            CityListViewModel result =
+            controller.List(2).ViewData.Model as CityListViewModel;
 
             // Assert
             PagingInfo pageInfo = result.PagingInfo;
@@ -202,18 +202,18 @@ namespace ProdFloor.Tests
             Mock<ITempDataDictionary> tempData = new Mock<ITempDataDictionary>();
 
             // Arrange - create the controller
-            StateController target = new StateController(mockitems.Object)
+            CityController target = new CityController(mockitems.Object)
             {
                 TempData = tempData.Object
             };
-            // Arrange - create a country
-            State state = new State { StateID = 1,CountryID = 1, Name = "Test" };
+            // Arrange - create a city
+            City city = new City { StateID = 1, CityID = 1, Name = "Test" };
 
-            // Act - try to save the Country
-            IActionResult result = target.Edit(state);
+            // Act - try to save the city
+            IActionResult result = target.Edit(city);
 
             // Assert - check that the repository was not called
-            mockitems.Verify(m => m.SaveState(state), Times.AtLeastOnce());
+            mockitems.Verify(m => m.SaveCity(city), Times.AtLeastOnce());
 
             // Assert - check the method result type
             Assert.IsType<RedirectToActionResult>(result);

@@ -98,16 +98,16 @@ namespace ProdFloor.Tests
             CountryController target = new CountryController(mock.Object);
 
             // Arrange - create a product
-            Country product = new Country { Name = "Test" };
+            Country country = new Country { Name = "Test" };
 
             // Arrange - add an error to the model state
             target.ModelState.AddModelError("error", "error");
 
             // Act - try to save the product
-            IActionResult result = target.Edit(product);
+            IActionResult result = target.Edit(country);
 
             // Assert - check that the repository was not called
-            mock.Verify(m => m.SaveCountry(It.IsAny<Country>()), Times.Never());
+            mock.Verify(m => m.SaveCountry(country), Times.Never());
 
             // Assert - check the method result type
             Assert.IsType<ViewResult>(result);
@@ -169,36 +169,22 @@ namespace ProdFloor.Tests
         public void Can_Send_Pagination_View_Model()
         {
             // Arrange
-            Mock<IJobRepository> mock = new Mock<IJobRepository>();
             Mock<IItemRepository> mockitems = new Mock<IItemRepository>();
-            List<AppUser> _users = new List<AppUser>
-            {
-                new AppUser{ EngID = 1 },
-                new AppUser{ EngID = 2 }
-            };
-            Mock<UserManager<AppUser>> mockusers = MockUserManager<AppUser>(_users);
-            mock.Setup(m => m.Jobs).Returns((new Job[] {
-                new Job {JobID = 1, Name = "P1"},
-                new Job {JobID = 2, Name = "P2"},
-                new Job {JobID = 3, Name = "P3"},
-                new Job {JobID = 4, Name = "P4"},
-                new Job {JobID = 5, Name = "P5"}
-            }).AsQueryable<Job>());
-            mockusers.Setup(u => u.Users).Returns((new AppUser[] {
-                new AppUser {EngID = 1},
-                new AppUser {EngID = 2},
-                new AppUser {EngID = 3},
-                new AppUser {EngID = 4},
-                new AppUser {EngID = 5}
-            }).AsQueryable<AppUser>());
+            mockitems.Setup(m => m.Countries).Returns((new Country[] {
+                new Country {CountryID = 1, Name = "P1"},
+                new Country {CountryID = 2, Name = "P2"},
+                new Country {CountryID = 3, Name = "P3"},
+                new Country {CountryID = 4, Name = "P4"},
+                new Country {CountryID = 5, Name = "P5"}
+            }).AsQueryable<Country>());
 
             // Arrange
-            JobController controller =
-            new JobController(mock.Object, mockitems.Object, mockusers.Object) { PageSize = 3 };
+            CountryController controller =
+            new CountryController(mockitems.Object) { PageSize = 3 };
 
             // Act
-            JobsListViewModel result =
-            controller.List(1, 2).ViewData.Model as JobsListViewModel;
+            CountryListViewModel result =
+            controller.List(2).ViewData.Model as CountryListViewModel;
 
             // Assert
             PagingInfo pageInfo = result.PagingInfo;
@@ -212,29 +198,28 @@ namespace ProdFloor.Tests
         public void Can_Save_Valid_Changes()
         {
             // Arrange - create mock repository
-            Mock<IJobRepository> mock = new Mock<IJobRepository>();
             Mock<IItemRepository> mockitems = new Mock<IItemRepository>();
-            List<AppUser> _users = new List<AppUser>
-            {
-                new AppUser{ EngID = 1 },
-                new AppUser{ EngID = 2 }
-            };
-            Mock<UserManager<AppUser>> mockusers = MockUserManager<AppUser>(_users);
 
             // Arrange - create mock temp data
             Mock<ITempDataDictionary> tempData = new Mock<ITempDataDictionary>();
 
             // Arrange - create the controller
-            JobController target = new JobController(mock.Object, mockitems.Object, mockusers.Object)
+            CountryController target = new CountryController(mockitems.Object)
             {
                 TempData = tempData.Object
             };
+            // Arrange - create a country
+            Country country = new Country { CountryID = 1 ,Name = "Test" };
 
-            // Arrange - create a Job
-            Job Job = new Job { Name = "Test" };
+            // Act - try to save the Country
+            IActionResult result = target.Edit(country);
 
-            // Act - try to save the Job
-            IActionResult result = target.Edit(Job.JobID);
+            // Assert - check that the repository was not called
+            mockitems.Verify(m => m.SaveCountry(country), Times.AtLeastOnce());
+
+            // Assert - check the method result type
+            Assert.IsType<RedirectToActionResult>(result);
+
         }
 
         private T GetViewModel<T>(IActionResult result) where T : class
