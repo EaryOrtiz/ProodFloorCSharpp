@@ -23,7 +23,7 @@ namespace ProdFloor.Controllers
                 FireCodes = repository.FireCodes
                 .OrderBy(p => p.FireCodeID)
                 .Skip((page - 1) * PageSize)
-                .Take(PageSize),
+                .Take(PageSize).ToList(),
                 PagingInfo = new PagingInfo
                 {
                     CurrentPage = page,

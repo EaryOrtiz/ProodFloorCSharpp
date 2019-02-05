@@ -15,7 +15,7 @@ namespace ProdFloor.Tests
     public class DoorOperatorControllerTests
     {
         [Fact]
-        public void Index_Contains_All_States()
+        public void Index_Contains_All_DoorOperators()
         {
             // Arrange - create the mock repository
             Mock<IItemRepository> mock = new Mock<IItemRepository>();
@@ -40,7 +40,7 @@ namespace ProdFloor.Tests
         }
 
         [Fact]
-        public void Can_Edit_State()
+        public void Can_Edit_DoorOperator()
         {
             // Arrange - create the mock repository
             Mock<IItemRepository> mock = new Mock<IItemRepository>();
@@ -66,7 +66,7 @@ namespace ProdFloor.Tests
         }
 
         [Fact]
-        public void Cannot_Edit_Nonexistent_State()
+        public void Cannot_Edit_Nonexistent_DoorOperator()
         {
             // Arrange - create the mock repository
             Mock<IItemRepository> mock = new Mock<IItemRepository>();
@@ -113,7 +113,7 @@ namespace ProdFloor.Tests
         }
 
         [Fact]
-        public void Can_Delete_Valid_States()
+        public void Can_Delete_Valid_DoorOperators()
         {
             // Arrange - create a State
             DoorOperator prod = new DoorOperator { DoorOperatorID = 2, Name = "Test" };

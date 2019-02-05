@@ -23,7 +23,7 @@ namespace ProdFloor.Controllers
                 JobTypes = repository.JobTypes
                 .OrderBy(p => p.JobTypeID)
                 .Skip((page - 1) * PageSize)
-                .Take(PageSize),
+                .Take(PageSize).ToList(),
                 PagingInfo = new PagingInfo
                 {
                     CurrentPage = page,

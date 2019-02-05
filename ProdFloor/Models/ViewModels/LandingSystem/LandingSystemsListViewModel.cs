@@ -5,7 +5,7 @@ namespace ProdFloor.Models.ViewModels
 {
     public class LandingSystemsListViewModel
     {
-        public IEnumerable<LandingSystem> LandingSystems { get; set; }
+        public List<LandingSystem> LandingSystems { get; set; }
         public PagingInfo PagingInfo { get; set; }
     }
 }

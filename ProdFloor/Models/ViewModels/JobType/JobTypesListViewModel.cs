@@ -5,7 +5,7 @@ namespace ProdFloor.Models.ViewModels
 {
     public class JobTypesListViewModel
     {
-        public IEnumerable<JobType> JobTypes { get; set; }
+        public List<JobType> JobTypes { get; set; }
         public PagingInfo PagingInfo { get; set; }
     }
 }

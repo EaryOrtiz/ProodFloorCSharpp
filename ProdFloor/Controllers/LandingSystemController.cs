@@ -26,7 +26,7 @@ namespace ProdFloor.Controllers
                 .Where(j => jobType == null || j.UsedIn == jobType)
                 .OrderBy(p => p.LandingSystemID)
                 .Skip((page - 1) * PageSize)
-                .Take(PageSize),
+                .Take(PageSize).ToList(),
                 PagingInfo = new PagingInfo
                 {
                     CurrentPage = page,
