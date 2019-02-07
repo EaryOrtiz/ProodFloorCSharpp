@@ -1,13 +1,34 @@
 ﻿@model JobViewModel
-<input type="hidden" asp-for="CurrentSpecialFeatures.JobID" />
-<input type="hidden" asp-for="CurrentJobExtension.JobExtensionID" />
-<div class="form-row col-sm-12" style="padding-bottom:15px">
-    <div class="col-md-6 form-line border-right">
-        <h3>Special Features</h3>
-        <div class="form-group">
-            <label asp-for="CurrentSpecialFeatures.Description" class="col-sm-5 col-form-label"></label>
-            <div><span asp-validation-for="CurrentSpecialFeatures.Description" class="text-danger"></span></div>
-            <textarea class="form-control"rows="3" asp-for="CurrentSpecialFeatures.Description"></textarea>
-        </div>
-    </div>
+<input type="hidden" asp-for="CurrentHydroSpecific.HydroSpecificID" />
+<button asp-action="NextForm" type="submit" value="AddSF" name="buttonAction" class="btn btn-success btn-sm col-sm-2" style="padding-top:10px;margin-bottom:10px;min-width:100px;float:left">
+    <i class="fa fa-plus"></i>&nbsp; Special Feature</button>
+<div class="table-responsive">
+    <table class="table form-control">
+        <thead>
+            <tr>
+                <th style="text-align:center;width:100%">Description</th>
+            </tr>
+        </thead>
+        <tbody style="text-align:">
+            @for (int i = 0; i < Model.SpecialFeatureslist.Count; i++)
+            {
+                @Html.HiddenFor(m => m.SpecialFeatureslist[i].JobID)
+                @Html.HiddenFor(m => m.SpecialFeatureslist[i].SpecialFeaturesID)
+                <tr>
+                    <td>
+                        @Html.TextBoxFor(m => m.SpecialFeatureslist[i].Description, new { Class = "form-control col-sm-2;", Style = "text-align:center;" })
+                    </td>
+                    <td style="text-align:center;">
+                        <form asp-action="DeleteSF" method="post">
+                        <input type="hidden" name="fieldID" value="@Model.SpecialFeatureslist[i].SpecialFeaturesID" />
+                        <input type="hidden" name="returnUrl" value="\Job\Edit\@Model.SpecialFeatureslist[i].JobID" />
+                        <button type="submit" class="btn btn-danger btn-sm">
+                        <i class="fa fa-minus-circle"></i>
+                         </button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 </div>

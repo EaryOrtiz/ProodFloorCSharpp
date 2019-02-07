@@ -76,7 +76,7 @@ namespace ProdFloor.Models
         public GenericFeatures _GenericFeatures { get; set; }
         public Indicator _Indicator { get; set; }
         public HoistWayData _HoistWayData { get; set; }
-        public SpecialFeatures _SpecialFeatures { get; set; }
+        public List<SpecialFeatures> _SpecialFeatureslist { get; set; }
         public int JobTypeID { get; set; }
         public int CityID { get; set; }
         public int FireCodeID { get; set; }
@@ -489,8 +489,8 @@ namespace ProdFloor.Models
         public int SpecialFeaturesID { get; set; }
         public int JobID { get; set; }
         [StringLength(250, ErrorMessage = "The maximum length of the {0} field is {1}")]
-        [Required(ErrorMessage = "Please enter a {0}")]
         public string Description { get; set; }
+        public Job Job { get; set; }
     }
 
     /*It is not need it

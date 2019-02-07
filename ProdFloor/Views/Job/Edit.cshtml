@@ -22,7 +22,7 @@
         <a class="nav-link @(Model.CurrentTab == "HoistWayData" ? "active" : " ")  @(Model.CurrentHoistWayData.JobID == 0 ? "disabled" : " ")" data-toggle="tab" href="#hoistwaydata" role="tab">Hoistway Data</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link @(Model.CurrentTab == "SpecialFeatures" ? "active" : " ")  @(Model.CurrentSpecialFeatures.JobID == 0 ? "disabled" : " ")" data-toggle="tab" href="#specialfeatures" role="tab">Special Features</a>
+        <a class="nav-link @(Model.CurrentTab == "SpecialFeatures" ? "active" : " ")  @(Model.SpecialFeatureslist[0].JobID == 0 ? "disabled" : " ")" data-toggle="tab" href="#specialfeatures" role="tab">Special Features</a>
     </li>
 </ul>
 <!-- Tab panes -->
@@ -62,13 +62,13 @@
             }
         </div>
         <div class="tab-pane @(Model.CurrentTab == "SpecialFeatures" ? "active" : " ")" id="specialfeatures" role="tabpanel">
-            @if (Model.CurrentSpecialFeatures.JobID != 0)
+            @if (Model.SpecialFeatureslist[0].JobID != 0)
             {
                 @Html.Partial("SpecialFeaturesForm", Model)
             }
         </div>
         <div class="text-center">
-            <button class="btn btn-primary" type="submit">Save</button>
+            <button class="btn btn-primary" value="Save" type="submit">Save</button>
             <a asp-action="List" class="btn btn-secondary">Cancel</a>
         </div>
     </div>

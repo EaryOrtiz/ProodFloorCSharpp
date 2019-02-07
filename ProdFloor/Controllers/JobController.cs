@@ -90,6 +90,12 @@ namespace ProdFloor.Controllers
             AppUser currentUser = GetCurrentUser().Result;
             if (ModelState.IsValid)
             {
+                List<SpecialFeatures> SpecialFaeturesList = new List<SpecialFeatures>();
+                SpecialFaeturesList = (from SpecialFeatures in repository.SpecialFeatures
+                                       where SpecialFeatures.JobID == 0
+                                       select SpecialFeatures).ToList();
+                ViewData["SpecialFeatures"] = SpecialFaeturesList;
+
                 newJob.EngID = currentUser.EngID;
                 newJob.Status = "Incomplete";
                 repository.SaveJob(newJob);
@@ -101,7 +107,7 @@ namespace ProdFloor.Controllers
                     CurrentGenericFeatures = new GenericFeatures (),
                     CurrentIndicator = new Indicator (),
                     CurrentHoistWayData = new HoistWayData (),
-                    CurrentSpecialFeatures = new SpecialFeatures(),
+                    SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures() },
                     CurrentTab = "Extension"
                 };
                 TempData["message"] = $"Job# {newJobViewModel.CurrentJob.JobNum} has been saved...{newJobViewModel.CurrentJob.JobID}...{currentUser.EngID}";
@@ -128,6 +134,7 @@ namespace ProdFloor.Controllers
             }
             else
             {
+                List<SpecialFeatures> SfList = repository.SpecialFeatures.Where(j => j.JobID == ID).ToList();
                 JobViewModel viewModel = new JobViewModel();
                 viewModel.CurrentJob = job;
                 viewModel.CurrentJobExtension = repository.JobsExtensions.FirstOrDefault(j => j.JobID == ID);
@@ -135,7 +142,14 @@ namespace ProdFloor.Controllers
                 viewModel.CurrentGenericFeatures = repository.GenericFeaturesList.FirstOrDefault(j => j.JobID == ID);
                 viewModel.CurrentIndicator = repository.Indicators.FirstOrDefault(j => j.JobID == ID);
                 viewModel.CurrentHoistWayData = repository.HoistWayDatas.FirstOrDefault(j => j.JobID == ID);
-                viewModel.CurrentSpecialFeatures = repository.SpecialFeatures.FirstOrDefault(j => j.JobID == ID);
+                if(SfList != null)
+                {
+                    viewModel.SpecialFeatureslist = SfList;
+                }
+                else
+                {
+                    viewModel.SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures() };
+                }
                 viewModel.CurrentTab = "Main";
                 return View(viewModel);
             }
@@ -145,25 +159,65 @@ namespace ProdFloor.Controllers
         [HttpPost]
         public IActionResult Edit(JobViewModel multiEditViewModel)
         {
-
-            if (ModelState.IsValid)
-            {
-                if(multiEditViewModel.CurrentJob.Status == "" || multiEditViewModel.CurrentJob.Status == null)
+                if (ModelState.IsValid)
                 {
-                    multiEditViewModel.CurrentJob.Status = "Working on it";
+                    if (multiEditViewModel.CurrentJob.Status == "" || multiEditViewModel.CurrentJob.Status == null)
+                    {
+                        multiEditViewModel.CurrentJob.Status = "Working on it";
+                    }
+                    repository.SaveEngJobView(multiEditViewModel);
+
+                    multiEditViewModel.CurrentTab = "Main";
+                    TempData["message"] = $"{multiEditViewModel.CurrentJob.JobNum} ID has been saved...{multiEditViewModel.CurrentJob.JobID}";
+                    return View(multiEditViewModel);
                 }
-                repository.SaveEngJobView(multiEditViewModel);
-                multiEditViewModel.CurrentTab = "Main";
-                TempData["message"] = $"{multiEditViewModel.CurrentJob.JobNum} ID has been saved...{multiEditViewModel.CurrentJob.JobID}";
-                return View(multiEditViewModel);
+                else
+                {
+                    // there is something wrong with the data values
+                    TempData["message"] = $"There seems to be errors in the form. Please validate.";
+                    TempData["alert"] = $"alert-danger";
+                    return View(multiEditViewModel);
+                }
+        }
+
+        public IActionResult AddSF(int Id)
+        {
+            Job currentJob = repository.Jobs.FirstOrDefault(p => p.JobID == Id);
+            JobExtension extension = repository.JobsExtensions.FirstOrDefault(p => p.JobID == Id);
+            HydroSpecific hydro = repository.HydroSpecifics.FirstOrDefault(p => p.JobID == Id);
+            GenericFeatures generic = repository.GenericFeaturesList.FirstOrDefault(p => p.JobID == Id);
+            Indicator indicator = repository.Indicators.FirstOrDefault(p => p.JobID == Id);
+            HoistWayData hoist = repository.HoistWayDatas.FirstOrDefault(p => p.JobID == Id);
+            IQueryable<SpecialFeatures> currentSpecialF = (repository.SpecialFeatures.Where(p => p.JobID == Id));
+
+            JobViewModel viewModel = new JobViewModel
+            {
+                CurrentJob = currentJob,
+                SpecialFeatureslist = currentSpecialF.ToList(),
+                CurrentJobExtension = extension,
+                CurrentHydroSpecific = hydro,
+                CurrentGenericFeatures = generic,
+                CurrentIndicator = indicator,
+                CurrentHoistWayData = hoist,
+                CurrentTab = "SpecialFeatures"
+            };
+            return View("Edit", viewModel);
+        }
+
+        [HttpPost]
+        public IActionResult DeleteSF(int fieldID, string returnUrl, JobViewModel viewModel)
+        {
+            SpecialFeatures deletedField = repository.DeleteSpecialFeatures(fieldID);
+            if (deletedField != null)
+            {
+                TempData["message"] = $"{deletedField.SpecialFeaturesID} was deleted";
             }
             else
             {
-                // there is something wrong with the data values
-                TempData["message"] = $"There seems to be errors in the form. Please validate.";
                 TempData["alert"] = $"alert-danger";
-                return View(multiEditViewModel);
+                TempData["message"] = $"There was an error with your request{fieldID}";
             }
+            return Redirect(returnUrl);
         }
 
         public IActionResult Continue(int ID)
@@ -171,17 +225,27 @@ namespace ProdFloor.Controllers
 
             if (repository.Jobs.FirstOrDefault(j => j.JobID == ID) != null)
             {
-
+                List<SpecialFeatures> SfList = repository.SpecialFeatures.Where(j => j.JobID == ID).ToList();
                 JobViewModel continueJobViewModel = new JobViewModel();
+                continueJobViewModel.CurrentTab = "Main";
                 continueJobViewModel.CurrentJob = repository.Jobs.FirstOrDefault(j => j.JobID == ID);
                 continueJobViewModel.CurrentJobExtension = (repository.JobsExtensions.FirstOrDefault(j => j.JobID == ID) ?? new JobExtension());
                 continueJobViewModel.CurrentHydroSpecific = (repository.HydroSpecifics.FirstOrDefault(j => j.JobID == ID) ?? new HydroSpecific());
                 continueJobViewModel.CurrentGenericFeatures = (repository.GenericFeaturesList.FirstOrDefault(j => j.JobID == ID) ?? new GenericFeatures());
                 continueJobViewModel.CurrentIndicator = (repository.Indicators.FirstOrDefault(j => j.JobID == ID) ?? new Indicator());
                 continueJobViewModel.CurrentHoistWayData = (repository.HoistWayDatas.FirstOrDefault(j => j.JobID == ID) ?? new HoistWayData());
-                continueJobViewModel.CurrentSpecialFeatures = (repository.SpecialFeatures.FirstOrDefault(j => j.JobID == ID) ?? new SpecialFeatures());
+                if (SfList.Count > 1)
+                {
 
-                
+                    continueJobViewModel.SpecialFeatureslist = SfList;
+
+                }
+                else
+                {
+                    continueJobViewModel.SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures() };
+                }
+
+
 
                 return View("NextForm", continueJobViewModel);
 
@@ -196,113 +260,123 @@ namespace ProdFloor.Controllers
         [HttpPost]
         public IActionResult NextForm(JobViewModel nextViewModel)
         {
-
-            if (ModelState.IsValid)
+            if (nextViewModel.buttonAction == "AddSF")
             {
-                if(nextViewModel.CurrentJobExtension != null)
+                nextViewModel.SpecialFeatureslist.Add(new SpecialFeatures { JobID = nextViewModel.CurrentJob.JobID });
+                nextViewModel.CurrentTab = "SpecialFeatures";
+
+            }
+            else
+            {
+                if (ModelState.IsValid)
                 {
-                    if (nextViewModel.CurrentHydroSpecific != null)
+                    if (nextViewModel.CurrentJobExtension != null)
                     {
-                        if (nextViewModel.CurrentGenericFeatures != null)
+                        if (nextViewModel.CurrentHydroSpecific != null)
                         {
-                            if (nextViewModel.CurrentIndicator != null)
+                            if (nextViewModel.CurrentGenericFeatures != null)
                             {
-                                if (nextViewModel.CurrentHoistWayData != null)
+                                if (nextViewModel.CurrentIndicator != null)
                                 {
-                                    if(nextViewModel.CurrentSpecialFeatures != null)
+                                    if (nextViewModel.CurrentHoistWayData != null)
                                     {
-                                        nextViewModel.CurrentJob.Status = "Working on it";
-                                        repository.SaveEngJobView(nextViewModel);
-                                        nextViewModel.CurrentTab = "Main";
-                                        TempData["message"] = $"everything was saved";
-                                        // Here the Job Filling Status should be changed the Working on it
-                                        // Redirect to Hub??
-                                        return View(nextViewModel);
+                                        if (nextViewModel.SpecialFeatureslist != null)
+                                        {
+                                            nextViewModel.CurrentJob.Status = "Working on it";
+                                            repository.SaveEngJobView(nextViewModel);
+                                            nextViewModel.CurrentTab = "Main";
+                                            TempData["message"] = $"everything was saved";
+                                            // Here the Job Filling Status should be changed the Working on it
+                                            // Redirect to Hub??
+                                            return View(nextViewModel);
+                                        }
+                                        else
+                                        {
+                                            repository.SaveEngJobView(nextViewModel);
+                                            nextViewModel.CurrentTab = "SpecialFeatures";
+                                            TempData["message"] = $"HoistWayData was saved";
+                                            nextViewModel.SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures {JobID = nextViewModel.CurrentJob.JobID } };
+                                            return View(nextViewModel);
+                                        }
+
                                     }
                                     else
                                     {
                                         repository.SaveEngJobView(nextViewModel);
-                                        nextViewModel.CurrentSpecialFeatures = new SpecialFeatures { JobID = nextViewModel.CurrentJob.JobID };
-                                        nextViewModel.CurrentTab = "SpecialFeatures";
-                                        TempData["message"] = $"HoistWayData was saved";
+                                        nextViewModel.CurrentHoistWayData = new HoistWayData { JobID = nextViewModel.CurrentJob.JobID };
+                                        nextViewModel.SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures() };
+                                        nextViewModel.CurrentTab = "HoistWayData";
+                                        TempData["message"] = $"indicator was saved";
                                         return View(nextViewModel);
                                     }
-                                    
                                 }
                                 else
                                 {
                                     repository.SaveEngJobView(nextViewModel);
-                                    nextViewModel.CurrentHoistWayData = new HoistWayData { JobID = nextViewModel.CurrentJob.JobID };
-                                    nextViewModel.CurrentSpecialFeatures = new SpecialFeatures();
-                                    nextViewModel.CurrentTab = "HoistWayData";
-                                    TempData["message"] = $"indicator was saved";
+                                    nextViewModel.CurrentIndicator = new Indicator { JobID = nextViewModel.CurrentJob.JobID };
+                                    nextViewModel.CurrentHoistWayData = new HoistWayData();
+                                    nextViewModel.SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures() };
+                                    nextViewModel.CurrentTab = "Indicator";
+                                    TempData["message"] = $"generic was saved";
                                     return View(nextViewModel);
                                 }
                             }
                             else
                             {
                                 repository.SaveEngJobView(nextViewModel);
-                                nextViewModel.CurrentIndicator = new Indicator { JobID = nextViewModel.CurrentJob.JobID };
+                                nextViewModel.CurrentGenericFeatures = new GenericFeatures { JobID = nextViewModel.CurrentJob.JobID };
+                                nextViewModel.CurrentIndicator = new Indicator();
                                 nextViewModel.CurrentHoistWayData = new HoistWayData();
-                                nextViewModel.CurrentSpecialFeatures = new SpecialFeatures();
-                                nextViewModel.CurrentTab = "Indicator";
-                                TempData["message"] = $"generic was saved";
+                                nextViewModel.SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures() };
+                                nextViewModel.CurrentTab = "GenericFeatures";
+                                TempData["message"] = $"hydro specific was saved";
                                 return View(nextViewModel);
                             }
                         }
                         else
                         {
                             repository.SaveEngJobView(nextViewModel);
-                            nextViewModel.CurrentGenericFeatures = new GenericFeatures { JobID = nextViewModel.CurrentJob.JobID };
+                            nextViewModel.CurrentHydroSpecific = new HydroSpecific { JobID = nextViewModel.CurrentJob.JobID };
+                            nextViewModel.CurrentGenericFeatures = new GenericFeatures();
                             nextViewModel.CurrentIndicator = new Indicator();
                             nextViewModel.CurrentHoistWayData = new HoistWayData();
-                            nextViewModel.CurrentSpecialFeatures = new SpecialFeatures();
-                            nextViewModel.CurrentTab = "GenericFeatures";
-                            TempData["message"] = $"hydro specific was saved";
+                            nextViewModel.SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures() };
+                            nextViewModel.CurrentTab = "HydroSpecifics";
+                            TempData["message"] = $"jobextension was saved";
                             return View(nextViewModel);
                         }
                     }
                     else
                     {
+
                         repository.SaveEngJobView(nextViewModel);
-                        nextViewModel.CurrentHydroSpecific = new HydroSpecific { JobID = nextViewModel.CurrentJob.JobID };
+                        JobExtension jobExt = repository.JobsExtensions.FirstOrDefault(j => j.JobID == nextViewModel.CurrentJob.JobID);
+                        nextViewModel.CurrentJobExtension = (jobExt ?? new JobExtension { JobID = nextViewModel.CurrentJob.JobID });
+                        nextViewModel.CurrentHydroSpecific = new HydroSpecific();
                         nextViewModel.CurrentGenericFeatures = new GenericFeatures();
                         nextViewModel.CurrentIndicator = new Indicator();
                         nextViewModel.CurrentHoistWayData = new HoistWayData();
-                        nextViewModel.CurrentSpecialFeatures = new SpecialFeatures();
-                        nextViewModel.CurrentTab = "HydroSpecifics";
-                        TempData["message"] = $"jobextension was saved";
+                        nextViewModel.SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures() };
+                        nextViewModel.CurrentTab = "Extension";
+                        TempData["message"] = $"job was saved";
                         return View(nextViewModel);
                     }
                 }
                 else
                 {
-                    
-                    repository.SaveEngJobView(nextViewModel);
-                    JobExtension jobExt = repository.JobsExtensions.FirstOrDefault(j => j.JobID == nextViewModel.CurrentJob.JobID);
-                    nextViewModel.CurrentJobExtension = (jobExt ?? new JobExtension { JobID = nextViewModel.CurrentJob.JobID });
-                    nextViewModel.CurrentHydroSpecific = new HydroSpecific ();
-                    nextViewModel.CurrentGenericFeatures = new GenericFeatures();
-                    nextViewModel.CurrentIndicator = new Indicator();
-                    nextViewModel.CurrentHoistWayData = new HoistWayData();
-                    nextViewModel.CurrentSpecialFeatures = new SpecialFeatures();
-                    nextViewModel.CurrentTab = "Extension";
-                    TempData["message"] = $"job was saved";
+                    nextViewModel.CurrentJob = (nextViewModel.CurrentJob ?? new Job());
+                    nextViewModel.CurrentJobExtension = (nextViewModel.CurrentJobExtension ?? new JobExtension());
+                    nextViewModel.CurrentHydroSpecific = (nextViewModel.CurrentHydroSpecific ?? new HydroSpecific());
+                    nextViewModel.CurrentGenericFeatures = (nextViewModel.CurrentGenericFeatures ?? new GenericFeatures());
+                    nextViewModel.CurrentIndicator = (nextViewModel.CurrentIndicator ?? new Indicator());
+                    nextViewModel.CurrentHoistWayData = (nextViewModel.CurrentHoistWayData ?? new HoistWayData());
+                    nextViewModel.SpecialFeatureslist = (nextViewModel.SpecialFeatureslist ?? new List<SpecialFeatures> { new SpecialFeatures() });
+                    TempData["message"] = $"nothing was saved";
                     return View(nextViewModel);
                 }
             }
-            else
-            {
-                nextViewModel.CurrentJob = (nextViewModel.CurrentJob ?? new Job());
-                nextViewModel.CurrentJobExtension = (nextViewModel.CurrentJobExtension ?? new JobExtension());
-                nextViewModel.CurrentHydroSpecific = (nextViewModel.CurrentHydroSpecific ?? new HydroSpecific());
-                nextViewModel.CurrentGenericFeatures = (nextViewModel.CurrentGenericFeatures ?? new GenericFeatures());
-                nextViewModel.CurrentIndicator = (nextViewModel.CurrentIndicator ?? new Indicator());
-                nextViewModel.CurrentHoistWayData = (nextViewModel.CurrentHoistWayData ?? new HoistWayData());
-                nextViewModel.CurrentSpecialFeatures = (nextViewModel.CurrentSpecialFeatures ?? new SpecialFeatures());
-                TempData["message"] = $"nothing was saved";
-                return View(nextViewModel);
-            }
+
+            return View(nextViewModel);
         }
 
         private async Task<AppUser> GetCurrentUser()
@@ -311,7 +385,6 @@ namespace ProdFloor.Controllers
 
             return user;
         }
-
 
         public JsonResult GetJobState(int CountryID)
         {

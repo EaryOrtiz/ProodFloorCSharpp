@@ -11,9 +11,10 @@ using System;
 namespace ProdFloor.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190205181421_UpdateFkSpecialFaetures")]
+    partial class UpdateFkSpecialFaetures
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -583,6 +584,7 @@ namespace ProdFloor.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasMaxLength(250);
 
                     b.Property<int>("JobID");
@@ -695,8 +697,8 @@ namespace ProdFloor.Migrations
 
             modelBuilder.Entity("ProdFloor.Models.SpecialFeatures", b =>
                 {
-                    b.HasOne("ProdFloor.Models.Job", "Job")
-                        .WithMany("_SpecialFeatureslist")
+                    b.HasOne("ProdFloor.Models.Job")
+                        .WithMany("_SpecialFeatures")
                         .HasForeignKey("JobID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

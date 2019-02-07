@@ -286,23 +286,31 @@ namespace ProdFloor.Models
             context.SaveChanges();
         }
         public void SaveSpecialFeatures(SpecialFeatures specialFeatures)
-        {
-            if (specialFeatures.SpecialFeaturesID == 0)
-            {
-                context.SpecialFeatures.Add(specialFeatures);
-            }
-            else
-            {
-                SpecialFeatures dbEntry = context.SpecialFeatures
-                .FirstOrDefault(p => p.SpecialFeaturesID == specialFeatures.SpecialFeaturesID);
-                if (dbEntry != null)
+        {  
+                if (specialFeatures != null && specialFeatures.SpecialFeaturesID == 0)
                 {
-                    dbEntry.JobID = specialFeatures.JobID;
-                    dbEntry.Description= specialFeatures.Description;
-
+                    List<SpecialFeatures> specials = context.SpecialFeatures.Where(p => p.JobID == specialFeatures.JobID).ToList();
+                    if (specials.Count != 1 || specialFeatures.Description != null)
+                    {
+                        context.SpecialFeatures.Add(specialFeatures);
+                    }
+                    
                 }
-            }
+                else
+                {
+
+
+                    SpecialFeatures dbEntry = context.SpecialFeatures
+                    .FirstOrDefault(p => p.SpecialFeaturesID == specialFeatures.SpecialFeaturesID);
+                    if (dbEntry != null)
+                    {
+                        dbEntry.JobID = specialFeatures.JobID;
+                        dbEntry.Description = specialFeatures.Description;
+
+                    }
+                }
             context.SaveChanges();
+           
         }
 
         public Job DeleteJob(int JobID)
@@ -531,19 +539,21 @@ namespace ProdFloor.Models
                 }
             }
 
-            if (viewModelToSave.CurrentSpecialFeatures != null)
+            if (viewModelToSave.SpecialFeatureslist != null )
             {
-                if (viewModelToSave.CurrentSpecialFeatures.JobID != 0)
+                for (int i = 0; i < viewModelToSave.SpecialFeatureslist.Count; i++)
                 {
-                    SpecialFeatures specialF = SpecialFeatures.FirstOrDefault(j => j.JobID == viewModelToSave.CurrentSpecialFeatures.JobID);
-                    if (specialF == null)
+                    if (viewModelToSave.SpecialFeatureslist[i].JobID != 0)
                     {
-                        SaveSpecialFeatures(viewModelToSave.CurrentSpecialFeatures);
-                    }
-                    else
-                    {
-                        viewModelToSave.CurrentSpecialFeatures.SpecialFeaturesID = specialF.SpecialFeaturesID;
-                        SaveSpecialFeatures(viewModelToSave.CurrentSpecialFeatures);
+                        if (viewModelToSave.SpecialFeatureslist == null)
+                        {
+                            SaveSpecialFeatures(viewModelToSave.SpecialFeatureslist[i]);
+                        }
+                        else
+                        {
+                            viewModelToSave.SpecialFeatureslist[i].SpecialFeaturesID = viewModelToSave.SpecialFeatureslist[i].SpecialFeaturesID;
+                            SaveSpecialFeatures(viewModelToSave.SpecialFeatureslist[i]);
+                        }
                     }
                 }
             }
