@@ -31,6 +31,8 @@ namespace ProdFloor.Controllers
             TempData["alert"] = $"alert-danger";
             TempData["message"] = $"There was an error with your request";
         }
+        // Recibe jobType y jobPage y regresa un 
+        //JobsListViewModel con los jobs filtrados por tipo y sorteados por JobID 
         public ViewResult List(int jobType, int jobPage = 1)
         {
 
@@ -51,8 +53,9 @@ namespace ProdFloor.Controllers
                         CurrentJobType = jobType.ToString()
              });
         }
-            
 
+        // Al recibir un post de Delete llama a DeleteEngJob con el ID recibido y redirige 
+        //a List con un mensaje de success o failure
         [HttpPost]
         public IActionResult Delete(int ID)
         {
@@ -69,12 +72,20 @@ namespace ProdFloor.Controllers
             return RedirectToAction("List");
         }
 
+        // Si recibe un get de Delete redirige a List con un mensaje de failure
         public IActionResult Delete()
         {
+            TempData["alert"] = $"alert-danger";
             TempData["message"] = $"The requested Job Id doesn't exist";
             return RedirectToAction("List");
         }
 
+        /* Post de NewJob; recibe el Job completado por el usuario si todo esta correcto procede a agregar el Job al repositorio
+         * llena el campo de EngID en base al usuario que capturo la forma y el status lo pone como "Incomplete"
+         * regresa un newJobViewModel a la vista NextForm con el CurrentJob = al job recien creado y un JobExtension en blanco a excepcion
+         * del JobID el cual se especifica = al del Job recien creado; Si hay algun error en la forma recibida regresa el Job que recibio junto
+         * a un mensaje de failure
+        */
         public ViewResult NewJob()
         {
 
@@ -120,7 +131,10 @@ namespace ProdFloor.Controllers
                 return View(newJob);
             }
         }
-        
+
+        /* Get de Edit; Si el ID recibido exite en el repositorio regresa un JobViewModel con los objetos relacionados a este ID,
+         * de lo contrario regresa un mensaje de failure a la view List
+         */
         public IActionResult Edit(int ID)
         {
             ViewData["CountryID"] = new SelectList(itemsrepository.Countries, "CountryID", "Name");
@@ -157,6 +171,10 @@ namespace ProdFloor.Controllers
 
         }
 
+        /* Post de Edit; recibe un JobViewModel, si todo esta bien procede a salvar cada objeto en el repositorio y en caso de que el status
+         * este en blanco o no este configurado procede a cambiarlo a "Working on it"; Si el modelo recibido contiene algun error regresa el
+         * modelo a la vista con un mensaje de failure
+         */
         [HttpPost]
         public IActionResult Edit(JobViewModel multiEditViewModel)
         {
@@ -225,6 +243,10 @@ namespace ProdFloor.Controllers
             return Redirect(returnUrl);
         }
 
+        /* Get de Continue; esta clase es para cuando el usuario estaba capturando un job y por algun motivo no lo termino;
+         * recibe un ID y busca los objetos relacionados a este, en caso de encontrar un Job con este ID regresa un JobViewModel a NextForm con los 
+         * objetos que concuerdan con el ID, de lo contrario manda a List con un mensaje de Failure
+         */
         public IActionResult Continue(int ID)
         {
             ViewData["CountryID"] = new SelectList(itemsrepository.Countries, "CountryID", "Name");
@@ -263,6 +285,17 @@ namespace ProdFloor.Controllers
             }
         }
 
+        /* ***TODO*** Post de NextForm; Recibe un JobViewModel y en verifica en que paso se encuentra el Job
+         * Este objeto siempre contendra un Job completo pero los siguientes pueden no estarlo, los if's validan si el objeto no es nulo
+         * en caso de que no lo sean revisa el siguiente objeto, si es nulo regresa un objeto nuevo con el jobID para ese objeto,
+         * los siguientes objetos los regresa vacios y los anteriores los salva en la DB, tambien regresa la informacion de la tab actual, 
+         * en caso de que el ultimo objeto a revisar este completo cambia el status a "Working on it" y salva todo:
+         * 1- JobExtension
+         * 2- HydroSpecific
+         * 3- CurrentIndicator
+         * 4- HoistWayData
+         * 5- SpecialFeatures
+         */
         [HttpPost]
         public IActionResult NextForm(JobViewModel nextViewModel)
         {
@@ -387,6 +420,7 @@ namespace ProdFloor.Controllers
             return View(nextViewModel);
         }
 
+        //Funcion para obtener el usuario que realizo la llamada
         private async Task<AppUser> GetCurrentUser()
         {
             AppUser user = await userManager.GetUserAsync(HttpContext.User);
