@@ -43,26 +43,8 @@ namespace ProdFloor.Controllers
 
         public ViewResult Edit(int ID)
         {
-
-            List<State> StateList = new List<State>();
-            //Getting Data
-            StateList = (from state in repository.States select state).ToList();
-            //Insert Select item in list
-            StateList.Insert(0, new State { StateID = 0, Name = "Select" });
-            //Assigning categorlist to viewbag
-            ViewBag.StateList = StateList;
-
-            List<FireCode> FireCodeList = new List<FireCode>();
-            //Getting Data
-            FireCodeList = (from firecode in repository.FireCodes select firecode).ToList();
-            //Insert Select item in list
-            FireCodeList.Insert(0, new FireCode { FireCodeID = 0, Name = "Select" });
-            //Assigning categorlist to viewbag
-            ViewBag.FireCodeList = FireCodeList;
-
-            ViewData["Countries"] = repository.Countries;
-            ViewData["States"] = repository.States;
-            ViewData["FireCodes"] = repository.FireCodes;
+            ViewData["CountryID"] = new SelectList(repository.Countries, "CountryID", "Name");
+            ViewData["StateID"] = new SelectList(repository.States, "StateID", "Name");
 
             return View(repository.Cities
                 .FirstOrDefault(j => j.CityID == ID));
@@ -99,27 +81,17 @@ namespace ProdFloor.Controllers
         
         public ViewResult Add()
         {
-            ViewData["Countries"] = repository.Countries;
-            ViewData["States"] = repository.States;
-            ViewData["FireCodes"] = repository.FireCodes;
-
-            List<State> StateList = new List<State>();
-            //Getting Data
-            StateList = (from state in repository.States select state).ToList();
-            //Insert Select item in list
-            StateList.Insert(0, new State { StateID = 0, Name = "Select" });
-            //Assigning categorlist to viewbag
-            ViewBag.StateList = StateList;
-
-            List<FireCode> FireCodeList = new List<FireCode>();
-            //Getting Data
-            FireCodeList = (from firecode in repository.FireCodes select firecode).ToList();
-            //Insert Select item in list
-            FireCodeList.Insert(0, new FireCode { FireCodeID = 0, Name = "Select" });
-            //Assigning categorlist to viewbag
-            ViewBag.FireCodeList = FireCodeList;
+            ViewData["CountryID"] = new SelectList(repository.Countries, "CountryID", "Name");
+            ViewData["StateID"] = new SelectList(repository.States, "StateID", "Name");
 
             return View("Edit", new City());
+        }
+
+        public JsonResult GetJobState(int CountryID)
+        {
+            List<State> JobStatelist = new List<State>();
+            JobStatelist = (from state in repository.States where state.CountryID == CountryID select state).ToList();
+            return Json(new SelectList(JobStatelist, "StateID", "Name"));
         }
     }
 }

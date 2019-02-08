@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ProdFloor.Models
 {
@@ -47,29 +48,16 @@ namespace ProdFloor.Models
         [StringLength(50, ErrorMessage = "The maximum length of the {0} field is {1}")]
         [Required(ErrorMessage = "Please enter a Contractor")]
         public string Contractor { get; set; }
-        /*
+        
+        [NotMapped]
         [Display(Name = "Country")]
         [Required(ErrorMessage = "Please enter a Country")]
-        public string JobCountry { get; set; }
+        public string CountryID { get; set; }
 
+        [NotMapped]
         [Display(Name = "State")]
         [Required(ErrorMessage = "Please enter a State")]
-        public string JobState { get; set; }
-
-        
-        [Display(Name = "Job Type")]
-        [Required(ErrorMessage = "Please enter a Job Type")]
-        public string JobType { get; set; }
-            
-        [Display(Name = "City")]
-        [Required(ErrorMessage = "Please enter a City")]
-        public string JobCity { get; set; }
-
-        [Display(Name = "Safety Code")]
-        [Required(ErrorMessage = "Please enter a Safety Code")]
-        public string SafetyCode { get; set; }
-
-        */
+        public string StateID { get; set; }
 
         public JobExtension _jobExtension { get; set; }
         public HydroSpecific _HydroSpecific { get; set; }
@@ -77,8 +65,11 @@ namespace ProdFloor.Models
         public Indicator _Indicator { get; set; }
         public HoistWayData _HoistWayData { get; set; }
         public List<SpecialFeatures> _SpecialFeatureslist { get; set; }
+        [Display(Name = "Job Type")]
         public int JobTypeID { get; set; }
+        [Display(Name = "City")]
         public int CityID { get; set; }
+        [Display(Name = "Fire Code")]
         public int FireCodeID { get; set; }
 
     }
@@ -100,7 +91,7 @@ namespace ProdFloor.Models
         public string JobTypeMain { get; set; }
 
         [Display(Name = "Type of operation#2")]
-        [StringLength(26, ErrorMessage = "The maximum length of the {0} field is {1}")]
+        [StringLength(50, ErrorMessage = "The maximum length of the {0} field is {1}")]
         [Required(ErrorMessage = "Please enter the type of operation")]
         public string JobTypeAdd { get; set; }
 
@@ -167,6 +158,7 @@ namespace ProdFloor.Models
         [Display(Name = "Auxiliary COP")]
         public bool AUXCOP { get; set; }
 
+        [Display(Name = "Door Operator")]
         public int DoorOperatorID { get; set; } 
     }
 
@@ -480,7 +472,6 @@ namespace ProdFloor.Models
         public int TotalTravel { get; set; }
         [Required(ErrorMessage = "Please enter the landing system")]
         [Display(Name = "Landing System")]
-        //public string LandingSystem { get; set; }
         public int LandingSystemID { get; set; }
     }
 

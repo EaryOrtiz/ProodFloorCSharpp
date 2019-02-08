@@ -12,12 +12,12 @@
         <div class="form-group row">
             <label asp-for="CurrentJobExtension.JobTypeMain" class="col-sm-5 col-form-label"></label>
             <div><span asp-validation-for="CurrentJobExtension.JobTypeMain" class="text-danger"></span></div>
-            <indicators select-for="JobType" selected-value="@Model.CurrentJobExtension.JobTypeMain" asp-for="CurrentJobExtension.JobTypeMain"></indicators>
+            <indicators select-for="JobType" selected-value="@Model.CurrentJobExtension.JobTypeMain" class="form-control-sm"  asp-for="CurrentJobExtension.JobTypeMain"></indicators>
         </div>
         <div class="form-group row">
             <label asp-for="CurrentJobExtension.JobTypeAdd" class="col-sm-5 col-form-label"></label>
             <div><span asp-validation-for="CurrentJobExtension.JobTypeAdd" class="text-danger"></span></div>
-            <indicators select-for="JobType2" selected-value="@Model.CurrentJobExtension.JobTypeAdd" asp-for="CurrentJobExtension.JobTypeAdd"></indicators>
+            <indicators select-for="JobType2" selected-value="@Model.CurrentJobExtension.JobTypeAdd" class="form-control-sm"  asp-for="CurrentJobExtension.JobTypeAdd"></indicators>
         </div>
         <div class="form-group row">
             <label asp-for="CurrentJobExtension.InputVoltage" class="col-sm-5 col-form-label"></label>
@@ -37,17 +37,17 @@
         <div class="form-group row">
             <label asp-for="CurrentJobExtension.DoorGate" class="col-sm-5 col-form-label"></label>
             <div><span asp-validation-for="CurrentJobExtension.DoorGate" class="text-danger"></span></div>
-            <custom-select select-for="DoorOperatorStyle" selected-value="@Model.CurrentJobExtension.DoorGate" asp-for="CurrentJobExtension.DoorGate"></custom-select>
+            <custom-select select-for="DoorOperatorStyle" selected-value="@Model.CurrentJobExtension.DoorGate" class="form-control-sm"  asp-for="CurrentJobExtension.DoorGate"></custom-select>
         </div>
         <div class="form-group row">
             <label asp-for="CurrentJobExtension.DoorHoist" class="col-sm-5 col-form-label"></label>
             <div><span asp-validation-for="CurrentJobExtension.DoorHoist" class="text-danger"></span></div>
-            <custom-select select-for="DoorOperatorStyle" selected-value="@Model.CurrentJobExtension.DoorHoist" asp-for="CurrentJobExtension.DoorHoist"></custom-select>
+            <custom-select select-for="DoorOperatorStyle" selected-value="@Model.CurrentJobExtension.DoorHoist" class="form-control-sm" asp-for="CurrentJobExtension.DoorHoist"></custom-select>
         </div>
         <div class="form-group row">
             <label asp-for="CurrentJobExtension.DoorOperatorID" class="col-sm-5 col-form-label"></label>
             <div>
-                <door-operator-select selected-value="@Model.CurrentJobExtension.DoorOperatorID" asp-for="CurrentJobExtension.DoorOperatorID"></door-operator-select>
+                <door-operator-select selected-value="@Model.CurrentJobExtension.DoorOperatorID" class="form-control-sm"  asp-for="CurrentJobExtension.DoorOperatorID"></door-operator-select>
                 <span asp-validation-for="CurrentJobExtension.DoorOperatorID" class="text-danger"></span>
             </div>
         </div>

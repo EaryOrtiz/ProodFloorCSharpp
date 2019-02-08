@@ -80,6 +80,7 @@ namespace ProdFloor.Controllers
 
             ViewData["CountryID"] = new SelectList(itemsrepository.Countries, "CountryID", "Name");
             ViewData["StateID"] = new SelectList(itemsrepository.States, "StateID", "Name");
+            ViewData["CityID"] = new SelectList(itemsrepository.Cities, "CityID", "Name");
 
             return View(new Job());
         } 
@@ -87,15 +88,12 @@ namespace ProdFloor.Controllers
         [HttpPost]
         public IActionResult NewJob(Job newJob)
         {
+            ViewData["CountryID"] = new SelectList(itemsrepository.Countries, "CountryID", "Name");
+            ViewData["StateID"] = new SelectList(itemsrepository.States, "StateID", "Name");
+            ViewData["CityID"] = new SelectList(itemsrepository.Cities, "CityID", "Name");
             AppUser currentUser = GetCurrentUser().Result;
             if (ModelState.IsValid)
             {
-                List<SpecialFeatures> SpecialFaeturesList = new List<SpecialFeatures>();
-                SpecialFaeturesList = (from SpecialFeatures in repository.SpecialFeatures
-                                       where SpecialFeatures.JobID == 0
-                                       select SpecialFeatures).ToList();
-                ViewData["SpecialFeatures"] = SpecialFaeturesList;
-
                 newJob.EngID = currentUser.EngID;
                 newJob.Status = "Incomplete";
                 repository.SaveJob(newJob);
@@ -125,6 +123,9 @@ namespace ProdFloor.Controllers
         
         public IActionResult Edit(int ID)
         {
+            ViewData["CountryID"] = new SelectList(itemsrepository.Countries, "CountryID", "Name");
+            ViewData["StateID"] = new SelectList(itemsrepository.States, "StateID", "Name");
+            ViewData["CityID"] = new SelectList(itemsrepository.Cities, "CityID", "Name");
 
             Job job = repository.Jobs.FirstOrDefault(j => j.JobID == ID);
             if (job == null)
@@ -159,7 +160,11 @@ namespace ProdFloor.Controllers
         [HttpPost]
         public IActionResult Edit(JobViewModel multiEditViewModel)
         {
-                if (ModelState.IsValid)
+            ViewData["CountryID"] = new SelectList(itemsrepository.Countries, "CountryID", "Name");
+            ViewData["StateID"] = new SelectList(itemsrepository.States, "StateID", "Name");
+            ViewData["CityID"] = new SelectList(itemsrepository.Cities, "CityID", "Name");
+
+            if (ModelState.IsValid)
                 {
                     if (multiEditViewModel.CurrentJob.Status == "" || multiEditViewModel.CurrentJob.Status == null)
                     {
@@ -222,6 +227,9 @@ namespace ProdFloor.Controllers
 
         public IActionResult Continue(int ID)
         {
+            ViewData["CountryID"] = new SelectList(itemsrepository.Countries, "CountryID", "Name");
+            ViewData["StateID"] = new SelectList(itemsrepository.States, "StateID", "Name");
+            ViewData["CityID"] = new SelectList(itemsrepository.Cities, "CityID", "Name");
 
             if (repository.Jobs.FirstOrDefault(j => j.JobID == ID) != null)
             {
@@ -245,8 +253,6 @@ namespace ProdFloor.Controllers
                     continueJobViewModel.SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures() };
                 }
 
-
-
                 return View("NextForm", continueJobViewModel);
 
             }
@@ -260,11 +266,13 @@ namespace ProdFloor.Controllers
         [HttpPost]
         public IActionResult NextForm(JobViewModel nextViewModel)
         {
+            ViewData["CountryID"] = new SelectList(itemsrepository.Countries, "CountryID", "Name");
+            ViewData["StateID"] = new SelectList(itemsrepository.States, "StateID", "Name");
+            ViewData["CityID"] = new SelectList(itemsrepository.Cities, "CityID", "Name");
             if (nextViewModel.buttonAction == "AddSF")
             {
                 nextViewModel.SpecialFeatureslist.Add(new SpecialFeatures { JobID = nextViewModel.CurrentJob.JobID });
                 nextViewModel.CurrentTab = "SpecialFeatures";
-
             }
             else
             {
@@ -389,20 +397,14 @@ namespace ProdFloor.Controllers
         public JsonResult GetJobState(int CountryID)
         {
             List<State> JobStatelist = new List<State>();
-            JobStatelist = (from state in itemsrepository.States
-                            where state.CountryID == CountryID
-                            select state).ToList();
-            JobStatelist.Insert(0, new State { StateID = 0, Name = "Select a State" });
+            JobStatelist = (from state in itemsrepository.States where state.CountryID == CountryID select state).ToList();
             return Json(new SelectList(JobStatelist, "StateID", "Name"));
         }
 
         public JsonResult GetJobCity(int StateID)
         {
             List<City> CityCascadeList = new List<City>();
-            CityCascadeList = (from city in itemsrepository.Cities
-                               where city.StateID == StateID
-                               select city).ToList();
-            CityCascadeList.Insert(0, new City { CityID = 0, Name = "Select a City" });
+            CityCascadeList = (from city in itemsrepository.Cities where city.StateID == StateID select city).ToList();
             return Json(new SelectList(CityCascadeList, "CityID", "Name"));
         }
 

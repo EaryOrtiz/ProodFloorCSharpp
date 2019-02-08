@@ -32,7 +32,7 @@
 <div class="form-group row has-warning has-feedback">
     <label asp-for="CurrentHoistWayData.LandingSystemID" class="col-sm-2 col-form-label"></label>
     <div>
-        <landing-sys-select selected-value="@Model.CurrentHoistWayData.LandingSystemID" asp-for="CurrentHoistWayData.LandingSystemID"></landing-sys-select>
+        <landing-sys-select selected-value="@Model.CurrentHoistWayData.LandingSystemID" class="form-control-sm" asp-for="CurrentHoistWayData.LandingSystemID"></landing-sys-select>
         <span asp-validation-for="CurrentHoistWayData.LandingSystemID" class="text-danger"></span>
     </div>
 </div>

@@ -1,4 +1,7 @@
 ﻿@model JobViewModel
+@{
+    <script src="~/Scripts/CascadingCountryStateCity.js" type="text/javascript"></script>
+}
 <input type="hidden" asp-for="CurrentJob.JobID" />
 <input type="hidden" asp-for="CurrentJob.Status" />
 <input type="hidden" asp-for="CurrentJob.EngID" />
@@ -12,7 +15,7 @@
 <div class="form-group row">
     <label asp-for="CurrentJob.JobTypeID" class="col-sm-2 col-form-label"></label>
     <div>
-        <job-type-select selected-value="@Model.CurrentJob.JobTypeID" asp-for="CurrentJob.JobTypeID"></job-type-select>
+        <job-type-select selected-value="@Model.CurrentJob.JobTypeID" class="form-control-sm" asp-for="CurrentJob.JobTypeID"></job-type-select>
         <span asp-validation-for="CurrentJob.JobTypeID" class="text-danger"></span>
     </div>
 </div>
@@ -57,16 +60,27 @@
     </div>
 </div>
 <div class="form-group row">
+    <label asp-for="CurrentJob.CountryID" class="col-sm-2 col-form-label"></label>
+    <select id="CountryID" asp-for="@Model.CurrentJob.CountryID" class="form-control-sm" asp-items="ViewBag.CountryID">
+        <option value="default">-- Select Country --</option>
+    </select>
+</div>
+<div class="form-group row">
+    <label asp-for="CurrentJob.StateID" class="col-sm-2 col-form-label"></label>
+    <select id="StateID" asp-for="@Model.CurrentJob.StateID" class="form-control-sm" asp-items="ViewBag.StateID">
+        <option value="default">-- Select State --</option>
+    </select>
+</div>
+<div class="form-group row">
     <label asp-for="CurrentJob.CityID" class="col-sm-2 col-form-label"></label>
-    <div>
-        <city-select selected-value="@Model.CurrentJob.CityID" asp-for="CurrentJob.CityID"></city-select>
-        <span asp-validation-for="CurrentJob.CityID" class="text-danger"></span>
-    </div>
+    <select id="CityID" asp-for="@Model.CurrentJob.CityID" class="form-control-sm" asp-items="ViewBag.CityID">
+        <option value="">-- Select City --</option>
+    </select>
 </div>
 <div class="form-group row">
     <label asp-for="CurrentJob.FireCodeID" class="col-sm-2 col-form-label"></label>
     <div>
-        <fire-code-select selected-value="@Model.CurrentJob.FireCodeID" asp-for="CurrentJob.FireCodeID"></fire-code-select>
+        <fire-code-select selected-value="@Model.CurrentJob.FireCodeID" class="form-control-sm" asp-for="CurrentJob.FireCodeID"></fire-code-select>
         <span asp-validation-for="CurrentJob.FireCodeID" class="text-danger"></span>
     </div>
 </div>

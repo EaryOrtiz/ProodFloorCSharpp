@@ -1,4 +1,7 @@
 ﻿@model Job
+@{
+    <script src="~/Scripts/CascadingCountryStateCity.js" type="text/javascript"></script>
+}
 <input type="hidden" asp-for="JobID" />
 <div class="form-group row">
     <label asp-for="Name" class="col-sm-2 col-form-label"></label>
@@ -10,14 +13,14 @@
 <div class="form-group row">
     <label asp-for="JobNum" class="col-sm-2 col-form-label"></label>
     <div>
-        <input asp-for="JobNum" class="form-control col-sm-7" />
+        <input asp-for="JobNum" class="form-control col-sm-11" />
         <span asp-validation-for="JobNum" class="text-danger"></span>
     </div>
 </div>
 <div class="form-group row">
     <label asp-for="JobTypeID" class="col-sm-2 col-form-label"></label>
     <div>
-        <job-type-select selected-value="@Model.JobTypeID" asp-for="JobTypeID"></job-type-select>
+        <job-type-select selected-value="@Model.JobTypeID" class="form-control-sm" asp-for="JobTypeID"></job-type-select>
         <span asp-validation-for="JobTypeID" class="text-danger"></span>
     </div>
 </div>
@@ -34,7 +37,6 @@
         <input asp-for="ShipDate" class="form-control col-sm-15" />
         <span asp-validation-for="ShipDate" class="text-danger"></span>
     </div>
-
 </div>
 <div class="form-group row">
     <label asp-for="LatestFinishDate" class="col-sm-2 col-form-label"></label>
@@ -58,53 +60,27 @@
     </div>
 </div>
 <div class="form-group row">
+    <label asp-for="CountryID" class="col-sm-2 col-form-label"></label>
+    <select id="CountryID" asp-for="@Model.CountryID" class="form-control-sm" asp-items="ViewBag.CountryID">
+        <option value="default">-- Select Country --</option>
+    </select>
+</div>
+<div class="form-group row">
+    <label asp-for="StateID" class="col-sm-2 col-form-label"></label>
+    <select id="StateID" asp-for="@Model.StateID" class="form-control-sm" asp-items="ViewBag.StateID">
+        <option value="default">-- Select State --</option>
+    </select>
+</div>
+<div class="form-group row">
     <label asp-for="CityID" class="col-sm-2 col-form-label"></label>
-    <div>
-        <city-select selected-value="@Model.CityID" asp-for="CityID"></city-select>
-        <span asp-validation-for="CityID" class="text-danger"></span>
-    </div>
+    <select id="CityID" asp-for="@Model.CityID" class="form-control-sm" asp-items="ViewBag.CityID">
+        <option value="">-- Select City --</option>
+    </select>
 </div>
 <div class="form-group row">
     <label asp-for="FireCodeID" class="col-sm-2 col-form-label"></label>
     <div>
-        <fire-code-select selected-value="@Model.FireCodeID" asp-for="FireCodeID"></fire-code-select>
+        <fire-code-select selected-value="@Model.FireCodeID" class="form-control-sm" asp-for="FireCodeID"></fire-code-select>
         <span asp-validation-for="FireCodeID" class="text-danger"></span>
     </div>
 </div>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    <script>
-        $(document).ready(function () {
-            $("#StateID").prop("disabled", true);
-        });
-    </script>
-    <script>
-        $(function () {
-            $("#CountryID").change(function () {
-                var selectedContinent = $("#CountryID").val();
-                var coutriesSelectObject = $('#StateID');
-                coutriesSelectObject.empty();
-                if (selectedContinent != null && selectedContinent != '') {
-                    $.ajax({
-                        type: 'GET',
-                        url: '/Job/GetJobState',
-                        contentType: "applications/json",
-                        data: {
-                            CountryID: selectedContinent
-                        },
-                        success: function (data) {
-                            $("#StateID").prop("disabled", false);
-                            $.each(data, function (idx, country) {
-                                coutriesSelectObject.append('<option value="' + country.value + '">' + country.text + '</option>');
-                            });
-                        },
-                        error: function (exc) {
-                            alert("error");
-                        }
-                    });
-                }
-            });
-        });
-    </script>
-}

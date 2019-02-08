@@ -2,29 +2,33 @@
 @{
     ViewBag.Title = "Edit City";
     Layout = "_AdminLayoutWO";
+    <script src="~/Scripts/CascadingCountryState.js" type="text/javascript"></script>
 }
 <div class="bg-dark m-1 p-1"><h4 style="color:white">Edit City: @Model.Name</h4></div>
 <br />
 <form asp-controller="City" asp-action="Edit" method="post">
     <input type="hidden" asp-for="CityID" />
     <div class="form-group">
-        <label asp-for="StateID" class="col-sm-2 col-form-label"></label>
-        <div>
-            <state-select selected-value="@Model.StateID" asp-for="StateID"></state-select>
-            <span asp-validation-for="StateID" class="text-danger"></span>
-        </div>
+        <label asp-for="CountryID" class="col-sm-1 col-form-label"></label>
+        <select id="CountryID" asp-for="@Model.CountryID" class="form-control-sm " asp-items="ViewBag.CountryID">
+            <option value="default">-- Select Country --</option>
+        </select>
     </div>
     <div class="form-group">
-        <label asp-for="Name"></label>
-        <div><span asp-validation-for="Name" class="text-danger"></span></div>
-        <input asp-for="Name" class="form-control" />
+        <label asp-for="StateID" class="col-sm-1 col-form-label"></label>
+        <select id="StateID" asp-for="@Model.StateID" class="form-control-sm" asp-items="ViewBag.StateID">
+            <option value="default">-- Select State --</option>
+        </select>
+    </div>
+    <div class="form-group ">
+        <label asp-for="Name" class="col-sm-1 col-form-label" ></label>
+        <input asp-for="Name" class="form-control-sm col-sm-2" />
+        <span asp-validation-for="Name" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label asp-for="FirecodeID" class="col-sm-2 col-form-label"></label>
-        <div>
-            <fire-code-select selected-value="@Model.FirecodeID" asp-for="FirecodeID"></fire-code-select>
+        <label asp-for="FirecodeID" class="col-sm-1 col-form-label"></label>
+            <fire-code-select selected-value="@Model.FirecodeID" class="form-control-sm" asp-for="FirecodeID"></fire-code-select>
             <span asp-validation-for="FirecodeID" class="text-danger"></span>
-        </div>
     </div>
     <div class=" text-center">
         <button class="btn btn-primary" type="submit">Save</button>

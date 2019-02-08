@@ -14,6 +14,7 @@ namespace ProdFloor.Models
         [Required(ErrorMessage = "Please enter a {0}")]
         public string Name { get; set; }
 
+        [Display(Name = "Country")]
         public int CountryID { get; set; }
         //public string Country { get; set; }
         public List<City> _Cities { get; set; }

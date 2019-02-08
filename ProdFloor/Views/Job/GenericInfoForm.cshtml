@@ -83,14 +83,14 @@
     <div class="form-group col-3 text-center">
         <label asp-for="CurrentGenericFeatures.EPCarsNumber" class="col-form-label"></label>
         <div>
-            <indicators select-for="EPCars" selected-value="@Model.CurrentGenericFeatures.EPCarsNumber" asp-for="CurrentGenericFeatures.EPCarsNumber"></indicators>
+            <indicators select-for="EPCars" selected-value="@Model.CurrentGenericFeatures.EPCarsNumber" class="form-control-sm" asp-for="CurrentGenericFeatures.EPCarsNumber"></indicators>
             <span asp-validation-for="CurrentGenericFeatures.EPCarsNumber" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group col-3 text-center">
         <label asp-for="CurrentGenericFeatures.EPContact" class="col-form-label"></label>
         <div>
-            <indicators select-for="EPContact" selected-value="@Model.CurrentGenericFeatures.EPContact" asp-for="CurrentGenericFeatures.EPContact"></indicators>
+            <indicators select-for="EPContact" selected-value="@Model.CurrentGenericFeatures.EPContact" class="form-control-sm" asp-for="CurrentGenericFeatures.EPContact"></indicators>
             <span asp-validation-for="CurrentGenericFeatures.EPContact" class="text-danger"></span>
         </div>
     </div>
@@ -153,7 +153,7 @@
     <div class="form-group col-3 text-center">
         <label asp-for="CurrentGenericFeatures.TopAccessLocation" class="col-form-label"></label>
         <div>
-            <indicators select-for="AccessSWLocation" selected-value="@Model.CurrentGenericFeatures.TopAccessLocation" asp-for="CurrentGenericFeatures.TopAccessLocation"></indicators>
+            <indicators select-for="AccessSWLocation" selected-value="@Model.CurrentGenericFeatures.TopAccessLocation" class="form-control-sm" asp-for="CurrentGenericFeatures.TopAccessLocation"></indicators>
             <span asp-validation-for="CurrentGenericFeatures.TopAccessLocation" class="text-danger"></span>
         </div>
     </div>
@@ -167,7 +167,7 @@
     <div class="form-group col-3 text-center">
         <label asp-for="CurrentGenericFeatures.BottomAccessLocation" class="col-form-label"></label>
         <div>
-            <indicators select-for="AccessSWLocation" selected-value="@Model.CurrentGenericFeatures.BottomAccessLocation" asp-for="CurrentGenericFeatures.BottomAccessLocation"></indicators>
+            <indicators select-for="AccessSWLocation" selected-value="@Model.CurrentGenericFeatures.BottomAccessLocation" class="form-control-sm" asp-for="CurrentGenericFeatures.BottomAccessLocation"></indicators>
             <span asp-validation-for="CurrentGenericFeatures.BottomAccessLocation" class="text-danger"></span>
         </div>
     </div>
@@ -181,21 +181,21 @@
     <div class="form-group col-3 text-center">
         <label asp-for="CurrentGenericFeatures.INCPButtons" class="col-form-label"></label>
         <div>
-            <indicators select-for="INCPButtons" selected-value="@Model.CurrentGenericFeatures.INCPButtons" asp-for="CurrentGenericFeatures.INCPButtons"></indicators>
+            <indicators select-for="INCPButtons" selected-value="@Model.CurrentGenericFeatures.INCPButtons" class="form-control-sm" asp-for="CurrentGenericFeatures.INCPButtons"></indicators>
             <span asp-validation-for="CurrentGenericFeatures.INCPButtons" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group col-3 text-center">
         <label asp-for="CurrentGenericFeatures.SwitchStyle" class="col-form-label"></label>
         <div>
-            <custom-select select-for="SwitchStyle" selected-value="@Model.CurrentGenericFeatures.SwitchStyle" asp-for="CurrentGenericFeatures.SwitchStyle"></custom-select>
+            <custom-select select-for="SwitchStyle" selected-value="@Model.CurrentGenericFeatures.SwitchStyle" class="form-control-sm" asp-for="CurrentGenericFeatures.SwitchStyle"></custom-select>
             <span asp-validation-for="CurrentGenericFeatures.SwitchStyle" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group col-3 text-center">
         <label asp-for="CurrentGenericFeatures.Monitoring" class="col-form-label"></label>
         <div>
-            <indicators select-for="Monitoring" selected-value="@Model.CurrentGenericFeatures.Monitoring" asp-for="CurrentGenericFeatures.Monitoring"></indicators>
+            <indicators select-for="Monitoring" selected-value="@Model.CurrentGenericFeatures.Monitoring" class="form-control-sm" asp-for="CurrentGenericFeatures.Monitoring"></indicators>
             <span asp-validation-for="CurrentGenericFeatures.Monitoring" class="text-danger"></span>
         </div>
     </div>
