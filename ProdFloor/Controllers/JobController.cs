@@ -8,6 +8,7 @@ using System;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
 namespace ProdFloor.Controllers
 {
@@ -92,6 +93,10 @@ namespace ProdFloor.Controllers
             ViewData["CountryID"] = new SelectList(itemsrepository.Countries, "CountryID", "Name");
             ViewData["StateID"] = new SelectList(itemsrepository.States, "StateID", "Name");
             ViewData["CityID"] = new SelectList(itemsrepository.Cities, "CityID", "Name");
+            ViewData["Style"] = new SelectList(itemsrepository.DoorOperators.FromSql("select * from dbo.DoorOperators where dbo.DoorOperators.DoorOperatorID " +
+                "in (Select max(dbo.DoorOperators.DoorOperatorID) FROM dbo.DoorOperators group by dbo.DoorOperators.Style); "), "Style", "Style");
+            ViewData["Brand"] = new SelectList(itemsrepository.DoorOperators, "Brand", "Brand");
+            ViewData["DoorOperatorID"] = new SelectList(itemsrepository.DoorOperators, "DoorOperatorID", "Name");
 
             return View(new Job());
         } 
@@ -102,6 +107,10 @@ namespace ProdFloor.Controllers
             ViewData["CountryID"] = new SelectList(itemsrepository.Countries, "CountryID", "Name");
             ViewData["StateID"] = new SelectList(itemsrepository.States, "StateID", "Name");
             ViewData["CityID"] = new SelectList(itemsrepository.Cities, "CityID", "Name");
+            ViewData["Style"] = new SelectList(itemsrepository.DoorOperators.FromSql("select * from dbo.DoorOperators where dbo.DoorOperators.DoorOperatorID " +
+                "in (Select max(dbo.DoorOperators.DoorOperatorID) FROM dbo.DoorOperators group by dbo.DoorOperators.Style); "), "Style", "Style");
+            ViewData["Brand"] = new SelectList(itemsrepository.DoorOperators, "Brand", "Brand");
+            ViewData["DoorOperatorID"] = new SelectList(itemsrepository.DoorOperators, "DoorOperatorID", "Name");
             AppUser currentUser = GetCurrentUser().Result;
             if (ModelState.IsValid)
             {
@@ -140,6 +149,10 @@ namespace ProdFloor.Controllers
             ViewData["CountryID"] = new SelectList(itemsrepository.Countries, "CountryID", "Name");
             ViewData["StateID"] = new SelectList(itemsrepository.States, "StateID", "Name");
             ViewData["CityID"] = new SelectList(itemsrepository.Cities, "CityID", "Name");
+            ViewData["Style"] = new SelectList(itemsrepository.DoorOperators.FromSql("select * from dbo.DoorOperators where dbo.DoorOperators.DoorOperatorID " +
+                "in (Select max(dbo.DoorOperators.DoorOperatorID) FROM dbo.DoorOperators group by dbo.DoorOperators.Style); "), "Style", "Style");
+            ViewData["Brand"] = new SelectList(itemsrepository.DoorOperators, "Brand", "Brand");
+            ViewData["DoorOperatorID"] = new SelectList(itemsrepository.DoorOperators, "DoorOperatorID", "Name");
 
             Job job = repository.Jobs.FirstOrDefault(j => j.JobID == ID);
             if (job == null)
@@ -181,6 +194,10 @@ namespace ProdFloor.Controllers
             ViewData["CountryID"] = new SelectList(itemsrepository.Countries, "CountryID", "Name");
             ViewData["StateID"] = new SelectList(itemsrepository.States, "StateID", "Name");
             ViewData["CityID"] = new SelectList(itemsrepository.Cities, "CityID", "Name");
+            ViewData["Style"] = new SelectList(itemsrepository.DoorOperators.FromSql("select * from dbo.DoorOperators where dbo.DoorOperators.DoorOperatorID " +
+                "in (Select max(dbo.DoorOperators.DoorOperatorID) FROM dbo.DoorOperators group by dbo.DoorOperators.Style); "), "Style", "Style");
+            ViewData["Brand"] = new SelectList(itemsrepository.DoorOperators, "Brand", "Brand");
+            ViewData["DoorOperatorID"] = new SelectList(itemsrepository.DoorOperators, "DoorOperatorID", "Name");
 
             if (ModelState.IsValid)
                 {
@@ -252,6 +269,10 @@ namespace ProdFloor.Controllers
             ViewData["CountryID"] = new SelectList(itemsrepository.Countries, "CountryID", "Name");
             ViewData["StateID"] = new SelectList(itemsrepository.States, "StateID", "Name");
             ViewData["CityID"] = new SelectList(itemsrepository.Cities, "CityID", "Name");
+            ViewData["Style"] = new SelectList(itemsrepository.DoorOperators.FromSql("select * from dbo.DoorOperators where dbo.DoorOperators.DoorOperatorID " +
+                "in (Select max(dbo.DoorOperators.DoorOperatorID) FROM dbo.DoorOperators group by dbo.DoorOperators.Style); "), "Style", "Style");
+            ViewData["Brand"] = new SelectList(itemsrepository.DoorOperators, "Brand", "Brand");
+            ViewData["DoorOperatorID"] = new SelectList(itemsrepository.DoorOperators, "DoorOperatorID", "Name");
 
             if (repository.Jobs.FirstOrDefault(j => j.JobID == ID) != null)
             {
@@ -302,6 +323,11 @@ namespace ProdFloor.Controllers
             ViewData["CountryID"] = new SelectList(itemsrepository.Countries, "CountryID", "Name");
             ViewData["StateID"] = new SelectList(itemsrepository.States, "StateID", "Name");
             ViewData["CityID"] = new SelectList(itemsrepository.Cities, "CityID", "Name");
+            ViewData["Style"] = new SelectList(itemsrepository.DoorOperators.FromSql("select * from dbo.DoorOperators where dbo.DoorOperators.DoorOperatorID " +
+                "in (Select max(dbo.DoorOperators.DoorOperatorID) FROM dbo.DoorOperators group by dbo.DoorOperators.Style); "), "Style", "Style");
+            ViewData["Brand"] = new SelectList(itemsrepository.DoorOperators, "Brand", "Brand");
+            ViewData["DoorOperatorID"] = new SelectList(itemsrepository.DoorOperators, "DoorOperatorID", "Name");
+
             if (nextViewModel.buttonAction == "AddSF")
             {
                 nextViewModel.SpecialFeatureslist.Add(new SpecialFeatures { JobID = nextViewModel.CurrentJob.JobID });
@@ -440,6 +466,21 @@ namespace ProdFloor.Controllers
             List<City> CityCascadeList = new List<City>();
             CityCascadeList = (from city in itemsrepository.Cities where city.StateID == StateID select city).ToList();
             return Json(new SelectList(CityCascadeList, "CityID", "Name"));
+        }
+
+        public JsonResult GetBrand(string Style)
+        {
+            List<DoorOperator> BrandList = new List<DoorOperator>();
+            BrandList = itemsrepository.DoorOperators.FromSql("select * from dbo.DoorOperators where Style = {0} AND dbo.DoorOperators.DoorOperatorID in "+
+                "(Select max(dbo.DoorOperators.DoorOperatorID) FROM dbo.DoorOperators group by dbo.DoorOperators.Brand)",Style).ToList();
+            return Json(new SelectList(BrandList, "Brand", "Brand"));
+        }
+
+        public JsonResult GetDoorOperatorID(string Brand)
+        {
+            List<DoorOperator> DoorOperatorList = new List<DoorOperator>();
+            DoorOperatorList = (from door in itemsrepository.DoorOperators where door.Brand == Brand select door).ToList();
+            return Json(new SelectList(DoorOperatorList, "DoorOperatorID", "Name"));
         }
 
     }

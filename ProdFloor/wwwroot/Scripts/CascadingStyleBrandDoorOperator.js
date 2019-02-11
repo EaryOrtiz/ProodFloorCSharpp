@@ -1,0 +1,51 @@
+$(function () {
+    
+            $("#Style").change(function () {
+                var Style = $("#Style").val();
+                var Brand = $('#Brand');
+                Brand.empty();
+                if (Style != null && Style != '') {
+                    $.ajax({
+                        type: 'GET',
+                        url: '/Job/GetBrand',
+                        contentType: "applications/json",
+                        data: {
+                            Style: Style
+                        },
+                        success: function (data) {
+                            $("#Brand").prop("disabled", false);
+                            $.each(data, function (idx, brand) {
+                                Brand.append('<option value="' + brand.value + '">' + brand.text + '</option>');
+                            });
+                        },
+                        error: function (exc) {
+                            alert("error");
+                        }
+                    });
+                }
+            });
+            $("#Brand").change(function () {
+                var Brand = $("#Brand").val();
+                var DoorOperatorID = $('#DoorOperatorID');
+                DoorOperatorID.empty();
+                if (Brand != null && Brand != '') {
+                    $.ajax({
+                        type: 'GET',
+                        url: '/Job/GetDoorOperatorID',
+                        contentType: "applications/json",
+                        data: {
+                            Brand: Brand
+                        },
+                        success: function (data) {
+                            $("#DoorOperatorID").prop("disabled", false);
+                            $.each(data, function (idx, doorOperatorID) {
+                                DoorOperatorID.append('<option value="' + doorOperatorID.value + '">' + doorOperatorID.text + '</option>');
+                            });
+                        },
+                        error: function (exc) {
+                            alert("error");
+                        }
+                    });
+                }
+            });
+        });

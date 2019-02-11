@@ -137,15 +137,17 @@ namespace ProdFloor.Models
 
         [Display(Name = "Nudging")]
         public bool Nudging { get; set; }
-        /*
+
+        [NotMapped]
         [Display(Name = "Door Operator Style")]
-        [Required(ErrorMessage = "Please enter the door operator model")]
+        [Required(ErrorMessage = "Please enter the door operator style")]
         public string DoorStyle { get; set; }
 
+        [NotMapped]
         [Display(Name = "Door Operator Brand")]
         [Required(ErrorMessage = "Please enter the door operator brand")]
         public string DoorBrand { get; set; }
-        */
+
         [Display(Name = "Serial COP")]
         public bool SCOP { get; set; }
 

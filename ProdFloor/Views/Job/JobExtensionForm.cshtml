@@ -1,4 +1,7 @@
 ﻿@model JobViewModel
+@{
+    <script src="~/Scripts/CascadingStyleBrandDoorOperator.js" type="text/javascript"></script>
+}
 <input type="hidden" asp-for="CurrentJobExtension.JobID" />
 <input type="hidden" asp-for="CurrentJobExtension.JobExtensionID" />
 <div class="form-row col-sm-12" style="padding-bottom:15px">
@@ -12,12 +15,12 @@
         <div class="form-group row">
             <label asp-for="CurrentJobExtension.JobTypeMain" class="col-sm-5 col-form-label"></label>
             <div><span asp-validation-for="CurrentJobExtension.JobTypeMain" class="text-danger"></span></div>
-            <indicators select-for="JobType" selected-value="@Model.CurrentJobExtension.JobTypeMain" class="form-control-sm"  asp-for="CurrentJobExtension.JobTypeMain"></indicators>
+            <indicators select-for="JobType" selected-value="@Model.CurrentJobExtension.JobTypeMain" class="form-control-sm" asp-for="CurrentJobExtension.JobTypeMain"></indicators>
         </div>
         <div class="form-group row">
             <label asp-for="CurrentJobExtension.JobTypeAdd" class="col-sm-5 col-form-label"></label>
             <div><span asp-validation-for="CurrentJobExtension.JobTypeAdd" class="text-danger"></span></div>
-            <indicators select-for="JobType2" selected-value="@Model.CurrentJobExtension.JobTypeAdd" class="form-control-sm"  asp-for="CurrentJobExtension.JobTypeAdd"></indicators>
+            <indicators select-for="JobType2" selected-value="@Model.CurrentJobExtension.JobTypeAdd" class="form-control-sm" asp-for="CurrentJobExtension.JobTypeAdd"></indicators>
         </div>
         <div class="form-group row">
             <label asp-for="CurrentJobExtension.InputVoltage" class="col-sm-5 col-form-label"></label>
@@ -37,7 +40,7 @@
         <div class="form-group row">
             <label asp-for="CurrentJobExtension.DoorGate" class="col-sm-5 col-form-label"></label>
             <div><span asp-validation-for="CurrentJobExtension.DoorGate" class="text-danger"></span></div>
-            <custom-select select-for="DoorOperatorStyle" selected-value="@Model.CurrentJobExtension.DoorGate" class="form-control-sm"  asp-for="CurrentJobExtension.DoorGate"></custom-select>
+            <custom-select select-for="DoorOperatorStyle" selected-value="@Model.CurrentJobExtension.DoorGate" class="form-control-sm" asp-for="CurrentJobExtension.DoorGate"></custom-select>
         </div>
         <div class="form-group row">
             <label asp-for="CurrentJobExtension.DoorHoist" class="col-sm-5 col-form-label"></label>
@@ -45,11 +48,22 @@
             <custom-select select-for="DoorOperatorStyle" selected-value="@Model.CurrentJobExtension.DoorHoist" class="form-control-sm" asp-for="CurrentJobExtension.DoorHoist"></custom-select>
         </div>
         <div class="form-group row">
+            <label asp-for="CurrentJobExtension.DoorStyle" class="col-sm-5 col-form-label"></label>
+            <select id="Style" asp-for="@Model.CurrentJobExtension.DoorStyle" class="form-control-sm" asp-items="ViewBag.Style">
+                <option value="default">-- Select a Door Style --</option>
+            </select>
+        </div>
+        <div class="form-group row">
+            <label asp-for="CurrentJobExtension.DoorBrand" class="col-sm-5 col-form-label"></label>
+            <select id="Brand" asp-for="@Model.CurrentJobExtension.DoorBrand" class="form-control-sm" asp-items="ViewBag.Brand">
+                <option value="default">-- Select a Door Brand --</option>
+            </select>
+        </div>
+        <div class="form-group row">
             <label asp-for="CurrentJobExtension.DoorOperatorID" class="col-sm-5 col-form-label"></label>
-            <div>
-                <door-operator-select selected-value="@Model.CurrentJobExtension.DoorOperatorID" class="form-control-sm"  asp-for="CurrentJobExtension.DoorOperatorID"></door-operator-select>
-                <span asp-validation-for="CurrentJobExtension.DoorOperatorID" class="text-danger"></span>
-            </div>
+            <select id="DoorOperatorID" asp-for="@Model.CurrentJobExtension.DoorOperatorID" class="form-control-sm" asp-items="ViewBag.DoorOperatorID">
+                <option value="">-- Select a Door Operator --</option>
+            </select>
         </div>
     </div>
     <div class="col-md-6">
@@ -85,7 +99,7 @@
             <div><span asp-validation-for="CurrentJobExtension.Nudging" class="text-danger"></span></div>
             <input asp-for="CurrentJobExtension.Nudging" class="form-control col-sm-3 float-left" />
         </div>
-        
+
         <h3 class="border-top">Serial Link</h3>
         <div class="form-inline">
             <label asp-for="CurrentJobExtension.SCOP" class="col-sm-4 col-form-label"></label>

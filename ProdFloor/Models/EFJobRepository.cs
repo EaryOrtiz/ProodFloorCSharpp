@@ -298,8 +298,6 @@ namespace ProdFloor.Models
                 }
                 else
                 {
-
-
                     SpecialFeatures dbEntry = context.SpecialFeatures
                     .FirstOrDefault(p => p.SpecialFeaturesID == specialFeatures.SpecialFeaturesID);
                     if (dbEntry != null)
