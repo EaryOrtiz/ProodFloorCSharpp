@@ -184,6 +184,10 @@ namespace ProdFloor.Models
         [Display(Name = "Number of motors")]
         public int MotorsNum { get; set; }
 
+        [Required(ErrorMessage = "Please enter the starts number of motors disconnects")]
+        [Display(Name = "Number of motors disconnects")]
+        public int MotorsDisconnect { get; set; }
+
         [StringLength(50, ErrorMessage = "The maximum length of the {0} field is {1}")]
         [Required(ErrorMessage = "Please enter the brand of the valves")]
         [Display(Name = "Valve's Brand")]
@@ -458,6 +462,13 @@ namespace ProdFloor.Models
         public bool RearFifteenthServed { get; set; }
         public bool FrontSixteenthServed { get; set; }
         public bool RearSixteenthServed { get; set; }
+
+        [Required(ErrorMessage = "Please enter a number of hoistways")]
+        [Display(Name = "Number of Hoistways")]
+        public int HoistWaysNumber { get; set; }
+        [Required(ErrorMessage = "Please enter a number of Machine Rooms")]
+        [Display(Name = "Number of Machine Rooms")]
+        public int MachineRooms { get; set; }
 
         [Required(ErrorMessage = "Please enter the capacity")]
         public int Capacity { get; set; }

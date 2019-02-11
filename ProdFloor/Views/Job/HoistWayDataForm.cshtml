@@ -2,6 +2,20 @@
 <input type="hidden" asp-for="CurrentHoistWayData.JobID" />
 <input type="hidden" asp-for="CurrentHoistWayData.HoistWayDataID" />
 <div class="form-group row has-warning has-feedback">
+    <label asp-for="CurrentHoistWayData.HoistWaysNumber" class="col-sm-2 col-form-label"></label>
+    <div>
+        <input asp-for="CurrentHoistWayData.HoistWaysNumber" class="form-control col-sm-7" />
+        <span asp-validation-for="CurrentHoistWayData.HoistWaysNumber" class="text-danger"></span>
+    </div>
+</div>
+<div class="form-group row has-warning has-feedback">
+    <label asp-for="CurrentHoistWayData.MachineRooms" class="col-sm-2 col-form-label"></label>
+    <div>
+        <input asp-for="CurrentHoistWayData.MachineRooms" class="form-control col-sm-7" />
+        <span asp-validation-for="CurrentHoistWayData.MachineRooms" class="text-danger"></span>
+    </div>
+</div>
+<div class="form-group row has-warning has-feedback">
     <label asp-for="CurrentHoistWayData.Capacity" class="col-sm-2 col-form-label"></label>
     <div>
         <input asp-for="CurrentHoistWayData.Capacity" class="form-control col-sm-7" />
