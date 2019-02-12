@@ -1,0 +1,39 @@
+﻿@model ProdFloor.Models.ViewModels.Job.JobSearchViewModel
+@{
+    ViewBag.Title = "JobsSearchList";
+    Layout = "_AdminLayoutWO";
+}
+<div class="row" style="padding-right:20px">
+    <h2 class="col-sm-10"> Job Search List</h2>
+</div>
+<br />
+
+<p>
+   <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+    Job Search
+    </button>
+</p>
+<div class="collapse" id="collapseExample">
+    <div class="card card-body">
+        <form asp-controller="Job" asp-action="JobSearchList" method="get">
+             Job Name: <input type="text" name="NameJobSearch" asp-for="NameJobSearch">
+             Job Number: <input type="text" name="NumJobSearch" asp-for="NumJobSearch">
+             Job PO Number: <input type="text" name="POJobSearch" asp-for="POJobSearch">
+             Job Cust Number: <input type="text" name="CustJobSearch" asp-for="CustJobSearch">
+             Contractor Name: <input type="text" name="ContractorJobSearch" asp-for="ContractorJobSearch">
+             <input type="submit" value="Search" />
+         </form>
+    </div>
+</div>
+    
+
+<br /><br />
+@foreach (var j in Model.JobsSearchList)
+{
+    @Html.Partial("SearchJobSummary", j)
+}
+<div page-model="@Model.PagingInfo" page-action="JobSearchList" page-classes-enabled="true"
+     page-class="btn" page-class-normal="btn-secondary"
+     page-class-selected="btn-primary" page-url-jobType="@Model.JobsSearchList"
+     class="btn-group pull-right m-1">
+</div>

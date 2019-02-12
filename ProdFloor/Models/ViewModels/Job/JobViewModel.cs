@@ -7,7 +7,7 @@ namespace ProdFloor.Models.ViewModels
 {
     public class JobViewModel
     {
-        public Job CurrentJob { get; set; }
+        public Models.Job CurrentJob { get; set; }
         public JobExtension CurrentJobExtension { get; set; }
         public HydroSpecific CurrentHydroSpecific { get; set; }
         public GenericFeatures CurrentGenericFeatures { get; set; }

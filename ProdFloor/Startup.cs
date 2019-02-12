@@ -74,9 +74,9 @@ namespace ProdFloor
                     name: null,
                     template: "{jobType}/Page{jobPage:int}",
                     defaults: new { controller = "Job", action = "List" }
-                );
+                ); 
 
-                routes.MapRoute(
+            routes.MapRoute(
                     name: null,
                     template: "{pendingJobPage:int}_{productionJobPage:int}",
                     defaults: new{controller = "Home", action = "Index" });
@@ -108,6 +108,10 @@ namespace ProdFloor
                 routes.MapRoute(name: null, template: "{controller}/{action}/Page{page:int}");
 
                 routes.MapRoute(name: null, template: "{controller}/{action}/{id?}");
+
+                routes.MapRoute(
+                 name: null,
+                    template: "{controller=Job}/{action=JobSearchList}/{id?}");
             });
             //SeedData.EnsurePopulated(app);
             //IdentitySeedData.EnsurePopulated(app);

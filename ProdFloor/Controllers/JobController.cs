@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using ProdFloor.Models.ViewModels.Job;
 
 namespace ProdFloor.Controllers
 {
@@ -95,7 +96,7 @@ namespace ProdFloor.Controllers
             ViewData["CityID"] = new SelectList(itemsrepository.Cities, "CityID", "Name");
             ViewData["Style"] = new SelectList(itemsrepository.DoorOperators.FromSql("select * from dbo.DoorOperators where dbo.DoorOperators.DoorOperatorID " +
                 "in (Select max(dbo.DoorOperators.DoorOperatorID) FROM dbo.DoorOperators group by dbo.DoorOperators.Style); "), "Style", "Style");
-            ViewData["Brand"] = new SelectList(itemsrepository.DoorOperators, "Brand", "Brand");
+            ViewData["Brand2"] = new SelectList(itemsrepository.DoorOperators, "Brand", "Brand");
             ViewData["DoorOperatorID"] = new SelectList(itemsrepository.DoorOperators, "DoorOperatorID", "Name");
 
             return View(new Job());
@@ -109,7 +110,7 @@ namespace ProdFloor.Controllers
             ViewData["CityID"] = new SelectList(itemsrepository.Cities, "CityID", "Name");
             ViewData["Style"] = new SelectList(itemsrepository.DoorOperators.FromSql("select * from dbo.DoorOperators where dbo.DoorOperators.DoorOperatorID " +
                 "in (Select max(dbo.DoorOperators.DoorOperatorID) FROM dbo.DoorOperators group by dbo.DoorOperators.Style); "), "Style", "Style");
-            ViewData["Brand"] = new SelectList(itemsrepository.DoorOperators, "Brand", "Brand");
+            ViewData["Brand2"] = new SelectList(itemsrepository.DoorOperators, "Brand", "Brand");
             ViewData["DoorOperatorID"] = new SelectList(itemsrepository.DoorOperators, "DoorOperatorID", "Name");
             AppUser currentUser = GetCurrentUser().Result;
             if (ModelState.IsValid)
@@ -151,7 +152,7 @@ namespace ProdFloor.Controllers
             ViewData["CityID"] = new SelectList(itemsrepository.Cities, "CityID", "Name");
             ViewData["Style"] = new SelectList(itemsrepository.DoorOperators.FromSql("select * from dbo.DoorOperators where dbo.DoorOperators.DoorOperatorID " +
                 "in (Select max(dbo.DoorOperators.DoorOperatorID) FROM dbo.DoorOperators group by dbo.DoorOperators.Style); "), "Style", "Style");
-            ViewData["Brand"] = new SelectList(itemsrepository.DoorOperators, "Brand", "Brand");
+            ViewData["Brand2"] = new SelectList(itemsrepository.DoorOperators, "Brand", "Brand");
             ViewData["DoorOperatorID"] = new SelectList(itemsrepository.DoorOperators, "DoorOperatorID", "Name");
 
             Job job = repository.Jobs.FirstOrDefault(j => j.JobID == ID);
@@ -196,7 +197,7 @@ namespace ProdFloor.Controllers
             ViewData["CityID"] = new SelectList(itemsrepository.Cities, "CityID", "Name");
             ViewData["Style"] = new SelectList(itemsrepository.DoorOperators.FromSql("select * from dbo.DoorOperators where dbo.DoorOperators.DoorOperatorID " +
                 "in (Select max(dbo.DoorOperators.DoorOperatorID) FROM dbo.DoorOperators group by dbo.DoorOperators.Style); "), "Style", "Style");
-            ViewData["Brand"] = new SelectList(itemsrepository.DoorOperators, "Brand", "Brand");
+            ViewData["Brand2"] = new SelectList(itemsrepository.DoorOperators, "Brand", "Brand");
             ViewData["DoorOperatorID"] = new SelectList(itemsrepository.DoorOperators, "DoorOperatorID", "Name");
 
             if (ModelState.IsValid)
@@ -271,7 +272,7 @@ namespace ProdFloor.Controllers
             ViewData["CityID"] = new SelectList(itemsrepository.Cities, "CityID", "Name");
             ViewData["Style"] = new SelectList(itemsrepository.DoorOperators.FromSql("select * from dbo.DoorOperators where dbo.DoorOperators.DoorOperatorID " +
                 "in (Select max(dbo.DoorOperators.DoorOperatorID) FROM dbo.DoorOperators group by dbo.DoorOperators.Style); "), "Style", "Style");
-            ViewData["Brand"] = new SelectList(itemsrepository.DoorOperators, "Brand", "Brand");
+            ViewData["Brand2"] = new SelectList(itemsrepository.DoorOperators, "Brand", "Brand");
             ViewData["DoorOperatorID"] = new SelectList(itemsrepository.DoorOperators, "DoorOperatorID", "Name");
 
             if (repository.Jobs.FirstOrDefault(j => j.JobID == ID) != null)
@@ -325,7 +326,7 @@ namespace ProdFloor.Controllers
             ViewData["CityID"] = new SelectList(itemsrepository.Cities, "CityID", "Name");
             ViewData["Style"] = new SelectList(itemsrepository.DoorOperators.FromSql("select * from dbo.DoorOperators where dbo.DoorOperators.DoorOperatorID " +
                 "in (Select max(dbo.DoorOperators.DoorOperatorID) FROM dbo.DoorOperators group by dbo.DoorOperators.Style); "), "Style", "Style");
-            ViewData["Brand"] = new SelectList(itemsrepository.DoorOperators, "Brand", "Brand");
+            ViewData["Brand2"] = new SelectList(itemsrepository.DoorOperators, "Brand", "Brand");
             ViewData["DoorOperatorID"] = new SelectList(itemsrepository.DoorOperators, "DoorOperatorID", "Name");
 
             if (nextViewModel.buttonAction == "AddSF")
@@ -454,6 +455,98 @@ namespace ProdFloor.Controllers
             return user;
         }
 
+
+        public async Task<ViewResult> JobSearchList(string nameJobSearch,int numJobSearch,int POJobSearch,string CustJobSearch,string ContractorJobSearch, int jobPage = 1)
+        {
+            var JobCount = repository.Jobs.Count();
+            var jobSearchRepo = from m in repository.Jobs select m;
+
+            //Se acciona si el nombre, el Numero del Job, el Id del costumer no son nulos y el Contractor Name estan en el rango correspondiente
+            if ((!string.IsNullOrEmpty(nameJobSearch) && (numJobSearch >= 2015000000 && numJobSearch <= 2021000000) && !string.IsNullOrEmpty(CustJobSearch) && !string.IsNullOrEmpty(ContractorJobSearch)))
+            {
+                jobSearchRepo = repository.Jobs.Where(s => s.Name.Contains(nameJobSearch) && s.JobNum == numJobSearch && s.Cust.Contains(CustJobSearch) && s.Contractor.Contains(ContractorJobSearch));
+            }
+            else if (((numJobSearch >= 2015000000 && numJobSearch <= 2021000000) && !string.IsNullOrEmpty(CustJobSearch) && !string.IsNullOrEmpty(ContractorJobSearch)))
+            {
+                jobSearchRepo = repository.Jobs.Where(s => s.JobNum == numJobSearch && s.Cust.Contains(CustJobSearch) && s.Contractor.Contains(ContractorJobSearch));
+            }
+            else if ((!string.IsNullOrEmpty(nameJobSearch) && !string.IsNullOrEmpty(CustJobSearch) && !string.IsNullOrEmpty(ContractorJobSearch)))
+            {
+                jobSearchRepo = repository.Jobs.Where(s => s.Name.Contains(nameJobSearch) && s.Cust.Contains(CustJobSearch) && s.Contractor.Contains(ContractorJobSearch));
+            }//Se acciona si el nombre, el Numero del Job, el Id del costumer no son nulos y el Contractor Name estan en el rango correspondiente
+            else if ((!string.IsNullOrEmpty(nameJobSearch) && (numJobSearch >= 2015000000 && numJobSearch <= 2021000000) && !string.IsNullOrEmpty(ContractorJobSearch)))
+            {
+                jobSearchRepo = repository.Jobs.Where(s => s.Name.Contains(nameJobSearch) && s.JobNum == numJobSearch  && s.Contractor.Contains(ContractorJobSearch));
+            }
+            else if ((!string.IsNullOrEmpty(nameJobSearch) && !string.IsNullOrEmpty(ContractorJobSearch)))
+            {
+                jobSearchRepo = repository.Jobs.Where(s => s.Name.Contains(nameJobSearch) &&  s.Contractor.Contains(ContractorJobSearch));
+            }
+            else if((!string.IsNullOrEmpty(CustJobSearch) && !string.IsNullOrEmpty(ContractorJobSearch)))
+            {
+                jobSearchRepo = repository.Jobs.Where(s => s.Cust.Contains(CustJobSearch) && s.Contractor.Contains(ContractorJobSearch));
+            }
+            else if (((numJobSearch >= 2015000000 && numJobSearch <= 2021000000) && !string.IsNullOrEmpty(ContractorJobSearch)))
+            {
+                jobSearchRepo = repository.Jobs.Where(s => s.JobNum == numJobSearch && s.Contractor.Contains(ContractorJobSearch));
+            }
+            //Se acciona si el nombre el Numero del Job y el Id del costumer no son nulos y estan en el rango correspondiente
+            else if ((!string.IsNullOrEmpty(nameJobSearch) && (numJobSearch >= 2015000000 && numJobSearch <= 2021000000) && !string.IsNullOrEmpty(CustJobSearch)))
+            {
+                jobSearchRepo = repository.Jobs.Where(s => s.Name.Contains(nameJobSearch) && s.JobNum == numJobSearch && s.Cust.Contains(CustJobSearch));
+            }//Se acciona si el nombre y el Numero del Job no son nulos y estan en el rango correspondiente
+            else if (!string.IsNullOrEmpty(nameJobSearch) && (numJobSearch >= 2015000000 && numJobSearch <= 2021000000))
+            {
+                jobSearchRepo = repository.Jobs.Where(s => s.Name.Contains(nameJobSearch) && s.JobNum == numJobSearch);
+            }//Se acciona si el JobNumber y el Numero del CustomerID de Job no son nulos y estan en el rango correspondiente
+            else if (!string.IsNullOrEmpty(CustJobSearch) && (numJobSearch >= 2015000000 && numJobSearch <= 2021000000))
+            {
+                jobSearchRepo = repository.Jobs.Where(s => s.Cust.Contains(CustJobSearch) && s.JobNum == numJobSearch);
+            }//Se acciona si el nombre y el Numero del CustomerID de Job no son nulos
+            else if (!string.IsNullOrEmpty(CustJobSearch) && !string.IsNullOrEmpty(nameJobSearch))
+            {
+                jobSearchRepo = repository.Jobs.Where(s => s.Cust.Contains(CustJobSearch) && s.Name.Contains(nameJobSearch));
+            }//Se acciona si el nombre no es nulo 
+            else if (!string.IsNullOrEmpty(nameJobSearch))
+            {
+                jobSearchRepo = repository.Jobs.Where(s => s.Name.Contains(nameJobSearch));
+            }//Se acciona si el  Numero del Job esta en el rango correspondiente
+            else if(numJobSearch >= 2015000000 && numJobSearch <= 2021000000)
+            {
+                jobSearchRepo = repository.Jobs.Where(s => s.JobNum == numJobSearch);
+            }//Se acciona si el CustomerId no es nulo 
+            else if (!string.IsNullOrEmpty(CustJobSearch))
+            {
+                jobSearchRepo = repository.Jobs.Where(s => s.Cust.Contains(CustJobSearch));
+            }else if (( !string.IsNullOrEmpty(ContractorJobSearch)))
+            {
+                jobSearchRepo = repository.Jobs.Where(s => s.Contractor.Contains(ContractorJobSearch));
+            }
+
+            //Se acciona si el  PO Number del Job esta en el rango correspondiente
+            if (POJobSearch >= 3000000 && numJobSearch <= 4900000)
+            {
+                jobSearchRepo = repository.Jobs.Where(s => s.PO == POJobSearch);
+            }
+
+
+            JobSearchViewModel jobSearch = new JobSearchViewModel
+            {
+
+
+                JobsSearchList = await jobSearchRepo.OrderBy(p => p.JobID).Skip((jobPage - 1) * 10).Take(PageSize).ToListAsync(),
+                PagingInfo = new PagingInfo
+                {
+                    CurrentPage = jobPage,
+                    ItemsPerPage = 10,
+                    TotalItems = JobCount
+                },
+            };
+
+            return View(jobSearch);
+        }
+
+        //Funciones para el llenado de los dropdowns en casacada
         public JsonResult GetJobState(int CountryID)
         {
             List<State> JobStatelist = new List<State>();
