@@ -139,11 +139,6 @@ namespace ProdFloor.Models
         public bool Nudging { get; set; }
 
         [NotMapped]
-        [Display(Name = "Door Operator Style")]
-        [Required(ErrorMessage = "Please enter the door operator style")]
-        public string DoorStyle { get; set; }
-
-        [NotMapped]
         [Display(Name = "Door Operator Brand")]
         [Required(ErrorMessage = "Please enter the door operator brand")]
         public string DoorBrand { get; set; }
@@ -216,7 +211,6 @@ namespace ProdFloor.Models
 
         [Display(Name = "Battery's Brand")]
         [StringLength(50, ErrorMessage = "The maximum length of the {0} field is {1}")]
-        [Required(ErrorMessage = "Please enter a {0}")]
         public string BatteryBrand { get; set; }
 
         [Display(Name = "Life Jacket")]
@@ -261,7 +255,7 @@ namespace ProdFloor.Models
         [Display(Name = "Does same generator power other cars?")]
         public bool EPOtherCars { get; set; } //*
         [Display(Name = "Number of cars to run at the same time?")]
-        public int EPCarsNumber { get; set; } //* 1,2,3,4+
+        public string EPCarsNumber { get; set; } //* 1,2,3,4+
 
         [Display(Name = "EP contact during normal power?")]
         [StringLength(50, ErrorMessage = "The maximum length of the {0} field is {1}")]
@@ -411,11 +405,9 @@ namespace ProdFloor.Models
         public bool PassingFloor { get; set; } // check if required
 
         [StringLength(25, ErrorMessage = "The maximum length of the {0} field is {1}")]
-        [Required(ErrorMessage = "Please enter a {0}")]
         public string PassingFloorType { get; set; } // CE, Emotive, Discrete
 
         [StringLength(25, ErrorMessage = "The maximum length of the {0} field is {1}")]
-        [Required(ErrorMessage = "Please enter a {0}")]
         public string PassingFloorDiscreteType { get; set; } //Chime, Gong
 
         public bool PassingFloorEnable { get; set; } // check if required

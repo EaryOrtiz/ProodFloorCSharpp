@@ -35,13 +35,15 @@
 </div>
 <div class="form-group row">
     <label asp-for="CurrentJob.ShipDate" class="col-sm-2 col-form-label"></label>
-    <div><span asp-validation-for="CurrentJob.ShipDate" class="text-danger"></span></div>
-    <input asp-for="CurrentJob.ShipDate" class="form-control col-sm-7" />
+    <div>
+        <input asp-for="CurrentJob.ShipDate" class="form-control col-sm-15" />
+        <span asp-validation-for="CurrentJob.ShipDate" class="text-danger"></span>
+    </div>
 </div>
 <div class="form-group row">
     <label asp-for="CurrentJob.LatestFinishDate" class="col-sm-2 col-form-label"></label>
     <div>
-        <input asp-for="CurrentJob.LatestFinishDate" class="form-control col-sm-7" />
+        <input asp-for="CurrentJob.LatestFinishDate" class="form-control col-sm-15" />
         <span asp-validation-for="CurrentJob.LatestFinishDate" class="text-danger"></span>
     </div>
 </div>

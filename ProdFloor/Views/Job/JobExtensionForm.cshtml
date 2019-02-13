@@ -38,18 +38,13 @@
             <input asp-for="CurrentJobExtension.InputFrecuency" class="form-control col-sm-6" />
         </div>
         <div class="form-group row">
-            <label asp-for="CurrentJobExtension.DoorGate" class="col-sm-5 col-form-label"></label>
-            <div><span asp-validation-for="CurrentJobExtension.DoorGate" class="text-danger"></span></div>
-            <custom-select select-for="DoorOperatorStyle" selected-value="@Model.CurrentJobExtension.DoorGate" class="form-control-sm" asp-for="CurrentJobExtension.DoorGate"></custom-select>
-        </div>
-        <div class="form-group row">
             <label asp-for="CurrentJobExtension.DoorHoist" class="col-sm-5 col-form-label"></label>
             <div><span asp-validation-for="CurrentJobExtension.DoorHoist" class="text-danger"></span></div>
             <custom-select select-for="DoorOperatorStyle" selected-value="@Model.CurrentJobExtension.DoorHoist" class="form-control-sm" asp-for="CurrentJobExtension.DoorHoist"></custom-select>
         </div>
         <div class="form-group row">
-            <label asp-for="CurrentJobExtension.DoorStyle" class="col-sm-5 col-form-label"></label>
-            <select id="Style" asp-for="@Model.CurrentJobExtension.DoorStyle" class="form-control-sm" asp-items="ViewBag.Style">
+            <label asp-for="CurrentJobExtension.DoorGate" class="col-sm-5 col-form-label"></label>
+            <select id="Style" asp-for="@Model.CurrentJobExtension.DoorGate" class="form-control-sm" asp-items="ViewBag.Style">
                 <option value="default">-- Select a Door Style --</option>
             </select>
         </div>

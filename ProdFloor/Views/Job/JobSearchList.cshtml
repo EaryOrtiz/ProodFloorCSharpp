@@ -16,12 +16,14 @@
 <div class="collapse" id="collapseExample">
     <div class="card card-body">
         <form asp-controller="Job" asp-action="JobSearchList" method="get">
+            <p>
              Job Name: <input type="text" name="NameJobSearch" asp-for="NameJobSearch">
              Job Number: <input type="text" name="NumJobSearch" asp-for="NumJobSearch">
              Job PO Number: <input type="text" name="POJobSearch" asp-for="POJobSearch">
              Job Cust Number: <input type="text" name="CustJobSearch" asp-for="CustJobSearch">
              Contractor Name: <input type="text" name="ContractorJobSearch" asp-for="ContractorJobSearch">
              <input type="submit" value="Search" />
+            </p>
          </form>
     </div>
 </div>
