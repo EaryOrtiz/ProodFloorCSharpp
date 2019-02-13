@@ -16,6 +16,7 @@ namespace ProdFloor.Models
         public string Status { get; set; }
 
         public int EngID { get; set; }
+        public int CrossAppEngID { get; set; }
 
         [StringLength(78, ErrorMessage = "The maximum length of the {0} field is {1}")]
         [Required(ErrorMessage = "Please enter a name")]

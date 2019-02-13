@@ -47,6 +47,7 @@ namespace ProdFloor.Models
                     dbEntry.FireCodeID = job.FireCodeID;
                     dbEntry.Status = job.Status;
                     dbEntry.EngID = job.EngID;
+                    dbEntry.CrossAppEngID = job.CrossAppEngID;
                 }
             }
             context.SaveChanges();

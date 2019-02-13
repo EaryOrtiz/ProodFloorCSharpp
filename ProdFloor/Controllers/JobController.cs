@@ -116,6 +116,7 @@ namespace ProdFloor.Controllers
             if (ModelState.IsValid)
             {
                 newJob.EngID = currentUser.EngID;
+                newJob.CrossAppEngID = 117;
                 newJob.Status = "Incomplete";
                 repository.SaveJob(newJob);
                 JobViewModel newJobViewModel = new JobViewModel
@@ -201,24 +202,24 @@ namespace ProdFloor.Controllers
             ViewData["DoorOperatorID"] = new SelectList(itemsrepository.DoorOperators, "DoorOperatorID", "Name");
 
             if (ModelState.IsValid)
+            {
+                
+                if (multiEditViewModel.CurrentJob.Status == "" || multiEditViewModel.CurrentJob.Status == null)
                 {
-                    if (multiEditViewModel.CurrentJob.Status == "" || multiEditViewModel.CurrentJob.Status == null)
-                    {
                         multiEditViewModel.CurrentJob.Status = "Working on it";
-                    }
-                    repository.SaveEngJobView(multiEditViewModel);
-
-                    multiEditViewModel.CurrentTab = "Main";
-                    TempData["message"] = $"{multiEditViewModel.CurrentJob.JobNum} ID has been saved...{multiEditViewModel.CurrentJob.JobID}";
-                    return View(multiEditViewModel);
                 }
-                else
-                {
+                repository.SaveEngJobView(multiEditViewModel);
+
+                multiEditViewModel.CurrentTab = "Main";
+                TempData["message"] = $"{multiEditViewModel.CurrentJob.JobNum} ID has been saved...{multiEditViewModel.CurrentJob.JobID}";
+                 return View(multiEditViewModel);
+             }else
+             {
                     // there is something wrong with the data values
                     TempData["message"] = $"There seems to be errors in the form. Please validate.";
                     TempData["alert"] = $"alert-danger";
                     return View(multiEditViewModel);
-                }
+              }
         }
 
         public IActionResult AddSF(int Id)

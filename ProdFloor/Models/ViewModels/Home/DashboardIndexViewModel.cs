@@ -11,5 +11,6 @@ namespace ProdFloor.Models.ViewModels
         public PagingInfo ProductionJobsPagingInfo { get; set; }
         public string CurrentItem { get; set; }
         public string CurrentCategory { get; set; }
+        public string buttonAction { get; set; }
     }
 }

@@ -48,15 +48,31 @@
                         }
                         else if (j.Status == "Working on it")
                         {
-                            <a asp-action="ToCross" class="btn btn-sm btn-success"
+                            /*<a asp-action="ToCross" class="btn btn-sm btn-success"
                                asp-route-Id="@j.JobID">
                                 To Cross!
-                            </a>
+                            </a>*/
+
+                            <form asp-action="ToCross" method="post">
+                                <input type="hidden" name="JobCrossID" value="@j.JobID" />
+                                <button type="submit" value="ToCross" name="buttonAction" class="btn btn-warning btn-sm col-sm-4"
+                                        style="margin-bottom:10px;min-width:100px;float:left">
+                                    Ready For Cross
+                                </button>
+                            </form>
+
                         }
-                        <a asp-controller="Job" asp-action="Delete" class="btn btn-sm btn-danger"
-                           asp-route-Id="@j.JobID">
-                            Delete
-                        </a>
+                        else if (j.Status == "Cross Approval Complete")
+                        {
+                            <form asp-action="ToCross" method="post">
+                                <input type="hidden" name="JobCrossID" value="@j.JobID" />
+                                <button type="submit" class="btn btn-success btn-sm col-sm-7"
+                                        style="margin-bottom:10px;min-width:100px;float:left">
+                                    To Production
+                                </button>
+                            </form>
+                        }
+
                     </td>
                     <td>@j.ShipDate</td>
                 </tr>
@@ -89,8 +105,7 @@
             <tr>
                 <td>No Jobs in Cross Approval!</td>
             </tr>
-        }
-        else
+        } else
         {
             @foreach (var j in Model.ProductionJobs)
             {
@@ -99,12 +114,25 @@
                 <td>@j.Name</td>
                 <td>@j.Status</td>
                 <td>
-                    @if (j.Status == "Cross Approval Complete")
+                    @if (j.Status == "Cross Approval Pending")
                     {
-                        <a asp-action="Release" class="btn btn-sm btn-warning"
-                           asp-route-Id="@j.JobID">
-                            Release Job.
-                        </a>
+                        <form asp-action="GetCross" method="post">
+                            <input type="hidden" name="JobCrossID" value="@j.JobID" />
+                            <button type="submit" class="btn btn-info btn-sm col-sm-7"
+                                    style="margin-bottom:10px;min-width:100px;float:left">
+                                Cross Approving
+                            </button>
+                        </form>
+                    }
+                    else if (j.Status == "On Cross Approval")
+                    {
+                        <form asp-action="ToCross" method="post">
+                            <input type="hidden" name="JobCrossID" value="@j.JobID" />
+                            <button type="submit" value="CrossApproved" name="buttonAction" class="btn btn-primary btn-sm col-sm-7"
+                                    style="margin-bottom:10px;min-width:100px;float:left">
+                                Cross Approved
+                            </button>
+                        </form>
                     }
                 </td>
                 <td>@j.ShipDate</td>
