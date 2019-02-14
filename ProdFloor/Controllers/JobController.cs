@@ -457,90 +457,34 @@ namespace ProdFloor.Controllers
         }
 
 
-        public async Task<ViewResult> JobSearchList(string nameJobSearch,int numJobSearch,int POJobSearch,string CustJobSearch,string ContractorJobSearch, int jobPage = 1)
+        public async Task<ViewResult> JobSearchList(JobSearchViewModel searchViewModel, int jobPage = 1)
         {
             var JobCount = repository.Jobs.Count();
             var jobSearchRepo = from m in repository.Jobs select m;
+            IQueryable<string> statusQuery = from s in repository.Jobs orderby s.Status select s.Status;
 
-            //Se acciona si el nombre, el Numero del Job, el Id del costumer no son nulos y el Contractor Name estan en el rango correspondiente
-            if ((!string.IsNullOrEmpty(nameJobSearch) && (numJobSearch >= 2015000000 && numJobSearch <= 2021000000) && !string.IsNullOrEmpty(CustJobSearch) && !string.IsNullOrEmpty(ContractorJobSearch)))
-            {
-                jobSearchRepo = repository.Jobs.Where(s => s.Name.Contains(nameJobSearch) && s.JobNum == numJobSearch && s.Cust.Contains(CustJobSearch) && s.Contractor.Contains(ContractorJobSearch));
-            }
-            else if (((numJobSearch >= 2015000000 && numJobSearch <= 2021000000) && !string.IsNullOrEmpty(CustJobSearch) && !string.IsNullOrEmpty(ContractorJobSearch)))
-            {
-                jobSearchRepo = repository.Jobs.Where(s => s.JobNum == numJobSearch && s.Cust.Contains(CustJobSearch) && s.Contractor.Contains(ContractorJobSearch));
-            }
-            else if ((!string.IsNullOrEmpty(nameJobSearch) && !string.IsNullOrEmpty(CustJobSearch) && !string.IsNullOrEmpty(ContractorJobSearch)))
-            {
-                jobSearchRepo = repository.Jobs.Where(s => s.Name.Contains(nameJobSearch) && s.Cust.Contains(CustJobSearch) && s.Contractor.Contains(ContractorJobSearch));
-            }//Se acciona si el nombre, el Numero del Job, el Id del costumer no son nulos y el Contractor Name estan en el rango correspondiente
-            else if ((!string.IsNullOrEmpty(nameJobSearch) && (numJobSearch >= 2015000000 && numJobSearch <= 2021000000) && !string.IsNullOrEmpty(ContractorJobSearch)))
-            {
-                jobSearchRepo = repository.Jobs.Where(s => s.Name.Contains(nameJobSearch) && s.JobNum == numJobSearch  && s.Contractor.Contains(ContractorJobSearch));
-            }
-            else if ((!string.IsNullOrEmpty(nameJobSearch) && !string.IsNullOrEmpty(ContractorJobSearch)))
-            {
-                jobSearchRepo = repository.Jobs.Where(s => s.Name.Contains(nameJobSearch) &&  s.Contractor.Contains(ContractorJobSearch));
-            }
-            else if((!string.IsNullOrEmpty(CustJobSearch) && !string.IsNullOrEmpty(ContractorJobSearch)))
-            {
-                jobSearchRepo = repository.Jobs.Where(s => s.Cust.Contains(CustJobSearch) && s.Contractor.Contains(ContractorJobSearch));
-            }
-            else if (((numJobSearch >= 2015000000 && numJobSearch <= 2021000000) && !string.IsNullOrEmpty(ContractorJobSearch)))
-            {
-                jobSearchRepo = repository.Jobs.Where(s => s.JobNum == numJobSearch && s.Contractor.Contains(ContractorJobSearch));
-            }
-            //Se acciona si el nombre el Numero del Job y el Id del costumer no son nulos y estan en el rango correspondiente
-            else if ((!string.IsNullOrEmpty(nameJobSearch) && (numJobSearch >= 2015000000 && numJobSearch <= 2021000000) && !string.IsNullOrEmpty(CustJobSearch)))
-            {
-                jobSearchRepo = repository.Jobs.Where(s => s.Name.Contains(nameJobSearch) && s.JobNum == numJobSearch && s.Cust.Contains(CustJobSearch));
-            }//Se acciona si el nombre y el Numero del Job no son nulos y estan en el rango correspondiente
-            else if (!string.IsNullOrEmpty(nameJobSearch) && (numJobSearch >= 2015000000 && numJobSearch <= 2021000000))
-            {
-                jobSearchRepo = repository.Jobs.Where(s => s.Name.Contains(nameJobSearch) && s.JobNum == numJobSearch);
-            }//Se acciona si el JobNumber y el Numero del CustomerID de Job no son nulos y estan en el rango correspondiente
-            else if (!string.IsNullOrEmpty(CustJobSearch) && (numJobSearch >= 2015000000 && numJobSearch <= 2021000000))
-            {
-                jobSearchRepo = repository.Jobs.Where(s => s.Cust.Contains(CustJobSearch) && s.JobNum == numJobSearch);
-            }//Se acciona si el nombre y el Numero del CustomerID de Job no son nulos
-            else if (!string.IsNullOrEmpty(CustJobSearch) && !string.IsNullOrEmpty(nameJobSearch))
-            {
-                jobSearchRepo = repository.Jobs.Where(s => s.Cust.Contains(CustJobSearch) && s.Name.Contains(nameJobSearch));
-            }//Se acciona si el nombre no es nulo 
-            else if (!string.IsNullOrEmpty(nameJobSearch))
-            {
-                jobSearchRepo = repository.Jobs.Where(s => s.Name.Contains(nameJobSearch));
-            }//Se acciona si el  Numero del Job esta en el rango correspondiente
-            else if(numJobSearch >= 2015000000 && numJobSearch <= 2021000000)
-            {
-                jobSearchRepo = repository.Jobs.Where(s => s.JobNum == numJobSearch);
-            }//Se acciona si el CustomerId no es nulo 
-            else if (!string.IsNullOrEmpty(CustJobSearch))
-            {
-                jobSearchRepo = repository.Jobs.Where(s => s.Cust.Contains(CustJobSearch));
-            }else if (( !string.IsNullOrEmpty(ContractorJobSearch)))
-            {
-                jobSearchRepo = repository.Jobs.Where(s => s.Contractor.Contains(ContractorJobSearch));
-            }
+            if (!string.IsNullOrEmpty(searchViewModel.NameJobSearch)) jobSearchRepo = jobSearchRepo.Where(s => s.Name.Contains(searchViewModel.NameJobSearch));//Busqueda por Job Name si este no es nulo
+            if (searchViewModel.NumJobSearch >= 2015000000 && searchViewModel.NumJobSearch <= 2021000000) jobSearchRepo = jobSearchRepo.Where(s => s.JobNum == searchViewModel.NumJobSearch);//Busqueda por Job Number si esta en el rango + la anterior
+            if (!string.IsNullOrEmpty(searchViewModel.CustJobSearch)) jobSearchRepo = jobSearchRepo.Where(s => s.Cust.Contains(searchViewModel.CustJobSearch));//Busqueda por Job CustID si no es nulo + las anteriores
+            if (!string.IsNullOrEmpty(searchViewModel.ContractorJobSearch)) jobSearchRepo = jobSearchRepo.Where(s => s.Contractor.Contains(searchViewModel.ContractorJobSearch));//Busqueda por Job Contractor si no es nulo + las anteriores
+            if (searchViewModel.POJobSearch >= 3000000 && searchViewModel.POJobSearch <= 4900000) jobSearchRepo = repository.Jobs.Where(s => s.PO == searchViewModel.POJobSearch);//Busqueda por Job PO si esta en el rango + las anteriores
+            if (searchViewModel.EngID != 0) jobSearchRepo = jobSearchRepo.Where(s => s.EngID == searchViewModel.EngID);//Busqueda por el Id de Ingeniero si este no es 0 + las anteriores
+            if (searchViewModel.CrossAppEngID != 0) jobSearchRepo = jobSearchRepo.Where(s => s.CrossAppEngID == searchViewModel.CrossAppEngID);//Busqueda por el Id de Ingeniero si este no es 0 + las anteriores
+            if (!string.IsNullOrEmpty(searchViewModel.StatusJobSearch)) jobSearchRepo = jobSearchRepo.Where(s => s.Status == searchViewModel.StatusJobSearch);//Busqueda por Job Status si no es nulo + las anteriores
+            if (searchViewModel.CityID != 0) jobSearchRepo = jobSearchRepo.Where(s => s.CityID == searchViewModel.CityID);//Busqueda por el CityID si este no es 0 + las anteriores
+            if (searchViewModel.FireCodeID != 0) jobSearchRepo = jobSearchRepo.Where(s => s.FireCodeID == searchViewModel.FireCodeID);//Busqueda por el FireCodeID si este no es 0 + las anteriores
+            if (searchViewModel.JobTypeID != 0) jobSearchRepo = jobSearchRepo.Where(s => s.JobTypeID == searchViewModel.JobTypeID);//Busqueda por el JobTypeID si este no es 0 + las anteriores
 
-            //Se acciona si el  PO Number del Job esta en el rango correspondiente
-            if (POJobSearch >= 3000000 && numJobSearch <= 4900000)
-            {
-                jobSearchRepo = repository.Jobs.Where(s => s.PO == POJobSearch);
-            }
-
-
+            int TotalItemsSearch = jobSearchRepo.Count() +1;
             JobSearchViewModel jobSearch = new JobSearchViewModel
             {
-
-
-                JobsSearchList = await jobSearchRepo.OrderBy(p => p.JobID).Skip((jobPage - 1) * 10).Take(PageSize).ToListAsync(),
+                Status = new SelectList(await statusQuery.Distinct().ToListAsync()),
+                JobsSearchList = await jobSearchRepo.OrderBy(p => p.JobID).Skip((jobPage - 1) * 10).Take(TotalItemsSearch).ToListAsync(),
                 PagingInfo = new PagingInfo
                 {
                     CurrentPage = jobPage,
                     ItemsPerPage = 10,
-                    TotalItems = JobCount
+                    TotalItems = TotalItemsSearch
                 },
             };
 

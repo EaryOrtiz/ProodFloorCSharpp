@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -21,5 +22,13 @@ namespace ProdFloor.Models.ViewModels.Job
         public int POJobSearch { get; set; }
         public string CustJobSearch { get; set; }
         public string ContractorJobSearch { get; set; }
+        public int EngID { get; set; }
+        public int CrossAppEngID { get; set; }
+        public int CityID { get; set; }
+        public int FireCodeID { get; set; }
+        public int JobTypeID { get; set; }
+
+        public SelectList Status;
+        public string StatusJobSearch { get; set; }
     }
 }

@@ -9,27 +9,84 @@
 <br />
 
 <p>
-   <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-    Job Search
+    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+        Job Search
+    </button>
+    <button class="btn btn-secondary" type="button" data-toggle="collapse" data-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
+        Job Search
     </button>
 </p>
 <div class="collapse" id="collapseExample">
     <div class="card card-body">
         <form asp-controller="Job" asp-action="JobSearchList" method="get">
-            <p>
-             Job Name: <input type="text" name="NameJobSearch" asp-for="NameJobSearch">
-             Job Number: <input type="text" name="NumJobSearch" asp-for="NumJobSearch">
-             Job PO Number: <input type="text" name="POJobSearch" asp-for="POJobSearch">
-             Job Cust Number: <input type="text" name="CustJobSearch" asp-for="CustJobSearch">
-             Contractor Name: <input type="text" name="ContractorJobSearch" asp-for="ContractorJobSearch">
-             <input type="submit" value="Search" />
-            </p>
-         </form>
+            <div class="row">
+                <div class="col-sm">
+                    Job Name: <input type="text" name="NameJobSearch" class="form-control form-control-sm col-sm-10" asp-for="NameJobSearch">
+                    Job Number: <input type="text" name="NumJobSearch" class="form-control form-control-sm col-sm-10" asp-for="NumJobSearch">
+                    Job PO Number: <input type="text" name="POJobSearch" class="form-control form-control-sm col-sm-10" asp-for="POJobSearch">
+                    <br />
+                    <button class="btn btn-dark" type="submit" value="Search"><i class="fa fa-search" aria-hidden="true"></i></button>
+                </div>
+                <div class="col-sm">
+                    Job Cust Number: <input type="text" name="CustJobSearch" class="form-control form-control-sm col-sm-10" asp-for="CustJobSearch">
+                    Contractor Name: <input type="text" name="ContractorJobSearch" class="form-control form-control-sm col-sm-10" asp-for="ContractorJobSearch">
+                    Enginner Number: <input type="text" name="EngID" class="form-control form-control-sm col-sm-10" asp-for="EngID">
+                </div>
+                <div class="col-sm">
+                    Cross Approval Engineer Number: <input type="text" name="CrossAppEngID" class="form-control form-control-sm col-sm-10" asp-for="CrossAppEngID">
+                    <br />
+                    <select asp-for="StatusJobSearch" class="form-control form-control-sm col-sm-10" asp-items="Model.Status"><option value="">Select a Status</option></select>
+                    <br />
+                    <city-select selected-value="@Model.CityID" class="form-control form-control-sm col-sm-10" asp-for="CityID"></city-select>
+                </div>
+                <div class="col-sm">
+                    <br />
+                    <fire-code-select selected-value="@Model.FireCodeID" class="form-control form-control-sm col-sm-10" asp-for="FireCodeID"></fire-code-select>
+                    <br />
+                    <job-type-select selected-value="@Model.JobTypeID" class="form-control form-control-sm col-sm-10" asp-for="JobTypeID"></job-type-select>
+                </div>
+            </div>
+        </form>
     </div>
 </div>
-    
-
-<br /><br />
+<div class="collapse" id="collapse2">
+    <div class="card card-body">
+        <form asp-controller="Job" asp-action="JobSearchList" method="get">
+            <div class="row">
+                <div class="col-sm">
+                    Job Name: <input type="text" name="NameJobSearch" class="form-control form-control-sm col-sm-10" asp-for="NameJobSearch">
+                    Job Number: <input type="text" name="NumJobSearch" class="form-control form-control-sm col-sm-10" asp-for="NumJobSearch">
+                    Job PO Number: <input type="text" name="POJobSearch" class="form-control form-control-sm col-sm-10" asp-for="POJobSearch">
+                    <br />
+                    <button class="btn btn-dark" type="submit" value="Search"><i class="fa fa-search" aria-hidden="true"></i></button>
+                </div>
+                <div class="col-sm">
+                    Job Cust Number: <input type="text" name="CustJobSearch" class="form-control form-control-sm col-sm-10" asp-for="CustJobSearch">
+                    Contractor Name: <input type="text" name="ContractorJobSearch" class="form-control form-control-sm col-sm-10" asp-for="ContractorJobSearch">
+                    Enginner Number: <input type="text" name="EngID" class="form-control form-control-sm col-sm-10" asp-for="EngID">
+                </div>
+                <div class="col-sm">
+                    Cross Approval Engineer Number: <input type="text" name="CrossAppEngID" class="form-control form-control-sm col-sm-10" asp-for="CrossAppEngID">
+                    <br />
+                    <select asp-for="StatusJobSearch" class="form-control form-control-sm col-sm-10" asp-items="Model.Status"><option value="">Select a Status</option></select>
+                    <br />
+                    <city-select selected-value="@Model.CityID" class="form-control form-control-sm col-sm-10" asp-for="CityID"></city-select>
+                </div>
+                <div class="col-sm">
+                    <br />
+                    <fire-code-select selected-value="@Model.FireCodeID" class="form-control form-control-sm col-sm-10" asp-for="FireCodeID"></fire-code-select>
+                    <br />
+                    <job-type-select selected-value="@Model.JobTypeID" class="form-control form-control-sm col-sm-10" asp-for="JobTypeID"></job-type-select>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<br />
+<br />
+<div class="row" style="padding-right:20px">
+    <h4 class="col-sm-10 text-info">List Of Jobs Found</h4>
+</div>
 @foreach (var j in Model.JobsSearchList)
 {
     @Html.Partial("SearchJobSummary", j)

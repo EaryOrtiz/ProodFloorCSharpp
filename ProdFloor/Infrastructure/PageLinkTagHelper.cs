@@ -548,7 +548,7 @@ namespace ProdFloor.Infrastructure
             }
             TagBuilder m_tag = new TagBuilder("option");
             m_tag.Attributes["value"] = "";
-            m_tag.InnerHtml.Append("Please select one");
+            m_tag.InnerHtml.Append("Please select a City");
             result.InnerHtml.AppendHtml(m_tag);
             IQueryable<City> city = itemsrepository.Cities.AsQueryable();
             foreach (City cities in city)
@@ -701,7 +701,7 @@ namespace ProdFloor.Infrastructure
             }
             TagBuilder m_tag = new TagBuilder("option");
             m_tag.Attributes["value"] = "";
-            m_tag.InnerHtml.Append("Please select one");
+            m_tag.InnerHtml.Append("Please select a FireCode");
             result.InnerHtml.AppendHtml(m_tag);
             IQueryable<FireCode> fireCode = itemsrepository.FireCodes.AsQueryable();
             foreach (FireCode fireCodes in fireCode)
@@ -854,7 +854,7 @@ namespace ProdFloor.Infrastructure
             }
             TagBuilder m_tag = new TagBuilder("option");
             m_tag.Attributes["value"] = "";
-            m_tag.InnerHtml.Append("Please select one");
+            m_tag.InnerHtml.Append("Please select a JobType");
             result.InnerHtml.AppendHtml(m_tag);
             IQueryable<JobType> jobType = itemsrepository.JobTypes.AsQueryable();
             foreach (JobType jobTypes in jobType)
