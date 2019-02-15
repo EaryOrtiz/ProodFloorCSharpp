@@ -8,6 +8,7 @@ using ProdFloor.Models;
 using System.Collections.Generic;
 using System;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace ProdFloor.Infrastructure
 {
@@ -719,6 +720,58 @@ namespace ProdFloor.Infrastructure
         }
     }
 
+    public class FireCodeInJobsSelectTagHelper : TagHelper
+    {
+        private IItemRepository itemsrepository;
+
+        private IUrlHelperFactory urlHelperFactory;
+
+        public ModelExpression AspFor { get; set; }
+
+        public FireCodeInJobsSelectTagHelper(IUrlHelperFactory helperFactory, IItemRepository itemsrepo)
+        {
+            urlHelperFactory = helperFactory;
+            itemsrepository = itemsrepo;
+        }
+
+        [ViewContext]
+        [HtmlAttributeNotBound]
+        public ViewContext ViewContext { get; set; }
+
+        public int SelectedValue { get; set; }
+
+        public override void Process(TagHelperContext context, TagHelperOutput output)
+        {
+            IUrlHelper urlHelper = urlHelperFactory.GetUrlHelper(ViewContext);
+            output.TagName = "select";
+            TagBuilder result = new TagBuilder("select");
+            string name = this.AspFor.Name;
+            if (!String.IsNullOrEmpty(name))
+            {
+                output.Attributes.Add("id", name);
+                output.Attributes.Add("name", name);
+            }
+            TagBuilder m_tag = new TagBuilder("option");
+            m_tag.Attributes["value"] = "";
+            m_tag.InnerHtml.Append("Please select a FireCode");
+            result.InnerHtml.AppendHtml(m_tag);
+            IQueryable<FireCode> fireCode = itemsrepository.FireCodes.FromSql("select * from dbo.FireCodes " +
+                "Where dbo.FireCodes.FireCodeID IN (Select dbo.Jobs.FireCodeID From dbo.Jobs)").AsQueryable();
+            foreach (FireCode fireCodes in fireCode)
+            {
+                TagBuilder tag = new TagBuilder("option");
+                tag.Attributes["value"] = fireCodes.FireCodeID.ToString();
+                if (fireCodes.FireCodeID == SelectedValue)
+                {
+                    tag.Attributes["selected"] = "selected";
+                }
+                tag.InnerHtml.Append(fireCodes.Name.ToString());
+                result.InnerHtml.AppendHtml(tag);
+            }
+            output.Content.AppendHtml(result.InnerHtml);
+        }
+    }
+
     public class LandingSysSelectTagHelper : TagHelper
     {
         private IItemRepository itemsrepository;
@@ -866,6 +919,160 @@ namespace ProdFloor.Infrastructure
                     tag.Attributes["selected"] = "selected";
                 }
                 tag.InnerHtml.Append(jobTypes.Name.ToString());
+                result.InnerHtml.AppendHtml(tag);
+            }
+            output.Content.AppendHtml(result.InnerHtml);
+        }
+    }
+
+    public class JobTypeInJobSelectTagHelper : TagHelper
+    {
+        private IItemRepository itemsrepository;
+
+        private IUrlHelperFactory urlHelperFactory;
+
+        public ModelExpression AspFor { get; set; }
+
+        public JobTypeInJobSelectTagHelper(IUrlHelperFactory helperFactory, IItemRepository itemsrepo)
+        {
+            urlHelperFactory = helperFactory;
+            itemsrepository = itemsrepo;
+        }
+
+        [ViewContext]
+        [HtmlAttributeNotBound]
+        public ViewContext ViewContext { get; set; }
+
+        public int SelectedValue { get; set; }
+
+        public override void Process(TagHelperContext context, TagHelperOutput output)
+        {
+            IUrlHelper urlHelper = urlHelperFactory.GetUrlHelper(ViewContext);
+            output.TagName = "select";
+            TagBuilder result = new TagBuilder("select");
+            string name = this.AspFor.Name;
+            if (!String.IsNullOrEmpty(name))
+            {
+                output.Attributes.Add("id", name);
+                output.Attributes.Add("name", name);
+            }
+            TagBuilder m_tag = new TagBuilder("option");
+            m_tag.Attributes["value"] = "";
+            m_tag.InnerHtml.Append("Please select a JobType");
+            result.InnerHtml.AppendHtml(m_tag);
+            IQueryable<JobType> jobType = itemsrepository.JobTypes.FromSql("select * from dbo.JobTypes " +
+                "Where dbo.JobTypes.JobTypeID IN (Select dbo.Jobs.JobTypeID From dbo.Jobs)").AsQueryable();
+            foreach (JobType jobTypes in jobType)
+            {
+                TagBuilder tag = new TagBuilder("option");
+                tag.Attributes["value"] = jobTypes.JobTypeID.ToString();
+                if (jobTypes.JobTypeID == SelectedValue)
+                {
+                    tag.Attributes["selected"] = "selected";
+                }
+                tag.InnerHtml.Append(jobTypes.Name.ToString());
+                result.InnerHtml.AppendHtml(tag);
+            }
+            output.Content.AppendHtml(result.InnerHtml);
+        }
+    }
+
+    public class JobTypeAddInJobSelectTagHelper : TagHelper
+    {
+        private IJobRepository ijobrepository;
+
+        private IUrlHelperFactory urlHelperFactory;
+
+        public ModelExpression AspFor { get; set; }
+
+        public JobTypeAddInJobSelectTagHelper(IUrlHelperFactory helperFactory, IJobRepository jobRepository)
+        {
+            urlHelperFactory = helperFactory;
+            ijobrepository = jobRepository;
+        }
+
+        [ViewContext]
+        [HtmlAttributeNotBound]
+        public ViewContext ViewContext { get; set; }
+
+        public string SelectedValue { get; set; }
+
+        public override void Process(TagHelperContext context, TagHelperOutput output)
+        {
+            IUrlHelper urlHelper = urlHelperFactory.GetUrlHelper(ViewContext);
+            output.TagName = "select";
+            TagBuilder result = new TagBuilder("select");
+            string name = this.AspFor.Name;
+            if (!String.IsNullOrEmpty(name))
+            {
+                output.Attributes.Add("id", name);
+                output.Attributes.Add("name", name);
+            }
+            TagBuilder m_tag = new TagBuilder("option");
+            m_tag.Attributes["value"] = "";
+            m_tag.InnerHtml.Append("Select a Type of operation");
+            result.InnerHtml.AppendHtml(m_tag);
+            IQueryable<string> jobTypeAdd = ijobrepository.JobsExtensions.Select( j => j.JobTypeAdd ).Distinct().AsQueryable();
+            foreach (string jobTypesAdd in jobTypeAdd)
+            {
+                TagBuilder tag = new TagBuilder("option");
+                tag.Attributes["value"] = jobTypesAdd;
+                if (jobTypesAdd == SelectedValue)
+                {
+                    tag.Attributes["selected"] = "selected";
+                }
+                tag.InnerHtml.Append(jobTypesAdd);
+                result.InnerHtml.AppendHtml(tag);
+            }
+            output.Content.AppendHtml(result.InnerHtml);
+        }
+    }
+
+    public class JobTypeMainiInJobSelectTagHelper : TagHelper
+    {
+        private IJobRepository ijobrepository;
+
+        private IUrlHelperFactory urlHelperFactory;
+
+        public ModelExpression AspFor { get; set; }
+
+        public JobTypeMainiInJobSelectTagHelper(IUrlHelperFactory helperFactory, IJobRepository jobRepository)
+        {
+            urlHelperFactory = helperFactory;
+            ijobrepository = jobRepository;
+        }
+
+        [ViewContext]
+        [HtmlAttributeNotBound]
+        public ViewContext ViewContext { get; set; }
+
+        public string SelectedValue { get; set; }
+
+        public override void Process(TagHelperContext context, TagHelperOutput output)
+        {
+            IUrlHelper urlHelper = urlHelperFactory.GetUrlHelper(ViewContext);
+            output.TagName = "select";
+            TagBuilder result = new TagBuilder("select");
+            string name = this.AspFor.Name;
+            if (!String.IsNullOrEmpty(name))
+            {
+                output.Attributes.Add("id", name);
+                output.Attributes.Add("name", name);
+            }
+            TagBuilder m_tag = new TagBuilder("option");
+            m_tag.Attributes["value"] = "";
+            m_tag.InnerHtml.Append("Select a Type of operation #2");
+            result.InnerHtml.AppendHtml(m_tag);
+            IQueryable<string> jobTypeMain = ijobrepository.JobsExtensions.Select(j => j.JobTypeMain).Distinct().AsQueryable();
+            foreach (string jobTypesMain in jobTypeMain)
+            {
+                TagBuilder tag = new TagBuilder("option");
+                tag.Attributes["value"] = jobTypesMain;
+                if (jobTypesMain == SelectedValue)
+                {
+                    tag.Attributes["selected"] = "selected";
+                }
+                tag.InnerHtml.Append(jobTypesMain);
                 result.InnerHtml.AppendHtml(tag);
             }
             output.Content.AppendHtml(result.InnerHtml);

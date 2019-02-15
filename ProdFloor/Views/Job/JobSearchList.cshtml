@@ -13,27 +13,27 @@
         Job Search
     </button>
     <button class="btn btn-secondary" type="button" data-toggle="collapse" data-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
-        Job Search
+        JobExtension
     </button>
 </p>
-<div class="collapse" id="collapseExample">
-    <div class="card card-body">
-        <form asp-controller="Job" asp-action="JobSearchList" method="get">
+<form asp-controller="Job" asp-action="JobSearchList" method="get">
+    <div class="collapse" id="collapseExample">
+        <div class="card card-body">
+
             <div class="row">
                 <div class="col-sm">
-                    Job Name: <input type="text" name="NameJobSearch" class="form-control form-control-sm col-sm-10" asp-for="NameJobSearch">
-                    Job Number: <input type="text" name="NumJobSearch" class="form-control form-control-sm col-sm-10" asp-for="NumJobSearch">
-                    Job PO Number: <input type="text" name="POJobSearch" class="form-control form-control-sm col-sm-10" asp-for="POJobSearch">
+                    Job Name: <input type="text" class="form-control form-control-sm col-sm-10" asp-for="NameJobSearch">
+                    Job Number: <input type="text" class="form-control form-control-sm col-sm-10" asp-for="NumJobSearch">
+                    Job PO Number: <input type="text" class="form-control form-control-sm col-sm-10" asp-for="POJobSearch">
                     <br />
-                    <button class="btn btn-dark" type="submit" value="Search"><i class="fa fa-search" aria-hidden="true"></i></button>
                 </div>
                 <div class="col-sm">
-                    Job Cust Number: <input type="text" name="CustJobSearch" class="form-control form-control-sm col-sm-10" asp-for="CustJobSearch">
-                    Contractor Name: <input type="text" name="ContractorJobSearch" class="form-control form-control-sm col-sm-10" asp-for="ContractorJobSearch">
-                    Enginner Number: <input type="text" name="EngID" class="form-control form-control-sm col-sm-10" asp-for="EngID">
+                    Job Cust Number: <input type="text" class="form-control form-control-sm col-sm-10" asp-for="CustJobSearch">
+                    Contractor Name: <input type="text" class="form-control form-control-sm col-sm-10" asp-for="ContractorJobSearch">
+                    Enginner Number: <input type="text" class="form-control form-control-sm col-sm-10" asp-for="EngID">
                 </div>
                 <div class="col-sm">
-                    Cross Approval Engineer Number: <input type="text" name="CrossAppEngID" class="form-control form-control-sm col-sm-10" asp-for="CrossAppEngID">
+                    Cross Approval Engineer Number: <input type="text" class="form-control form-control-sm col-sm-10" asp-for="CrossAppEngID">
                     <br />
                     <select asp-for="StatusJobSearch" class="form-control form-control-sm col-sm-10" asp-items="Model.Status"><option value="">Select a Status</option></select>
                     <br />
@@ -41,47 +41,88 @@
                 </div>
                 <div class="col-sm">
                     <br />
-                    <fire-code-select selected-value="@Model.FireCodeID" class="form-control form-control-sm col-sm-10" asp-for="FireCodeID"></fire-code-select>
+                    <fire-code-in-jobs-select selected-value="@Model.FireCodeID" class="form-control form-control-sm col-sm-10" asp-for="FireCodeID"></fire-code-in-jobs-select>
                     <br />
-                    <job-type-select selected-value="@Model.JobTypeID" class="form-control form-control-sm col-sm-10" asp-for="JobTypeID"></job-type-select>
+                    <job-type-in-job-select selected-value="@Model.JobTypeID" class="form-control form-control-sm col-sm-10" asp-for="JobTypeID"></job-type-in-job-select>
                 </div>
             </div>
-        </form>
+        </div>
     </div>
-</div>
-<div class="collapse" id="collapse2">
-    <div class="card card-body">
-        <form asp-controller="Job" asp-action="JobSearchList" method="get">
+    <div class="collapse" id="collapse2">
+        <div class="card card-body">
             <div class="row">
                 <div class="col-sm">
-                    Job Name: <input type="text" name="NameJobSearch" class="form-control form-control-sm col-sm-10" asp-for="NameJobSearch">
-                    Job Number: <input type="text" name="NumJobSearch" class="form-control form-control-sm col-sm-10" asp-for="NumJobSearch">
-                    Job PO Number: <input type="text" name="POJobSearch" class="form-control form-control-sm col-sm-10" asp-for="POJobSearch">
-                    <br />
-                    <button class="btn btn-dark" type="submit" value="Search"><i class="fa fa-search" aria-hidden="true"></i></button>
-                </div>
-                <div class="col-sm">
-                    Job Cust Number: <input type="text" name="CustJobSearch" class="form-control form-control-sm col-sm-10" asp-for="CustJobSearch">
-                    Contractor Name: <input type="text" name="ContractorJobSearch" class="form-control form-control-sm col-sm-10" asp-for="ContractorJobSearch">
-                    Enginner Number: <input type="text" name="EngID" class="form-control form-control-sm col-sm-10" asp-for="EngID">
-                </div>
-                <div class="col-sm">
-                    Cross Approval Engineer Number: <input type="text" name="CrossAppEngID" class="form-control form-control-sm col-sm-10" asp-for="CrossAppEngID">
-                    <br />
-                    <select asp-for="StatusJobSearch" class="form-control form-control-sm col-sm-10" asp-items="Model.Status"><option value="">Select a Status</option></select>
-                    <br />
-                    <city-select selected-value="@Model.CityID" class="form-control form-control-sm col-sm-10" asp-for="CityID"></city-select>
+                    Input Frequency: <input type="text" class="form-control form-control-sm col-sm-10" asp-for="InputFrecuency">
+                    Input Phase: <input type="text" class="form-control form-control-sm col-sm-10" asp-for="InputPhase">
+                    Input Voltage: <input type="text" class="form-control form-control-sm col-sm-10" asp-for="InputVoltage">
+                    Number Of Stops: <input type="text" class="form-control form-control-sm col-sm-10" asp-for="NumOfStops">
                 </div>
                 <div class="col-sm">
                     <br />
-                    <fire-code-select selected-value="@Model.FireCodeID" class="form-control form-control-sm col-sm-10" asp-for="FireCodeID"></fire-code-select>
+                    <job-type-add-in-job-select selected-value="@Model.JobTypeAdd" class="form-control form-control-sm col-sm-10" asp-for="JobTypeAdd"></job-type-add-in-job-select>
                     <br />
-                    <job-type-select selected-value="@Model.JobTypeID" class="form-control form-control-sm col-sm-10" asp-for="JobTypeID"></job-type-select>
+                    <job-type-maini-in-job-select selected-value="@Model.JobTypeMain" class="form-control form-control-sm col-sm-10" asp-for="JobTypeMain"></job-type-maini-in-job-select>
+                    <br />
+                    <select asp-for="AuxCop" class="form-control form-control-sm col-sm-5">
+                        <option value="">Select a AuxCop</option>
+                        <option value="Si">-------- Si ---------</option>
+                        <option value="No">-------- No --------</option>
+                    </select>
+                    <br />
+                </div>
+                <div class="col-sm">
+                    <br />
+                    <select asp-for="CartopDoorButtons" class="form-control form-control-sm col-sm-8">
+                        <option value="">Select a CartopDoorButtons</option>
+                        <option value="Si">------------------ Si ----------------</option>
+                        <option value="No">------------------ No ---------------</option>
+                    </select>
+                    <br />
+                    <select asp-for="DoorHold" class="form-control form-control-sm col-sm-6">
+                        <option value="">Select a DoorHold</option>
+                        <option value="Si">------------ Si -----------</option>
+                        <option value="No">------------ No ----------</option>
+                    </select>
+                    <br />
+                    <select asp-for="HeavyDoors" class="form-control form-control-sm col-sm-6">
+                        <option value="">Select a HeavyDoors</option>
+                        <option value="Si">------------ Si -----------</option>
+                        <option value="No">------------ No ----------</option>
+                    </select>
+                    <br />
+                    <select asp-for="InfDetector" class="form-control form-control-sm col-sm-6">
+                        <option value="">Select a InfDetector</option>
+                        <option value="Si">------------ Si -----------</option>
+                        <option value="No">------------ No ----------</option>
+                    </select>
+                </div>
+                <div class="col-sm">
+                    <br />
+                    <select asp-for="MechSafEdge" class="form-control form-control-sm col-sm-6">
+                        <option value="">Select a MechSafEdge</option>
+                        <option value="Si">------------ Si -----------</option>
+                        <option value="No">------------ No ----------</option>
+                    </select>
+                    <br />
+                    <select asp-for="Scop" class="form-control form-control-sm col-sm-6">
+                        <option value="">Select a SCOP</option>
+                        <option value="Si">------------ Si -----------</option>
+                        <option value="No">------------ No ----------</option>
+                    </select>
+                    <br />
+                    <select asp-for="Shc" class="form-control form-control-sm col-sm-6">
+                        <option value="">Select a SHC</option>
+                        <option value="Si">------------ Si -----------</option>
+                        <option value="No">------------ No ----------</option>
+                    </select>
+                    <br />
                 </div>
             </div>
-        </form>
+        </div>
     </div>
-</div>
+    <br />
+    <button class="btn btn-dark" type="submit" value="Search"><i class="fa fa-search" aria-hidden="true"></i></button>
+</form>
 <br />
 <br />
 <div class="row" style="padding-right:20px">
