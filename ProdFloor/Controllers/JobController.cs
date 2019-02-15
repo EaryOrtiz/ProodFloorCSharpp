@@ -462,18 +462,32 @@ namespace ProdFloor.Controllers
             var JobCount = repository.Jobs.Count();
             var jobSearchRepo = repository.Jobs.Include( j => j._jobExtension).AsQueryable();
             IQueryable<string> statusQuery = from s in repository.Jobs orderby s.Status select s.Status;
+            /*
+             * 
+            **Campos de tipo numerico: Primero checa que el valor introoducido este en el rango adecuado y/o mayor a cero,
+              despues regresa los trabajos que son iguales  a el valor introducido
+            
+            **Campos de tipo caracter: Primero checa que la variable no este nula y despues regresa los trabajos que 
+              que contengan esa palabra o letras introducidas
+
+            **Campos de tipo caracter-Booleanos: Primero checa que la variable no este nula y despues dependiendo si 
+              selecciono si o no sera los trabajos que tienen o no ese campo
+
+            */
             //Opciones de busqueda para el modelo principal de job
-            if (!string.IsNullOrEmpty(searchViewModel.NameJobSearch)) jobSearchRepo = jobSearchRepo.Where(s => s.Name.Contains(searchViewModel.NameJobSearch));//Busqueda por Job Name si este no es nulo
-            if (searchViewModel.NumJobSearch >= 2015000000 && searchViewModel.NumJobSearch <= 2021000000) jobSearchRepo = jobSearchRepo.Where(s => s.JobNum == searchViewModel.NumJobSearch);//Busqueda por Job Number si esta en el rango + la anterior
-            if (!string.IsNullOrEmpty(searchViewModel.CustJobSearch)) jobSearchRepo = jobSearchRepo.Where(s => s.Cust.Contains(searchViewModel.CustJobSearch));//Busqueda por Job CustID si no es nulo + las anteriores
-            if (!string.IsNullOrEmpty(searchViewModel.ContractorJobSearch)) jobSearchRepo = jobSearchRepo.Where(s => s.Contractor.Contains(searchViewModel.ContractorJobSearch));//Busqueda por Job Contractor si no es nulo + las anteriores
-            if (searchViewModel.POJobSearch >= 3000000 && searchViewModel.POJobSearch <= 4900000) jobSearchRepo = repository.Jobs.Where(s => s.PO == searchViewModel.POJobSearch);//Busqueda por Job PO si esta en el rango + las anteriores
-            if (searchViewModel.EngID != 0) jobSearchRepo = jobSearchRepo.Where(s => s.EngID == searchViewModel.EngID);//Busqueda por el Id de Ingeniero si este no es 0 + las anteriores
-            if (searchViewModel.CrossAppEngID != 0) jobSearchRepo = jobSearchRepo.Where(s => s.CrossAppEngID == searchViewModel.CrossAppEngID);//Busqueda por el Id de Ingeniero si este no es 0 + las anteriores
-            if (!string.IsNullOrEmpty(searchViewModel.StatusJobSearch)) jobSearchRepo = jobSearchRepo.Where(s => s.Status == searchViewModel.StatusJobSearch);//Busqueda por Job Status si no es nulo + las anteriores
-            if (searchViewModel.CityID != 0) jobSearchRepo = jobSearchRepo.Where(s => s.CityID == searchViewModel.CityID);//Busqueda por el CityID si este no es 0 + las anteriores
-            if (searchViewModel.FireCodeID != 0) jobSearchRepo = jobSearchRepo.Where(s => s.FireCodeID == searchViewModel.FireCodeID);//Busqueda por el FireCodeID si este no es 0 + las anteriores
-            if (searchViewModel.JobTypeID != 0) jobSearchRepo = jobSearchRepo.Where(s => s.JobTypeID == searchViewModel.JobTypeID);//Busqueda por el JobTypeID si este no es 0 + las anteriores
+            if (searchViewModel.NumJobSearch >= 2015000000 && searchViewModel.NumJobSearch <= 2021000000) jobSearchRepo = jobSearchRepo.Where(s => s.JobNum == searchViewModel.NumJobSearch);
+            if (searchViewModel.POJobSearch >= 3000000 && searchViewModel.POJobSearch <= 4900000) jobSearchRepo = repository.Jobs.Where(s => s.PO == searchViewModel.POJobSearch);
+            if (searchViewModel.EngID > 0) jobSearchRepo = jobSearchRepo.Where(s => s.EngID == searchViewModel.EngID);
+            if (searchViewModel.CrossAppEngID > 0) jobSearchRepo = jobSearchRepo.Where(s => s.CrossAppEngID == searchViewModel.CrossAppEngID);
+            if (searchViewModel.CityID > 0) jobSearchRepo = jobSearchRepo.Where(s => s.CityID == searchViewModel.CityID);
+            if (searchViewModel.FireCodeID > 0) jobSearchRepo = jobSearchRepo.Where(s => s.FireCodeID == searchViewModel.FireCodeID);
+            if (searchViewModel.JobTypeID > 0) jobSearchRepo = jobSearchRepo.Where(s => s.JobTypeID == searchViewModel.JobTypeID);
+
+            if (!string.IsNullOrEmpty(searchViewModel.NameJobSearch)) jobSearchRepo = jobSearchRepo.Where(s => s.Name.Contains(searchViewModel.NameJobSearch));
+            if (!string.IsNullOrEmpty(searchViewModel.CustJobSearch)) jobSearchRepo = jobSearchRepo.Where(s => s.Cust.Contains(searchViewModel.CustJobSearch));
+            if (!string.IsNullOrEmpty(searchViewModel.ContractorJobSearch)) jobSearchRepo = jobSearchRepo.Where(s => s.Contractor.Contains(searchViewModel.ContractorJobSearch));
+            if (!string.IsNullOrEmpty(searchViewModel.StatusJobSearch)) jobSearchRepo = jobSearchRepo.Where(s => s.Status == searchViewModel.StatusJobSearch);
+
             //Opciones de busqueda para el modelo de jobExtensions.
             if (!string.IsNullOrEmpty(searchViewModel.AuxCop)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.AuxCop == "Si" ? s._jobExtension.AUXCOP == true : s._jobExtension.AUXCOP == false);
             if (!string.IsNullOrEmpty(searchViewModel.CartopDoorButtons)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.CartopDoorButtons == "Si" ? s._jobExtension.CartopDoorButtons == true : s._jobExtension.CartopDoorButtons == false);
