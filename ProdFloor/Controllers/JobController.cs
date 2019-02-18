@@ -460,8 +460,8 @@ namespace ProdFloor.Controllers
         public async Task<ViewResult> JobSearchList(JobSearchViewModel searchViewModel, int jobPage = 1)
         {
             var JobCount = repository.Jobs.Count();
-            var jobSearchRepo = repository.Jobs.Include( j => j._jobExtension).Include( h => h._HydroSpecific).Include(g => g._GenericFeatures)
-                .Include( i => i._Indicator).AsQueryable();
+            var jobSearchRepo = repository.Jobs.Include( j => j._jobExtension).Include( hy => hy._HydroSpecific).Include(g => g._GenericFeatures)
+                .Include( i => i._Indicator).Include(ho => ho._HoistWayData).Include(sp => sp._SpecialFeatureslist).AsQueryable();
             IQueryable<string> statusQuery = from s in repository.Jobs orderby s.Status select s.Status;
             /*
              * 
@@ -578,6 +578,17 @@ namespace ProdFloor.Controllers
             if (!string.IsNullOrEmpty(searchViewModel.HallPI)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.HallPI == "Si" ? s._Indicator.HallPI == true : s._Indicator.HallPI == false);
             if (!string.IsNullOrEmpty(searchViewModel.PassingFloor)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.PassingFloor == "Si" ? s._Indicator.PassingFloor == true : s._Indicator.PassingFloor == false);
             if (!string.IsNullOrEmpty(searchViewModel.VoiceAnnunciationPI)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.VoiceAnnunciationPI == "Si" ? s._Indicator.VoiceAnnunciationPI == true : s._Indicator.VoiceAnnunciationPI == false);
+
+            //Opciones de bsuqueda para el modelo de HoistWayData
+            if (searchViewModel.Capacity > 0) jobSearchRepo = jobSearchRepo.Where(s => s._HoistWayData.Capacity == searchViewModel.Capacity);
+            if (searchViewModel.DownSpeed > 0) jobSearchRepo = jobSearchRepo.Where(s => s._HoistWayData.DownSpeed == searchViewModel.DownSpeed);
+            if (searchViewModel.UpSpeed > 0) jobSearchRepo = jobSearchRepo.Where(s => s._HoistWayData.UpSpeed == searchViewModel.UpSpeed);
+            if (searchViewModel.HoistWaysNumber > 0) jobSearchRepo = jobSearchRepo.Where(s => s._HoistWayData.HoistWaysNumber == searchViewModel.HoistWaysNumber);
+            if (searchViewModel.MachineRooms > 0) jobSearchRepo = jobSearchRepo.Where(s => s._HoistWayData.MachineRooms == searchViewModel.MachineRooms);
+            if (searchViewModel.LandingSystemID > 0) jobSearchRepo = jobSearchRepo.Where(s => s._HoistWayData.LandingSystemID == searchViewModel.LandingSystemID);
+
+            //Opciones de bsuqueda para el modelo de Special Features
+            if (!string.IsNullOrEmpty(searchViewModel.Description)) jobSearchRepo = jobSearchRepo.Where(s => s._SpecialFeatureslist.Any().Equals(searchViewModel.Description));
 
 
             int TotalItemsSearch = jobSearchRepo.Count() +1;

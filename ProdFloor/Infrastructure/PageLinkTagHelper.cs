@@ -1130,4 +1130,56 @@ namespace ProdFloor.Infrastructure
         }
     }
 
+    public class LandingSysInJobSelectTagHelper : TagHelper
+    {
+        private IItemRepository itemsrepository;
+
+        private IUrlHelperFactory urlHelperFactory;
+
+        public ModelExpression AspFor { get; set; }
+
+        public LandingSysInJobSelectTagHelper(IUrlHelperFactory helperFactory, IItemRepository itemsrepo)
+        {
+            urlHelperFactory = helperFactory;
+            itemsrepository = itemsrepo;
+        }
+
+        [ViewContext]
+        [HtmlAttributeNotBound]
+        public ViewContext ViewContext { get; set; }
+
+        public int SelectedValue { get; set; }
+
+        public override void Process(TagHelperContext context, TagHelperOutput output)
+        {
+            IUrlHelper urlHelper = urlHelperFactory.GetUrlHelper(ViewContext);
+            output.TagName = "select";
+            TagBuilder result = new TagBuilder("select");
+            string name = this.AspFor.Name;
+            if (!String.IsNullOrEmpty(name))
+            {
+                output.Attributes.Add("id", name);
+                output.Attributes.Add("name", name);
+            }
+            TagBuilder m_tag = new TagBuilder("option");
+            m_tag.Attributes["value"] = "";
+            m_tag.InnerHtml.Append("Please select a JobType");
+            result.InnerHtml.AppendHtml(m_tag);
+            IQueryable<LandingSystem> landingSys = itemsrepository.LandingSystems.FromSql("select * from dbo.LandingSystems " +
+                "Where dbo.LandingSystems.LandingSystemsID IN (Select dbo.HoistWayDatas.LandingSystemsID From dbo.HoistWayDatas)").AsQueryable();
+            foreach (LandingSystem landingsSys in landingSys)
+            {
+                TagBuilder tag = new TagBuilder("option");
+                tag.Attributes["value"] = landingsSys.LandingSystemID.ToString();
+                if (landingsSys.LandingSystemID == SelectedValue)
+                {
+                    tag.Attributes["selected"] = "selected";
+                }
+                tag.InnerHtml.Append(landingsSys.Name.ToString());
+                result.InnerHtml.AppendHtml(tag);
+            }
+            output.Content.AppendHtml(result.InnerHtml);
+        }
+    }
+
 }

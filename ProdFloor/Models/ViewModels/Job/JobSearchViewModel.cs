@@ -123,7 +123,7 @@ namespace ProdFloor.Models.ViewModels.Job
         public int DownSpeed { get; set; }
         public int LandingSystemID { get; set; }
         public int UpSpeed { get; set; }
-        public int HoistWayNumber { get; set; }
+        public int HoistWaysNumber { get; set; }
         public int MachineRooms  { get; set; }
 
         //Atributos de Special Features
