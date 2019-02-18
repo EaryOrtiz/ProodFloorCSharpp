@@ -1079,4 +1079,55 @@ namespace ProdFloor.Infrastructure
         }
     }
 
+    public class ValveBrandniInJobSelectTagHelper : TagHelper
+    {
+        private IJobRepository ijobrepository;
+
+        private IUrlHelperFactory urlHelperFactory;
+
+        public ModelExpression AspFor { get; set; }
+
+        public ValveBrandniInJobSelectTagHelper(IUrlHelperFactory helperFactory, IJobRepository jobRepository)
+        {
+            urlHelperFactory = helperFactory;
+            ijobrepository = jobRepository;
+        }
+
+        [ViewContext]
+        [HtmlAttributeNotBound]
+        public ViewContext ViewContext { get; set; }
+
+        public string SelectedValue { get; set; }
+
+        public override void Process(TagHelperContext context, TagHelperOutput output)
+        {
+            IUrlHelper urlHelper = urlHelperFactory.GetUrlHelper(ViewContext);
+            output.TagName = "select";
+            TagBuilder result = new TagBuilder("select");
+            string name = this.AspFor.Name;
+            if (!String.IsNullOrEmpty(name))
+            {
+                output.Attributes.Add("id", name);
+                output.Attributes.Add("name", name);
+            }
+            TagBuilder m_tag = new TagBuilder("option");
+            m_tag.Attributes["value"] = "";
+            m_tag.InnerHtml.Append("Select a Valve Brand");
+            result.InnerHtml.AppendHtml(m_tag);
+            IQueryable<string> valveBrand = ijobrepository.HydroSpecifics.Select(h => h.ValveBrand).Distinct().AsQueryable();
+            foreach (string valveBrands in valveBrand)
+            {
+                TagBuilder tag = new TagBuilder("option");
+                tag.Attributes["value"] = valveBrands;
+                if (valveBrands == SelectedValue)
+                {
+                    tag.Attributes["selected"] = "selected";
+                }
+                tag.InnerHtml.Append(valveBrands);
+                result.InnerHtml.AppendHtml(tag);
+            }
+            output.Content.AppendHtml(result.InnerHtml);
+        }
+    }
+
 }

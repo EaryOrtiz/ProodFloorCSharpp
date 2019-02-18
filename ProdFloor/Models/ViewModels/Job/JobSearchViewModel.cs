@@ -16,6 +16,7 @@ namespace ProdFloor.Models.ViewModels.Job
         public List<HoistWayData> HoistWayDataList { get; set; }
         public List<SpecialFeatures> SpecialFeatureslist { get; set; }
         public PagingInfo PagingInfo { get; set; }
+
         //Atributos de Job
         public string NameJobSearch { get; set; }
         public int NumJobSearch { get; set; }
@@ -47,5 +48,85 @@ namespace ProdFloor.Models.ViewModels.Job
         public int InputPhase { get; set; }
         public int InputVoltage { get; set; }
         public int NumOfStops { get; set; }
+
+        //Atributos de HydroSpecifics
+        public string Battery { get; set; }
+        public string BatteryBrand { get; set; }
+        public string LOS { get; set; }
+        public string LifeJacket { get; set; }
+        public string OilCool { get; set; }
+        public string OilTank { get; set; }
+        public string PSS { get; set; }
+        public string Resync { get; set; }
+        public string Roped { get; set; }
+        public string Starter { get; set; }
+        public string VCI { get; set; }
+        public string ValveBrand { get; set; }
+
+        public int FLA { get; set; }
+        public int HP { get; set; }
+        public int MotorsNum { get; set; }
+        public int SPH { get; set; }
+
+        //Atributos de GenericFeatureList
+        public string Attendant { get; set; }
+        public string CallEnable { get; set; }
+        public string CarToLobby { get; set; }
+        public string EMT { get; set; }
+        public string EP { get; set; }
+        public string EQ { get; set; }
+        public string FLO { get; set; }
+        public string FRON2 { get; set; }
+        public string Hosp { get; set; }
+        public string EPVoltage { get; set; }
+        public string INA { get; set; }
+        public string INCP { get; set; }
+        public string Ind { get; set; }
+        public string LoadWeigher { get; set; }
+        public string TopAccess { get; set; }
+        public string SwitchStyle { get; set; }
+        public string CRO { get; set; }
+        public string CarCallRead { get; set; }
+        public string CarKey { get; set; }
+        public string HCRO { get; set; }
+        public string HallCallRead { get; set; }
+        public string HallKey { get; set; }
+        public string BottomAccess { get; set; }
+        public string BottomAccessLocation { get; set; }
+        public string CTINSPST { get; set; }
+        public string EPContact { get; set; }
+        public string EPSelect { get; set; }
+        public string GovModel { get; set; }
+        public string INCPButtons { get; set; }
+        public string Monitoring { get; set; }
+        public string EPCarsNumber { get; set; }
+        public string PTI { get; set; }
+        public string TopAccessLocation { get; set; }
+
+        //Atributos de Indicators
+        public string CarLanterns { get; set; }
+        public string HallCallsType { get; set; }
+        public string HallCallsVoltageType { get; set; }
+        public string HallLanterns { get; set; }
+        public string HallPI { get; set; }
+        public string IndicatorsVoltageType { get; set; }
+        public string PassingFloor { get; set; }
+        public string VoiceAnnunciationPI { get; set; }
+        public string CarCallsVoltageType { get; set; }
+
+        public string CarCallsVoltage { get; set; }
+        public string HallCallsVoltage { get; set; }
+        public int IndicatorsVoltage { get; set; }
+
+        //Atributos de HoistWayData
+        public int Capacity { get; set; }
+        public int DownSpeed { get; set; }
+        public int LandingSystemID { get; set; }
+        public int UpSpeed { get; set; }
+        public int HoistWayNumber { get; set; }
+        public int MachineRooms  { get; set; }
+
+        //Atributos de Special Features
+        public string Description { get; set; }
     }
 }

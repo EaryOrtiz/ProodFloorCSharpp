@@ -10,10 +10,25 @@
 
 <p>
     <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-        Job Search
+        Job Information
     </button>
-    <button class="btn btn-secondary" type="button" data-toggle="collapse" data-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
+    <button class="btn btn-danger" type="button" data-toggle="collapse" data-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
         JobExtension
+    </button>
+    <button class="btn btn-info" type="button" data-toggle="collapse" data-target="#collapse3" aria-expanded="false" aria-controls="collapse3">
+        HydroSpecifics
+    </button>
+    <button class="btn btn-warning" type="button" data-toggle="collapse" data-target="#collapse4" aria-expanded="false" aria-controls="collapse4">
+        Generic Features
+    </button>
+    <button class="btn btn-success" type="button" data-toggle="collapse" data-target="#collapse5" aria-expanded="false" aria-controls="collapse5">
+        Indicators
+    </button>
+    <button class="btn btn-success" type="button" data-toggle="collapse" data-target="#collapse6" aria-expanded="false" aria-controls="collapse6">
+        HoistWayData
+    </button>
+    <button class="btn btn-success" type="button" data-toggle="collapse" data-target="#collapse7" aria-expanded="false" aria-controls="collapse7">
+        Special Features
     </button>
 </p>
 <form asp-controller="Job" asp-action="JobSearchList" method="get">
@@ -120,6 +135,367 @@
             </div>
         </div>
     </div>
+    <div class="collapse" id="collapse3">
+        <div class="card card-body">
+            <div class="row">
+                <div class="col-sm">
+                    FLA: <input type="text" class="form-control form-control-sm col-sm-10" asp-for="FLA">
+                    HP: <input type="text" class="form-control form-control-sm col-sm-10" asp-for="HP">
+                    Numer of Motors: <input type="text" class="form-control form-control-sm col-sm-10" asp-for="MotorsNum">
+                    SPH: <input type="text" class="form-control form-control-sm col-sm-10" asp-for="SPH">
+                </div>
+                <div class="col-sm">
+                    Starter: <input type="text" class="form-control form-control-sm col-sm-10" asp-for="Starter">
+                    <br />
+                    <valve-brandni-in-job-select selected-value="@Model.ValveBrand" class="form-control form-control-sm col-sm-10" asp-for="ValveBrand"></valve-brandni-in-job-select>
+                    <br />
+                    <select id="BatterySelect" asp-for="Battery" class="form-control form-control-sm col-sm-5">
+                        <option value="">Select a Battery</option>
+                        <option id="BatterySi" value="Si">-------- Si ---------</option>
+                        <option value="No">-------- No --------</option>
+                    </select>
+                    <br />
+                    <div id="BatteryBrand">
+                        Battery Brand: <input type="text" class="form-control form-control-sm col-sm-10" asp-for="BatteryBrand">
+                    </div>
+                </div>
+                <div class="col-sm">
+                    <br />
+                    <select asp-for="LOS" class="form-control form-control-sm col-sm-8">
+                        <option value="">Select a LOS</option>
+                        <option value="Si">------------------ Si ----------------</option>
+                        <option value="No">------------------ No ---------------</option>
+                    </select>
+                    <br />
+                    <select asp-for="LifeJacket" class="form-control form-control-sm col-sm-6">
+                        <option value="">Select a LifeJacket</option>
+                        <option value="Si">------------ Si -----------</option>
+                        <option value="No">------------ No ----------</option>
+                    </select>
+                    <br />
+                    <select asp-for="OilCool" class="form-control form-control-sm col-sm-6">
+                        <option value="">Select a OilCool</option>
+                        <option value="Si">------------ Si -----------</option>
+                        <option value="No">------------ No ----------</option>
+                    </select>
+                    <br />
+                    <select asp-for="OilTank" class="form-control form-control-sm col-sm-6">
+                        <option value="">Select a OilTank</option>
+                        <option value="Si">------------ Si -----------</option>
+                        <option value="No">------------ No ----------</option>
+                    </select>
+                </div>
+                <div class="col-sm">
+                    <br />
+                    <select asp-for="PSS" class="form-control form-control-sm col-sm-6">
+                        <option value="">Select a PSS</option>
+                        <option value="Si">------------ Si -----------</option>
+                        <option value="No">------------ No ----------</option>
+                    </select>
+                    <br />
+                    <select asp-for="Resync" class="form-control form-control-sm col-sm-6">
+                        <option value="">Select a Resync</option>
+                        <option value="Si">------------ Si -----------</option>
+                        <option value="No">------------ No ----------</option>
+                    </select>
+                    <br />
+                    <select asp-for="Roped" class="form-control form-control-sm col-sm-6">
+                        <option value="">Select a Roped</option>
+                        <option value="Si">------------ Si -----------</option>
+                        <option value="No">------------ No ----------</option>
+                    </select>
+                    <br />
+                    <select asp-for="VCI" class="form-control form-control-sm col-sm-6">
+                        <option value="">Select a VCI</option>
+                        <option value="Si">------------ Si -----------</option>
+                        <option value="No">------------ No ----------</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="collapse" id="collapse4">
+        <div class="card card-body">
+            <div class="row">
+                <div class="col-sm">
+                    <br />
+                    <select asp-for="CarKey" class="form-control form-control-sm col-sm-6">
+                        <option value="">Select a CarKey</option>
+                        <option value="Si">------------ Si -----------</option>
+                        <option value="No">------------ No ----------</option>
+                    </select>
+                    <br />
+                    <select asp-for="HCRO" class="form-control form-control-sm col-sm-6">
+                        <option value="">Select a HCRO</option>
+                        <option value="Si">------------ Si -----------</option>
+                        <option value="No">------------ No ----------</option>
+                    </select>
+                    <br />
+                    <select asp-for="HallCallRead" class="form-control form-control-sm col-sm-6">
+                        <option value="">Select a HallCallRead</option>
+                        <option value="Si">------------ Si -----------</option>
+                        <option value="No">------------ No ----------</option>
+                    </select>
+                    <br />
+                    <select asp-for="HallKey" class="form-control form-control-sm col-sm-6">
+                        <option value="">Select a HallKey</option>
+                        <option value="Si">------------ Si -----------</option>
+                        <option value="No">------------ No ----------</option>
+                    </select>
+                    <br />
+                    <select asp-for="BottomAccess" class="form-control form-control-sm col-sm-8">
+                        <option value="">Select a BottomAccess</option>
+                        <option value="Si">------------------ Si ----------------</option>
+                        <option value="No">------------------ No ---------------</option>
+                    </select>
+                    <br />
+                    <select asp-for="CTINSPST" class="form-control form-control-sm col-sm-6">
+                        <option value="">Select a CTINSPST</option>
+                        <option value="Si">------------ Si -----------</option>
+                        <option value="No">------------ No ----------</option>
+                    </select>
+                    <br />
+                    <select asp-for="EPSelect" class="form-control form-control-sm col-sm-6">
+                        <option value="">Select a EPSelect</option>
+                        <option value="Si">------------ Si -----------</option>
+                        <option value="No">------------ No ----------</option>
+                    </select>
+                    <br />
+                    <select asp-for="Attendant" class="form-control form-control-sm col-sm-8">
+                        <option value="">Select a Attendant</option>
+                        <option value="Si">------------------ Si ----------------</option>
+                        <option value="No">------------------ No ---------------</option>
+                    </select>
+                    <br />
+                    <select asp-for="PTI" class="form-control form-control-sm col-sm-8">
+                        <option value="">Select a PTI</option>
+                        <option value="Si">------------------ Si ----------------</option>
+                        <option value="No">------------------ No ---------------</option>
+                    </select>
+                </div>
+                <div class="col-sm">
+                    <br />
+                    <select asp-for="CallEnable" class="form-control form-control-sm col-sm-8">
+                        <option value="">Select a CallEnable</option>
+                        <option value="Si">------------------ Si ----------------</option>
+                        <option value="No">------------------ No ---------------</option>
+                    </select>
+                    <br />
+                    <select asp-for="CarToLobby" class="form-control form-control-sm col-sm-6">
+                        <option value="">Select a CarToLobby</option>
+                        <option value="Si">------------ Si -----------</option>
+                        <option value="No">------------ No ----------</option>
+                    </select>
+                    <br />
+                    <select asp-for="EMT" class="form-control form-control-sm col-sm-6">
+                        <option value="">Select a EMT</option>
+                        <option value="Si">------------ Si -----------</option>
+                        <option value="No">------------ No ----------</option>
+                    </select>
+                    <br />
+                    <select asp-for="EP" class="form-control form-control-sm col-sm-6">
+                        <option value="">Select a EP</option>
+                        <option value="Si">------------ Si -----------</option>
+                        <option value="No">------------ No ----------</option>
+                    </select>
+                    <br />
+                    <select asp-for="EQ" class="form-control form-control-sm col-sm-8">
+                        <option value="">Select a EQ</option>
+                        <option value="Si">------------------ Si ----------------</option>
+                        <option value="No">------------------ No ---------------</option>
+                    </select>
+                    <br />
+                    <select asp-for="FLO" class="form-control form-control-sm col-sm-6">
+                        <option value="">Select a FLO</option>
+                        <option value="Si">------------ Si -----------</option>
+                        <option value="No">------------ No ----------</option>
+                    </select>
+                    <br />
+                    <select asp-for="FRON2" class="form-control form-control-sm col-sm-6">
+                        <option value="">Select a FRON2</option>
+                        <option value="Si">------------ Si -----------</option>
+                        <option value="No">------------ No ----------</option>
+                    </select>
+                    <br />
+                    <select asp-for="Hosp" class="form-control form-control-sm col-sm-6">
+                        <option value="">Select a Hosp</option>
+                        <option value="Si">------------ Si -----------</option>
+                        <option value="No">------------ No ----------</option>
+                    </select>
+                    <label asp-for="Monitoring" class="col-form-label"></label>
+                    <br />
+                    <indicators select-for="Monitoring" selected-value="@Model.Monitoring" class="form-control form-control-sm col-sm-5" asp-for="Monitoring"></indicators>
+                </div>
+                <div class="col-sm">
+                    <br />
+                    <select asp-for="EPVoltage" class="form-control form-control-sm col-sm-8">
+                        <option value="">Select a EPVoltage</option>
+                        <option value="Si">------------------ Si ----------------</option>
+                        <option value="No">------------------ No ---------------</option>
+                    </select>
+                    <br />
+                    <select asp-for="INA" class="form-control form-control-sm col-sm-6">
+                        <option value="">Select a INA</option>
+                        <option value="Si">------------ Si -----------</option>
+                        <option value="No">------------ No ----------</option>
+                    </select>
+                    <br />
+                    <select asp-for="INCP" class="form-control form-control-sm col-sm-6">
+                        <option value="">Select a INCP</option>
+                        <option value="Si">------------ Si -----------</option>
+                        <option value="No">------------ No ----------</option>
+                    </select>
+                    <br />
+                    <select asp-for="Ind" class="form-control form-control-sm col-sm-6">
+                        <option value="">Select a Ind</option>
+                        <option value="Si">------------ Si -----------</option>
+                        <option value="No">------------ No ----------</option>
+                    </select>
+                    <br />
+                    <select asp-for="LoadWeigher" class="form-control form-control-sm col-sm-8">
+                        <option value="">Select a LoadWeigher</option>
+                        <option value="Si">------------------ Si ----------------</option>
+                        <option value="No">------------------ No ---------------</option>
+                    </select>
+                    <br />
+                    <select asp-for="TopAccess" class="form-control form-control-sm col-sm-6">
+                        <option value="">Select a TopAccess</option>
+                        <option value="Si">------------ Si -----------</option>
+                        <option value="No">------------ No ----------</option>
+                    </select>
+                    <br />
+                    <select asp-for="CRO" class="form-control form-control-sm col-sm-6">
+                        <option value="">Select a CRO</option>
+                        <option value="Si">------------ Si -----------</option>
+                        <option value="No">------------ No ----------</option>
+                    </select>
+                    <br />
+                    <select asp-for="CarCallRead" class="form-control form-control-sm col-sm-6">
+                        <option value="">Select a CarCallRead</option>
+                        <option value="Si">------------ Si -----------</option>
+                        <option value="No">------------ No ----------</option>
+                    </select>
+                    <label asp-for="TopAccessLocation" class="col-form-label"></label>
+                    <br />
+                    <indicators select-for="AccessSWLocation" selected-value="@Model.TopAccessLocation" class="form-control-sm form-control col-sm-3" asp-for="TopAccessLocation"></indicators>
+                </div>
+                <div class="col-sm">
+                    Roped Hydro Governor Model: <input type="text" class="form-control form-control-sm col-sm-10" asp-for="GovModel">
+                    <label asp-for="SwitchStyle" class="col-form-label"></label>
+                    <br />
+                    <custom-select select-for="SwitchStyle" selected-value="@Model.SwitchStyle" class="form-control-sm form-control col-sm-4" asp-for="SwitchStyle"></custom-select>
+                    <br />
+                    <label asp-for="BottomAccessLocation" class="col-form-label"></label>
+                    <br />
+                    <indicators select-for="AccessSWLocation" selected-value="@Model.BottomAccessLocation" class="form-control-sm form-control col-sm-3" asp-for="BottomAccessLocation"></indicators>
+                    <br />
+                    <label asp-for="EPContact" class="col-form-label"></label>
+                    <br />
+                    <indicators select-for="EPContact" selected-value="@Model.EPContact" class="form-control-sm form-control col-sm-3" asp-for="EPContact"></indicators>
+                    <br />
+                    <label asp-for="EPCarsNumber" class="col-form-label"></label>
+                    <br />
+                    <indicators select-for="EPCars" selected-value="@Model.EPCarsNumber" class="form-control-sm form-control col-sm-3" asp-for="EPCarsNumber"></indicators>
+                    <br />
+                    <label asp-for="INCPButtons" class="col-form-label"></label>
+                    <br />
+                    <indicators select-for="INCPButtons" selected-value="@Model.INCPButtons" class="form-control-sm form-control col-sm-7" asp-for="INCPButtons"></indicators>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="collapse" id="collapse5">
+        <div class="card card-body">
+
+            <div class="row">
+                <div class="col-sm">
+                    <label asp-for="CarCallsVoltage" class="col-form-label"></label>
+                    <br />
+                    <indicators select-for="Volts_Value" selected-value="@Model.CarCallsVoltage" asp-for="CarCallsVoltage" class="form-control form-control-sm col-sm-7"></indicators>
+                    <label asp-for="CarCallsVoltageType" class="col-form-label"></label>
+                    <br />
+                    <indicators select-for="Volts_Type" selected-value="@Model.CarCallsVoltageType" asp-for="CarCallsVoltageType" class="form-control form-control-sm col-sm-7"></indicators>
+                    <br />
+                    <select asp-for="CarLanterns" class="form-control form-control-sm col-sm-6">
+                        <option value="">Select a CarLanterns</option>
+                        <option value="Si">------------ Si -----------</option>
+                        <option value="No">------------ No ----------</option>
+                    </select>
+                </div>
+                <div class="col-sm">
+                    <label asp-for="HallCallsVoltage" class="col-form-label"></label>
+                    <br />
+                    <indicators select-for="Volts_Value" selected-value="@Model.HallCallsVoltage" asp-for="HallCallsVoltage" class="form-control-sm form-control col-sm-7"></indicators>
+                    <label asp-for="HallCallsVoltageType" class="col-form-label"></label>
+                    <br />
+                    <indicators select-for="Volts_Type" selected-value="@Model.HallCallsVoltageType" asp-for="HallCallsVoltageType" class="form-control-sm form-control col-sm-7"></indicators>
+                    <label asp-for="HallCallsType" class="col-form-label"></label>
+                    <br />
+                    <indicators select-for="CallType" selected-value="@Model.HallCallsType" asp-for="HallCallsType" class="form-control-sm form-control col-sm-7"></indicators>
+                </div>
+                <div class="col-sm">
+                    <br />
+                    <select asp-for="HallLanterns" class="form-control form-control-sm col-sm-6">
+                        <option value="">Select a HallLanterns</option>
+                        <option value="Si">------------ Si -----------</option>
+                        <option value="No">------------ No ----------</option>
+                    </select>
+                    <br />
+                    <select asp-for="HallPI" class="form-control form-control-sm col-sm-6">
+                        <option value="">Select a HallPI</option>
+                        <option value="Si">------------ Si -----------</option>
+                        <option value="No">------------ No ----------</option>
+                    </select>
+                    <br />
+                    <select asp-for="PassingFloor" class="form-control form-control-sm col-sm-6">
+                        <option value="">Select a PassingFloor</option>
+                        <option value="Si">------------ Si -----------</option>
+                        <option value="No">------------ No ----------</option>
+                    </select>
+                </div>
+                <div class="col-sm">
+                    <label asp-for="IndicatorsVoltage" class="col-form-label"></label>
+                    <br />
+                    <volts select-for="Volts_Value" selected-value="@Model.IndicatorsVoltage" asp-for="IndicatorsVoltage" class="form-control-sm form-control col-sm-7"></volts>
+                    <label asp-for="IndicatorsVoltageType" class="col-form-label"></label>
+                    <br />
+                    <indicators select-for="Volts_Type" selected-value="@Model.IndicatorsVoltageType" asp-for="IndicatorsVoltageType" class="form-control-sm form-control col-sm-7"></indicators>
+                    <br />
+                    <select asp-for="VoiceAnnunciationPI" class="form-control form-control-sm col-sm-7">
+                        <option value="">Select a VoiceAnnunciationPI</option>
+                        <option value="Si">------------ Si -----------</option>
+                        <option value="No">------------ No ----------</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="collapse" id="collapse6">
+        <div class="card card-body">
+
+            <div class="row">
+                <div class="col-sm">
+
+                </div>
+                <div class="col-sm">
+
+                </div>
+                <div class="col-sm">
+                    3
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="collapse" id="collapse7">
+        <div class="card card-body">
+
+            <div class="row">
+                <div class="col-sm">
+                    1
+                </div>
+            </div>
+        </div>
+    </div>
     <br />
     <button class="btn btn-dark" type="submit" value="Search"><i class="fa fa-search" aria-hidden="true"></i></button>
 </form>
@@ -137,3 +513,23 @@
      page-class-selected="btn-primary" page-url-jobType="@Model.JobsSearchList"
      class="btn-group pull-right m-1">
 </div>
+@{
+    <script type="text/javascript">
+        $("#BatterySelect").ready(function (){
+            $("#BatteryBrand").hide();
+        });
+
+        $(document).ready(function () {
+            $("#BatterySelect").change(function () {
+                $("select option:selected").each(function () {
+                    if ($(this).attr("value") == "No" || ("value") == "") {
+                        $("#BatteryBrand").hide();
+                    }
+                    if ($(this).attr("value") == "Si") {
+                        $("#BatteryBrand").show();
+                    }
+                });
+            }).change();
+        });
+    </script>
+ }
