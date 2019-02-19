@@ -48,6 +48,9 @@ namespace ProdFloor.Models.ViewModels.Job
         public int InputPhase { get; set; }
         public int InputVoltage { get; set; }
         public int NumOfStops { get; set; }
+        public int DoorOperatorID { get;  set; }
+        public string DoorGate { get; set; }
+        public string DoorBrand { get; set; }
 
         //Atributos de HydroSpecifics
         public string Battery { get; set; }

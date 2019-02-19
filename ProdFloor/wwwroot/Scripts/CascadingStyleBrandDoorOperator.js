@@ -14,6 +14,7 @@ $(function () {
                         },
                         success: function (data) {
                             $("#Brand").prop("disabled", false);
+                            Brand.append('<option value="">' + " --- Please Select a Brand--- " + '</option>');
                             $.each(data, function (idx, brand) {
                                 Brand.append('<option value="' + brand.value + '">' + brand.text + '</option>');
                             });
@@ -38,6 +39,7 @@ $(function () {
                         },
                         success: function (data) {
                             $("#DoorOperatorID").prop("disabled", false);
+                            DoorOperatorID.append('<option value="">' + " ---Please Select a Door Operator--- " + '</option>');
                             $.each(data, function (idx, doorOperatorID) {
                                 DoorOperatorID.append('<option value="' + doorOperatorID.value + '">' + doorOperatorID.text + '</option>');
                             });

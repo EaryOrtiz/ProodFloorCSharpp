@@ -14,6 +14,7 @@ $(function () {
                         },
                         success: function (data) {
                             $("#StateID").prop("disabled", false);
+                            StateID.append('<option value="">' + " --- Please Select a State--- " + '</option>');
                             $.each(data, function (idx, state) {
                                 StateID.append('<option value="' + state.value + '">' + state.text + '</option>');
                             });
@@ -38,6 +39,7 @@ $(function () {
                         },
                         success: function (data) {
                             $("#CityID").prop("disabled", false);
+                            CityID.append('<option value="">' + " --- Please Select a City--- " + '</option>');
                             $.each(data, function (idx, City) {
                                 CityID.append('<option value="' + City.value + '">' + City.text + '</option>');
                             });

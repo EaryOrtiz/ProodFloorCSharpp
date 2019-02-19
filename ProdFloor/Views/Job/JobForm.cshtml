@@ -64,15 +64,13 @@
 </div>
 <div class="form-group row">
     <label asp-for="CurrentJob.CountryID" class="col-sm-2 col-form-label"></label>
-    <select id="CountryID" asp-for="@Model.CurrentJob.CountryID" class="form-control-sm" asp-items="ViewBag.CountryID">
-        <option value="default">-- Select Country --</option>
-    </select>
+    <country-select id="CountryID" asp-for="@Model.CurrentJob.CountryID" class="form-control-sm" selected-value="@Model.CurrentJob.CityID">
+    </country-select>
 </div>
 <div class="form-group row">
     <label asp-for="CurrentJob.StateID" class="col-sm-2 col-form-label"></label>
-    <select id="StateID" asp-for="@Model.CurrentJob.StateID" class="form-control-sm" asp-items="ViewBag.StateID">
-        <option value="default">-- Select State --</option>
-    </select>
+    <state-select id="StateID" asp-for="@Model.CurrentJob.StateID" class="form-control-sm" selected-value="@Model.CurrentJob.CityID">
+    </state-select>
 </div>
 <div class="form-group row">
     <label asp-for="CurrentJob.CityID" class="col-sm-2 col-form-label"></label>

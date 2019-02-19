@@ -600,14 +600,21 @@ namespace ProdFloor.Infrastructure
             }
             TagBuilder m_tag = new TagBuilder("option");
             m_tag.Attributes["value"] = "";
-            m_tag.InnerHtml.Append("Please select one");
+            m_tag.InnerHtml.Append("-- Select State --");
             result.InnerHtml.AppendHtml(m_tag);
+            int stateID = 0;
+            if (SelectedValue != 0)
+            {
+                City selectedCity = itemsrepository.Cities.FirstOrDefault(c => c.CityID == SelectedValue);
+                State selectedState = itemsrepository.States.FirstOrDefault(s => s.StateID == selectedCity.StateID);
+                stateID = selectedCity.StateID;
+            }
             IQueryable<State> state = itemsrepository.States.AsQueryable();
             foreach (State states in state)
             {
                 TagBuilder tag = new TagBuilder("option");
                 tag.Attributes["value"] = states.StateID.ToString();
-                if (states.StateID == SelectedValue)
+                if (states.StateID == stateID)
                 {
                     tag.Attributes["selected"] = "selected";
                 }
@@ -650,15 +657,22 @@ namespace ProdFloor.Infrastructure
                 output.Attributes.Add("name", name);
             }
             TagBuilder m_tag = new TagBuilder("option");
-            m_tag.Attributes["value"] = "";
-            m_tag.InnerHtml.Append("Please select one");
+            m_tag.Attributes["value"] = "default";
+            m_tag.InnerHtml.Append("-- Select Country --");
             result.InnerHtml.AppendHtml(m_tag);
+            int countryID = 0;
+            if (SelectedValue != 0)
+            {
+                City selectedCity = itemsrepository.Cities.FirstOrDefault(c => c.CityID == SelectedValue);
+                State selectedState = itemsrepository.States.FirstOrDefault(s => s.StateID == selectedCity.StateID);
+                countryID = selectedState.CountryID;
+            }
             IQueryable<Country> country = itemsrepository.Countries.AsQueryable();
             foreach (Country countries in country)
             {
                 TagBuilder tag = new TagBuilder("option");
                 tag.Attributes["value"] = countries.CountryID.ToString();
-                if (countries.CountryID == SelectedValue)
+                if (countries.CountryID == countryID)
                 {
                     tag.Attributes["selected"] = "selected";
                 }
@@ -868,6 +882,121 @@ namespace ProdFloor.Infrastructure
                     tag.Attributes["selected"] = "selected";
                 }
                 tag.InnerHtml.Append(doors.Name.ToString());
+                result.InnerHtml.AppendHtml(tag);
+            }
+            output.Content.AppendHtml(result.InnerHtml);
+        }
+    }
+
+    public class DoorOperatorStyleSelectTagHelper : TagHelper
+    {
+        private IItemRepository itemsrepository;
+
+        private IUrlHelperFactory urlHelperFactory;
+
+        public ModelExpression AspFor { get; set; }
+
+        public DoorOperatorStyleSelectTagHelper(IUrlHelperFactory helperFactory, IItemRepository itemsrepo)
+        {
+            urlHelperFactory = helperFactory;
+            itemsrepository = itemsrepo;
+        }
+
+        [ViewContext]
+        [HtmlAttributeNotBound]
+        public ViewContext ViewContext { get; set; }
+
+        public int SelectedValue { get; set; }
+
+        public override void Process(TagHelperContext context, TagHelperOutput output)
+        {
+            IUrlHelper urlHelper = urlHelperFactory.GetUrlHelper(ViewContext);
+            output.TagName = "select";
+            TagBuilder result = new TagBuilder("select");
+            string name = this.AspFor.Name;
+            if (!String.IsNullOrEmpty(name))
+            {
+                output.Attributes.Add("id", name);
+                output.Attributes.Add("name", name);
+            }
+            TagBuilder m_tag = new TagBuilder("option");
+            m_tag.Attributes["value"] = "";
+            m_tag.InnerHtml.Append("Please select a Style");
+            result.InnerHtml.AppendHtml(m_tag);
+            int doorOperatorID = 0;
+            if (SelectedValue != 0)
+            {
+                DoorOperator selectedDoor = itemsrepository.DoorOperators.FirstOrDefault(c => c.DoorOperatorID == SelectedValue);
+                doorOperatorID = selectedDoor.DoorOperatorID;
+            }
+            IQueryable<DoorOperator> door = itemsrepository.DoorOperators.FromSql("select * from dbo.DoorOperators where dbo.DoorOperators.DoorOperatorID " +
+                "in (Select max(dbo.DoorOperators.DoorOperatorID) FROM dbo.DoorOperators group by dbo.DoorOperators.Style)").AsQueryable();
+            foreach (DoorOperator doors in door)
+            {
+                TagBuilder tag = new TagBuilder("option");
+                tag.Attributes["value"] = doors.Style;
+                if (doors.DoorOperatorID == doorOperatorID)
+                {
+                    tag.Attributes["selected"] = "selected";
+                }
+                tag.InnerHtml.Append(doors.Style);
+                result.InnerHtml.AppendHtml(tag);
+            }
+            output.Content.AppendHtml(result.InnerHtml);
+        }
+    }
+
+    public class DoorOperatorBrandSelectTagHelper : TagHelper
+    {
+        private IItemRepository itemsrepository;
+
+        private IUrlHelperFactory urlHelperFactory;
+
+        public ModelExpression AspFor { get; set; }
+
+        public DoorOperatorBrandSelectTagHelper(IUrlHelperFactory helperFactory, IItemRepository itemsrepo)
+        {
+            urlHelperFactory = helperFactory;
+            itemsrepository = itemsrepo;
+        }
+
+        [ViewContext]
+        [HtmlAttributeNotBound]
+        public ViewContext ViewContext { get; set; }
+
+        public int SelectedValue { get; set; }
+
+        public override void Process(TagHelperContext context, TagHelperOutput output)
+        {
+            IUrlHelper urlHelper = urlHelperFactory.GetUrlHelper(ViewContext);
+            output.TagName = "select";
+            TagBuilder result = new TagBuilder("select");
+            string name = this.AspFor.Name;
+            if (!String.IsNullOrEmpty(name))
+            {
+                output.Attributes.Add("id", name);
+                output.Attributes.Add("name", name);
+            }
+            TagBuilder m_tag = new TagBuilder("option");
+            m_tag.Attributes["value"] = "";
+            m_tag.InnerHtml.Append("Please select a Brand");
+            result.InnerHtml.AppendHtml(m_tag);
+            int doorOperatorID = 0;
+            if (SelectedValue != 0)
+            {
+                DoorOperator selectedDoor = itemsrepository.DoorOperators.FirstOrDefault(c => c.DoorOperatorID == SelectedValue);
+                doorOperatorID = selectedDoor.DoorOperatorID;
+            }
+            IQueryable<DoorOperator> door = itemsrepository.DoorOperators.AsQueryable();
+            foreach (DoorOperator doors in door)
+            {
+                TagBuilder tag = new TagBuilder("option");
+                tag.Attributes["value"] = doors.DoorOperatorID.ToString();
+                if (doors.DoorOperatorID == doorOperatorID)
+                {
+                    tag.Attributes["selected"] = "selected";
+                }
+                tag.InnerHtml.Append(doors.Brand);
                 result.InnerHtml.AppendHtml(tag);
             }
             output.Content.AppendHtml(result.InnerHtml);
@@ -1163,10 +1292,10 @@ namespace ProdFloor.Infrastructure
             }
             TagBuilder m_tag = new TagBuilder("option");
             m_tag.Attributes["value"] = "";
-            m_tag.InnerHtml.Append("Please select a JobType");
+            m_tag.InnerHtml.Append("Please select a Landing System");
             result.InnerHtml.AppendHtml(m_tag);
             IQueryable<LandingSystem> landingSys = itemsrepository.LandingSystems.FromSql("select * from dbo.LandingSystems " +
-                "Where dbo.LandingSystems.LandingSystemsID IN (Select dbo.HoistWayDatas.LandingSystemsID From dbo.HoistWayDatas)").AsQueryable();
+                "Where dbo.LandingSystems.LandingSystemID IN (Select dbo.HoistWayDatas.LandingSystemID From dbo.HoistWayDatas)").AsQueryable();
             foreach (LandingSystem landingsSys in landingSys)
             {
                 TagBuilder tag = new TagBuilder("option");

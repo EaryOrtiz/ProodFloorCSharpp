@@ -13,6 +13,7 @@ $(function () {
                         },
                         success: function (data) {
                             $("#StateID").prop("disabled", false);
+                            StateID.append('<option value="">' + " --- Please Select a State--- " + '</option>');
                             $.each(data, function (idx, state) {
                                 StateID.append('<option value="' + state.value + '">' + state.text + '</option>');
                             });

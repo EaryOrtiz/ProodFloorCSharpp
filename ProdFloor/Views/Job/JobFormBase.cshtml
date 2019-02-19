@@ -61,15 +61,13 @@
 </div>
 <div class="form-group row">
     <label asp-for="CountryID" class="col-sm-2 col-form-label"></label>
-    <select id="CountryID" asp-for="@Model.CountryID" class="form-control-sm" asp-items="ViewBag.CountryID">
-        <option value="default">-- Select Country --</option>
-    </select>
+    <country-select id="CountryID" asp-for="@Model.CountryID" class="form-control-sm" selected-value="@Model.CityID">
+    </country-select>
 </div>
 <div class="form-group row">
     <label asp-for="StateID" class="col-sm-2 col-form-label"></label>
-    <select id="StateID" asp-for="@Model.StateID" class="form-control-sm" asp-items="ViewBag.StateID">
-        <option value="default">-- Select State --</option>
-    </select>
+    <state-select id="StateID" asp-for="@Model.StateID" class="form-control-sm" selected-value="@Model.CityID">
+    </state-select>
 </div>
 <div class="form-group row">
     <label asp-for="CityID" class="col-sm-2 col-form-label"></label>

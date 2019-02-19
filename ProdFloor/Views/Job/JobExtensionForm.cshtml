@@ -44,19 +44,17 @@
         </div>
         <div class="form-group row">
             <label asp-for="CurrentJobExtension.DoorGate" class="col-sm-5 col-form-label"></label>
-            <select id="Style" asp-for="@Model.CurrentJobExtension.DoorGate" class="form-control-sm" asp-items="ViewBag.Style">
-                <option value="default">-- Select a Door Style --</option>
-            </select>
+            <door-operator-style-select id="Style" asp-for="@Model.CurrentJobExtension.DoorGate" selected-value="@Model.CurrentJobExtension.DoorOperatorID" class="form-control form-control-sm col-sm-3">
+            </door-operator-style-select>
         </div>
         <div class="form-group row">
             <label asp-for="CurrentJobExtension.DoorBrand" class="col-sm-5 col-form-label"></label>
-            <select id="Brand" asp-for="@Model.CurrentJobExtension.DoorBrand" class="form-control-sm" asp-items="ViewBag.Brand2">
-                <option value="default">-- Select a Door Brand --</option>
-            </select>
+            <door-operator-brand-select id="Brand" asp-for="@Model.CurrentJobExtension.DoorBrand" selected-value="@Model.CurrentJobExtension.DoorOperatorID" class="form-control form-control-sm col-sm-3">
+            </door-operator-brand-select>
         </div>
         <div class="form-group row">
             <label asp-for="CurrentJobExtension.DoorOperatorID" class="col-sm-5 col-form-label"></label>
-            <select id="DoorOperatorID" asp-for="@Model.CurrentJobExtension.DoorOperatorID" class="form-control-sm" asp-items="ViewBag.DoorOperatorID">
+            <select id="DoorOperatorID" asp-for="@Model.CurrentJobExtension.DoorOperatorID" class="form-control form-control-sm col-sm-3" asp-items="ViewBag.DoorOperatorID">
                 <option value="">-- Select a Door Operator --</option>
             </select>
         </div>

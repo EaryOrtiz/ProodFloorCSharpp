@@ -2,6 +2,9 @@
 @{
     ViewBag.Title = "JobsSearchList";
     Layout = "_AdminLayoutWO";
+
+    <script src="~/Scripts/CascadingCountryStateCity.js" type="text/javascript"></script>
+    <script src="~/Scripts/CascadingStyleBrandDoorOperator.js" type="text/javascript"></script>
 }
 <div class="row" style="padding-right:20px">
     <h2 class="col-sm-10"> Job Search List</h2>
@@ -24,10 +27,10 @@
     <button class="btn btn-success" type="button" data-toggle="collapse" data-target="#collapse5" aria-expanded="false" aria-controls="collapse5">
         Indicators
     </button>
-    <button class="btn btn-success" type="button" data-toggle="collapse" data-target="#collapse6" aria-expanded="false" aria-controls="collapse6">
+    <button class="btn btn-dark" type="button" data-toggle="collapse" data-target="#collapse6" aria-expanded="false" aria-controls="collapse6">
         HoistWayData
     </button>
-    <button class="btn btn-success" type="button" data-toggle="collapse" data-target="#collapse7" aria-expanded="false" aria-controls="collapse7">
+    <button class="btn btn-light" type="button" data-toggle="collapse" data-target="#collapse7" aria-expanded="false" aria-controls="collapse7">
         Special Features
     </button>
 </p>
@@ -40,18 +43,22 @@
                     Job Name: <input type="text" class="form-control form-control-sm col-sm-10" asp-for="NameJobSearch">
                     Job Number: <input type="text" class="form-control form-control-sm col-sm-10" asp-for="NumJobSearch">
                     Job PO Number: <input type="text" class="form-control form-control-sm col-sm-10" asp-for="POJobSearch">
+                    Job Cust Number: <input type="text" class="form-control form-control-sm col-sm-10" asp-for="CustJobSearch">
                     <br />
                 </div>
                 <div class="col-sm">
-                    Job Cust Number: <input type="text" class="form-control form-control-sm col-sm-10" asp-for="CustJobSearch">
                     Contractor Name: <input type="text" class="form-control form-control-sm col-sm-10" asp-for="ContractorJobSearch">
                     Enginner Number: <input type="text" class="form-control form-control-sm col-sm-10" asp-for="EngID">
-                </div>
-                <div class="col-sm">
                     Cross Approval Engineer Number: <input type="text" class="form-control form-control-sm col-sm-10" asp-for="CrossAppEngID">
                     <br />
                     <select asp-for="StatusJobSearch" class="form-control form-control-sm col-sm-10" asp-items="Model.Status"><option value="">Select a Status</option></select>
+                </div>
+                <div class="col-sm">
                     <br />
+                    <country-select id="CountryID" asp-for="@Model.CountryID" class="form-control form-control-sm col-sm-10"></country-select>
+                    <br /><br />
+                    <state-select id="StateID" asp-for="@Model.StateID" class="form-control form-control-sm col-sm-10"></state-select>
+                    <br /><br />
                     <city-select selected-value="@Model.CityID" class="form-control form-control-sm col-sm-10" asp-for="CityID"></city-select>
                 </div>
                 <div class="col-sm">
@@ -71,6 +78,12 @@
                     Input Phase: <input type="text" class="form-control form-control-sm col-sm-10" asp-for="InputPhase">
                     Input Voltage: <input type="text" class="form-control form-control-sm col-sm-10" asp-for="InputVoltage">
                     Number Of Stops: <input type="text" class="form-control form-control-sm col-sm-10" asp-for="NumOfStops">
+                    <br />
+                    <select asp-for="AuxCop" class="form-control form-control-sm col-sm-5">
+                        <option value="">Select a AuxCop</option>
+                        <option value="Si">-------- Si ---------</option>
+                        <option value="No">-------- No --------</option>
+                    </select>
                 </div>
                 <div class="col-sm">
                     <br />
@@ -78,10 +91,22 @@
                     <br />
                     <job-type-maini-in-job-select selected-value="@Model.JobTypeMain" class="form-control form-control-sm col-sm-10" asp-for="JobTypeMain"></job-type-maini-in-job-select>
                     <br />
-                    <select asp-for="AuxCop" class="form-control form-control-sm col-sm-5">
-                        <option value="">Select a AuxCop</option>
-                        <option value="Si">-------- Si ---------</option>
-                        <option value="No">-------- No --------</option>
+                    <select asp-for="MechSafEdge" class="form-control form-control-sm col-sm-6">
+                        <option value="">Select a MechSafEdge</option>
+                        <option value="Si">------------ Si -----------</option>
+                        <option value="No">------------ No ----------</option>
+                    </select>
+                    <br />
+                    <select asp-for="Scop" class="form-control form-control-sm col-sm-6">
+                        <option value="">Select a SCOP</option>
+                        <option value="Si">------------ Si -----------</option>
+                        <option value="No">------------ No ----------</option>
+                    </select>
+                    <br />
+                    <select asp-for="Shc" class="form-control form-control-sm col-sm-6">
+                        <option value="">Select a SHC</option>
+                        <option value="Si">------------ Si -----------</option>
+                        <option value="No">------------ No ----------</option>
                     </select>
                     <br />
                 </div>
@@ -113,23 +138,14 @@
                 </div>
                 <div class="col-sm">
                     <br />
-                    <select asp-for="MechSafEdge" class="form-control form-control-sm col-sm-6">
-                        <option value="">Select a MechSafEdge</option>
-                        <option value="Si">------------ Si -----------</option>
-                        <option value="No">------------ No ----------</option>
-                    </select>
+                    <door-operator-style-select id="Style" asp-for="@Model.DoorGate" class="form-control form-control-sm col-sm-7">
+                    </door-operator-style-select>
                     <br />
-                    <select asp-for="Scop" class="form-control form-control-sm col-sm-6">
-                        <option value="">Select a SCOP</option>
-                        <option value="Si">------------ Si -----------</option>
-                        <option value="No">------------ No ----------</option>
-                    </select>
+                    <door-operator-brand-select id="Brand" asp-for="@Model.DoorBrand" class="form-control form-control-sm col-sm-7">
+                    </door-operator-brand-select>
                     <br />
-                    <select asp-for="Shc" class="form-control form-control-sm col-sm-6">
-                        <option value="">Select a SHC</option>
-                        <option value="Si">------------ Si -----------</option>
-                        <option value="No">------------ No ----------</option>
-                    </select>
+                    <door-operator-select id="DoorOperatorID" asp-for="@Model.DoorOperatorID" class="form-control form-control-sm col-sm-7">
+                    </door-operator-select>
                     <br />
                 </div>
             </div>
@@ -475,10 +491,15 @@
 
             <div class="row">
                 <div class="col-sm">
-
+                    Number of Hoistways: <input type="text" class="form-control form-control-sm col-sm-10" asp-for="HoistWaysNumber">
+                    Number of Machine Rooms: <input type="text" class="form-control form-control-sm col-sm-10" asp-for="MachineRooms">
+                    Capacity: <input type="text" class="form-control form-control-sm col-sm-10" asp-for="Capacity">
                 </div>
                 <div class="col-sm">
-
+                    Up Direction Speed: <input type="text" class="form-control form-control-sm col-sm-10" asp-for="UpSpeed">
+                    Down Direction Speeds: <input type="text" class="form-control form-control-sm col-sm-10" asp-for="DownSpeed">
+                    <br />
+                    <landing-sys-in-job-select selected-value="@Model.LandingSystemID" class="form-control form-control-sm col-sm-10" asp-for="LandingSystemID"></landing-sys-in-job-select>
                 </div>
                 <div class="col-sm">
                     3
@@ -491,7 +512,7 @@
 
             <div class="row">
                 <div class="col-sm">
-                    1
+                    Description: <input type="text" class="form-control form-control-sm col-sm-10" asp-for="Description">
                 </div>
             </div>
         </div>
@@ -515,7 +536,7 @@
 </div>
 @{
     <script type="text/javascript">
-        $("#BatterySelect").ready(function (){
+        $("#BatterySelect").ready(function () {
             $("#BatteryBrand").hide();
         });
 
@@ -532,4 +553,4 @@
             }).change();
         });
     </script>
- }
+}

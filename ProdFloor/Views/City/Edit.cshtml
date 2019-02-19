@@ -10,25 +10,21 @@
     <input type="hidden" asp-for="CityID" />
     <div class="form-group">
         <label asp-for="CountryID" class="col-sm-1 col-form-label"></label>
-        <select id="CountryID" asp-for="@Model.CountryID" class="form-control-sm " asp-items="ViewBag.CountryID">
-            <option value="default">-- Select Country --</option>
-        </select>
+        <country-select class="form-control-sm" asp-for="CountryID"></country-select>
     </div>
     <div class="form-group">
         <label asp-for="StateID" class="col-sm-1 col-form-label"></label>
-        <select id="StateID" asp-for="@Model.StateID" class="form-control-sm" asp-items="ViewBag.StateID">
-            <option value="default">-- Select State --</option>
-        </select>
+        <state-select class="form-control-sm" asp-for="StateID"></state-select>
     </div>
     <div class="form-group ">
-        <label asp-for="Name" class="col-sm-1 col-form-label" ></label>
+        <label asp-for="Name" class="col-sm-1 col-form-label"></label>
         <input asp-for="Name" class="form-control-sm col-sm-2" />
         <span asp-validation-for="Name" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label asp-for="FirecodeID" class="col-sm-1 col-form-label"></label>
-            <fire-code-select selected-value="@Model.FirecodeID" class="form-control-sm" asp-for="FirecodeID"></fire-code-select>
-            <span asp-validation-for="FirecodeID" class="text-danger"></span>
+        <fire-code-select selected-value="@Model.FirecodeID" class="form-control-sm" asp-for="FirecodeID"></fire-code-select>
+        <span asp-validation-for="FirecodeID" class="text-danger"></span>
     </div>
     <div class=" text-center">
         <button class="btn btn-primary" type="submit">Save</button>
