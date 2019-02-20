@@ -458,17 +458,20 @@ namespace ProdFloor.Models
         public bool FrontSixteenthServed { get; set; }
         public bool RearSixteenthServed { get; set; }
 
-        public bool AnyRear()
+        public bool AnyRear
         {
-            if (RearFirstServed == true || RearSecondServed == true || RearThirdServed == true || RearFourthServed == true || RearFifthServed == true || RearSexthServed == true
-                || RearSeventhServed == true || RearEightServed == true || RearNinthServed == true || RearTenthServed == true
-                || RearEleventhServed == true || RearTwelvethServed == true || RearThirteenthServed == true || RearFourteenthServed == true
-                || FrontFifteenthServed == true || RearSixteenthServed == true)
+            get
             {
-                return true;
+                if (RearFirstServed == true || RearSecondServed == true || RearThirdServed == true || RearFourthServed == true || RearFifthServed == true || RearSexthServed == true
+                    || RearSeventhServed == true || RearEightServed == true || RearNinthServed == true || RearTenthServed == true
+                    || RearEleventhServed == true || RearTwelvethServed == true || RearThirteenthServed == true || RearFourteenthServed == true
+                    || FrontFifteenthServed == true || RearSixteenthServed == true)
+                {
+                    return true;
+                }
+                
+                return false;
             }
-
-            return false;
         }
 
         [Required(ErrorMessage = "Please enter a number of hoistways")]
