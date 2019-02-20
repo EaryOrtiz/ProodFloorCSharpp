@@ -458,6 +458,19 @@ namespace ProdFloor.Models
         public bool FrontSixteenthServed { get; set; }
         public bool RearSixteenthServed { get; set; }
 
+        public bool AnyRear()
+        {
+            if (RearFirstServed == true || RearSecondServed == true || RearThirdServed == true || RearFourthServed == true || RearFifthServed == true || RearSexthServed == true
+                || RearSeventhServed == true || RearEightServed == true || RearNinthServed == true || RearTenthServed == true
+                || RearEleventhServed == true || RearTwelvethServed == true || RearThirteenthServed == true || RearFourteenthServed == true
+                || FrontFifteenthServed == true || RearSixteenthServed == true)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
         [Required(ErrorMessage = "Please enter a number of hoistways")]
         [Display(Name = "Number of Hoistways")]
         public int HoistWaysNumber { get; set; }

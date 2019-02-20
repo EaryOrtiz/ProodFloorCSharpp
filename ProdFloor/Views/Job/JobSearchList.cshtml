@@ -502,7 +502,12 @@
                     <landing-sys-in-job-select selected-value="@Model.LandingSystemID" class="form-control form-control-sm col-sm-10" asp-for="LandingSystemID"></landing-sys-in-job-select>
                 </div>
                 <div class="col-sm">
-                    3
+                    <br />
+                    <select asp-for="AnyRear" class="form-control form-control-sm col-sm-6">
+                        <option value="">Select a Job with Rear Floor</option>
+                        <option value="Si">------------ Si -----------</option>
+                        <option value="No">------------ No ----------</option>
+                    </select>
                 </div>
             </div>
         </div>
