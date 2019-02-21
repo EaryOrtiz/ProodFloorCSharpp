@@ -33,11 +33,11 @@ namespace ProdFloor.Controllers
             TempData["alert"] = $"alert-danger";
             TempData["message"] = $"There was an error with your request";
         }
+
         // Recibe jobType y jobPage y regresa un 
         //JobsListViewModel con los jobs filtrados por tipo y sorteados por JobID 
         public ViewResult List(int jobType, int jobPage = 1)
         {
-
             var JobCount = repository.Jobs.Count();
 
             return View(new JobsListViewModel
@@ -105,13 +105,7 @@ namespace ProdFloor.Controllers
         [HttpPost]
         public IActionResult NewJob(Job newJob)
         {
-            ViewData["CountryID"] = new SelectList(itemsrepository.Countries, "CountryID", "Name");
-            ViewData["StateID"] = new SelectList(itemsrepository.States, "StateID", "Name");
             ViewData["CityID"] = new SelectList(itemsrepository.Cities, "CityID", "Name");
-            ViewData["Style"] = new SelectList(itemsrepository.DoorOperators.FromSql("select * from dbo.DoorOperators where dbo.DoorOperators.DoorOperatorID " +
-                "in (Select max(dbo.DoorOperators.DoorOperatorID) FROM dbo.DoorOperators group by dbo.DoorOperators.Style); "), "Style", "Style");
-            ViewData["Brand2"] = new SelectList(itemsrepository.DoorOperators, "Brand", "Brand");
-            ViewData["DoorOperatorID"] = new SelectList(itemsrepository.DoorOperators, "DoorOperatorID", "Name");
             AppUser currentUser = GetCurrentUser().Result;
             if (ModelState.IsValid)
             {
@@ -148,14 +142,10 @@ namespace ProdFloor.Controllers
          */
         public IActionResult Edit(int ID)
         {
-            ViewData["CountryID"] = new SelectList(itemsrepository.Countries, "CountryID", "Name");
-            ViewData["StateID"] = new SelectList(itemsrepository.States, "StateID", "Name");
             ViewData["CityID"] = new SelectList(itemsrepository.Cities, "CityID", "Name");
-            ViewData["Style"] = new SelectList(itemsrepository.DoorOperators.FromSql("select * from dbo.DoorOperators where dbo.DoorOperators.DoorOperatorID " +
-                "in (Select max(dbo.DoorOperators.DoorOperatorID) FROM dbo.DoorOperators group by dbo.DoorOperators.Style); "), "Style", "Style");
-            ViewData["Brand2"] = new SelectList(itemsrepository.DoorOperators, "Brand", "Brand");
             ViewData["DoorOperatorID"] = new SelectList(itemsrepository.DoorOperators, "DoorOperatorID", "Name");
 
+            AppUser currentUser = GetCurrentUser().Result;
             Job job = repository.Jobs.FirstOrDefault(j => j.JobID == ID);
             if (job == null)
             {
@@ -180,6 +170,7 @@ namespace ProdFloor.Controllers
                 {
                     viewModel.SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures() };
                 }
+                viewModel.CurrentUserID = currentUser.EngID;
                 viewModel.CurrentTab = "Main";
                 return View(viewModel);
             }
@@ -193,12 +184,7 @@ namespace ProdFloor.Controllers
         [HttpPost]
         public IActionResult Edit(JobViewModel multiEditViewModel)
         {
-            ViewData["CountryID"] = new SelectList(itemsrepository.Countries, "CountryID", "Name");
-            ViewData["StateID"] = new SelectList(itemsrepository.States, "StateID", "Name");
             ViewData["CityID"] = new SelectList(itemsrepository.Cities, "CityID", "Name");
-            ViewData["Style"] = new SelectList(itemsrepository.DoorOperators.FromSql("select * from dbo.DoorOperators where dbo.DoorOperators.DoorOperatorID " +
-                "in (Select max(dbo.DoorOperators.DoorOperatorID) FROM dbo.DoorOperators group by dbo.DoorOperators.Style); "), "Style", "Style");
-            ViewData["Brand2"] = new SelectList(itemsrepository.DoorOperators, "Brand", "Brand");
             ViewData["DoorOperatorID"] = new SelectList(itemsrepository.DoorOperators, "DoorOperatorID", "Name");
 
             if (ModelState.IsValid)
@@ -268,12 +254,7 @@ namespace ProdFloor.Controllers
          */
         public IActionResult Continue(int ID)
         {
-            ViewData["CountryID"] = new SelectList(itemsrepository.Countries, "CountryID", "Name");
-            ViewData["StateID"] = new SelectList(itemsrepository.States, "StateID", "Name");
             ViewData["CityID"] = new SelectList(itemsrepository.Cities, "CityID", "Name");
-            ViewData["Style"] = new SelectList(itemsrepository.DoorOperators.FromSql("select * from dbo.DoorOperators where dbo.DoorOperators.DoorOperatorID " +
-                "in (Select max(dbo.DoorOperators.DoorOperatorID) FROM dbo.DoorOperators group by dbo.DoorOperators.Style); "), "Style", "Style");
-            ViewData["Brand2"] = new SelectList(itemsrepository.DoorOperators, "Brand", "Brand");
             ViewData["DoorOperatorID"] = new SelectList(itemsrepository.DoorOperators, "DoorOperatorID", "Name");
 
             if (repository.Jobs.FirstOrDefault(j => j.JobID == ID) != null)
@@ -322,12 +303,7 @@ namespace ProdFloor.Controllers
         [HttpPost]
         public IActionResult NextForm(JobViewModel nextViewModel)
         {
-            ViewData["CountryID"] = new SelectList(itemsrepository.Countries, "CountryID", "Name");
-            ViewData["StateID"] = new SelectList(itemsrepository.States, "StateID", "Name");
             ViewData["CityID"] = new SelectList(itemsrepository.Cities, "CityID", "Name");
-            ViewData["Style"] = new SelectList(itemsrepository.DoorOperators.FromSql("select * from dbo.DoorOperators where dbo.DoorOperators.DoorOperatorID " +
-                "in (Select max(dbo.DoorOperators.DoorOperatorID) FROM dbo.DoorOperators group by dbo.DoorOperators.Style); "), "Style", "Style");
-            ViewData["Brand2"] = new SelectList(itemsrepository.DoorOperators, "Brand", "Brand");
             ViewData["DoorOperatorID"] = new SelectList(itemsrepository.DoorOperators, "DoorOperatorID", "Name");
 
             if (nextViewModel.buttonAction == "AddSF")
@@ -463,6 +439,7 @@ namespace ProdFloor.Controllers
             var jobSearchRepo = repository.Jobs.Include( j => j._jobExtension).Include( hy => hy._HydroSpecific).Include(g => g._GenericFeatures)
                 .Include( i => i._Indicator).Include(ho => ho._HoistWayData).Include(sp => sp._SpecialFeatureslist).AsQueryable();
             IQueryable<string> statusQuery = from s in repository.Jobs orderby s.Status select s.Status;
+            #region comments
             /*
              * 
             **Campos de tipo Numerico: Primero checa que el valor introoducido este en el rango adecuado y/o mayor a cero,
@@ -476,6 +453,9 @@ namespace ProdFloor.Controllers
 
             */
             //Opciones de busqueda para el modelo principal de job
+            #endregion
+
+            #region JobModelSearch
             if (searchViewModel.NumJobSearch >= 2015000000 && searchViewModel.NumJobSearch <= 2021000000) jobSearchRepo = jobSearchRepo.Where(s => s.JobNum == searchViewModel.NumJobSearch);
             if (searchViewModel.POJobSearch >= 3000000 && searchViewModel.POJobSearch <= 4900000) jobSearchRepo = repository.Jobs.Where(s => s.PO == searchViewModel.POJobSearch);
             if (searchViewModel.EngID > 0) jobSearchRepo = jobSearchRepo.Where(s => s.EngID == searchViewModel.EngID);
@@ -488,7 +468,9 @@ namespace ProdFloor.Controllers
             if (!string.IsNullOrEmpty(searchViewModel.CustJobSearch)) jobSearchRepo = jobSearchRepo.Where(s => s.Cust.Contains(searchViewModel.CustJobSearch));
             if (!string.IsNullOrEmpty(searchViewModel.ContractorJobSearch)) jobSearchRepo = jobSearchRepo.Where(s => s.Contractor.Contains(searchViewModel.ContractorJobSearch));
             if (!string.IsNullOrEmpty(searchViewModel.StatusJobSearch)) jobSearchRepo = jobSearchRepo.Where(s => s.Status.Equals(searchViewModel.StatusJobSearch));
+            #endregion
 
+            #region JobExtension
             //Opciones de busqueda para el modelo de jobExtensions.
             if (searchViewModel.InputFrecuency >= 50 && searchViewModel.InputFrecuency <= 61) jobSearchRepo = jobSearchRepo.Where(s => s._jobExtension.InputFrecuency == searchViewModel.InputFrecuency);
             if (searchViewModel.InputPhase >= 1 && searchViewModel.InputPhase <= 3) jobSearchRepo = jobSearchRepo.Where(s => s._jobExtension.InputPhase == searchViewModel.InputPhase);
@@ -507,7 +489,9 @@ namespace ProdFloor.Controllers
             if (!string.IsNullOrEmpty(searchViewModel.MechSafEdge)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.MechSafEdge == "Si" ? s._jobExtension.MechSafEdge == true : s._jobExtension.MechSafEdge == false);
             if (!string.IsNullOrEmpty(searchViewModel.Scop)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.Scop == "Si" ? s._jobExtension.SCOP == true : s._jobExtension.SCOP == false);
             if (!string.IsNullOrEmpty(searchViewModel.Shc)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.Shc == "Si" ? s._jobExtension.SHC == true : s._jobExtension.SHC == false);
+            #endregion
 
+            #region HydroSpecifics
             //Opciones de bsuqueda para el modelo de HydroSpecifics
             if (searchViewModel.FLA > 0) jobSearchRepo = jobSearchRepo.Where(s => s._HydroSpecific.FLA == searchViewModel.FLA);
             if (searchViewModel.HP > 0) jobSearchRepo = jobSearchRepo.Where(s => s._HydroSpecific.HP == searchViewModel.HP);
@@ -527,7 +511,9 @@ namespace ProdFloor.Controllers
             if (!string.IsNullOrEmpty(searchViewModel.Resync)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.Resync == "Si" ? s._HydroSpecific.Resync == true : s._HydroSpecific.Resync == false);
             if (!string.IsNullOrEmpty(searchViewModel.Roped)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.Roped == "Si" ? s._HydroSpecific.Roped == true : s._HydroSpecific.Roped == false);
             if (!string.IsNullOrEmpty(searchViewModel.VCI)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.VCI == "Si" ? s._HydroSpecific.VCI == true : s._HydroSpecific.VCI == false);
+            #endregion
 
+            #region GenericFeatures
             //Opciones de bsuqueda para el modelo de GenericFeatures
             if (!string.IsNullOrEmpty(searchViewModel.EPCarsNumber)) jobSearchRepo = jobSearchRepo.Where(s => s._GenericFeatures.EPCarsNumber.Equals(searchViewModel.EPCarsNumber));
             if (!string.IsNullOrEmpty(searchViewModel.SwitchStyle)) jobSearchRepo = jobSearchRepo.Where(s => s._GenericFeatures.SwitchStyle.Equals(searchViewModel.SwitchStyle));
@@ -563,7 +549,9 @@ namespace ProdFloor.Controllers
             if (!string.IsNullOrEmpty(searchViewModel.CTINSPST)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.CTINSPST == "Si" ? s._GenericFeatures.CTINSPST == true : s._GenericFeatures.CTINSPST == false);
             if (!string.IsNullOrEmpty(searchViewModel.EPSelect)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.EPSelect == "Si" ? s._GenericFeatures.EPSelect == true : s._GenericFeatures.EPSelect == false);
             if (!string.IsNullOrEmpty(searchViewModel.PTI)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.PTI == "Si" ? s._GenericFeatures.PTI == true : s._GenericFeatures.PTI == false);
+            #endregion
 
+            #region HydroSpecifics
             //Opciones de bsuqueda para el modelo de HydroSpecifics
             if (searchViewModel.IndicatorsVoltage > 0) jobSearchRepo = jobSearchRepo.Where(s => s._Indicator.IndicatorsVoltage == searchViewModel.IndicatorsVoltage);
 
@@ -579,20 +567,33 @@ namespace ProdFloor.Controllers
             if (!string.IsNullOrEmpty(searchViewModel.HallPI)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.HallPI == "Si" ? s._Indicator.HallPI == true : s._Indicator.HallPI == false);
             if (!string.IsNullOrEmpty(searchViewModel.PassingFloor)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.PassingFloor == "Si" ? s._Indicator.PassingFloor == true : s._Indicator.PassingFloor == false);
             if (!string.IsNullOrEmpty(searchViewModel.VoiceAnnunciationPI)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.VoiceAnnunciationPI == "Si" ? s._Indicator.VoiceAnnunciationPI == true : s._Indicator.VoiceAnnunciationPI == false);
+            #endregion
 
+            #region HoistWayData
             //Opciones de bsuqueda para el modelo de HoistWayData
+            if (!string.IsNullOrEmpty(searchViewModel.AnyRear)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.AnyRear == "Si" ? s._HoistWayData.AnyRear == true : s._HoistWayData.AnyRear == false);
+            if (!string.IsNullOrEmpty(searchViewModel.IndependentRearOpenings)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.IndependentRearOpenings == "Si" ? 
+            s._HoistWayData.IndependentRearOpenings == true && s._HoistWayData.AnyRear == true : s._HoistWayData.IndependentRearOpenings == false && s._HoistWayData.AnyRear == true);
+
+            if (searchViewModel.RearFloorOpenings > 0) jobSearchRepo = jobSearchRepo.Where(s => s._HoistWayData.RearFloorOpenings == searchViewModel.RearFloorOpenings);
+            if (searchViewModel.TopFloor > 0) jobSearchRepo = jobSearchRepo.Where(s => s._HoistWayData.TopFloor == searchViewModel.TopFloor);
+            if (searchViewModel.FrontFloorOpenings > 0) jobSearchRepo = jobSearchRepo.Where(s => s._HoistWayData.FrontFloorOpenings == searchViewModel.FrontFloorOpenings);
+
             if (searchViewModel.Capacity > 0) jobSearchRepo = jobSearchRepo.Where(s => s._HoistWayData.Capacity == searchViewModel.Capacity);
             if (searchViewModel.DownSpeed > 0) jobSearchRepo = jobSearchRepo.Where(s => s._HoistWayData.DownSpeed == searchViewModel.DownSpeed);
             if (searchViewModel.UpSpeed > 0) jobSearchRepo = jobSearchRepo.Where(s => s._HoistWayData.UpSpeed == searchViewModel.UpSpeed);
             if (searchViewModel.HoistWaysNumber > 0) jobSearchRepo = jobSearchRepo.Where(s => s._HoistWayData.HoistWaysNumber == searchViewModel.HoistWaysNumber);
             if (searchViewModel.MachineRooms > 0) jobSearchRepo = jobSearchRepo.Where(s => s._HoistWayData.MachineRooms == searchViewModel.MachineRooms);
             if (searchViewModel.LandingSystemID > 0) jobSearchRepo = jobSearchRepo.Where(s => s._HoistWayData.LandingSystemID == searchViewModel.LandingSystemID);
+            #endregion
 
+            #region SpecialFeatures
             //Opciones de bsuqueda para el modelo de Special Features
             if (!string.IsNullOrEmpty(searchViewModel.Description))
             {
                     jobSearchRepo = jobSearchRepo.Where(a => a._SpecialFeatureslist.Any(b => b.Description.Equals(searchViewModel.Description)));
             }
+            #endregion
 
             int TotalItemsSearch = jobSearchRepo.Count() +1;
             JobSearchViewModel jobSearch = new JobSearchViewModel
