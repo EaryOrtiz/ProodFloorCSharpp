@@ -6,259 +6,259 @@
     <div class="form-group col-3 text-center">
         <label asp-for="CurrentGenericFeatures.FRON2" class="col-form-label"></label>
         <div>
-            <input asp-for="CurrentGenericFeatures.FRON2" class="form-control" />
+            <input asp-for="CurrentGenericFeatures.FRON2" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control" />
             <span asp-validation-for="CurrentGenericFeatures.FRON2" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group col-3 text-center">
         <label asp-for="CurrentGenericFeatures.Attendant" class="col-form-label text-center"></label>
         <div>
-            <input asp-for="CurrentGenericFeatures.Attendant" class="form-control" />
+            <input asp-for="CurrentGenericFeatures.Attendant" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control" />
             <span asp-validation-for="CurrentGenericFeatures.Attendant" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group col-3 text-center">
         <label asp-for="CurrentGenericFeatures.CarToLobby" class="col-form-label"></label>
         <div>
-            <input asp-for="CurrentGenericFeatures.CarToLobby" class="form-control" />
+            <input asp-for="CurrentGenericFeatures.CarToLobby" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control" />
             <span asp-validation-for="CurrentGenericFeatures.CarToLobby" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group col-3 text-center">
         <label asp-for="CurrentGenericFeatures.EQ" class="col-form-label"></label>
         <div>
-            <input asp-for="CurrentGenericFeatures.EQ" class="form-control " />
+            <input asp-for="CurrentGenericFeatures.EQ" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control " />
             <span asp-validation-for="CurrentGenericFeatures.EQ" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group col-3 text-center">
         <label asp-for="CurrentGenericFeatures.CTINSPST" class="col-form-label"></label>
         <div>
-            <input asp-for="CurrentGenericFeatures.CTINSPST" class="form-control " />
+            <input asp-for="CurrentGenericFeatures.CTINSPST" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control " />
             <span asp-validation-for="CurrentGenericFeatures.CTINSPST" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group col-3 text-center">
         <label asp-for="CurrentGenericFeatures.Roped" class="col-form-label"></label>
         <div>
-            <input asp-for="CurrentGenericFeatures.Roped" class="form-control " />
+            <input asp-for="CurrentGenericFeatures.Roped" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control " />
             <span asp-validation-for="CurrentGenericFeatures.Roped" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group col-3 text-center">
         <label asp-for="CurrentGenericFeatures.GovModel" class="col-form-label"></label>
         <div>
-            <input asp-for="CurrentGenericFeatures.GovModel" class="form-control " />
+            <input asp-for="CurrentGenericFeatures.GovModel" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control " />
             <span asp-validation-for="CurrentGenericFeatures.GovModel" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group col-3 text-center">
         <label asp-for="CurrentGenericFeatures.EMT" class="col-form-label"></label>
         <div>
-            <input asp-for="CurrentGenericFeatures.EMT" class="form-control" />
+            <input asp-for="CurrentGenericFeatures.EMT" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control" />
             <span asp-validation-for="CurrentGenericFeatures.EMT" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group col-3 text-center">
         <label asp-for="CurrentGenericFeatures.EP" class="col-form-label"></label>
         <div>
-            <input asp-for="CurrentGenericFeatures.EP" class="form-control" />
+            <input asp-for="CurrentGenericFeatures.EP" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control" />
             <span asp-validation-for="CurrentGenericFeatures.EP" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group col-3 text-center">
         <label asp-for="CurrentGenericFeatures.EPVoltage" class="col-form-label"></label>
         <div>
-            <input asp-for="CurrentGenericFeatures.EPVoltage" class="form-control" />
+            <input asp-for="CurrentGenericFeatures.EPVoltage" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control" />
             <span asp-validation-for="CurrentGenericFeatures.EPVoltage" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group col-3 text-center">
         <label asp-for="CurrentGenericFeatures.EPOtherCars" class="col-form-label"></label>
         <div>
-            <input asp-for="CurrentGenericFeatures.EPOtherCars" class="form-control" />
+            <input asp-for="CurrentGenericFeatures.EPOtherCars" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control" />
             <span asp-validation-for="CurrentGenericFeatures.EPOtherCars" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group col-3 text-center">
         <label asp-for="CurrentGenericFeatures.EPCarsNumber" class="col-form-label"></label>
         <div>
-            <indicators select-for="EPCars" selected-value="@Model.CurrentGenericFeatures.EPCarsNumber" class="form-control-sm" asp-for="CurrentGenericFeatures.EPCarsNumber"></indicators>
+            <indicators select-for="EPCars" selected-value="@Model.CurrentGenericFeatures.EPCarsNumber" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control-sm" asp-for="CurrentGenericFeatures.EPCarsNumber"></indicators>
             <span asp-validation-for="CurrentGenericFeatures.EPCarsNumber" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group col-3 text-center">
         <label asp-for="CurrentGenericFeatures.EPContact" class="col-form-label"></label>
         <div>
-            <indicators select-for="EPContact" selected-value="@Model.CurrentGenericFeatures.EPContact" class="form-control-sm" asp-for="CurrentGenericFeatures.EPContact"></indicators>
+            <indicators select-for="EPContact" selected-value="@Model.CurrentGenericFeatures.EPContact" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control-sm" asp-for="CurrentGenericFeatures.EPContact"></indicators>
             <span asp-validation-for="CurrentGenericFeatures.EPContact" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group col-3 text-center">
         <label asp-for="CurrentGenericFeatures.PTI" class="col-form-label"></label>
         <div>
-            <input asp-for="CurrentGenericFeatures.PTI" class="form-control" />
+            <input asp-for="CurrentGenericFeatures.PTI" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control" />
             <span asp-validation-for="CurrentGenericFeatures.PTI" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group col-3 text-center">
         <label asp-for="CurrentGenericFeatures.EPSelect" class="col-form-label"></label>
         <div>
-            <input asp-for="CurrentGenericFeatures.EPSelect" class="form-control" />
+            <input asp-for="CurrentGenericFeatures.EPSelect" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control" />
             <span asp-validation-for="CurrentGenericFeatures.EPSelect" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group col-3 text-center">
         <label asp-for="CurrentGenericFeatures.FLO" class="col-form-label"></label>
         <div>
-            <input asp-for="CurrentGenericFeatures.FLO" class="form-control" />
+            <input asp-for="CurrentGenericFeatures.FLO" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control" />
             <span asp-validation-for="CurrentGenericFeatures.FLO" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group col-3 text-center">
         <label asp-for="CurrentGenericFeatures.Hosp" class="col-form-label"></label>
         <div>
-            <input asp-for="CurrentGenericFeatures.Hosp" class="form-control" />
+            <input asp-for="CurrentGenericFeatures.Hosp" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control" />
             <span asp-validation-for="CurrentGenericFeatures.Hosp" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group col-3 text-center">
         <label asp-for="CurrentGenericFeatures.Ind" class="col-form-label"></label>
         <div>
-            <input asp-for="CurrentGenericFeatures.Ind" class="form-control" />
+            <input asp-for="CurrentGenericFeatures.Ind" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control" />
             <span asp-validation-for="CurrentGenericFeatures.Ind" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group col-3 text-center">
         <label asp-for="CurrentGenericFeatures.LoadWeigher" class="col-form-label"></label>
         <div>
-            <input asp-for="CurrentGenericFeatures.LoadWeigher" class="form-control" />
+            <input asp-for="CurrentGenericFeatures.LoadWeigher" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control" />
             <span asp-validation-for="CurrentGenericFeatures.LoadWeigher" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group col-3 text-center">
         <label asp-for="CurrentGenericFeatures.INA" class="col-form-label"></label>
         <div>
-            <input asp-for="CurrentGenericFeatures.INA" class="form-control" />
+            <input asp-for="CurrentGenericFeatures.INA" cdisabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" lass="form-control" />
             <span asp-validation-for="CurrentGenericFeatures.INA" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group col-3 text-center">
         <label asp-for="CurrentGenericFeatures.TopAccess" class="col-form-label"></label>
         <div>
-            <input asp-for="CurrentGenericFeatures.TopAccess" class="form-control" />
+            <input asp-for="CurrentGenericFeatures.TopAccess" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control" />
             <span asp-validation-for="CurrentGenericFeatures.TopAccess" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group col-3 text-center">
         <label asp-for="CurrentGenericFeatures.TopAccessLocation" class="col-form-label"></label>
         <div>
-            <indicators select-for="AccessSWLocation" selected-value="@Model.CurrentGenericFeatures.TopAccessLocation" class="form-control-sm" asp-for="CurrentGenericFeatures.TopAccessLocation"></indicators>
+            <indicators select-for="AccessSWLocation" selected-value="@Model.CurrentGenericFeatures.TopAccessLocation" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control-sm" asp-for="CurrentGenericFeatures.TopAccessLocation"></indicators>
             <span asp-validation-for="CurrentGenericFeatures.TopAccessLocation" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group col-3 text-center">
         <label asp-for="CurrentGenericFeatures.BottomAccess" class="col-form-label"></label>
         <div>
-            <input asp-for="CurrentGenericFeatures.BottomAccess" class="form-control" />
+            <input asp-for="CurrentGenericFeatures.BottomAccess"disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control" />
             <span asp-validation-for="CurrentGenericFeatures.BottomAccess" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group col-3 text-center">
         <label asp-for="CurrentGenericFeatures.BottomAccessLocation" class="col-form-label"></label>
         <div>
-            <indicators select-for="AccessSWLocation" selected-value="@Model.CurrentGenericFeatures.BottomAccessLocation" class="form-control-sm" asp-for="CurrentGenericFeatures.BottomAccessLocation"></indicators>
+            <indicators select-for="AccessSWLocation" selected-value="@Model.CurrentGenericFeatures.BottomAccessLocation" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control-sm" asp-for="CurrentGenericFeatures.BottomAccessLocation"></indicators>
             <span asp-validation-for="CurrentGenericFeatures.BottomAccessLocation" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group col-3 text-center">
         <label asp-for="CurrentGenericFeatures.INCP" class="col-form-label"></label>
         <div>
-            <input asp-for="CurrentGenericFeatures.INCP" class="form-control" />
+            <input asp-for="CurrentGenericFeatures.INCP" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control" />
             <span asp-validation-for="CurrentGenericFeatures.INCP" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group col-3 text-center">
         <label asp-for="CurrentGenericFeatures.INCPButtons" class="col-form-label"></label>
         <div>
-            <indicators select-for="INCPButtons" selected-value="@Model.CurrentGenericFeatures.INCPButtons" class="form-control-sm" asp-for="CurrentGenericFeatures.INCPButtons"></indicators>
+            <indicators select-for="INCPButtons" selected-value="@Model.CurrentGenericFeatures.INCPButtons" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control-sm" asp-for="CurrentGenericFeatures.INCPButtons"></indicators>
             <span asp-validation-for="CurrentGenericFeatures.INCPButtons" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group col-3 text-center">
         <label asp-for="CurrentGenericFeatures.SwitchStyle" class="col-form-label"></label>
         <div>
-            <custom-select select-for="SwitchStyle" selected-value="@Model.CurrentGenericFeatures.SwitchStyle" class="form-control-sm" asp-for="CurrentGenericFeatures.SwitchStyle"></custom-select>
+            <custom-select select-for="SwitchStyle" selected-value="@Model.CurrentGenericFeatures.SwitchStyle" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control-sm" asp-for="CurrentGenericFeatures.SwitchStyle"></custom-select>
             <span asp-validation-for="CurrentGenericFeatures.SwitchStyle" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group col-3 text-center">
         <label asp-for="CurrentGenericFeatures.Monitoring" class="col-form-label"></label>
         <div>
-            <indicators select-for="Monitoring" selected-value="@Model.CurrentGenericFeatures.Monitoring" class="form-control-sm" asp-for="CurrentGenericFeatures.Monitoring"></indicators>
+            <indicators select-for="Monitoring" selected-value="@Model.CurrentGenericFeatures.Monitoring" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control-sm" asp-for="CurrentGenericFeatures.Monitoring"></indicators>
             <span asp-validation-for="CurrentGenericFeatures.Monitoring" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group col-3 text-center">
         <label asp-for="CurrentGenericFeatures.CallEnable" class="col-form-label"></label>
         <div>
-            <input asp-for="CurrentGenericFeatures.CallEnable" class="form-control" />
+            <input asp-for="CurrentGenericFeatures.CallEnable" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control" />
             <span asp-validation-for="CurrentGenericFeatures.CallEnable" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group col-3 text-center">
         <label asp-for="CurrentGenericFeatures.CarCallRead" class="col-form-label"></label>
         <div>
-            <input asp-for="CurrentGenericFeatures.CarCallRead" class="form-control" />
+            <input asp-for="CurrentGenericFeatures.CarCallRead" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control" />
             <span asp-validation-for="CurrentGenericFeatures.CarCallRead" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group col-3 text-center">
         <label asp-for="CurrentGenericFeatures.HallCallRead" class="col-form-label"></label>
         <div>
-            <input asp-for="CurrentGenericFeatures.HallCallRead" class="form-control" />
+            <input asp-for="CurrentGenericFeatures.HallCallRead" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control" />
             <span asp-validation-for="CurrentGenericFeatures.HallCallRead" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group col-3 text-center">
         <label asp-for="CurrentGenericFeatures.CarKey" class="col-form-label"></label>
         <div>
-            <input asp-for="CurrentGenericFeatures.CarKey" class="form-control" />
+            <input asp-for="CurrentGenericFeatures.CarKey" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control" />
             <span asp-validation-for="CurrentGenericFeatures.CarKey" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group col-3 text-center">
         <label asp-for="CurrentGenericFeatures.HallKey" class="col-form-label"></label>
         <div>
-            <input asp-for="CurrentGenericFeatures.HallKey" class="form-control" />
+            <input asp-for="CurrentGenericFeatures.HallKey" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control" />
             <span asp-validation-for="CurrentGenericFeatures.HallKey" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group col-3 text-center">
         <label asp-for="CurrentGenericFeatures.CRO" class="col-form-label"></label>
         <div>
-            <input asp-for="CurrentGenericFeatures.CRO" class="form-control" />
+            <input asp-for="CurrentGenericFeatures.CRO" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control" />
             <span asp-validation-for="CurrentGenericFeatures.CRO" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group col-3 text-center">
         <label asp-for="CurrentGenericFeatures.HCRO" class="col-form-label"></label>
         <div>
-            <input asp-for="CurrentGenericFeatures.HCRO" class="form-control" />
+            <input asp-for="CurrentGenericFeatures.HCRO" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control" />
             <span asp-validation-for="CurrentGenericFeatures.HCRO" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group col-3 text-center">
         <label asp-for="CurrentGenericFeatures.CarCallCodeSecurity" class="col-form-label"></label>
         <div>
-            <input asp-for="CurrentGenericFeatures.CarCallCodeSecurity" class="form-control" />
+            <input asp-for="CurrentGenericFeatures.CarCallCodeSecurity" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control" />
             <span asp-validation-for="CurrentGenericFeatures.CarCallCodeSecurity" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group col-3 text-center">
         <label asp-for="CurrentGenericFeatures.SpecialInstructions" class="col-form-label"></label>
         <div>
-            <input asp-for="CurrentGenericFeatures.SpecialInstructions" class="form-control" />
+            <input asp-for="CurrentGenericFeatures.SpecialInstructions" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control" />
             <span asp-validation-for="CurrentGenericFeatures.SpecialInstructions" class="text-danger"></span>
         </div>
     </div>

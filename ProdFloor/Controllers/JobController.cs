@@ -38,7 +38,6 @@ namespace ProdFloor.Controllers
         //JobsListViewModel con los jobs filtrados por tipo y sorteados por JobID 
         public ViewResult List(int jobType, int jobPage = 1)
         {
-
             var JobCount = repository.Jobs.Count();
 
             return View(new JobsListViewModel
@@ -107,7 +106,6 @@ namespace ProdFloor.Controllers
         public IActionResult NewJob(Job newJob)
         {
             ViewData["CityID"] = new SelectList(itemsrepository.Cities, "CityID", "Name");
-            ViewData["DoorOperatorID"] = new SelectList(itemsrepository.DoorOperators, "DoorOperatorID", "Name");
             AppUser currentUser = GetCurrentUser().Result;
             if (ModelState.IsValid)
             {
@@ -144,14 +142,10 @@ namespace ProdFloor.Controllers
          */
         public IActionResult Edit(int ID)
         {
-            ViewData["CountryID"] = new SelectList(itemsrepository.Countries, "CountryID", "Name");
-            ViewData["StateID"] = new SelectList(itemsrepository.States, "StateID", "Name");
             ViewData["CityID"] = new SelectList(itemsrepository.Cities, "CityID", "Name");
-            ViewData["Style"] = new SelectList(itemsrepository.DoorOperators.FromSql("select * from dbo.DoorOperators where dbo.DoorOperators.DoorOperatorID " +
-                "in (Select max(dbo.DoorOperators.DoorOperatorID) FROM dbo.DoorOperators group by dbo.DoorOperators.Style); "), "Style", "Style");
-            ViewData["Brand2"] = new SelectList(itemsrepository.DoorOperators, "Brand", "Brand");
             ViewData["DoorOperatorID"] = new SelectList(itemsrepository.DoorOperators, "DoorOperatorID", "Name");
 
+            AppUser currentUser = GetCurrentUser().Result;
             Job job = repository.Jobs.FirstOrDefault(j => j.JobID == ID);
             if (job == null)
             {
@@ -176,6 +170,7 @@ namespace ProdFloor.Controllers
                 {
                     viewModel.SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures() };
                 }
+                viewModel.CurrentUserID = currentUser.EngID;
                 viewModel.CurrentTab = "Main";
                 return View(viewModel);
             }
@@ -576,7 +571,19 @@ namespace ProdFloor.Controllers
 
             #region HoistWayData
             //Opciones de bsuqueda para el modelo de HoistWayData
-            if (!string.IsNullOrEmpty(searchViewModel.AnyRear)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.AnyRear == "Si" ? s._HoistWayData.AnyRear() == true : s._HoistWayData.AnyRear() == false);
+            if (!string.IsNullOrEmpty(searchViewModel.AnyRear)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.AnyRear == "Si" ? s._HoistWayData.AnyRear == true : s._HoistWayData.AnyRear == false);
+<<<<<<< HEAD
+<<<<<<< HEAD
+            if (!string.IsNullOrEmpty(searchViewModel.IndependentRearOpenings)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.IndependentRearOpenings == "Si" ? 
+            s._HoistWayData.IndependentRearOpenings == true && s._HoistWayData.AnyRear == true : s._HoistWayData.IndependentRearOpenings == false && s._HoistWayData.AnyRear == true);
+
+            if (searchViewModel.RearFloorOpenings > 0) jobSearchRepo = jobSearchRepo.Where(s => s._HoistWayData.RearFloorOpenings == searchViewModel.RearFloorOpenings);
+            if (searchViewModel.TopFloor > 0) jobSearchRepo = jobSearchRepo.Where(s => s._HoistWayData.TopFloor == searchViewModel.TopFloor);
+            if (searchViewModel.FrontFloorOpenings > 0) jobSearchRepo = jobSearchRepo.Where(s => s._HoistWayData.FrontFloorOpenings == searchViewModel.FrontFloorOpenings);
+=======
+>>>>>>> 9886ce58093aa54ef3f520bae46ecac8762400e8
+=======
+>>>>>>> 9886ce58093aa54ef3f520bae46ecac8762400e8
             if (searchViewModel.Capacity > 0) jobSearchRepo = jobSearchRepo.Where(s => s._HoistWayData.Capacity == searchViewModel.Capacity);
             if (searchViewModel.DownSpeed > 0) jobSearchRepo = jobSearchRepo.Where(s => s._HoistWayData.DownSpeed == searchViewModel.DownSpeed);
             if (searchViewModel.UpSpeed > 0) jobSearchRepo = jobSearchRepo.Where(s => s._HoistWayData.UpSpeed == searchViewModel.UpSpeed);

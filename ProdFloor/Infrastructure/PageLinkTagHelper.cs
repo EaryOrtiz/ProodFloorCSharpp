@@ -252,6 +252,9 @@ namespace ProdFloor.Infrastructure
 
         public string SelectedValue { get; set; }
 
+        [HtmlAttributeName("asp-is-disabled")]
+        public bool IsDisabled { set; get; }
+
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
             IUrlHelper urlHelper = urlHelperFactory.GetUrlHelper(ViewContext);
@@ -279,6 +282,12 @@ namespace ProdFloor.Infrastructure
                 result.InnerHtml.AppendHtml(tag);
             }
             output.Content.AppendHtml(result.InnerHtml);
+            if (IsDisabled)
+            {
+                var d = new TagHelperAttribute("disabled", "disabled");
+                output.Attributes.Add(d);
+            }
+            base.Process(context, output);
         }
     }
 
@@ -297,6 +306,9 @@ namespace ProdFloor.Infrastructure
             urlHelperFactory = helperFactory;
             itemsrepository = itemsrepo;
         }
+
+        [HtmlAttributeName("asp-is-disabled")]
+        public bool IsDisabled { set; get; }
 
         private IQueryable<string> CaseFor(string value)
         {
@@ -361,6 +373,12 @@ namespace ProdFloor.Infrastructure
                 result.InnerHtml.AppendHtml(tag);
             }
             output.Content.AppendHtml(result.InnerHtml);
+            if (IsDisabled)
+            {
+                var d = new TagHelperAttribute("disabled", "disabled");
+                output.Attributes.Add(d);
+            }
+            base.Process(context, output);
         }
     }
 
@@ -379,6 +397,9 @@ namespace ProdFloor.Infrastructure
             urlHelperFactory = helperFactory;
             itemsrepository = itemsrepo;
         }
+
+        [HtmlAttributeName("asp-is-disabled")]
+        public bool IsDisabled { set; get; }
 
         private IQueryable<string> CaseFor(string value)
         {
@@ -449,6 +470,12 @@ namespace ProdFloor.Infrastructure
                 result.InnerHtml.AppendHtml(tag);
             }
             output.Content.AppendHtml(result.InnerHtml);
+            if (IsDisabled)
+            {
+                var d = new TagHelperAttribute("disabled", "disabled");
+                output.Attributes.Add(d);
+            }
+            base.Process(context, output);
         }
     }
 
@@ -467,6 +494,9 @@ namespace ProdFloor.Infrastructure
             urlHelperFactory = helperFactory;
             itemsrepository = itemsrepo;
         }
+
+        [HtmlAttributeName("asp-is-disabled")]
+        public bool IsDisabled { set; get; }
 
         private IQueryable<int> CaseFor(string value)
         {
@@ -513,6 +543,12 @@ namespace ProdFloor.Infrastructure
                 result.InnerHtml.AppendHtml(tag);
             }
             output.Content.AppendHtml(result.InnerHtml);
+            if (IsDisabled)
+            {
+                var d = new TagHelperAttribute("disabled", "disabled");
+                output.Attributes.Add(d);
+            }
+            base.Process(context, output);
         }
     }
 
@@ -529,6 +565,9 @@ namespace ProdFloor.Infrastructure
             urlHelperFactory = helperFactory;
             itemsrepository = itemsrepo;
         }
+
+        [HtmlAttributeName("asp-is-disabled")]
+        public bool IsDisabled { set; get; }
 
         [ViewContext]
         [HtmlAttributeNotBound]
@@ -564,6 +603,12 @@ namespace ProdFloor.Infrastructure
                 result.InnerHtml.AppendHtml(tag);
             }
             output.Content.AppendHtml(result.InnerHtml);
+            if (IsDisabled)
+            {
+                var d = new TagHelperAttribute("disabled", "disabled");
+                output.Attributes.Add(d);
+            }
+            base.Process(context, output);
         }
     }
 
@@ -586,6 +631,9 @@ namespace ProdFloor.Infrastructure
         public ViewContext ViewContext { get; set; }
 
         public int SelectedValue { get; set; }
+
+        [HtmlAttributeName("asp-is-disabled")]
+        public bool IsDisabled { set; get; }
 
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
@@ -622,6 +670,12 @@ namespace ProdFloor.Infrastructure
                 result.InnerHtml.AppendHtml(tag);
             }
             output.Content.AppendHtml(result.InnerHtml);
+            if (IsDisabled)
+            {
+                var d = new TagHelperAttribute("disabled", "disabled");
+                output.Attributes.Add(d);
+            }
+            base.Process(context, output);
         }
     }
 
@@ -645,8 +699,12 @@ namespace ProdFloor.Infrastructure
 
         public int SelectedValue { get; set; }
 
+        [HtmlAttributeName("asp-is-disabled")]
+        public bool IsDisabled { set; get; }
+            
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
+
             IUrlHelper urlHelper = urlHelperFactory.GetUrlHelper(ViewContext);
             output.TagName = "select";
             TagBuilder result = new TagBuilder("select");
@@ -680,6 +738,12 @@ namespace ProdFloor.Infrastructure
                 result.InnerHtml.AppendHtml(tag);
             }
             output.Content.AppendHtml(result.InnerHtml);
+            if (IsDisabled)
+            {
+                var d = new TagHelperAttribute("disabled", "disabled");
+                output.Attributes.Add(d);
+            }
+            base.Process(context, output);
         }
     }
 
@@ -702,6 +766,9 @@ namespace ProdFloor.Infrastructure
         public ViewContext ViewContext { get; set; }
 
         public int SelectedValue { get; set; }
+
+        [HtmlAttributeName("asp-is-disabled")]
+        public bool IsDisabled { set; get; }
 
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
@@ -731,6 +798,12 @@ namespace ProdFloor.Infrastructure
                 result.InnerHtml.AppendHtml(tag);
             }
             output.Content.AppendHtml(result.InnerHtml);
+            if (IsDisabled)
+            {
+                var d = new TagHelperAttribute("disabled", "disabled");
+                output.Attributes.Add(d);
+            }
+            base.Process(context, output);
         }
     }
 
@@ -753,6 +826,9 @@ namespace ProdFloor.Infrastructure
         public ViewContext ViewContext { get; set; }
 
         public int SelectedValue { get; set; }
+
+        [HtmlAttributeName("asp-is-disabled")]
+        public bool IsDisabled { set; get; }
 
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
@@ -783,6 +859,12 @@ namespace ProdFloor.Infrastructure
                 result.InnerHtml.AppendHtml(tag);
             }
             output.Content.AppendHtml(result.InnerHtml);
+            if (IsDisabled)
+            {
+                var d = new TagHelperAttribute("disabled", "disabled");
+                output.Attributes.Add(d);
+            }
+            base.Process(context, output);
         }
     }
 
@@ -805,6 +887,9 @@ namespace ProdFloor.Infrastructure
         public ViewContext ViewContext { get; set; }
 
         public int SelectedValue { get; set; }
+
+        [HtmlAttributeName("asp-is-disabled")]
+        public bool IsDisabled { set; get; }
 
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
@@ -834,6 +919,12 @@ namespace ProdFloor.Infrastructure
                 result.InnerHtml.AppendHtml(tag);
             }
             output.Content.AppendHtml(result.InnerHtml);
+            if (IsDisabled)
+            {
+                var d = new TagHelperAttribute("disabled", "disabled");
+                output.Attributes.Add(d);
+            }
+            base.Process(context, output);
         }
     }
 
@@ -856,6 +947,9 @@ namespace ProdFloor.Infrastructure
         public ViewContext ViewContext { get; set; }
 
         public int SelectedValue { get; set; }
+
+        [HtmlAttributeName("asp-is-disabled")]
+        public bool IsDisabled { set; get; }
 
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
@@ -885,6 +979,12 @@ namespace ProdFloor.Infrastructure
                 result.InnerHtml.AppendHtml(tag);
             }
             output.Content.AppendHtml(result.InnerHtml);
+            if (IsDisabled)
+            {
+                var d = new TagHelperAttribute("disabled", "disabled");
+                output.Attributes.Add(d);
+            }
+            base.Process(context, output);
         }
     }
 
@@ -907,6 +1007,9 @@ namespace ProdFloor.Infrastructure
         public ViewContext ViewContext { get; set; }
 
         public int SelectedValue { get; set; }
+
+        [HtmlAttributeName("asp-is-disabled")]
+        public bool IsDisabled { set; get; }
 
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
@@ -943,6 +1046,12 @@ namespace ProdFloor.Infrastructure
                 result.InnerHtml.AppendHtml(tag);
             }
             output.Content.AppendHtml(result.InnerHtml);
+            if (IsDisabled)
+            {
+                var d = new TagHelperAttribute("disabled", "disabled");
+                output.Attributes.Add(d);
+            }
+            base.Process(context, output);
         }
     }
 
@@ -965,6 +1074,9 @@ namespace ProdFloor.Infrastructure
         public ViewContext ViewContext { get; set; }
 
         public int SelectedValue { get; set; }
+
+        [HtmlAttributeName("asp-is-disabled")]
+        public bool IsDisabled { set; get; }
 
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
@@ -1000,6 +1112,12 @@ namespace ProdFloor.Infrastructure
                 result.InnerHtml.AppendHtml(tag);
             }
             output.Content.AppendHtml(result.InnerHtml);
+            if (IsDisabled)
+            {
+                var d = new TagHelperAttribute("disabled", "disabled");
+                output.Attributes.Add(d);
+            }
+            base.Process(context, output);
         }
     }
 
@@ -1022,6 +1140,9 @@ namespace ProdFloor.Infrastructure
         public ViewContext ViewContext { get; set; }
 
         public int SelectedValue { get; set; }
+
+        [HtmlAttributeName("asp-is-disabled")]
+        public bool IsDisabled { set; get; }
 
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
@@ -1051,6 +1172,12 @@ namespace ProdFloor.Infrastructure
                 result.InnerHtml.AppendHtml(tag);
             }
             output.Content.AppendHtml(result.InnerHtml);
+            if (IsDisabled)
+            {
+                var d = new TagHelperAttribute("disabled", "disabled");
+                output.Attributes.Add(d);
+            }
+            base.Process(context, output);
         }
     }
 
@@ -1073,6 +1200,9 @@ namespace ProdFloor.Infrastructure
         public ViewContext ViewContext { get; set; }
 
         public int SelectedValue { get; set; }
+
+        [HtmlAttributeName("asp-is-disabled")]
+        public bool IsDisabled { set; get; }
 
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
@@ -1103,6 +1233,12 @@ namespace ProdFloor.Infrastructure
                 result.InnerHtml.AppendHtml(tag);
             }
             output.Content.AppendHtml(result.InnerHtml);
+            if (IsDisabled)
+            {
+                var d = new TagHelperAttribute("disabled", "disabled");
+                output.Attributes.Add(d);
+            }
+            base.Process(context, output);
         }
     }
 
@@ -1125,6 +1261,9 @@ namespace ProdFloor.Infrastructure
         public ViewContext ViewContext { get; set; }
 
         public string SelectedValue { get; set; }
+
+        [HtmlAttributeName("asp-is-disabled")]
+        public bool IsDisabled { set; get; }
 
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
@@ -1154,6 +1293,12 @@ namespace ProdFloor.Infrastructure
                 result.InnerHtml.AppendHtml(tag);
             }
             output.Content.AppendHtml(result.InnerHtml);
+            if (IsDisabled)
+            {
+                var d = new TagHelperAttribute("disabled", "disabled");
+                output.Attributes.Add(d);
+            }
+            base.Process(context, output);
         }
     }
 
@@ -1176,6 +1321,9 @@ namespace ProdFloor.Infrastructure
         public ViewContext ViewContext { get; set; }
 
         public string SelectedValue { get; set; }
+
+        [HtmlAttributeName("asp-is-disabled")]
+        public bool IsDisabled { set; get; }
 
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
@@ -1205,6 +1353,12 @@ namespace ProdFloor.Infrastructure
                 result.InnerHtml.AppendHtml(tag);
             }
             output.Content.AppendHtml(result.InnerHtml);
+            if (IsDisabled)
+            {
+                var d = new TagHelperAttribute("disabled", "disabled");
+                output.Attributes.Add(d);
+            }
+            base.Process(context, output);
         }
     }
 
@@ -1227,6 +1381,9 @@ namespace ProdFloor.Infrastructure
         public ViewContext ViewContext { get; set; }
 
         public string SelectedValue { get; set; }
+
+        [HtmlAttributeName("asp-is-disabled")]
+        public bool IsDisabled { set; get; }
 
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
@@ -1256,6 +1413,12 @@ namespace ProdFloor.Infrastructure
                 result.InnerHtml.AppendHtml(tag);
             }
             output.Content.AppendHtml(result.InnerHtml);
+            if (IsDisabled)
+            {
+                var d = new TagHelperAttribute("disabled", "disabled");
+                output.Attributes.Add(d);
+            }
+            base.Process(context, output);
         }
     }
 
@@ -1278,6 +1441,9 @@ namespace ProdFloor.Infrastructure
         public ViewContext ViewContext { get; set; }
 
         public int SelectedValue { get; set; }
+
+        [HtmlAttributeName("asp-is-disabled")]
+        public bool IsDisabled { set; get; }
 
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
@@ -1308,6 +1474,13 @@ namespace ProdFloor.Infrastructure
                 result.InnerHtml.AppendHtml(tag);
             }
             output.Content.AppendHtml(result.InnerHtml);
+
+            if (IsDisabled)
+            {
+                var d = new TagHelperAttribute("disabled", "disabled");
+                output.Attributes.Add(d);
+            }
+            base.Process(context, output);
         }
     }
 

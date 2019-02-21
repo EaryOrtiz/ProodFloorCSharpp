@@ -4,77 +4,77 @@
 <div class="form-group row has-warning has-feedback">
     <label asp-for="CurrentHydroSpecific.Starter" class="col-sm-2 col-form-label"></label>
     <div>
-        <input asp-for="CurrentHydroSpecific.Starter" class="form-control col-sm-7" />
+        <input asp-for="CurrentHydroSpecific.Starter" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control col-sm-7" />
         <span asp-validation-for="CurrentHydroSpecific.Starter" class="text-danger"></span>
     </div>
 </div>
 <div class="form-group row">
     <label asp-for="CurrentHydroSpecific.HP" class="col-sm-2 col-form-label"></label>
     <div>
-        <input asp-for="CurrentHydroSpecific.HP" class="form-control col-sm-7" />
+        <input asp-for="CurrentHydroSpecific.HP" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control col-sm-7" />
         <span asp-validation-for="CurrentHydroSpecific.HP" class="text-danger"></span>
     </div>
 </div>
 <div class="form-group row">
     <label asp-for="CurrentHydroSpecific.FLA" class="col-sm-2 col-form-label"></label>
     <div>
-        <input asp-for="CurrentHydroSpecific.FLA" class="form-control col-sm-7" />
+        <input asp-for="CurrentHydroSpecific.FLA" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control col-sm-7" />
         <span asp-validation-for="CurrentHydroSpecific.FLA" class="text-danger"></span>
     </div>
 </div>
 <div class="form-group row">
     <label asp-for="CurrentHydroSpecific.SPH" class="col-sm-2 col-form-label"></label>
     <div>
-        <input asp-for="CurrentHydroSpecific.SPH" class="form-control col-sm-7" />
+        <input asp-for="CurrentHydroSpecific.SPH" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control col-sm-7" />
         <span asp-validation-for="CurrentHydroSpecific.SPH" class="text-danger"></span>
     </div>
 </div>
 <div class="form-group row">
     <label asp-for="CurrentHydroSpecific.MotorsNum" class="col-sm-2 col-form-label"></label>
     <div>
-        <input asp-for="CurrentHydroSpecific.MotorsNum" class="form-control col-sm-7" />
+        <input asp-for="CurrentHydroSpecific.MotorsNum" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control col-sm-7" />
         <span asp-validation-for="CurrentHydroSpecific.MotorsNum" class="text-danger"></span>
     </div>
 </div>
 <div class="form-group row">
     <label asp-for="CurrentHydroSpecific.MotorsDisconnect" class="col-sm-2 col-form-label"></label>
     <div>
-        <input asp-for="CurrentHydroSpecific.MotorsDisconnect" class="form-control col-sm-7" />
+        <input asp-for="CurrentHydroSpecific.MotorsDisconnect" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control col-sm-7" />
         <span asp-validation-for="CurrentHydroSpecific.MotorsDisconnect" class="text-danger"></span>
     </div>
 </div>
 <div class="form-group row">
     <label asp-for="CurrentHydroSpecific.ValveBrand" class="col-sm-2 col-form-label"></label>
     <div>
-        <input asp-for="CurrentHydroSpecific.ValveBrand" class="form-control col-sm-7" />
+        <input asp-for="CurrentHydroSpecific.ValveBrand" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control col-sm-7" />
         <span asp-validation-for="CurrentHydroSpecific.ValveBrand" class="text-danger"></span>
     </div>
 </div>
 <div class="form-group row">
     <label asp-for="CurrentHydroSpecific.ValveModel" class="col-sm-2 col-form-label"></label>
     <div>
-        <input asp-for="CurrentHydroSpecific.ValveModel" class="form-control col-sm-7" />
+        <input asp-for="CurrentHydroSpecific.ValveModel" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control col-sm-7" />
         <span asp-validation-for="CurrentHydroSpecific.ValveModel" class="text-danger"></span>
     </div>
 </div>
 <div class="form-group row">
     <label asp-for="CurrentHydroSpecific.ValveNum" class="col-sm-2 col-form-label"></label>
     <div>
-        <input asp-for="CurrentHydroSpecific.ValveNum" class="form-control col-sm-7" />
+        <input asp-for="CurrentHydroSpecific.ValveNum" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control col-sm-7" />
         <span asp-validation-for="CurrentHydroSpecific.ValveNum" class="text-danger"></span>
     </div>
 </div>
 <div class="form-group row">
     <label asp-for="CurrentHydroSpecific.ValveCoils" class="col-sm-2 col-form-label"></label>
     <div>
-        <input asp-for="CurrentHydroSpecific.ValveCoils" class="form-control col-sm-7" />
+        <input asp-for="CurrentHydroSpecific.ValveCoils" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control col-sm-7" />
         <span asp-validation-for="CurrentHydroSpecific.ValveCoils" class="text-danger"></span>
     </div>
 </div>
 <div class="form-group row">
     <label asp-for="CurrentHydroSpecific.ValveVoltage" class="col-sm-2 col-form-label"></label>
     <div>
-        <input asp-for="CurrentHydroSpecific.ValveVoltage" class="form-control col-sm-7" />
+        <input asp-for="CurrentHydroSpecific.ValveVoltage" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control col-sm-7" />
         <span asp-validation-for="CurrentHydroSpecific.ValveVoltage" class="text-danger"></span>
     </div>
 </div>
@@ -83,51 +83,51 @@
     <div class="form-group col-3 text-center">
         <label asp-for="CurrentHydroSpecific.Battery" class="col-form-label"></label>
         <div><span asp-validation-for="CurrentHydroSpecific.Battery" class="text-danger"></span></div>
-        <input asp-for="CurrentHydroSpecific.Battery" class="form-control" />
+        <input asp-for="CurrentHydroSpecific.Battery" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control" />
     </div>
     <div class="form-group col-8">
         <label asp-for="CurrentHydroSpecific.BatteryBrand" class="col-form-label"></label>
         <div><span asp-validation-for="CurrentHydroSpecific.BatteryBrand" class="text-danger"></span></div>
-        <input asp-for="CurrentHydroSpecific.BatteryBrand" class="form-control" />
+        <input asp-for="CurrentHydroSpecific.BatteryBrand" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)"  class="form-control" />
     </div>
     <div class="form-group col-3 text-center">
         <label asp-for="CurrentHydroSpecific.LifeJacket" class="col-form-label text-center"></label>
         <div><span asp-validation-for="CurrentHydroSpecific.LifeJacket" class="text-danger"></span></div>
-        <input asp-for="CurrentHydroSpecific.LifeJacket" class="form-control" />
+        <input asp-for="CurrentHydroSpecific.LifeJacket" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control" />
     </div>
     <div class="form-group col-3 text-center">
         <label asp-for="CurrentHydroSpecific.LOS" class="col-form-label"></label>
         <div><span asp-validation-for="CurrentHydroSpecific.LOS" class="text-danger"></span></div>
-        <input asp-for="CurrentHydroSpecific.LOS" class="form-control" />
+        <input asp-for="CurrentHydroSpecific.LOS" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control" />
     </div>
     <div class="form-group col-3 text-center">
         <label asp-for="CurrentHydroSpecific.OilCool" class="col-form-label"></label>
         <div><span asp-validation-for="CurrentHydroSpecific.OilCool" class="text-danger"></span></div>
-        <input asp-for="CurrentHydroSpecific.OilCool" class="form-control " />
+        <input asp-for="CurrentHydroSpecific.OilCool" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control " />
     </div>
     <div class="form-group col-3 text-center">
         <label asp-for="CurrentHydroSpecific.OilTank" class="col-form-label"></label>
         <div><span asp-validation-for="CurrentHydroSpecific.OilTank" class="text-danger"></span></div>
-        <input asp-for="CurrentHydroSpecific.OilTank" class="form-control" />
+        <input asp-for="CurrentHydroSpecific.OilTank" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control" />
     </div>
     <div class="form-group col-3 text-center">
         <label asp-for="CurrentHydroSpecific.PSS" class="col-form-label"></label>
         <div><span asp-validation-for="CurrentHydroSpecific.PSS" class="text-danger"></span></div>
-        <input asp-for="CurrentHydroSpecific.PSS" class="form-control" />
+        <input asp-for="CurrentHydroSpecific.PSS" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control" />
     </div>
     <div class="form-group col-3 text-center">
         <label asp-for="CurrentHydroSpecific.Resync" class="col-form-label"></label>
         <div><span asp-validation-for="CurrentHydroSpecific.Resync" class="text-danger"></span></div>
-        <input asp-for="CurrentHydroSpecific.Resync" class="form-control" />
+        <input asp-for="CurrentHydroSpecific.Resync" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control" />
     </div>
     <div class="form-group col-3 text-center">
         <label asp-for="CurrentHydroSpecific.Roped" class="col-form-label"></label>
         <div><span asp-validation-for="CurrentHydroSpecific.Roped" class="text-danger"></span></div>
-        <input asp-for="CurrentHydroSpecific.Roped" class="form-control" />
+        <input asp-for="CurrentHydroSpecific.Roped" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control" />
     </div>
     <div class="form-group col-3 text-center">
         <label asp-for="CurrentHydroSpecific.VCI" class="col-form-label"></label>
         <div><span asp-validation-for="CurrentHydroSpecific.VCI" class="text-danger"></span></div>
-        <input asp-for="CurrentHydroSpecific.VCI" class="form-control" />
+        <input asp-for="CurrentHydroSpecific.VCI" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control" />
     </div>
 </div>

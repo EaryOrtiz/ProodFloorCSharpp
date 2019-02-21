@@ -17,6 +17,8 @@ namespace ProdFloor.Models
 
         public int EngID { get; set; }
         public int CrossAppEngID { get; set; }
+        [NotMapped]
+        public int CurrentUserID { get; set; }
 
         [StringLength(78, ErrorMessage = "The maximum length of the {0} field is {1}")]
         [Required(ErrorMessage = "Please enter a name")]
@@ -458,17 +460,158 @@ namespace ProdFloor.Models
         public bool FrontSixteenthServed { get; set; }
         public bool RearSixteenthServed { get; set; }
 
-        public bool AnyRear()
+<<<<<<< HEAD
+<<<<<<< HEAD
+        [NotMapped]
+        public bool AnyRear
         {
-            if (RearFirstServed == true || RearSecondServed == true || RearThirdServed == true || RearFourthServed == true || RearFifthServed == true || RearSexthServed == true
-                || RearSeventhServed == true || RearEightServed == true || RearNinthServed == true || RearTenthServed == true
-                || RearEleventhServed == true || RearTwelvethServed == true || RearThirteenthServed == true || RearFourteenthServed == true
-                || FrontFifteenthServed == true || RearSixteenthServed == true)
-            {
-                return true;
-            }
+            get {
+                    if (RearFirstServed == true || RearSecondServed == true || RearThirdServed == true || RearFourthServed == true || RearFifthServed == true || RearSexthServed == true
+                        || RearSeventhServed == true || RearEightServed == true || RearNinthServed == true || RearTenthServed == true
+                        || RearEleventhServed == true || RearTwelvethServed == true || RearThirteenthServed == true || RearFourteenthServed == true
+                        || RearFifteenthServed == true || RearSixteenthServed == true)
+                    {
+                        return true;
+                    }
+                        return false;
+                }
+        }
 
-            return false;
+        [NotMapped]
+        public bool IndependentRearOpenings
+        {
+            get
+            {
+                bool resp = false;
+                if( AnyRear == true)
+                {
+                    if (RearFirstServed == true && FrontFirstServed == false) resp = true;
+                    if (RearSecondServed == true && FrontSecondServed == false) resp = true;
+                    if (RearThirdServed == true && FrontThirdServed == false) resp = true;
+                    if (RearFourthServed == true && FrontFourthServed == false) resp = true;
+                    if (RearFifthServed == true && FrontFifthServed == false) resp = true;
+                    if (RearSexthServed == true && FrontSexthServed == false) resp = true;
+                    if (RearSeventhServed == true && FrontSeventhServed == false) resp = true;
+                    if (RearEightServed == true && FrontEightServed == false) resp = true;
+                    if (RearNinthServed == true && FrontNinthServed == false) resp = true;
+                    if (RearTenthServed == true && FrontTenthServed == false) resp = true;
+                    if (RearEleventhServed == true && FrontEleventhServed == false) resp = true;
+                    if (RearTwelvethServed == true && FrontTwelvethServed == false) resp = true;
+                    if (RearThirteenthServed == true && FrontThirteenthServed == false) resp = true;
+                    if (RearFourteenthServed == true && FrontFourteenthServed == false) resp = true;
+                    if (RearFifteenthServed == true && FrontFifteenthServed == false) resp = true;
+                    if (RearSixteenthServed == true && FrontSixteenthServed == false) resp = true;
+
+                    return resp;
+                }
+                
+                return resp;
+            }
+        }
+
+        [NotMapped]
+        public int TopFloor
+        {
+            get
+            {
+                int count = 0;
+                if (RearFirstServed == true || FrontFirstServed == true) count++;
+                if (RearSecondServed == true || FrontSecondServed == true) count++;
+                if (RearThirdServed == true || FrontThirdServed == true) count++;
+                if (RearFourthServed == true || FrontFourthServed == true) count++;
+                if (RearFifthServed == true || FrontFifthServed == true) count++;
+                if (RearSexthServed == true || FrontSexthServed == true) count++;
+                if (RearSeventhServed == true || FrontSeventhServed == true) count++;
+                if (RearEightServed == true || FrontEightServed == true) count++;
+                if (RearNinthServed == true || FrontNinthServed == true) count++;
+                if (RearTenthServed == true || FrontTenthServed == true) count++;
+                if (RearEleventhServed == true || FrontEleventhServed == true) count++;
+                if (RearTwelvethServed == true || FrontTwelvethServed == true) count++;
+                if (RearThirteenthServed == true || FrontThirteenthServed == true) count++;
+                if (RearFourteenthServed == true || FrontFourteenthServed == true) count++;
+                if (RearFifteenthServed == true || FrontFifteenthServed == true) count++;
+                if (RearSixteenthServed == true || FrontSixteenthServed == true) count++;
+
+                return count;
+            }
+        }
+
+        [NotMapped]
+        public int RearFloorOpenings
+        {
+            get
+            {
+                int count = 0;
+                if (RearFirstServed == true) count++;
+                if (RearSecondServed == true) count++;
+                if (RearThirdServed == true) count++;
+                if (RearFourthServed == true) count++;
+                if (RearFifthServed == true) count++;
+                if (RearSexthServed == true) count++;
+                if (RearSeventhServed == true) count++;
+                if (RearEightServed == true) count++;
+                if (RearNinthServed == true) count++;
+                if (RearTenthServed == true) count++;
+                if (RearEleventhServed == true) count++;
+                if (RearTwelvethServed == true) count++;
+                if (RearThirteenthServed == true) count++;
+                if (RearFourteenthServed == true) count++;
+                if (RearFifteenthServed == true) count++;
+                if (RearSixteenthServed == true) count++;
+                
+                return count;
+            }
+        }
+
+        [NotMapped]
+        public int FrontFloorOpenings
+        {
+            get
+            {
+                int count = 0;
+                if (FrontFirstServed == true) count++;
+                if (FrontSecondServed == true) count++;
+                if (FrontThirdServed == true) count++;
+                if (FrontFourthServed == true) count++;
+                if (FrontFifthServed == true) count++;
+                if (FrontSexthServed == true) count++;
+                if (FrontSeventhServed == true) count++;
+                if (FrontEightServed == true) count++;
+                if (FrontNinthServed == true) count++;
+                if (FrontTenthServed == true) count++;
+                if (FrontEleventhServed == true) count++;
+                if (FrontTwelvethServed == true) count++;
+                if (FrontThirteenthServed == true) count++;
+                if (FrontFourteenthServed == true) count++;
+                if (FrontFifteenthServed == true) count++;
+                if (FrontSixteenthServed == true) count++;
+
+                return count;
+=======
+        public bool AnyRear
+        {
+            get
+            {
+=======
+        public bool AnyRear
+        {
+            get
+            {
+>>>>>>> 9886ce58093aa54ef3f520bae46ecac8762400e8
+                if (RearFirstServed == true || RearSecondServed == true || RearThirdServed == true || RearFourthServed == true || RearFifthServed == true || RearSexthServed == true
+                    || RearSeventhServed == true || RearEightServed == true || RearNinthServed == true || RearTenthServed == true
+                    || RearEleventhServed == true || RearTwelvethServed == true || RearThirteenthServed == true || RearFourteenthServed == true
+                    || FrontFifteenthServed == true || RearSixteenthServed == true)
+                {
+                    return true;
+                }
+                
+                return false;
+<<<<<<< HEAD
+>>>>>>> 9886ce58093aa54ef3f520bae46ecac8762400e8
+=======
+>>>>>>> 9886ce58093aa54ef3f520bae46ecac8762400e8
+            }
         }
 
         [Required(ErrorMessage = "Please enter a number of hoistways")]
