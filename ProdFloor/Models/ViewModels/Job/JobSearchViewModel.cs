@@ -122,6 +122,11 @@ namespace ProdFloor.Models.ViewModels.Job
         public int IndicatorsVoltage { get; set; }
 
         //Atributos de HoistWayData
+        public string AnyRear { get; set; }
+        public string IndependentRearOpenings { get; set; }
+        public int TopFloor { get; set; }
+        public int RearFloorOpenings { get; set; }
+        public int FrontFloorOpenings { get; set; }
         public int Capacity { get; set; }
         public int DownSpeed { get; set; }
         public int LandingSystemID { get; set; }

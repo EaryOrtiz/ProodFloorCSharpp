@@ -4,49 +4,49 @@
 <div class="form-group row has-warning has-feedback">
     <label asp-for="CurrentHoistWayData.HoistWaysNumber" class="col-sm-2 col-form-label"></label>
     <div>
-        <input asp-for="CurrentHoistWayData.HoistWaysNumber" class="form-control col-sm-7" />
+        <input asp-for="CurrentHoistWayData.HoistWaysNumber" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control col-sm-7" />
         <span asp-validation-for="CurrentHoistWayData.HoistWaysNumber" class="text-danger"></span>
     </div>
 </div>
 <div class="form-group row has-warning has-feedback">
     <label asp-for="CurrentHoistWayData.MachineRooms" class="col-sm-2 col-form-label"></label>
     <div>
-        <input asp-for="CurrentHoistWayData.MachineRooms" class="form-control col-sm-7" />
+        <input asp-for="CurrentHoistWayData.MachineRooms" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control col-sm-7" />
         <span asp-validation-for="CurrentHoistWayData.MachineRooms" class="text-danger"></span>
     </div>
 </div>
 <div class="form-group row has-warning has-feedback">
     <label asp-for="CurrentHoistWayData.Capacity" class="col-sm-2 col-form-label"></label>
     <div>
-        <input asp-for="CurrentHoistWayData.Capacity" class="form-control col-sm-7" />
+        <input asp-for="CurrentHoistWayData.Capacity" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control col-sm-7" />
         <span asp-validation-for="CurrentHoistWayData.Capacity" class="text-danger"></span>
     </div>
 </div>
 <div class="form-group row has-warning has-feedback">
     <label asp-for="CurrentHoistWayData.UpSpeed" class="col-sm-2 col-form-label"></label>
     <div>
-        <input asp-for="CurrentHoistWayData.UpSpeed" class="form-control col-sm-7" />
+        <input asp-for="CurrentHoistWayData.UpSpeed" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control col-sm-7" />
         <span asp-validation-for="CurrentHoistWayData.UpSpeed" class="text-danger"></span>
     </div>
 </div>
 <div class="form-group row has-warning has-feedback">
     <label asp-for="CurrentHoistWayData.DownSpeed" class="col-sm-2 col-form-label"></label>
     <div>
-        <input asp-for="CurrentHoistWayData.DownSpeed" class="form-control col-sm-7" />
+        <input asp-for="CurrentHoistWayData.DownSpeed" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control col-sm-7" />
         <span asp-validation-for="CurrentHoistWayData.DownSpeed" class="text-danger"></span>
     </div>
 </div>
 <div class="form-group row has-warning has-feedback">
     <label asp-for="CurrentHoistWayData.TotalTravel" class="col-sm-2 col-form-label"></label>
     <div>
-        <input asp-for="CurrentHoistWayData.TotalTravel" class="form-control col-sm-7" />
+        <input asp-for="CurrentHoistWayData.TotalTravel" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control col-sm-7" />
         <span asp-validation-for="CurrentHoistWayData.TotalTravel" class="text-danger"></span>
     </div>
 </div>
 <div class="form-group row has-warning has-feedback">
     <label asp-for="CurrentHoistWayData.LandingSystemID" class="col-sm-2 col-form-label"></label>
     <div>
-        <landing-sys-select selected-value="@Model.CurrentHoistWayData.LandingSystemID" class="form-control-sm" asp-for="CurrentHoistWayData.LandingSystemID"></landing-sys-select>
+        <landing-sys-select selected-value="@Model.CurrentHoistWayData.LandingSystemID" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control-sm" asp-for="CurrentHoistWayData.LandingSystemID"></landing-sys-select>
         <span asp-validation-for="CurrentHoistWayData.LandingSystemID" class="text-danger"></span>
     </div>
 </div>
@@ -62,83 +62,83 @@
     <tbody>
         <tr>
             <th scope="row"><center>16</center></th>
-            <td><input asp-for="CurrentHoistWayData.FrontSixteenthServed" class="form-control" /></td>
-            <td><input asp-for="CurrentHoistWayData.RearSixteenthServed" class="form-control" /></td>
+            <td><input asp-for="CurrentHoistWayData.FrontSixteenthServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)"  class="form-control" /></td>
+            <td><input asp-for="CurrentHoistWayData.RearSixteenthServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control" /></td>
         </tr>
         <tr>
             <th scope="row"><center>15</center></th>
-            <td><input asp-for="CurrentHoistWayData.FrontFifteenthServed" class="form-control" /></td>
-            <td><input asp-for="CurrentHoistWayData.RearFifteenthServed" class="form-control" /></td>
+            <td><input asp-for="CurrentHoistWayData.FrontFifteenthServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control" /></td>
+            <td><input asp-for="CurrentHoistWayData.RearFifteenthServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control" /></td>
         </tr>
         <tr>
             <th scope="row"><center>14</center></th>
-            <td><input asp-for="CurrentHoistWayData.FrontFourteenthServed" class="form-control" /></td>
-            <td><input asp-for="CurrentHoistWayData.RearFourteenthServed" class="form-control" /></td>
+            <td><input asp-for="CurrentHoistWayData.FrontFourteenthServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control" /></td>
+            <td><input asp-for="CurrentHoistWayData.RearFourteenthServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control" /></td>
         </tr>
         <tr>
             <th scope="row"><center>13</center></th>
-            <td><input asp-for="CurrentHoistWayData.FrontThirteenthServed" class="form-control" /></td>
-            <td><input asp-for="CurrentHoistWayData.RearThirteenthServed" class="form-control" /></td>
+            <td><input asp-for="CurrentHoistWayData.FrontThirteenthServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control" /></td>
+            <td><input asp-for="CurrentHoistWayData.RearThirteenthServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control" /></td>
         </tr>
         <tr>
             <th scope="row"><center>12</center></th>
-            <td><input asp-for="CurrentHoistWayData.FrontTwelvethServed" class="form-control" /></td>
-            <td><input asp-for="CurrentHoistWayData.RearTwelvethServed" class="form-control" /></td>
+            <td><input asp-for="CurrentHoistWayData.FrontTwelvethServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control" /></td>
+            <td><input asp-for="CurrentHoistWayData.RearTwelvethServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control" /></td>
         </tr>
         <tr>
             <th scope="row"><center>11</center></th>
-            <td><input asp-for="CurrentHoistWayData.FrontEleventhServed" class="form-control" /></td>
-            <td><input asp-for="CurrentHoistWayData.RearEleventhServed" class="form-control" /></td>
+            <td><input asp-for="CurrentHoistWayData.FrontEleventhServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control" /></td>
+            <td><input asp-for="CurrentHoistWayData.RearEleventhServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control" /></td>
         </tr>
         <tr>
             <th scope="row"><center>10</center></th>
-            <td><input asp-for="CurrentHoistWayData.FrontTenthServed" class="form-control" /></td>
+            <td><input asp-for="CurrentHoistWayData.FrontTenthServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control" /></td>
             <td><input asp-for="CurrentHoistWayData.RearTenthServed" class="form-control" /></td>
         </tr>
         <tr>
             <th scope="row"><center>9</center></th>
-            <td><input asp-for="CurrentHoistWayData.FrontNinthServed" class="form-control" /></td>
-            <td><input asp-for="CurrentHoistWayData.RearNinthServed" class="form-control" /></td>
+            <td><input asp-for="CurrentHoistWayData.FrontNinthServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control" /></td>
+            <td><input asp-for="CurrentHoistWayData.RearNinthServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control" /></td>
         </tr>
         <tr>
             <th scope="row"><center>8</center></th>
-            <td><input asp-for="CurrentHoistWayData.FrontEightServed" class="form-control" /></td>
-            <td><input asp-for="CurrentHoistWayData.RearEightServed" class="form-control" /></td>
+            <td><input asp-for="CurrentHoistWayData.FrontEightServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control" /></td>
+            <td><input asp-for="CurrentHoistWayData.RearEightServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control" /></td>
         </tr>
         <tr>
             <th scope="row"><center>7</center></th>
-            <td><input asp-for="CurrentHoistWayData.FrontSeventhServed" class="form-control" /></td>
-            <td><input asp-for="CurrentHoistWayData.RearSeventhServed" class="form-control" /></td>
+            <td><input asp-for="CurrentHoistWayData.FrontSeventhServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control" /></td>
+            <td><input asp-for="CurrentHoistWayData.RearSeventhServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control" /></td>
         </tr>
         <tr>
             <th scope="row"><center>6</center></th>
-            <td><input asp-for="CurrentHoistWayData.FrontSexthServed" class="form-control" /></td>
+            <td><input asp-for="CurrentHoistWayData.FrontSexthServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control" /></td>
             <td><input asp-for="CurrentHoistWayData.RearSexthServed" class="form-control" /></td>
         </tr>
         <tr>
             <th scope="row"><center>5</center></th>
-            <td><input asp-for="CurrentHoistWayData.FrontFifthServed" class="form-control" /></td>
-            <td><input asp-for="CurrentHoistWayData.RearFifthServed" class="form-control" /></td>
+            <td><input asp-for="CurrentHoistWayData.FrontFifthServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control" /></td>
+            <td><input asp-for="CurrentHoistWayData.RearFifthServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control" /></td>
         </tr>
         <tr>
             <th scope="row"><center>4</center></th>
-            <td><input asp-for="CurrentHoistWayData.FrontFourthServed" class="form-control" /></td>
-            <td><input asp-for="CurrentHoistWayData.RearFourthServed" class="form-control" /></td>
+            <td><input asp-for="CurrentHoistWayData.FrontFourthServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control" /></td>
+            <td><input asp-for="CurrentHoistWayData.RearFourthServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control" /></td>
         </tr>
         <tr>
             <th scope="row"><center>3</center></th>
-            <td><input asp-for="CurrentHoistWayData.FrontThirdServed" class="form-control" /></td>
-            <td><input asp-for="CurrentHoistWayData.RearThirdServed" class="form-control" /></td>
+            <td><input asp-for="CurrentHoistWayData.FrontThirdServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control" /></td>
+            <td><input asp-for="CurrentHoistWayData.RearThirdServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control" /></td>
         </tr>
         <tr>
             <th scope="row"><center>2</center></th>
-            <td><input asp-for="CurrentHoistWayData.FrontSecondServed" class="form-control" /></td>
+            <td><input asp-for="CurrentHoistWayData.FrontSecondServed"disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control" /></td>
             <td><input asp-for="CurrentHoistWayData.RearSecondServed" class="form-control" /></td>
         </tr>
         <tr>
             <th scope="row"><center>1</center></th>
-            <td><input asp-for="CurrentHoistWayData.FrontFirstServed" class="form-control" /></td>
-            <td><input asp-for="CurrentHoistWayData.RearFirstServed" class="form-control" /></td>
+            <td><input asp-for="CurrentHoistWayData.FrontFirstServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control" /></td>
+            <td><input asp-for="CurrentHoistWayData.RearFirstServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control" /></td>
         </tr>
     </tbody>
 </table>

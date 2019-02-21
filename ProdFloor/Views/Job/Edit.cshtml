@@ -28,7 +28,7 @@
 <!-- Tab panes -->
 <form asp-action="Edit" method="post">
     <div class="tab-content" style="padding:20px">
-        <div class="tab-pane @(Model.CurrentTab == "Main" || Model.CurrentTab == "" || Model.CurrentTab == null ? "active" : " ")" id="home" role="tabpanel">
+        <div class="tab-pane @(Model.CurrentTab == "Main" || Model.CurrentTab == "" || Model.CurrentTab == null ? "active" : " ") " id="home" role="tabpanel">
             @Html.Partial("JobForm", Model)
         </div>
         <div class="tab-pane @(Model.CurrentTab == "Extension" ? "active" : " ")" id="jobextension" role="tabpanel">
@@ -68,8 +68,16 @@
             }
         </div>
         <div class="text-center">
-            <button class="btn btn-primary" value="Save" type="submit">Save</button>
-            <a asp-action="List" class="btn btn-secondary">Cancel</a>
+            @if (Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0)
+            {
+                <button class="btn btn-primary" value="Save" type="submit">Save</button>
+                <a asp-action="List" class="btn btn-secondary">Cancel</a>
+            }
+            else
+            {
+                <a asp-action="List" class="btn btn-lg btn-success" style="float:left">Back</a>
+            }
+
         </div>
     </div>
 </form>

@@ -2,6 +2,9 @@
 using System;
 using ProdFloor.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Http;
 
 namespace ProdFloor.Models.ViewModels
 {
@@ -17,5 +20,6 @@ namespace ProdFloor.Models.ViewModels
         public List<SpecialFeatures> SpecialFeatureslist { get; set; }
         public string CurrentTab { get; set; }
         public string buttonAction { get; set; }
+        public int CurrentUserID { get; set; }
     }
 }

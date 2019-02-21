@@ -16,13 +16,13 @@
                 @Html.HiddenFor(m => m.SpecialFeatureslist[i].SpecialFeaturesID)
                 <tr>
                     <td>
-                        @Html.TextBoxFor(m => m.SpecialFeatureslist[i].Description, new { Class = "form-control col-sm-2;", Style = "text-align:center;" })
+                        @Html.TextBoxFor(m => m.SpecialFeatureslist[i].Description, new { Class = "form-control col-sm-2;", disabled = (Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true) , Style = "text-align:center;" })
                     </td>
-                    <td style="text-align:center;">
+                    <td style="text-align:center;" >
                         <form asp-action="DeleteSF" method="post">
                         <input type="hidden" name="fieldID" value="@Model.SpecialFeatureslist[i].SpecialFeaturesID" />
                         <input type="hidden" name="returnUrl" value="\Job\Edit\@Model.SpecialFeatureslist[i].JobID" />
-                        <button type="submit" class="btn btn-danger btn-sm">
+                        <button type="submit" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="btn btn-danger btn-sm">
                         <i class="fa fa-minus-circle"></i>
                          </button>
                         </form>

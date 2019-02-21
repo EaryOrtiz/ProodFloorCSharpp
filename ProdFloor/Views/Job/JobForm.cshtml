@@ -1,5 +1,6 @@
 ﻿@model JobViewModel
 @{
+    
     <script src="~/Scripts/CascadingCountryStateCity.js" type="text/javascript"></script>
 }
 <input type="hidden" asp-for="CurrentJob.JobID" />
@@ -9,79 +10,79 @@
 <div class="form-group row">
     <label asp-for="CurrentJob.Name" class="col-sm-2 col-form-label"></label>
     <div>
-        <input asp-for="CurrentJob.Name" class="form-control col-sm-7" />
+        <input asp-for="CurrentJob.Name" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control col-sm-15" />
         <span asp-validation-for="CurrentJob.Name" class="text-danger"></span>
     </div>
 </div>
 <div class="form-group row">
     <label asp-for="CurrentJob.JobTypeID" class="col-sm-2 col-form-label"></label>
-    <div>
-        <job-type-select selected-value="@Model.CurrentJob.JobTypeID" class="form-control-sm" asp-for="CurrentJob.JobTypeID"></job-type-select>
+    <div >
+        <job-type-select selected-value="@Model.CurrentJob.JobTypeID" class="form-control-sm" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" asp-for="CurrentJob.JobTypeID" ></job-type-select>
         <span asp-validation-for="CurrentJob.JobTypeID" class="text-danger"></span>
     </div>
 </div>
-<div class="form-group row">
+<div class="form-group row @(Model.CurrentUserID != Model.CurrentJob.EngID ? "disabled" : "disabled")">
     <label asp-for="CurrentJob.JobNum" class="col-sm-2 col-form-label"></label>
     <div>
-        <input asp-for="CurrentJob.JobNum" class="form-control" style="width:auto" />
+        <input asp-for="CurrentJob.JobNum" class="form-control" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" style="width:auto" />
         <span asp-validation-for="CurrentJob.JobNum" class="text-danger"></span>
     </div>
 </div>
 <div class="form-group row">
     <label asp-for="CurrentJob.PO" class="col-sm-2 col-form-label"></label>
     <div>
-        <input asp-for="CurrentJob.PO" class="form-control col-sm-7" />
+        <input asp-for="CurrentJob.PO" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control col-sm-7" />
         <span asp-validation-for="CurrentJob.PO" class="text-danger"></span>
     </div>
 </div>
 <div class="form-group row">
     <label asp-for="CurrentJob.ShipDate" class="col-sm-2 col-form-label"></label>
     <div>
-        <input asp-for="CurrentJob.ShipDate" class="form-control col-sm-15" />
+        <input asp-for="CurrentJob.ShipDate" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control col-sm-15" />
         <span asp-validation-for="CurrentJob.ShipDate" class="text-danger"></span>
     </div>
 </div>
 <div class="form-group row">
     <label asp-for="CurrentJob.LatestFinishDate" class="col-sm-2 col-form-label"></label>
     <div>
-        <input asp-for="CurrentJob.LatestFinishDate" class="form-control col-sm-15" />
+        <input asp-for="CurrentJob.LatestFinishDate" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control col-sm-15" />
         <span asp-validation-for="CurrentJob.LatestFinishDate" class="text-danger"></span>
     </div>
 </div>
 <div class="form-group row">
     <label asp-for="CurrentJob.Cust" class="col-sm-2 col-form-label"></label>
     <div>
-        <input asp-for="CurrentJob.Cust" class="form-control col-sm-7" />
+        <input asp-for="CurrentJob.Cust" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control col-sm-7" />
         <span asp-validation-for="CurrentJob.Cust" class="text-danger"></span>
     </div>
 </div>
 <div class="form-group row">
     <label asp-for="CurrentJob.Contractor" class="col-sm-2 col-form-label"></label>
     <div>
-        <input asp-for="CurrentJob.Contractor" class="form-control col-sm-7" />
+        <input asp-for="CurrentJob.Contractor" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control col-sm-7" />
         <span asp-validation-for="CurrentJob.Contractor" class="text-danger"></span>
     </div>
 </div>
 <div class="form-group row">
     <label asp-for="CurrentJob.CountryID" class="col-sm-2 col-form-label"></label>
-    <country-select id="CountryID" asp-for="@Model.CurrentJob.CountryID" class="form-control-sm" selected-value="@Model.CurrentJob.CityID">
+    <country-select id="CountryID" asp-for="@Model.CurrentJob.CountryID" class="form-control-sm" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" selected-value="@Model.CurrentJob.CityID">
     </country-select>
 </div>
 <div class="form-group row">
     <label asp-for="CurrentJob.StateID" class="col-sm-2 col-form-label"></label>
-    <state-select id="StateID" asp-for="@Model.CurrentJob.StateID" class="form-control-sm" selected-value="@Model.CurrentJob.CityID">
+    <state-select id="StateID" asp-for="@Model.CurrentJob.StateID" class="form-control-sm" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" selected-value="@Model.CurrentJob.CityID">
     </state-select>
 </div>
 <div class="form-group row">
     <label asp-for="CurrentJob.CityID" class="col-sm-2 col-form-label"></label>
-    <select id="CityID" asp-for="@Model.CurrentJob.CityID" class="form-control-sm" asp-items="ViewBag.CityID">
+    <select id="CityID" asp-for="@Model.CurrentJob.CityID" class="form-control-sm" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" asp-items="ViewBag.CityID">
         <option value="">-- Select City --</option>
     </select>
 </div>
 <div class="form-group row">
     <label asp-for="CurrentJob.FireCodeID" class="col-sm-2 col-form-label"></label>
     <div>
-        <fire-code-select selected-value="@Model.CurrentJob.FireCodeID" class="form-control-sm" asp-for="CurrentJob.FireCodeID"></fire-code-select>
+        <fire-code-select selected-value="@Model.CurrentJob.FireCodeID" class="form-control-sm" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" asp-for="CurrentJob.FireCodeID"></fire-code-select>
         <span asp-validation-for="CurrentJob.FireCodeID" class="text-danger"></span>
     </div>
 </div>
