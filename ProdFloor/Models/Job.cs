@@ -460,8 +460,6 @@ namespace ProdFloor.Models
         public bool FrontSixteenthServed { get; set; }
         public bool RearSixteenthServed { get; set; }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
         [NotMapped]
         public bool AnyRear
         {
@@ -587,30 +585,6 @@ namespace ProdFloor.Models
                 if (FrontSixteenthServed == true) count++;
 
                 return count;
-=======
-        public bool AnyRear
-        {
-            get
-            {
-=======
-        public bool AnyRear
-        {
-            get
-            {
->>>>>>> 9886ce58093aa54ef3f520bae46ecac8762400e8
-                if (RearFirstServed == true || RearSecondServed == true || RearThirdServed == true || RearFourthServed == true || RearFifthServed == true || RearSexthServed == true
-                    || RearSeventhServed == true || RearEightServed == true || RearNinthServed == true || RearTenthServed == true
-                    || RearEleventhServed == true || RearTwelvethServed == true || RearThirteenthServed == true || RearFourteenthServed == true
-                    || FrontFifteenthServed == true || RearSixteenthServed == true)
-                {
-                    return true;
-                }
-                
-                return false;
-<<<<<<< HEAD
->>>>>>> 9886ce58093aa54ef3f520bae46ecac8762400e8
-=======
->>>>>>> 9886ce58093aa54ef3f520bae46ecac8762400e8
             }
         }
 
