@@ -14,77 +14,7 @@ namespace ProdFloor.Models
             ApplicationDbContext context = app.ApplicationServices
             .GetRequiredService<ApplicationDbContext>();
             context.Database.Migrate();
-            /*if (!context.Jobs.Any())
-            {
-                context.Jobs.AddRange(
-                    new Job
-                    {
-                        Name = "BRENTWOOD CONDOS",
-                        JobNum = 2017088571,
-                        PO = 3398238,
-                        Cust = "OTIS-MP",
-                        JobCountry = "USA",
-                        JobCity = "Austin",
-                        JobState = "Texas",
-                        SafetyCode = "ASME A17.1-2007/CSA B44-07",
-                        JobType = "M2000",
-                        Contractor = "Contractor 1",
-                        EngID = 97,
-                        Status = "Incomplete",
-                        ShipDate = new DateTime(2017,12,28)
-                    },
-                    new Job
-                    {
-                        Name = "Job Name 2",
-                        JobNum = 2017088362,
-                        PO = 3398175,
-                        Cust = "FAKE-2",
-                        JobCountry = "USA",
-                        JobCity = "Pasadena",
-                        JobState = "California",
-                        SafetyCode = "ASME A17.1-2004 w/CA TITLE 8,GROUP IV",
-                        JobType = "M4000",
-                        Contractor = "Contractor 2",
-                        EngID = 99,
-                        Status = "Incomplete",
-                        ShipDate = new DateTime(2017, 12, 12)
-                    },
-                    new Job
-                    {
-                        Name = "PACIFIC PALISADES LAUSD CHARTER HIGH SCHOOL",
-                        JobNum = 2017088536,
-                        PO = 3397819,
-                        Cust = "CAEE2999",
-                        JobCountry = "USA",
-                        JobCity = "Los Angeles",
-                        JobState = "California",
-                        SafetyCode = "ASME A17.1-2004 w/CA TITLE 8,GROUP IV ",
-                        JobType = "ELEM",
-                        Contractor = "Contractor 1",
-                        EngID = 27,
-                        Status = "Incomplete",
-                        ShipDate = new DateTime(2017, 11, 13)
-                    },
-                    new Job
-                    {
-                        Name = "SMC ADMIN",
-                        JobNum = 2017088535,
-                        PO = 3397817,
-                        Cust = "CAEE3000",
-                        JobCountry = "USA",
-                        JobCity = "Sacramento",
-                        JobState = "California",
-                        SafetyCode = "ASME A17.1-2004 w/CA TITLE 8,GROUP IV ",
-                        JobType = "M2000",
-                        Contractor = "Contractor 6",
-                        EngID = 27,
-                        Status = "Incomplete",
-                        ShipDate = new DateTime(2018, 1, 26)
-                    }
-                    );
-                context.SaveChanges();
-            }*/
-
+             
             if (!context.JobTypes.Any())
             {
                 context.JobTypes.AddRange(
@@ -111,10 +41,20 @@ namespace ProdFloor.Models
                     new JobType
                     {
                         JobTypeID = 5,
-                        Name = "ElmTractio"
+                        Name = "ElmTract"
                     }
                     );
-                context.SaveChanges();
+                context.Database.OpenConnection();
+                try
+                {
+                    context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.JobTypes ON");
+                    context.SaveChanges();
+                    context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.JobTypes OFF");
+                }
+                finally
+                {
+                    context.Database.CloseConnection();
+                }
             }
 
             if (!context.DoorOperators.Any())
@@ -400,7 +340,17 @@ namespace ProdFloor.Models
                         Brand = "EMS",
                         Name = "EMS"
                     });
-                context.SaveChanges();
+                context.Database.OpenConnection();
+                try
+                {
+                    context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.DoorOperators ON");
+                    context.SaveChanges();
+                    context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.DoorOperators OFF");
+                }
+                finally
+                {
+                    context.Database.CloseConnection();
+                }
             }
 
             if (!context.Countries.Any())
@@ -417,7 +367,17 @@ namespace ProdFloor.Models
                         Name = "Canada"
                     }
                     );
-                context.SaveChanges();
+                context.Database.OpenConnection();
+                try
+                {
+                    context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.Countries ON");
+                    context.SaveChanges();
+                    context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.Countries OFF");
+                }
+                finally
+                {
+                    context.Database.CloseConnection();
+                }
             }
 
            if (!context.States.Any())
@@ -820,7 +780,17 @@ namespace ProdFloor.Models
                         CountryID = 1
                     }
                     );
-                context.SaveChanges();
+                context.Database.OpenConnection();
+                try
+                {
+                    context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.States ON");
+                    context.SaveChanges();
+                    context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.States OFF");
+                }
+                finally
+                {
+                    context.Database.CloseConnection();
+                }
             }
 
             if (!context.FireCodes.Any())
@@ -843,9 +813,24 @@ namespace ProdFloor.Models
                     new FireCode { FireCodeID = 15, Name = "ASME A17.1-2013/CSA B44-13" },
                     new FireCode { FireCodeID = 16, Name = "ASME A17.1-2016/CSA B44-16" },
                     new FireCode { FireCodeID = 17, Name = "ASME A17.1-1996 w/CA TITLE 8,GROUP III" },
-                    new FireCode { FireCodeID = 18, Name = "ASME A17.1-2016 w/Chicago Title 14C-3" }
+                    new FireCode { FireCodeID = 18, Name = "ASME A17.1-2016 w/Chicago Title 14C-3" },
+                    new FireCode { FireCodeID = 19, Name = "ASME A17.1-2004 w/524 CMR 13.00" },
+                    new FireCode { FireCodeID = 20, Name = "ASME A17.1-2013 w/524 CMR 35.00" },
+                    new FireCode { FireCodeID = 21, Name = "ASME A17.1S-2005" },
+                    new FireCode { FireCodeID = 22, Name = "ASME A17.1S-2005 w/NYC Appendix K4" },
+                    new FireCode { FireCodeID = 23, Name = "ASME A17.1b-2005 w/NYC Appendix K" }
                     );
-                context.SaveChanges();
+                context.Database.OpenConnection();
+                try
+                {
+                    context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.FireCodes ON");
+                    context.SaveChanges();
+                    context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.FireCodes OFF");
+                }
+                finally
+                {
+                    context.Database.CloseConnection();
+                }
             }
 
             if (!context.Cities.Any())
@@ -853,360 +838,793 @@ namespace ProdFloor.Models
                 context.Cities.AddRange(
                     new City
                     {
+                        CityID = 1,
                         Name = "Other",
                         StateID = 8,
                         FirecodeID = 14
                     },
                     new City
                     {
+                        CityID = 2,
                         Name = "Other",
                         StateID = 12,
                         FirecodeID = 14
                     },
                     new City
                     {
+                        CityID =3,
                         Name = "Other",
                         StateID = 14,
                         FirecodeID = 14
                     },
                     new City
                     {
+                        CityID = 4,
                         Name = "Other",
                         StateID = 17,
                         FirecodeID = 14
                     },
                     new City
                     {
+                        CityID = 5,
                         Name = "Other",
                         StateID = 20,
                         FirecodeID = 14
                     },
                     new City
                     {
+                        CityID = 6,
                         Name = "Other",
                         StateID = 21,
                         FirecodeID = 14
                     },
                     new City
                     {
+                        CityID = 7,
                         Name = "Other",
                         StateID = 35,
                         FirecodeID = 14
                     },
                     new City
                     {
+                        CityID = 8,
                         Name = "Other",
                         StateID = 37,
                         FirecodeID = 14
                     },
                     new City
                     {
+                        CityID = 9,
                         Name = "Other",
                         StateID = 41,
                         FirecodeID = 14
                     },
                     new City
                     {
+                        CityID = 10,
                         Name = "Other",
                         StateID = 53,
                         FirecodeID = 14
                     },
                     new City
                     {
+                        CityID = 11,
                         Name = "Other",
                         StateID = 57,
                         FirecodeID = 14
                     },//------------------------
                     new City
                     {
+                        CityID = 12,
                         Name = "Other",
                         StateID = 2,
                         FirecodeID = 16
                     },
                     new City
                     {
+                        CityID = 13,
                         Name = "Other",
                         StateID = 61,
                         FirecodeID = 16
                     },
                     new City
                     {
+                        CityID = 14,
                         Name = "Other",
                         StateID = 13,
                         FirecodeID = 16
                     },
                     new City
                     {
+                        CityID = 15,
                         Name = "Other",
                         StateID = 16,
                         FirecodeID = 16
                     },
                     new City
                     {
+                        CityID = 16,
                         Name = "Other",
                         StateID = 62,
                         FirecodeID = 16
                     },
                     new City
                     {
+                        CityID = 17,
                         Name = "Other",
                         StateID = 23,
                         FirecodeID = 16
                     },
                     new City
                     {
+                        CityID = 18,
                         Name = "Other",
                         StateID = 28,
                         FirecodeID = 16
                     },
                     new City
                     {
+                        CityID = 19,
                         Name = "Other",
                         StateID = 25,
                         FirecodeID = 16
                     },
                     new City
                     {
+                        CityID = 20,
                         Name = "Other",
                         StateID = 26,
                         FirecodeID = 16
                     },
                     new City
                     {
+                        CityID = 21,
                         Name = "Other",
                         StateID = 33,
                         FirecodeID = 16
                     },
                     new City
                     {
+                        CityID = 22,
                         Name = "Other",
                         StateID = 34,
                         FirecodeID = 16
                     },
                     new City
                     {
+                        CityID = 23,
                         Name = "Other",
                         StateID = 38,
                         FirecodeID = 16
                     },
                     new City
                     {
+                        CityID = 24,
                         Name = "Other",
                         StateID = 40,
                         FirecodeID = 16
                     },
                     new City
                     {
+                        CityID = 25,
                         Name = "Other",
                         StateID = 42,
                         FirecodeID = 16
                     },
                     new City
                     {
+                        CityID = 26,
                         Name = "Other",
                         StateID = 43,
                         FirecodeID = 16
                     },
                     new City
                     {
+                        CityID = 27,
                         Name = "Other",
                         StateID = 46,
                         FirecodeID = 16
                     },
                     new City
                     {
+                        CityID = 28,
                         Name = "Other",
                         StateID = 49,
                         FirecodeID = 16
                     },
                     new City
                     {
+                        CityID = 29,
                         Name = "Other",
                         StateID = 54,
                         FirecodeID = 16
                     },//--------------------
                     new City
                     {
+                        CityID = 30,
                         Name = "Other",
                         StateID = 1,
                         FirecodeID = 15
                     },
                     new City
                     {
+                        CityID = 31,
                         Name = "Other",
                         StateID = 6,
                         FirecodeID = 15
                     },
                     new City
                     {
+                        CityID = 32,
                         Name = "Other",
                         StateID = 7,
                         FirecodeID = 15
                     },
                     new City
                     {
+                        CityID = 33,
                         Name = "Other",
                         StateID = 10,
                         FirecodeID = 15
                     },
                     new City
                     {
+                        CityID = 34,
                         Name = "Other",
                         StateID = 11,
                         FirecodeID = 15
                     },
                     new City
                     {
+                        CityID = 35,
                         Name = "Other",
                         StateID = 15,
                         FirecodeID = 15
                     },
                     new City
                     {
+                        CityID = 36,
                         Name = "Other",
                         StateID = 18,
                         FirecodeID = 15
                     },
                     new City
                     {
+                        CityID = 37,
                         Name = "Other",
                         StateID = 63,
                         FirecodeID = 15
                     },
                     new City
                     {
+                        CityID = 38,
                         Name = "Other",
                         StateID = 31,
                         FirecodeID = 15
                     },
                     new City
                     {
+                        CityID = 39,
                         Name = "Other",
                         StateID = 27,
                         FirecodeID = 15
                     },
                     new City
                     {
+                        CityID = 40,
                         Name = "Other",
                         StateID = 30,
                         FirecodeID = 15
                     },
                     new City
                     {
+                        CityID = 41,
                         Name = "Other",
                         StateID = 32,
                         FirecodeID = 15
                     },
                     new City
                     {
+                        CityID = 42,
                         Name = "Other",
                         StateID = 39,
                         FirecodeID = 15
                     },
                     new City
                     {
+                        CityID = 43,
                         Name = "Other",
                         StateID = 44,
                         FirecodeID = 15
                     },
                     new City
                     {
+                        CityID = 44,
                         Name = "Other",
                         StateID = 45,
                         FirecodeID = 15
                     },
                     new City
                     {
+                        CityID = 45,
                         Name = "Other",
                         StateID = 47,
                         FirecodeID = 15
                     },
                     new City
                     {
+                        CityID = 46,
                         Name = "Other",
                         StateID = 48,
                         FirecodeID = 15
                     },
                     new City
                     {
+                        CityID = 47,
                         Name = "Other",
                         StateID = 50,
                         FirecodeID = 15
                     },
                     new City
                     {
+                        CityID = 48,
                         Name = "Other",
                         StateID = 56,
                         FirecodeID = 15
                     },
                     new City
                     {
+                        CityID = 49,
                         Name = "Other",
                         StateID = 58,
                         FirecodeID = 15
                     },
                     new City
                     {
+                        CityID = 50,
                         Name = "Other",
                         StateID = 60,
                         FirecodeID = 15
                     },//----------------------
                     new City
                     {
+                        CityID = 51,
                         Name = "Other",
                         StateID = 4,
                         FirecodeID = 11
                     },
                     new City
                     {
+                        CityID = 52,
                         Name = "Other",
                         StateID = 3,
                         FirecodeID = 11
                     },
                     new City
                     {
+                        CityID = 53,
                         Name = "Other",
                         StateID = 64,
                         FirecodeID = 11
                     },
                     new City
                     {
+                        CityID = 54,
                         Name = "Other",
                         StateID = 65,
                         FirecodeID = 11
                     },
                     new City
                     {
+                        CityID = 55,
                         Name = "Other",
                         StateID = 66,
                         FirecodeID = 11
                     },
                     new City
                     {
+                        CityID = 56,
                         Name = "Other",
                         StateID = 51,
                         FirecodeID = 11
                     },
                     new City
                     {
+                        CityID = 57,
                         Name = "Other",
                         StateID = 52,
                         FirecodeID = 11
                     },
                     new City
                     {
+                        CityID = 58,
                         Name = "Other",
                         StateID = 55,
                         FirecodeID = 11
                     },
                     new City
                     {
+                        CityID = 59,
                         Name = "Other",
                         StateID = 59,
                         FirecodeID = 11
+                    },//Special Cities
+                    new City
+                    {
+                        CityID = 60,
+                        Name = "Other before 2008",
+                        StateID = 5,
+                        FirecodeID = 17
+                    },
+                    new City
+                    {
+                        CityID = 61,
+                        Name = "Other after 2008",
+                        StateID = 5,
+                        FirecodeID = 9
+                    },
+                    new City//pregumntar a abraham
+                    {
+                        CityID = 62,
+                        Name = "Other",
+                        StateID = 36,
+                        FirecodeID = 4
+                    },
+                    new City
+                    {
+                        CityID = 63,
+                        Name = "Other MRL",
+                        StateID = 24,
+                        FirecodeID = 11
+                    },
+                    new City
+                    {
+                        CityID = 64,
+                        Name = "All Others",
+                        StateID = 24,
+                        FirecodeID = 10
+                    },
+                    new City
+                    {
+                        CityID = 65,
+                        Name = "Other MRL",
+                        StateID = 19,
+                        FirecodeID = 19
+                    },
+                    new City
+                    {
+                        CityID = 66,
+                        Name = "All Others",
+                        StateID = 19,
+                        FirecodeID = 8
+                    },
+                    new City
+                    {
+                        CityID = 67,
+                        Name = "Other after 2013",
+                        StateID = 19,
+                        FirecodeID = 20
+                    },
+                    new City
+                    {//Pregunaar abraham
+                        CityID = 68,
+                        Name = "Other",
+                        StateID = 22,
+                        FirecodeID = 10
+                    },//Cities with different Firecode
+                    new City
+                    {
+                        CityID = 69,
+                        Name = "Birmingham",
+                        StateID = 2,
+                        FirecodeID = 16
+                    },
+                    new City
+                    {
+                        CityID = 70,
+                        Name = "Anchorage",
+                        StateID = 1,
+                        FirecodeID = 16
+                    },
+                    new City
+                    {
+                        CityID = 71,
+                        Name = "Phoenix",
+                        StateID = 4,
+                        FirecodeID = 16
+                    },
+                    new City
+                    {
+                        CityID = 72,
+                        Name = "Los angeles-before 2008",
+                        StateID = 5,
+                        FirecodeID = 17
+                    },
+                    new City
+                    {
+                        CityID = 73,
+                        Name = "Los angeles-after 2008",
+                        StateID = 5,
+                        FirecodeID = 9
+                    },
+                    new City
+                    {
+                        CityID = 74,
+                        Name = "Avon",
+                        StateID = 6,
+                        FirecodeID = 15
+                    },
+                    new City
+                    {
+                        CityID = 75,
+                        Name = "Boulder",
+                        StateID = 6,
+                        FirecodeID = 15
+                    },
+                    new City
+                    {
+                        CityID = 76,
+                        Name = "Denver-proper",
+                        StateID = 6,
+                        FirecodeID = 15
+                    },
+                    new City
+                    {
+                        CityID = 77,
+                        Name = "Denver-Suburbs",
+                        StateID = 6,
+                        FirecodeID = 15
+                    },
+                    new City
+                    {
+                        CityID = 78,
+                        Name = "NWCCOG",
+                        StateID = 6,
+                        FirecodeID = 15
+                    },
+                    new City
+                    {
+                        CityID = 79,
+                        Name = "City of Dover",
+                        StateID = 9,
+                        FirecodeID = 11
+                    },
+                    new City
+                    {
+                        CityID = 80,
+                        Name = "County Of Kent",
+                        StateID = 9,
+                        FirecodeID = 12
+                    },
+                    new City
+                    {
+                        CityID = 81,
+                        Name = "City of Newark",
+                        StateID = 9,
+                        FirecodeID = 12
+                    },
+                    new City
+                    {
+                        CityID = 82,
+                        Name = "City of New Castle",
+                        StateID = 9,
+                        FirecodeID = 3
+                    },
+                    new City
+                    {
+                        CityID = 83,
+                        Name = "County Of New Castle",
+                        StateID = 9,
+                        FirecodeID = 15
+                    },
+                    new City
+                    {
+                        CityID = 84,
+                        Name = "County Of Sussex",
+                        StateID = 9,
+                        FirecodeID = 12
+                    },
+                    new City
+                    {
+                        CityID = 85,
+                        Name = "City of Wilmington",
+                        StateID = 9,
+                        FirecodeID = 12
+                    },
+                    new City
+                    {
+                        CityID = 86,
+                        Name = "Chicago",
+                        StateID = 15,
+                        FirecodeID = 18
+                    },
+                    new City
+                    {
+                        CityID = 87,
+                        Name = "Kansas City",
+                        StateID = 16,
+                        FirecodeID = 12
+                    },
+                    new City
+                    {
+                        CityID = 88,
+                        Name = "Manhattan",
+                        StateID = 16,
+                        FirecodeID = 15
+                    },
+                    new City
+                    {
+                        CityID = 89,
+                        Name = "Overland Park",
+                        StateID = 16,
+                        FirecodeID = 12
+                    },
+                    new City
+                    {
+                        CityID = 90,
+                        Name = "Topeka",
+                        StateID = 16,
+                        FirecodeID = 15
+                    },
+                    new City
+                    {
+                        CityID = 91,
+                        Name = "Wichita & Sedwick County",
+                        StateID = 16,
+                        FirecodeID = 16
+                    },
+                    new City
+                    {
+                        CityID = 92,
+                        Name = "New Orleands",
+                        StateID = 18,
+                        FirecodeID = 15
+                    },
+                    new City
+                    {
+                        CityID = 93,
+                        Name = "Detroit - 1993",
+                        StateID = 20,
+                        FirecodeID = 1
+                    },
+                    new City
+                    {
+                        CityID = 94,
+                        Name = "Detroit - 2000",
+                        StateID = 20,
+                        FirecodeID = 4
+                    },
+                    new City
+                    {
+                        CityID = 95,
+                        Name = "Kansas City",
+                        StateID = 22,
+                        FirecodeID = 14
+                    },
+                    new City
+                    {
+                        CityID = 96,
+                        Name = "St. Louis Couty",
+                        StateID = 22,
+                        FirecodeID = 11
+                    },
+                    new City
+                    {
+                        CityID = 97,
+                        Name = "City of Manchester",
+                        StateID = 28,
+                        FirecodeID = 16
+                    },
+                    new City
+                    {
+                        CityID = 98,
+                        Name = "Albuquerque",
+                        StateID = 30,
+                        FirecodeID = 15
+                    },
+                    new City
+                    {
+                        CityID = 99,
+                        Name = "Santa Fe",
+                        StateID = 30,
+                        FirecodeID = 11
+                    },
+                    new City
+                    {
+                        CityID = 100,
+                        Name = "NYC - New York - MRL",
+                        StateID = 32,
+                        FirecodeID = 22
+                    },
+                    new City
+                    {
+                        CityID = 101,
+                        Name = "NYC - New York - All others",
+                        StateID = 32,
+                        FirecodeID = 23
+                    },
+                    new City
+                    {
+                        CityID = 102,
+                        Name = "Cincinnati",
+                        StateID = 33,
+                        FirecodeID = 16
+                    },
+                    new City
+                    {
+                        CityID = 103,
+                        Name = "Clevelant",
+                        StateID = 33,
+                        FirecodeID = 16
+                    },
+                    new City
+                    {
+                        CityID = 104,
+                        Name = "Enid",
+                        StateID = 34,
+                        FirecodeID = 15
+                    },
+                    new City
+                    {
+                        CityID = 105,
+                        Name = "Oklahoma City",
+                        StateID = 34,
+                        FirecodeID = 11
+                    },
+                    new City
+                    {
+                        CityID = 106,
+                        Name = "Tulsa",
+                        StateID = 34,
+                        FirecodeID = 15
+                    },
+                    new City
+                    {
+                        CityID = 107,
+                        Name = "Memphis",
+                        StateID = 41,
+                        FirecodeID = 14
+                    },
+                    new City
+                    {
+                        CityID = 108,
+                        Name = "Houston",
+                        StateID = 42,
+                        FirecodeID = 16
+                    },
+                    new City
+                    {
+                        CityID = 109,
+                        Name = "Seattle",
+                        StateID = 46,
+                        FirecodeID = 15
+                    },
+                    new City
+                    {
+                        CityID = 110,
+                        Name = "Casper",
+                        StateID = 49,
+                        FirecodeID = 16
+                    },
+                    new City
+                    {
+                        CityID = 111,
+                        Name = "Cheyenne",
+                        StateID = 49,
+                        FirecodeID = 15
                     }
                     );
-                context.SaveChanges();
+                context.Database.OpenConnection();
+                try
+                {
+                    context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.Cities ON");
+                    context.SaveChanges();
+                    context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.Cities OFF");
+                }
+                finally
+                {
+                    context.Database.CloseConnection();
+                }
             }
 
             if (!context.LandingSystems.Any())
@@ -1234,13 +1652,13 @@ namespace ProdFloor.Models
                     {
                         LandingSystemID = 4,
                         Name = "LS-QUTE",
-                        UsedIn = "Element Hydro"
+                        UsedIn = "ElemHydro"
                     },
                     new LandingSystem
                     {
                         LandingSystemID = 5,
                         Name = "LS-EDGE",
-                        UsedIn = "Element Hydro"
+                        UsedIn = "ElemHydro"
                     },
                     new LandingSystem
                     {
@@ -1258,18 +1676,113 @@ namespace ProdFloor.Models
                     {
                         LandingSystemID = 8,
                         Name = "LS-Rail",
-                        UsedIn = "Element Traction"
+                        UsedIn = "ElemTraction"
                     },
                     new LandingSystem
                     {
                         LandingSystemID = 9,
                         Name = "LS-EDGE",
-                        UsedIn = "Element Traction"
+                        UsedIn = "ElemTraction"
                     }
                     );
-                context.SaveChanges();
+                context.Database.OpenConnection();
+                try
+                {
+                    context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.LandingSystems ON");
+                    context.SaveChanges();
+                    context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.LandingSystems OFF");
+                }
+                finally
+                {
+                    context.Database.CloseConnection();
+                }
+
             }
 
+            if (!context.Jobs.Any())
+            {
+                context.Jobs.AddRange(
+                    new Job
+                    {
+                        JobID = 1,
+                        Name = "BRENTWOOD CONDOS",
+                        JobNum = 2017088571,
+                        PO = 3398238,
+                        Cust = "OTIS-MP",
+                        CityID = 25,
+                        FireCodeID = 11,
+                        JobTypeID = 2,
+                        Contractor = "Contractor 1",
+                        EngID = 97,
+                        CrossAppEngID = 98,
+                        Status = "Incomplete",
+                        ShipDate = new DateTime(2017,12,28),
+                        LatestFinishDate = new DateTime(2018, 10, 12)
+                    },
+                    new Job
+                    {
+                        JobID = 2,
+                        Name = "Job Name 2",
+                        JobNum = 2017088362,
+                        PO = 3398175,
+                        Cust = "FAKE-2",
+                        CityID = 60,
+                        FireCodeID = 7,
+                        JobTypeID = 3,
+                        Contractor = "Contractor 2",
+                        EngID = 99,
+                        CrossAppEngID = 97,
+                        Status = "Incomplete",
+                        ShipDate = new DateTime(2017, 12, 12),
+                        LatestFinishDate = new DateTime(2018, 12, 12)
+                    },
+                    new Job
+                    {
+                        JobID = 3,
+                        Name = "PACIFIC PALISADES LAUSD CHARTER HIGH SCHOOL",
+                        JobNum = 2017088536,
+                        PO = 3397819,
+                        Cust = "CAEE2999",
+                        CityID = 61,
+                        FireCodeID = 18,
+                        JobTypeID = 4,
+                        Contractor = "Contractor 1",
+                        EngID = 27,
+                        CrossAppEngID = 99,
+                        Status = "Incomplete",
+                        ShipDate = new DateTime(2017, 11, 13),
+                        LatestFinishDate = new DateTime(2019, 10, 24)
+                    },
+                    new Job
+                    {
+                        JobID = 4,
+                        Name = "SMC ADMIN",
+                        JobNum = 2017088535,
+                        PO = 3397817,
+                        Cust = "CAEE3000",
+                        CityID = 73,
+                        FireCodeID = 18,
+                        JobTypeID = 5,
+                        Contractor = "Contractor 6",
+                        EngID = 27,
+                        CrossAppEngID = 99,
+                        Status = "Incomplete",
+                        ShipDate = new DateTime(2018, 1, 26),
+                        LatestFinishDate =  new DateTime(2019, 1, 17)
+                    }
+                    );
+                context.Database.OpenConnection();
+                try
+                {
+                    context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.Jobs ON");
+                    context.SaveChanges();
+                    context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.Jobs OFF");
+                }
+                finally
+                {
+                    context.Database.CloseConnection();
+                }
+            }
         }
     }
 }
