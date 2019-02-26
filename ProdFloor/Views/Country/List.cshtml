@@ -12,11 +12,16 @@
         New Country
     </a>
 </div>
+<br />
+
 @foreach (var j in Model.Countries)
 {
     @Html.Partial("CountrySummary", j)
 }
-
+<br />
+<div>
+    <a class="btn btn-sm  " style="background-color:#DF0174;color:white" asp-action="ExportToXML" asp-controller="Country">Export List to an XML File</a>
+</div>
 <page-doorop page-model="@Model.PagingInfo" page-action="List" page-classes-enabled="true"
      page-class="btn" page-class-normal="btn-secondary"
      page-class-selected="btn-primary"

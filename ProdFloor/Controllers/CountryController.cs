@@ -4,6 +4,9 @@ using ProdFloor.Models.ViewModels;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using System.Collections.Generic;
+using System.IO;
+using System.Xml;
+using System.Xml.Linq;
 
 namespace ProdFloor.Controllers
 {
@@ -63,6 +66,40 @@ namespace ProdFloor.Controllers
                 TempData["message"] = $"{deletedCountry.Name} was deleted";
             }
             return RedirectToAction("List");
+        }
+
+        public FileStreamResult ExportToXML()
+        {
+            MemoryStream ms = new MemoryStream();
+            XmlWriterSettings xws = new XmlWriterSettings();
+            xws.OmitXmlDeclaration = true;
+            xws.Indent = true;
+
+            List<Country> countries = new List<Country>();
+            countries = repository.Countries.ToList();
+
+                
+                using (XmlWriter xw = XmlWriter.Create(ms, xws))
+                {
+                xw.WriteStartDocument();
+                xw.WriteStartElement("Countries");
+
+                foreach (Country country in countries)
+                {
+                    xw.WriteStartElement("Country");
+
+                    xw.WriteElementString("ID", country.CountryID.ToString());   
+                    xw.WriteElementString("Name", country.Name);
+                    xw.WriteEndElement();
+                }
+
+                xw.WriteEndElement();
+                xw.WriteEndDocument();
+            }
+            ms.Position = 0;
+
+            
+            return File(ms, "text/xml", "Sample.xml");
         }
 
         public ViewResult Add() => View("Edit", new Country());
