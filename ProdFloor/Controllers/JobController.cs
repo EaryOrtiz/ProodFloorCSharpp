@@ -19,7 +19,7 @@ namespace ProdFloor.Controllers
         private IJobRepository repository;
         private IItemRepository itemsrepository;
         private UserManager<AppUser> userManager;
-        public int PageSize = 4;
+        public int PageSize = 5;
 
         public JobController(IJobRepository repo, IItemRepository itemsrepo, UserManager<AppUser> userMgr)
         {
@@ -90,23 +90,12 @@ namespace ProdFloor.Controllers
         */
         public ViewResult NewJob()
         {
-
-            ViewData["CountryID"] = new SelectList(itemsrepository.Countries, "CountryID", "Name");
-            ViewData["StateID"] = new SelectList(itemsrepository.States, "StateID", "Name");
-            ViewData["CityID"] = new SelectList(itemsrepository.Cities, "CityID", "Name");
-            ViewData["Style"] = new SelectList(itemsrepository.DoorOperators.FromSql("select * from dbo.DoorOperators where dbo.DoorOperators.DoorOperatorID " +
-                "in (Select max(dbo.DoorOperators.DoorOperatorID) FROM dbo.DoorOperators group by dbo.DoorOperators.Style); "), "Style", "Style");
-            ViewData["Brand2"] = new SelectList(itemsrepository.DoorOperators, "Brand", "Brand");
-            ViewData["DoorOperatorID"] = new SelectList(itemsrepository.DoorOperators, "DoorOperatorID", "Name");
-
             return View(new Job());
         } 
 
         [HttpPost]
         public IActionResult NewJob(Job newJob)
         {
-            ViewData["CityID"] = new SelectList(itemsrepository.Cities, "CityID", "Name");
-
             //Desactivar esta funcion para que funcione el test de Job
             AppUser currentUser = GetCurrentUser().Result;
             if (ModelState.IsValid)
@@ -145,8 +134,6 @@ namespace ProdFloor.Controllers
          */
         public IActionResult Edit(int ID)
         {
-            ViewData["CityID"] = new SelectList(itemsrepository.Cities, "CityID", "Name");
-            ViewData["DoorOperatorID"] = new SelectList(itemsrepository.DoorOperators, "DoorOperatorID", "Name");
 
             AppUser currentUser = GetCurrentUser().Result;
             Job job = repository.Jobs.FirstOrDefault(j => j.JobID == ID);
@@ -181,9 +168,6 @@ namespace ProdFloor.Controllers
         [HttpPost]
         public IActionResult Edit(JobViewModel multiEditViewModel)
         {
-            ViewData["CityID"] = new SelectList(itemsrepository.Cities, "CityID", "Name");
-            ViewData["DoorOperatorID"] = new SelectList(itemsrepository.DoorOperators, "DoorOperatorID", "Name");
-
             if (ModelState.IsValid)
             {
                 
@@ -251,11 +235,8 @@ namespace ProdFloor.Controllers
          */
         public IActionResult Continue(int ID)
         {
-            ViewData["CityID"] = new SelectList(itemsrepository.Cities, "CityID", "Name");
-            ViewData["DoorOperatorID"] = new SelectList(itemsrepository.DoorOperators, "DoorOperatorID", "Name");
-
-            if (repository.Jobs.FirstOrDefault(j => j.JobID == ID) != null)
-            {
+                if (repository.Jobs.FirstOrDefault(j => j.JobID == ID) != null)
+                {
                 List<SpecialFeatures> SfList = repository.SpecialFeatures.Where(j => j.JobID == ID).ToList();
                 JobViewModel continueJobViewModel = new JobViewModel();
                 continueJobViewModel.CurrentTab = "Main";
@@ -269,12 +250,12 @@ namespace ProdFloor.Controllers
                 else continueJobViewModel.SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures() };
 
                 return View("NextForm", continueJobViewModel);
-            }
-            else
-            {
+                }
+                else
+                {
                 TempData["message"] = $"The requested Job Id# {ID} doesn't exist";
                 return RedirectToAction("List");
-            }
+                }
         }
 
         /* ***TODO*** Post de NextForm; Recibe un JobViewModel y en verifica en que paso se encuentra el Job
@@ -291,8 +272,6 @@ namespace ProdFloor.Controllers
         [HttpPost]
         public IActionResult NextForm(JobViewModel nextViewModel)
         {
-            ViewData["CityID"] = new SelectList(itemsrepository.Cities, "CityID", "Name");
-            ViewData["DoorOperatorID"] = new SelectList(itemsrepository.DoorOperators, "DoorOperatorID", "Name");
 
             if (nextViewModel.buttonAction == "AddSF")
             {

@@ -10,11 +10,11 @@
     <input type="hidden" asp-for="CityID" />
     <div class="form-group">
         <label asp-for="CountryID" class="col-sm-1 col-form-label"></label>
-        <country-select class="form-control-sm" asp-for="CountryID"></country-select>
+        <country-select class="form-control-sm" asp-for="CountryID" selected-value="Model.CityID"></country-select>
     </div>
     <div class="form-group">
         <label asp-for="StateID" class="col-sm-1 col-form-label"></label>
-        <state-select class="form-control-sm" asp-for="StateID"></state-select>
+        <state-select class="form-control-sm" asp-for="StateID" selected-value="Model.CityID"></state-select>
     </div>
     <div class="form-group ">
         <label asp-for="Name" class="col-sm-1 col-form-label"></label>

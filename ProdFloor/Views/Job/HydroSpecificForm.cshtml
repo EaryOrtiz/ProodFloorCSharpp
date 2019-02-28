@@ -83,12 +83,12 @@
     <div class="form-group col-3 text-center">
         <label asp-for="CurrentHydroSpecific.Battery" class="col-form-label"></label>
         <div><span asp-validation-for="CurrentHydroSpecific.Battery" class="text-danger"></span></div>
-        <input asp-for="CurrentHydroSpecific.Battery" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control" />
+        <input id="BatterySelected" asp-for="CurrentHydroSpecific.Battery" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control" />
     </div>
-    <div class="form-group col-8">
+    <div class="form-group col-8" id="BatteryBrand">
         <label asp-for="CurrentHydroSpecific.BatteryBrand" class="col-form-label"></label>
         <div><span asp-validation-for="CurrentHydroSpecific.BatteryBrand" class="text-danger"></span></div>
-        <input asp-for="CurrentHydroSpecific.BatteryBrand" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)"  class="form-control" />
+        <input asp-for="CurrentHydroSpecific.BatteryBrand" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control" />
     </div>
     <div class="form-group col-3 text-center">
         <label asp-for="CurrentHydroSpecific.LifeJacket" class="col-form-label text-center"></label>
@@ -131,3 +131,17 @@
         <input asp-for="CurrentHydroSpecific.VCI" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)" class="form-control" />
     </div>
 </div>
+
+ @if(Model.CurrentHydroSpecific.Battery == false)
+    {
+        <script type="text/javascript">
+                $("#BatterySelected").ready(function () {
+                    $("#BatteryBrand").hide();
+                });
+
+            $("#BatterySelected").click(function () {
+                $("#BatteryBrand")[this.checked ? "show" : "hide"]();
+            });
+          </script>
+        
+    }

@@ -71,9 +71,7 @@
 </div>
 <div class="form-group row">
     <label asp-for="CityID" class="col-sm-2 col-form-label"></label>
-    <select id="CityID" asp-for="@Model.CityID" class="form-control-sm" asp-items="ViewBag.CityID">
-        <option value="">-- Select City --</option>
-    </select>
+    <city-select id="CityID" asp-for="@Model.CityID" class="form-control-sm"></city-select>
 </div>
 <div class="form-group row">
     <label asp-for="FireCodeID" class="col-sm-2 col-form-label"></label>

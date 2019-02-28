@@ -1027,10 +1027,12 @@ namespace ProdFloor.Infrastructure
             m_tag.InnerHtml.Append("Please select a Style");
             result.InnerHtml.AppendHtml(m_tag);
             int doorOperatorID = 0;
+            string doorStyle = "";
             if (SelectedValue != 0)
             {
                 DoorOperator selectedDoor = itemsrepository.DoorOperators.FirstOrDefault(c => c.DoorOperatorID == SelectedValue);
                 doorOperatorID = selectedDoor.DoorOperatorID;
+                doorStyle = selectedDoor.Style;
             }
             IQueryable<DoorOperator> door = itemsrepository.DoorOperators.FromSql("select * from dbo.DoorOperators where dbo.DoorOperators.DoorOperatorID " +
                 "in (Select max(dbo.DoorOperators.DoorOperatorID) FROM dbo.DoorOperators group by dbo.DoorOperators.Style)").AsQueryable();
@@ -1038,9 +1040,9 @@ namespace ProdFloor.Infrastructure
             {
                 TagBuilder tag = new TagBuilder("option");
                 tag.Attributes["value"] = doors.Style;
-                if (doors.DoorOperatorID == doorOperatorID)
+                if (doors.Style == doorStyle)
                 {
-                    tag.Attributes["selected"] = "selected";
+                    tag.Attributes["selected"] = doors.Style;
                 }
                 tag.InnerHtml.Append(doors.Style);
                 result.InnerHtml.AppendHtml(tag);
