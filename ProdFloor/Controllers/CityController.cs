@@ -13,7 +13,7 @@ namespace ProdFloor.Controllers
     public class CityController : Controller
     {
         private IItemRepository repository;
-        public int PageSize = 4;
+        public int PageSize = 7;
 
         public CityController(IItemRepository repo)
         {

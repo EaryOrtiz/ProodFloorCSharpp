@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using ProdFloor.Models.ViewModels.Job;
 
 namespace ProdFloor.Tests
 {
@@ -162,7 +163,7 @@ namespace ProdFloor.Tests
         }
 
         [Fact]
-        public void Can_Save_Valid_Changes()
+        public void Can_Save_New_Valid_Job()
         {
             // Arrange - create mock repository
             Mock<IJobRepository> mock = new Mock<IJobRepository>();
@@ -211,6 +212,47 @@ namespace ProdFloor.Tests
             Assert.IsType<ViewResult>(result);
 
         }
+        [Fact]
+        public void Can_Not_Save_New_Valid_Job()
+        {
+            // Arrange - create mock repository
+            Mock<IJobRepository> mock = new Mock<IJobRepository>();
+            Mock<IItemRepository> mockitems = new Mock<IItemRepository>();
+
+            List<AppUser> _users = new List<AppUser>
+            {
+                new AppUser{ EngID = 1 },
+                new AppUser{ EngID = 2 }
+            };
+            Mock<UserManager<AppUser>> mockusers = MockUserManager<AppUser>(_users);
+
+            // Arrange - create mock temp data
+            Mock<ITempDataDictionary> tempData = new Mock<ITempDataDictionary>();
+
+            // Arrange - create the controller
+            JobController target = new JobController(mock.Object, mockitems.Object, mockusers.Object)
+            {
+                TempData = tempData.Object
+            };
+
+            DateTime fecha = DateTime.Now;
+            // Arrange - create a Job
+            Job Job = new Job { Name = "Test Job"};
+
+            // Arrange - add an error to the model state
+            target.ModelState.AddModelError("error", "error");
+
+            // Act - try to save the Job
+            IActionResult result = target.NewJob(Job);
+
+            // Assert - check that the repository was called
+            mock.Verify(m => m.SaveJob(Job), Times.Never());
+
+            // Assert - check the method result type
+            Assert.IsType<ViewResult>(result);
+
+        }
+
 
         [Fact]
         public void Can_Delete_Job()
@@ -297,7 +339,7 @@ namespace ProdFloor.Tests
         }
 
         [Fact]
-        public void Can_Continue()
+        public void Can_Continue_a_Job()
         {
             // Arrange - create mock repository
             Mock<IJobRepository> mock = new Mock<IJobRepository>();
@@ -334,7 +376,44 @@ namespace ProdFloor.Tests
         }
 
         [Fact]
-        public void Can_Got_To_NextForm()
+        public void Can_Not_Continue_a_Job()
+        {
+            // Arrange - create mock repository
+            Mock<IJobRepository> mock = new Mock<IJobRepository>();
+            Mock<IItemRepository> mockitems = new Mock<IItemRepository>();
+
+            List<AppUser> _users = new List<AppUser>
+            {
+                new AppUser{ EngID = 1 },
+                new AppUser{ EngID = 2 }
+            };
+            Mock<UserManager<AppUser>> mockusers = MockUserManager<AppUser>(_users);
+
+            // Arrange - create mock temp data
+            Mock<ITempDataDictionary> tempData = new Mock<ITempDataDictionary>();
+
+            // Arrange - create the controller
+            JobController target = new JobController(mock.Object, mockitems.Object, mockusers.Object)
+            {
+                TempData = tempData.Object
+            };
+            DateTime fecha = DateTime.Now;
+
+            // Arrange - create a Job
+            Job Job = new Job { JobID = 1};
+
+            // Arrange - create the mock repository
+            mock.Setup(m => m.Jobs).Returns(new Job[] { Job }.AsQueryable<Job>());
+
+            // Act - try to save the Job
+            IActionResult result = target.Continue(2);
+
+            // Assert - check the method result type
+            Assert.IsType<RedirectToActionResult>(result);
+        }
+
+        [Fact]
+        public void Can_Go_To_NextForm()
         {
             // Arrange - create mock repository
             Mock<IJobRepository> mock = new Mock<IJobRepository>();
@@ -385,7 +464,63 @@ namespace ProdFloor.Tests
 
             // Assert - check the method result type
             Assert.IsType<ViewResult>(result);
-        
+        }
+
+        [Fact]
+        public void Can_Not_Go_To_NextForm()
+        {
+            // Arrange - create mock repository
+            Mock<IJobRepository> mock = new Mock<IJobRepository>();
+            Mock<IItemRepository> mockitems = new Mock<IItemRepository>();
+
+            List<AppUser> _users = new List<AppUser>
+            {
+                new AppUser{ EngID = 1 },
+                new AppUser{ EngID = 2 }
+            };
+            Mock<UserManager<AppUser>> mockusers = MockUserManager<AppUser>(_users);
+
+            // Arrange - create mock temp data
+            Mock<ITempDataDictionary> tempData = new Mock<ITempDataDictionary>();
+
+            // Arrange - create the controller
+            JobController target = new JobController(mock.Object, mockitems.Object, mockusers.Object)
+            {
+                TempData = tempData.Object
+            };
+
+            // Arrange - add an error to the model state
+            target.ModelState.AddModelError("error", "error");
+
+            // Arrange - create a Job
+            Job Job = new Job { JobID = 1};
+
+            // Arrange - create the mock repository
+            mock.Setup(m => m.Jobs).Returns(new Job[] { Job }.AsQueryable<Job>());
+
+            JobViewModel viewModel = new JobViewModel()
+            {
+                CurrentJob = Job,
+                CurrentJobExtension = null,
+                CurrentGenericFeatures = null,
+                CurrentHydroSpecific = null,
+                CurrentIndicator = null,
+                CurrentHoistWayData = null,
+                SpecialFeatureslist = null,
+                CurrentUserID = 1,
+                CurrentTab = "Main",
+                buttonAction = "Nel"
+            };
+
+            // Act - try to save the Job
+            IActionResult result = target.NextForm(viewModel);
+
+            // Assert - check that the repository was called
+            mock.Verify(m => m.SaveEngJobView(viewModel), Times.Never());
+
+
+            // Assert - check the method result type
+            Assert.IsType<ViewResult>(result);
         }
 
         [Fact]
@@ -435,7 +570,6 @@ namespace ProdFloor.Tests
 
             // Assert - check the method result type
             Assert.IsType<ViewResult>(result);
-
         }
 
         [Fact]
@@ -498,6 +632,264 @@ namespace ProdFloor.Tests
 
             // Assert - check that the repository was called
             mock.Verify(m => m.SaveEngJobView(viewModel), Times.AtLeastOnce());
+
+            // Assert - check the method result type
+            Assert.IsType<ViewResult>(result);
+        }
+
+        [Fact]
+        public void Can_Not_Edit_Job()
+        {
+            // Arrange - create mock repository
+            Mock<IJobRepository> mock = new Mock<IJobRepository>();
+            Mock<IItemRepository> mockitems = new Mock<IItemRepository>();
+
+            List<AppUser> _users = new List<AppUser>
+            {
+                new AppUser{ EngID = 1 },
+                new AppUser{ EngID = 2 }
+            };
+            Mock<UserManager<AppUser>> mockusers = MockUserManager<AppUser>(_users);
+
+            // Arrange - create mock temp data
+            Mock<ITempDataDictionary> tempData = new Mock<ITempDataDictionary>();
+
+            // Arrange - create the controller
+            JobController target = new JobController(mock.Object, mockitems.Object, mockusers.Object)
+            {
+                TempData = tempData.Object
+            };
+
+            // Arrange - add an error to the model state
+            target.ModelState.AddModelError("error", "error");
+
+            // Arrange - create a Job
+            Job Job = new Job { JobID = 1, Name = "BRENTWOOD CONDOS", JobNum = 2017088571, Status = null, };
+            JobExtension JobExt = new JobExtension { JobID = 1, JobExtensionID = 1, };
+            HydroSpecific hydro = new HydroSpecific { HydroSpecificID = 1, JobID = 1 };
+            GenericFeatures generic = new GenericFeatures { GenericFeaturesID = 1, JobID = 1 };
+            Indicator indicator = new Indicator { IndicatorID = 1, JobID = 1 };
+            HoistWayData hoist = new HoistWayData { HoistWayDataID = 1, JobID = 1 };
+            SpecialFeatures specialFeatures = new SpecialFeatures { SpecialFeaturesID = 1, JobID = 1 };
+
+            // Arrange - create the mock repository
+            mock.Setup(m => m.Jobs).Returns(new Job[] { Job }.AsQueryable<Job>());
+            mock.Setup(m => m.JobsExtensions).Returns(new JobExtension[] { JobExt }.AsQueryable<JobExtension>);
+            mock.Setup(m => m.HydroSpecifics).Returns(new HydroSpecific[] { hydro }.AsQueryable<HydroSpecific>);
+            mock.Setup(m => m.GenericFeaturesList).Returns(new GenericFeatures[] { generic }.AsQueryable<GenericFeatures>);
+            mock.Setup(m => m.Indicators).Returns(new Indicator[] { indicator }.AsQueryable<Indicator>);
+            mock.Setup(m => m.HoistWayDatas).Returns(new HoistWayData[] { hoist }.AsQueryable<HoistWayData>);
+            mock.Setup(m => m.SpecialFeatures).Returns(new SpecialFeatures[] { specialFeatures }.AsQueryable<SpecialFeatures>);
+
+            JobViewModel viewModel = new JobViewModel()
+            {
+                CurrentJob = Job,
+                CurrentJobExtension = JobExt,
+                CurrentGenericFeatures = generic,
+                CurrentHydroSpecific = hydro,
+                CurrentIndicator = indicator,
+                CurrentHoistWayData = hoist,
+                SpecialFeatureslist = null,
+                CurrentUserID = 1,
+                CurrentTab = "Main",
+                buttonAction = "Nel"
+            };
+
+            // Act - try to save the Job
+            IActionResult result = target.Edit(viewModel);
+
+            // Assert - check that the repository was called
+            mock.Verify(m => m.SaveEngJobView(viewModel), Times.Never());
+
+            // Assert - check the method result type
+            Assert.IsType<ViewResult>(result);
+        }
+
+        [Fact]
+        public void Can_Add_New_SpecialFeature_Field_Get()
+        {
+            // Arrange - create mock repository
+            Mock<IJobRepository> mock = new Mock<IJobRepository>();
+            Mock<IItemRepository> mockitems = new Mock<IItemRepository>();
+
+            List<AppUser> _users = new List<AppUser>
+            {
+                new AppUser{ EngID = 1 },
+                new AppUser{ EngID = 2 }
+            };
+            Mock<UserManager<AppUser>> mockusers = MockUserManager<AppUser>(_users);
+
+            // Arrange - create mock temp data
+            Mock<ITempDataDictionary> tempData = new Mock<ITempDataDictionary>();
+
+            // Arrange - create the controller
+            JobController target = new JobController(mock.Object, mockitems.Object, mockusers.Object)
+            {
+                TempData = tempData.Object
+            };
+
+            // Arrange - create a Job
+            Job Job = new Job { JobID = 1, Name = "BRENTWOOD CONDOS", JobNum = 2017088571, Status = null, };
+            JobExtension JobExt = new JobExtension { JobID = 1, JobExtensionID = 1, };
+            HydroSpecific hydro = new HydroSpecific { HydroSpecificID = 1, JobID = 1 };
+            GenericFeatures generic = new GenericFeatures { GenericFeaturesID = 1, JobID = 1 };
+            Indicator indicator = new Indicator { IndicatorID = 1, JobID = 1 };
+            HoistWayData hoist = new HoistWayData { HoistWayDataID = 1, JobID = 1 };
+            SpecialFeatures specialFeatures = new SpecialFeatures { SpecialFeaturesID = 1, JobID = 1 };
+
+            // Arrange - create the mock repository
+            mock.Setup(m => m.Jobs).Returns(new Job[] { Job }.AsQueryable<Job>());
+            mock.Setup(m => m.JobsExtensions).Returns(new JobExtension[] { JobExt }.AsQueryable<JobExtension>);
+            mock.Setup(m => m.HydroSpecifics).Returns(new HydroSpecific[] { hydro }.AsQueryable<HydroSpecific>);
+            mock.Setup(m => m.GenericFeaturesList).Returns(new GenericFeatures[] { generic }.AsQueryable<GenericFeatures>);
+            mock.Setup(m => m.Indicators).Returns(new Indicator[] { indicator }.AsQueryable<Indicator>);
+            mock.Setup(m => m.HoistWayDatas).Returns(new HoistWayData[] { hoist }.AsQueryable<HoistWayData>);
+            mock.Setup(m => m.SpecialFeatures).Returns(new SpecialFeatures[] { specialFeatures }.AsQueryable<SpecialFeatures>);
+
+
+            // Act - try to add new SpecialFeature Field
+            IActionResult result = target.AddSF(Job.JobID);
+
+            // Assert - check the method result type
+            Assert.IsType<ViewResult>(result);
+        }
+
+        [Fact]
+        public void Can_Delete_SpecialFeature_Field()
+        {
+            // Arrange - create mock repository
+            Mock<IJobRepository> mock = new Mock<IJobRepository>();
+            Mock<IItemRepository> mockitems = new Mock<IItemRepository>();
+
+            List<AppUser> _users = new List<AppUser>
+            {
+                new AppUser{ EngID = 1 },
+                new AppUser{ EngID = 2 }
+            };
+            Mock<UserManager<AppUser>> mockusers = MockUserManager<AppUser>(_users);
+
+            // Arrange - create a Job
+            Job Job = new Job { JobID = 1, Name = "BRENTWOOD CONDOS", JobNum = 2017088571, Status = null, };
+            JobExtension JobExt = new JobExtension { JobID = 1, JobExtensionID = 1, };
+            HydroSpecific hydro = new HydroSpecific { HydroSpecificID = 1, JobID = 1 };
+            GenericFeatures generic = new GenericFeatures { GenericFeaturesID = 1, JobID = 1 };
+            Indicator indicator = new Indicator { IndicatorID = 1, JobID = 1 };
+            HoistWayData hoist = new HoistWayData { HoistWayDataID = 1, JobID = 1 };
+            SpecialFeatures sF = new SpecialFeatures { SpecialFeaturesID = 1, JobID = 1 };
+            SpecialFeatures sF2 = new SpecialFeatures { SpecialFeaturesID = 2, JobID = 1 };
+
+            // Arrange - create the mock repository
+            mock.Setup(m => m.Jobs).Returns(new Job[] { Job }.AsQueryable<Job>());
+            mock.Setup(m => m.JobsExtensions).Returns(new JobExtension[] { JobExt }.AsQueryable<JobExtension>);
+            mock.Setup(m => m.HydroSpecifics).Returns(new HydroSpecific[] { hydro }.AsQueryable<HydroSpecific>);
+            mock.Setup(m => m.GenericFeaturesList).Returns(new GenericFeatures[] { generic }.AsQueryable<GenericFeatures>);
+            mock.Setup(m => m.Indicators).Returns(new Indicator[] { indicator }.AsQueryable<Indicator>);
+            mock.Setup(m => m.HoistWayDatas).Returns(new HoistWayData[] { hoist }.AsQueryable<HoistWayData>);
+            mock.Setup(m => m.SpecialFeatures).Returns(new SpecialFeatures[] { sF, sF2 }.AsQueryable<SpecialFeatures>);
+            //Create a view model
+            JobViewModel viewModel = new JobViewModel()
+            {
+                CurrentJob = Job,
+                CurrentJobExtension = JobExt,
+                CurrentGenericFeatures = generic,
+                CurrentHydroSpecific = hydro,
+                CurrentIndicator = indicator,
+                CurrentHoistWayData = hoist,
+                SpecialFeatureslist = null,
+                CurrentUserID = 1,
+                CurrentTab = "Main",
+                buttonAction = "Nel"
+            };
+            Mock<ITempDataDictionary> tempData = new Mock<ITempDataDictionary>();
+
+            // Arrange - create the controller
+            JobController target = new JobController(mock.Object, mockitems.Object, mockusers.Object)
+            {
+                TempData = tempData.Object
+            };
+
+            // Act - delete the product
+            IActionResult result =  target.DeleteSF(sF2.SpecialFeaturesID, "retunrURL", viewModel);
+
+            // Assert - ensure that the repository delete method was
+            // called with the correct SpecialFeature Field
+            mock.Verify(m => m.DeleteSpecialFeatures(sF2.SpecialFeaturesID));
+
+            // Assert - check the method result type
+            Assert.IsType<RedirectResult>(result);
+        }
+
+        [Fact]
+        public void Can_Filter_JobList_On_Search()
+        {
+            // Arrange - create mock repository
+            Mock<IJobRepository> mock = new Mock<IJobRepository>();
+            Mock<IItemRepository> mockitems = new Mock<IItemRepository>();
+
+            List<AppUser> _users = new List<AppUser>
+            {
+                new AppUser{ EngID = 1 },
+                new AppUser{ EngID = 2 }
+            };
+            Mock<UserManager<AppUser>> mockusers = MockUserManager<AppUser>(_users);
+
+            // Arrange - create mock temp data
+            Mock<ITempDataDictionary> tempData = new Mock<ITempDataDictionary>();
+
+            // Arrange - create the controller
+            JobController target = new JobController(mock.Object, mockitems.Object, mockusers.Object)
+            {
+                TempData = tempData.Object
+            };
+
+            // Arrange - create a Job
+            Job Job = new Job { JobID = 1, Name = "BRENTWOOD CONDOS", JobNum = 2017088571, Status =  "Incomplete", CityID = 1};
+            Job Job2 = new Job { JobID = 2, Name = "School", JobNum = 2018088687, Status = "Incomplete", CityID = 2 };
+            JobExtension JobExt = new JobExtension { JobID = 1, JobExtensionID = 1, DoorOperatorID = 1 };
+            JobExtension JobExt2 = new JobExtension { JobID = 2, JobExtensionID = 1, DoorOperatorID = 1 };
+            HydroSpecific hydro = new HydroSpecific { HydroSpecificID = 1, JobID = 1 };
+            GenericFeatures generic = new GenericFeatures { GenericFeaturesID = 1, JobID = 1 };
+            Indicator indicator = new Indicator { IndicatorID = 1, JobID = 1 };
+            HoistWayData hoist = new HoistWayData { HoistWayDataID = 1, JobID = 1 };
+            SpecialFeatures specialFeatures = new SpecialFeatures { SpecialFeaturesID = 1, JobID = 1 };
+
+            List<Job> Joblist = new List<Job>(); Joblist.Add(Job); Joblist.Add(Job2);
+            List<JobExtension> JobExtlist = new List<JobExtension>(); JobExtlist.Add(JobExt); JobExtlist.Add(JobExt2);
+            List<HydroSpecific> hydroList = new List<HydroSpecific>(); hydroList.Add(hydro);
+            List<GenericFeatures> genericList = new List<GenericFeatures>(); genericList.Add(generic);
+            List<Indicator> indicatorList = new List<Indicator>(); indicatorList.Add(indicator);
+            List<HoistWayData> hoistList = new List<HoistWayData>(); hoistList.Add(hoist);
+            List<SpecialFeatures> specialFeaturesList = new List<SpecialFeatures>(); specialFeaturesList.Add(specialFeatures);
+
+
+            // Arrange - create the mock repository
+            mock.Setup(m => m.Jobs).Returns(new Job[] { Job, Job2 }.AsQueryable<Job>());
+            mock.Setup(m => m.JobsExtensions).Returns(new JobExtension[] { JobExt, JobExt2 }.AsQueryable<JobExtension>);
+            mock.Setup(m => m.HydroSpecifics).Returns(new HydroSpecific[] { hydro }.AsQueryable<HydroSpecific>);
+            mock.Setup(m => m.GenericFeaturesList).Returns(new GenericFeatures[] { generic }.AsQueryable<GenericFeatures>);
+            mock.Setup(m => m.Indicators).Returns(new Indicator[] { indicator }.AsQueryable<Indicator>);
+            mock.Setup(m => m.HoistWayDatas).Returns(new HoistWayData[] { hoist }.AsQueryable<HoistWayData>);
+            mock.Setup(m => m.SpecialFeatures).Returns(new SpecialFeatures[] { specialFeatures }.AsQueryable<SpecialFeatures>);
+
+            JobSearchViewModel viewModel = new JobSearchViewModel()
+            {
+                JobsSearchList = Joblist,
+                JobExtensionList = JobExtlist,
+                HydroSpecificList = hydroList,
+                GenericFeaturesList = genericList,
+                IndicatorList = indicatorList,
+                HoistWayDataList = hoistList,
+                SpecialFeatureslist = specialFeaturesList,
+                NumJobSearch = 2017088571,
+            };
+
+            // Act - try to save the Jobs
+            JobSearchViewModel result = target.JobSearchList(viewModel, 1).Result.ViewData.Model as JobSearchViewModel;
+
+            // Assert
+            Job[] jobArray = result.JobsSearchList.ToArray();
+            Assert.True(jobArray.Length == 1);
+            Assert.Equal(1, jobArray[0].JobID);
 
             // Assert - check the method result type
             Assert.IsType<ViewResult>(result);

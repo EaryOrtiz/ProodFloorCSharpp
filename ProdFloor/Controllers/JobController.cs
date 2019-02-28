@@ -108,11 +108,11 @@ namespace ProdFloor.Controllers
             ViewData["CityID"] = new SelectList(itemsrepository.Cities, "CityID", "Name");
 
             //Desactivar esta funcion para que funcione el test de Job
-            //AppUser currentUser = GetCurrentUser().Result;
+            AppUser currentUser = GetCurrentUser().Result;
             if (ModelState.IsValid)
             {
                 //y esta esta tambien y poner denuevo el {currenuser.engId} en Los TempDatas cuando terminen los test 
-                //newJob.EngID = currentUser.EngID;
+                newJob.EngID = currentUser.EngID;
                 newJob.CrossAppEngID = 117;
                 newJob.Status = "Incomplete";
                 repository.SaveJob(newJob);
@@ -127,14 +127,14 @@ namespace ProdFloor.Controllers
                     SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures() },
                     CurrentTab = "Extension"
                 };
-                TempData["message"] = $"Job# {newJobViewModel.CurrentJob.JobNum} has been saved...{newJobViewModel.CurrentJob.JobID}...";
+                TempData["message"] = $"Job# {newJobViewModel.CurrentJob.JobNum} has been saved...{newJobViewModel.CurrentJob.JobID}...{currentUser.EngID}";
                 return View("NextForm", newJobViewModel);
 
 
             }
             else
             {
-                TempData["message"] = $"There seems to be errors in the form. Please validate....";
+                TempData["message"] = $"There seems to be errors in the form. Please validate....{currentUser.EngID}";
                 TempData["alert"] = $"alert-danger";
                 return View(newJob);
             }
@@ -148,7 +148,7 @@ namespace ProdFloor.Controllers
             ViewData["CityID"] = new SelectList(itemsrepository.Cities, "CityID", "Name");
             ViewData["DoorOperatorID"] = new SelectList(itemsrepository.DoorOperators, "DoorOperatorID", "Name");
 
-            //AppUser currentUser = GetCurrentUser().Result;
+            AppUser currentUser = GetCurrentUser().Result;
             Job job = repository.Jobs.FirstOrDefault(j => j.JobID == ID);
             if (job == null)
             {
@@ -413,13 +413,12 @@ namespace ProdFloor.Controllers
         }
 
         //Funcion para obtener el usuario que realizo la llamada
-        public async Task<AppUser> GetCurrentUser()
+        private async Task<AppUser> GetCurrentUser()
         {
             AppUser user = await userManager.GetUserAsync(HttpContext.User);
 
             return user;
         }
-
 
         public async Task<ViewResult> JobSearchList(JobSearchViewModel searchViewModel, int jobPage = 1)
         {
