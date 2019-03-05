@@ -12,6 +12,8 @@ using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using ProdFloor.Models.ViewModels.Job;
+using System.IO;
+using System.Security.Principal;
 
 namespace ProdFloor.Tests
 {
@@ -168,7 +170,9 @@ namespace ProdFloor.Tests
             // Arrange - create mock repository
             Mock<IJobRepository> mock = new Mock<IJobRepository>();
             Mock<IItemRepository> mockitems = new Mock<IItemRepository>();
-            
+            Mock<JobController> mockJob = new Mock<JobController>();
+
+
             List<AppUser> _users = new List<AppUser>
             {
                 new AppUser{ EngID = 1 },
@@ -910,5 +914,17 @@ namespace ProdFloor.Tests
             return mgr;
         }
 
+        static Mock<HttpContext> MockContext()
+        {
+            Mock request = new Mock<HttpRequest>("", "http://my.url.com", "");
+
+            Mock response = new Mock<HttpResponse>(new StringWriter());
+
+            var context = new Mock<HttpContext>(request, response);
+            var principal = new GenericPrincipal(new GenericIdentity("username"), new string[0]);
+            context.Setup(m => m.User).Returns(principal);
+
+            return context;
+        }
     }
 }
