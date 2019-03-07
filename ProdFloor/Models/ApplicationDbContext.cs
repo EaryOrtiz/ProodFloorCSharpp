@@ -37,6 +37,14 @@ namespace ProdFloor.Models
 
         public DbSet<SpecialFeatures> SpecialFeatures { get; set; }
 
+        public DbSet<Slowdown> Slowdowns { get; set; }
+
+        public DbSet<WireTypesSize> WireTypesSizes { get; set; }
+
+        public DbSet<Starter> Starters { get; set; }
+
+        public DbSet<Overload> Overloads { get; set; }
+
         public class ApplicationDbContextFactory
             : IDesignTimeDbContextFactory<ApplicationDbContext>
         {
