@@ -45,43 +45,43 @@
 
         @foreach (var item in Model.Starters)
         {
-        <tr>
-            <td>
-                @Html.DisplayFor(m => item.Brand)
-            </td>
-            <td>
-                @Html.DisplayFor(m => item.FLA)
-            </td>
-            <td>
-                @Html.DisplayFor(m => item.Type)
-            </td>
-            <td>
-                @Html.DisplayFor(m => item.Volts)
-            </td>
-            <td>
-                @Html.DisplayFor(m => item.HP)
-            </td>
-            <td>
-                @Html.DisplayFor(m => item.MCPart)
-            </td>
-            <td>
-                @Html.DisplayFor(m => item.NewManufacturerPart)
-            </td>
-            <td>
-                @Html.DisplayFor(m => item.OverloadTable)
-            </td>
-            <td style="width:100px">
-                <form asp-action="Delete" asp-route-id="@item.StarterID" method="post">
-                    <button type="submit" class="btn btn-danger btn-sm">
-                        <i class="far fa-trash-alt"></i>
-                    </button>
-                    <a asp-action="Edit" class="btn btn-sm btn-warning"
-                       asp-route-Id="@item.StarterID">
-                        <i class="fas fa-edit"></i>
-                    </a>
-                </form>
-            </td>
-        </tr>
+            <tr>
+                <td>
+                    @Html.DisplayFor(m => item.Brand)
+                </td>
+                <td>
+                    @Html.DisplayFor(m => item.FLA)
+                </td>
+                <td>
+                    @Html.DisplayFor(m => item.Type)
+                </td>
+                <td>
+                    @Html.DisplayFor(m => item.Volts)
+                </td>
+                <td>
+                    @Html.DisplayFor(m => item.HP)
+                </td>
+                <td>
+                    @Html.DisplayFor(m => item.MCPart)
+                </td>
+                <td>
+                    @Html.DisplayFor(m => item.NewManufacturerPart)
+                </td>
+                <td>
+                    @Html.DisplayFor(m => item.OverloadTable)
+                </td>
+                <td style="width:100px">
+                    <form asp-action="Delete" asp-route-id="@item.StarterID" method="post">
+                        <button type="submit" class="btn btn-danger btn-sm">
+                            <i class="far fa-trash-alt"></i>
+                        </button>
+                        <a asp-action="Edit" class="btn btn-sm btn-warning"
+                           asp-route-Id="@item.StarterID">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                    </form>
+                </td>
+            </tr>
 
         }
     </table>
@@ -91,4 +91,10 @@
              page-class-selected="btn-primary"
              class="btn-group pull-right m-1">
 </page-doorop>
+<br />
+<div>
+    <form asp-controller="Item" asp-action="ExportToXML" method="post">
+        <button class="btn btn-sm " name="buttonXML" value="Starters" style="background-color:#DF0174;color:white">Export List to an XML File</button>
+    </form>
+</div>
 

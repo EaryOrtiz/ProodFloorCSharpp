@@ -213,6 +213,123 @@ namespace ProdFloor.Controllers
                     }
                     ms.Position = 0;
                     return File(ms, "text/xml", "JobTypes.xml");
+
+                case "Slowdowns":
+                    List<Slowdown> slowdowns = new List<Slowdown>();
+                    slowdowns = repository.Slowdowns.ToList();
+
+
+                    using (XmlWriter xw = XmlWriter.Create(ms, xws))
+                    {
+                        xw.WriteStartDocument();
+                        xw.WriteStartElement("Slowdowns");
+
+                        foreach (Slowdown slowdown in slowdowns)
+                        {
+                            xw.WriteStartElement("Slowdown");
+
+                            xw.WriteElementString("ID", slowdown.SlowdownID.ToString());
+                            xw.WriteElementString("CarSpeedFPM", slowdown.CarSpeedFPM.ToString());
+                            xw.WriteElementString("Distance", slowdown.Distance.ToString());
+                            xw.WriteElementString("A", slowdown.A.ToString());
+                            xw.WriteElementString("SlowLimit", slowdown.SlowLimit.ToString());
+                            xw.WriteElementString("MiniumFloorHeight", slowdown.MiniumFloorHeight.ToString());
+                            xw.WriteEndElement();
+                        }
+
+                        xw.WriteEndElement();
+                        xw.WriteEndDocument();
+                    }
+                    ms.Position = 0;
+                    return File(ms, "text/xml", "Slowdowns.xml");
+
+                case "Starters":
+                    List<Starter> starters = new List<Starter>();
+                    starters = repository.Starters.ToList();
+
+
+                    using (XmlWriter xw = XmlWriter.Create(ms, xws))
+                    {
+                        xw.WriteStartDocument();
+                        xw.WriteStartElement("Starters");
+
+                        foreach (Starter starter in starters)
+                        {
+                            xw.WriteStartElement("Starter");
+
+                            xw.WriteElementString("ID", starter.StarterID.ToString());
+                            xw.WriteElementString("Brand", starter.Brand);
+                            xw.WriteElementString("FLA", starter.FLA.ToString());
+                            xw.WriteElementString("Type", starter.Type);
+                            xw.WriteElementString("Volts", starter.Volts);
+                            xw.WriteElementString("HP", starter.HP.ToString());
+                            xw.WriteElementString("MCEPart", starter.MCPart);
+                            xw.WriteElementString("NewManufacturerPart", starter.NewManufacturerPart);
+                            xw.WriteElementString("OverloadTable", starter.OverloadTable.ToString());
+                            xw.WriteEndElement();
+                        }
+
+                        xw.WriteEndElement();
+                        xw.WriteEndDocument();
+                    }
+                    ms.Position = 0;
+                    return File(ms, "text/xml", "Starters.xml");
+
+                case "WireTypesSizes":
+                    List<WireTypesSize> wireTypesSizes = new List<WireTypesSize>();
+                    wireTypesSizes = repository.WireTypesSizes.ToList();
+
+
+                    using (XmlWriter xw = XmlWriter.Create(ms, xws))
+                    {
+                        xw.WriteStartDocument();
+                        xw.WriteStartElement("WireTypesSizes");
+
+                        foreach (WireTypesSize wireTypesSize in wireTypesSizes)
+                        {
+                            xw.WriteStartElement("WireTypesSize");
+
+                            xw.WriteElementString("ID", wireTypesSize.WireTypesSizeID.ToString());
+                            xw.WriteElementString("Type", wireTypesSize.Type);
+                            xw.WriteElementString("Size", wireTypesSize.Size);
+                            xw.WriteElementString("AMPRating", wireTypesSize.AMPRating.ToString());
+                            xw.WriteEndElement();
+                        }
+
+                        xw.WriteEndElement();
+                        xw.WriteEndDocument();
+                    }
+                    ms.Position = 0;
+                    return File(ms, "text/xml", "WireTypesSizes.xml");
+
+                case "Overloads":
+                    List<Overload> overloads = new List<Overload>();
+                    overloads = repository.Ovearloads.ToList();
+
+
+                    using (XmlWriter xw = XmlWriter.Create(ms, xws))
+                    {
+                        xw.WriteStartDocument();
+                        xw.WriteStartElement("Overloads");
+
+                        foreach (Overload overload in overloads)
+                        {
+                            xw.WriteStartElement("Overload");
+
+                            xw.WriteElementString("ID", overload.OverloadID.ToString());
+                            xw.WriteElementString("AMPMin", overload.AMPMin.ToString());
+                            xw.WriteElementString("AMPMax", overload.AMPMax.ToString());
+                            xw.WriteElementString("OverTableNum", overload.OverTableNum.ToString());
+                            xw.WriteElementString("MCEPart", overload.MCPart.ToString());
+                            xw.WriteElementString("SiemensPart", overload.SiemensPart.ToString());
+                            xw.WriteEndElement();
+                        }
+
+                        xw.WriteEndElement();
+                        xw.WriteEndDocument();
+                    }
+                    ms.Position = 0;
+                    return File(ms, "text/xml", "Overloads.xml");
             }
 
             return File(ms, "text/xml", "Error.xml");
