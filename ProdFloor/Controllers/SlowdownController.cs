@@ -14,7 +14,7 @@ namespace ProdFloor.Controllers
     public class SlowdownController : Controller
     {
         private IItemRepository repository;
-        public int PageSize = 4;
+        public int PageSize = 15;
 
         public SlowdownController(IItemRepository repo)
         {

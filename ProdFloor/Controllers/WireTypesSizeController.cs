@@ -14,7 +14,7 @@ namespace ProdFloor.Controllers
     public class WireTypesSizeController : Controller
     {
         private IItemRepository repository;
-        public int PageSize = 4;
+        public int PageSize = 15;
 
         public WireTypesSizeController(IItemRepository repo)
         {

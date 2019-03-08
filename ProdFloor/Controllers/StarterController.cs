@@ -14,7 +14,7 @@ namespace ProdFloor.Controllers
     public class StarterController : Controller
     {
         private IItemRepository repository;
-        public int PageSize = 4;
+        public int PageSize = 15;
 
         public StarterController(IItemRepository repo)
         {

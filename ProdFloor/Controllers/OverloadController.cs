@@ -14,7 +14,7 @@ namespace ProdFloor.Controllers
     public class OverloadController : Controller
     {
         private IItemRepository repository;
-        public int PageSize = 4;
+        public int PageSize = 15;
 
         public OverloadController(IItemRepository repo)
         {
