@@ -53,7 +53,7 @@ namespace ProdFloor.Models
         public string Brand { get; set; }
 
         [Required(ErrorMessage = "Please enter a FLA")]
-        public string FLA { get; set; }
+        public int FLA { get; set; }
 
         [Required(ErrorMessage = "Please enter a Type")]
         public string Type { get; set; }

@@ -1486,4 +1486,83 @@ namespace ProdFloor.Infrastructure
         }
     }
 
+    public class StarterTagHelper : TagHelper
+    {
+        private IItemRepository itemsrepository;
+
+        private IUrlHelperFactory urlHelperFactory;
+
+        public ModelExpression AspFor { get; set; }
+
+        public string SelectFor { get; set; }
+
+        public StarterTagHelper(IUrlHelperFactory helperFactory, IItemRepository itemsrepo)
+        {
+            urlHelperFactory = helperFactory;
+            itemsrepository = itemsrepo;
+        }
+
+        [HtmlAttributeName("asp-is-disabled")]
+        public bool IsDisabled { set; get; }
+
+        private IQueryable<string> CaseFor(string value)
+        {
+            switch (value)
+            {
+                case "Volts":
+                    return new List<string> { "208", "240", "380/415", "460", "480", "575" }.AsQueryable();
+                case "Brand":
+                    return new List<string> { "Siemens", "Sprecher Schuh" }.AsQueryable();
+                case "Type":
+                    return new List<string> { "ATL", "YD","3/9", "6/12" }.AsQueryable();
+                case "OverloadTable":
+                    return new List<string> { "1", "2", "3", "4", "5", "N/A" }.AsQueryable();
+                default:
+                    return new List<string> { "Error" }.AsQueryable();
+            }
+        }
+
+        [ViewContext]
+        [HtmlAttributeNotBound]
+        public ViewContext ViewContext { get; set; }
+
+        public string SelectedValue { get; set; }
+
+        public override void Process(TagHelperContext context, TagHelperOutput output)
+        {
+            IUrlHelper urlHelper = urlHelperFactory.GetUrlHelper(ViewContext);
+            output.TagName = "select";
+            TagBuilder result = new TagBuilder("select");
+            string name = this.AspFor.Name;
+            if (!String.IsNullOrEmpty(name))
+            {
+                output.Attributes.Add("id", name);
+                output.Attributes.Add("name", name);
+            }
+            TagBuilder m_tag = new TagBuilder("option");
+            m_tag.Attributes["value"] = "";
+            m_tag.InnerHtml.Append("Select a option");
+            result.InnerHtml.AppendHtml(m_tag);
+            IQueryable<string> options = CaseFor(SelectFor);
+            foreach (string option in options)
+            {
+                TagBuilder tag = new TagBuilder("option");
+                tag.Attributes["value"] = option;
+                if (option == SelectedValue)
+                {
+                    tag.Attributes["selected"] = "selected";
+                }
+                tag.InnerHtml.Append(option);
+                result.InnerHtml.AppendHtml(tag);
+            }
+            output.Content.AppendHtml(result.InnerHtml);
+            if (IsDisabled)
+            {
+                var d = new TagHelperAttribute("disabled", "disabled");
+                output.Attributes.Add(d);
+            }
+            base.Process(context, output);
+        }
+    }
+
 }
