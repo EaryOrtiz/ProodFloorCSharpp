@@ -7,18 +7,24 @@ using System.Reflection;
 using System.Collections.Generic;
 using System.IO;
 using System.Xml;
+using ProdFloor.Models.ViewModels.Item;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace ProdFloor.Controllers
 {
     public class ItemController : Controller
     {
         private IItemRepository repository;
+        private IJobRepository jobrepo;
 
         public int PageSize = 4;
 
-        public ItemController(IItemRepository repo)
+        public ItemController(IItemRepository repo, IJobRepository jobRepository)
         {
             repository = repo;
+            jobrepo = jobRepository;
         }
 
         public ViewResult Index() => View();
@@ -335,5 +341,51 @@ namespace ProdFloor.Controllers
             return File(ms, "text/xml", "Error.xml");
         }
 
+        public async Task<IActionResult> ReferencesSearch(ReferencesSearchvViewModel ViewModel)
+        {
+            var jobSearch = jobrepo.Jobs.Include(j => j._HydroSpecific).Include( h => h._HoistWayData).AsQueryable();
+            var SlowReferSearch = repository.Slowdowns.AsQueryable();
+            var WireReferSearch = repository.WireTypesSizes.AsQueryable();
+
+            if (ViewModel.NumJobSearch != 0)
+            {
+                //Slowdown Table
+                List<int> CarSpeedList = jobSearch.Where(m => m.JobNum == ViewModel.NumJobSearch).Select(s => s._HoistWayData.DownSpeed).ToList(); ViewModel.CarSpeedFPM = CarSpeedList[0];
+                List<int> Distancelist = SlowReferSearch.Where(m => m.CarSpeedFPM == ViewModel.CarSpeedFPM).Select(s => s.Distance).ToList(); ViewModel.Distance = Distancelist[0];
+                List<int> landingPageList = SlowReferSearch.Where(m => m.CarSpeedFPM == ViewModel.CarSpeedFPM).Select(s => s.A).ToList(); ViewModel.A = landingPageList[0];
+                List<int> SlowLimit = SlowReferSearch.Where(m => m.CarSpeedFPM == ViewModel.CarSpeedFPM).Select(s => s.SlowLimit).ToList(); ViewModel.SlowLimit = SlowLimit[0];
+                List<int> MiniuimFloorList = SlowReferSearch.Where(m => m.CarSpeedFPM == ViewModel.CarSpeedFPM).Select(s => s.MiniumFloorHeight).ToList(); ViewModel.MiniumFloorHeight = MiniuimFloorList[0];
+
+                //WireTypeSizes
+                List<int> FLAlist = jobSearch.Where(m => m.JobNum == ViewModel.NumJobSearch).Select(s => s._HydroSpecific.FLA).ToList(); ViewModel.AMPRating = FLAlist[0];
+                List<string>  TypeList = WireReferSearch.Where(m => m.AMPRating == ViewModel.AMPRating).Select(s => s.Type).ToList(); ViewModel.Type = TypeList[0];
+                List<string> SizeList = WireReferSearch.Where(m => m.AMPRating == ViewModel.AMPRating).Select(s => s.Size).ToList(); ViewModel.Size = SizeList[0];
+                ReferencesSearchvViewModel referSearch = new ReferencesSearchvViewModel
+                {
+                    RefernceData = true,
+                    //Slow Table
+                    CarSpeedFPM = ViewModel.CarSpeedFPM,
+                    Distance = ViewModel.Distance,
+                    A = ViewModel.A,
+                    SlowLimit = ViewModel.SlowLimit,
+                    MiniumFloorHeight = ViewModel.MiniumFloorHeight,
+
+                    //WireTypesSize
+                    AMPRating = ViewModel.AMPRating,
+                    Size = ViewModel.Size,
+                    Type = ViewModel.Type
+                };
+
+                return View(referSearch);
+
+            }
+            else {
+                ReferencesSearchvViewModel referSearch2 = new ReferencesSearchvViewModel
+                {
+                    RefernceData = false,
+                };
+                return View(referSearch2);
+            }
+        }
     }
 }

@@ -1,0 +1,67 @@
+﻿@model ProdFloor.Models.ViewModels.Item.ReferencesSearchvViewModel
+@{
+    ViewBag.Title = "JobsSearchList";
+    Layout = "_AdminLayoutWO";
+}
+
+<div class="row" style="padding-right:20px">
+    <h2 class="col-sm-10"> Enginner References Search</h2>
+</div>
+<br />
+
+<form asp-controller="Item" asp-action="ReferencesSearch" method="get">
+    <div class="input-group">
+        <input type="text" class="form-control form-control-sm col-sm-2" asp-for="NumJobSearch" placeholder=" Please enter a Job Number">
+        <div class="input-group-append">
+            <button class="btn btn-dark" type="submit" value="Search">
+                <i class="fa fa-search" aria-hidden="true"></i>
+            </button>
+        </div>
+    </div>
+    <br />
+    <br />
+    <br />
+</form>
+@if (Model.RefernceData == true)
+{
+    <ul class="nav nav-tabs col-sm-7" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link " data-toggle="tab" href="#slowdown" role="tab">Slowdown Table</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link " data-toggle="tab" href="#wire" role="tab">WireTypesSize Table</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link " data-toggle="tab" href="#" role="tab">Starter Table</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link " data-toggle="tab" href="#" role="tab">Overload Table</a>
+        </li>
+    </ul>
+    <div class="tab-content" style="padding:20px">
+        <div class="tab-pane active" id="slowdown" role="tabpanel">
+            <div class="row">
+                <div class="col-sm">
+                    CarSpeed (FPM): <input type="text" value="@Model.CarSpeedFPM" class="form-control form-control-sm col-sm-10" disabled asp-for="CarSpeedFPM">
+                    Distance: <input type="text" value="@Model.Distance" class="form-control form-control-sm col-sm-10" disabled asp-for="Distance">
+                    "A" Landing Page: <input type="text" value="@Model.A" class="form-control form-control-sm col-sm-10" disabled asp-for="A">
+                </div>
+                <div class="col-sm">
+                    Slow Limit: <input type="text" value="@Model.SlowLimit" class="form-control form-control-sm col-sm-10" disabled asp-for="SlowLimit">
+                    Minium Floor Height: <input type="text" value="@Model.MiniumFloorHeight" class="form-control form-control-sm col-sm-10" disabled asp-for="MiniumFloorHeight">
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane active" id="wire" role="tabpanel">
+            <div class="row">
+                <div class="col-sm">
+                    Type: <input type="text" value="@Model.Type" class="form-control form-control-sm col-sm-4" disabled asp-for="Type">
+                    Size: <input type="text" value="@Model.Size" class="form-control form-control-sm col-sm-4" disabled asp-for="Size">
+                    AMP Rating: <input type="text" value="@Model.AMPRating" class="form-control form-control-sm col-sm-4" disabled asp-for="AMPRating">
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
