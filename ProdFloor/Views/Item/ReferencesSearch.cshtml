@@ -26,48 +26,75 @@
 {
     <ul class="nav nav-tabs col-sm-7" role="tablist">
         <li class="nav-item">
-            <a class="nav-link " data-toggle="tab" href="#slowdown" role="tab">Slowdown Table</a>
+            <a class="nav-link " data-toggle="tab" href="#silver" role="tab">Silver Table</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link " data-toggle="tab" href="#wire" role="tab">WireTypesSize Table</a>
+            <a class="nav-link " data-toggle="tab" href="#starter" role="tab">Starter</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link active" data-toggle="tab" href="#" role="tab">Starter Table</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link active " data-toggle="tab" href="#" role="tab">Overload Table</a>
+            <a class="nav-link" data-toggle="tab" href="#landingSearch" role="tab">Landing</a>
         </li>
     </ul>
     <div class="tab-content" style="padding:20px">
-        <div class="tab-pane active" id="slowdown" role="tabpanel">
+        <div class="tab-pane active" id="silver" role="tabpanel">
             <div class="row">
                 <div class="col-sm">
-                    CarSpeed (FPM): <input type="text" value="@Model.CarSpeedFPM" class="form-control form-control-sm col-sm-10" disabled asp-for="CarSpeedFPM">
+                    Name: <input type="text" value="@Model.JobName" class="form-control form-control-sm col-sm-10" disabled asp-for="JobName">
+                    Contractor: <input type="text" value="@Model.Contractor" class="form-control form-control-sm col-sm-10" disabled asp-for="Contractor">
                 </div>
                 <div class="col-sm">
-                    Distance: <input type="text" value="@Model.Distance" class="form-control form-control-sm col-sm-10" disabled asp-for="Distance">
+                    PO: <input type="text" value="@Model.PO" class="form-control form-control-sm col-sm-10" disabled asp-for="PO">
+                    FLA: <input type="text" value="@Model.FLA" class="form-control form-control-sm col-sm-10" disabled asp-for="FLA">
                 </div>
                 <div class="col-sm">
-                    "A" Landing Page: <input type="text" value="@Model.A" class="form-control form-control-sm col-sm-10" disabled asp-for="A">
+                    HP: <input type="text" value="@Model.HP" class="form-control form-control-sm col-sm-10" disabled asp-for="HP">
+                    FireCode: <input type="text" value="@Model.FireCodeName" class="form-control form-control-sm col-sm-10" disabled asp-for="FireCodeName">
                 </div>
                 <div class="col-sm">
-                    Slow Limit: <input type="text" value="@Model.SlowLimit" class="form-control form-control-sm col-sm-10" disabled asp-for="SlowLimit">
+                    Type of Operation: <input type="text" value="@Model.JobTypeMain" class="form-control form-control-sm col-sm-10" disabled asp-for="JobTypeMain">
+                    Input Voltage: <input type="text" value="@Model.InputVoltage" class="form-control form-control-sm col-sm-10" disabled asp-for="InputVoltage">
                 </div>
                 <div class="col-sm">
-                    Minium Floor Height: <input type="text" value="@Model.MiniumFloorHeight" class="form-control form-control-sm col-sm-10" disabled asp-for="MiniumFloorHeight">
+                    ValveBrand: <input type="text" value="@Model.ValveBrand" class="form-control form-control-sm col-sm-10" disabled asp-for="ValveBrand">
+                    Landing Sytem: <input type="text" value="@Model.LandingName" class="form-control form-control-sm col-sm-10" disabled asp-for="LandingName">
                 </div>
             </div>
         </div>
-        <div class="tab-pane active" id="wire" role="tabpanel">
+        <div class="tab-pane " id="starter" role="tabpanel">
             <div class="row">
                 <div class="col-sm">
-                    Type: <input type="text" value="@Model.Type" class="form-control form-control-sm col-sm-4" disabled asp-for="Type">
+                    <label>Solid</label>
+                    MCE Part #: <input type="text" value="@Model.MCPart" class="form-control form-control-sm col-sm-10" disabled asp-for="MCPart">
+                    New Manufacturer Part #: <input type="text" value="@Model.NewManufacturerPart" class="form-control form-control-sm col-sm-10" disabled asp-for="NewManufacturerPart">
+                </div>
+                <div class="col-sm">
+                    <label>Overload</label>
+                    MCE Part #: <input type="text" value="@Model.MCPartOver" class="form-control form-control-sm col-sm-10" disabled asp-for="MCPartOver">
+                    Siemens Part #: <input type="text" value="@Model.SiemensPart" class="form-control form-control-sm col-sm-10" disabled asp-for="SiemensPart">
                 </div>
                 <div class="col-sm">
                     Size: <input type="text" value="@Model.Size" class="form-control form-control-sm col-sm-4" disabled asp-for="Size">
                 </div>
-                <div class="col-sm">
-                    AMP Rating: <input type="text" value="@Model.AMPRating" class="form-control form-control-sm col-sm-4" disabled asp-for="AMPRating">
+            </div>
+        </div>
+        <div class="tab-pane " id="landingSearch" role="tabpanel">
+            <div class="row">
+                <div class="row">
+                    <div class="col-sm">
+                        CarSpeed (FPM): <input type="text" value="@Model.CarSpeedFPM" class="form-control form-control-sm col-sm-10" disabled asp-for="CarSpeedFPM">
+                    </div>
+                    <div class="col-sm">
+                        Distance: <input type="text" value="@Model.Distance" class="form-control form-control-sm col-sm-10" disabled asp-for="Distance">
+                    </div>
+                    <div class="col-sm">
+                        "A" Landing Page: <input type="text" value="@Model.A" class="form-control form-control-sm col-sm-10" disabled asp-for="A">
+                    </div>
+                    <div class="col-sm">
+                        Slow Limit: <input type="text" value="@Model.SlowLimit" class="form-control form-control-sm col-sm-10" disabled asp-for="SlowLimit">
+                    </div>
+                    <div class="col-sm">
+                        Minium Floor Height: <input type="text" value="@Model.MiniumFloorHeight" class="form-control form-control-sm col-sm-10" disabled asp-for="MiniumFloorHeight">
+                    </div>
                 </div>
             </div>
         </div>

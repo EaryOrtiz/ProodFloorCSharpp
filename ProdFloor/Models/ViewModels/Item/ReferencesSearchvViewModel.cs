@@ -15,6 +15,18 @@ namespace ProdFloor.Models.ViewModels.Item
 
         //Atributos de Job
         public int NumJobSearch { get; set; }
+        public int SPH { get; set; }
+        public string JobName { get; set; }
+        public string Contractor { get; set; }
+        public string FireCode { get; set; }
+        public string JobTypeMain { get; set; }
+        public string ValveBrand { get; set; }
+        public string LandingName { get; set; }
+        public int PO { get; set; }
+        public int InputVoltage { get; set; }
+        public int LandingID { get; set; }
+        public string FireCodeName { get; set; }
+
 
         //SlowLimit Table
         public int CarSpeedFPM { get; set; } ///Downs Speed

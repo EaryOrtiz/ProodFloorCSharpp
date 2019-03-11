@@ -343,27 +343,96 @@ namespace ProdFloor.Controllers
 
         public async Task<IActionResult> ReferencesSearch(ReferencesSearchvViewModel ViewModel)
         {
-            var jobSearch = jobrepo.Jobs.Include(j => j._HydroSpecific).Include( h => h._HoistWayData).AsQueryable();
+            var jobSearch = jobrepo.Jobs.Include(j => j._HydroSpecific).Include( h => h._HoistWayData).Include(ex => ex._jobExtension).AsQueryable();
             var SlowReferSearch = repository.Slowdowns.AsQueryable();
             var WireReferSearch = repository.WireTypesSizes.AsQueryable();
+            var StarterReferSearch = repository.Starters.AsQueryable();
+            var OverloadReferSearch = repository.Ovearloads.AsQueryable();
+            var LandingList= repository.LandingSystems.AsQueryable();
+            var FireCodeList = repository.FireCodes.AsQueryable();
 
             if (ViewModel.NumJobSearch != 0)
             {
+
+                var JobSearch = jobSearch.FirstOrDefault(m => m.JobNum == ViewModel.NumJobSearch);
+                var LandingOne = LandingList.FirstOrDefault(m => m.LandingSystemID == JobSearch._HoistWayData.LandingSystemID);
+                var FireCodeOne = FireCodeList.FirstOrDefault(m => m.FireCodeID == JobSearch.FireCodeID);
+                ViewModel.SPH = JobSearch._HydroSpecific.SPH;
+                ViewModel.FLA = JobSearch._HydroSpecific.FLA;
+                ViewModel.JobName = JobSearch.Name;
+                ViewModel.Contractor = JobSearch.Contractor;
+                ViewModel.JobTypeMain = JobSearch._jobExtension.JobTypeMain;
+                ViewModel.ValveBrand = JobSearch._HydroSpecific.ValveBrand;
+                ViewModel.PO = JobSearch.PO;
+                ViewModel.InputVoltage = JobSearch._jobExtension.InputVoltage;
+                ViewModel.HP = JobSearch._HydroSpecific.HP;
+                ViewModel.FireCodeName = FireCodeOne.Name;
+                ViewModel.LandingName = LandingOne.Name;
+
                 //Slowdown Table
-                List<int> CarSpeedList = jobSearch.Where(m => m.JobNum == ViewModel.NumJobSearch).Select(s => s._HoistWayData.DownSpeed).ToList(); ViewModel.CarSpeedFPM = CarSpeedList[0];
-                List<int> Distancelist = SlowReferSearch.Where(m => m.CarSpeedFPM == ViewModel.CarSpeedFPM).Select(s => s.Distance).ToList(); ViewModel.Distance = Distancelist[0];
-                List<int> landingPageList = SlowReferSearch.Where(m => m.CarSpeedFPM == ViewModel.CarSpeedFPM).Select(s => s.A).ToList(); ViewModel.A = landingPageList[0];
-                List<int> SlowLimit = SlowReferSearch.Where(m => m.CarSpeedFPM == ViewModel.CarSpeedFPM).Select(s => s.SlowLimit).ToList(); ViewModel.SlowLimit = SlowLimit[0];
-                List<int> MiniuimFloorList = SlowReferSearch.Where(m => m.CarSpeedFPM == ViewModel.CarSpeedFPM).Select(s => s.MiniumFloorHeight).ToList(); ViewModel.MiniumFloorHeight = MiniuimFloorList[0];
+                var SlowdoenReg = SlowReferSearch.Where(m => m.CarSpeedFPM >= ViewModel.FLA).OrderBy(o => o.CarSpeedFPM).Skip(0).Take(1).ToList();
+                ViewModel.CarSpeedFPM = SlowdoenReg[0].CarSpeedFPM;
+                ViewModel.Distance = SlowdoenReg[0].Distance;
+                ViewModel.A = SlowdoenReg[0].A;
+                ViewModel.SlowLimit = SlowdoenReg[0].SlowLimit;
+                ViewModel.MiniumFloorHeight = SlowdoenReg[0].MiniumFloorHeight;
 
                 //WireTypeSizes
-                List<int> FLAlist = jobSearch.Where(m => m.JobNum == ViewModel.NumJobSearch).Select(s => s._HydroSpecific.FLA).ToList(); ViewModel.AMPRating = FLAlist[0];
-                List<string>  TypeList = WireReferSearch.Where(m => m.AMPRating == ViewModel.AMPRating).Select(s => s.Type).ToList(); ViewModel.Type = TypeList[0];
-                List<string> SizeList = WireReferSearch.Where(m => m.AMPRating == ViewModel.AMPRating).Select(s => s.Size).ToList(); ViewModel.Size = SizeList[0];
+                var WireTypeReg = WireReferSearch.Where(m => m.AMPRating >= ViewModel.FLA).OrderBy(o => o.AMPRating).Skip(0).Take(1).ToList();
+                ViewModel.AMPRating = WireTypeReg[0].AMPRating;
+                ViewModel.Size = WireTypeReg[0].Size;
+                ViewModel.Type = WireTypeReg[0].Type;
+
+
+                //Lista para strater and overload table
+                List<Starter> StarterList = StarterReferSearch.Where(m => m.Volts.Contains(ViewModel.InputVoltage.ToString())
+                && m.Type == JobSearch._HydroSpecific.Starter && m.FLA >= ViewModel.FLA).OrderBy( o => o.FLA).Skip(0).Take(2).ToList();
+
+                
+                if(ViewModel.SPH == 80)
+                {
+                    ViewModel.MCPart = StarterList[0].MCPart;
+                    ViewModel.NewManufacturerPart = StarterList[0].NewManufacturerPart;
+                    ViewModel.OverloadTable = StarterList[0].OverloadTable;
+                }
+                else
+                {
+                    ViewModel.MCPart = StarterList[1].MCPart;
+                    ViewModel.NewManufacturerPart = StarterList[1].NewManufacturerPart;
+                    ViewModel.OverloadTable = StarterList[1].OverloadTable;
+                }
+
+                //Overload Table
+                if(ViewModel.OverloadTable != null && ViewModel.OverloadTable != "N/A")
+                {
+                    var OverLoadReg = OverloadReferSearch.FirstOrDefault(m => m.OverTableNum == Int32.Parse(ViewModel.OverloadTable) 
+                    && m.AMPMin >= ViewModel.FLA && m.AMPMax <= ViewModel.FLA);
+                    ViewModel.MCPartOver = OverLoadReg.MCPart;
+                    ViewModel.SiemensPart = OverLoadReg.SiemensPart;
+                }
+                else
+                {
+                    ViewModel.MCPartOver = "N/A";
+                    ViewModel.SiemensPart = "N/A";
+                }
+                
                 ReferencesSearchvViewModel referSearch = new ReferencesSearchvViewModel
                 {
                     RefernceData = true,
-                    //Slow Table
+
+                    //JobData
+                    FLA = ViewModel.FLA,
+                    JobName =  ViewModel.JobName,
+                    Contractor = ViewModel.Contractor,
+                    JobTypeMain = ViewModel.JobTypeMain,
+                    ValveBrand = ViewModel.ValveBrand,
+                    PO = JobSearch.PO,
+                    InputVoltage =  ViewModel.InputVoltage,
+                    HP = ViewModel.HP,
+                    FireCodeName = ViewModel.FireCodeName,
+                    LandingName = ViewModel.LandingName,
+
+                //Slow Table
                     CarSpeedFPM = ViewModel.CarSpeedFPM,
                     Distance = ViewModel.Distance,
                     A = ViewModel.A,
@@ -373,7 +442,15 @@ namespace ProdFloor.Controllers
                     //WireTypesSize
                     AMPRating = ViewModel.AMPRating,
                     Size = ViewModel.Size,
-                    Type = ViewModel.Type
+                    Type = ViewModel.Type,
+
+                    //Starter
+                    MCPart = ViewModel.MCPart,
+                    NewManufacturerPart = ViewModel.NewManufacturerPart,
+
+                    //Overload
+                    MCPartOver = ViewModel.MCPartOver,
+                    SiemensPart = ViewModel.SiemensPart
                 };
 
                 return View(referSearch);
