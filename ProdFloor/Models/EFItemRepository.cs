@@ -15,17 +15,11 @@ namespace ProdFloor.Models
         }
 
         public IQueryable<Country> Countries => context.Countries;
-
         public IQueryable<State> States => context.States;
-        
         public IQueryable<City> Cities => context.Cities;
-        
         public IQueryable<DoorOperator> DoorOperators => context.DoorOperators;
-        
         public IQueryable<FireCode> FireCodes => context.FireCodes;
-        
         public IQueryable<JobType> JobTypes => context.JobTypes;
-        
         public IQueryable<LandingSystem> LandingSystems => context.LandingSystems;
 
         public void SaveCountry(Country country)
@@ -241,6 +235,151 @@ namespace ProdFloor.Models
             if (dbEntry != null)
             {
                 context.LandingSystems.Remove(dbEntry);
+                context.SaveChanges();
+            }
+            return dbEntry;
+        }
+
+
+        //********Enginner Refernces Table
+
+        public IQueryable<Slowdown> Slowdowns => context.Slowdowns;
+        public IQueryable<WireTypesSize> WireTypesSizes => context.WireTypesSizes;
+        public IQueryable<Starter> Starters => context.Starters;
+        public IQueryable<Overload> Ovearloads => context.Overloads;
+
+        public void SaveSlowdown(Slowdown slowdown)
+        {
+            if (slowdown.SlowdownID == 0)
+            {
+                context.Slowdowns.Add(slowdown);
+            }
+            else
+            {
+                Slowdown dbEntry = context.Slowdowns
+                .FirstOrDefault(p => p.SlowdownID == slowdown.SlowdownID);
+                if (dbEntry != null)
+                {
+                    dbEntry.CarSpeedFPM = slowdown.CarSpeedFPM;
+                    dbEntry.Distance = slowdown.Distance;
+                    dbEntry.A = slowdown.A;
+                    dbEntry.SlowLimit = slowdown.SlowLimit;
+                    dbEntry.MiniumFloorHeight = slowdown.MiniumFloorHeight;
+                }
+            }
+            context.SaveChanges();
+        }
+
+        public void SaveWireTypesSize(WireTypesSize wireTypesSize)
+        {
+            if (wireTypesSize.WireTypesSizeID == 0)
+            {
+                context.WireTypesSizes.Add(wireTypesSize);
+            }
+            else
+            {
+                WireTypesSize dbEntry = context.WireTypesSizes
+                .FirstOrDefault(p => p.WireTypesSizeID == wireTypesSize.WireTypesSizeID);
+                if (dbEntry != null)
+                {
+                    dbEntry.Type = wireTypesSize.Type;
+                    dbEntry.Size = wireTypesSize.Size;
+                    dbEntry.AMPRating = wireTypesSize.AMPRating;
+                }
+            }
+            context.SaveChanges();
+        }
+
+        public void SaveStarter(Starter starter)
+        {
+            if (starter.StarterID == 0)
+            {
+                context.Starters.Add(starter);
+            }
+            else
+            {
+                Starter dbEntry = context.Starters
+                .FirstOrDefault(p => p.StarterID == starter.StarterID);
+                if (dbEntry != null)
+                {
+                    dbEntry.Brand = starter.Brand;
+                    dbEntry.FLA = starter.FLA;
+                    dbEntry.Type = starter.Type;
+                    dbEntry.Volts = starter.Volts;
+                    dbEntry.HP = starter.HP;
+                    dbEntry.MCPart = starter.MCPart;
+                    dbEntry.NewManufacturerPart = starter.NewManufacturerPart;
+                    dbEntry.OverloadTable = starter.OverloadTable;
+                }
+            }
+            context.SaveChanges();
+        }
+
+        public void SaveOverload(Overload overload)
+        {
+            if (overload.OverloadID == 0)
+            {
+                context.Overloads.Add(overload);
+            }
+            else
+            {
+                Overload dbEntry = context.Overloads
+                .FirstOrDefault(p => p.OverloadID == overload.OverloadID);
+                if (dbEntry != null)
+                {
+                    dbEntry.AMPMin = overload.AMPMin;
+                    dbEntry.AMPMax = overload.AMPMax;
+                    dbEntry.OverTableNum = overload.OverTableNum;
+                    dbEntry.MCPart = overload.MCPart;
+                    dbEntry.SiemensPart = overload.SiemensPart;
+                }
+            }
+            context.SaveChanges();
+        }
+
+        public Slowdown DeleteSlowdown(int slowdownID)
+        {
+            Slowdown dbEntry = context.Slowdowns
+                .FirstOrDefault(p => p.SlowdownID == slowdownID);
+            if (dbEntry != null)
+            {
+                context.Slowdowns.Remove(dbEntry);
+                context.SaveChanges();
+            }
+            return dbEntry;
+        }
+
+        public WireTypesSize DeleteWireTypeSize(int WireTypeSizeID)
+        {
+            WireTypesSize dbEntry = context.WireTypesSizes
+                .FirstOrDefault(p => p.WireTypesSizeID == WireTypeSizeID);
+            if (dbEntry != null)
+            {
+                context.WireTypesSizes.Remove(dbEntry);
+                context.SaveChanges();
+            }
+            return dbEntry;
+        }
+
+        public Starter DeleteStarter(int StarterID)
+        {
+            Starter dbEntry = context.Starters
+                .FirstOrDefault(p => p.StarterID == StarterID);
+            if (dbEntry != null)
+            {
+                context.Starters.Remove(dbEntry);
+                context.SaveChanges();
+            }
+            return dbEntry;
+        }
+
+        public Overload DeleteOverload(int OverloadID)
+        {
+            Overload dbEntry = context.Overloads
+                .FirstOrDefault(p => p.OverloadID == OverloadID);
+            if (dbEntry != null)
+            {
+                context.Overloads.Remove(dbEntry);
                 context.SaveChanges();
             }
             return dbEntry;

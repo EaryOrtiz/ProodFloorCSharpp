@@ -9,9 +9,9 @@
         <div class="input-group-prepend">
             <span class="input-group-text" id="">Car Calls</span>
         </div>
-        <indicators select-for="Volts_Value" selected-value="@Model.CurrentIndicator.CarCallsVoltage" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)"   asp-for="CurrentIndicator.CarCallsVoltage" class="form-control col-sm-7"></indicators>
-        <indicators select-for="Volts_Type" selected-value="@Model.CurrentIndicator.CarCallsVoltageType" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)"   asp-for="CurrentIndicator.CarCallsVoltageType" class="form-control col-sm-7"></indicators>
-        <indicators select-for="CallType" selected-value="@Model.CurrentIndicator.CarCallsType" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)"   asp-for="CurrentIndicator.CarCallsType" class="form-control col-sm-7"></indicators>
+        <indicators select-for="Volts_Value" selected-value="@Model.CurrentIndicator.CarCallsVoltage" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)"   asp-for="CurrentIndicator.CarCallsVoltage" class="form-control col-sm-7"></indicators>
+        <indicators select-for="Volts_Type" selected-value="@Model.CurrentIndicator.CarCallsVoltageType" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)"   asp-for="CurrentIndicator.CarCallsVoltageType" class="form-control col-sm-7"></indicators>
+        <indicators select-for="CallType" selected-value="@Model.CurrentIndicator.CarCallsType" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)"   asp-for="CurrentIndicator.CarCallsType" class="form-control col-sm-7"></indicators>
         <div>
             <div><span asp-validation-for="CurrentIndicator.CarCallsVoltage" class="text-danger"></span></div>
             <div><span asp-validation-for="CurrentIndicator.CarCallsVoltageType " class="text-danger"></span></div>
@@ -22,9 +22,9 @@
         <div class="input-group-prepend">
             <span class="input-group-text" id="">Hall Calls</span>
         </div>
-        <indicators select-for="Volts_Value" selected-value="@Model.CurrentIndicator.HallCallsVoltage" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)"  asp-for="CurrentIndicator.HallCallsVoltage" class="form-control col-sm-7"></indicators>
-        <indicators select-for="Volts_Type" selected-value="@Model.CurrentIndicator.HallCallsVoltageType" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)"  asp-for="CurrentIndicator.HallCallsVoltageType" class="form-control col-sm-7"></indicators>
-        <indicators select-for="CallType" selected-value="@Model.CurrentIndicator.HallCallsType" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)"  asp-for="CurrentIndicator.HallCallsType" class="form-control col-sm-7"></indicators>
+        <indicators select-for="Volts_Value" selected-value="@Model.CurrentIndicator.HallCallsVoltage" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)"  asp-for="CurrentIndicator.HallCallsVoltage" class="form-control col-sm-7"></indicators>
+        <indicators select-for="Volts_Type" selected-value="@Model.CurrentIndicator.HallCallsVoltageType" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)"  asp-for="CurrentIndicator.HallCallsVoltageType" class="form-control col-sm-7"></indicators>
+        <indicators select-for="CallType" selected-value="@Model.CurrentIndicator.HallCallsType" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)"  asp-for="CurrentIndicator.HallCallsType" class="form-control col-sm-7"></indicators>
         <div>
             <div><span asp-validation-for="CurrentIndicator.HallCallsVoltage" class="text-danger"></span></div>
             <div><span asp-validation-for="CurrentIndicator.HallCallsVoltageType " class="text-danger"></span></div>
@@ -42,10 +42,10 @@
         </div>
         <div><span asp-validation-for="CurrentIndicator.CarPI" class="text-danger"></span></div>
         <div class="input-group-text">
-            <input asp-for="CurrentIndicator.CarPI" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)"  />
+            <input asp-for="CurrentIndicator.CarPI" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)"  />
         </div>
-        <indicators select-for="PIDriver" selected-value="@Model.CurrentIndicator.CarPIType" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)"  asp-for="CurrentIndicator.CarPIType" class="form-control col-sm-4"></indicators>
-        <indicators select-for="CarPIDiscreteType" selected-value="@Model.CurrentIndicator.CarPIDiscreteType" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)"  asp-for="CurrentIndicator.CarPIDiscreteType" class="form-control col-sm-4"></indicators>
+        <indicators select-for="PIDriver" selected-value="@Model.CurrentIndicator.CarPIType" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)"  asp-for="CurrentIndicator.CarPIType" class="form-control col-sm-4"></indicators>
+        <indicators select-for="CarPIDiscreteType" selected-value="@Model.CurrentIndicator.CarPIDiscreteType" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)"  asp-for="CurrentIndicator.CarPIDiscreteType" class="form-control col-sm-4"></indicators>
         <div>
             <div><span asp-validation-for="CurrentIndicator.CarPIType" class="text-danger"></span></div>
             <div><span asp-validation-for="CurrentIndicator.CarPIDiscreteType" class="text-danger"></span></div>
@@ -57,12 +57,12 @@
         </div>
         <div><span asp-validation-for="CurrentIndicator.HallPI" class="text-danger"></span></div>
         <div class="input-group-text">
-            <input asp-for="CurrentIndicator.HallPI" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)"  />
+            <input asp-for="CurrentIndicator.HallPI" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)"  />
         </div>
         <div><span asp-validation-for="CurrentIndicator.HallPIType" class="text-danger"></span></div>
-        <indicators select-for="PIDriver" selected-value="@Model.CurrentIndicator.HallPIType" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)"   asp-for="CurrentIndicator.HallPIType" class="form-control col-sm-4"></indicators>
+        <indicators select-for="PIDriver" selected-value="@Model.CurrentIndicator.HallPIType" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)"   asp-for="CurrentIndicator.HallPIType" class="form-control col-sm-4"></indicators>
         <div><span asp-validation-for="CurrentIndicator.HallPIDiscreteType" class="text-danger"></span></div>
-        <indicators select-for="CarPIDiscreteType" selected-value="@Model.CurrentIndicator.HallPIDiscreteType" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)"   asp-for="CurrentIndicator.HallPIDiscreteType" class="form-control col-sm-4"></indicators>
+        <indicators select-for="CarPIDiscreteType" selected-value="@Model.CurrentIndicator.HallPIDiscreteType" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)"   asp-for="CurrentIndicator.HallPIDiscreteType" class="form-control col-sm-4"></indicators>
     </div>
     <div class="input-group col-5 text-center">
         <div class="input-group-prepend">
@@ -70,10 +70,10 @@
         </div>
         <div><span asp-validation-for="CurrentIndicator.VoiceAnnunciationPI" class="text-danger"></span></div>
         <div class="input-group-text">
-            <input asp-for="CurrentIndicator.VoiceAnnunciationPI" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)"  />
+            <input asp-for="CurrentIndicator.VoiceAnnunciationPI" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)"  />
         </div>
         <div><span asp-validation-for="CurrentIndicator.VoiceAnnunciationPIType" class="text-danger"></span></div>
-        <indicators select-for="PIDriver" selected-value="@Model.CurrentIndicator.VoiceAnnunciationPIType" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)"   asp-for="CurrentIndicator.VoiceAnnunciationPIType" class="form-control col-sm-4"></indicators>
+        <indicators select-for="PIDriver" selected-value="@Model.CurrentIndicator.VoiceAnnunciationPIType" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)"   asp-for="CurrentIndicator.VoiceAnnunciationPIType" class="form-control col-sm-4"></indicators>
     </div>
 </div>
 <h2 class="col-sm-10">
@@ -86,12 +86,12 @@
         </div>
         <div><span asp-validation-for="CurrentIndicator.CarLanterns" class="text-danger"></span></div>
         <div class="input-group-text">
-            <input asp-for="CurrentIndicator.CarLanterns" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)"  />
+            <input asp-for="CurrentIndicator.CarLanterns" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)"  />
         </div>
         <div><span asp-validation-for="CurrentIndicator.CarLanternsStyle" class="text-danger"></span></div>
-        <indicators select-for="PIDriver" selected-value="@Model.CurrentIndicator.CarLanternsStyle" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)"   asp-for="CurrentIndicator.CarLanternsStyle" class="form-control col-sm-4"></indicators>
+        <indicators select-for="PIDriver" selected-value="@Model.CurrentIndicator.CarLanternsStyle" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)"   asp-for="CurrentIndicator.CarLanternsStyle" class="form-control col-sm-3"></indicators>
         <div><span asp-validation-for="CurrentIndicator.CarLanternsType" class="text-danger"></span></div>
-        <indicators select-for="PIType" selected-value="@Model.CurrentIndicator.CarLanternsType" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)"   asp-for="CurrentIndicator.CarLanternsType" class="form-control col-sm-4"></indicators>
+        <indicators select-for="PIType" selected-value="@Model.CurrentIndicator.CarLanternsType" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)"   asp-for="CurrentIndicator.CarLanternsType" class="form-control col-sm-3"></indicators>
     </div>
     <div class="input-group col-5 text-center" style="padding-bottom:5px">
         <div class="input-group-prepend">
@@ -99,12 +99,12 @@
         </div>
         <div><span asp-validation-for="CurrentIndicator.HallLanterns" class="text-danger"></span></div>
         <div class="input-group-text">
-            <input asp-for="CurrentIndicator.HallLanterns" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)"  />
+            <input asp-for="CurrentIndicator.HallLanterns" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)"  />
         </div>
         <div><span asp-validation-for="CurrentIndicator.HallLanternsStyle" class="text-danger"></span></div>
-        <indicators select-for="PIDriver" selected-value="@Model.CurrentIndicator.HallLanternsStyle" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)"   asp-for="CurrentIndicator.HallLanternsStyle" class="form-control col-sm-4"></indicators>
+        <indicators select-for="PIDriver" selected-value="@Model.CurrentIndicator.HallLanternsStyle" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)"   asp-for="CurrentIndicator.HallLanternsStyle" class="form-control col-sm-3"></indicators>
         <div><span asp-validation-for="CurrentIndicator.HallLanternsType" class="text-danger"></span></div>
-        <indicators select-for="PIType" selected-value="@Model.CurrentIndicator.HallLanternsType" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)"   asp-for="CurrentIndicator.HallLanternsType" class="form-control col-sm-4"></indicators>
+        <indicators select-for="PIType" selected-value="@Model.CurrentIndicator.HallLanternsType" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)"   asp-for="CurrentIndicator.HallLanternsType" class="form-control col-sm-3"></indicators>
     </div>
     <div class="input-group col-10 text-left" style="padding-bottom:5px">
         <div class="input-group-prepend">
@@ -112,18 +112,18 @@
         </div>
         <div><span asp-validation-for="CurrentIndicator.PassingFloor" class="text-danger"></span></div>
         <div class="input-group-text">
-            <input asp-for="CurrentIndicator.PassingFloor" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)"  />
+            <input asp-for="CurrentIndicator.PassingFloor" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)"  />
         </div>
         <div class="input-group-prepend">
             <span class="input-group-text" id="">Passing Floor Enable</span>
         </div>
         <div class="input-group-text">
-            <input asp-for="CurrentIndicator.PassingFloorEnable" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)"  />
+            <input asp-for="CurrentIndicator.PassingFloorEnable" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)"  />
         </div>
         <div><span asp-validation-for="CurrentIndicator.PassingFloorType" class="text-danger"></span></div>
-        <indicators select-for="PIDriver" selected-value="@Model.CurrentIndicator.PassingFloorType" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)"   asp-for="CurrentIndicator.PassingFloorType" class="form-control col-sm-2"></indicators>
+        <indicators select-for="PIDriver" selected-value="@Model.CurrentIndicator.PassingFloorType" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)"   asp-for="CurrentIndicator.PassingFloorType" class="form-control col-sm-2"></indicators>
         <div><span asp-validation-for="CurrentIndicator.PassingFloorDiscreteType" class="text-danger"></span></div>
-        <indicators select-for="PIType" selected-value="@Model.CurrentIndicator.PassingFloorDiscreteType" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)"   asp-for="CurrentIndicator.PassingFloorDiscreteType" class="form-control col-sm-2"></indicators>
+        <indicators select-for="PIType" selected-value="@Model.CurrentIndicator.PassingFloorDiscreteType" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)"   asp-for="CurrentIndicator.PassingFloorDiscreteType" class="form-control col-sm-2"></indicators>
 
     </div>
 </div>
@@ -135,8 +135,8 @@
         <div class="input-group-prepend">
             <span class="input-group-text" id="">Voltage</span>
         </div>
-        <volts select-for="Volts_Value" selected-value="@Model.CurrentIndicator.IndicatorsVoltage" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)"   asp-for="CurrentIndicator.IndicatorsVoltage" class="form-control col-sm-7"></volts>
-        <indicators select-for="Volts_Type" selected-value="@Model.CurrentIndicator.IndicatorsVoltageType" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || Model.CurrentUserID == 0 ? false : true)"  asp-for="CurrentIndicator.IndicatorsVoltageType" class="form-control col-sm-7"></indicators>
+        <volts select-for="Volts_Value" selected-value="@Model.CurrentIndicator.IndicatorsVoltage" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)"   asp-for="CurrentIndicator.IndicatorsVoltage" class="form-control col-sm-7"></volts>
+        <indicators select-for="Volts_Type" selected-value="@Model.CurrentIndicator.IndicatorsVoltageType" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)"  asp-for="CurrentIndicator.IndicatorsVoltageType" class="form-control col-sm-7"></indicators>
         <div>
             <div><span asp-validation-for="CurrentIndicator.IndicatorsVoltage" class="text-danger"></span></div>
             <div><span asp-validation-for="CurrentIndicator.IndicatorsVoltageType " class="text-danger"></span></div>

@@ -582,6 +582,48 @@ namespace ProdFloor.Migrations
                     b.ToTable("LandingSystems");
                 });
 
+            modelBuilder.Entity("ProdFloor.Models.Overload", b =>
+                {
+                    b.Property<int>("OverloadID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<float>("AMPMax");
+
+                    b.Property<float>("AMPMin");
+
+                    b.Property<string>("MCPart")
+                        .IsRequired();
+
+                    b.Property<int>("OverTableNum");
+
+                    b.Property<string>("SiemensPart")
+                        .IsRequired();
+
+                    b.HasKey("OverloadID");
+
+                    b.ToTable("Overloads");
+                });
+
+            modelBuilder.Entity("ProdFloor.Models.Slowdown", b =>
+                {
+                    b.Property<int>("SlowdownID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("A");
+
+                    b.Property<int>("CarSpeedFPM");
+
+                    b.Property<int>("Distance");
+
+                    b.Property<int>("MiniumFloorHeight");
+
+                    b.Property<int>("SlowLimit");
+
+                    b.HasKey("SlowdownID");
+
+                    b.ToTable("Slowdowns");
+                });
+
             modelBuilder.Entity("ProdFloor.Models.SpecialFeatures", b =>
                 {
                     b.Property<int>("SpecialFeaturesID")
@@ -597,6 +639,38 @@ namespace ProdFloor.Migrations
                     b.HasIndex("JobID");
 
                     b.ToTable("SpecialFeatures");
+                });
+
+            modelBuilder.Entity("ProdFloor.Models.Starter", b =>
+                {
+                    b.Property<int>("StarterID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Brand")
+                        .IsRequired();
+
+                    b.Property<int>("FLA");
+
+                    b.Property<float>("HP");
+
+                    b.Property<string>("MCPart")
+                        .IsRequired();
+
+                    b.Property<string>("NewManufacturerPart")
+                        .IsRequired();
+
+                    b.Property<string>("OverloadTable")
+                        .IsRequired();
+
+                    b.Property<string>("Type")
+                        .IsRequired();
+
+                    b.Property<string>("Volts")
+                        .IsRequired();
+
+                    b.HasKey("StarterID");
+
+                    b.ToTable("Starters");
                 });
 
             modelBuilder.Entity("ProdFloor.Models.State", b =>
@@ -615,6 +689,24 @@ namespace ProdFloor.Migrations
                     b.HasIndex("CountryID");
 
                     b.ToTable("States");
+                });
+
+            modelBuilder.Entity("ProdFloor.Models.WireTypesSize", b =>
+                {
+                    b.Property<int>("WireTypesSizeID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("AMPRating");
+
+                    b.Property<string>("Size")
+                        .IsRequired();
+
+                    b.Property<string>("Type")
+                        .IsRequired();
+
+                    b.HasKey("WireTypesSizeID");
+
+                    b.ToTable("WireTypesSizes");
                 });
 
             modelBuilder.Entity("ProdFloor.Models.City", b =>

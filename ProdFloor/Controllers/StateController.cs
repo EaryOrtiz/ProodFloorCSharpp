@@ -13,7 +13,7 @@ namespace ProdFloor.Controllers
     public class StateController : Controller
     {
         private IItemRepository repository;
-        public int PageSize = 4;
+        public int PageSize = 6;
 
         public StateController(IItemRepository repo)
         {
@@ -44,15 +44,6 @@ namespace ProdFloor.Controllers
 
         public ViewResult Edit(int ID)
         {
-
-            List<Country> CountryList = new List<Country>();
-            //Getting Data
-            CountryList = (from country in repository.Countries select country).ToList();
-            //Insert Select item in list
-            CountryList.Insert(0, new Country { CountryID = 0, Name = "Select" });
-            //Assigning categorlist to viewbag
-            ViewBag.CountryList = CountryList;
-            ViewData["Countries"] = repository.Countries;
 
             return View(repository.States
                  .FirstOrDefault(j => j.StateID == ID));
@@ -87,13 +78,6 @@ namespace ProdFloor.Controllers
         }
 
         public ViewResult Add(){
-            List<Country> CountryList = new List<Country>();
-            //Getting Data
-            CountryList = (from country in repository.Countries select country).ToList();
-            //Insert Select item in list
-            CountryList.Insert(0, new Country { CountryID = 0, Name = "Select" });
-            //Assigning categorlist to viewbag
-            ViewBag.CountryList = CountryList;
             return View("Edit", new State());
         } 
     }

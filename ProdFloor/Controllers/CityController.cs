@@ -13,7 +13,7 @@ namespace ProdFloor.Controllers
     public class CityController : Controller
     {
         private IItemRepository repository;
-        public int PageSize = 4;
+        public int PageSize = 7;
 
         public CityController(IItemRepository repo)
         {
@@ -43,8 +43,6 @@ namespace ProdFloor.Controllers
 
         public ViewResult Edit(int ID)
         {
-            ViewData["CountryID"] = new SelectList(repository.Countries, "CountryID", "Name");
-            ViewData["StateID"] = new SelectList(repository.States, "StateID", "Name");
 
             return View(repository.Cities
                 .FirstOrDefault(j => j.CityID == ID));
@@ -81,9 +79,6 @@ namespace ProdFloor.Controllers
         
         public ViewResult Add()
         {
-            ViewData["CountryID"] = new SelectList(repository.Countries, "CountryID", "Name");
-            ViewData["StateID"] = new SelectList(repository.States, "StateID", "Name");
-
             return View("Edit", new City());
         }
 

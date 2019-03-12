@@ -19,7 +19,7 @@ namespace ProdFloor.Controllers
         private IJobRepository repository;
         private IItemRepository itemsrepository;
         private UserManager<AppUser> userManager;
-        public int PageSize = 4;
+        public int PageSize = 5;
 
         public JobController(IJobRepository repo, IItemRepository itemsrepo, UserManager<AppUser> userMgr)
         {
@@ -90,25 +90,17 @@ namespace ProdFloor.Controllers
         */
         public ViewResult NewJob()
         {
-
-            ViewData["CountryID"] = new SelectList(itemsrepository.Countries, "CountryID", "Name");
-            ViewData["StateID"] = new SelectList(itemsrepository.States, "StateID", "Name");
-            ViewData["CityID"] = new SelectList(itemsrepository.Cities, "CityID", "Name");
-            ViewData["Style"] = new SelectList(itemsrepository.DoorOperators.FromSql("select * from dbo.DoorOperators where dbo.DoorOperators.DoorOperatorID " +
-                "in (Select max(dbo.DoorOperators.DoorOperatorID) FROM dbo.DoorOperators group by dbo.DoorOperators.Style); "), "Style", "Style");
-            ViewData["Brand2"] = new SelectList(itemsrepository.DoorOperators, "Brand", "Brand");
-            ViewData["DoorOperatorID"] = new SelectList(itemsrepository.DoorOperators, "DoorOperatorID", "Name");
-
             return View(new Job());
         } 
 
         [HttpPost]
         public IActionResult NewJob(Job newJob)
         {
-            ViewData["CityID"] = new SelectList(itemsrepository.Cities, "CityID", "Name");
+            //Desactivar esta funcion para que funcione el test de Job
             AppUser currentUser = GetCurrentUser().Result;
             if (ModelState.IsValid)
             {
+                //y esta esta tambien y poner denuevo el {currenuser.engId} en Los TempDatas cuando terminen los test 
                 newJob.EngID = currentUser.EngID;
                 newJob.CrossAppEngID = 117;
                 newJob.Status = "Incomplete";
@@ -142,8 +134,6 @@ namespace ProdFloor.Controllers
          */
         public IActionResult Edit(int ID)
         {
-            ViewData["CityID"] = new SelectList(itemsrepository.Cities, "CityID", "Name");
-            ViewData["DoorOperatorID"] = new SelectList(itemsrepository.DoorOperators, "DoorOperatorID", "Name");
 
             AppUser currentUser = GetCurrentUser().Result;
             Job job = repository.Jobs.FirstOrDefault(j => j.JobID == ID);
@@ -162,15 +152,9 @@ namespace ProdFloor.Controllers
                 viewModel.CurrentGenericFeatures = repository.GenericFeaturesList.FirstOrDefault(j => j.JobID == ID);
                 viewModel.CurrentIndicator = repository.Indicators.FirstOrDefault(j => j.JobID == ID);
                 viewModel.CurrentHoistWayData = repository.HoistWayDatas.FirstOrDefault(j => j.JobID == ID);
-                if(SfList != null)
-                {
-                    viewModel.SpecialFeatureslist = SfList;
-                }
-                else
-                {
-                    viewModel.SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures() };
-                }
-                viewModel.CurrentUserID = currentUser.EngID;
+                if(SfList != null) viewModel.SpecialFeatureslist = SfList;
+                else viewModel.SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures() };
+                viewModel.CurrentUserID = 1;
                 viewModel.CurrentTab = "Main";
                 return View(viewModel);
             }
@@ -184,9 +168,6 @@ namespace ProdFloor.Controllers
         [HttpPost]
         public IActionResult Edit(JobViewModel multiEditViewModel)
         {
-            ViewData["CityID"] = new SelectList(itemsrepository.Cities, "CityID", "Name");
-            ViewData["DoorOperatorID"] = new SelectList(itemsrepository.DoorOperators, "DoorOperatorID", "Name");
-
             if (ModelState.IsValid)
             {
                 
@@ -254,11 +235,8 @@ namespace ProdFloor.Controllers
          */
         public IActionResult Continue(int ID)
         {
-            ViewData["CityID"] = new SelectList(itemsrepository.Cities, "CityID", "Name");
-            ViewData["DoorOperatorID"] = new SelectList(itemsrepository.DoorOperators, "DoorOperatorID", "Name");
-
-            if (repository.Jobs.FirstOrDefault(j => j.JobID == ID) != null)
-            {
+                if (repository.Jobs.FirstOrDefault(j => j.JobID == ID) != null)
+                {
                 List<SpecialFeatures> SfList = repository.SpecialFeatures.Where(j => j.JobID == ID).ToList();
                 JobViewModel continueJobViewModel = new JobViewModel();
                 continueJobViewModel.CurrentTab = "Main";
@@ -268,25 +246,16 @@ namespace ProdFloor.Controllers
                 continueJobViewModel.CurrentGenericFeatures = (repository.GenericFeaturesList.FirstOrDefault(j => j.JobID == ID) ?? new GenericFeatures());
                 continueJobViewModel.CurrentIndicator = (repository.Indicators.FirstOrDefault(j => j.JobID == ID) ?? new Indicator());
                 continueJobViewModel.CurrentHoistWayData = (repository.HoistWayDatas.FirstOrDefault(j => j.JobID == ID) ?? new HoistWayData());
-                if (SfList.Count > 1)
-                {
+                if (SfList.Count > 1) continueJobViewModel.SpecialFeatureslist = SfList;
+                else continueJobViewModel.SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures() };
 
-                    continueJobViewModel.SpecialFeatureslist = SfList;
-
+                return View("NextForm", continueJobViewModel);
                 }
                 else
                 {
-                    continueJobViewModel.SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures() };
-                }
-
-                return View("NextForm", continueJobViewModel);
-
-            }
-            else
-            {
                 TempData["message"] = $"The requested Job Id# {ID} doesn't exist";
                 return RedirectToAction("List");
-            }
+                }
         }
 
         /* ***TODO*** Post de NextForm; Recibe un JobViewModel y en verifica en que paso se encuentra el Job
@@ -303,8 +272,6 @@ namespace ProdFloor.Controllers
         [HttpPost]
         public IActionResult NextForm(JobViewModel nextViewModel)
         {
-            ViewData["CityID"] = new SelectList(itemsrepository.Cities, "CityID", "Name");
-            ViewData["DoorOperatorID"] = new SelectList(itemsrepository.DoorOperators, "DoorOperatorID", "Name");
 
             if (nextViewModel.buttonAction == "AddSF")
             {
@@ -431,7 +398,6 @@ namespace ProdFloor.Controllers
 
             return user;
         }
-
 
         public async Task<ViewResult> JobSearchList(JobSearchViewModel searchViewModel, int jobPage = 1)
         {
@@ -579,6 +545,7 @@ namespace ProdFloor.Controllers
             if (searchViewModel.RearFloorOpenings > 0) jobSearchRepo = jobSearchRepo.Where(s => s._HoistWayData.RearFloorOpenings == searchViewModel.RearFloorOpenings);
             if (searchViewModel.TopFloor > 0) jobSearchRepo = jobSearchRepo.Where(s => s._HoistWayData.TopFloor == searchViewModel.TopFloor);
             if (searchViewModel.FrontFloorOpenings > 0) jobSearchRepo = jobSearchRepo.Where(s => s._HoistWayData.FrontFloorOpenings == searchViewModel.FrontFloorOpenings);
+
             if (searchViewModel.Capacity > 0) jobSearchRepo = jobSearchRepo.Where(s => s._HoistWayData.Capacity == searchViewModel.Capacity);
             if (searchViewModel.DownSpeed > 0) jobSearchRepo = jobSearchRepo.Where(s => s._HoistWayData.DownSpeed == searchViewModel.DownSpeed);
             if (searchViewModel.UpSpeed > 0) jobSearchRepo = jobSearchRepo.Where(s => s._HoistWayData.UpSpeed == searchViewModel.UpSpeed);

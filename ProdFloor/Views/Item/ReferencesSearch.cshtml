@@ -1,0 +1,168 @@
+﻿@model ProdFloor.Models.ViewModels.Item.ReferencesSearchvViewModel
+@{
+    ViewBag.Title = "JobsSearchList";
+    Layout = "_AdminLayoutWO";
+}
+
+<div class="row" style="padding-right:20px">
+    <h2 class="col-sm-10">M2000 Worksheet</h2>
+</div>
+<br />
+
+<form asp-controller="Item" asp-action="ReferencesSearch" method="get">
+    <div class="input-group">
+        <input type="text" class="form-control form-control-sm col-sm-2" asp-for="NumJobSearch" placeholder=" Please enter a Job Number">
+        <div class="input-group-append">
+            <button class="btn btn-dark" type="submit" value="Search">
+                <i class="fa fa-search" aria-hidden="true"></i>
+            </button>
+        </div>
+    </div>
+    <br />
+    <div>
+        <span asp-validation-for="NumJobSearch" class="text-danger"></span><br />
+    </div>
+</form>
+@if (Model.RefernceData == true)
+{
+    <ul class="nav nav-tabs col-sm-7" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link " data-toggle="tab" href="#silver" role="tab">Silver Table</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link " data-toggle="tab" href="#starter" role="tab">Starter</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#landingSearch" role="tab">Landing</a>
+        </li>
+    </ul>
+    <div class="tab-content" style="padding:20px">
+        <div class="tab-pane active" id="silver" role="tabpanel">
+                <div class="col-5 ">
+                    <div class="form-group row">
+                        <label class="col-3 col-form-label">Name:</label>
+                        <div class="col-5">
+                            <input type="text" value="@Model.JobName" class="form-control form-control-sm col-12" disabled asp-for="JobName">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-3 col-form-label">Contractor: &nbsp;</label>
+                        <div class="col-5">
+                            <input type="text" value="@Model.Contractor" class="form-control form-control-sm col-sm-12" disabled asp-for="Contractor">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-3 col-form-label">PO: &nbsp;</label>
+                        <div class="col-5">
+                            <input type="text" value="@Model.PO" class="form-control form-control-sm col-sm-12" disabled asp-for="PO">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-3 col-form-label">Voltage: &nbsp;</label>
+                        <div class="col-5">
+                            <input type="text" value="@Model.InputVoltage" class="form-control form-control-sm col-sm-12" disabled asp-for="InputVoltage">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-3 col-form-label">FLA: &nbsp;</label>
+                        <div class="col-5">
+                            <input type="text" value="@Model.FLA" class="form-control form-control-sm col-sm-12" disabled asp-for="FLA">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-3 col-form-label">HP: &nbsp;</label>
+                        <div class="col-5">
+                            <input type="text" value="@Model.HP" class="form-control form-control-sm col-sm-12" disabled asp-for="HP">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-3 col-form-label">Valve Brand: &nbsp;</label>
+                        <div class="col-5">
+                            <input type="text" value="@Model.ValveBrand" class="form-control form-control-sm col-sm-12" disabled asp-for="ValveBrand">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-3 col-form-label">FireCode: &nbsp;</label> 
+                        <div class="col-5">
+                            <input type="text" value="@Model.FireCodeName" class="form-control form-control-sm col-sm-12" disabled asp-for="FireCodeName">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-3 col-form-label">Landing System: &nbsp;</label>  
+                        <div class="col-5">
+                            <input type="text" value="@Model.LandingName" class="form-control form-control-sm col-sm-12" disabled asp-for="LandingName">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-3 col-form-label">Type of Operation: &nbsp;</label> 
+                        <div class="col-5">
+                            <input type="text" value="@Model.JobTypeMain" class="form-control form-control-sm col-sm-12" disabled asp-for="JobTypeMain">
+                        </div>
+                    </div>
+                </div>
+        </div>
+        <div class="tab-pane " id="starter" role="tabpanel">
+            <div class="row">
+                <div class="col-3  border-right" style="text-align:center;">
+                    <h4 style="position:center">Starter Model</h4>
+                    <div class="form-group row">
+                        <div class="row">
+                            <div class="col-1"></div>
+                            <div class="col">
+                                MCE Part #: <input type="text" value="@Model.MCPart" class="form-control form-control-sm col-sm-10" disabled asp-for="MCPart">
+                            </div>
+                            <div class="col-5">
+                                Manufacturer Part #: <input type="text" value="@Model.NewManufacturerPart" class="form-control form-control-sm col-sm-10" disabled asp-for="NewManufacturerPart">
+                            </div>
+                            <div class="col-1"></div>
+                        </div>
+                    </div>
+                    <br />
+                    <h4 style="position:center">Overload</h4>
+                    <div class="form-group row">
+                        <div class="row">
+                            <div class="col-1"></div>
+                            <div class="col">
+                                MCE Part #: <input type="text" value="@Model.MCPartOver" class="form-control form-control-sm col-sm-10" disabled asp-for="MCPartOver">
+                            </div>
+                            <div class="col-4">
+                                Siemens Part #: <input type="text" value="@Model.SiemensPart" class="form-control form-control-sm col-sm-10" disabled asp-for="SiemensPart">
+                            </div>
+                            <div class="col-1"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <h4 style="position:center">Wire</h4>
+                    <br />
+                    <div class="form-inline">
+                        <input type="text" value="@Model.Size" class="form-control form-control-lg col-sm-1" disabled asp-for="Size">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane " id="landingSearch" role="tabpanel">
+            <div class="row">
+                <div class="row">
+                    <div class="col-sm">
+                        CarSpeed (FPM): <input type="text" value="@Model.CarSpeedFPM" class="form-control form-control-sm col-sm-10" disabled asp-for="CarSpeedFPM">
+                    </div>
+                    <div class="col-sm">
+                        Distance: <input type="text" value="@Model.Distance" class="form-control form-control-sm col-sm-10" disabled asp-for="Distance">
+                    </div>
+                    <div class="col-sm">
+                        "A" Landing Page: <input type="text" value="@Model.A" class="form-control form-control-sm col-sm-10" disabled asp-for="A">
+                    </div>
+                    <div class="col-sm">
+                        Slow Limit: <input type="text" value="@Model.SlowLimit" class="form-control form-control-sm col-sm-10" disabled asp-for="SlowLimit">
+                    </div>
+                    <div class="col-sm">
+                        Minium Floor Height: <input type="text" value="@Model.MiniumFloorHeight" class="form-control form-control-sm col-sm-10" disabled asp-for="MiniumFloorHeight">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
