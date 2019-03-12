@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -15,6 +16,7 @@ namespace ProdFloor.Models.ViewModels.Item
 
         //Atributos de Job
         public int NumJobSearch { get; set; }
+
         public int SPH { get; set; }
         public string JobName { get; set; }
         public string Contractor { get; set; }
