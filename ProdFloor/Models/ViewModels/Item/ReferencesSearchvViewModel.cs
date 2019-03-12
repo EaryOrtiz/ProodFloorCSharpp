@@ -15,6 +15,8 @@ namespace ProdFloor.Models.ViewModels.Item
         public bool RefernceData { get; set; }
 
         //Atributos de Job
+        [Range(2015000000, 3030000000, ErrorMessage = "Job number is out of range")]
+        [Required(ErrorMessage = "Please enter a Job Num")]
         public int NumJobSearch { get; set; }
 
         public int SPH { get; set; }
@@ -28,6 +30,7 @@ namespace ProdFloor.Models.ViewModels.Item
         public int InputVoltage { get; set; }
         public int LandingID { get; set; }
         public string FireCodeName { get; set; }
+        public int DownSpeed { get; set; }
 
 
         //SlowLimit Table

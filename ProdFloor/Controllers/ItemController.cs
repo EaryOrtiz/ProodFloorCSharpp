@@ -377,11 +377,12 @@ namespace ProdFloor.Controllers
                     ViewModel.HP = JobSearch._HydroSpecific.HP;
                     ViewModel.FireCodeName = FireCodeOne.Name;
                     ViewModel.LandingName = LandingOne.Name;
+                    ViewModel.DownSpeed = JobSearch._HoistWayData.DownSpeed;
                     #endregion
 
                     #region SlowdownAndWire
                     //Slowdown Table
-                    var SlowdoenReg = SlowReferSearch.Where(m => m.CarSpeedFPM >= ViewModel.FLA).OrderBy(o => o.CarSpeedFPM).Skip(0).Take(1).ToList();
+                    var SlowdoenReg = SlowReferSearch.Where(m => m.CarSpeedFPM >= ViewModel.DownSpeed).OrderBy(o => o.CarSpeedFPM).Skip(0).Take(1).ToList();
                     ViewModel.CarSpeedFPM = SlowdoenReg[0].CarSpeedFPM;
                     ViewModel.Distance = SlowdoenReg[0].Distance;
                     ViewModel.A = SlowdoenReg[0].A;
@@ -408,7 +409,7 @@ namespace ProdFloor.Controllers
                         ViewModel.NewManufacturerPart = StarterList[0].NewManufacturerPart;
                         ViewModel.OverloadTable = StarterList[0].OverloadTable;
                     }
-                    else if(ViewModel.SPH == 120  && StarterList[1].MCPart != null )
+                    else if(ViewModel.SPH == 120  && StarterList.Count != 0)
                     {
                         ViewModel.MCPart = StarterList[1].MCPart;
                         ViewModel.NewManufacturerPart = StarterList[1].NewManufacturerPart;
@@ -416,9 +417,12 @@ namespace ProdFloor.Controllers
                     }
                     else
                     {
-                        ViewModel.MCPart = "N/A";
-                        ViewModel.NewManufacturerPart = "N/A";
+                        ViewModel.MCPart = "------Error------";
+                        ViewModel.NewManufacturerPart = "------Error------";
                         ViewModel.OverloadTable = "N/A";
+
+                        TempData["alert"] = $"alert-danger";
+                        TempData["message"] = $"Starter Model out of range, please validate their SPH, HP, FLA and try again";
                     }
 
                     //Overload Table
