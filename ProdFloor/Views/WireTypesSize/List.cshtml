@@ -12,6 +12,14 @@
         New Wire Types Size Registry
     </a>
 </div>
+@if (Model.WireTypes.Count() == 0)
+{
+    <div class="text-right m-2">
+        <form asp-action="SeedWire" method="post">
+            <button type="submit" name="buttonImportXML" value="Wire" class="btn btn-danger">Import data from XML <i class="fas fa-file-alt"></i></button>
+        </form>
+    </div>
+}
 <br />
 <div>
     <table class="table table-striped borde table-sm" style="text-align:center">

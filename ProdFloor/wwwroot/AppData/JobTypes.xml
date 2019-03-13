@@ -1,0 +1,22 @@
+﻿<JobTypes>
+  <JobType>
+    <ID>1</ID>
+    <Name>ElmHydro</Name>
+  </JobType>
+  <JobType>
+    <ID>2</ID>
+    <Name>M2000</Name>
+  </JobType>
+  <JobType>
+    <ID>3</ID>
+    <Name>M3000</Name>
+  </JobType>
+  <JobType>
+    <ID>4</ID>
+    <Name>M4000</Name>
+  </JobType>
+  <JobType>
+    <ID>5</ID>
+    <Name>ElmTract</Name>
+  </JobType>
+</JobTypes>

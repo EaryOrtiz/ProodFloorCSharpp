@@ -11,6 +11,9 @@ using ProdFloor.Models.ViewModels.Item;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using System;
+using HtmlAgilityPack;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ProdFloor.Controllers
 {
@@ -80,7 +83,7 @@ namespace ProdFloor.Controllers
 
                             xw.WriteElementString("ID", city.CityID.ToString());
                             xw.WriteElementString("Name", city.Name);
-                            xw.WriteElementString("StateID",city.StateID.ToString());
+                            xw.WriteElementString("StateID", city.StateID.ToString());
                             xw.WriteElementString("FireCodeID", city.FirecodeID.ToString());
                             xw.WriteEndElement();
                         }
@@ -343,12 +346,12 @@ namespace ProdFloor.Controllers
 
         public async Task<IActionResult> ReferencesSearch(ReferencesSearchvViewModel ViewModel)
         {
-            var jobSearch = jobrepo.Jobs.Include(j => j._HydroSpecific).Include( h => h._HoistWayData).Include(ex => ex._jobExtension).AsQueryable();
+            var jobSearch = jobrepo.Jobs.Include(j => j._HydroSpecific).Include(h => h._HoistWayData).Include(ex => ex._jobExtension).AsQueryable();
             var SlowReferSearch = repository.Slowdowns.AsQueryable();
             var WireReferSearch = repository.WireTypesSizes.AsQueryable();
             var StarterReferSearch = repository.Starters.AsQueryable();
             var OverloadReferSearch = repository.Ovearloads.AsQueryable();
-            var LandingList= repository.LandingSystems.AsQueryable();
+            var LandingList = repository.LandingSystems.AsQueryable();
             var FireCodeList = repository.FireCodes.AsQueryable();
 
             ReferencesSearchvViewModel referSearchAux = new ReferencesSearchvViewModel
@@ -358,7 +361,7 @@ namespace ProdFloor.Controllers
 
             if (ViewModel.NumJobSearch != 0)
             {
-                
+
                 var JobSearch = jobSearch.FirstOrDefault(m => m.JobNum == ViewModel.NumJobSearch);
 
                 if (JobSearch != null)
@@ -409,7 +412,7 @@ namespace ProdFloor.Controllers
                         ViewModel.NewManufacturerPart = StarterList[0].NewManufacturerPart;
                         ViewModel.OverloadTable = StarterList[0].OverloadTable;
                     }
-                    else if(ViewModel.SPH == 120  && StarterList.Count != 0)
+                    else if (ViewModel.SPH == 120 && StarterList.Count != 0)
                     {
                         ViewModel.MCPart = StarterList[1].MCPart;
                         ViewModel.NewManufacturerPart = StarterList[1].NewManufacturerPart;
@@ -491,10 +494,388 @@ namespace ProdFloor.Controllers
                 return View(referSearchAux);
 
             }
-            else {
-                
+            else
+            {
+
                 return View(referSearchAux);
             }
+
+        }
+
+        public static void ImportXML(IServiceProvider services, string resp)
+        {
+            ApplicationDbContext context = services.GetRequiredService<ApplicationDbContext>();
+
+            switch (resp)
+            {
+                case "Wire":
+                    HtmlDocument doc = new HtmlDocument();
+                    doc.Load(@"C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\WireTypesSizes.xml");
+
+                    var XMLobs = doc.DocumentNode.SelectNodes("//wiretypessize");
+
+                    foreach (var XMLob in XMLobs)
+                    {
+                        var ID = XMLob.SelectSingleNode(".//id").InnerText;
+                        var type = XMLob.SelectSingleNode(".//type").InnerText;
+                        var size = XMLob.SelectSingleNode(".//size").InnerText;
+                        var aMPRataing = XMLob.SelectSingleNode(".//amprating").InnerText;
+
+                            context.WireTypesSizes.Add(new WireTypesSize { WireTypesSizeID = Int32.Parse(ID), Type = type, Size = size, AMPRating = Int32.Parse(aMPRataing) });
+                            context.Database.OpenConnection();
+                            try
+                            {
+                                context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.WireTypesSizes ON");
+                                context.SaveChanges();
+                                context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.WireTypesSizes OFF");
+                            }
+                            finally
+                            {
+                                context.Database.CloseConnection();
+                            }
+                    }
+                    break;
+
+                case "Slowdown":
+                    HtmlDocument doc3 = new HtmlDocument();
+                    doc3.Load(@"C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\Slowdowns.xml");
+
+                    var XMLobs3 = doc3.DocumentNode.SelectNodes("//slowdown");
+
+                    foreach (var XMLob in XMLobs3)
+                    {
+                        var ID = XMLob.SelectSingleNode(".//id").InnerText;
+                        var carspeed = XMLob.SelectSingleNode(".//carspeedfpm").InnerText;
+                        var distance = XMLob.SelectSingleNode(".//distance").InnerText;
+                        var a = XMLob.SelectSingleNode(".//a").InnerText;
+                        var slowlimit = XMLob.SelectSingleNode(".//slowlimit").InnerText;
+                        var miniumFloor = XMLob.SelectSingleNode(".//miniumfloorheight").InnerText;
+
+                            context.Slowdowns.Add(new Slowdown { SlowdownID = Int32.Parse(ID), CarSpeedFPM = Int32.Parse(carspeed), Distance = Int32.Parse(distance),
+                                A = Int32.Parse(a), SlowLimit = Int32.Parse(slowlimit), MiniumFloorHeight = Int32.Parse(miniumFloor)});
+
+                            context.Database.OpenConnection();
+                            try
+                            {
+                                context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.Slowdowns ON");
+                                context.SaveChanges();
+                                context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.Slowdowns OFF");
+                            }
+                            finally
+                            {
+                                context.Database.CloseConnection();
+                            }
+                    }
+                    break;
+
+                case "Starter":
+                    HtmlDocument doc4 = new HtmlDocument();
+                    doc4.Load(@"C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\Starters.xml");
+
+                    var XMLobs4 = doc4.DocumentNode.SelectNodes("//starter");
+
+                    foreach (var XMLob in XMLobs4)
+                    {
+                        var ID = XMLob.SelectSingleNode(".//id").InnerText;
+                        var brand = XMLob.SelectSingleNode(".//brand").InnerText;
+                        var fla = XMLob.SelectSingleNode(".//fla").InnerText;
+                        var type = XMLob.SelectSingleNode(".//type").InnerText;
+                        var volts = XMLob.SelectSingleNode(".//volts").InnerText;
+                        var hp = XMLob.SelectSingleNode(".//hp").InnerText;
+                        var mcepart = XMLob.SelectSingleNode(".//mcepart").InnerText;
+                        var manufacturer = XMLob.SelectSingleNode(".//newmanufacturerpart").InnerText;
+                        var overloadT = XMLob.SelectSingleNode(".//overloadtable").InnerText;
+
+                        context.Starters.Add(new Starter
+                        {
+                            StarterID = Int32.Parse(ID),
+                            Brand = brand,
+                            FLA = Int32.Parse(fla),
+                            Type = type,
+                            Volts = volts,
+                            HP = float.Parse(hp),
+                            MCPart = mcepart,
+                            NewManufacturerPart = manufacturer,
+                            OverloadTable = overloadT
+                        });
+
+                        context.Database.OpenConnection();
+                        try
+                        {
+                            context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.Starters ON");
+                            context.SaveChanges();
+                            context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.Starters OFF");
+                        }
+                        finally
+                        {
+                            context.Database.CloseConnection();
+                        }
+                    }
+                    break;
+
+                case "Overload":
+                    HtmlDocument doc5 = new HtmlDocument();
+                    doc5.Load(@"C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\Overloads.xml");
+
+                    var XMLobs5 = doc5.DocumentNode.SelectNodes("//overload");
+
+                    foreach (var XMLob in XMLobs5)
+                    {
+                        var ID = XMLob.SelectSingleNode(".//id").InnerText;
+                        var ampmin = XMLob.SelectSingleNode(".//ampmin").InnerText;
+                        var ampmax = XMLob.SelectSingleNode(".//ampmax").InnerText;
+                        var overT = XMLob.SelectSingleNode(".//overtablenum").InnerText;
+                        var mcepart = XMLob.SelectSingleNode(".//mcepart").InnerText;
+                        var siemenspart = XMLob.SelectSingleNode(".//siemenspart").InnerText;
+
+                        context.Overloads.Add(new Overload
+                        {
+                            OverloadID = Int32.Parse(ID),
+                            AMPMin = float.Parse(ampmin),
+                            AMPMax = float.Parse(ampmax),
+                            OverTableNum = Int32.Parse(overT),
+                            MCPart = mcepart,
+                            SiemensPart = siemenspart
+                        });
+
+                        context.Database.OpenConnection();
+                        try
+                        {
+                            context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.Overloads ON");
+                            context.SaveChanges();
+                            context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.Overloads OFF");
+                        }
+                        finally
+                        {
+                            context.Database.CloseConnection();
+                        }
+                    }
+                    break;
+
+                case "Country":
+                    HtmlDocument doc6 = new HtmlDocument();
+                    doc6.Load(@"C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\Countries.xml");
+
+                    var XMLobs6 = doc6.DocumentNode.SelectNodes("//country");
+
+                    foreach (var XMLob in XMLobs6)
+                    {
+                        var ID = XMLob.SelectSingleNode(".//id").InnerText;
+                        var name = XMLob.SelectSingleNode(".//name").InnerText;
+
+                        context.Countries.Add(new Country
+                        {
+                            CountryID = Int32.Parse(ID),
+                            Name = name
+                        });
+
+                        context.Database.OpenConnection();
+                        try
+                        {
+                            context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.Countries ON");
+                            context.SaveChanges();
+                            context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.Countries OFF");
+                        }
+                        finally
+                        {
+                            context.Database.CloseConnection();
+                        }
+                    }
+                    break;
+
+                case "States":
+                    HtmlDocument doc2 = new HtmlDocument();
+                    doc2.Load(@"C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\States.xml");
+
+                    var XMLobs2 = doc2.DocumentNode.SelectNodes("//wiretypessize");
+
+                    foreach (var XMLob in XMLobs2)
+                    {
+                        var ID = XMLob.SelectSingleNode(".//id").InnerText;
+                        var name = XMLob.SelectSingleNode(".//name").InnerText;
+                        var countryId = XMLob.SelectSingleNode(".//countryid").InnerText;
+
+                        context.States.Add(new State { StateID = Int32.Parse(ID), Name = name, CountryID = Int32.Parse(countryId) });
+                        context.Database.OpenConnection();
+                        try
+                        {
+                            context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.States ON");
+                            context.SaveChanges();
+                            context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.States OFF");
+                        }
+                        finally
+                        {
+                            context.Database.CloseConnection();
+                        }
+                    }
+                    break;
+
+                case "City":
+                    HtmlDocument doc7 = new HtmlDocument();
+                    doc7.Load(@"C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\Cities.xml");
+
+                    var XMLobs7 = doc7.DocumentNode.SelectNodes("//city");
+
+                    foreach (var XMLob in XMLobs7)
+                    {
+                        var ID = XMLob.SelectSingleNode(".//id").InnerText;
+                        var name = XMLob.SelectSingleNode(".//name").InnerText;
+                        var stateID = XMLob.SelectSingleNode(".//stateid").InnerText;
+                        var firecodeID = XMLob.SelectSingleNode(".//firecodeid").InnerText;
+
+                        context.Cities.Add(new City
+                        {
+                            CityID = Int32.Parse(ID),
+                            Name = name,
+                            StateID = Int32.Parse(stateID),
+                            FirecodeID = Int32.Parse(firecodeID),
+                        });
+
+                        context.Database.OpenConnection();
+                        try
+                        {
+                            context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.Cities ON");
+                            context.SaveChanges();
+                            context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.Cities OFF");
+                        }
+                        finally
+                        {
+                            context.Database.CloseConnection();
+                        }
+                    }
+                    break;
+
+                case "LandingSys":
+                    HtmlDocument doc8 = new HtmlDocument();
+                    doc8.Load(@"C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\LandingSystems.xml");
+
+                    var XMLobs8 = doc8.DocumentNode.SelectNodes("//landingsystem");
+
+                    foreach (var XMLob in XMLobs8)
+                    {
+                        var ID = XMLob.SelectSingleNode(".//id").InnerText;
+                        var usein = XMLob.SelectSingleNode(".//usein").InnerText;
+                        var name = XMLob.SelectSingleNode(".//name").InnerText;
+
+                        context.LandingSystems.Add(new LandingSystem
+                        {
+                            LandingSystemID = Int32.Parse(ID),
+                            UsedIn = ID,
+                            Name = name
+                        });
+
+                        context.Database.OpenConnection();
+                        try
+                        {
+                            context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.LandingSystems ON");
+                            context.SaveChanges();
+                            context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.LandingSystems OFF");
+                        }
+                        finally
+                        {
+                            context.Database.CloseConnection();
+                        }
+                    }
+                    break;
+
+                case "FireCode":
+                    HtmlDocument doc9 = new HtmlDocument();
+                    doc9.Load(@"C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\FireCodes.xml");
+
+                    var XMLobs9 = doc9.DocumentNode.SelectNodes("//firecode");
+
+                    foreach (var XMLob in XMLobs9)
+                    {
+                        var ID = XMLob.SelectSingleNode(".//id").InnerText;
+                        var name = XMLob.SelectSingleNode(".//name").InnerText;
+
+                        context.FireCodes.Add(new FireCode
+                        {
+                            FireCodeID = Int32.Parse(ID),
+                            Name = name
+                        });
+
+                        context.Database.OpenConnection();
+                        try
+                        {
+                            context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.FireCodes ON");
+                            context.SaveChanges();
+                            context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.FireCodes OFF");
+                        }
+                        finally
+                        {
+                            context.Database.CloseConnection();
+                        }
+                    }
+                    break;
+
+                case "DoorOperator":
+                    HtmlDocument doc10 = new HtmlDocument();
+                    doc10.Load(@"C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\DoorOperators.xml");
+
+                    var XMLobs10 = doc10.DocumentNode.SelectNodes("//dooroperator");
+
+                    foreach (var XMLob in XMLobs10)
+                    {
+                        var ID = XMLob.SelectSingleNode(".//id").InnerText;
+                        var style = XMLob.SelectSingleNode(".//style").InnerText;
+                        var branch = XMLob.SelectSingleNode(".//branch").InnerText;
+                        var name = XMLob.SelectSingleNode(".//name").InnerText;
+
+                        context.DoorOperators.Add(new DoorOperator
+                        {
+                            DoorOperatorID = Int32.Parse(ID),
+                            Style = style,
+                            Brand = branch,
+                            Name = name
+                        });
+
+                        context.Database.OpenConnection();
+                        try
+                        {
+                            context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.DoorOperators ON");
+                            context.SaveChanges();
+                            context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.DoorOperators OFF");
+                        }
+                        finally
+                        {
+                            context.Database.CloseConnection();
+                        }
+                    }
+                    break;
+
+                case "JobType":
+                    HtmlDocument doc11 = new HtmlDocument();
+                    doc11.Load(@"C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\JobTypes.xml");
+
+                    var XMLobs11 = doc11.DocumentNode.SelectNodes("//jobtype");
+
+                    foreach (var XMLob in XMLobs11)
+                    {
+                        var ID = XMLob.SelectSingleNode(".//id").InnerText;
+                        var name = XMLob.SelectSingleNode(".//name").InnerText;
+
+                        context.JobTypes.Add(new JobType
+                        {
+                            JobTypeID = Int32.Parse(ID),
+                            Name = name
+                        });
+
+                        context.Database.OpenConnection();
+                        try
+                        {
+                            context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.JobTypes ON");
+                            context.SaveChanges();
+                            context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.JobTypes OFF");
+                        }
+                        finally
+                        {
+                            context.Database.CloseConnection();
+                        }
+                    }
+                    break;
+            }
+
 
         }
     }

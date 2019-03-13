@@ -1,0 +1,10 @@
+﻿<Countries>
+  <Country>
+    <ID>1</ID>
+    <Name>USA</Name>
+  </Country>
+  <Country>
+    <ID>2</ID>
+    <Name>Canada</Name>
+  </Country>
+</Countries>

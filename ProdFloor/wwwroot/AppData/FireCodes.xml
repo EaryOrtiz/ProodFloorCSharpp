@@ -1,0 +1,94 @@
+﻿<FireCodes>
+  <FireCode>
+    <ID>1</ID>
+    <Name>ASME A17.1-1993</Name>
+  </FireCode>
+  <FireCode>
+    <ID>2</ID>
+    <Name>ASME A17.1b-1996</Name>
+  </FireCode>
+  <FireCode>
+    <ID>3</ID>
+    <Name>ASME A17.1b-1998</Name>
+  </FireCode>
+  <FireCode>
+    <ID>4</ID>
+    <Name>ASME A17.1-2000</Name>
+  </FireCode>
+  <FireCode>
+    <ID>5</ID>
+    <Name>ASME A17.1-2002</Name>
+  </FireCode>
+  <FireCode>
+    <ID>6</ID>
+    <Name>ASME A17.1-2003 w/NYC Appendix K</Name>
+  </FireCode>
+  <FireCode>
+    <ID>7</ID>
+    <Name>ASME A17.1-2004 w/CSA B44-04</Name>
+  </FireCode>
+  <FireCode>
+    <ID>8</ID>
+    <Name>ASME A17.1-2004 w/524 CMR 35.00</Name>
+  </FireCode>
+  <FireCode>
+    <ID>9</ID>
+    <Name>ASME A17.1-2004 w/CA TITLE 8, GROUP IV</Name>
+  </FireCode>
+  <FireCode>
+    <ID>10</ID>
+    <Name>ASME A17.1a-2005/CSA B44S1-05</Name>
+  </FireCode>
+  <FireCode>
+    <ID>11</ID>
+    <Name>ASME A17.1-2007/CSA B44-07</Name>
+  </FireCode>
+  <FireCode>
+    <ID>12</ID>
+    <Name>ASME A17.1a-2008/CSA B44a-08</Name>
+  </FireCode>
+  <FireCode>
+    <ID>13</ID>
+    <Name>ASME A17.1b-2009/CSA B44b-09</Name>
+  </FireCode>
+  <FireCode>
+    <ID>14</ID>
+    <Name>ASME A17.1-2010/CSA B44-10</Name>
+  </FireCode>
+  <FireCode>
+    <ID>15</ID>
+    <Name>ASME A17.1-2013/CSA B44-13</Name>
+  </FireCode>
+  <FireCode>
+    <ID>16</ID>
+    <Name>ASME A17.1-2016/CSA B44-16</Name>
+  </FireCode>
+  <FireCode>
+    <ID>17</ID>
+    <Name>ASME A17.1-1996 w/CA TITLE 8,GROUP III</Name>
+  </FireCode>
+  <FireCode>
+    <ID>18</ID>
+    <Name>ASME A17.1-2016 w/Chicago Title 14C-3</Name>
+  </FireCode>
+  <FireCode>
+    <ID>19</ID>
+    <Name>ASME A17.1-2004 w/524 CMR 13.00</Name>
+  </FireCode>
+  <FireCode>
+    <ID>20</ID>
+    <Name>ASME A17.1-2013 w/524 CMR 35.00</Name>
+  </FireCode>
+  <FireCode>
+    <ID>21</ID>
+    <Name>ASME A17.1S-2005</Name>
+  </FireCode>
+  <FireCode>
+    <ID>22</ID>
+    <Name>ASME A17.1S-2005 w/NYC Appendix K4</Name>
+  </FireCode>
+  <FireCode>
+    <ID>23</ID>
+    <Name>ASME A17.1b-2005 w/NYC Appendix K</Name>
+  </FireCode>
+</FireCodes>

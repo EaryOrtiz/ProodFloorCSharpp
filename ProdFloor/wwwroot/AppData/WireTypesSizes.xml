@@ -1,0 +1,116 @@
+﻿<WireTypesSizes>
+  <WireTypesSize>
+    <ID>1</ID>
+    <Type>90°C THHN</Type>
+    <Size>10</Size>
+    <AMPRating>27</AMPRating>
+  </WireTypesSize>
+  <WireTypesSize>
+    <ID>2</ID>
+    <Type>105°C PVC</Type>
+    <Size>22</Size>
+    <AMPRating>3</AMPRating>
+  </WireTypesSize>
+  <WireTypesSize>
+    <ID>3</ID>
+    <Type>105°C PVC</Type>
+    <Size>18</Size>
+    <AMPRating>6</AMPRating>
+  </WireTypesSize>
+  <WireTypesSize>
+    <ID>4</ID>
+    <Type>105°C PVC</Type>
+    <Size>16</Size>
+    <AMPRating>9</AMPRating>
+  </WireTypesSize>
+  <WireTypesSize>
+    <ID>5</ID>
+    <Type>105°C PVC</Type>
+    <Size>14</Size>
+    <AMPRating>15</AMPRating>
+  </WireTypesSize>
+  <WireTypesSize>
+    <ID>6</ID>
+    <Type>105°C PVC</Type>
+    <Size>12</Size>
+    <AMPRating>22</AMPRating>
+  </WireTypesSize>
+  <WireTypesSize>
+    <ID>7</ID>
+    <Type>125°C PTL</Type>
+    <Size>10</Size>
+    <AMPRating>58</AMPRating>
+  </WireTypesSize>
+  <WireTypesSize>
+    <ID>8</ID>
+    <Type>125°C PTL</Type>
+    <Size>8</Size>
+    <AMPRating>75</AMPRating>
+  </WireTypesSize>
+  <WireTypesSize>
+    <ID>9</ID>
+    <Type>125°C PTL</Type>
+    <Size>6</Size>
+    <AMPRating>104</AMPRating>
+  </WireTypesSize>
+  <WireTypesSize>
+    <ID>10</ID>
+    <Type>125°C PTL</Type>
+    <Size>4</Size>
+    <AMPRating>141</AMPRating>
+  </WireTypesSize>
+  <WireTypesSize>
+    <ID>11</ID>
+    <Type>125°C PTL</Type>
+    <Size>2</Size>
+    <AMPRating>187</AMPRating>
+  </WireTypesSize>
+  <WireTypesSize>
+    <ID>12</ID>
+    <Type>125°C PTL</Type>
+    <Size>1</Size>
+    <AMPRating>220</AMPRating>
+  </WireTypesSize>
+  <WireTypesSize>
+    <ID>13</ID>
+    <Type>125°C PTL</Type>
+    <Size>1/0</Size>
+    <AMPRating>253</AMPRating>
+  </WireTypesSize>
+  <WireTypesSize>
+    <ID>14</ID>
+    <Type>125°C PTL</Type>
+    <Size>2/0</Size>
+    <AMPRating>295</AMPRating>
+  </WireTypesSize>
+  <WireTypesSize>
+    <ID>15</ID>
+    <Type>125°C PTL</Type>
+    <Size>3/0</Size>
+    <AMPRating>340</AMPRating>
+  </WireTypesSize>
+  <WireTypesSize>
+    <ID>16</ID>
+    <Type>125°C PTL</Type>
+    <Size>4/0</Size>
+    <AMPRating>394</AMPRating>
+  </WireTypesSize>
+  <WireTypesSize>
+    <ID>17</ID>
+    <Type>200°C TEFLON</Type>
+    <Size>18</Size>
+    <AMPRating>6</AMPRating>
+  </WireTypesSize>
+  <WireTypesSize>
+    <ID>18</ID>
+    <Type>200°C TEFLON</Type>
+    <Size>14</Size>
+    <AMPRating>15</AMPRating>
+  </WireTypesSize>
+  <WireTypesSize>
+    <ID>19</ID>
+    <Type>200°C TEFLON</Type>
+    <Size>12</Size>
+    <AMPRating>22</AMPRating>
+  </WireTypesSize>
+</WireTypesSizes>

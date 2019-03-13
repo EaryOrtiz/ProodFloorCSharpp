@@ -12,6 +12,14 @@
         New State
     </a>
 </div>
+@if (Model.States.Count() == 0)
+{
+    <div class="text-right m-2">
+        <form asp-action="SeedXML" method="post">
+            <button type="submit" name="buttonImportXML" value="States" class="btn btn-danger">Import data from XML <i class="fas fa-file-alt"></i></button>
+        </form>
+    </div>
+}
 @foreach (var j in Model.States)
 {
     @Html.Partial("StateSummary", j)
