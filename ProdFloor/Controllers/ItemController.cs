@@ -683,7 +683,7 @@ namespace ProdFloor.Controllers
                     }
                     break;
 
-                case "States":
+                case "State":
                     HtmlDocument doc2 = new HtmlDocument();
                     doc2.Load(@"C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\States.xml");
 

@@ -68,7 +68,13 @@ namespace ProdFloor.Controllers
             return RedirectToAction("List");
         }
 
-
+        [HttpPost]
+        public IActionResult SeedXML(string buttonImportXML)
+        {
+            string resp = buttonImportXML;
+            ItemController.ImportXML(HttpContext.RequestServices, resp);
+            return RedirectToAction(nameof(List));
+        }
 
         public ViewResult Add() => View("Edit", new Slowdown());
     }

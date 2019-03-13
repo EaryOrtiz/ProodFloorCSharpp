@@ -12,6 +12,14 @@
         New Fire Code
     </a>
 </div>
+@if (Model.FireCodes.Count() == 0)
+{
+    <div class="text-right m-2">
+        <form asp-action="SeedXML" method="post">
+            <button type="submit" name="buttonImportXML" value="FireCode" class="btn btn-danger">Import data from XML <i class="fas fa-file-alt"></i></button>
+        </form>
+    </div>
+}
 @foreach (var j in Model.FireCodes)
 {
     @Html.Partial("FireCodeSummary", j)

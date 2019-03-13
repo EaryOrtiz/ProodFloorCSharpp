@@ -12,6 +12,14 @@
         New Door Operator
     </a>
 </div>
+@if (Model.DoorOperators.Count() == 0)
+{
+    <div class="text-right m-2">
+        <form asp-action="SeedXML" method="post">
+            <button type="submit" name="buttonImportXML" value="DoorOperator" class="btn btn-danger">Import data from XML <i class="fas fa-file-alt"></i></button>
+        </form>
+    </div>
+}
 @foreach (var j in Model.DoorOperators)
 {
     @Html.Partial("DoorOperatorSummary", j)

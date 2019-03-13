@@ -68,38 +68,13 @@ namespace ProdFloor.Controllers
             return RedirectToAction("List");
         }
 
-        public FileStreamResult ExportToXML()
+
+        [HttpPost]
+        public IActionResult SeedXML(string buttonImportXML)
         {
-            MemoryStream ms = new MemoryStream();
-            XmlWriterSettings xws = new XmlWriterSettings();
-            xws.OmitXmlDeclaration = true;
-            xws.Indent = true;
-
-            List<Country> countries = new List<Country>();
-            countries = repository.Countries.ToList();
-
-                
-                using (XmlWriter xw = XmlWriter.Create(ms, xws))
-                {
-                xw.WriteStartDocument();
-                xw.WriteStartElement("Countries");
-
-                foreach (Country country in countries)
-                {
-                    xw.WriteStartElement("Country");
-
-                    xw.WriteElementString("ID", country.CountryID.ToString());   
-                    xw.WriteElementString("Name", country.Name);
-                    xw.WriteEndElement();
-                }
-
-                xw.WriteEndElement();
-                xw.WriteEndDocument();
-            }
-            ms.Position = 0;
-
-            
-            return File(ms, "text/xml", "Sample.xml");
+            string resp = buttonImportXML;
+            ItemController.ImportXML(HttpContext.RequestServices, resp);
+            return RedirectToAction(nameof(List));
         }
 
         public ViewResult Add() => View("Edit", new Country());

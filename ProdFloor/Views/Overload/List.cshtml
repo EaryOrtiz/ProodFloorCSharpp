@@ -12,6 +12,14 @@
         New Overload Registry
     </a>
 </div>
+@if (Model.Overloads.Count() == 0)
+{
+    <div class="text-right m-2">
+        <form asp-action="SeedXML" method="post">
+            <button type="submit" name="buttonImportXML" value="Overload" class="btn btn-danger">Import data from XML <i class="fas fa-file-alt"></i></button>
+        </form>
+    </div>
+}
 <br />
 <div>
     <table class="table table-striped border text-center table-sm" style="text-align:center">

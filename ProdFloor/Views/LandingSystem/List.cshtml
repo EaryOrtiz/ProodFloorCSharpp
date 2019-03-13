@@ -12,6 +12,14 @@
         New Landing System
     </a>
 </div>
+@if (Model.LandingSystems.Count() == 0)
+{
+    <div class="text-right m-2">
+        <form asp-action="SeedXML" method="post">
+            <button type="submit" name="buttonImportXML" value="LandingSys" class="btn btn-danger">Import data from XML <i class="fas fa-file-alt"></i></button>
+        </form>
+    </div>
+}
 @foreach (var j in Model.LandingSystems)
 {
     @Html.Partial("LandingSystemsSummary", j)

@@ -88,5 +88,13 @@ namespace ProdFloor.Controllers
             JobStatelist = (from state in repository.States where state.CountryID == CountryID select state).ToList();
             return Json(new SelectList(JobStatelist, "StateID", "Name"));
         }
+
+        [HttpPost]
+        public IActionResult SeedXML(string buttonImportXML)
+        {
+            string resp = buttonImportXML;
+            ItemController.ImportXML(HttpContext.RequestServices, resp);
+            return RedirectToAction(nameof(List));
+        }
     }
 }

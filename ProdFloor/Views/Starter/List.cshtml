@@ -12,6 +12,14 @@
         New Starter Registry
     </a>
 </div>
+@if (Model.Starters.Count() == 0)
+{
+    <div class="text-right m-2">
+        <form asp-action="SeedXML" method="post">
+            <button type="submit" name="buttonImportXML" value="Starter" class="btn btn-danger">Import data from XML <i class="fas fa-file-alt"></i></button>
+        </form>
+    </div>
+}
 <br />
 <div>
     <table class="table table-striped border table-sm" style="text-align:center">
