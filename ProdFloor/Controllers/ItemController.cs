@@ -505,10 +505,10 @@ namespace ProdFloor.Controllers
         public static void ImportXML(IServiceProvider services, string resp)
         {
             ApplicationDbContext context = services.GetRequiredService<ApplicationDbContext>();
-
             switch (resp)
             {
                 case "Wire":
+                    
                     HtmlDocument doc = new HtmlDocument();
                     doc.Load(@"C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\WireTypesSizes.xml");
 
@@ -687,25 +687,28 @@ namespace ProdFloor.Controllers
                     HtmlDocument doc2 = new HtmlDocument();
                     doc2.Load(@"C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\States.xml");
 
-                    var XMLobs2 = doc2.DocumentNode.SelectNodes("//wiretypessize");
+                    var XMLobs2 = doc2.DocumentNode.SelectNodes("//state");
 
-                    foreach (var XMLob in XMLobs2)
+                    if (context.Countries.Any())
                     {
-                        var ID = XMLob.SelectSingleNode(".//id").InnerText;
-                        var name = XMLob.SelectSingleNode(".//name").InnerText;
-                        var countryId = XMLob.SelectSingleNode(".//countryid").InnerText;
+                        foreach (var XMLob in XMLobs2)
+                        {
+                            var ID = XMLob.SelectSingleNode(".//id").InnerText;
+                            var name = XMLob.SelectSingleNode(".//name").InnerText;
+                            var countryId = XMLob.SelectSingleNode(".//countryid").InnerText;
 
-                        context.States.Add(new State { StateID = Int32.Parse(ID), Name = name, CountryID = Int32.Parse(countryId) });
-                        context.Database.OpenConnection();
-                        try
-                        {
-                            context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.States ON");
-                            context.SaveChanges();
-                            context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.States OFF");
-                        }
-                        finally
-                        {
-                            context.Database.CloseConnection();
+                            context.States.Add(new State { StateID = Int32.Parse(ID), Name = name, CountryID = Int32.Parse(countryId) });
+                            context.Database.OpenConnection();
+                            try
+                            {
+                                context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.States ON");
+                                context.SaveChanges();
+                                context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.States OFF");
+                            }
+                            finally
+                            {
+                                context.Database.CloseConnection();
+                            }
                         }
                     }
                     break;
@@ -716,33 +719,37 @@ namespace ProdFloor.Controllers
 
                     var XMLobs7 = doc7.DocumentNode.SelectNodes("//city");
 
-                    foreach (var XMLob in XMLobs7)
+                    if (context.States.Any() && context.FireCodes.Any())
                     {
-                        var ID = XMLob.SelectSingleNode(".//id").InnerText;
-                        var name = XMLob.SelectSingleNode(".//name").InnerText;
-                        var stateID = XMLob.SelectSingleNode(".//stateid").InnerText;
-                        var firecodeID = XMLob.SelectSingleNode(".//firecodeid").InnerText;
+                        foreach (var XMLob in XMLobs7)
+                        {
+                            var ID = XMLob.SelectSingleNode(".//id").InnerText;
+                            var name = XMLob.SelectSingleNode(".//name").InnerText;
+                            var stateID = XMLob.SelectSingleNode(".//stateid").InnerText;
+                            var firecodeID = XMLob.SelectSingleNode(".//firecodeid").InnerText;
 
-                        context.Cities.Add(new City
-                        {
-                            CityID = Int32.Parse(ID),
-                            Name = name,
-                            StateID = Int32.Parse(stateID),
-                            FirecodeID = Int32.Parse(firecodeID),
-                        });
+                            context.Cities.Add(new City
+                            {
+                                CityID = Int32.Parse(ID),
+                                Name = name,
+                                StateID = Int32.Parse(stateID),
+                                FirecodeID = Int32.Parse(firecodeID),
+                            });
 
-                        context.Database.OpenConnection();
-                        try
-                        {
-                            context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.Cities ON");
-                            context.SaveChanges();
-                            context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.Cities OFF");
-                        }
-                        finally
-                        {
-                            context.Database.CloseConnection();
+                            context.Database.OpenConnection();
+                            try
+                            {
+                                context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.Cities ON");
+                                context.SaveChanges();
+                                context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.Cities OFF");
+                            }
+                            finally
+                            {
+                                context.Database.CloseConnection();
+                            }
                         }
                     }
+                    
                     break;
 
                 case "LandingSys":
@@ -754,7 +761,7 @@ namespace ProdFloor.Controllers
                     foreach (var XMLob in XMLobs8)
                     {
                         var ID = XMLob.SelectSingleNode(".//id").InnerText;
-                        var usein = XMLob.SelectSingleNode(".//usein").InnerText;
+                        var usein = XMLob.SelectSingleNode(".//usedin").InnerText;
                         var name = XMLob.SelectSingleNode(".//name").InnerText;
 
                         context.LandingSystems.Add(new LandingSystem
