@@ -16,6 +16,7 @@ namespace ProdFloor.Models.ViewModels.Job
         public List<HoistWayData> HoistWayDataList { get; set; }
         public List<SpecialFeatures> SpecialFeatureslist { get; set; }
         public PagingInfo PagingInfo { get; set; }
+        public bool CleanFields { get; set; }
 
         //Atributos de Job
         public string NameJobSearch { get; set; }

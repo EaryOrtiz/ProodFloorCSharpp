@@ -18,6 +18,7 @@ namespace ProdFloor.Models.ViewModels.Item
         [Range(2015000000, 3030000000, ErrorMessage = "Job number is out of range")]
         [Required(ErrorMessage = "Please enter a Job Num")]
         public int NumJobSearch { get; set; }
+        public string status { get; set; }
 
         public int SPH { get; set; }
         public string JobName { get; set; }

@@ -399,8 +399,24 @@ namespace ProdFloor.Controllers
             return user;
         }
 
-        public async Task<ViewResult> JobSearchList(JobSearchViewModel searchViewModel, int jobPage = 1)
+        public async Task<IActionResult> JobSearchList(JobSearchViewModel searchViewModel, int jobPage = 1)
         {
+            if (searchViewModel.CleanFields)
+            {
+                var jobSearchNew = repository.Jobs.ToList();
+                JobSearchViewModel search = new JobSearchViewModel{
+                    JobsSearchList = jobSearchNew,
+                    PagingInfo = new PagingInfo
+                    {
+                        CurrentPage = jobPage,
+                        ItemsPerPage = 10,
+                        TotalItems = jobSearchNew.Count()
+                    }
+                };
+
+                return RedirectToAction("JobSearchList", search);
+            }
+
             var JobCount = repository.Jobs.Count();
             var jobSearchRepo = repository.Jobs.Include( j => j._jobExtension).Include( hy => hy._HydroSpecific).Include(g => g._GenericFeatures)
                 .Include( i => i._Indicator).Include(ho => ho._HoistWayData).Include(sp => sp._SpecialFeatureslist).AsQueryable();
