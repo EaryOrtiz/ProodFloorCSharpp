@@ -116,14 +116,14 @@ namespace ProdFloor.Controllers
                     SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures() },
                     CurrentTab = "Extension"
                 };
-                TempData["message"] = $"Job# {newJobViewModel.CurrentJob.JobNum} has been saved...{newJobViewModel.CurrentJob.JobID}...{currentUser.EngID}";
+                TempData["message"] = $"Job# {newJobViewModel.CurrentJob.JobNum} has been saved...{newJobViewModel.CurrentJob.JobID}...";
                 return View("NextForm", newJobViewModel);
 
 
             }
             else
             {
-                TempData["message"] = $"There seems to be errors in the form. Please validate....{currentUser.EngID}";
+                TempData["message"] = $"There seems to be errors in the form. Please validate....";
                 TempData["alert"] = $"alert-danger";
                 return View(newJob);
             }
@@ -154,7 +154,7 @@ namespace ProdFloor.Controllers
                 viewModel.CurrentHoistWayData = repository.HoistWayDatas.FirstOrDefault(j => j.JobID == ID);
                 if(SfList != null) viewModel.SpecialFeatureslist = SfList;
                 else viewModel.SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures() };
-                viewModel.CurrentUserID = 1;
+                viewModel.CurrentUserID = currentUser.EngID;
                 viewModel.CurrentTab = "Main";
                 return View(viewModel);
             }
@@ -581,8 +581,8 @@ namespace ProdFloor.Controllers
             int TotalItemsSearch = jobSearchRepo.Count() +1;
             JobSearchViewModel jobSearch = new JobSearchViewModel
             {
-                Status = new SelectList(await statusQuery.Distinct().ToListAsync()),
-                JobsSearchList = await jobSearchRepo.OrderBy(p => p.JobID).Skip((jobPage - 1) * 10).Take(TotalItemsSearch).ToListAsync(),
+                Status = new SelectList( statusQuery.Distinct().ToList()),
+                JobsSearchList =  jobSearchRepo.OrderBy(p => p.JobID).Skip((jobPage - 1) * 10).Take(TotalItemsSearch).ToList(),
                 PagingInfo = new PagingInfo
                 {
                     CurrentPage = jobPage,
