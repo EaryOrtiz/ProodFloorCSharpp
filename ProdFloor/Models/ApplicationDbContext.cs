@@ -38,6 +38,7 @@ namespace ProdFloor.Models
         public DbSet<TestJob> TestJobs { get; set; }
         public DbSet<TestFeature> TestFeatures { get; set; }
         public DbSet<Step> Steps { get; set; }
+        public DbSet<TriggeringFeature> TriggeringFeatures { get; set; }
         public DbSet<StepsForJob> StepsForJobs { get; set; }
         public DbSet<Reason1> Reasons1 { get; set; }
         public DbSet<Reason2> Reasons2 { get; set; }

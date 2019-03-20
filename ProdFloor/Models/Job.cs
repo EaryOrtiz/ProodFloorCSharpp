@@ -68,6 +68,7 @@ namespace ProdFloor.Models
         public Indicator _Indicator { get; set; }
         public HoistWayData _HoistWayData { get; set; }
         public List<SpecialFeatures> _SpecialFeatureslist { get; set; }
+        public List<TestJob> _TestJobs { get; set; }
         [Display(Name = "Job Type")]
         public int JobTypeID { get; set; }
         [Display(Name = "City")]

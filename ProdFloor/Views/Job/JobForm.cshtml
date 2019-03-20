@@ -10,7 +10,7 @@
 <div class="form-group row">
     <label asp-for="CurrentJob.Name" class="col-sm-2 col-form-label"></label>
     <div>
-        <input asp-for="CurrentJob.Name" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" class="form-control col-sm-15" />
+        <input asp-for="CurrentJob.Name" readonly="@(Model.CurrentJob.EngID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" class="form-control col-sm-15" />
         <span asp-validation-for="CurrentJob.Name" class="text-danger"></span>
     </div>
 </div>

@@ -10,6 +10,7 @@ namespace ProdFloor.Models
         IQueryable<TestJob> TestJobs { get; }
         IQueryable<TestFeature> TestFeatures { get; }
         IQueryable<Step> Steps { get; }
+        IQueryable<TriggeringFeature> TriggeringFeatures { get; }
         IQueryable<StepsForJob> StepsForJobs { get; }
         IQueryable<Reason1> Reasons1 { get; }
         IQueryable<Reason2> Reasons2 { get; }
@@ -21,6 +22,7 @@ namespace ProdFloor.Models
         void SaveTestJob(TestJob testJob);
         void SaveTestFeature(TestFeature testFeature);
         void SaveStep(Step step);
+        void SaveTriggeringFeature(TriggeringFeature triggeringFeature);
         void SaveStepsForJob(StepsForJob stepsForJob);
         void SaveReason1(Reason1 reason1);
         void SaveReason2(Reason2 reason2);
@@ -32,6 +34,7 @@ namespace ProdFloor.Models
         TestJob DeleteTestJob(int TestJobID);
         TestFeature DeleteTestFeature(int TestFeatureID);
         Step DeleteStep(int StepID);
+        TriggeringFeature DeleteTriggeringFeature(int TriggeringFeatureID);
         StepsForJob DeleteStepsForJob(int StepsForJobID);
         Reason1 DeleteReason1(int Reason1ID);
         Reason2 DeleteReason2(int Reason2ID);

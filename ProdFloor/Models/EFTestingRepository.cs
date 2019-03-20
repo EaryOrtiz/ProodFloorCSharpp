@@ -17,6 +17,7 @@ namespace ProdFloor.Models
         public IQueryable<TestJob> TestJobs => context.TestJobs;
         public IQueryable<TestFeature> TestFeatures => context.TestFeatures;
         public IQueryable<Step> Steps => context.Steps;
+        public IQueryable<TriggeringFeature> TriggeringFeatures => context.TriggeringFeatures;
         public IQueryable<StepsForJob> StepsForJobs => context.StepsForJobs;
         public IQueryable<Reason1> Reasons1 => context.Reasons1;
         public IQueryable<Reason2> Reasons2 => context.Reasons2;
@@ -91,18 +92,26 @@ namespace ProdFloor.Models
                     dbEntry.ExpectedTime = step.ExpectedTime;
                     dbEntry.Description = step.Description;
                     dbEntry.Order = step.Order;
-                    dbEntry.Overlay = step.Overlay;
-                    dbEntry.Group = step.Group;
-                    dbEntry.PC = step.PC;
-                    dbEntry.BrakeCoilVoltageMoreThan10 = step.BrakeCoilVoltageMoreThan10;
-                    dbEntry.MBrake = step.MBrake;
-                    dbEntry.EMCO = step.EMCO;
-                    dbEntry.R6 = step.R6;
-                    dbEntry.Local = step.Local;
-                    dbEntry.ShortFloor = step.ShortFloor;
-                    dbEntry.Custom = step.Custom;
-                    dbEntry.MRL = step.MRL;
-                    dbEntry.CTL2 = step.CTL2;
+                }
+            }
+            context.SaveChanges();
+
+        }
+        public void SaveTriggeringFeature(TriggeringFeature triggering)
+        {
+            if (triggering.TriggeringFeatureID == 0)
+            {
+                context.TriggeringFeatures.Add(triggering);
+            }
+            else
+            {
+                TriggeringFeature dbEntry = context.TriggeringFeatures
+                .FirstOrDefault(p => p.TriggeringFeatureID == triggering.TriggeringFeatureID);
+                if (dbEntry != null)
+                {
+                    dbEntry.StepID = triggering.StepID;
+                    dbEntry.Name = triggering.Name;
+                    dbEntry.IsSelected = triggering.IsSelected;
                 }
             }
             context.SaveChanges();
@@ -242,7 +251,7 @@ namespace ProdFloor.Models
                     dbEntry.Reason4ID = stop.Reason4ID;
                     dbEntry.Reason5ID = stop.Reason5ID;
                     dbEntry.Start = stop.Start;
-                    dbEntry._Stop = stop._Stop;
+                    dbEntry.StopDate = stop.StopDate;
                     dbEntry.Description = stop.Description;
                 }
             }
@@ -279,6 +288,17 @@ namespace ProdFloor.Models
             if (dbEntry != null)
             {
                 context.Steps.Remove(dbEntry);
+                context.SaveChanges();
+            }
+            return dbEntry;
+        }
+        public TriggeringFeature DeleteTriggeringFeature(int TriggeringFeatureID)
+        {
+            TriggeringFeature dbEntry = context.TriggeringFeatures
+                .FirstOrDefault(p => p.TriggeringFeatureID == TriggeringFeatureID);
+            if (dbEntry != null)
+            {
+                context.TriggeringFeatures.Remove(dbEntry);
                 context.SaveChanges();
             }
             return dbEntry;
