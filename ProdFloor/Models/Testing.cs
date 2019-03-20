@@ -83,11 +83,11 @@ namespace ProdFloor.Models
         public int StepID { get; set; }
         [Required(ErrorMessage = "Please enter a {0}")]
         public int TestJobID { get; set; }
-        [Required(ErrorMessage = "Please enter a {0}")]
+        [Required(ErrorMessage = "Please enter a {0} Date")]
         public DateTime Start { get; set; }
-        [Required(ErrorMessage = "Please enter a {0}")]
+        [Required(ErrorMessage = "Please enter a {0} Date")]
         public DateTime Stop { get; set; }
-        [Required(ErrorMessage = "Please enter a {0}")]
+        [Required(ErrorMessage = "Please enter a {0} Date")]
         public DateTime Elapsed { get; set; }
         [Required(ErrorMessage = "Please enter a {0}")]
         public bool Complete { get; set; }
@@ -159,9 +159,9 @@ namespace ProdFloor.Models
         public int Reason4ID { get; set; }
         [Required(ErrorMessage = "Please enter a {0}")]
         public int Reason5ID { get; set; }
-        [Required(ErrorMessage = "Please enter a {0}")]
+        [Required(ErrorMessage = "Please enter a {0} Date")]
         public DateTime Start { get; set; }
-        [Required(ErrorMessage = "Please enter a {0}")]
+        [Required(ErrorMessage = "Please enter a Stop Date")]
         public DateTime _Stop { get; set; }
         [Required(ErrorMessage = "Please enter a {0}")]
         public string Description { get; set; }
