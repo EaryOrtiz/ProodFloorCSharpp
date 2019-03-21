@@ -1,0 +1,37 @@
+﻿@model Step
+<input type="hidden" asp-for="StepID" />
+<div class="form-group row">
+    <label asp-for="JobTypeID" class="col-sm-2 col-form-label"></label>
+    <div>
+        <job-type-select selected-value="@Model.JobTypeID" class="form-control-sm form-control" asp-for="JobTypeID"></job-type-select>
+        <span asp-validation-for="JobTypeID" class="text-danger"></span>
+    </div>
+</div>
+<div class="form-group row">
+    <label asp-for="Stage" class="col-sm-2 col-form-label"></label>
+    <div>
+        <custom-select selected-value="@Model.Stage" class="form-control-sm form-control" asp-for="Stage" select-for="Stage"></custom-select>
+        <span asp-validation-for="Stage" class="text-danger"></span>
+    </div>
+</div>
+<div class="form-group row">
+    <label asp-for="ExpectedTime" class="col-sm-2 col-form-label"></label>
+    <div>
+        <input asp-for="ExpectedTime" class="form-control col-sm-11" />
+        <span asp-validation-for="ExpectedTime" class="text-danger"></span>
+    </div>
+</div>
+<div class="form-group row">
+    <label asp-for="Description" class="col-sm-2 col-form-label"></label>
+    <div>
+        <input asp-for="Description" class="form-control col-sm-12" />
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+</div>
+<div class="form-group row">
+    <label asp-for="Order" class="col-sm-2 col-form-label"></label>
+    <div>
+        <input asp-for="Order" class="form-control col-sm-15" />
+        <span asp-validation-for="Order" class="text-danger"></span>
+    </div>
+</div>

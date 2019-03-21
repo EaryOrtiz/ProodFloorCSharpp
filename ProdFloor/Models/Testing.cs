@@ -13,7 +13,7 @@ namespace ProdFloor.Models
         [Required(ErrorMessage = "Please enter a {0}")]
         public int JobID { get; set; }
         [Required(ErrorMessage = "Please enter a {0}")]
-        public int UserID { get; set; }
+        public int TechnicianID { get; set; }
         [Required(ErrorMessage = "Please enter a {0}")]
         public int Status { get; set; }
 
@@ -32,7 +32,7 @@ namespace ProdFloor.Models
         public bool Group { get; set; }
         public bool PC { get; set; }
         public bool BrakeCoilVoltageMoreThan10 { get; set; }
-        public bool MBrake { get; set; }
+        public bool MBrake { get; set; }   
         public bool EMCO { get; set; }
         public bool R6 { get; set; }
         public bool Local { get; set; }
@@ -46,6 +46,7 @@ namespace ProdFloor.Models
     {
         public int StepID { get; set; }
 
+        public int JobTypeID { get; set; }
         [Required(ErrorMessage = "Please enter a {0}")]
         public string Stage { get; set; }
         [Required(ErrorMessage = "Please enter a {0}")]

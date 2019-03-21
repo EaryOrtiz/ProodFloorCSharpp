@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProdFloor.Models.ViewModels.Testing;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -39,7 +40,7 @@ namespace ProdFloor.Models
                 if (dbEntry != null)
                 {
                     dbEntry.JobID = testJob.JobID;
-                    dbEntry.UserID = testJob.UserID;
+                    dbEntry.TechnicianID = testJob.TechnicianID;
                     dbEntry.Status = testJob.Status;
                 }
             }
@@ -88,6 +89,7 @@ namespace ProdFloor.Models
                 .FirstOrDefault(p => p.StepID == step.StepID);
                 if (dbEntry != null)
                 {
+                    dbEntry.JobTypeID = step.JobTypeID;
                     dbEntry.Stage = step.Stage;
                     dbEntry.ExpectedTime = step.ExpectedTime;
                     dbEntry.Description = step.Description;
@@ -99,9 +101,14 @@ namespace ProdFloor.Models
         }
         public void SaveTriggeringFeature(TriggeringFeature triggering)
         {
-            if (triggering.TriggeringFeatureID == 0)
+            if (triggering != null && triggering.TriggeringFeatureID == 0)
             {
-                context.TriggeringFeatures.Add(triggering);
+                List<TriggeringFeature> specials = context.TriggeringFeatures.Where(p => p.TriggeringFeatureID == triggering.TriggeringFeatureID).ToList();
+                if (specials.Count != 1 || triggering.Name != null)
+                {
+                    context.TriggeringFeatures.Add(triggering);
+                }
+
             }
             else
             {
@@ -292,6 +299,33 @@ namespace ProdFloor.Models
             }
             return dbEntry;
         }
+        public Step DeleteTestStep(int StepID)
+        {
+            Step dbEntry = context.Steps
+                .FirstOrDefault(p => p.StepID == StepID);
+            TriggeringFeature triggering = context.TriggeringFeatures
+                .FirstOrDefault(p => p.StepID == StepID);
+            try
+            {
+                if (dbEntry != null)
+                {
+                    context.Steps.Remove(dbEntry);
+                    context.SaveChanges();
+                }
+                if (triggering != null)
+                {
+                    context.TriggeringFeatures.Remove(triggering);
+                    context.SaveChanges();
+                }
+
+            }
+            catch (Exception e)
+            {
+
+            }
+
+            return dbEntry;
+        }
         public TriggeringFeature DeleteTriggeringFeature(int TriggeringFeatureID)
         {
             TriggeringFeature dbEntry = context.TriggeringFeatures
@@ -379,6 +413,29 @@ namespace ProdFloor.Models
                 context.SaveChanges();
             }
             return dbEntry;
+        }
+
+        public void SaveTestStep(StepViewModel viewModelToSave)
+        {
+            SaveStep(viewModelToSave.Step);
+            if (viewModelToSave.TriggeringList != null)
+            {
+                for (int i = 0; i < viewModelToSave.TriggeringList.Count; i++)
+                {
+                    if (viewModelToSave.TriggeringList[i].StepID != 0)
+                    {
+                        if (viewModelToSave.TriggeringList == null)
+                        {
+                            SaveTriggeringFeature(viewModelToSave.TriggeringList[i]);
+                        }
+                        else
+                        {
+                            viewModelToSave.TriggeringList[i].TriggeringFeatureID = viewModelToSave.TriggeringList[i].TriggeringFeatureID;
+                            SaveTriggeringFeature(viewModelToSave.TriggeringList[i]);
+                        }
+                    }
+                }
+            }
         }
     }
 }

@@ -15,6 +15,7 @@ namespace ProdFloor.Models
         public string Name { get; set; }
 
         public List<Job> _Jobs { get; set; }
+        public List<Step> Steps { get; set; }
 
     }
 }

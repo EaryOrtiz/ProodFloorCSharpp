@@ -314,28 +314,12 @@ namespace ProdFloor.Infrastructure
         {
             switch (value)
             {
-                case "FireCode":
-                    return itemsrepository.FireCodes.Select(d => d.Name).Distinct();
-                case "State":
-                    return itemsrepository.States.Select(d => d.Name).Distinct();
-                case "Country":
-                    return itemsrepository.Countries.Select(d => d.Name).Distinct();
-                case "City":
-                    return itemsrepository.Cities.Select(d => d.Name).Distinct();
-                case "DoorOperatorName":
-                    return itemsrepository.DoorOperators.Select(d => d.Name).Distinct();
-                case "DoorOperatorBrand":
-                    return itemsrepository.DoorOperators.Select(d => d.Brand).Distinct();
-                case "DoorOperatorStyle":
-                    return itemsrepository.DoorOperators.Select(d => d.Style).Distinct();
-                case "LandingSystems":
-                    return itemsrepository.LandingSystems.Select(d => d.Name).Distinct();
-                case "JobType":
-                    return itemsrepository.JobTypes.Select(d => d.Name).Distinct();
                 case "SwitchStyle":
                     return new List<string> { "2-Position", "3-Position" }.AsQueryable();
+                case "Stage":
+                    return new List<string> { "Beginning", "Program", "Logic", "Ending", "Complete" }.AsQueryable();
                 default:
-                    return itemsrepository.JobTypes.Select(d => d.Name).Distinct();
+                    return new List<string> { "Beginning", "Program", "Logic", "Ending", "Complete" }.AsQueryable();
             }
         }
 

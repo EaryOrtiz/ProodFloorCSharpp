@@ -1,11 +1,12 @@
-﻿using System;
+﻿using ProdFloor.Models.ViewModels.Testing;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace ProdFloor.Models
 {
-    interface ITestingRepository
+    public interface ITestingRepository
     {
         IQueryable<TestJob> TestJobs { get; }
         IQueryable<TestFeature> TestFeatures { get; }
@@ -30,10 +31,12 @@ namespace ProdFloor.Models
         void SaveReason4(Reason4 reason4);
         void SaveReason5(Reason5 reason5);
         void SaveStop(Stop stop);
+        void SaveTestStep(StepViewModel viewModelToSave);
 
         TestJob DeleteTestJob(int TestJobID);
         TestFeature DeleteTestFeature(int TestFeatureID);
         Step DeleteStep(int StepID);
+        Step DeleteTestStep(int StepID);
         TriggeringFeature DeleteTriggeringFeature(int TriggeringFeatureID);
         StepsForJob DeleteStepsForJob(int StepsForJobID);
         Reason1 DeleteReason1(int Reason1ID);

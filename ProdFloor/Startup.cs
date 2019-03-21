@@ -42,6 +42,7 @@ namespace ProdFloor
 
             services.AddTransient<IJobRepository, EFJobRepository>();
             services.AddTransient<IItemRepository, EFItemRepository>();
+            services.AddTransient<ITestingRepository, EFTestingRepository>();
             services.AddMvc();
             services.AddMemoryCache();
             services.AddSession();
@@ -74,9 +75,15 @@ namespace ProdFloor
                     name: null,
                     template: "{jobType}/Page{jobPage:int}",
                     defaults: new { controller = "Job", action = "List" }
-                ); 
+                );
 
-            routes.MapRoute(
+                routes.MapRoute(
+                    name: null,
+                    template: "{Step}/Page{page:int}",
+                    defaults: new { controller = "Step", action = "List" }
+                );
+
+                routes.MapRoute(
                     name: null,
                     template: "{pendingJobPage:int}_{productionJobPage:int}",
                     defaults: new{controller = "Home", action = "Index" });

@@ -441,7 +441,6 @@ namespace ProdFloor.Models
             }
             return dbEntry;
         }
-
         public SpecialFeatures DeleteSpecialFeatures(int specialFeaturesID)
         {
             SpecialFeatures dbEntry = context.SpecialFeatures
