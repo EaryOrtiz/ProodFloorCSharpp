@@ -1,7 +1,39 @@
-﻿
+﻿@model Reason4
 @{
-    ViewData["Title"] = "Reason4Edit";
+    ViewBag.Title = "Edit Reason 4";
+    Layout = "_AdminLayoutWO";
 }
-
-<h2>Reason4Edit</h2>
-
+<div class="bg-dark m-1 p-1"><h4 style="color:white">Edit Reasons 4</h4></div>
+<form asp-action="EditR4" method="post">
+    <input type="hidden" asp-for="Reason4ID" />
+    <div class="form-group">
+        <label asp-for="Reason1ID" class="col-sm-2 col-form-label"></label>
+        <div>
+            <reasons1-select selected-value="@Model.Reason1ID" class="form-control-sm" asp-for="Reason1ID"></reasons1-select>
+            <span asp-validation-for="Reason1ID" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="Reason2ID" class="col-sm-2 col-form-label"></label>
+        <div>
+            <reasons2-select selected-value="@Model.Reason2ID" class="form-control-sm" asp-for="Reason2ID"></reasons2-select>
+            <span asp-validation-for="Reason2ID" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="Reason3ID" class="col-sm-2 col-form-label"></label>
+        <div>
+            <reasons3-select selected-value="@Model.Reason3ID" class="form-control-sm" asp-for="Reason3ID"></reasons3-select>
+            <span asp-validation-for="Reason3ID" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="Description"></label>
+        <div><span asp-validation-for="Description" class="text-danger"></span></div>
+        <input asp-for="Description" class="form-control" />
+    </div>
+    <div class="text-center">
+        <button class="btn btn-primary" type="submit">Save</button>
+        <a asp-action="List" asp-controller="Reasons" asp-route-Page="1" asp-route-Reason="4" class="btn btn-secondary">Cancel</a>
+    </div>
+</form>
