@@ -112,7 +112,10 @@ namespace ProdFloor
                     template: "",
                     defaults: new { controller = "Home", action = "Index" });
 
+                routes.MapRoute(name: null, template: "{controller}/{action}/Page{page:int}/Reason{reason:int}");
+
                 routes.MapRoute(name: null, template: "{controller}/{action}/Page{page:int}");
+
 
                 routes.MapRoute(name: null, template: "{controller}/{action}/{id?}");
 

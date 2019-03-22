@@ -1549,4 +1549,345 @@ namespace ProdFloor.Infrastructure
         }
     }
 
+    public class Reasons1SelectTagHelper : TagHelper
+    {
+        private ITestingRepository repository;
+
+        private IUrlHelperFactory urlHelperFactory;
+
+        public ModelExpression AspFor { get; set; }
+
+        public Reasons1SelectTagHelper(IUrlHelperFactory helperFactory, ITestingRepository repo)
+        {
+            urlHelperFactory = helperFactory;
+            repository = repo;
+        }
+
+        [ViewContext]
+        [HtmlAttributeNotBound]
+        public ViewContext ViewContext { get; set; }
+
+        public int SelectedValue { get; set; }
+
+        [HtmlAttributeName("asp-is-disabled")]
+        public bool IsDisabled { set; get; }
+
+        public override void Process(TagHelperContext context, TagHelperOutput output)
+        {
+
+            IUrlHelper urlHelper = urlHelperFactory.GetUrlHelper(ViewContext);
+            output.TagName = "select";
+            TagBuilder result = new TagBuilder("select");
+            string name = this.AspFor.Name;
+            if (!String.IsNullOrEmpty(name))
+            {
+                output.Attributes.Add("id", name);
+                output.Attributes.Add("name", name);
+            }
+            TagBuilder m_tag = new TagBuilder("option");
+            m_tag.Attributes["value"] = "default";
+            m_tag.InnerHtml.Append("-- Select Reason 1 --");
+            result.InnerHtml.AppendHtml(m_tag);
+            int reason1ID = 0;
+            if (SelectedValue != 0)
+            {
+                Reason5 selectedR5 = repository.Reasons5.FirstOrDefault(c => c.Reason5ID == SelectedValue);
+                Reason4 selectedR4 = repository.Reasons4.FirstOrDefault(c => c.Reason4ID == selectedR5.Reason4ID);
+                Reason3 selectedR3 = repository.Reasons3.FirstOrDefault(c => c.Reason3ID == selectedR4.Reason3ID);
+                Reason2 selectedR2 = repository.Reasons2.FirstOrDefault(s => s.Reason2ID == selectedR3.Reason2ID);
+                reason1ID = selectedR2.Reason1ID;
+            }
+            IQueryable<Reason1> reason1s = repository.Reasons1.AsQueryable();
+            foreach (Reason1 item in reason1s)
+            {
+                TagBuilder tag = new TagBuilder("option");
+                tag.Attributes["value"] = item.Reason1ID.ToString();
+                if (item.Reason1ID == reason1ID)
+                {
+                    tag.Attributes["selected"] = "selected";
+                }
+                tag.InnerHtml.Append(item.Description.ToString());
+                result.InnerHtml.AppendHtml(tag);
+            }
+            output.Content.AppendHtml(result.InnerHtml);
+            if (IsDisabled)
+            {
+                var d = new TagHelperAttribute("disabled", "disabled");
+                output.Attributes.Add(d);
+            }
+            base.Process(context, output);
+        }
+    }
+
+    public class Reasons2SelectTagHelper : TagHelper
+    {
+        private ITestingRepository repository;
+
+        private IUrlHelperFactory urlHelperFactory;
+
+        public ModelExpression AspFor { get; set; }
+
+        public Reasons2SelectTagHelper(IUrlHelperFactory helperFactory, ITestingRepository repo)
+        {
+            urlHelperFactory = helperFactory;
+            repository = repo;
+        }
+
+        [ViewContext]
+        [HtmlAttributeNotBound]
+        public ViewContext ViewContext { get; set; }
+
+        public int SelectedValue { get; set; }
+
+        [HtmlAttributeName("asp-is-disabled")]
+        public bool IsDisabled { set; get; }
+
+        public override void Process(TagHelperContext context, TagHelperOutput output)
+        {
+
+            IUrlHelper urlHelper = urlHelperFactory.GetUrlHelper(ViewContext);
+            output.TagName = "select";
+            TagBuilder result = new TagBuilder("select");
+            string name = this.AspFor.Name;
+            if (!String.IsNullOrEmpty(name))
+            {
+                output.Attributes.Add("id", name);
+                output.Attributes.Add("name", name);
+            }
+            TagBuilder m_tag = new TagBuilder("option");
+            m_tag.Attributes["value"] = "default";
+            m_tag.InnerHtml.Append("-- Select Reason 2 --");
+            result.InnerHtml.AppendHtml(m_tag);
+            int reason2ID = 0;
+            if (SelectedValue != 0)
+            {
+                Reason5 selectedR5 = repository.Reasons5.FirstOrDefault(c => c.Reason5ID == SelectedValue);
+                Reason4 selectedR4 = repository.Reasons4.FirstOrDefault(c => c.Reason4ID == selectedR5.Reason4ID);
+                Reason3 selectedR3 = repository.Reasons3.FirstOrDefault(c => c.Reason3ID == selectedR4.Reason3ID);
+                reason2ID = selectedR3.Reason2ID;
+            }
+            IQueryable<Reason2> reason2s = repository.Reasons2.AsQueryable();
+            foreach (Reason2 item in reason2s)
+            {
+                TagBuilder tag = new TagBuilder("option");
+                tag.Attributes["value"] = item.Reason2ID.ToString();
+                if (item.Reason2ID == reason2ID)
+                {
+                    tag.Attributes["selected"] = "selected";
+                }
+                tag.InnerHtml.Append(item.Description.ToString());
+                result.InnerHtml.AppendHtml(tag);
+            }
+            output.Content.AppendHtml(result.InnerHtml);
+            if (IsDisabled)
+            {
+                var d = new TagHelperAttribute("disabled", "disabled");
+                output.Attributes.Add(d);
+            }
+            base.Process(context, output);
+        }
+    }
+
+    public class Reasons3SelectTagHelper : TagHelper
+    {
+        private ITestingRepository repository;
+
+        private IUrlHelperFactory urlHelperFactory;
+
+        public ModelExpression AspFor { get; set; }
+
+        public Reasons3SelectTagHelper(IUrlHelperFactory helperFactory, ITestingRepository repo)
+        {
+            urlHelperFactory = helperFactory;
+            repository = repo;
+        }
+
+        [ViewContext]
+        [HtmlAttributeNotBound]
+        public ViewContext ViewContext { get; set; }
+
+        public int SelectedValue { get; set; }
+
+        [HtmlAttributeName("asp-is-disabled")]
+        public bool IsDisabled { set; get; }
+
+        public override void Process(TagHelperContext context, TagHelperOutput output)
+        {
+
+            IUrlHelper urlHelper = urlHelperFactory.GetUrlHelper(ViewContext);
+            output.TagName = "select";
+            TagBuilder result = new TagBuilder("select");
+            string name = this.AspFor.Name;
+            if (!String.IsNullOrEmpty(name))
+            {
+                output.Attributes.Add("id", name);
+                output.Attributes.Add("name", name);
+            }
+            TagBuilder m_tag = new TagBuilder("option");
+            m_tag.Attributes["value"] = "default";
+            m_tag.InnerHtml.Append("-- Select Reason 3 --");
+            result.InnerHtml.AppendHtml(m_tag);
+            int reason3ID = 0;
+            if (SelectedValue != 0)
+            {
+                Reason5 selectedR5 = repository.Reasons5.FirstOrDefault(c => c.Reason5ID == SelectedValue);
+                Reason4 selectedR4 = repository.Reasons4.FirstOrDefault(c => c.Reason4ID == selectedR5.Reason4ID);
+                reason3ID = selectedR4.Reason3ID;
+            }
+            IQueryable<Reason3> reason3s = repository.Reasons3.AsQueryable();
+            foreach (Reason3 item in reason3s)
+            {
+                TagBuilder tag = new TagBuilder("option");
+                tag.Attributes["value"] = item.Reason3ID.ToString();
+                if (item.Reason3ID == reason3ID)
+                {
+                    tag.Attributes["selected"] = "selected";
+                }
+                tag.InnerHtml.Append(item.Description.ToString());
+                result.InnerHtml.AppendHtml(tag);
+            }
+            output.Content.AppendHtml(result.InnerHtml);
+            if (IsDisabled)
+            {
+                var d = new TagHelperAttribute("disabled", "disabled");
+                output.Attributes.Add(d);
+            }
+            base.Process(context, output);
+        }
+    }
+
+    public class Reasons4SelectTagHelper : TagHelper
+    {
+        private ITestingRepository repository;
+
+        private IUrlHelperFactory urlHelperFactory;
+
+        public ModelExpression AspFor { get; set; }
+
+        public Reasons4SelectTagHelper(IUrlHelperFactory helperFactory, ITestingRepository repo)
+        {
+            urlHelperFactory = helperFactory;
+            repository = repo;
+        }
+
+        [ViewContext]
+        [HtmlAttributeNotBound]
+        public ViewContext ViewContext { get; set; }
+
+        public int SelectedValue { get; set; }
+
+        [HtmlAttributeName("asp-is-disabled")]
+        public bool IsDisabled { set; get; }
+
+        public override void Process(TagHelperContext context, TagHelperOutput output)
+        {
+
+            IUrlHelper urlHelper = urlHelperFactory.GetUrlHelper(ViewContext);
+            output.TagName = "select";
+            TagBuilder result = new TagBuilder("select");
+            string name = this.AspFor.Name;
+            if (!String.IsNullOrEmpty(name))
+            {
+                output.Attributes.Add("id", name);
+                output.Attributes.Add("name", name);
+            }
+            TagBuilder m_tag = new TagBuilder("option");
+            m_tag.Attributes["value"] = "default";
+            m_tag.InnerHtml.Append("-- Select Reason 4 --");
+            result.InnerHtml.AppendHtml(m_tag);
+            int reason4ID = 0;
+            if (SelectedValue != 0)
+            {
+                Reason5 selectedR5 = repository.Reasons5.FirstOrDefault(c => c.Reason5ID == SelectedValue);
+                reason4ID = selectedR5.Reason4ID;
+            }
+            IQueryable<Reason4> reason4s = repository.Reasons4.AsQueryable();
+            foreach (Reason4 item in reason4s)
+            {
+                TagBuilder tag = new TagBuilder("option");
+                tag.Attributes["value"] = item.Reason4ID.ToString();
+                if (item.Reason4ID == reason4ID)
+                {
+                    tag.Attributes["selected"] = "selected";
+                }
+                tag.InnerHtml.Append(item.Description.ToString());
+                result.InnerHtml.AppendHtml(tag);
+            }
+            output.Content.AppendHtml(result.InnerHtml);
+            if (IsDisabled)
+            {
+                var d = new TagHelperAttribute("disabled", "disabled");
+                output.Attributes.Add(d);
+            }
+            base.Process(context, output);
+        }
+    }
+
+    public class Reasons5SelectTagHelper : TagHelper
+    {
+        private ITestingRepository repository;
+
+        private IUrlHelperFactory urlHelperFactory;
+
+        public ModelExpression AspFor { get; set; }
+
+        public Reasons5SelectTagHelper(IUrlHelperFactory helperFactory, ITestingRepository repo)
+        {
+            urlHelperFactory = helperFactory;
+            repository = repo;
+        }
+
+        [ViewContext]
+        [HtmlAttributeNotBound]
+        public ViewContext ViewContext { get; set; }
+
+        public int SelectedValue { get; set; }
+
+        [HtmlAttributeName("asp-is-disabled")]
+        public bool IsDisabled { set; get; }
+
+        public override void Process(TagHelperContext context, TagHelperOutput output)
+        {
+
+            IUrlHelper urlHelper = urlHelperFactory.GetUrlHelper(ViewContext);
+            output.TagName = "select";
+            TagBuilder result = new TagBuilder("select");
+            string name = this.AspFor.Name;
+            if (!String.IsNullOrEmpty(name))
+            {
+                output.Attributes.Add("id", name);
+                output.Attributes.Add("name", name);
+            }
+            TagBuilder m_tag = new TagBuilder("option");
+            m_tag.Attributes["value"] = "default";
+            m_tag.InnerHtml.Append("-- Select Reason 5 --");
+            result.InnerHtml.AppendHtml(m_tag);
+            int reason5ID = 0;
+            if (SelectedValue != 0)
+            {
+                Reason5 selectedR5 = repository.Reasons5.FirstOrDefault(c => c.Reason5ID == SelectedValue);
+                reason5ID = selectedR5.Reason5ID;
+            }
+            IQueryable<Reason5> reason5s = repository.Reasons5.AsQueryable();
+            foreach (Reason5 item in reason5s)
+            {
+                TagBuilder tag = new TagBuilder("option");
+                tag.Attributes["value"] = item.Reason5ID.ToString();
+                if (item.Reason5ID == reason5ID)
+                {
+                    tag.Attributes["selected"] = "selected";
+                }
+                tag.InnerHtml.Append(item.Description.ToString());
+                result.InnerHtml.AppendHtml(tag);
+            }
+            output.Content.AppendHtml(result.InnerHtml);
+            if (IsDisabled)
+            {
+                var d = new TagHelperAttribute("disabled", "disabled");
+                output.Attributes.Add(d);
+            }
+            base.Process(context, output);
+        }
+    }
+
 }

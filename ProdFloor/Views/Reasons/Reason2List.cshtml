@@ -1,0 +1,27 @@
+﻿@model ProdFloor.Models.ViewModels.Reasons.ReasonViewModel
+@{
+    ViewBag.Title = "Reason 2";
+    Layout = "_AdminLayoutWO";
+}
+<div class="row" style="padding-right:20px">
+    <h2 class="col-sm-10">
+        Reasons 2 List
+    </h2>
+    <form asp-action="Add" asp-controller="Reasons" method="get">
+        <button class="btn btn-success" name="AddR" value="R2" style="padding-top:10px;min-width:150px">
+            <i class="fa fa-plus"></i>
+            New Reason 2
+        </button>
+    </form>
+</div>
+<br />
+@foreach (var j in Model.Reasons2)
+{
+    @Html.Partial("Reason2Summary", j)
+}
+<br />
+<page-doorop page-model="@Model.PagingInfo" page-action="List" page-classes-enabled="true"
+             page-class="btn" page-class-normal="btn-secondary"
+             page-class-selected="btn-primary"
+             class="btn-group pull-right m-1">
+</page-doorop>

@@ -75,6 +75,34 @@
             </li>
         </ul>
     </li>
+    <li class="nav-item" role="tab" id="Reasons">
+        <a data-toggle="collapse" href="#collapseReasons" role="button" aria-expanded="false" aria-controls="collapseReasons"
+           class="nav-link">Reasons</a>
+        <form asp-controller="Reasons" asp-action="List" asp-route-Page="1" method="get">
+            <ul id="collapseReasons" class="collapse" role="tabpanel" aria-labelledby="collapseReasons" data-parent="#accordion">
+                <li class="nav-link"
+                    style="padding:4px;text-align:center;margin-bottom:5px">
+                    <button class="btn btn-sm btn-link" style="color:white"  asp-action="List" asp-controller="Reasons" asp-route-Page="1" asp-route-Reason="1">Reasons 1</button>
+                </li>
+                <li class="nav-link"
+                    style="padding:4px;text-align:center;margin-bottom:5px">
+                    <button class="btn btn-sm btn-link" style="color:white"asp-action="List" asp-controller="Reasons" asp-route-Page="1" asp-route-Reason="2">Reasons 2</button>
+                </li>
+                <li class="nav-link"
+                    style="padding:4px;text-align:center;margin-bottom:5px">
+                    <button class="btn btn-sm btn-link" style="color:white"  asp-action="List" asp-controller="Reasons" asp-route-Page="1" asp-route-Reason="3">Reasons 3</button>
+                </li>
+                <li class="nav-link"
+                    style="padding:4px;text-align:center;margin-bottom:5px">
+                    <button class="btn btn-sm btn-link" style="color:white"  asp-action="List" asp-controller="Reasons" asp-route-Page="1" asp-route-Reason="4">Reasons 4</button>
+                </li>
+                <li class="nav-link"
+                    style="padding:4px;text-align:center;margin-bottom:5px">
+                    <button class="btn btn-sm btn-link" style="color:white"  asp-action="List" asp-controller="Reasons" asp-route-Page="1" asp-route-Reason="5">Reasons 5</button>
+                </li>
+            </ul>
+        </form>
+    </li>
     <li class="nav-item">
         <a class="nav-link" asp-controller="Account" asp-action="Index">Users</a>
     </li>
