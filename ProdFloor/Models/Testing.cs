@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -103,6 +104,7 @@ namespace ProdFloor.Models
     {
         public int Reason2ID { get; set; }
 
+        [Display(Name = "Reason 1")]
         [Required(ErrorMessage = "Please enter a {0}")]
         public int Reason1ID { get; set; }
         [Required(ErrorMessage = "Please enter a {0}")]
@@ -116,6 +118,11 @@ namespace ProdFloor.Models
     {
         public int Reason3ID { get; set; }
 
+        [NotMapped]
+        [Display(Name = "Reason 1")]
+        public int Reason1ID { get; set; }
+
+        [Display(Name = "Reason 2")]
         [Required(ErrorMessage = "Please enter a {0}")]
         public int Reason2ID { get; set; }
         [Required(ErrorMessage = "Please enter a {0}")]
@@ -129,6 +136,14 @@ namespace ProdFloor.Models
     {
         public int Reason4ID { get; set; }
 
+        [NotMapped]
+        [Display(Name = "Reason 1")]
+        public int Reason1ID { get; set; }
+        [NotMapped]
+        [Display(Name = "Reason 2")]
+        public int Reason2ID { get; set; }
+
+        [Display(Name = "Reason 3")]
         [Required(ErrorMessage = "Please enter a {0}")]
         public int Reason3ID { get; set; }
         [Required(ErrorMessage = "Please enter a {0}")]
@@ -142,6 +157,17 @@ namespace ProdFloor.Models
     {
         public int Reason5ID { get; set; }
 
+        [NotMapped]
+        [Display(Name = "Reason 1")]
+        public int Reason1ID { get; set; }
+        [NotMapped]
+        [Display(Name = "Reason 2")]
+        public int Reason2ID { get; set; }
+        [NotMapped]
+        [Display(Name = "Reason 3")]
+        public int Reason3ID { get; set; }
+
+        [Display(Name = "Reason 4")]
         [Required(ErrorMessage = "Please enter a {0}")]
         public int Reason4ID { get; set; }
         [Required(ErrorMessage = "Please enter a {0}")]

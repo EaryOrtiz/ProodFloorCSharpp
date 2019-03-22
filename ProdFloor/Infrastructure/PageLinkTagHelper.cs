@@ -1591,11 +1591,8 @@ namespace ProdFloor.Infrastructure
             int reason1ID = 0;
             if (SelectedValue != 0)
             {
-                Reason5 selectedR5 = repository.Reasons5.FirstOrDefault(c => c.Reason5ID == SelectedValue);
-                Reason4 selectedR4 = repository.Reasons4.FirstOrDefault(c => c.Reason4ID == selectedR5.Reason4ID);
-                Reason3 selectedR3 = repository.Reasons3.FirstOrDefault(c => c.Reason3ID == selectedR4.Reason3ID);
-                Reason2 selectedR2 = repository.Reasons2.FirstOrDefault(s => s.Reason2ID == selectedR3.Reason2ID);
-                reason1ID = selectedR2.Reason1ID;
+                Reason1 selectedR1 = repository.Reasons1.FirstOrDefault(c => c.Reason1ID == SelectedValue);
+                reason1ID = selectedR1.Reason1ID;
             }
             IQueryable<Reason1> reason1s = repository.Reasons1.AsQueryable();
             foreach (Reason1 item in reason1s)

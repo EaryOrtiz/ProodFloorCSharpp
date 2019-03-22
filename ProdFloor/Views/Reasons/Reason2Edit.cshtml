@@ -1,0 +1,25 @@
+﻿@model Reason2
+@{
+    ViewBag.Title = "Edit Reason 2";
+    Layout = "_AdminLayoutWO";
+}
+<div class="bg-dark m-1 p-1"><h4 style="color:white">Edit Reasons 2</h4></div>
+<form asp-action="EditR2" method="post">
+    <input type="hidden" asp-for="Reason2ID" />
+    <div class="form-group">
+        <label asp-for="Reason1ID" class="col-sm-2 col-form-label"></label>
+        <div>
+            <reasons1-select selected-value="@Model.Reason1ID" class="form-control-sm" asp-for="Reason1ID"></reasons1-select>
+            <span asp-validation-for="Reason1ID" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="Description"></label>
+        <div><span asp-validation-for="Description" class="text-danger"></span></div>
+        <input asp-for="Description" class="form-control" />
+    </div>
+    <div class="text-center">
+        <button class="btn btn-primary" type="submit">Save</button>
+        <a asp-action="List" asp-controller="Reasons" asp-route-Page="1" asp-route-Reason="2" class="btn btn-secondary">Cancel</a>
+    </div>
+</form>
