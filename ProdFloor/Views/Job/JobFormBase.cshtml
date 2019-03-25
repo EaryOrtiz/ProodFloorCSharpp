@@ -20,7 +20,7 @@
 <div class="form-group row">
     <label asp-for="JobTypeID" class="col-sm-2 col-form-label"></label>
     <div>
-        <job-type-select selected-value="@Model.JobTypeID" class="form-control-sm" asp-for="JobTypeID"></job-type-select>
+        <job-type-select selected-value="@Model.JobTypeID" class="form-control-sm form-control " asp-for="JobTypeID"></job-type-select>
         <span asp-validation-for="JobTypeID" class="text-danger"></span>
     </div>
 </div>
@@ -61,22 +61,22 @@
 </div>
 <div class="form-group row">
     <label asp-for="CountryID" class="col-sm-2 col-form-label"></label>
-    <country-select id="CountryID" asp-for="@Model.CountryID" class="form-control-sm" selected-value="@Model.CityID">
+    <country-select id="CountryID" asp-for="@Model.CountryID" class="form-control-sm form-control col-2" selected-value="@Model.CityID">
     </country-select>
 </div>
 <div class="form-group row">
     <label asp-for="StateID" class="col-sm-2 col-form-label"></label>
-    <state-select id="StateID" asp-for="@Model.StateID" class="form-control-sm" selected-value="@Model.CityID">
+    <state-select id="StateID" asp-for="@Model.StateID" class="form-control-sm form-control col-2" selected-value="@Model.CityID">
     </state-select>
 </div>
 <div class="form-group row">
     <label asp-for="CityID" class="col-sm-2 col-form-label"></label>
-    <city-select id="CityID" asp-for="@Model.CityID" class="form-control-sm"></city-select>
+    <city-select id="CityID" asp-for="@Model.CityID" class="form-control-sm form-control col-2"></city-select>
 </div>
 <div class="form-group row">
     <label asp-for="FireCodeID" class="col-sm-2 col-form-label"></label>
     <div>
-        <fire-code-select selected-value="@Model.FireCodeID" class="form-control-sm" asp-for="FireCodeID"></fire-code-select>
+        <fire-code-select selected-value="@Model.FireCodeID" class="form-control-sm form-control col-12" asp-for="FireCodeID"></fire-code-select>
         <span asp-validation-for="FireCodeID" class="text-danger"></span>
     </div>
 </div>

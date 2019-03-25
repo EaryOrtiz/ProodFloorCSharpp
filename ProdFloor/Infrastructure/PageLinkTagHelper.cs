@@ -318,6 +318,8 @@ namespace ProdFloor.Infrastructure
                     return new List<string> { "2-Position", "3-Position" }.AsQueryable();
                 case "Stage":
                     return new List<string> { "Beginning", "Program", "Logic", "Ending", "Complete" }.AsQueryable();
+                case "Style":
+                    return itemsrepository.DoorOperators.Select(s => s.Style).Distinct().AsQueryable();
                 default:
                     return new List<string> { "Beginning", "Program", "Logic", "Ending", "Complete" }.AsQueryable();
             }
