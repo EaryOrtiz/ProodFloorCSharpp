@@ -54,7 +54,7 @@
         </div>
         <div class="form-group row">
             <label asp-for="CurrentJobExtension.DoorOperatorID" class="col-sm-5 col-form-label"></label>
-            <door-operator-select id="DoorOperatorID" asp-for="@Model.CurrentJobExtension.DoorOperatorID" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true )" selected-value="Model.CurrentJobExtension.DoorOperatorID" class="form-control form-control-sm col-sm-3">
+            <door-operator-select id="DoorOperatorID" asp-for="@Model.CurrentJobExtension.DoorOperatorID" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true )" selected-value="Model.CurrentJobExtension.DoorOperatorID" class="form-control form-control-sm col-sm-3">
             </door-operator-select>
         </div>
     </div>
