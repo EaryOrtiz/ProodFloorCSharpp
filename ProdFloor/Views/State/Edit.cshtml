@@ -9,7 +9,7 @@
     <div class="form-group">
         <label asp-for="CountryID" class="col-sm-2 col-form-label"></label>
         <div>
-            <country-select selected-value="@Model.CountryID" class="form-control-sm" asp-for="CountryID"></country-select>
+            <country-select selected-default-value="@Model.CountryID" class="form-control-sm" asp-for="CountryID"></country-select>
             <span asp-validation-for="CountryID" class="text-danger"></span>
         </div>
     </div>

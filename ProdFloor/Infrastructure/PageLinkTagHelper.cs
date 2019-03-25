@@ -683,6 +683,8 @@ namespace ProdFloor.Infrastructure
 
         public int SelectedValue { get; set; }
 
+        public int SelectedDefaultValue { get; set; }
+
         [HtmlAttributeName("asp-is-disabled")]
         public bool IsDisabled { set; get; }
             
@@ -708,6 +710,11 @@ namespace ProdFloor.Infrastructure
                 City selectedCity = itemsrepository.Cities.FirstOrDefault(c => c.CityID == SelectedValue);
                 State selectedState = itemsrepository.States.FirstOrDefault(s => s.StateID == selectedCity.StateID);
                 countryID = selectedState.CountryID;
+            }
+            if (SelectedDefaultValue != 0)
+            {
+                Country selectedCountry = itemsrepository.Countries.FirstOrDefault(s => s.CountryID == SelectedDefaultValue);
+                countryID = selectedCountry.CountryID;
             }
             IQueryable<Country> country = itemsrepository.Countries.AsQueryable();
             foreach (Country countries in country)
@@ -1567,7 +1574,11 @@ namespace ProdFloor.Infrastructure
         [HtmlAttributeNotBound]
         public ViewContext ViewContext { get; set; }
 
-        public int SelectedValue { get; set; }
+        public int SelectedInR3Value { get; set; }
+        public int SelectedInR2Value { get; set; }
+        public int SelectedInR4Value { get; set; }
+        public int SelectedInR5Value { get; set; }
+
 
         [HtmlAttributeName("asp-is-disabled")]
         public bool IsDisabled { set; get; }
@@ -1589,9 +1600,34 @@ namespace ProdFloor.Infrastructure
             m_tag.InnerHtml.Append("-- Select Reason 1 --");
             result.InnerHtml.AppendHtml(m_tag);
             int reason1ID = 0;
-            if (SelectedValue != 0)
+            if (SelectedInR5Value != 0)
             {
-                Reason1 selectedR1 = repository.Reasons1.FirstOrDefault(c => c.Reason1ID == SelectedValue);
+                Reason5 selectedR5 = repository.Reasons5.FirstOrDefault(c => c.Reason5ID == SelectedInR5Value);
+                Reason4 selectedR4 = repository.Reasons4.FirstOrDefault(c => c.Reason4ID == selectedR5.Reason4ID);
+                Reason3 selectedR3 = repository.Reasons3.FirstOrDefault(c => c.Reason3ID == selectedR4.Reason3ID);
+                Reason2 selectedR2 = repository.Reasons2.FirstOrDefault(c => c.Reason2ID == selectedR3.Reason2ID);
+                Reason1 selectedR1 = repository.Reasons1.FirstOrDefault(c => c.Reason1ID == selectedR2.Reason1ID);
+                reason1ID = selectedR1.Reason1ID;
+            }
+            if (SelectedInR4Value != 0)
+            {
+                Reason4 selectedR4 = repository.Reasons4.FirstOrDefault(c => c.Reason4ID == SelectedInR4Value);
+                Reason3 selectedR3 = repository.Reasons3.FirstOrDefault(c => c.Reason3ID == selectedR4.Reason3ID);
+                Reason2 selectedR2 = repository.Reasons2.FirstOrDefault(c => c.Reason2ID == selectedR3.Reason2ID);
+                Reason1 selectedR1 = repository.Reasons1.FirstOrDefault(c => c.Reason1ID == selectedR2.Reason1ID);
+                reason1ID = selectedR1.Reason1ID;
+            }
+            if (SelectedInR3Value != 0)
+            {
+                Reason3 selectedR3 = repository.Reasons3.FirstOrDefault(c => c.Reason3ID == SelectedInR3Value);
+                Reason2 selectedR2 = repository.Reasons2.FirstOrDefault(c => c.Reason2ID == selectedR3.Reason2ID);
+                Reason1 selectedR1 = repository.Reasons1.FirstOrDefault(c => c.Reason1ID == selectedR2.Reason1ID);
+                reason1ID = selectedR1.Reason1ID;
+            }
+            if (SelectedInR2Value != 0)
+            {
+                Reason2 selectedR2 = repository.Reasons2.FirstOrDefault(c => c.Reason2ID == SelectedInR2Value);
+                Reason1 selectedR1 = repository.Reasons1.FirstOrDefault(c => c.Reason1ID == selectedR2.Reason1ID);
                 reason1ID = selectedR1.Reason1ID;
             }
             IQueryable<Reason1> reason1s = repository.Reasons1.AsQueryable();
@@ -1634,7 +1670,9 @@ namespace ProdFloor.Infrastructure
         [HtmlAttributeNotBound]
         public ViewContext ViewContext { get; set; }
 
-        public int SelectedValue { get; set; }
+        public int SelectedInR5Value { get; set; }
+        public int SelectedInR4Value { get; set; }
+        public int SelectedInR3Value { get; set; }
 
         [HtmlAttributeName("asp-is-disabled")]
         public bool IsDisabled { set; get; }
@@ -1656,12 +1694,26 @@ namespace ProdFloor.Infrastructure
             m_tag.InnerHtml.Append("-- Select Reason 2 --");
             result.InnerHtml.AppendHtml(m_tag);
             int reason2ID = 0;
-            if (SelectedValue != 0)
+            if (SelectedInR5Value != 0)
             {
-                Reason5 selectedR5 = repository.Reasons5.FirstOrDefault(c => c.Reason5ID == SelectedValue);
+                Reason5 selectedR5 = repository.Reasons5.FirstOrDefault(c => c.Reason5ID == SelectedInR5Value);
                 Reason4 selectedR4 = repository.Reasons4.FirstOrDefault(c => c.Reason4ID == selectedR5.Reason4ID);
                 Reason3 selectedR3 = repository.Reasons3.FirstOrDefault(c => c.Reason3ID == selectedR4.Reason3ID);
-                reason2ID = selectedR3.Reason2ID;
+                Reason2 selectedR2 = repository.Reasons2.FirstOrDefault(c => c.Reason2ID == selectedR3.Reason2ID);
+                reason2ID = selectedR2.Reason2ID;
+            }
+            if (SelectedInR4Value != 0)
+            {
+                Reason4 selectedR4 = repository.Reasons4.FirstOrDefault(c => c.Reason4ID == SelectedInR4Value);
+                Reason3 selectedR3 = repository.Reasons3.FirstOrDefault(c => c.Reason3ID == selectedR4.Reason3ID);
+                Reason2 selectedR2 = repository.Reasons2.FirstOrDefault(c => c.Reason2ID == selectedR3.Reason2ID);
+                reason2ID = selectedR2.Reason2ID;
+            }
+            if (SelectedInR3Value != 0)
+            {
+                Reason3 selectedR3 = repository.Reasons3.FirstOrDefault(c => c.Reason3ID == SelectedInR3Value);
+                Reason2 selectedR2 = repository.Reasons2.FirstOrDefault(c => c.Reason2ID == selectedR3.Reason2ID);
+                reason2ID = selectedR2.Reason2ID;
             }
             IQueryable<Reason2> reason2s = repository.Reasons2.AsQueryable();
             foreach (Reason2 item in reason2s)
@@ -1703,7 +1755,8 @@ namespace ProdFloor.Infrastructure
         [HtmlAttributeNotBound]
         public ViewContext ViewContext { get; set; }
 
-        public int SelectedValue { get; set; }
+        public int SelectedInR4Value { get; set; }
+        public int SelectedInR5Value { get; set; }
 
         [HtmlAttributeName("asp-is-disabled")]
         public bool IsDisabled { set; get; }
@@ -1725,11 +1778,18 @@ namespace ProdFloor.Infrastructure
             m_tag.InnerHtml.Append("-- Select Reason 3 --");
             result.InnerHtml.AppendHtml(m_tag);
             int reason3ID = 0;
-            if (SelectedValue != 0)
+            if (SelectedInR5Value != 0)
             {
-                Reason5 selectedR5 = repository.Reasons5.FirstOrDefault(c => c.Reason5ID == SelectedValue);
+                Reason5 selectedR5 = repository.Reasons5.FirstOrDefault(c => c.Reason5ID == SelectedInR5Value);
                 Reason4 selectedR4 = repository.Reasons4.FirstOrDefault(c => c.Reason4ID == selectedR5.Reason4ID);
-                reason3ID = selectedR4.Reason3ID;
+                Reason3 selectedR3 = repository.Reasons3.FirstOrDefault(c => c.Reason3ID == selectedR4.Reason3ID);
+                reason3ID = selectedR3.Reason3ID;
+            }
+            if (SelectedInR4Value != 0)
+            {
+                Reason4 selectedR4 = repository.Reasons4.FirstOrDefault(c => c.Reason4ID == SelectedInR4Value);
+                Reason3 selectedR3 = repository.Reasons3.FirstOrDefault(c => c.Reason3ID == selectedR4.Reason3ID);
+                reason3ID = selectedR3.Reason3ID;
             }
             IQueryable<Reason3> reason3s = repository.Reasons3.AsQueryable();
             foreach (Reason3 item in reason3s)
@@ -1771,7 +1831,7 @@ namespace ProdFloor.Infrastructure
         [HtmlAttributeNotBound]
         public ViewContext ViewContext { get; set; }
 
-        public int SelectedValue { get; set; }
+        public int SelectedInR5Value { get; set; }
 
         [HtmlAttributeName("asp-is-disabled")]
         public bool IsDisabled { set; get; }
@@ -1793,10 +1853,11 @@ namespace ProdFloor.Infrastructure
             m_tag.InnerHtml.Append("-- Select Reason 4 --");
             result.InnerHtml.AppendHtml(m_tag);
             int reason4ID = 0;
-            if (SelectedValue != 0)
+            if (SelectedInR5Value != 0)
             {
-                Reason5 selectedR5 = repository.Reasons5.FirstOrDefault(c => c.Reason5ID == SelectedValue);
-                reason4ID = selectedR5.Reason4ID;
+                Reason5 selectedR5 = repository.Reasons5.FirstOrDefault(c => c.Reason5ID == SelectedInR5Value);
+                Reason4 selectedR4 = repository.Reasons4.FirstOrDefault(c => c.Reason4ID == selectedR5.Reason4ID);
+                reason4ID = selectedR4.Reason4ID;
             }
             IQueryable<Reason4> reason4s = repository.Reasons4.AsQueryable();
             foreach (Reason4 item in reason4s)
