@@ -16,7 +16,7 @@ namespace ProdFloor.Models
         [Required(ErrorMessage = "Please enter a {0}")]
         public int TechnicianID { get; set; }
         [Required(ErrorMessage = "Please enter a {0}")]
-        public int Status { get; set; }
+        public string Status { get; set; }
 
         public List<Stop> _Stops { get; set; }
         public List<StepsForJob> _StepsForJobs { get; set; }

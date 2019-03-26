@@ -51,48 +51,41 @@ namespace ProdFloor.Controllers
             return View(new TestJobViewModel());
         }
 
+        [HttpPost]
         public IActionResult SearchJob(TestJobViewModel viewModel)
         {
+            AppUser currentUser = GetCurrentUser().Result;
             var jobSearch = jobRepo.Jobs.AsQueryable();
             TestJobViewModel testJobSearchAux = new TestJobViewModel { };
 
-            if (viewModel.NumJobSearch > 0)
+            if (viewModel.POJobSearch > 0)
             {
-                var _jobSearch = jobSearch.Where(m => m.JobNum == viewModel.NumJobSearch);
+                var _jobSearch = jobSearch.First(m => m.PO == viewModel.POJobSearch);
 
-                if (_jobSearch.Count() > 0)
+                if (_jobSearch != null && _jobSearch.Status != "Incomplete")
                 {
-                    List<Job> Jobs = new List<Job>();
-                    foreach (Job job in _jobSearch) if (job.Status != "Incomplete") Jobs.Add(job);
 
-                    if (Jobs.Count() != 0)
+                    TestJob testJob = new TestJob {JobID = _jobSearch.JobID,TechnicianID = currentUser.EngID, Status = "Working on it"};
+                    testingRepo.SaveTestJob(testJob);
+
+                    var currentTestJob = testingRepo.TestJobs
+                        .FirstOrDefault(p => p.TestJobID == testingRepo.TestJobs.Max(x => x.TestJobID));
+
+
+                    TestJobViewModel testJobView = new TestJobViewModel
                     {
-                        TestJobViewModel testJobView = new TestJobViewModel
-                        {
-                            JobList = Jobs,
-                            PagingInfo = new PagingInfo
-                            {
-                                CurrentPage = 1,
-                                ItemsPerPage = PageSize,
-                                TotalItems = Jobs.Count()
-                            }
-                        };
+                        TestJob = currentTestJob,
+                    };
 
-                        return View("NewTestJob",testJobView);
-                    }
-
-                    TempData["alert"] = $"alert-danger";
-                    TempData["message"] = $"These jobs aren't completed, please finish it or create a dummy job and try again";
-
-
-                    return RedirectToAction("NewTestJob", testJobSearchAux);
+                    return View("NewTestFeatures", testJobView);
 
                 }
-
-                TempData["alert"] = $"alert-danger";
-                TempData["message"] = $"That job doesn't exist, please enter a new one or create a dummy job";
-
-                return RedirectToAction("NewTestJob", testJobSearchAux);
+                else
+                {
+                    TempData["message"] = $"There seems to be errors in the form. Please validate....";
+                    TempData["alert"] = $"alert-danger";
+                    return RedirectToAction("NewTestFeatures", testJobSearchAux);
+                }
             }
             else
             {
@@ -100,6 +93,18 @@ namespace ProdFloor.Controllers
             }
         }
 
+        [HttpPost]
+        public IActionResult NewTestFeatures(TestJobViewModel testJobView)
+        {
+            if(testJobView.TestFeature != null)
+            {
+                testingRepo.SaveTestFeature(testJobView.TestFeature);
+
+                return RedirectToAction(nameof(List));
+            }
+
+            return NotFound();
+        }
         private async Task<AppUser> GetCurrentUser()
         {
             AppUser user = await userManager.GetUserAsync(HttpContext.User);

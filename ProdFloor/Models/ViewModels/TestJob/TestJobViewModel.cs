@@ -15,9 +15,9 @@ namespace ProdFloor.Models.ViewModels.TestJob
         public int CurrentTechnicianID { get; set; }
         public PagingInfo PagingInfo { get; set; }
         public Models.Job Job { get; set; }
-        [Range(2015000000, 3030000000, ErrorMessage = "Job number is out of range")]
-        [Required(ErrorMessage = "Please enter a Job Num")]
-        public int NumJobSearch { get; set; }
+        [Range(3000000, 4900000, ErrorMessage = "PO number is out of range")]
+        [Required(ErrorMessage = "Please enter a PO")]
+        public int POJobSearch { get; set; }
 
         public List<Models.TestJob> TestJobList { get; set; }
         public List<Models.Job> JobList { get; set; }

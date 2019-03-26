@@ -8,39 +8,19 @@
     <h2 class="col-sm-10">Jobs to Test</h2>
 </div>
 <br />
-<form asp-controller="TestJob" asp-action="SearchJob" method="get">
+<form asp-controller="TestJob" asp-action="SearchJob" method="post">
     <div class="input-group">
-        <input type="text" class="form-control form-control-sm col-sm-2" asp-for="NumJobSearch" placeholder=" Please enter a Job Number">
+        <input type="text" class="form-control form-control-sm col-5" asp-for="POJobSearch" placeholder=" Please enter a PO Number">
         <div class="input-group-append">
             <button class="btn btn-dark" type="submit" value="Search">
-                <i class="fa fa-search" aria-hidden="true"></i>
+                <i class="fa fa-plus" aria-hidden="true"></i>
             </button>
         </div>
     </div>
     <br />
     <div>
-        <span asp-validation-for="NumJobSearch" class="text-danger"></span><br />
+        <span asp-validation-for="POJobSearch" class="text-danger"></span><br />
     </div>
 </form>
-@if (Model.JobList != null)
-{
-    <div class="row" style="padding-right:20px">
-        <h4 class="col-sm-10 text-info">List Of Jobs Found</h4>
-    </div>
-    @foreach (var j in Model.JobList)
-    {
-        @Html.Partial("SearchJobSummary", j)
-    }
-    <div page-model="@Model.PagingInfo" page-action="JobSearchList" page-classes-enabled="true"
-         page-class="btn" page-class-normal="btn-secondary"
-         page-class-selected="btn-primary" page-url-jobType="@Model.JobList"
-         class="btn-group pull-right m-1">
-    </div>
-}
-else
-{
-    <br /><br />
-    <h3 style="text-align:center">No Jobs! Create a Dummy Job or try to search &nbsp;<i class="fas fa-exclamation-triangle"></i></h3>
-}
 
 
