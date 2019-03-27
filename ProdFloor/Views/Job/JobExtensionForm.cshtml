@@ -54,64 +54,84 @@
         </div>
         <div class="form-group row">
             <label asp-for="CurrentJobExtension.DoorOperatorID" class="col-sm-5 col-form-label"></label>
-            <door-operator-select id="DoorOperatorID" asp-for="@Model.CurrentJobExtension.DoorOperatorID" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true )" selected-value="Model.CurrentJobExtension.DoorOperatorID" class="form-control form-control-sm col-sm-3">
+            <door-operator-select id="DoorOperatorID" asp-for="@Model.CurrentJobExtension.DoorOperatorID"  asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true )" selected-value="Model.CurrentJobExtension.DoorOperatorID" class="form-control form-control-sm col-sm-3">
             </door-operator-select>
         </div>
     </div>
     <div class="col-md-6">
         @*Grid for checkboxes*@
-        <h3>Door Features</h3>
-        <div class="form-inline">
-            <label asp-for="CurrentJobExtension.InfDetector" class="col-sm-4 col-form-label float-left"></label>
-            <div><span asp-validation-for="CurrentJobExtension.InfDetector" class="text-danger"></span></div>
-            <input asp-for="CurrentJobExtension.InfDetector" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" class="form-control col-sm-3 float-left" />
-        </div>
-        <div class="form-inline">
-            <label asp-for="CurrentJobExtension.MechSafEdge" class="col-sm-4 col-form-label"></label>
-            <div><span asp-validation-for="CurrentJobExtension.MechSafEdge" class="text-danger"></span></div>
-            <input asp-for="CurrentJobExtension.MechSafEdge" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" class="form-control col-sm-3 float-left" />
-        </div>
-        <div class="form-inline">
-            <label asp-for="CurrentJobExtension.HeavyDoors" class="col-sm-4 col-form-label"></label>
-            <div><span asp-validation-for="CurrentJobExtension.HeavyDoors" class="text-danger"></span></div>
-            <input asp-for="CurrentJobExtension.HeavyDoors" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)" class="form-control col-sm-3 float-left" />
-        </div>
-        <div class="form-inline">
-            <label asp-for="CurrentJobExtension.CartopDoorButtons" class="col-sm-4 col-form-label"></label>
-            <div><span asp-validation-for="CurrentJobExtension.CartopDoorButtons" class="text-danger"></span></div>
-            <input asp-for="CurrentJobExtension.CartopDoorButtons" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control col-sm-3 float-left " />
-        </div>
-        <div class="form-inline">
-            <label asp-for="CurrentJobExtension.DoorHold" class="col-sm-4 col-form-label"></label>
-            <div><span asp-validation-for="CurrentJobExtension.DoorHold" class="text-danger"></span></div>
-            <input asp-for="CurrentJobExtension.DoorHold" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control col-sm-3 float-left" />
-        </div>
-        <div class="form-inline">
-            <label asp-for="CurrentJobExtension.Nudging" class="col-sm-4 col-form-label"></label>
-            <div><span asp-validation-for="CurrentJobExtension.Nudging" class="text-danger"></span></div>
-            <input asp-for="CurrentJobExtension.Nudging" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true )" class="form-control col-sm-3 float-left" />
-        </div>
-
-        <h3 class="border-top">Serial Link</h3>
-        <div class="form-inline">
-            <label asp-for="CurrentJobExtension.SCOP" class="col-sm-4 col-form-label"></label>
-            <div><span asp-validation-for="CurrentJobExtension.SCOP" class="text-danger"></span></div>
-            <input asp-for="CurrentJobExtension.SCOP" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true )" class="form-control col-sm-3 float-left" />
-        </div>
-        <div class="form-inline">
-            <label asp-for="CurrentJobExtension.SHC" class="col-sm-4 col-form-label"></label>
-            <div><span asp-validation-for="CurrentJobExtension.SHC" class="text-danger"></span></div>
-            <input asp-for="CurrentJobExtension.SHC" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true )" class="form-control col-sm-3 float-left" />
-        </div>
-        <div class="form-inline">
-            <label asp-for="CurrentJobExtension.SHCRisers" class="col-sm-4 col-form-label"></label>
-            <div><span asp-validation-for="CurrentJobExtension.SHCRisers" class="text-danger"></span></div>
-            <input asp-for="CurrentJobExtension.SHCRisers" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true )" class="form-control col-sm-3 float-left" />
-        </div>
-        <div class="form-inline">
-            <label asp-for="CurrentJobExtension.AUXCOP" class="col-sm-4 col-form-label"></label>
-            <div><span asp-validation-for="CurrentJobExtension.AUXCOP" class="text-danger"></span></div>
-            <input asp-for="CurrentJobExtension.AUXCOP" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true )" class="form-control col-sm-3 float-left" />
+        <div class="container text-left" style="padding-left:30px;">
+            <h3>Door Features</h3>
+            <div class="form-group row">
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" asp-for="CurrentJobExtension.InfDetector" class="custom-control-input" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)">
+                    <div><span asp-validation-for="CurrentJobExtension.InfDetector" class="text-danger" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></span></div>
+                    <label class="custom-control-label" asp-for="CurrentJobExtension.InfDetector" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></label>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" asp-for="CurrentJobExtension.MechSafEdge" class="custom-control-input" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)">
+                    <div><span asp-validation-for="CurrentJobExtension.MechSafEdge" class="text-danger" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></span></div>
+                    <label class="custom-control-label" asp-for="CurrentJobExtension.MechSafEdge" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></label>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" asp-for="CurrentJobExtension.HeavyDoors" class="custom-control-input" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)">
+                    <div><span asp-validation-for="CurrentJobExtension.HeavyDoors" class="text-danger" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></span></div>
+                    <label class="custom-control-label" asp-for="CurrentJobExtension.HeavyDoors" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></label>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" asp-for="CurrentJobExtension.CartopDoorButtons" class="custom-control-input" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)">
+                    <div><span asp-validation-for="CurrentJobExtension.CartopDoorButtons" class="text-danger" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></span></div>
+                    <label class="custom-control-label" asp-for="CurrentJobExtension.CartopDoorButtons" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></label>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" asp-for="CurrentJobExtension.DoorHold" class="custom-control-input" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)">
+                    <div><span asp-validation-for="CurrentJobExtension.DoorHold" class="text-danger" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></span></div>
+                    <label class="custom-control-label" asp-for="CurrentJobExtension.DoorHold" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></label>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" asp-for="CurrentJobExtension.Nudging" class="custom-control-input" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)">
+                    <div><span asp-validation-for="CurrentJobExtension.Nudging" class="text-danger" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></span></div>
+                    <label class="custom-control-label" asp-for="CurrentJobExtension.Nudging" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></label>
+                </div>
+            </div>
+            <h3 class="border-top">Serial Link</h3>
+            <div class="form-group row">
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" asp-for="CurrentJobExtension.SCOP" class="custom-control-input" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)">
+                    <div><span asp-validation-for="CurrentJobExtension.SCOP" class="text-danger" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></span></div>
+                    <label class="custom-control-label" asp-for="CurrentJobExtension.SCOP" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></label>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" asp-for="CurrentJobExtension.SHC" class="custom-control-input" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)">
+                    <div><span asp-validation-for="CurrentJobExtension.SHC" class="text-danger" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></span></div>
+                    <label class="custom-control-label" asp-for="CurrentJobExtension.SHC" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></label>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" asp-for="CurrentJobExtension.AUXCOP" class="custom-control-input" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)">
+                    <div><span asp-validation-for="CurrentJobExtension.AUXCOP" class="text-danger" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></span></div>
+                    <label class="custom-control-label" asp-for="CurrentJobExtension.AUXCOP" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></label>
+                </div>
+            </div>
+            <hr style="width: 100%; color: black; height: 1px; background-color:floralwhite;" />
+            <div class="form-group row">
+                <label asp-for="CurrentJobExtension.SHCRisers" class="col-form-label"></label>
+                <div><span asp-validation-for="CurrentJobExtension.SHCRisers" class="text-danger"></span></div>
+                <input asp-for="CurrentJobExtension.SHCRisers" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true )" style="margin-left:20px;" class="form-control col-3" />
+            </div>
         </div>
     </div>
 </div>
