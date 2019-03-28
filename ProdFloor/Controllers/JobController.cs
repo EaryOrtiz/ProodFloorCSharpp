@@ -107,6 +107,7 @@ namespace ProdFloor.Controllers
                 repository.SaveJob(newJob);
                 JobViewModel newJobViewModel = new JobViewModel
                 {
+                    CurrentUserID = currentUser.EngID,
                     CurrentJob = newJob,
                     CurrentJobExtension = new JobExtension { JobID = newJob.JobID },
                     CurrentHydroSpecific = new HydroSpecific(),
@@ -168,12 +169,18 @@ namespace ProdFloor.Controllers
         [HttpPost]
         public IActionResult Edit(JobViewModel multiEditViewModel)
         {
+            AppUser currentUser = GetCurrentUser().Result;
+            multiEditViewModel.CurrentUserID = currentUser.EngID;
             if (ModelState.IsValid)
             {
                 
                 if (multiEditViewModel.CurrentJob.Status == "" || multiEditViewModel.CurrentJob.Status == null)
                 {
                         multiEditViewModel.CurrentJob.Status = "Working on it";
+                }
+                if (multiEditViewModel.CurrentHydroSpecific.BatteryBrand == "Other" && !string.IsNullOrEmpty(multiEditViewModel.CurrentHydroSpecific.OtherBatteryBrand))
+                {
+                    multiEditViewModel.CurrentHydroSpecific.BatteryBrand = multiEditViewModel.CurrentHydroSpecific.OtherBatteryBrand;
                 }
                 repository.SaveEngJobView(multiEditViewModel);
 
@@ -239,6 +246,8 @@ namespace ProdFloor.Controllers
                 {
                 List<SpecialFeatures> SfList = repository.SpecialFeatures.Where(j => j.JobID == ID).ToList();
                 JobViewModel continueJobViewModel = new JobViewModel();
+                AppUser currentUser = GetCurrentUser().Result;
+                continueJobViewModel.CurrentUserID = currentUser.EngID;
                 continueJobViewModel.CurrentTab = "Main";
                 continueJobViewModel.CurrentJob = repository.Jobs.FirstOrDefault(j => j.JobID == ID);
                 continueJobViewModel.CurrentJobExtension = (repository.JobsExtensions.FirstOrDefault(j => j.JobID == ID) ?? new JobExtension());
@@ -272,6 +281,8 @@ namespace ProdFloor.Controllers
         [HttpPost]
         public IActionResult NextForm(JobViewModel nextViewModel)
         {
+            AppUser currentUser = GetCurrentUser().Result;
+            nextViewModel.CurrentUserID = currentUser.EngID;
 
             if (nextViewModel.buttonAction == "AddSF")
             {
@@ -335,6 +346,10 @@ namespace ProdFloor.Controllers
                             }
                             else
                             {
+                                if (nextViewModel.CurrentHydroSpecific.BatteryBrand == "Other" && !string.IsNullOrEmpty(nextViewModel.CurrentHydroSpecific.OtherBatteryBrand))
+                                {
+                                    nextViewModel.CurrentHydroSpecific.BatteryBrand = nextViewModel.CurrentHydroSpecific.OtherBatteryBrand;
+                                }
                                 repository.SaveEngJobView(nextViewModel);
                                 nextViewModel.CurrentGenericFeatures = new GenericFeatures { JobID = nextViewModel.CurrentJob.JobID };
                                 nextViewModel.CurrentIndicator = new Indicator();

@@ -1,144 +1,156 @@
 ﻿@model JobViewModel
 <input type="hidden" asp-for="CurrentHoistWayData.JobID" />
 <input type="hidden" asp-for="CurrentHoistWayData.HoistWayDataID" />
-<div class="form-group row has-warning has-feedback">
-    <label asp-for="CurrentHoistWayData.HoistWaysNumber" class="col-sm-2 col-form-label"></label>
-    <div>
-        <input asp-for="CurrentHoistWayData.HoistWaysNumber" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control col-sm-7" />
-        <span asp-validation-for="CurrentHoistWayData.HoistWaysNumber" class="text-danger"></span>
+<div class="form-row col-sm-12" style="padding-bottom:15px">
+    <div class="col-6 form-line border-right">
+        <br />
+        <div class="form-group row has-warning has-feedback">
+            <label asp-for="CurrentHoistWayData.HoistWaysNumber" class="col-sm-5 col-form-label"></label>
+            <div>
+                <input asp-for="CurrentHoistWayData.HoistWaysNumber" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control col-sm-9" />
+                <span asp-validation-for="CurrentHoistWayData.HoistWaysNumber" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row has-warning has-feedback">
+            <label asp-for="CurrentHoistWayData.MachineRooms" class="col-sm-5 col-form-label"></label>
+            <div>
+                <input asp-for="CurrentHoistWayData.MachineRooms" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control col-sm-9" />
+                <span asp-validation-for="CurrentHoistWayData.MachineRooms" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row has-warning has-feedback">
+            <label asp-for="CurrentHoistWayData.Capacity" class="col-sm-5 col-form-label"></label>
+            <div>
+                <input asp-for="CurrentHoistWayData.Capacity" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control col-sm-9" />
+                <span asp-validation-for="CurrentHoistWayData.Capacity" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row has-warning has-feedback">
+            <label asp-for="CurrentHoistWayData.UpSpeed" class="col-sm-5 col-form-label"></label>
+            <div>
+                <input asp-for="CurrentHoistWayData.UpSpeed" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control col-sm-9" />
+                <span asp-validation-for="CurrentHoistWayData.UpSpeed" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row has-warning has-feedback">
+            <label asp-for="CurrentHoistWayData.DownSpeed" class="col-sm-5 col-form-label"></label>
+            <div>
+                <input asp-for="CurrentHoistWayData.DownSpeed" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control col-sm-9" />
+                <span asp-validation-for="CurrentHoistWayData.DownSpeed" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row has-warning has-feedback">
+            <label asp-for="CurrentHoistWayData.TotalTravel" class="col-sm-5 col-form-label"></label>
+            <div>
+                <input asp-for="CurrentHoistWayData.TotalTravel" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control col-sm-9" />
+                <span asp-validation-for="CurrentHoistWayData.TotalTravel" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row has-warning has-feedback">
+            <label asp-for="CurrentHoistWayData.LandingSystemID" class="col-sm-5 col-form-label"></label>
+            <div>
+                <landing-sys-select selected-value="@Model.CurrentHoistWayData.LandingSystemID" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control-sm" asp-for="CurrentHoistWayData.LandingSystemID"></landing-sys-select>
+                <span asp-validation-for="CurrentHoistWayData.LandingSystemID" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        @*Grid for checkboxes*@
+        <div class="container text-left" style="padding-left:30px;">
+            <table class="table table-bordered form-group table-sm table-hover" style="width:250px">
+                <thead class="thead-dark">
+                    <tr>
+                        <th class="col-sm-2" scope="col"><center>Landing #</center></th>
+                        <th class="col-sm-2" scope="col">Front</th>
+                        <th class="col-sm-2" scope="col">Rear</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row"><center>16</center></th>
+                        <td><input asp-for="CurrentHoistWayData.FrontSixteenthServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control" /></td>
+                        <td><input asp-for="CurrentHoistWayData.RearSixteenthServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control" /></td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><center>15</center></th>
+                        <td><input asp-for="CurrentHoistWayData.FrontFifteenthServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control" /></td>
+                        <td><input asp-for="CurrentHoistWayData.RearFifteenthServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control" /></td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><center>14</center></th>
+                        <td><input asp-for="CurrentHoistWayData.FrontFourteenthServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control" /></td>
+                        <td><input asp-for="CurrentHoistWayData.RearFourteenthServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)" class="form-control" /></td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><center>13</center></th>
+                        <td><input asp-for="CurrentHoistWayData.FrontThirteenthServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control" /></td>
+                        <td><input asp-for="CurrentHoistWayData.RearThirteenthServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control" /></td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><center>12</center></th>
+                        <td><input asp-for="CurrentHoistWayData.FrontTwelvethServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control" /></td>
+                        <td><input asp-for="CurrentHoistWayData.RearTwelvethServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control" /></td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><center>11</center></th>
+                        <td><input asp-for="CurrentHoistWayData.FrontEleventhServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control" /></td>
+                        <td><input asp-for="CurrentHoistWayData.RearEleventhServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control" /></td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><center>10</center></th>
+                        <td><input asp-for="CurrentHoistWayData.FrontTenthServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)" class="form-control" /></td>
+                        <td><input asp-for="CurrentHoistWayData.RearTenthServed" class="form-control" /></td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><center>9</center></th>
+                        <td><input asp-for="CurrentHoistWayData.FrontNinthServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control" /></td>
+                        <td><input asp-for="CurrentHoistWayData.RearNinthServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control" /></td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><center>8</center></th>
+                        <td><input asp-for="CurrentHoistWayData.FrontEightServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control" /></td>
+                        <td><input asp-for="CurrentHoistWayData.RearEightServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control" /></td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><center>7</center></th>
+                        <td><input asp-for="CurrentHoistWayData.FrontSeventhServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)" class="form-control" /></td>
+                        <td><input asp-for="CurrentHoistWayData.RearSeventhServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control" /></td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><center>6</center></th>
+                        <td><input asp-for="CurrentHoistWayData.FrontSexthServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control" /></td>
+                        <td><input asp-for="CurrentHoistWayData.RearSexthServed" class="form-control" /></td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><center>5</center></th>
+                        <td><input asp-for="CurrentHoistWayData.FrontFifthServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control" /></td>
+                        <td><input asp-for="CurrentHoistWayData.RearFifthServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control" /></td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><center>4</center></th>
+                        <td><input asp-for="CurrentHoistWayData.FrontFourthServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control" /></td>
+                        <td><input asp-for="CurrentHoistWayData.RearFourthServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control" /></td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><center>3</center></th>
+                        <td><input asp-for="CurrentHoistWayData.FrontThirdServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control" /></td>
+                        <td><input asp-for="CurrentHoistWayData.RearThirdServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control" /></td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><center>2</center></th>
+                        <td><input asp-for="CurrentHoistWayData.FrontSecondServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control" /></td>
+                        <td><input asp-for="CurrentHoistWayData.RearSecondServed" class="form-control" /></td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><center>1</center></th>
+                        <td><input asp-for="CurrentHoistWayData.FrontFirstServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control" /></td>
+                        <td><input asp-for="CurrentHoistWayData.RearFirstServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control" /></td>
+                    </tr>
+                </tbody>
+            </table>
+            
+        </div>
     </div>
 </div>
-<div class="form-group row has-warning has-feedback">
-    <label asp-for="CurrentHoistWayData.MachineRooms" class="col-sm-2 col-form-label"></label>
-    <div>
-        <input asp-for="CurrentHoistWayData.MachineRooms" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control col-sm-7" />
-        <span asp-validation-for="CurrentHoistWayData.MachineRooms" class="text-danger"></span>
-    </div>
-</div>
-<div class="form-group row has-warning has-feedback">
-    <label asp-for="CurrentHoistWayData.Capacity" class="col-sm-2 col-form-label"></label>
-    <div>
-        <input asp-for="CurrentHoistWayData.Capacity" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control col-sm-7" />
-        <span asp-validation-for="CurrentHoistWayData.Capacity" class="text-danger"></span>
-    </div>
-</div>
-<div class="form-group row has-warning has-feedback">
-    <label asp-for="CurrentHoistWayData.UpSpeed" class="col-sm-2 col-form-label"></label>
-    <div>
-        <input asp-for="CurrentHoistWayData.UpSpeed" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control col-sm-7" />
-        <span asp-validation-for="CurrentHoistWayData.UpSpeed" class="text-danger"></span>
-    </div>
-</div>
-<div class="form-group row has-warning has-feedback">
-    <label asp-for="CurrentHoistWayData.DownSpeed" class="col-sm-2 col-form-label"></label>
-    <div>
-        <input asp-for="CurrentHoistWayData.DownSpeed" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control col-sm-7" />
-        <span asp-validation-for="CurrentHoistWayData.DownSpeed" class="text-danger"></span>
-    </div>
-</div>
-<div class="form-group row has-warning has-feedback">
-    <label asp-for="CurrentHoistWayData.TotalTravel" class="col-sm-2 col-form-label"></label>
-    <div>
-        <input asp-for="CurrentHoistWayData.TotalTravel" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control col-sm-7" />
-        <span asp-validation-for="CurrentHoistWayData.TotalTravel" class="text-danger"></span>
-    </div>
-</div>
-<div class="form-group row has-warning has-feedback">
-    <label asp-for="CurrentHoistWayData.LandingSystemID" class="col-sm-2 col-form-label"></label>
-    <div>
-        <landing-sys-select selected-value="@Model.CurrentHoistWayData.LandingSystemID" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control-sm" asp-for="CurrentHoistWayData.LandingSystemID"></landing-sys-select>
-        <span asp-validation-for="CurrentHoistWayData.LandingSystemID" class="text-danger"></span>
-    </div>
-</div>
+
 <center></center>
-<table class="table table-bordered form-group" style="width:250px">
-    <thead class="thead-dark">
-        <tr>
-            <th class="col-sm-2" scope="col"><center>Landing #</center></th>
-            <th class="col-sm-2" scope="col">Front</th>
-            <th class="col-sm-2" scope="col">Rear</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <th scope="row"><center>16</center></th>
-            <td><input asp-for="CurrentHoistWayData.FrontSixteenthServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)"  class="form-control" /></td>
-            <td><input asp-for="CurrentHoistWayData.RearSixteenthServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control" /></td>
-        </tr>
-        <tr>
-            <th scope="row"><center>15</center></th>
-            <td><input asp-for="CurrentHoistWayData.FrontFifteenthServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control" /></td>
-            <td><input asp-for="CurrentHoistWayData.RearFifteenthServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control" /></td>
-        </tr>
-        <tr>
-            <th scope="row"><center>14</center></th>
-            <td><input asp-for="CurrentHoistWayData.FrontFourteenthServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control" /></td>
-            <td><input asp-for="CurrentHoistWayData.RearFourteenthServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)" class="form-control" /></td>
-        </tr>
-        <tr>
-            <th scope="row"><center>13</center></th>
-            <td><input asp-for="CurrentHoistWayData.FrontThirteenthServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control" /></td>
-            <td><input asp-for="CurrentHoistWayData.RearThirteenthServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control" /></td>
-        </tr>
-        <tr>
-            <th scope="row"><center>12</center></th>
-            <td><input asp-for="CurrentHoistWayData.FrontTwelvethServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control" /></td>
-            <td><input asp-for="CurrentHoistWayData.RearTwelvethServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control" /></td>
-        </tr>
-        <tr>
-            <th scope="row"><center>11</center></th>
-            <td><input asp-for="CurrentHoistWayData.FrontEleventhServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control" /></td>
-            <td><input asp-for="CurrentHoistWayData.RearEleventhServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control" /></td>
-        </tr>
-        <tr>
-            <th scope="row"><center>10</center></th>
-            <td><input asp-for="CurrentHoistWayData.FrontTenthServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)" class="form-control" /></td>
-            <td><input asp-for="CurrentHoistWayData.RearTenthServed" class="form-control" /></td>
-        </tr>
-        <tr>
-            <th scope="row"><center>9</center></th>
-            <td><input asp-for="CurrentHoistWayData.FrontNinthServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control" /></td>
-            <td><input asp-for="CurrentHoistWayData.RearNinthServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control" /></td>
-        </tr>
-        <tr>
-            <th scope="row"><center>8</center></th>
-            <td><input asp-for="CurrentHoistWayData.FrontEightServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control" /></td>
-            <td><input asp-for="CurrentHoistWayData.RearEightServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control" /></td>
-        </tr>
-        <tr>
-            <th scope="row"><center>7</center></th>
-            <td><input asp-for="CurrentHoistWayData.FrontSeventhServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)" class="form-control" /></td>
-            <td><input asp-for="CurrentHoistWayData.RearSeventhServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control" /></td>
-        </tr>
-        <tr>
-            <th scope="row"><center>6</center></th>
-            <td><input asp-for="CurrentHoistWayData.FrontSexthServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control" /></td>
-            <td><input asp-for="CurrentHoistWayData.RearSexthServed" class="form-control" /></td>
-        </tr>
-        <tr>
-            <th scope="row"><center>5</center></th>
-            <td><input asp-for="CurrentHoistWayData.FrontFifthServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control" /></td>
-            <td><input asp-for="CurrentHoistWayData.RearFifthServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control" /></td>
-        </tr>
-        <tr>
-            <th scope="row"><center>4</center></th>
-            <td><input asp-for="CurrentHoistWayData.FrontFourthServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control" /></td>
-            <td><input asp-for="CurrentHoistWayData.RearFourthServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control" /></td>
-        </tr>
-        <tr>
-            <th scope="row"><center>3</center></th>
-            <td><input asp-for="CurrentHoistWayData.FrontThirdServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control" /></td>
-            <td><input asp-for="CurrentHoistWayData.RearThirdServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control" /></td>
-        </tr>
-        <tr>
-            <th scope="row"><center>2</center></th>
-            <td><input asp-for="CurrentHoistWayData.FrontSecondServed"disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control" /></td>
-            <td><input asp-for="CurrentHoistWayData.RearSecondServed" class="form-control" /></td>
-        </tr>
-        <tr>
-            <th scope="row"><center>1</center></th>
-            <td><input asp-for="CurrentHoistWayData.FrontFirstServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control" /></td>
-            <td><input asp-for="CurrentHoistWayData.RearFirstServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control" /></td>
-        </tr>
-    </tbody>
-</table>

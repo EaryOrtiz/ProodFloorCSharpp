@@ -294,6 +294,8 @@ namespace ProdFloor.Infrastructure
     public class CustomSelectTagHelper : TagHelper
     {
         private IItemRepository itemsrepository;
+        private IJobRepository jobrepository;
+
 
         private IUrlHelperFactory urlHelperFactory;
 
@@ -301,10 +303,11 @@ namespace ProdFloor.Infrastructure
 
         public string SelectFor { get; set; }
 
-        public CustomSelectTagHelper(IUrlHelperFactory helperFactory, IItemRepository itemsrepo)
+        public CustomSelectTagHelper(IUrlHelperFactory helperFactory, IItemRepository itemsrepo, IJobRepository jobrepo)
         {
             urlHelperFactory = helperFactory;
             itemsrepository = itemsrepo;
+            jobrepository = jobrepo;
         }
 
         [HtmlAttributeName("asp-is-disabled")]
@@ -316,16 +319,22 @@ namespace ProdFloor.Infrastructure
             {
                 case "JobType":
                     return itemsrepository.JobTypes.Select(d => d.Name).Distinct();
+                case "Style":
+                    return itemsrepository.DoorOperators.Select(d => d.Style).Distinct();
                 case "SwitchStyle":
                     return new List<string> { "2-Position", "3-Position" }.AsQueryable();
                 case "SPH":
                     return new List<string> { "80", "120" }.AsQueryable();
                 case "Starter":
-                    return new List<string> { "Siemens SS: 6/12", "Siemens SS: 3/9", "Sprecher SS: 6/12", "Sprecher SS: 3/9", "ATL", "YD" }.AsQueryable();
+                    return new List<string> { "Siemens SS : 6/12", "Siemens SS : 3/9", "Sprecher SS : 6/12", "Sprecher SS : 3/9", "ATL", "YD" }.AsQueryable();
                 case "Valve Brand":
                     return new List<string> { "Maxton", "Blain", "EECO", "TKE | Dover", "Bucher", "Other" }.AsQueryable();
                 case "Battery Brand":
-                    return new List<string> { "HAPS", "R&R", "Other" }.AsQueryable();
+                    List<string> BatteryInHydro = jobrepository.HydroSpecifics.Select(d => d.BatteryBrand).Distinct().ToList();
+                    List<string> BatteryList = new List<string> { "HAPS", "R&R", "Other" };
+                    if(BatteryInHydro.Count > 0) BatteryList.AddRange(BatteryInHydro);
+
+                    return BatteryList.Distinct().AsQueryable();
                 default:
                     return itemsrepository.JobTypes.Select(d => d.Name).Distinct();
             }

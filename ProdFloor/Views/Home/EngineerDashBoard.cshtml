@@ -36,7 +36,7 @@
             @foreach (var j in Model.PendingJobs)
             {
                 <tr>
-                    <th scope="row">@j.JobNum</th>
+                    <th scope="row"><a asp-controller="Job" asp-action="Edit" asp-route-Id="@j.JobID">@j.JobNum</a></th>
                     <td>@j.Name</td>
                     <td>
                         @if (j.Status == "Incomplete")
@@ -53,6 +53,12 @@
                                 To Cross!
                             </a>*/
 
+                            <form asp-action="SearchAux" asp-controller="Item" method="get">
+                                <button type="submit" value="@j.JobNum" name="JobNum" class="btn btn-dark btn-sm col-sm-4"
+                                        style="margin-bottom:10px;min-width:100px;float:left">
+                                    WorkSheet
+                                </button>
+                            </form>
                             <form asp-action="ToCross" method="post">
                                 <input type="hidden" name="JobCrossID" value="@j.JobID" />
                                 <button type="submit" value="ToCross" name="buttonAction" class="btn btn-warning btn-sm col-sm-4"
@@ -64,6 +70,12 @@
                         }
                         else if (j.Status == "Cross Approval Complete")
                         {
+                            <form asp-action="SearchAux" asp-controller="Item" method="get">
+                                <button type="submit" value="@j.JobNum" name="JobNum" class="btn btn-dark btn-sm col-sm-4"
+                                        style="margin-bottom:10px;min-width:100px;float:left">
+                                    WorkSheet
+                                </button>
+                            </form>
                             <form asp-action="ToCross" method="post">
                                 <input type="hidden" name="JobCrossID" value="@j.JobID" />
                                 <button type="submit" class="btn btn-success btn-sm col-sm-7"
@@ -116,6 +128,12 @@
                 <td>
                     @if (j.Status == "Cross Approval Pending")
                     {
+                        <form asp-action="SearchAux" asp-controller="Item" method="get">
+                            <button type="submit" value="@j.JobNum" name="JobNum" class="btn btn-dark btn-sm col-sm-4"
+                                    style="margin-bottom:10px;min-width:100px;float:left">
+                                WorkSheet
+                            </button>
+                        </form>
                         <form asp-action="GetCross" method="post">
                             <input type="hidden" name="JobCrossID" value="@j.JobID" />
                             <button type="submit" class="btn btn-info btn-sm col-sm-7"
@@ -126,6 +144,12 @@
                     }
                     else if (j.Status == "On Cross Approval")
                     {
+                        <form asp-action="SearchAux" asp-controller="Item" method="get">
+                            <button type="submit" value="@j.JobNum" name="JobNum" class="btn btn-dark btn-sm col-sm-4"
+                                    style="margin-bottom:10px;min-width:100px;float:left">
+                                WorkSheet
+                            </button>
+                        </form>
                         <form asp-action="ToCross" method="post">
                             <input type="hidden" name="JobCrossID" value="@j.JobID" />
                             <button type="submit" value="CrossApproved" name="buttonAction" class="btn btn-primary btn-sm col-sm-7"

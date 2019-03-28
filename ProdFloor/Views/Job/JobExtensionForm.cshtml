@@ -40,7 +40,7 @@
         <div class="form-group row">
             <label asp-for="CurrentJobExtension.DoorHoist" class="col-sm-5 col-form-label"></label>
             <div><span asp-validation-for="CurrentJobExtension.DoorHoist" class="text-danger"></span></div>
-            <custom-select select-for="DoorOperatorStyle" selected-value="@Model.CurrentJobExtension.DoorHoist" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" class="form-control-sm" asp-for="CurrentJobExtension.DoorHoist"></custom-select>
+            <custom-select select-for="Style" selected-value="@Model.CurrentJobExtension.DoorHoist" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" class="form-control-sm" asp-for="CurrentJobExtension.DoorHoist"></custom-select>
         </div>
         <div class="form-group row">
             <label asp-for="CurrentJobExtension.DoorGate" class="col-sm-5 col-form-label"></label>

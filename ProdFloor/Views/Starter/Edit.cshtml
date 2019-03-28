@@ -7,23 +7,16 @@
 <form asp-action="Edit" method="post">
     <input type="hidden" asp-for="StarterID" />
     <div class="form-group col-4">
-        <label asp-for="Brand" class="col-form-label"></label>
+        <label asp-for="StarterType" class="col-form-label"></label>
         <div>
-            <starter select-for="Brand" selected-value="@Model.Brand" class="form-control-sm form-control" asp-for="Brand"></starter>
-            <span asp-validation-for="Brand" class="text-danger"></span>
+            <custom-select select-for="Starter" selected-value="@Model.StarterType" class="form-control-sm form-control" asp-for="StarterType"></custom-select>
+            <span asp-validation-for="StarterType" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group col-4">
         <label asp-for="FLA"></label>
         <div><span asp-validation-for="FLA" class="text-danger"></span></div>
         <input asp-for="FLA" class="form-control" />
-    </div>
-    <div class="form-group col-4">
-        <label asp-for="Type" class="col-form-label"></label>
-        <div>
-            <starter select-for="Type" selected-value="@Model.Type" class="form-control-sm form-control" asp-for="Type"></starter>
-            <span asp-validation-for="Type" class="text-danger"></span>
-        </div>
     </div>
     <div class="form-group col-4">
         <label asp-for="Volts" class="col-form-label"></label>

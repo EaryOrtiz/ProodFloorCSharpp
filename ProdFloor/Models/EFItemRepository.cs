@@ -302,9 +302,8 @@ namespace ProdFloor.Models
                 .FirstOrDefault(p => p.StarterID == starter.StarterID);
                 if (dbEntry != null)
                 {
-                    dbEntry.Brand = starter.Brand;
+                    dbEntry.StarterType = starter.StarterType;
                     dbEntry.FLA = starter.FLA;
-                    dbEntry.Type = starter.Type;
                     dbEntry.Volts = starter.Volts;
                     dbEntry.HP = starter.HP;
                     dbEntry.MCPart = starter.MCPart;

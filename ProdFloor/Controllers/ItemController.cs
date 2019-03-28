@@ -267,9 +267,8 @@ namespace ProdFloor.Controllers
                             xw.WriteStartElement("Starter");
 
                             xw.WriteElementString("ID", starter.StarterID.ToString());
-                            xw.WriteElementString("Brand", starter.Brand);
+                            xw.WriteElementString("StarterType", starter.StarterType);
                             xw.WriteElementString("FLA", starter.FLA.ToString());
-                            xw.WriteElementString("Type", starter.Type);
                             xw.WriteElementString("Volts", starter.Volts);
                             xw.WriteElementString("HP", starter.HP.ToString());
                             xw.WriteElementString("MCEPart", starter.MCPart);
@@ -378,11 +377,19 @@ namespace ProdFloor.Controllers
                         ViewModel.JobTypeMain = JobSearch._jobExtension.JobTypeMain;
                         ViewModel.ValveBrand = JobSearch._HydroSpecific.ValveBrand;
                         ViewModel.PO = JobSearch.PO;
-                        ViewModel.InputVoltage = JobSearch._jobExtension.InputVoltage;
                         ViewModel.HP = JobSearch._HydroSpecific.HP;
                         ViewModel.FireCodeName = FireCodeOne.Name;
                         ViewModel.LandingName = LandingOne.Name;
                         ViewModel.DownSpeed = JobSearch._HoistWayData.DownSpeed;
+                        ViewModel.StarterType = JobSearch._HydroSpecific.Starter;
+                        var volts = JobSearch._jobExtension.InputVoltage;
+                        if (volts >= 200 && volts <= 220 && (ViewModel.StarterType == "ATL" || ViewModel.StarterType == "YD" || ViewModel.StarterType == "Sprecher SS : 6/12" || ViewModel.StarterType == "Sprecher SS : 3/9" || ViewModel.StarterType == "Siemens SS : 6/12" || ViewModel.StarterType == "Siemens SS : 3/9")) ViewModel.Volts = "208";
+                        if (volts > 220 && volts <= 240 && (ViewModel.StarterType == "ATL" || ViewModel.StarterType == "YD" || ViewModel.StarterType == "Sprecher SS : 6/12" || ViewModel.StarterType == "Sprecher SS : 3/9" || ViewModel.StarterType == "Siemens SS : 6/12" || ViewModel.StarterType == "Siemens SS : 3/9")) ViewModel.Volts = "240";
+                        if (volts >= 380 && volts <= 480 && (ViewModel.StarterType == "ATL" || ViewModel.StarterType == "YD" || ViewModel.StarterType == "Sprecher SS : 6/12" || ViewModel.StarterType == "Sprecher SS : 3/9")) ViewModel.Volts = "480";
+                        if (volts > 480 && volts <= 600 && (ViewModel.StarterType == "ATL" || ViewModel.StarterType == "YD" || ViewModel.StarterType == "Sprecher SS : 6/12" || ViewModel.StarterType == "Sprecher SS : 3/9" || ViewModel.StarterType == "Siemens SS : 6/12" || ViewModel.StarterType == "Siemens SS : 3/9")) ViewModel.Volts = "575";
+                        if (volts > 380 && volts <= 480 && (ViewModel.StarterType == "Siemens SS : 6/12" || ViewModel.StarterType == "Siemens SS : 3/9")) ViewModel.Volts = "460";
+                        if (volts >= 300 && volts <= 380 && (ViewModel.StarterType == "Siemens SS : 6/12" || ViewModel.StarterType == "Siemens SS : 3/9")) ViewModel.Volts = "380/415";
+
                         #endregion
 
                         #region SlowdownAndWire
@@ -404,90 +411,97 @@ namespace ProdFloor.Controllers
                         #region StarterAndOverload
 
                         //Lista para strater and overload table
-                        List<Starter> StarterList = StarterReferSearch.Where(m => m.Volts.Contains(ViewModel.InputVoltage.ToString())
-                        && m.Type == JobSearch._HydroSpecific.Starter && m.FLA >= ViewModel.FLA && m.HP >= ViewModel.HP).OrderBy(o => o.FLA).Skip(0).Take(2).ToList();
+                        List<Starter> StarterList = StarterReferSearch.Where(m => m.Volts == ViewModel.Volts && m.StarterType == JobSearch._HydroSpecific.Starter 
+                        && m.FLA >= ViewModel.FLA && m.HP >= ViewModel.HP).OrderBy(o => o.FLA).Skip(0).Take(2).ToList();
 
-
-                        if (ViewModel.SPH == 80)
+                        if(StarterList.Count > 0)
                         {
-                            ViewModel.MCPart = StarterList[0].MCPart;
-                            ViewModel.NewManufacturerPart = StarterList[0].NewManufacturerPart;
-                            ViewModel.OverloadTable = StarterList[0].OverloadTable;
+                            if (ViewModel.SPH == 80)
+                            {
+                                ViewModel.MCPart = StarterList[0].MCPart;
+                                ViewModel.NewManufacturerPart = StarterList[0].NewManufacturerPart;
+                                ViewModel.OverloadTable = StarterList[0].OverloadTable;
+                            }
+                            else if (ViewModel.SPH == 120 && StarterList.Count != 0)
+                            {
+                                ViewModel.MCPart = StarterList[1].MCPart;
+                                ViewModel.NewManufacturerPart = StarterList[1].NewManufacturerPart;
+                                ViewModel.OverloadTable = StarterList[1].OverloadTable;
+                            }
+                            else
+                            {
+                                ViewModel.MCPart = "------Error------";
+                                ViewModel.NewManufacturerPart = "------Error------";
+                                ViewModel.OverloadTable = "N/A";
+
+                                TempData["alert"] = $"alert-danger";
+                                TempData["message"] = $"Starter Model out of range, please validate their SPH, HP, FLA and try again";
+                            }
+
+                            //Overload Table
+                            if (ViewModel.OverloadTable != null && ViewModel.OverloadTable != "N/A")
+                            {
+                                var OverLoadReg = OverloadReferSearch.FirstOrDefault(m => m.OverTableNum == Int32.Parse(ViewModel.OverloadTable)
+                                && m.AMPMin <= ViewModel.FLA && m.AMPMax >= ViewModel.FLA);
+                                ViewModel.MCPartOver = OverLoadReg.MCPart;
+                                ViewModel.SiemensPart = OverLoadReg.SiemensPart;
+                            }
+                            else
+                            {
+                                ViewModel.MCPartOver = "N/A";
+                                ViewModel.SiemensPart = "N/A";
+                            }
+
+                            #endregion
+
+                            #region ReferSearchVM
+
+                            ReferencesSearchvViewModel referSearch = new ReferencesSearchvViewModel
+                            {
+                                RefernceData = true,
+
+                                //JobData
+                                FLA = ViewModel.FLA,
+                                JobName = ViewModel.JobName,
+                                Contractor = ViewModel.Contractor,
+                                JobTypeMain = ViewModel.JobTypeMain,
+                                ValveBrand = ViewModel.ValveBrand,
+                                PO = JobSearch.PO,
+                                InputVoltage = ViewModel.InputVoltage,
+                                HP = ViewModel.HP,
+                                FireCodeName = ViewModel.FireCodeName,
+                                LandingName = ViewModel.LandingName,
+
+                                //Slow Table
+                                CarSpeedFPM = ViewModel.CarSpeedFPM,
+                                Distance = ViewModel.Distance,
+                                A = ViewModel.A,
+                                SlowLimit = ViewModel.SlowLimit,
+                                MiniumFloorHeight = ViewModel.MiniumFloorHeight,
+
+                                //WireTypesSize
+                                AMPRating = ViewModel.AMPRating,
+                                Size = ViewModel.Size,
+                                Type = ViewModel.Type,
+
+                                //Starter
+                                MCPart = ViewModel.MCPart,
+                                NewManufacturerPart = ViewModel.NewManufacturerPart,
+
+                                //Overload
+                                MCPartOver = ViewModel.MCPartOver,
+                                SiemensPart = ViewModel.SiemensPart
+                            };
+
+                            return View(referSearch);
+
+                            #endregion
                         }
-                        else if (ViewModel.SPH == 120 && StarterList.Count != 0)
-                        {
-                            ViewModel.MCPart = StarterList[1].MCPart;
-                            ViewModel.NewManufacturerPart = StarterList[1].NewManufacturerPart;
-                            ViewModel.OverloadTable = StarterList[1].OverloadTable;
-                        }
-                        else
-                        {
-                            ViewModel.MCPart = "------Error------";
-                            ViewModel.NewManufacturerPart = "------Error------";
-                            ViewModel.OverloadTable = "N/A";
 
-                            TempData["alert"] = $"alert-danger";
-                            TempData["message"] = $"Starter Model out of range, please validate their SPH, HP, FLA and try again";
-                        }
+                        TempData["alert"] = $"alert-danger";
+                        TempData["message"] = $"Some issue with the search, try again";
+                        return RedirectToAction("ReferencesSearch", referSearchAux);
 
-                        //Overload Table
-                        if (ViewModel.OverloadTable != null && ViewModel.OverloadTable != "N/A")
-                        {
-                            var OverLoadReg = OverloadReferSearch.FirstOrDefault(m => m.OverTableNum == Int32.Parse(ViewModel.OverloadTable)
-                            && m.AMPMin >= ViewModel.FLA && m.AMPMax <= ViewModel.FLA);
-                            ViewModel.MCPartOver = OverLoadReg.MCPart;
-                            ViewModel.SiemensPart = OverLoadReg.SiemensPart;
-                        }
-                        else
-                        {
-                            ViewModel.MCPartOver = "N/A";
-                            ViewModel.SiemensPart = "N/A";
-                        }
-
-                        #endregion
-
-                        #region ReferSearchVM
-
-                        ReferencesSearchvViewModel referSearch = new ReferencesSearchvViewModel
-                        {
-                            RefernceData = true,
-
-                            //JobData
-                            FLA = ViewModel.FLA,
-                            JobName = ViewModel.JobName,
-                            Contractor = ViewModel.Contractor,
-                            JobTypeMain = ViewModel.JobTypeMain,
-                            ValveBrand = ViewModel.ValveBrand,
-                            PO = JobSearch.PO,
-                            InputVoltage = ViewModel.InputVoltage,
-                            HP = ViewModel.HP,
-                            FireCodeName = ViewModel.FireCodeName,
-                            LandingName = ViewModel.LandingName,
-
-                            //Slow Table
-                            CarSpeedFPM = ViewModel.CarSpeedFPM,
-                            Distance = ViewModel.Distance,
-                            A = ViewModel.A,
-                            SlowLimit = ViewModel.SlowLimit,
-                            MiniumFloorHeight = ViewModel.MiniumFloorHeight,
-
-                            //WireTypesSize
-                            AMPRating = ViewModel.AMPRating,
-                            Size = ViewModel.Size,
-                            Type = ViewModel.Type,
-
-                            //Starter
-                            MCPart = ViewModel.MCPart,
-                            NewManufacturerPart = ViewModel.NewManufacturerPart,
-
-                            //Overload
-                            MCPartOver = ViewModel.MCPartOver,
-                            SiemensPart = ViewModel.SiemensPart
-                        };
-
-                        return View(referSearch);
-
-                        #endregion
                     }
 
                     TempData["alert"] = $"alert-danger";
@@ -508,6 +522,17 @@ namespace ProdFloor.Controllers
                 return View(referSearchAux);
             }
 
+        }
+
+        public RedirectToActionResult SearchAux(int JobNum)
+        {
+            ReferencesSearchvViewModel viewModel = new ReferencesSearchvViewModel
+            {
+               NumJobSearch = JobNum,
+               RefernceData = false
+            };
+
+            return RedirectToAction("ReferencesSearch", viewModel);
         }
 
         public static void ImportXML(IServiceProvider services, string resp)
@@ -585,9 +610,8 @@ namespace ProdFloor.Controllers
                     foreach (var XMLob in XMLobs4)
                     {
                         var ID = XMLob.SelectSingleNode(".//id").InnerText;
-                        var brand = XMLob.SelectSingleNode(".//brand").InnerText;
+                        var starter = XMLob.SelectSingleNode(".//startertype").InnerText;
                         var fla = XMLob.SelectSingleNode(".//fla").InnerText;
-                        var type = XMLob.SelectSingleNode(".//type").InnerText;
                         var volts = XMLob.SelectSingleNode(".//volts").InnerText;
                         var hp = XMLob.SelectSingleNode(".//hp").InnerText;
                         var mcepart = XMLob.SelectSingleNode(".//mcepart").InnerText;
@@ -597,9 +621,8 @@ namespace ProdFloor.Controllers
                         context.Starters.Add(new Starter
                         {
                             StarterID = Int32.Parse(ID),
-                            Brand = brand,
+                            StarterType = starter,
                             FLA = Int32.Parse(fla),
-                            Type = type,
                             Volts = volts,
                             HP = float.Parse(hp),
                             MCPart = mcepart,

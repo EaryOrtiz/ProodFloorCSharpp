@@ -11,9 +11,10 @@ using System;
 namespace ProdFloor.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190328155315_StarterTableUpdated")]
+    partial class StarterTableUpdated
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -331,6 +332,10 @@ namespace ProdFloor.Migrations
                         .HasMaxLength(50);
 
                     b.Property<int>("ValveCoils");
+
+                    b.Property<string>("ValveModel")
+                        .IsRequired()
+                        .HasMaxLength(50);
 
                     b.Property<int>("ValveNum");
 
@@ -655,10 +660,10 @@ namespace ProdFloor.Migrations
                     b.Property<string>("OverloadTable")
                         .IsRequired();
 
-                    b.Property<string>("StarterType")
+                    b.Property<string>("Volts")
                         .IsRequired();
 
-                    b.Property<string>("Volts")
+                    b.Property<string>("_Starter")
                         .IsRequired();
 
                     b.HasKey("StarterID");

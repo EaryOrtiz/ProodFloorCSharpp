@@ -22,6 +22,7 @@ namespace ProdFloor.Models.ViewModels.Item
 
         public int SPH { get; set; }
         public string JobName { get; set; }
+        public string StarterType { get; set; }
         public string Contractor { get; set; }
         public string FireCode { get; set; }
         public string JobTypeMain { get; set; }
