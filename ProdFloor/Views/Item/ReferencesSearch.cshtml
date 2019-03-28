@@ -5,23 +5,13 @@
 }
 
 <div class="row" style="padding-right:20px">
-    <h2 class="col-sm-10">M2000 Worksheet</h2>
+    <h2 class="col-sm-10">Worksheet for Job: @Model.NumJobSearch</h2>
 </div>
 <br />
 
 <form asp-controller="Item" asp-action="ReferencesSearch" method="get">
-    <div class="input-group">
-        <input type="text" class="form-control form-control-sm col-sm-2" asp-for="NumJobSearch" placeholder=" Please enter a Job Number">
-        <div class="input-group-append">
-            <button class="btn btn-dark" type="submit" value="Search">
-                <i class="fa fa-search" aria-hidden="true"></i>
-            </button>
-        </div>
-    </div>
-    <br />
-    <div>
-        <span asp-validation-for="NumJobSearch" class="text-danger"></span><br />
-    </div>
+    <input type="hidden" class="form-control form-control-sm col-sm-2" asp-for="NumJobSearch">
+    <span asp-validation-for="NumJobSearch" class="text-danger"></span><br />
 </form>
 @if (Model.RefernceData == true)
 {

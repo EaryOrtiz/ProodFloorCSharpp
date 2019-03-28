@@ -45,6 +45,10 @@ namespace ProdFloor
             services.AddMvc();
             services.AddMemoryCache();
             services.AddSession();
+            services.Configure<IISOptions>(options =>
+            {
+                options.ForwardClientCertificate = false;
+            });
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)

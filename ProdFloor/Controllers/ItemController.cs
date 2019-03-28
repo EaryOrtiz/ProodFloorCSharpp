@@ -363,7 +363,7 @@ namespace ProdFloor.Controllers
             {
                 var JobSearch = jobSearch.FirstOrDefault(m => m.JobNum == ViewModel.NumJobSearch);
 
-                if(JobSearch != null)
+                if (JobSearch != null)
                 {
                     if (JobSearch.Status != "Incomplete")
                     {
@@ -382,6 +382,7 @@ namespace ProdFloor.Controllers
                         ViewModel.LandingName = LandingOne.Name;
                         ViewModel.DownSpeed = JobSearch._HoistWayData.DownSpeed;
                         ViewModel.StarterType = JobSearch._HydroSpecific.Starter;
+                        ViewModel.NumJobSearch = JobSearch.JobNum;
                         var volts = JobSearch._jobExtension.InputVoltage;
                         if (volts >= 200 && volts <= 220 && (ViewModel.StarterType == "ATL" || ViewModel.StarterType == "YD" || ViewModel.StarterType == "Sprecher SS : 6/12" || ViewModel.StarterType == "Sprecher SS : 3/9" || ViewModel.StarterType == "Siemens SS : 6/12" || ViewModel.StarterType == "Siemens SS : 3/9")) ViewModel.Volts = "208";
                         if (volts > 220 && volts <= 240 && (ViewModel.StarterType == "ATL" || ViewModel.StarterType == "YD" || ViewModel.StarterType == "Sprecher SS : 6/12" || ViewModel.StarterType == "Sprecher SS : 3/9" || ViewModel.StarterType == "Siemens SS : 6/12" || ViewModel.StarterType == "Siemens SS : 3/9")) ViewModel.Volts = "240";
@@ -411,10 +412,10 @@ namespace ProdFloor.Controllers
                         #region StarterAndOverload
 
                         //Lista para strater and overload table
-                        List<Starter> StarterList = StarterReferSearch.Where(m => m.Volts == ViewModel.Volts && m.StarterType == JobSearch._HydroSpecific.Starter 
+                        List<Starter> StarterList = StarterReferSearch.Where(m => m.Volts == ViewModel.Volts && m.StarterType == JobSearch._HydroSpecific.Starter
                         && m.FLA >= ViewModel.FLA && m.HP >= ViewModel.HP).OrderBy(o => o.FLA).Skip(0).Take(2).ToList();
 
-                        if(StarterList.Count > 0)
+                        if (StarterList.Count > 0)
                         {
                             if (ViewModel.SPH == 80)
                             {
@@ -471,7 +472,7 @@ namespace ProdFloor.Controllers
                                 HP = ViewModel.HP,
                                 FireCodeName = ViewModel.FireCodeName,
                                 LandingName = ViewModel.LandingName,
-
+                                NumJobSearch = ViewModel.NumJobSearch,
                                 //Slow Table
                                 CarSpeedFPM = ViewModel.CarSpeedFPM,
                                 Distance = ViewModel.Distance,
@@ -528,8 +529,8 @@ namespace ProdFloor.Controllers
         {
             ReferencesSearchvViewModel viewModel = new ReferencesSearchvViewModel
             {
-               NumJobSearch = JobNum,
-               RefernceData = false
+                NumJobSearch = JobNum,
+                RefernceData = false
             };
 
             return RedirectToAction("ReferencesSearch", viewModel);
@@ -541,7 +542,7 @@ namespace ProdFloor.Controllers
             switch (resp)
             {
                 case "Wire":
-                    
+
                     HtmlDocument doc = new HtmlDocument();
                     doc.Load(@"C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\WireTypesSizes.xml");
 
@@ -554,18 +555,18 @@ namespace ProdFloor.Controllers
                         var size = XMLob.SelectSingleNode(".//size").InnerText;
                         var aMPRataing = XMLob.SelectSingleNode(".//amprating").InnerText;
 
-                            context.WireTypesSizes.Add(new WireTypesSize { WireTypesSizeID = Int32.Parse(ID), Type = type, Size = size, AMPRating = Int32.Parse(aMPRataing) });
-                            context.Database.OpenConnection();
-                            try
-                            {
-                                context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.WireTypesSizes ON");
-                                context.SaveChanges();
-                                context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.WireTypesSizes OFF");
-                            }
-                            finally
-                            {
-                                context.Database.CloseConnection();
-                            }
+                        context.WireTypesSizes.Add(new WireTypesSize { WireTypesSizeID = Int32.Parse(ID), Type = type, Size = size, AMPRating = Int32.Parse(aMPRataing) });
+                        context.Database.OpenConnection();
+                        try
+                        {
+                            context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.WireTypesSizes ON");
+                            context.SaveChanges();
+                            context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.WireTypesSizes OFF");
+                        }
+                        finally
+                        {
+                            context.Database.CloseConnection();
+                        }
                     }
                     break;
 
@@ -584,20 +585,27 @@ namespace ProdFloor.Controllers
                         var slowlimit = XMLob.SelectSingleNode(".//slowlimit").InnerText;
                         var miniumFloor = XMLob.SelectSingleNode(".//miniumfloorheight").InnerText;
 
-                            context.Slowdowns.Add(new Slowdown { SlowdownID = Int32.Parse(ID), CarSpeedFPM = Int32.Parse(carspeed), Distance = Int32.Parse(distance),
-                                A = Int32.Parse(a), SlowLimit = Int32.Parse(slowlimit), MiniumFloorHeight = Int32.Parse(miniumFloor)});
+                        context.Slowdowns.Add(new Slowdown
+                        {
+                            SlowdownID = Int32.Parse(ID),
+                            CarSpeedFPM = Int32.Parse(carspeed),
+                            Distance = Int32.Parse(distance),
+                            A = Int32.Parse(a),
+                            SlowLimit = Int32.Parse(slowlimit),
+                            MiniumFloorHeight = Int32.Parse(miniumFloor)
+                        });
 
-                            context.Database.OpenConnection();
-                            try
-                            {
-                                context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.Slowdowns ON");
-                                context.SaveChanges();
-                                context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.Slowdowns OFF");
-                            }
-                            finally
-                            {
-                                context.Database.CloseConnection();
-                            }
+                        context.Database.OpenConnection();
+                        try
+                        {
+                            context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.Slowdowns ON");
+                            context.SaveChanges();
+                            context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.Slowdowns OFF");
+                        }
+                        finally
+                        {
+                            context.Database.CloseConnection();
+                        }
                     }
                     break;
 
@@ -780,7 +788,7 @@ namespace ProdFloor.Controllers
                             }
                         }
                     }
-                    
+
                     break;
 
                 case "LandingSys":
