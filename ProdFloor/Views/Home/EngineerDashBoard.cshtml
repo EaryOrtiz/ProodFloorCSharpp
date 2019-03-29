@@ -36,7 +36,16 @@
             @foreach (var j in Model.PendingJobs)
             {
                 <tr>
-                    <th scope="row"><a asp-controller="Job" asp-action="Edit" asp-route-Id="@j.JobID">@j.JobNum</a></th>
+                    <th scope="row">
+                        @if (j.Status != "Incomplete")
+                        {
+                            <a asp-controller="Job" asp-action="Edit" asp-route-Id="@j.JobID">@j.JobNum</a>
+                        }
+                        else
+                        {
+                            <a asp-controller="Job" asp-action="Continue" asp-route-Id="@j.JobID">@j.JobNum</a>
+                        }
+                    </th>
                     <td>@j.Name</td>
                     <td>
                         @if (j.Status == "Incomplete")
