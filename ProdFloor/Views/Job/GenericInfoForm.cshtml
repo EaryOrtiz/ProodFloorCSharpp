@@ -2,7 +2,7 @@
 <input type="hidden" asp-for="CurrentGenericFeatures.JobID" />
 <input type="hidden" asp-for="CurrentGenericFeatures.GenericFeaturesID" />
 <div class="form-row col-sm-12" style="padding-bottom:15px">
-    <div class="col-4 form-line border-right">
+    <div class="col-4 form-line border-right justify-content-md-center">
         <div class="form-group row">
             <div class="custom-control custom-checkbox">
                 <input type="checkbox" asp-for="CurrentGenericFeatures.FRON2" class="custom-control-input" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)">
@@ -143,7 +143,7 @@
             </div>
         </div>
     </div>
-    <div class="col-md-8">
+    <div class="col-md-8 justify-content-md-center">
         @*Grid for checkboxes*@
         <div class="container text-left" style="padding-left:30px;">
             <div class="form-group row">

@@ -1,8 +1,8 @@
 ﻿@model JobViewModel
 <input type="hidden" asp-for="CurrentHoistWayData.JobID" />
 <input type="hidden" asp-for="CurrentHoistWayData.HoistWayDataID" />
-<div class="form-row col-sm-12" style="padding-bottom:15px">
-    <div class="col-6 form-line border-right">
+<div class="form-row col-sm-12 justify-content-md-center" style="padding-bottom:15px">
+    <div class="col-6 form-line border-right justify-content-md-center">
         <br />
         <div class="form-group row has-warning has-feedback">
             <label asp-for="CurrentHoistWayData.HoistWaysNumber" class="col-sm-5 col-form-label"></label>
@@ -54,7 +54,7 @@
             </div>
         </div>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-6 justify-content-md-center">
         @*Grid for checkboxes*@
         <div class="container text-left" style="padding-left:30px;">
             <table class="table table-bordered form-group table-sm table-hover" style="width:250px">
@@ -152,5 +152,3 @@
         </div>
     </div>
 </div>
-
-<center></center>
