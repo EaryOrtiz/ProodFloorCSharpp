@@ -267,7 +267,7 @@ namespace ProdFloor.Infrastructure
                 output.Attributes.Add("name", name);
             }
             TagBuilder m_tag = new TagBuilder("option");
-            m_tag.Attributes["value"] = "";
+            m_tag.Attributes["value"] = null;
             m_tag.InnerHtml.Append("Please select one");
             result.InnerHtml.AppendHtml(m_tag);
             foreach (string style in itemsrepository.DoorOperators.Select(d => d.Style).Distinct())
@@ -365,13 +365,16 @@ namespace ProdFloor.Infrastructure
             foreach (string option in options2)
             {
                 TagBuilder tag = new TagBuilder("option");
-                tag.Attributes["value"] = option.ToString();
-                if (option.ToString() == SelectedValue)
+                if (!string.IsNullOrEmpty(option))
                 {
-                    tag.Attributes["selected"] = "selected";
+                    tag.Attributes["value"] = option;
+                    if (option.ToString() == SelectedValue)
+                    {
+                        tag.Attributes["selected"] = "selected";
+                    }
+                    tag.InnerHtml.Append(option.ToString());
+                    result.InnerHtml.AppendHtml(tag);
                 }
-                tag.InnerHtml.Append(option.ToString());
-                result.InnerHtml.AppendHtml(tag);
             }
             output.Content.AppendHtml(result.InnerHtml);
             if (IsDisabled)
