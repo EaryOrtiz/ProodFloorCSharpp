@@ -158,6 +158,7 @@ namespace ProdFloor.Controllers
                         }
                     }
                 }
+                //Despues de terminar de hacer la lista de steps para job se manda el primero a la siguiente vista
                 var stepsFor = testingRepo.StepsForJobs.FirstOrDefault(m => m.TestJobID == testJobView.TestFeature.TestJobID && m.Consecutivo == 1);
                 var stepAux = testingRepo.Steps.FirstOrDefault(m => m.StepID == stepsFor.StepID);
                 var job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == testJobView.TestJob.JobID);
@@ -171,7 +172,11 @@ namespace ProdFloor.Controllers
         public IActionResult StepsForJob(TestJobViewModel viewModel, int next)
         {
             var StepsForJobList = testingRepo.StepsForJobs.Where(m => m.TestJobID == viewModel.TestFeature.TestJobID).ToList();
-            if((viewModel.StepsForJob.Consecutivo + 1) == next)
+            if (next == 0)
+            {
+                return View("StepsForJob", viewModel);
+
+            }else if (viewModel.StepsForJob.Consecutivo == (next - 1))
             {
                 var currentStepForJob = StepsForJobList.FirstOrDefault(m => m.Consecutivo == viewModel.StepsForJob.Consecutivo); currentStepForJob.Complete = true;
                 var nextStepFor = StepsForJobList.FirstOrDefault(m => m.Consecutivo == next && m.Complete == false);
@@ -179,12 +184,12 @@ namespace ProdFloor.Controllers
                 var job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == viewModel.TestJob.JobID);
                 return View("StepsForJob", new TestJobViewModel { StepsForJob = nextStepFor, Step = stepAux, Job = job });
 
-            }else if(next == 0)
+            }else if(viewModel.StepsForJob.Consecutivo == (next + 1))
             {
-                return View("StepsForJob", viewModel);
+
             }else if( next > StepsForJobList.Count())
             {
-                //******Se seataran varias cosas del testJob
+                //******Se setearan varias cosas del testJob
                 return RedirectToAction(nameof(List));
             }
             
