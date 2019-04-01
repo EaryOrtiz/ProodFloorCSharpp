@@ -1,0 +1,26 @@
+﻿@model ProdFloor.Models.ViewModels.TestJob.TestJobViewModel
+@{
+    ViewBag.Title = "Steps For Job";
+    Layout = "_AdminLayoutWO";
+}
+<form asp-controller="TestJob" asp-action="StepsForJob" method="post">
+    <input type="hidden" asp-for="@Model.Job.JobNum" value="@Model.Job.JobNum" />
+    <input type="hidden" asp-for="@Model.Step.Stage" />
+    <input type="hidden" asp-for="@Model.TestJob.TestJobID" value="@Model.TestJob.TestJobID" />
+    <input type="hidden" asp-for="@Model.StepsForJob.Consecutivo" value="@Model.StepsForJob.Consecutivo" />
+    <input type="hidden" asp-for="@Model.StepsForJob.StepsForJobID" value="@Model.StepsForJob.StepsForJobID" />
+    <input type="hidden" asp-for="@Model.Step.Description" />
+    <div class="container justify-content-md-center">
+        <div class="row justify-content-md-center">
+            <h2>@Model.Job.JobNum</h2>
+            <h3>@Model.Step.Stage</h3>
+            <h4>@Model.StepsForJob.Consecutivo</h4>
+            <h3>@Model.Step.Description</h3>
+            <div class="btn-group" role="group" aria-label="Basic example">
+                <button class="btn btn-primary" name="next" value="@Model.StepsForJob.Consecutivo - 1" disabled="@(Model.StepsForJob.Consecutivo == 1 ? true: false)">Atras</button>
+                <button class="btn btn-success" name="next" value="@Model.StepsForJob.Consecutivo + 1">Siguiente</button>
+                <button class="btn btn-warning" name="next" value="777">Stop</button>
+            </div>
+        </div>
+    </div>
+</form>

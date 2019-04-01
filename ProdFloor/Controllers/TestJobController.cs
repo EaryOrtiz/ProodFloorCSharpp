@@ -53,7 +53,7 @@ namespace ProdFloor.Controllers
 
         [HttpPost]
         public IActionResult SearchJob(TestJobViewModel viewModel)
-        {
+         {
             AppUser currentUser = GetCurrentUser().Result;
             var jobSearch = jobRepo.Jobs.AsQueryable();
             TestJobViewModel testJobSearchAux = new TestJobViewModel { };
@@ -96,15 +96,101 @@ namespace ProdFloor.Controllers
         [HttpPost]
         public IActionResult NewTestFeatures(TestJobViewModel testJobView)
         {
-            if(testJobView.TestFeature != null)
+            //Checa que la lista de features no este vacia o nula
+            if (testJobView.TestFeature != null)
             {
+                //guarda la lista de features
                 testingRepo.SaveTestFeature(testJobView.TestFeature);
 
-                return RedirectToAction(nameof(List));
+                var Steps = testingRepo.Steps.GroupBy(m => m.Order).ToList();
+                var JobFeatures = testingRepo.TestFeatures.FirstOrDefault(m => m.TestJobID == testJobView.TestFeature.TestJobID);
+                //Checa si la lista de estps no esta vacia
+                if (Steps.Count > 0)
+                {
+                    List<Step> StepList = new List<Step>();
+                    //Se checa cada step que este en la lista
+                    foreach (Step step in Steps)
+                    {
+                        var triggers = testingRepo.TriggeringFeatures.Where(m => m.StepID == step.StepID).ToList();
+                        int consecutivo = 1;
+                        //checa que la lista de triggers no este vacia
+                        if (triggers.Count > 0)
+                        {
+                            bool stepIsValid = false;
+                            int count = triggers.Count;
+                            //Checa que cada feature de la lista concuerde con los features del testjob
+                            foreach (TriggeringFeature trigger in triggers)
+                            {
+                                int countAux = 0;
+                                switch (trigger.Name)
+                                {
+                                    case "Overlay": if (trigger.IsSelected == JobFeatures.Overlay) { countAux++; } break;
+                                    case "Group": if (trigger.IsSelected == JobFeatures.Group) { countAux++; } break;
+                                    case "PC": if (trigger.IsSelected == JobFeatures.PC) { countAux++; } break;
+                                    case "BrakeCoilVoltageMoreThan10": if (trigger.IsSelected == JobFeatures.BrakeCoilVoltageMoreThan10) { countAux++; } break;
+                                    case "MBrake": if (trigger.IsSelected == JobFeatures.MBrake) { countAux++; } break;
+                                    case "EMCO": if (trigger.IsSelected == JobFeatures.EMCO) { countAux++; } break;
+                                    case "R6": if (trigger.IsSelected == JobFeatures.R6) { countAux++; } break;
+                                    case "Local": if (trigger.IsSelected == JobFeatures.Local) { countAux++; } break;
+                                    case "ShortFloor": if (trigger.IsSelected == JobFeatures.ShortFloor) { countAux++; } break;
+                                    case "Custom": if (trigger.IsSelected == JobFeatures.Custom) { countAux++; } break;
+                                    case "MRL": if (trigger.IsSelected == JobFeatures.MRL) { countAux++; } break;
+                                    case "CTL2": if (trigger.IsSelected == JobFeatures.CTL2) { countAux++; } break;
+                                }
+                                //Si la cantidad de features coinciden con la del los triggers entoces se volvera true
+                                if (count == countAux) stepIsValid = true;
+                            }
+                            //Si se vuelve valido agrega el step a la lista de steps for job
+                            if (stepIsValid == true)
+                            {
+                                StepsForJob stepForJob = new StepsForJob
+                                {
+                                    StepID = step.StepID,
+                                    TestJobID = JobFeatures.TestJobID,
+                                    Start = DateTime.Now,
+                                    Stop = DateTime.Now,
+                                    Elapsed = new DateTime(0, 0, 0),
+                                    Consecutivo = consecutivo
+                                };
+
+                                testingRepo.SaveStepsForJob(stepForJob);
+                            }
+                        }
+                    }
+                }
+                var stepsFor = testingRepo.StepsForJobs.FirstOrDefault(m => m.TestJobID == testJobView.TestFeature.TestJobID && m.Consecutivo == 1);
+                var stepAux = testingRepo.Steps.FirstOrDefault(m => m.StepID == stepsFor.StepID);
+                var job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == testJobView.TestJob.JobID);
+                return View("StepsForJob",new TestJobViewModel { StepsForJob = stepsFor, Step = stepAux, Job = job});
             }
 
             return NotFound();
         }
+
+        [HttpPost]
+        public IActionResult StepsForJob(TestJobViewModel viewModel, int next)
+        {
+            var StepsForJobList = testingRepo.StepsForJobs.Where(m => m.TestJobID == viewModel.TestFeature.TestJobID).ToList();
+            if((viewModel.StepsForJob.Consecutivo + 1) == next)
+            {
+                var currentStepForJob = StepsForJobList.FirstOrDefault(m => m.Consecutivo == viewModel.StepsForJob.Consecutivo); currentStepForJob.Complete = true;
+                var nextStepFor = StepsForJobList.FirstOrDefault(m => m.Consecutivo == next && m.Complete == false);
+                var stepAux = testingRepo.Steps.FirstOrDefault(m => m.StepID == nextStepFor.StepID);
+                var job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == viewModel.TestJob.JobID);
+                return View("StepsForJob", new TestJobViewModel { StepsForJob = nextStepFor, Step = stepAux, Job = job });
+
+            }else if(next == 0)
+            {
+                return View("StepsForJob", viewModel);
+            }else if( next > StepsForJobList.Count())
+            {
+                //******Se seataran varias cosas del testJob
+                return RedirectToAction(nameof(List));
+            }
+            
+            return View(NotFound());
+        }
+
         private async Task<AppUser> GetCurrentUser()
         {
             AppUser user = await userManager.GetUserAsync(HttpContext.User);
