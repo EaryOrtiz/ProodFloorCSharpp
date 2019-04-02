@@ -163,6 +163,7 @@ namespace ProdFloor.Controllers
                                         case "Custom": if (trigger.IsSelected == JobFeatures.Custom) { countAux++; } break;
                                         case "MRL": if (trigger.IsSelected == JobFeatures.MRL) { countAux++; } break;
                                         case "CTL2": if (trigger.IsSelected == JobFeatures.CTL2) { countAux++; } break;
+                                        default: break;
                                     }
                                 }
                                 //Si se vuelve valido agrega el step a la lista de steps for job
