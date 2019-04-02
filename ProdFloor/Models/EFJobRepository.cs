@@ -112,7 +112,6 @@ namespace ProdFloor.Models
                     dbEntry.SPH = hydroSpecific.SPH;
                     dbEntry.MotorsNum = hydroSpecific.MotorsNum;
                     dbEntry.ValveBrand = hydroSpecific.ValveBrand;
-                    dbEntry.ValveModel = hydroSpecific.ValveModel;
                     dbEntry.ValveCoils = hydroSpecific.ValveCoils;
                     dbEntry.ValveNum = hydroSpecific.ValveNum;
                     dbEntry.ValveVoltage = hydroSpecific.ValveVoltage;

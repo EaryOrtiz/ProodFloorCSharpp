@@ -194,11 +194,6 @@ namespace ProdFloor.Models
         [Display(Name = "Valve's Brand")]
         public string ValveBrand { get; set; }
 
-        [StringLength(50, ErrorMessage = "The maximum length of the {0} field is {1}")]
-        [Required(ErrorMessage = "Please enter the model of the valves")]
-        [Display(Name = "Valve's Model")]
-        public string ValveModel { get; set; }
-
         [Required(ErrorMessage = "Please enter the number of coils per valve")]
         [Display(Name = "Coils per valve")]
         public int ValveCoils { get; set; }

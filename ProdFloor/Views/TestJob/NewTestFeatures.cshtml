@@ -8,6 +8,8 @@
         <div class="container text-center">
             <h3>Job Features</h3>
             <br /><br />
+            <input type="hidden" asp-for="TestJob.JobID" />
+            <input type="hidden" asp-for="TestJob.TestJobID" />
             <input type="hidden" asp-for="TestFeature.TestFeatureID" />
             <input type="hidden" asp-for="TestFeature.TestJobID" value="@Model.TestJob.TestJobID" />
             <div class="form-group row">
@@ -61,7 +63,7 @@
             <div class="form-group row">
                 <div class="custom-control custom-checkbox">
                     <input type="checkbox" asp-for="TestFeature.ShortFloor" class="custom-control-input">
-                    <label class="custom-control-label" asp-for="TestFeature.Overlay"></label>
+                    <label class="custom-control-label" asp-for="TestFeature.ShortFloor"></label>
                 </div>
             </div>
             <div class="form-group row">
@@ -84,9 +86,8 @@
             </div>
             <hr style="width: 120%; color: black; height: 1px; background-color:floralwhite;" />
             <div class="text-center">
-                <button class="btn btn-primary" value="Save" type="submit">Save</button>
+                <button class="btn btn-primary" type="submit">Save</button>
             </div>
         </div>
     </div>
-    
 </form>
