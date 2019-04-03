@@ -28,7 +28,7 @@
             <div class="form-group row">
                 <label asp-for="Job.PO" class="col-sm-4 col-form-label"></label>
                 <div>
-                    <input asp-for="Job.PO" class="form-control col-sm-11" />
+                    <input asp-for="Job.PO" class="form-control col-sm-11" value="@Model.Job.PO"/>
                     <span asp-validation-for="Job.PO" class="text-danger"></span>
                 </div>
             </div>

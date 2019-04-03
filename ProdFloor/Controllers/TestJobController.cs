@@ -84,7 +84,7 @@ namespace ProdFloor.Controllers
                 }
                 catch(Exception e)
                 {
-                    return View("NewDummyJob", new TestJobViewModel { Job = new Job(), JobExtension = new JobExtension(), HydroSpecific = new HydroSpecific(),
+                    return View("NewDummyJob", new TestJobViewModel { Job = new Job {PO = viewModel.POJobSearch}, JobExtension = new JobExtension(), HydroSpecific = new HydroSpecific(),
                         GenericFeatures = new GenericFeatures(), HoistWayData = new HoistWayData()});
                 }
             }
