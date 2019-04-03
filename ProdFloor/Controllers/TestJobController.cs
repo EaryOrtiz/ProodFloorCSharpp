@@ -60,37 +60,46 @@ namespace ProdFloor.Controllers
 
             if (viewModel.POJobSearch > 0)
             {
-                var _jobSearch = jobSearch.First(m => m.PO == viewModel.POJobSearch);
+                try {
 
-                if (_jobSearch != null && _jobSearch.Status != "Incomplete")
-                {
-
-                    TestJob testJob = new TestJob {JobID = _jobSearch.JobID,TechnicianID = currentUser.EngID, Status = "Working on it"};
-                    testingRepo.SaveTestJob(testJob);
-
-                    var currentTestJob = testingRepo.TestJobs
-                        .FirstOrDefault(p => p.TestJobID == testingRepo.TestJobs.Max(x => x.TestJobID));
-
-
-                    TestJobViewModel testJobView = new TestJobViewModel
+                    var _jobSearch = jobSearch.First(m => m.PO == viewModel.POJobSearch);
+                    if (_jobSearch != null && _jobSearch.Status != "Incomplete")
                     {
-                        TestJob = currentTestJob,
-                    };
 
-                    return View("NewTestFeatures", testJobView);
+                        TestJob testJob = new TestJob { JobID = _jobSearch.JobID, TechnicianID = currentUser.EngID, Status = "Working on it" };
+                        testingRepo.SaveTestJob(testJob);
 
+                        var currentTestJob = testingRepo.TestJobs
+                            .FirstOrDefault(p => p.TestJobID == testingRepo.TestJobs.Max(x => x.TestJobID));
+
+
+                        TestJobViewModel testJobView = new TestJobViewModel
+                        {
+                            TestJob = currentTestJob,
+                        };
+
+                        return View("NewTestFeatures", testJobView);
+
+                    }    
                 }
-                else
+                catch(Exception e)
                 {
-                    TempData["message"] = $"There seems to be errors in the form. Please validate....";
-                    TempData["alert"] = $"alert-danger";
-                    return RedirectToAction("NewTestFeatures", testJobSearchAux);
+                    return View("NewDummyJob", new TestJobViewModel { Job = new Job(), JobExtension = new JobExtension(), HydroSpecific = new HydroSpecific(),
+                        GenericFeatures = new GenericFeatures(), HoistWayData = new HoistWayData()});
                 }
             }
             else
             {
                 return View(testJobSearchAux);
             }
+
+            return View(testJobSearchAux);
+        }
+
+        [HttpPost]
+        public IActionResult NewDummyJob(TestJobViewModel viewModel)
+        {
+            return NotFound();
         }
 
         [HttpPost]
@@ -100,6 +109,9 @@ namespace ProdFloor.Controllers
             if (testJobView.TestFeature != null)
             {
                 //guarda la lista de features
+                TestJob testJobModify = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == testJobView.TestJob.TestJobID);
+                testJobModify.Station = testJobView.TestJob.Station; testJobModify.JobLabel = testJobView.TestJob.JobLabel;
+                testingRepo.SaveTestJob(testJobModify);
                 testingRepo.SaveTestFeature(testJobView.TestFeature);
 
                 //Rellena las listas que se llenaran para la comparacion

@@ -17,6 +17,10 @@ namespace ProdFloor.Models
         public int TechnicianID { get; set; }
         [Required(ErrorMessage = "Please enter a {0}")]
         public string Status { get; set; }
+        [Display(Name = "Job Label")]
+        public string JobLabel { get; set; }
+        [Display(Name = "Estacion")]
+        public string Station { get; set; }
 
         public List<Stop> _Stops { get; set; }
         public List<StepsForJob> _StepsForJobs { get; set; }

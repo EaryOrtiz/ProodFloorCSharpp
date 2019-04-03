@@ -1,0 +1,147 @@
+﻿@model ProdFloor.Models.ViewModels.TestJob.TestJobViewModel
+@{
+    ViewBag.Title = "New Job";
+    Layout = "_AdminLayoutWO";
+    <script src="~/Scripts/CascadingCountryStateCity.js" type="text/javascript"></script>
+    <script src="~/Scripts/CascadingStyleBrandDoorOperator.js" type="text/javascript"></script>
+}
+<form asp-controller="TestJob" asp-action="NewTestFeatures" method="post">
+    <h3 class="text-left">Job Information</h3>
+    <br>
+    <div class="form-row col-sm-12" style="padding-bottom:15px">
+        <div class="col-6 form-line border-right justify-content-md-center">
+            <input type="hidden" asp-for="Job.JobID" />
+            <div class="form-group row">
+                <label asp-for="Job.Name" class="col-sm-4 col-form-label"></label>
+                <div>
+                    <input asp-for="Job.Name" class="form-control col-sm-11" />
+                    <span asp-validation-for="Job.Name" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="Job.JobNum" class="col-sm-4 col-form-label"></label>
+                <div>
+                    <input asp-for="Job.JobNum" class="form-control col-sm-11" />
+                    <span asp-validation-for="Job.JobNum" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="Job.PO" class="col-sm-4 col-form-label"></label>
+                <div>
+                    <input asp-for="Job.PO" class="form-control col-sm-11" />
+                    <span asp-validation-for="Job.PO" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="Job.ShipDate" class="col-sm-4 col-form-label"></label>
+                <div>
+                    <input asp-for="Job.ShipDate" class="form-control col-sm-11" />
+                    <span asp-validation-for="Job.ShipDate" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="Job.JobTypeID" class="col-sm-4 col-form-label"></label>
+                <job-type-select selected-value="@Model.Job.JobTypeID" class="form-control-sm form-control col-sm-5" asp-for="Job.JobTypeID"></job-type-select>
+                <span asp-validation-for="Job.JobTypeID" class="text-danger"></span>
+            </div>
+            <div class="form-group row">
+                <label asp-for="Job.CountryID" class="col-sm-4 col-form-label"></label>
+                <country-select id="CountryID" asp-for="@Model.Job.CountryID" class="form-control-sm form-control col-sm-5" selected-value="@Model.Job.CityID">
+                </country-select>
+            </div>
+            <div class="form-group row">
+                <label asp-for="Job.StateID" class="col-sm-4 col-form-label"></label>
+                <state-select id="StateID" asp-for="@Model.Job.StateID" class="form-control-sm form-control col-sm-5" selected-value="@Model.Job.CityID">
+                </state-select>
+            </div>
+            <div class="form-group row">
+                <label asp-for="Job.CityID" class="col-sm-4 col-form-label"></label>
+                <city-select id="CityID" asp-for="@Model.Job.CityID" class="form-control-sm form-control col-sm-5"></city-select>
+            </div>
+            <div class="form-group row">
+                <label asp-for="JobExtension.JobTypeMain" class="col-sm-4 col-form-label"></label>
+                <span asp-validation-for="JobExtension.JobTypeMain" class="text-danger"></span>
+                <indicators select-for="JobType" selected-value="@Model.JobExtension.JobTypeMain" class="form-control-sm form-control col-sm-5" asp-for="JobExtension.JobTypeMain"></indicators>
+            </div>
+            <div class="form-group row">
+                <label asp-for="HoistWayData.LandingSystemID" class="col-sm-4 col-form-label"></label>
+                <landing-sys-select selected-value="@Model.HoistWayData.LandingSystemID" class="form-control-sm form-control col-sm-5" asp-for="HoistWayData.LandingSystemID"></landing-sys-select>
+                <span asp-validation-for="HoistWayData.LandingSystemID" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-6 form-line justify-content-md-center">
+            <div class="container">
+                <div class="form-group row">
+                    <label asp-for="JobExtension.DoorGate" class="col-sm-4 col-form-label"></label>
+                    <door-operator-style-select id="Style" asp-for="@Model.JobExtension.DoorGate" selected-value="@Model.JobExtension.DoorOperatorID" class="form-control form-control-sm col-sm-5">
+                    </door-operator-style-select>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="JobExtension.DoorBrand" class="col-sm-4 col-form-label"></label>
+                    <door-operator-brand-select id="Brand" asp-for="@Model.JobExtension.DoorBrand" selected-value="@Model.JobExtension.DoorOperatorID" class="form-control form-control-sm col-sm-5">
+                    </door-operator-brand-select>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="JobExtension.DoorOperatorID" class="col-sm-4 col-form-label"></label>
+                    <door-operator-select id="DoorOperatorID" asp-for="@Model.JobExtension.DoorOperatorID" selected-value="Model.JobExtension.DoorOperatorID" class="form-control form-control-sm col-sm-5">
+                    </door-operator-select>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="GenericFeatures.Monitoring" class="col-sm-4 col-form-label"></label>
+                    <indicators select-for="Monitoring" selected-value="@Model.GenericFeatures.Monitoring" class="form-control form-control-sm col-sm-5" asp-for="GenericFeatures.Monitoring"></indicators>
+                    <span asp-validation-for="GenericFeatures.Monitoring" class="text-danger"></span>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="HydroSpecific.MotorsNum" class="col-sm-4 col-form-label"></label>
+                    <div>
+                        <input asp-for="HydroSpecific.MotorsNum" class="form-control col-sm-10 " />
+                        <span asp-validation-for="HydroSpecific.MotorsNum" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group row" style="padding-left:15px;">
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" asp-for="JobExtension.SCOP" class="custom-control-input">
+                        <div><span asp-validation-for="JobExtension.SCOP" class="text-danger"></span></div>
+                        <label class="custom-control-label" asp-for="JobExtension.SCOP"></label>
+                    </div>
+                </div>
+                <div class="form-group row" style="padding-left:15px;">
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" asp-for="JobExtension.SHC" class="custom-control-input">
+                        <div><span asp-validation-for="JobExtension.SHC" class="text-danger"></span></div>
+                        <label class="custom-control-label" asp-for="JobExtension.SHC"></label>
+                    </div>
+                </div>
+                <div class="form-group row" style="padding-left:15px;">
+                    <div class="form-inline">
+                        <input id="BatterySelected" asp-for="HydroSpecific.Battery" class="form-check-input" />
+                        <div><span asp-validation-for="HydroSpecific.Battery" class="text-danger"></span></div>
+                        <label asp-for="HydroSpecific.Battery" class="col-form-label" style="margin-left:15px;"></label>
+                    </div>
+                </div>
+                <div class="form-group row" id="BatteryBrand" style="padding-left:15px;">
+                    <label asp-for="HydroSpecific.BatteryBrand" class="col-sm-2 col-form-label" style="margin-right:10px"></label>
+                    <div>
+                        <custom-select id="OtherBatteryBrandSelected" selected-value="@Model.HydroSpecific.BatteryBrand" class="form-control-sm form-control" asp-for="HydroSpecific.BatteryBrand" select-for="Battery Brand"></custom-select>
+                        <span asp-validation-for="HydroSpecific.BatteryBrand" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="text-center">
+        <button class="btn btn-primary" type="submit">Save</button>
+    </div>
+</form>
+@if (Model.HydroSpecific.Battery == false)
+{
+    <script type="text/javascript">
+        $("#BatterySelected").ready(function () {
+            $("#BatteryBrand").hide();
+        });
+        $("#BatterySelected").click(function () {
+            $("#BatteryBrand")[this.checked ? "show" : "hide"]();
+            $("#OtherBatteryBrand")[this.checked ? "show" : "hide"]();
+        });
+    </script>
+}

@@ -15,6 +15,10 @@ namespace ProdFloor.Models.ViewModels.TestJob
         public int CurrentTechnicianID { get; set; }
         public PagingInfo PagingInfo { get; set; }
         public Models.Job Job { get; set; }
+        public JobExtension JobExtension { get; set; }
+        public HydroSpecific HydroSpecific { get; set; }
+        public HoistWayData HoistWayData {get;set;}
+        public GenericFeatures GenericFeatures { get; set; }
         [Range(3000000, 4900000, ErrorMessage = "PO number is out of range")]
         [Required(ErrorMessage = "Please enter a PO")]
         public int POJobSearch { get; set; }

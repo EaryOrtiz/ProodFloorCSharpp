@@ -318,6 +318,10 @@ namespace ProdFloor.Infrastructure
                     return new List<string> { "2-Position", "3-Position" }.AsQueryable();
                 case "Stage":
                     return new List<string> { "Beginning", "Program", "Logic", "Ending", "Complete" }.AsQueryable();
+                case "Label":
+                    return new List<string> { "-", "A", "B", "C", "D", "E", "F", "G", "H"}.AsQueryable();
+                case "Station":
+                    return new List<string> { "S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9", "S10", "S11", "S12", "ELEM1", "ELEM2" }.AsQueryable();
                 case "Style":
                     return itemsrepository.DoorOperators.Select(s => s.Style).Distinct().AsQueryable();
                 default:
@@ -1134,7 +1138,7 @@ namespace ProdFloor.Infrastructure
         [HtmlAttributeNotBound]
         public ViewContext ViewContext { get; set; }
 
-        public int SelectedValue { get; set; }
+        public int SelectedValue { get; set; } = 0;
 
         [HtmlAttributeName("asp-is-disabled")]
         public bool IsDisabled { set; get; }
@@ -1159,7 +1163,7 @@ namespace ProdFloor.Infrastructure
             {
                 TagBuilder tag = new TagBuilder("option");
                 tag.Attributes["value"] = jobTypes.JobTypeID.ToString();
-                if (jobTypes.JobTypeID == SelectedValue)
+                if (SelectedValue != 0 && jobTypes.JobTypeID == SelectedValue)
                 {
                     tag.Attributes["selected"] = "selected";
                 }
