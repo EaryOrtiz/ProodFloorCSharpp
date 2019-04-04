@@ -47,6 +47,13 @@ namespace ProdFloor.Models
         public DbSet<Reason5> Reasons5 { get; set; }
         public DbSet<Stop> Stops { get; set; }
 
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.Entity<Job>()
+                .HasIndex(u => u.PO)
+                .IsUnique();
+        }
+
         public class ApplicationDbContextFactory
             : IDesignTimeDbContextFactory<ApplicationDbContext>
         {

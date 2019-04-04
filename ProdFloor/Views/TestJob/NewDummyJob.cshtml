@@ -48,20 +48,23 @@
                 <label asp-for="Job.CountryID" class="col-sm-4 col-form-label"></label>
                 <country-select id="CountryID" asp-for="@Model.Job.CountryID" class="form-control-sm form-control col-sm-5" selected-value="@Model.Job.CityID">
                 </country-select>
+                <span asp-validation-for="Job.CountryID" class="text-danger"></span>
             </div>
             <div class="form-group row">
                 <label asp-for="Job.StateID" class="col-sm-4 col-form-label"></label>
-                <state-select id="StateID" asp-for="@Model.Job.StateID" class="form-control-sm form-control col-sm-5" selected-value="@Model.Job.CityID">
-                </state-select>
+                <state-select id="StateID" asp-for="@Model.Job.StateID" class="form-control-sm form-control col-sm-5" selected-value="@Model.Job.CityID"></state-select>
+                <span asp-validation-for="Job.StateID" class="text-danger"></span>
             </div>
             <div class="form-group row">
                 <label asp-for="Job.CityID" class="col-sm-4 col-form-label"></label>
                 <city-select id="CityID" asp-for="@Model.Job.CityID" class="form-control-sm form-control col-sm-5"></city-select>
+                <span asp-validation-for="Job.CityID" class="text-danger"></span>
             </div>
             <div class="form-group row">
                 <label asp-for="JobExtension.JobTypeMain" class="col-sm-4 col-form-label"></label>
                 <span asp-validation-for="JobExtension.JobTypeMain" class="text-danger"></span>
                 <indicators select-for="JobType" selected-value="@Model.JobExtension.JobTypeMain" class="form-control-sm form-control col-sm-5" asp-for="JobExtension.JobTypeMain"></indicators>
+                <span asp-validation-for="JobExtension.JobTypeMain" class="text-danger"></span>
             </div>
             <div class="form-group row">
                 <label asp-for="HoistWayData.LandingSystemID" class="col-sm-4 col-form-label"></label>
@@ -75,16 +78,19 @@
                     <label asp-for="JobExtension.DoorGate" class="col-sm-4 col-form-label"></label>
                     <door-operator-style-select id="Style" asp-for="@Model.JobExtension.DoorGate" selected-value="@Model.JobExtension.DoorOperatorID" class="form-control form-control-sm col-sm-5">
                     </door-operator-style-select>
+                    <span asp-validation-for="JobExtension.DoorGate" class="text-danger"></span>
                 </div>
                 <div class="form-group row">
                     <label asp-for="JobExtension.DoorBrand" class="col-sm-4 col-form-label"></label>
                     <door-operator-brand-select id="Brand" asp-for="@Model.JobExtension.DoorBrand" selected-value="@Model.JobExtension.DoorOperatorID" class="form-control form-control-sm col-sm-5">
                     </door-operator-brand-select>
+                    <span asp-validation-for="JobExtension.DoorBrand" class="text-danger"></span>
                 </div>
                 <div class="form-group row">
                     <label asp-for="JobExtension.DoorOperatorID" class="col-sm-4 col-form-label"></label>
                     <door-operator-select id="DoorOperatorID" asp-for="@Model.JobExtension.DoorOperatorID" selected-value="Model.JobExtension.DoorOperatorID" class="form-control form-control-sm col-sm-5">
                     </door-operator-select>
+                    <span asp-validation-for="JobExtension.DoorOperatorID" class="text-danger"></span>
                 </div>
                 <div class="form-group row">
                     <label asp-for="GenericFeatures.Monitoring" class="col-sm-4 col-form-label"></label>

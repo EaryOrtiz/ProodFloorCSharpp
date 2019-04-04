@@ -101,45 +101,54 @@ namespace ProdFloor.Controllers
         public IActionResult NewDummyJob(TestJobViewModel viewModel)
         {
             AppUser currentUser = GetCurrentUser().Result;
-            //Save the dummyJob
-            Job Job = viewModel.Job;
-            Job.Contractor = "Fake"; Job.Cust = "Fake"; Job.FireCodeID = 1; Job.LatestFinishDate = new DateTime(1,1,1);
-            Job.EngID = 1; Job.Status = "Pending"; Job.CrossAppEngID = 1;
-            jobRepo.SaveJob(Job);
-            Job currentJob = jobRepo.Jobs.FirstOrDefault(p => p.JobID == jobRepo.Jobs.Max(x => x.JobID));
-
-            //Save the dummy Job Extension
-            JobExtension currentExtension = viewModel.JobExtension; currentExtension.JobID = currentJob.JobID; currentExtension.InputFrecuency = 60; currentExtension.InputPhase = 3;
-            currentExtension.InputVoltage = 1;  currentExtension.NumOfStops = 2; currentExtension.SHCRisers = 1; currentExtension.DoorHoist = "Fake"; currentExtension.JobTypeAdd = "Fake";
-            jobRepo.SaveJobExtension(currentExtension);
-
-            //Save the dummy Job HydroSpecific
-            HydroSpecific currenHydroSpecific = viewModel.HydroSpecific; currenHydroSpecific.JobID = currentJob.JobID; currenHydroSpecific.FLA = 1; currenHydroSpecific.HP = 1;
-            currenHydroSpecific.SPH = 1; currenHydroSpecific.Starter ="Fake"; currenHydroSpecific.ValveCoils = 1; currenHydroSpecific.ValveBrand = "Fake";
-            jobRepo.SaveHydroSpecific(currenHydroSpecific);
-
-            //Save the dummy Job HoistWayData
-            HoistWayData currentHoistWayData = viewModel.HoistWayData; currentHoistWayData.JobID = currentJob.JobID; currentHoistWayData.Capacity = 1; currentHoistWayData.DownSpeed = 1;
-            currentHoistWayData.TotalTravel = 1; currentHoistWayData.UpSpeed = 1; currentHoistWayData.HoistWaysNumber = 1; currentHoistWayData.MachineRooms = 1;
-            jobRepo.SaveHoistWayData(currentHoistWayData);
-
-            //Save the dummy Job HoistWayData
-            GenericFeatures currentGenericFeatures = viewModel.GenericFeatures; currentGenericFeatures.JobID = currentJob.JobID;
-            jobRepo.SaveGenericFeatures(currentGenericFeatures);
-            
-            //Create the new TestJob
-            TestJob testJob = new TestJob { JobID = currentJob.JobID, TechnicianID = currentUser.EngID, Status = "Working on it" };
-            testingRepo.SaveTestJob(testJob);
-
-            var currentTestJob = testingRepo.TestJobs.FirstOrDefault(p => p.TestJobID == testingRepo.TestJobs.Max(x => x.TestJobID));
-
-
-            TestJobViewModel testJobView = new TestJobViewModel
+            try
             {
-                TestJob = currentTestJob,
-            };
+                //Save the dummyJob
+                Job Job = viewModel.Job;
+                Job.Contractor = "Fake"; Job.Cust = "Fake"; Job.FireCodeID = 1; Job.LatestFinishDate = new DateTime(1, 1, 1);
+                Job.EngID = currentUser.EngID; Job.Status = "Pending"; Job.CrossAppEngID = 1;
+                jobRepo.SaveJob(Job);
+                Job currentJob = jobRepo.Jobs.FirstOrDefault(p => p.JobID == jobRepo.Jobs.Max(x => x.JobID));
 
-            return View("NewTestFeatures", testJobView);
+                //Save the dummy Job Extension
+                JobExtension currentExtension = viewModel.JobExtension; currentExtension.JobID = currentJob.JobID; currentExtension.InputFrecuency = 60; currentExtension.InputPhase = 3;
+                currentExtension.InputVoltage = 1; currentExtension.NumOfStops = 2; currentExtension.SHCRisers = 1; currentExtension.DoorHoist = "Fake"; currentExtension.JobTypeAdd = "Fake";
+                jobRepo.SaveJobExtension(currentExtension);
+
+                //Save the dummy Job HydroSpecific
+                HydroSpecific currenHydroSpecific = viewModel.HydroSpecific; currenHydroSpecific.JobID = currentJob.JobID; currenHydroSpecific.FLA = 1; currenHydroSpecific.HP = 1;
+                currenHydroSpecific.SPH = 1; currenHydroSpecific.Starter = "Fake"; currenHydroSpecific.ValveCoils = 1; currenHydroSpecific.ValveBrand = "Fake";
+                jobRepo.SaveHydroSpecific(currenHydroSpecific);
+
+                //Save the dummy Job HoistWayData
+                HoistWayData currentHoistWayData = viewModel.HoistWayData; currentHoistWayData.JobID = currentJob.JobID; currentHoistWayData.Capacity = 1; currentHoistWayData.DownSpeed = 1;
+                currentHoistWayData.TotalTravel = 1; currentHoistWayData.UpSpeed = 1; currentHoistWayData.HoistWaysNumber = 1; currentHoistWayData.MachineRooms = 1;
+                jobRepo.SaveHoistWayData(currentHoistWayData);
+
+                //Save the dummy Job HoistWayData
+                GenericFeatures currentGenericFeatures = viewModel.GenericFeatures; currentGenericFeatures.JobID = currentJob.JobID;
+                jobRepo.SaveGenericFeatures(currentGenericFeatures);
+
+                //Create the new TestJob
+                TestJob testJob = new TestJob { JobID = currentJob.JobID, TechnicianID = currentUser.EngID, Status = "Working on it" };
+                testingRepo.SaveTestJob(testJob);
+
+                var currentTestJob = testingRepo.TestJobs.FirstOrDefault(p => p.TestJobID == testingRepo.TestJobs.Max(x => x.TestJobID));
+
+
+                TestJobViewModel testJobView = new TestJobViewModel
+                {
+                    TestJob = currentTestJob,
+                };
+
+                return View("NewTestFeatures", testJobView);
+            }
+            catch (DbUpdateException e)
+            {
+                TempData["message"] = $"El Job PO #{viewModel.Job.PO} ya existe por favor introduzca uno nuevo, o faltan campos por rellenar!";
+                TempData["alert"] = $"alert-danger";
+                return View("NewDummyJob", viewModel);
+            }
         }
 
         [HttpPost]
@@ -290,7 +299,7 @@ namespace ProdFloor.Controllers
                 var testjobinfo = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == viewModel.TestJob.TestJobID); testjobinfo.Status = "Completed";
                 testingRepo.SaveTestJob(testjobinfo);
 
-                TempData["message"] = $"The Test Job {testjobinfo.TestJobID} was completed successfully";
+                TempData["message"] = $"El Test Job {testjobinfo.TestJobID} se ha completado con exito!";
                 TempData["alert"] = $"alert-success";
                 return RedirectToAction(nameof(List), 1);
             }
