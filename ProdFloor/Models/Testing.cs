@@ -32,19 +32,28 @@ namespace ProdFloor.Models
         public int TestFeatureID { get; set; }
 
         public int TestJobID { get; set; }
-        [Required(ErrorMessage = "Please enter a {0}")]
         public bool Overlay { get; set; }
         public bool Group { get; set; }
+        [Display(Name = "PC de Cliente")]
         public bool PC { get; set; }
+        [Display(Name = "Brake Coil Voltage > 10")]
         public bool BrakeCoilVoltageMoreThan10 { get; set; }
-        public bool MBrake { get; set; }   
+        [Display(Name = "EMBrake Module")]
+        public bool EMBrake { get; set; }
+        [Display(Name = "EMCO Board")]
         public bool EMCO { get; set; }
+        [Display(Name = "R6 Regen Unit")]
         public bool R6 { get; set; }
         public bool Local { get; set; }
+        [Display(Name = "Short Floor")]
         public bool ShortFloor { get; set; }
         public bool Custom { get; set; }
         public bool MRL { get; set; }
         public bool CTL2 { get; set; }
+        [Display(Name = "Tarjeta CPI Incluida")]
+        public bool TrajetaCPI { get; set; }
+        [Display(Name = "Door Control en Cartop")]
+        public bool Cartop { get; set; }
     }
 
     public class Step

@@ -64,7 +64,7 @@ namespace ProdFloor.Models
                     dbEntry.Group = testFeature.Group;
                     dbEntry.PC = testFeature.PC;
                     dbEntry.BrakeCoilVoltageMoreThan10 = testFeature.BrakeCoilVoltageMoreThan10;
-                    dbEntry.MBrake = testFeature.MBrake;
+                    dbEntry.EMBrake = testFeature.EMBrake;
                     dbEntry.EMCO = testFeature.EMCO;
                     dbEntry.R6 = testFeature.R6;
                     dbEntry.Local = testFeature.Local;
@@ -72,6 +72,8 @@ namespace ProdFloor.Models
                     dbEntry.Custom = testFeature.Custom;
                     dbEntry.MRL = testFeature.MRL;
                     dbEntry.CTL2 = testFeature.CTL2;
+                    dbEntry.Cartop = testFeature.Cartop;
+                    dbEntry.TrajetaCPI = testFeature.TrajetaCPI;
                 }
             }
             context.SaveChanges();

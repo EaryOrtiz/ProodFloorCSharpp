@@ -324,6 +324,8 @@ namespace ProdFloor.Infrastructure
                     return new List<string> { "S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9", "S10", "S11", "S12", "ELEM1", "ELEM2" }.AsQueryable();
                 case "Style":
                     return itemsrepository.DoorOperators.Select(s => s.Style).Distinct().AsQueryable();
+                case "Battery Brand":
+                    return  new List<string> { "HAPS", "R&R", "Other" }.AsQueryable();
                 default:
                     return new List<string> { "Beginning", "Program", "Logic", "Ending", "Complete" }.AsQueryable();
             }
@@ -1942,6 +1944,83 @@ namespace ProdFloor.Infrastructure
                     tag.Attributes["selected"] = "selected";
                 }
                 tag.InnerHtml.Append(item.Description.ToString());
+                result.InnerHtml.AppendHtml(tag);
+            }
+            output.Content.AppendHtml(result.InnerHtml);
+            if (IsDisabled)
+            {
+                var d = new TagHelperAttribute("disabled", "disabled");
+                output.Attributes.Add(d);
+            }
+            base.Process(context, output);
+        }
+    }
+
+    public class TriggerSelectTagHelper : TagHelper
+    {
+        private IItemRepository itemsrepository;
+
+        private IUrlHelperFactory urlHelperFactory;
+
+        public ModelExpression AspFor { get; set; }
+
+        public string SelectFor { get; set; }
+
+        public TriggerSelectTagHelper(IUrlHelperFactory helperFactory, IItemRepository itemsrepo)
+        {
+            urlHelperFactory = helperFactory;
+            itemsrepository = itemsrepo;
+        }
+
+        [HtmlAttributeName("asp-is-disabled")]
+        public bool IsDisabled { set; get; }
+
+        private IQueryable<string> CaseFor(string value)
+        {
+            switch (value)
+            {
+                case "TriggerFeature":
+                    return new List<string> {"Overlay", "Group","PC de Cliente", "Brake Coil Voltage > 10","EMBrake Module","EMCO Board","R6 Regen Unit","Local","Short Floor"
+                                            ,"Custom","MRL","CTL2","Tarjeta CPI Incluida","Door Control en Cartop","Canada","Ontario","Manual Doors","Duplex","Serial Halls Calls"
+                                            ,"Edge-LS","Rail-LS", "mView","iMonitor","HAPS Battery","2+ Starters", "MOD Door Operator"}.AsQueryable();
+                default:
+                    return new List<string> {"Overlay", "Group","PC de Cliente", "Brake Coil Voltage > 10","EMBrake Module","EMCO Board","R6 Regen Unit","Local","ShortFloor"
+                                            ,"Custom","MRL","CTL2","Tarjeta CPI Incluida","Door Control en Cartop","Canada","Ontario","Manual Doors","Duplex","Serial Halls Calls"
+                                            ,"Edge-LS","Rail-LS", "mView","iMonitor","HAPS Battery","2+ Starters", "MOD Door Operator"}.AsQueryable();
+            }
+        }
+
+        [ViewContext]
+        [HtmlAttributeNotBound]
+        public ViewContext ViewContext { get; set; }
+
+        public string SelectedValue { get; set; }
+
+        public override void Process(TagHelperContext context, TagHelperOutput output)
+        {
+            IUrlHelper urlHelper = urlHelperFactory.GetUrlHelper(ViewContext);
+            output.TagName = "select";
+            TagBuilder result = new TagBuilder("select");
+            string name = this.AspFor.Name;
+            if (!String.IsNullOrEmpty(name))
+            {
+                output.Attributes.Add("id", name);
+                output.Attributes.Add("name", name);
+            }
+            TagBuilder m_tag = new TagBuilder("option");
+            m_tag.Attributes["value"] = "";
+            m_tag.InnerHtml.Append("Please select one");
+            result.InnerHtml.AppendHtml(m_tag);
+            IQueryable<string> options2 = CaseFor(SelectFor);
+            foreach (string option in options2)
+            {
+                TagBuilder tag = new TagBuilder("option");
+                tag.Attributes["value"] = option.ToString();
+                if (option.ToString() == SelectedValue)
+                {
+                    tag.Attributes["selected"] = "selected";
+                }
+                tag.InnerHtml.Append(option.ToString());
                 result.InnerHtml.AppendHtml(tag);
             }
             output.Content.AppendHtml(result.InnerHtml);

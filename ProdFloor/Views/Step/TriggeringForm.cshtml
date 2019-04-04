@@ -20,10 +20,11 @@
                         <div class="input-group mb-3 ">
                             <div class="input-group-prepend">
                                 <div class="input-group-text">
-                                    @Html.CheckBoxFor(m => m.TriggeringList[i].IsSelected, new { Class = "form-control;"})
+                                    @Html.CheckBoxFor(m => m.TriggeringList[i].IsSelected, new { Class = "form-control;" })
                                 </div>
                             </div>
-                            @Html.TextBoxFor(m => m.TriggeringList[i].Name, new { Class = "form-control col-8;" })
+                            <trigger-select class="form-control form-control-sm;" asp-for="@Model.TriggeringList[i].Name" select-for="TriggerFeature" selected-value="@Model.TriggeringList[i].Name"></trigger-select>
+                            @*@Html.TextBoxFor(m => m.TriggeringList[i].Name, new { Class = "form-control col-8;" })*@
                         </div>
                     </td>
                     <td style="text-align:center;">
