@@ -22,8 +22,10 @@
         <div class="row justify-content-md-center"><h4>@Model.StepsForJob.Consecutivo</h4></div>
         <br />
         <div class="row justify-content-md-center"><h3>@Model.Step.Description</h3></div>
-        <br />
-        <div class="btn-group row text-center" style="position:center" role="group" aria-label="Basic example">
+    </div>
+    <br />
+    <div class="justify-content-md-center text-center">
+        <div class="btn-group row " style="position:center" role="group" aria-label="Basic example">
             <button type="submit" class="btn btn-primary" name="next" value="@prevNum" disabled="@(Model.StepsForJob.Consecutivo <= 1 ? true: false)">Atras</button>
             <button type="submit" class="btn btn-success" name="next" value="@nextNum">Siguiente</button>
             <button type="submit" class="btn btn-warning" name="next" value="777">Stop</button>

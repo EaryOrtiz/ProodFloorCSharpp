@@ -11,9 +11,10 @@ using System;
 namespace ProdFloor.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190404194903_ElapsedTimeSpawn")]
+    partial class ElapsedTimeSpawn
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -813,7 +814,8 @@ namespace ProdFloor.Migrations
 
                     b.HasKey("StepsForJobID");
 
-                    b.HasIndex("StepID");
+                    b.HasIndex("StepID")
+                        .IsUnique();
 
                     b.HasIndex("TestJobID");
 
@@ -1103,8 +1105,8 @@ namespace ProdFloor.Migrations
             modelBuilder.Entity("ProdFloor.Models.StepsForJob", b =>
                 {
                     b.HasOne("ProdFloor.Models.Step")
-                        .WithMany("_StepsForJob")
-                        .HasForeignKey("StepID")
+                        .WithOne("_StepsForJob")
+                        .HasForeignKey("ProdFloor.Models.StepsForJob", "StepID")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("ProdFloor.Models.TestJob")

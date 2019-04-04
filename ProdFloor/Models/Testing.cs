@@ -71,7 +71,7 @@ namespace ProdFloor.Models
         public int Order { get; set; }
         
         public List<TriggeringFeature> _TriggeringFeatures { get; set; }
-        public StepsForJob _StepsForJob { get; set; }
+        public List<StepsForJob> _StepsForJob { get; set; }
     }
 
     public class TriggeringFeature
@@ -95,7 +95,7 @@ namespace ProdFloor.Models
         [Required(ErrorMessage = "Please enter a {0} Date")]
         public DateTime Stop { get; set; }
         [Required(ErrorMessage = "Please enter a {0} Date")]
-        public DateTime Elapsed { get; set; }
+        public TimeSpan Elapsed { get; set; }
         [Required(ErrorMessage = "Please enter a {0}")]
         public bool Complete { get; set; }
         [Required(ErrorMessage = "Please enter a {0}")]
