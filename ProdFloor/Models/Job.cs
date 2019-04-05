@@ -228,8 +228,6 @@ namespace ProdFloor.Models
         public bool PSS { get; set; }
         [Display(Name = "Resync operation")]
         public bool Resync { get; set; }
-        [Display(Name = "Roped Hydro")]
-        public bool Roped { get; set; }
         [Display(Name = "Viscosity Control")]
         public bool VCI { get; set; }
     }

@@ -373,6 +373,7 @@ namespace ProdFloor.Controllers
                         ViewModel.SPH = JobSearch._HydroSpecific.SPH;
                         ViewModel.FLA = JobSearch._HydroSpecific.FLA;
                         ViewModel.JobName = JobSearch.Name;
+                        ViewModel.Cust = JobSearch.Cust;
                         ViewModel.Contractor = JobSearch.Contractor;
                         ViewModel.JobTypeMain = JobSearch._jobExtension.JobTypeMain;
                         ViewModel.ValveBrand = JobSearch._HydroSpecific.ValveBrand;
@@ -381,9 +382,15 @@ namespace ProdFloor.Controllers
                         ViewModel.FireCodeName = FireCodeOne.Name;
                         ViewModel.LandingName = LandingOne.Name;
                         ViewModel.DownSpeed = JobSearch._HoistWayData.DownSpeed;
+                        ViewModel.UpSpeed = JobSearch._HoistWayData.UpSpeed;
                         ViewModel.StarterType = JobSearch._HydroSpecific.Starter;
                         ViewModel.NumJobSearch = JobSearch.JobNum;
+                        ViewModel.SHCisSelected = JobSearch._jobExtension.SHC;
+                        ViewModel.anyRear = JobSearch._HoistWayData.AnyRear;
+                        ViewModel.FrontFloor = JobSearch._HoistWayData.FrontFloorOpenings;
+                        ViewModel.RearFloor = JobSearch._HoistWayData.RearFloorOpenings;
                         var volts = JobSearch._jobExtension.InputVoltage;
+                        ViewModel.InputVoltage = volts;
                         if (volts >= 200 && volts <= 220 && (ViewModel.StarterType == "ATL" || ViewModel.StarterType == "YD" || ViewModel.StarterType == "Sprecher SS : 6/12" || ViewModel.StarterType == "Sprecher SS : 3/9" || ViewModel.StarterType == "Siemens SS : 6/12" || ViewModel.StarterType == "Siemens SS : 3/9")) ViewModel.Volts = "208";
                         if (volts > 220 && volts <= 240 && (ViewModel.StarterType == "ATL" || ViewModel.StarterType == "YD" || ViewModel.StarterType == "Sprecher SS : 6/12" || ViewModel.StarterType == "Sprecher SS : 3/9" || ViewModel.StarterType == "Siemens SS : 6/12" || ViewModel.StarterType == "Siemens SS : 3/9")) ViewModel.Volts = "240";
                         if (volts >= 380 && volts <= 480 && (ViewModel.StarterType == "ATL" || ViewModel.StarterType == "YD" || ViewModel.StarterType == "Sprecher SS : 6/12" || ViewModel.StarterType == "Sprecher SS : 3/9")) ViewModel.Volts = "480";
@@ -395,15 +402,25 @@ namespace ProdFloor.Controllers
 
                         #region SlowdownAndWire
                         //Slowdown Table
-                        var SlowdoenReg = SlowReferSearch.Where(m => m.CarSpeedFPM >= ViewModel.DownSpeed).OrderBy(o => o.CarSpeedFPM).Skip(0).Take(1).ToList();
-                        ViewModel.CarSpeedFPM = SlowdoenReg[0].CarSpeedFPM;
-                        ViewModel.Distance = SlowdoenReg[0].Distance;
-                        ViewModel.A = SlowdoenReg[0].A;
-                        ViewModel.SlowLimit = SlowdoenReg[0].SlowLimit;
-                        ViewModel.MiniumFloorHeight = SlowdoenReg[0].MiniumFloorHeight;
+
+                        //For Down Speed
+                        var SlowdoenRegDown = SlowReferSearch.Where(m => m.CarSpeedFPM >= ViewModel.DownSpeed).OrderBy(o => o.CarSpeedFPM).Skip(0).Take(1).ToList();
+                        ViewModel.CarSpeedFPM = SlowdoenRegDown[0].CarSpeedFPM;
+                        ViewModel.Distance = SlowdoenRegDown[0].Distance;
+                        ViewModel.A = SlowdoenRegDown[0].A;
+                        ViewModel.SlowLimit = SlowdoenRegDown[0].SlowLimit;
+                        ViewModel.MiniumFloorHeight = SlowdoenRegDown[0].MiniumFloorHeight;
+
+                        //For Down Speed
+                        var SlowdoenRegUP = SlowReferSearch.Where(m => m.CarSpeedFPM >= ViewModel.UpSpeed).OrderBy(o => o.CarSpeedFPM).Skip(0).Take(1).ToList();
+                        ViewModel.CarUpSpeedFPM = SlowdoenRegUP[0].CarSpeedFPM;
+                        ViewModel.UPDistance = SlowdoenRegUP[0].Distance;
+                        ViewModel.UPA = SlowdoenRegUP[0].A;
+                        ViewModel.UPSlowLimit = SlowdoenRegUP[0].SlowLimit;
+                        ViewModel.UPMiniumFloorHeight = SlowdoenRegUP[0].MiniumFloorHeight;
 
                         //WireTypeSizes
-                        var WireTypeReg = WireReferSearch.Where(m => m.AMPRating >= ViewModel.FLA).OrderBy(o => o.AMPRating).Skip(0).Take(1).ToList();
+                        var WireTypeReg = WireReferSearch.Where(m => m.AMPRating >= ViewModel.FLA && m.Type == "125°C PTL").OrderBy(o => o.AMPRating).Skip(0).Take(1).ToList();
                         ViewModel.AMPRating = WireTypeReg[0].AMPRating;
                         ViewModel.Size = WireTypeReg[0].Size;
                         ViewModel.Type = WireTypeReg[0].Type;
@@ -455,6 +472,27 @@ namespace ProdFloor.Controllers
 
                             #endregion
 
+                            #region SHC Calculator
+                            if (ViewModel.SHCisSelected)
+                            {
+                                ViewModel.calculatedFrontSHC = (70 + (10 * ViewModel.FrontFloor));
+                                if (ViewModel.anyRear)
+                                {
+                                    ViewModel.calculatedRearSHC = (70 + (10 * ViewModel.RearFloor));
+                                }
+                                else
+                                {
+                                    ViewModel.calculatedRearSHC = 0;
+                                }
+                            }
+                            else
+                            {
+                                ViewModel.calculatedFrontSHC = 0;
+                                ViewModel.calculatedRearSHC = 0;
+                            }
+
+                            #endregion
+
                             #region ReferSearchVM
 
                             ReferencesSearchvViewModel referSearch = new ReferencesSearchvViewModel
@@ -464,6 +502,7 @@ namespace ProdFloor.Controllers
                                 //JobData
                                 FLA = ViewModel.FLA,
                                 JobName = ViewModel.JobName,
+                                Cust = ViewModel.Cust,
                                 Contractor = ViewModel.Contractor,
                                 JobTypeMain = ViewModel.JobTypeMain,
                                 ValveBrand = ViewModel.ValveBrand,
@@ -473,12 +512,21 @@ namespace ProdFloor.Controllers
                                 FireCodeName = ViewModel.FireCodeName,
                                 LandingName = ViewModel.LandingName,
                                 NumJobSearch = ViewModel.NumJobSearch,
-                                //Slow Table
+                                //****Slow Table
+
+                                //For Down Speed
                                 CarSpeedFPM = ViewModel.CarSpeedFPM,
                                 Distance = ViewModel.Distance,
                                 A = ViewModel.A,
                                 SlowLimit = ViewModel.SlowLimit,
                                 MiniumFloorHeight = ViewModel.MiniumFloorHeight,
+
+                                //For Down Speed
+                                CarUpSpeedFPM = ViewModel.CarUpSpeedFPM,
+                                UPDistance = ViewModel.UPDistance,
+                                UPA = ViewModel.UPA,
+                                UPSlowLimit = ViewModel.UPSlowLimit,
+                                UPMiniumFloorHeight = ViewModel.UPMiniumFloorHeight,
 
                                 //WireTypesSize
                                 AMPRating = ViewModel.AMPRating,
@@ -491,7 +539,13 @@ namespace ProdFloor.Controllers
 
                                 //Overload
                                 MCPartOver = ViewModel.MCPartOver,
-                                SiemensPart = ViewModel.SiemensPart
+                                SiemensPart = ViewModel.SiemensPart,
+
+                                //SHC Calculator
+                                calculatedFrontSHC = ViewModel.calculatedFrontSHC,
+                                calculatedRearSHC = ViewModel.calculatedRearSHC,
+                                SHCisSelected = ViewModel.SHCisSelected
+                                
                             };
 
                             return View(referSearch);

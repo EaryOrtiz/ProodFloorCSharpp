@@ -124,13 +124,6 @@
             </div>
             <div class="form-group row">
                 <div class="custom-control custom-checkbox">
-                    <input type="checkbox" asp-for="CurrentHydroSpecific.Roped" class="custom-control-input" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)">
-                    <div><span asp-validation-for="CurrentHydroSpecific.Roped" class="text-danger" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></span></div>
-                    <label class="custom-control-label" asp-for="CurrentHydroSpecific.Roped" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></label>
-                </div>
-            </div>
-            <div class="form-group row">
-                <div class="custom-control custom-checkbox">
                     <input type="checkbox" asp-for="CurrentHydroSpecific.VCI" class="custom-control-input" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)">
                     <div><span asp-validation-for="CurrentHydroSpecific.VCI" class="text-danger" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></span></div>
                     <label class="custom-control-label" asp-for="CurrentHydroSpecific.VCI" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></label>

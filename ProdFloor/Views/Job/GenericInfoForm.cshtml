@@ -161,8 +161,11 @@
                 </div>
                 <div class="form-inline" id="TopAccess" style="padding-left:15px;">
                     <label asp-for="CurrentGenericFeatures.TopAccessLocation" class="col-form-label" style="margin-left:20px;"></label>
-                    <div><span asp-validation-for="CurrentGenericFeatures.TopAccessLocation" class="text-danger" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></span></div>
-                    <input asp-for="CurrentGenericFeatures.TopAccessLocation" style="margin-left:40px;" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="col-4 form-check-input" />
+                    <div>
+                        <indicators select-for="AccessSWLocation" style="margin-left:15px;" selected-value="@Model.CurrentGenericFeatures.TopAccessLocation"
+                                    asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control form-control-sm" asp-for="CurrentGenericFeatures.TopAccessLocation"></indicators>
+                        <span asp-validation-for="CurrentGenericFeatures.TopAccessLocation" class="text-danger"></span>
+                    </div>
                 </div>
                 <div class="form-inline">
                     <input id="BottonAccessSelected" asp-for="CurrentGenericFeatures.BottomAccess" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-check-input" />
@@ -173,7 +176,7 @@
                     <label asp-for="CurrentGenericFeatures.BottomAccessLocation" class="col-form-label"></label>
                     <div>
                         <indicators select-for="AccessSWLocation" style="margin-left:15px;" selected-value="@Model.CurrentGenericFeatures.BottomAccessLocation"
-                                    asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="col-8 form-control form-control-sm" asp-for="CurrentGenericFeatures.BottomAccessLocation"></indicators>
+                                    asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control form-control-sm" asp-for="CurrentGenericFeatures.BottomAccessLocation"></indicators>
                         <span asp-validation-for="CurrentGenericFeatures.BottomAccessLocation" class="text-danger"></span>
                     </div>
                 </div>
@@ -189,7 +192,7 @@
                 <label asp-for="CurrentGenericFeatures.INCPButtons" class="col-form-label"></label>
                 <div>
                     <indicators select-for="INCPButtons" style="margin-left:15px;" selected-value="@Model.CurrentGenericFeatures.INCPButtons"
-                                asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control-sm" asp-for="CurrentGenericFeatures.INCPButtons"></indicators>
+                                asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control form-control-sm" asp-for="CurrentGenericFeatures.INCPButtons"></indicators>
                     <span asp-validation-for="CurrentGenericFeatures.INCPButtons" class="text-danger"></span>
                 </div>
             </div>

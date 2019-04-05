@@ -330,7 +330,7 @@ namespace ProdFloor.Infrastructure
                 case "Valve Brand":
                     return new List<string> { "Maxton", "Blain", "EECO", "TKE | Dover", "Bucher", "Other" }.AsQueryable();
                 case "Battery Brand":
-                    List<string> BatteryInHydro = jobrepository.HydroSpecifics.Select(d => d.BatteryBrand).Distinct().ToList();
+                    List<string> BatteryInHydro = jobrepository.HydroSpecifics.Where(d => d.BatteryBrand != null).Select(d => d.BatteryBrand).Distinct().ToList();
                     List<string> BatteryList = new List<string> { "HAPS", "R&R", "Other" };
                     if(BatteryInHydro.Count > 0) BatteryList.AddRange(BatteryInHydro);
 
@@ -366,9 +366,12 @@ namespace ProdFloor.Infrastructure
             {
                 TagBuilder tag = new TagBuilder("option");
                 tag.Attributes["value"] = option.ToString();
-                if (option.ToString() == SelectedValue)
+                if (!string.IsNullOrEmpty(SelectedValue))
                 {
-                    tag.Attributes["selected"] = "selected";
+                    if (option.ToString() == SelectedValue)
+                    {
+                        tag.Attributes["selected"] = "selected";
+                    }
                 }
                 tag.InnerHtml.Append(option.ToString());
                 result.InnerHtml.AppendHtml(tag);
