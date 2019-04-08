@@ -16,24 +16,47 @@
     </div>
     <div class="card-text p-1">
         <form asp-action="Delete" method="post" asp-route-Id="@Model.JobID">
-            @if(Model.Status != "Incomplete")
-            { 
-            <a asp-action="Edit" class="btn btn-sm btn-warning"
-               asp-route-Id="@Model.JobID">
-                Edit
-            </a>
+            @if (Model.Status != "Incomplete")
+            {
+                <a asp-action="Edit" class="btn btn-sm btn-warning"
+                   asp-route-Id="@Model.JobID">
+                    Edit
+                </a>
             }
             else
             {
-            <a asp-action="Continue" class="btn btn-sm btn-warning"
-               asp-route-Id="@Model.JobID">
-                Continue
-            </a>
+                <a asp-action="Continue" class="btn btn-sm btn-warning"
+                   asp-route-Id="@Model.JobID">
+                    Continue
+                </a>
             }
-            <input type="hidden" name="ID" value="@Model.JobID" />
-            <button type="submit" class="btn btn-danger btn-sm">
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#exampleModalCenter">
                 Delete
             </button>
+
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle"><i class="fas fa-exclamation-triangle"></i>&nbsp;Warning</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            Are you sure you want to delete the Job #@Model.JobNum?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-danger btn-sm">
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </form>
     </div>
 </div>

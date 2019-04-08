@@ -24,7 +24,11 @@
 {
     @Html.Partial("JobSummary", j)
 }
-
+<div>
+    <form asp-controller="Job" asp-action="ExportJobToXML" method="post">
+        <button class="btn btn-sm" style="background-color:#DF0174;color:white">Export All Jobs to an XML File</button>
+    </form>
+</div>
 <div page-model="@Model.PagingInfo" page-action="List" page-classes-enabled="true"
      page-class="btn" page-class-normal="btn-secondary"
      page-class-selected="btn-primary" page-url-jobType="@Model.CurrentJobType"
