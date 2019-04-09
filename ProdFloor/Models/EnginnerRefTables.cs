@@ -49,14 +49,11 @@ namespace ProdFloor.Models
     {
         public int StarterID { get; set; }
 
-        [Required(ErrorMessage = "Please enter a Brand")]
-        public string Brand { get; set; }
-
         [Required(ErrorMessage = "Please enter a FLA")]
         public int FLA { get; set; }
 
         [Required(ErrorMessage = "Please enter a Type")]
-        public string Type { get; set; }
+        public string StarterType { get; set; }
 
         [Required(ErrorMessage = "Please enter a Volt Number")]
         public string Volts { get; set; }

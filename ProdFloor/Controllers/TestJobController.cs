@@ -86,7 +86,7 @@ namespace ProdFloor.Controllers
                 catch(Exception e)
                 {
                     return View("NewDummyJob", new TestJobViewModel { Job = new Job {PO = viewModel.POJobSearch}, JobExtension = new JobExtension(), HydroSpecific = new HydroSpecific(),
-                      GenericFeatures = new GenericFeatures(), HoistWayData = new HoistWayData()});
+                      GenericFeatures = new GenericFeatures(), Indicator = new Indicator(), HoistWayData = new HoistWayData(), SpecialFeature = new SpecialFeatures()});
                 }
             }
             else
@@ -120,6 +120,12 @@ namespace ProdFloor.Controllers
                 currenHydroSpecific.SPH = 1; currenHydroSpecific.Starter = "Fake"; currenHydroSpecific.ValveCoils = 1; currenHydroSpecific.ValveBrand = "Fake";
                 jobRepo.SaveHydroSpecific(currenHydroSpecific);
 
+                //Save the dummy job Indicators
+                Indicator currentIndicator = viewModel.Indicator; currentIndicator.CarCallsVoltage = "Fake"; currentIndicator.CarCallsVoltageType = "Fake"; currentIndicator.CarCallsType = "Fake";
+                currentIndicator.HallCallsVoltage = "Fake"; currentIndicator.HallCallsVoltageType = "Fake"; currentIndicator.HallCallsType = "Fake"; currentIndicator.IndicatorsVoltageType = "Fake";
+                currentIndicator.IndicatorsVoltage = 1; currentIndicator.JobID = currentJob.JobID;
+                jobRepo.SaveIndicator(currentIndicator);
+
                 //Save the dummy Job HoistWayData
                 HoistWayData currentHoistWayData = viewModel.HoistWayData; currentHoistWayData.JobID = currentJob.JobID; currentHoistWayData.Capacity = 1; currentHoistWayData.DownSpeed = 1;
                 currentHoistWayData.TotalTravel = 1; currentHoistWayData.UpSpeed = 1; currentHoistWayData.HoistWaysNumber = 1; currentHoistWayData.MachineRooms = 1;
@@ -128,6 +134,9 @@ namespace ProdFloor.Controllers
                 //Save the dummy Job HoistWayData
                 GenericFeatures currentGenericFeatures = viewModel.GenericFeatures; currentGenericFeatures.JobID = currentJob.JobID;
                 jobRepo.SaveGenericFeatures(currentGenericFeatures);
+
+                SpecialFeatures featureFake = viewModel.SpecialFeature; featureFake.JobID = currentJob.JobID; featureFake.Description = null;
+                jobRepo.SaveSpecialFeatures(featureFake);
 
                 //Create the new TestJob
                 TestJob testJob = new TestJob { JobID = currentJob.JobID, TechnicianID = currentUser.EngID, Status = "Working on it" };

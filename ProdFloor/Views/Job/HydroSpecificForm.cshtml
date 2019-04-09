@@ -114,11 +114,6 @@
         <input asp-for="CurrentHydroSpecific.Resync" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control" />
     </div>
     <div class="form-group col-3 text-center">
-        <label asp-for="CurrentHydroSpecific.Roped" class="col-form-label"></label>
-        <div><span asp-validation-for="CurrentHydroSpecific.Roped" class="text-danger"></span></div>
-        <input asp-for="CurrentHydroSpecific.Roped" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control" />
-    </div>
-    <div class="form-group col-3 text-center">
         <label asp-for="CurrentHydroSpecific.VCI" class="col-form-label"></label>
         <div><span asp-validation-for="CurrentHydroSpecific.VCI" class="text-danger"></span></div>
         <input asp-for="CurrentHydroSpecific.VCI" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control" />

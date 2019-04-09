@@ -224,8 +224,6 @@ namespace ProdFloor.Models
         public bool PSS { get; set; }
         [Display(Name = "Resync operation")]
         public bool Resync { get; set; }
-        [Display(Name = "Roped Hydro")]
-        public bool Roped { get; set; }
         [Display(Name = "Viscosity Control")]
         public bool VCI { get; set; }
     }
@@ -284,7 +282,7 @@ namespace ProdFloor.Models
         public string TopAccessLocation { get; set; } //* Front Or Rear
         [Display(Name = "Bottom Access Switch")]//*
         public bool BottomAccess { get; set; }//*
-
+        
         [Display(Name = "Bottom Access Switch Location")]//*
         [StringLength(25, ErrorMessage = "The maximum length of the {0} field is {1}")]
         public string BottomAccessLocation { get; set; } //* Front Or Rear

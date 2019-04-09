@@ -19,6 +19,8 @@ namespace ProdFloor.Models.ViewModels.TestJob
         public HydroSpecific HydroSpecific { get; set; }
         public HoistWayData HoistWayData {get;set;}
         public GenericFeatures GenericFeatures { get; set; }
+        public Indicator Indicator { get; set; }
+        public SpecialFeatures SpecialFeature { get; set; }
         [Range(3000000, 4900000, ErrorMessage = "PO number is out of range")]
         [Required(ErrorMessage = "Please enter a PO")]
         public int POJobSearch { get; set; }

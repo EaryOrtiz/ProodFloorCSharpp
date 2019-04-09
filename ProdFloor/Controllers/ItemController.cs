@@ -267,9 +267,8 @@ namespace ProdFloor.Controllers
                             xw.WriteStartElement("Starter");
 
                             xw.WriteElementString("ID", starter.StarterID.ToString());
-                            xw.WriteElementString("Brand", starter.Brand);
                             xw.WriteElementString("FLA", starter.FLA.ToString());
-                            xw.WriteElementString("Type", starter.Type);
+                            xw.WriteElementString("Type", starter.StarterType);
                             xw.WriteElementString("Volts", starter.Volts);
                             xw.WriteElementString("HP", starter.HP.ToString());
                             xw.WriteElementString("MCEPart", starter.MCPart);
@@ -405,7 +404,7 @@ namespace ProdFloor.Controllers
 
                         //Lista para strater and overload table
                         List<Starter> StarterList = StarterReferSearch.Where(m => m.Volts.Contains(ViewModel.InputVoltage.ToString())
-                        && m.Type == JobSearch._HydroSpecific.Starter && m.FLA >= ViewModel.FLA && m.HP >= ViewModel.HP).OrderBy(o => o.FLA).Skip(0).Take(2).ToList();
+                        && m.StarterType == JobSearch._HydroSpecific.Starter && m.FLA >= ViewModel.FLA && m.HP >= ViewModel.HP).OrderBy(o => o.FLA).Skip(0).Take(2).ToList();
 
 
                         if (ViewModel.SPH == 80)
@@ -597,9 +596,8 @@ namespace ProdFloor.Controllers
                         context.Starters.Add(new Starter
                         {
                             StarterID = Int32.Parse(ID),
-                            Brand = brand,
                             FLA = Int32.Parse(fla),
-                            Type = type,
+                            StarterType = type,
                             Volts = volts,
                             HP = float.Parse(hp),
                             MCPart = mcepart,
