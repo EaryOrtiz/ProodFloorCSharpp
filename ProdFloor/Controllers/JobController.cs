@@ -695,7 +695,7 @@ namespace ProdFloor.Controllers
 
                             xw.WriteStartElement("JobBase");
                             xw.WriteElementString("ID", job.JobID.ToString());
-                            if (!string.IsNullOrEmpty(job.Status)) xw.WriteElementString("Status", job.Status);
+                            xw.WriteElementString("Status", job.Status);
                             xw.WriteElementString("EngID", job.EngID.ToString());
                             xw.WriteElementString("CrossAppEngID", job.CrossAppEngID.ToString());
                             xw.WriteElementString("Name", job.Name);
@@ -727,23 +727,23 @@ namespace ProdFloor.Controllers
                                 xw.WriteElementString("DoorHoist", jobExtension.DoorHoist);
                                 xw.WriteElementString("SHCRisers", jobExtension.SHCRisers.ToString());
                                 xw.WriteElementString("DoorOperatorID", jobExtension.DoorOperatorID.ToString());
-                                aux = jobExtension.InfDetector ? "1" : "0";
+                                aux = jobExtension.InfDetector ? "True" : "False";
                                 xw.WriteElementString("InfDetector", aux);
-                                aux = jobExtension.MechSafEdge ? "1" : "0";
+                                aux = jobExtension.MechSafEdge ? "True" : "False";
                                 xw.WriteElementString("MechSafEdge", aux);
-                                aux = jobExtension.HeavyDoors ? "1" : "0";
+                                aux = jobExtension.HeavyDoors ? "True" : "False";
                                 xw.WriteElementString("HeavyDoors", aux);
-                                aux = jobExtension.CartopDoorButtons ? "1" : "0";
+                                aux = jobExtension.CartopDoorButtons ? "True" : "False";
                                 xw.WriteElementString("CartopDoorButtons", aux);
-                                aux = jobExtension.DoorHold ? "1" : "0";
+                                aux = jobExtension.DoorHold ? "True" : "False";
                                 xw.WriteElementString("DoorHold", aux);
-                                aux = jobExtension.Nudging ? "1" : "0";
+                                aux = jobExtension.Nudging ? "True" : "False";
                                 xw.WriteElementString("Nudging", aux);
-                                aux = jobExtension.SCOP ? "1" : "0";
+                                aux = jobExtension.SCOP ? "True" : "False";
                                 xw.WriteElementString("SCOP", aux);
-                                aux = jobExtension.SHC ? "1" : "0";
+                                aux = jobExtension.SHC ? "True" : "False";
                                 xw.WriteElementString("SHC", aux);
-                                aux = jobExtension.AUXCOP ? "1" : "0";
+                                aux = jobExtension.AUXCOP ? "True" : "False";
                                 xw.WriteElementString("AUXCOP", aux);
                                 xw.WriteEndElement();
                             }
@@ -764,22 +764,23 @@ namespace ProdFloor.Controllers
                                 xw.WriteElementString("ValveCoils", hydro.ValveCoils.ToString());
                                 xw.WriteElementString("ValveNum", hydro.ValveNum.ToString());
                                 xw.WriteElementString("ValveVoltage", hydro.ValveVoltage.ToString());
-                                if (!string.IsNullOrEmpty(hydro.BatteryBrand)) xw.WriteElementString("BatteryBrand", hydro.BatteryBrand);
-                                aux = hydro.Battery ? "1" : "0";
+                                aux = !string.IsNullOrEmpty(hydro.BatteryBrand) ? hydro.BatteryBrand : "Nulo";
+                                xw.WriteElementString("BatteryBrand", aux);
+                                aux = hydro.Battery ? "True" : "False";
                                 xw.WriteElementString("Battery", aux);
-                                aux = hydro.LifeJacket ? "1" : "0";
+                                aux = hydro.LifeJacket ? "True" : "False";
                                 xw.WriteElementString("LifeJacket", aux);
-                                aux = hydro.LOS ? "1" : "0";
+                                aux = hydro.LOS ? "True" : "False";
                                 xw.WriteElementString("LOS", aux);
-                                aux = hydro.OilCool ? "1" : "0";
+                                aux = hydro.OilCool ? "True" : "False";
                                 xw.WriteElementString("OilCool", aux);
-                                aux = hydro.OilTank ? "1" : "0";
+                                aux = hydro.OilTank ? "True" : "False";
                                 xw.WriteElementString("OilTank", aux);
-                                aux = hydro.PSS ? "1" : "0";
+                                aux = hydro.PSS ? "True" : "False";
                                 xw.WriteElementString("PSS", aux);
-                                aux = hydro.Resync ? "1" : "0";
+                                aux = hydro.Resync ? "True" : "False";
                                 xw.WriteElementString("Resync", aux);
-                                aux = hydro.VCI ? "1" : "0";
+                                aux = hydro.VCI ? "True" : "False";
                                 xw.WriteElementString("VCI", aux);
                                 xw.WriteEndElement();
                             }
@@ -790,69 +791,79 @@ namespace ProdFloor.Controllers
                                 xw.WriteStartElement("GenericFeatures");
                                 xw.WriteElementString("ID", generic.GenericFeaturesID.ToString());
                                 xw.WriteElementString("JobID", generic.JobID.ToString());
-                                if (!string.IsNullOrEmpty(generic.EPCarsNumber)) xw.WriteElementString("EPCarsNumber", generic.EPCarsNumber);
-                                if (!string.IsNullOrEmpty(generic.EPContact)) xw.WriteElementString("EPContact", generic.EPContact);
-                                if (!string.IsNullOrEmpty(generic.TopAccessLocation)) xw.WriteElementString("TopAccessLocation", generic.TopAccessLocation);
-                                if (!string.IsNullOrEmpty(generic.BottomAccessLocation)) xw.WriteElementString("BottomAccessLocation", generic.BottomAccessLocation);
-                                if (!string.IsNullOrEmpty(generic.INCPButtons)) xw.WriteElementString("INCPButtons", generic.INCPButtons);
-                                if (!string.IsNullOrEmpty(generic.SwitchStyle)) xw.WriteElementString("SwitchStyle", generic.SwitchStyle);
-                                if (!string.IsNullOrEmpty(generic.GovModel)) xw.WriteElementString("GovModel", generic.GovModel);
-                                if (!string.IsNullOrEmpty(generic.Monitoring)) xw.WriteElementString("Monitoring", generic.Monitoring);
-                                if (!string.IsNullOrEmpty(generic.CarCallCodeSecurity)) xw.WriteElementString("CarCallCodeSecurity", generic.CarCallCodeSecurity);
-                                if (!string.IsNullOrEmpty(generic.SpecialInstructions)) xw.WriteElementString("SpecialInstructions", generic.SpecialInstructions);
-                                aux = generic.FRON2 ? "1" : "0";
+                                aux = !string.IsNullOrEmpty(generic.EPCarsNumber) ? generic.EPCarsNumber : "Nulo";
+                                xw.WriteElementString("EPCarsNumber", aux);
+                                aux = !string.IsNullOrEmpty(generic.EPContact) ? generic.EPContact : "Nulo";
+                                xw.WriteElementString("EPContact", aux);
+                                aux = !string.IsNullOrEmpty(generic.TopAccessLocation) ? generic.TopAccessLocation : "Nulo";
+                                xw.WriteElementString("TopAccessLocation", aux);
+                                aux = !string.IsNullOrEmpty(generic.BottomAccessLocation) ? generic.BottomAccessLocation : "Nulo";
+                                xw.WriteElementString("BottomAccessLocation", aux);
+                                aux = !string.IsNullOrEmpty(generic.INCPButtons) ? generic.INCPButtons : "Nulo";
+                                xw.WriteElementString("INCPButtons", aux);
+                                aux = !string.IsNullOrEmpty(generic.SwitchStyle) ? generic.SwitchStyle : "Nulo";
+                                xw.WriteElementString("SwitchStyle", aux);
+                                aux = !string.IsNullOrEmpty(generic.GovModel) ? generic.GovModel : "Nulo";
+                                xw.WriteElementString("GovModel", aux);
+                                aux = !string.IsNullOrEmpty(generic.Monitoring) ? generic.Monitoring : "Nulo";
+                                xw.WriteElementString("Monitoring", aux);
+                                aux = !string.IsNullOrEmpty(generic.CarCallCodeSecurity) ? generic.CarCallCodeSecurity : "Nulo";
+                                xw.WriteElementString("CarCallCodeSecurity", aux);
+                                aux = !string.IsNullOrEmpty(generic.SpecialInstructions) ? generic.SpecialInstructions : "Nulo";
+                                xw.WriteElementString("SpecialInstructions", aux);
+                                aux = generic.FRON2 ? "True" : "False";
                                 xw.WriteElementString("FRON2", aux);
-                                aux = generic.Attendant ? "1" : "0";
+                                aux = generic.Attendant ? "True" : "False";
                                 xw.WriteElementString("Attendant", aux);
-                                aux = generic.CarToLobby ? "1" : "0";
+                                aux = generic.CarToLobby ? "True" : "False";
                                 xw.WriteElementString("CarToLobby", aux);
-                                aux = generic.EQ ? "1" : "0";
+                                aux = generic.EQ ? "True" : "False";
                                 xw.WriteElementString("EQ", aux);
-                                aux = generic.EMT ? "1" : "0";
+                                aux = generic.EMT ? "True" : "False";
                                 xw.WriteElementString("EMT", aux);
-                                aux = generic.EP ? "1" : "0";
+                                aux = generic.EP ? "True" : "False";
                                 xw.WriteElementString("EP", aux);
-                                aux = generic.EPVoltage ? "1" : "0";
+                                aux = generic.EPVoltage ? "True" : "False";
                                 xw.WriteElementString("EPVoltage", aux);
-                                aux = generic.EPOtherCars ? "1" : "0";
+                                aux = generic.EPOtherCars ? "True" : "False";
                                 xw.WriteElementString("EPOtherCars", aux);
-                                aux = generic.PTI ? "1" : "0";
+                                aux = generic.PTI ? "True" : "False";
                                 xw.WriteElementString("PTI", aux);
-                                aux = generic.EPSelect ? "1" : "0";
+                                aux = generic.EPSelect ? "True" : "False";
                                 xw.WriteElementString("EPSelect", aux);
-                                aux = generic.FLO ? "1" : "0";
+                                aux = generic.FLO ? "True" : "False";
                                 xw.WriteElementString("FLO", aux);
-                                aux = generic.Hosp ? "1" : "0";
+                                aux = generic.Hosp ? "True" : "False";
                                 xw.WriteElementString("Hosp", aux);
-                                aux = generic.Ind ? "1" : "0";
+                                aux = generic.Ind ? "True" : "False";
                                 xw.WriteElementString("Ind", aux);
-                                aux = generic.INA ? "1" : "0";
+                                aux = generic.INA ? "True" : "False";
                                 xw.WriteElementString("INA", aux);
-                                aux = generic.TopAccess ? "1" : "0";
+                                aux = generic.TopAccess ? "True" : "False";
                                 xw.WriteElementString("TopAccess", aux);
-                                aux = generic.BottomAccess ? "1" : "0";
+                                aux = generic.BottomAccess ? "True" : "False";
                                 xw.WriteElementString("BottomAccess", aux);
-                                aux = generic.INCP ? "1" : "0";
+                                aux = generic.INCP ? "True" : "False";
                                 xw.WriteElementString("INCP", aux);
-                                aux = generic.LoadWeigher ? "1" : "0";
+                                aux = generic.LoadWeigher ? "True" : "False";
                                 xw.WriteElementString("LoadWeigher", aux);
-                                aux = generic.CTINSPST ? "1" : "0";
+                                aux = generic.CTINSPST ? "True" : "False";
                                 xw.WriteElementString("CTINSPST", aux);
-                                aux = generic.Roped ? "1" : "0";
+                                aux = generic.Roped ? "True" : "False";
                                 xw.WriteElementString("Roped", aux);
-                                aux = generic.CallEnable ? "1" : "0";
+                                aux = generic.CallEnable ? "True" : "False";
                                 xw.WriteElementString("CallEnable", aux);
-                                aux = generic.CarCallRead ? "1" : "0";
+                                aux = generic.CarCallRead ? "True" : "False";
                                 xw.WriteElementString("CarCallRead", aux);
-                                aux = generic.HallCallRead ? "1" : "0";
+                                aux = generic.HallCallRead ? "True" : "False";
                                 xw.WriteElementString("HallCallRead", aux);
-                                aux = generic.CarKey ? "1" : "0";
+                                aux = generic.CarKey ? "True" : "False";
                                 xw.WriteElementString("CarKey", aux);
-                                aux = generic.HallKey ? "1" : "0";
+                                aux = generic.HallKey ? "True" : "False";
                                 xw.WriteElementString("HallKey", aux);
-                                aux = generic.CRO ? "1" : "0";
+                                aux = generic.CRO ? "True" : "False";
                                 xw.WriteElementString("CRO", aux);
-                                aux = generic.HCRO ? "1" : "0";
+                                aux = generic.HCRO ? "True" : "False";
                                 xw.WriteElementString("HCRO", aux);
                                 xw.WriteEndElement();
                             }
@@ -869,32 +880,43 @@ namespace ProdFloor.Controllers
                                 xw.WriteElementString("HallCallsVoltage", indicator.HallCallsVoltage);
                                 xw.WriteElementString("HallCallsVoltageType", indicator.HallCallsVoltageType);
                                 xw.WriteElementString("HallCallsType", indicator.HallCallsType);
-                                if (!string.IsNullOrEmpty(indicator.CarPIType)) xw.WriteElementString("CarPIType", indicator.CarPIType);
-                                if (!string.IsNullOrEmpty(indicator.CarPIDiscreteType)) xw.WriteElementString("CarPIDiscreteType", indicator.CarPIDiscreteType);
-                                if (!string.IsNullOrEmpty(indicator.HallPIType)) xw.WriteElementString("HallPIType", indicator.HallPIType);
-                                if (!string.IsNullOrEmpty(indicator.HallPIDiscreteType)) xw.WriteElementString("HallPIDiscreteType", indicator.HallPIDiscreteType);
-                                if (!string.IsNullOrEmpty(indicator.VoiceAnnunciationPIType)) xw.WriteElementString("VoiceAnnunciationPIType", indicator.VoiceAnnunciationPIType);
-                                if (!string.IsNullOrEmpty(indicator.CarLanternsStyle)) xw.WriteElementString("CarLanternsStyle", indicator.CarLanternsStyle);
-                                if (!string.IsNullOrEmpty(indicator.CarLanternsType)) xw.WriteElementString("CarLanternsType", indicator.CarLanternsType);
-                                if (!string.IsNullOrEmpty(indicator.HallLanternsStyle)) xw.WriteElementString("HallLanternsStyle", indicator.HallLanternsStyle);
-                                if (!string.IsNullOrEmpty(indicator.HallLanternsType)) xw.WriteElementString("HallLanternsType", indicator.HallLanternsType);
-                                if (!string.IsNullOrEmpty(indicator.PassingFloorType)) xw.WriteElementString("PassingFloorType", indicator.PassingFloorType);
-                                if (!string.IsNullOrEmpty(indicator.PassingFloorDiscreteType)) xw.WriteElementString("PassingFloorDiscreteType", indicator.PassingFloorDiscreteType);
+                                aux = !string.IsNullOrEmpty(indicator.CarPIType) ? indicator.CarPIType : "Nulo";
+                                xw.WriteElementString("CarPIType", indicator.CarPIType);
+                                aux = !string.IsNullOrEmpty(indicator.CarPIDiscreteType) ? indicator.CarPIDiscreteType : "Nulo";
+                                xw.WriteElementString("CarPIDiscreteType", indicator.CarPIDiscreteType);
+                                aux = !string.IsNullOrEmpty(indicator.HallPIType) ? indicator.HallPIType : "Nulo";
+                                xw.WriteElementString("HallPIType", indicator.HallPIType);
+                                aux = !string.IsNullOrEmpty(indicator.HallPIDiscreteType) ? indicator.HallPIDiscreteType : "Nulo";
+                                xw.WriteElementString("HallPIDiscreteType", indicator.HallPIDiscreteType);
+                                aux = !string.IsNullOrEmpty(indicator.VoiceAnnunciationPIType) ? indicator.VoiceAnnunciationPIType : "Nulo";
+                                xw.WriteElementString("VoiceAnnunciationPIType", indicator.VoiceAnnunciationPIType);
+                                aux = !string.IsNullOrEmpty(indicator.CarLanternsStyle) ? indicator.CarLanternsStyle : "Nulo";
+                                xw.WriteElementString("CarLanternsStyle", indicator.CarLanternsStyle);
+                                aux = !string.IsNullOrEmpty(indicator.CarLanternsType) ? indicator.CarLanternsType : "Nulo";
+                                xw.WriteElementString("CarLanternsType", indicator.CarLanternsType);
+                                aux = !string.IsNullOrEmpty(indicator.HallLanternsStyle) ? indicator.HallLanternsStyle : "Nulo";
+                                xw.WriteElementString("HallLanternsStyle", indicator.HallLanternsStyle);
+                                aux = !string.IsNullOrEmpty(indicator.HallLanternsType) ? indicator.HallLanternsType : "Nulo";
+                                xw.WriteElementString("HallLanternsType", indicator.HallLanternsType);
+                                aux = !string.IsNullOrEmpty(indicator.PassingFloorType) ? indicator.PassingFloorType : "Nulo";
+                                xw.WriteElementString("PassingFloorType", indicator.PassingFloorType);
+                                aux = !string.IsNullOrEmpty(indicator.PassingFloorDiscreteType) ? indicator.PassingFloorDiscreteType : "Nulo";
+                                xw.WriteElementString("PassingFloorDiscreteType", indicator.PassingFloorDiscreteType);
                                 xw.WriteElementString("IndicatorsVoltage", indicator.IndicatorsVoltage.ToString());
                                 xw.WriteElementString("IndicatorsVoltageType", indicator.IndicatorsVoltageType);
-                                aux = indicator.CarPI ? "1" : "0";
+                                aux = indicator.CarPI ? "True" : "False";
                                 xw.WriteElementString("CarPI", aux);
-                                aux = indicator.HallPI ? "1" : "0";
+                                aux = indicator.HallPI ? "True" : "False";
                                 xw.WriteElementString("HallPI", aux);
-                                aux = indicator.VoiceAnnunciationPI ? "1" : "0";
+                                aux = indicator.VoiceAnnunciationPI ? "True" : "False";
                                 xw.WriteElementString("VoiceAnnunciationPI", aux);
-                                aux = indicator.CarLanterns ? "1" : "0";
+                                aux = indicator.CarLanterns ? "True" : "False";
                                 xw.WriteElementString("CarLanterns", aux);
-                                aux = indicator.HallLanterns ? "1" : "0";
+                                aux = indicator.HallLanterns ? "True" : "False";
                                 xw.WriteElementString("HallLanterns", aux);
-                                aux = indicator.PassingFloor ? "1" : "0";
+                                aux = indicator.PassingFloor ? "True" : "False";
                                 xw.WriteElementString("PassingFloor", aux);
-                                aux = indicator.PassingFloorEnable ? "1" : "0";
+                                aux = indicator.PassingFloorEnable ? "True" : "False";
                                 xw.WriteElementString("PassingFloorEnable", aux);
                                 xw.WriteEndElement();
                             }
@@ -912,69 +934,69 @@ namespace ProdFloor.Controllers
                                 xw.WriteElementString("DownSpeed", hoist.DownSpeed.ToString());
                                 xw.WriteElementString("TotalTravel", hoist.TotalTravel.ToString());
                                 xw.WriteElementString("LandingSystemID", hoist.LandingSystemID.ToString());
-                                aux = hoist.FrontFirstServed ? "1" : "0";
+                                aux = hoist.FrontFirstServed ? "True" : "False";
                                 xw.WriteElementString("FrontFirstServed", aux);
-                                aux = hoist.RearFirstServed ? "1" : "0";
+                                aux = hoist.RearFirstServed ? "True" : "False";
                                 xw.WriteElementString("RearFirstServed", aux);
-                                aux = hoist.FrontSecondServed ? "1" : "0";
+                                aux = hoist.FrontSecondServed ? "True" : "False";
                                 xw.WriteElementString("FrontSecondServed", aux);
-                                aux = hoist.RearSecondServed ? "1" : "0";
+                                aux = hoist.RearSecondServed ? "True" : "False";
                                 xw.WriteElementString("RearSecondServed", aux);
-                                aux = hoist.FrontThirdServed ? "1" : "0";
+                                aux = hoist.FrontThirdServed ? "True" : "False";
                                 xw.WriteElementString("FrontThirdServed", aux);
-                                aux = hoist.RearThirdServed ? "1" : "0";
+                                aux = hoist.RearThirdServed ? "True" : "False";
                                 xw.WriteElementString("RearThirdServed", aux);
-                                aux = hoist.FrontFourthServed ? "1" : "0";
+                                aux = hoist.FrontFourthServed ? "True" : "False";
                                 xw.WriteElementString("FrontFourthServed", aux);
-                                aux = hoist.RearFourthServed ? "1" : "0";
+                                aux = hoist.RearFourthServed ? "True" : "False";
                                 xw.WriteElementString("RearFourthServed", aux);
-                                aux = hoist.FrontFifthServed ? "1" : "0";
+                                aux = hoist.FrontFifthServed ? "True" : "False";
                                 xw.WriteElementString("FrontFifthServed", aux);
-                                aux = hoist.RearFifthServed ? "1" : "0";
+                                aux = hoist.RearFifthServed ? "True" : "False";
                                 xw.WriteElementString("RearFifthServed", aux);
-                                aux = hoist.FrontSexthServed ? "1" : "0";
+                                aux = hoist.FrontSexthServed ? "True" : "False";
                                 xw.WriteElementString("FrontSexthServed", aux);
-                                aux = hoist.RearSexthServed ? "1" : "0";
+                                aux = hoist.RearSexthServed ? "True" : "False";
                                 xw.WriteElementString("RearSexthServed", aux);
-                                aux = hoist.FrontSeventhServed ? "1" : "0";
+                                aux = hoist.FrontSeventhServed ? "True" : "False";
                                 xw.WriteElementString("FrontSeventhServed", aux);
-                                aux = hoist.RearSeventhServed ? "1" : "0";
+                                aux = hoist.RearSeventhServed ? "True" : "False";
                                 xw.WriteElementString("RearSeventhServed", aux);
-                                aux = hoist.FrontEightServed ? "1" : "0";
+                                aux = hoist.FrontEightServed ? "True" : "False";
                                 xw.WriteElementString("FrontEightServed", aux);
-                                aux = hoist.RearEightServed ? "1" : "0";
+                                aux = hoist.RearEightServed ? "True" : "False";
                                 xw.WriteElementString("RearEightServed", aux);
-                                aux = hoist.FrontNinthServed ? "1" : "0";
+                                aux = hoist.FrontNinthServed ? "True" : "False";
                                 xw.WriteElementString("FrontNinthServed", aux);
-                                aux = hoist.RearNinthServed ? "1" : "0";
+                                aux = hoist.RearNinthServed ? "True" : "False";
                                 xw.WriteElementString("RearNinthServed", aux);
-                                aux = hoist.FrontTenthServed ? "1" : "0";
+                                aux = hoist.FrontTenthServed ? "True" : "False";
                                 xw.WriteElementString("FrontTenthServed", aux);
-                                aux = hoist.RearTenthServed ? "1" : "0";
+                                aux = hoist.RearTenthServed ? "True" : "False";
                                 xw.WriteElementString("RearTenthServed", aux);
-                                aux = hoist.FrontEleventhServed ? "1" : "0";
+                                aux = hoist.FrontEleventhServed ? "True" : "False";
                                 xw.WriteElementString("FrontEleventhServed", aux);
-                                aux = hoist.RearEleventhServed ? "1" : "0";
+                                aux = hoist.RearEleventhServed ? "True" : "False";
                                 xw.WriteElementString("RearEleventhServed", aux);
-                                aux = hoist.FrontTwelvethServed ? "1" : "0";
+                                aux = hoist.FrontTwelvethServed ? "True" : "False";
                                 xw.WriteElementString("FrontTwelvethServed", aux);
-                                aux = hoist.RearTwelvethServed ? "1" : "0";
+                                aux = hoist.RearTwelvethServed ? "True" : "False";
                                 xw.WriteElementString("RearTwelvethServed", aux);
-                                aux = hoist.FrontThirteenthServed ? "1" : "0";
+                                aux = hoist.FrontThirteenthServed ? "True" : "False";
                                 xw.WriteElementString("FrontThirteenthServed", aux);
-                                aux = hoist.RearThirteenthServed ? "1" : "0";
+                                aux = hoist.RearThirteenthServed ? "True" : "False";
                                 xw.WriteElementString("RearThirteenthServed", aux);
-                                aux = hoist.FrontFourteenthServed ? "1" : "0";
+                                aux = hoist.FrontFourteenthServed ? "True" : "False";
                                 xw.WriteElementString("FrontFourteenthServed", aux);
-                                aux = hoist.RearFourteenthServed ? "1" : "0";
+                                aux = hoist.RearFourteenthServed ? "True" : "False";
                                 xw.WriteElementString("RearFourteenthServed", aux);
-                                aux = hoist.FrontFifteenthServed ? "1" : "0";
+                                aux = hoist.FrontFifteenthServed ? "True" : "False";
                                 xw.WriteElementString("FrontFifteenthServed", aux);
-                                aux = hoist.RearFifteenthServed ? "1" : "0";
+                                aux = hoist.RearFifteenthServed ? "True" : "False";
                                 xw.WriteElementString("RearFifteenthServed", aux);
-                                aux = hoist.FrontSixteenthServed ? "1" : "0";
+                                aux = hoist.FrontSixteenthServed ? "True" : "False";
                                 xw.WriteElementString("FrontSixteenthServed", aux);
-                                aux = hoist.RearSixteenthServed ? "1" : "0";
+                                aux = hoist.RearSixteenthServed ? "True" : "False";
                                 xw.WriteElementString("RearSixteenthServed", aux);
                                 xw.WriteEndElement();
                             }
@@ -1007,24 +1029,22 @@ namespace ProdFloor.Controllers
             return File(ms, "text/xml", "Jobs.xml");
         }
 
-        public static void ImportXML(IServiceProvider services, string resp)
+        public static void ImportXML(IServiceProvider services)
         {
             ApplicationDbContext context = services.GetRequiredService<ApplicationDbContext>();
 
             HtmlDocument doc = new HtmlDocument();
             doc.Load(@"C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\Jobs.xml");
 
-            var XMLJob = doc.DocumentNode.SelectNodes("//job");
-            var XMLIndicator = doc.DocumentNode.SelectNodes("//indicator");
-            var XMLHoist = doc.DocumentNode.SelectNodes("//hoistwayData");
-            var XMLSpecialF = doc.DocumentNode.SelectNodes("//specialseatures");
+            var XMLJobs = doc.DocumentNode.SelectSingleNode("//jobs");
+            var XMLJob = XMLJobs.SelectNodes(".//job");
 
-            foreach (var xmlJob in XMLJob)
+            foreach (var node in XMLJob)
             {
-                    var XMLJobBase = xmlJob.SelectSingleNode("//jobbase");
+                    var XMLJobBase = node.SelectSingleNode(".//jobbase");
                     var id = XMLJobBase.SelectSingleNode(".//id").InnerText;
                     var status = XMLJobBase.SelectSingleNode(".//status").InnerText;
-                    var engid = XMLJobBase.SelectSingleNode(".//distance").InnerText;
+                    var engid = XMLJobBase.SelectSingleNode(".//engid").InnerText;
                     var crossappengid = XMLJobBase.SelectSingleNode(".//crossappengid").InnerText;
                     var name = XMLJobBase.SelectSingleNode(".//name").InnerText;
                     var jobnum = XMLJobBase.SelectSingleNode(".//jobnum").InnerText;
@@ -1035,7 +1055,7 @@ namespace ProdFloor.Controllers
                     var contractor = XMLJobBase.SelectSingleNode(".//contractor").InnerText;
                     var jobtypeid = XMLJobBase.SelectSingleNode(".//jobtypeid").InnerText;
                     var cityid = XMLJobBase.SelectSingleNode(".//cityid").InnerText;
-                    var fireCodeid = XMLJobBase.SelectSingleNode(".//fireCodeid").InnerText;
+                    var fireCodeid = XMLJobBase.SelectSingleNode(".//firecodeid").InnerText;
                     context.Jobs.Add(new Job
                     {
                         JobID = Int32.Parse(id),
@@ -1066,7 +1086,7 @@ namespace ProdFloor.Controllers
                         context.Database.CloseConnection();
                     }
 
-                var XMLJobExtension = xmlJob.SelectSingleNode("//jobextension");
+                var XMLJobExtension = node.SelectSingleNode(".//jobextension");
                 var idEx = XMLJobExtension.SelectSingleNode(".//id").InnerText;
                 var jobid = XMLJobExtension.SelectSingleNode(".//jobid").InnerText;
                 var numofstops = XMLJobExtension.SelectSingleNode(".//numofstops").InnerText;
@@ -1090,7 +1110,7 @@ namespace ProdFloor.Controllers
                 var dooroperatorid = XMLJobExtension.SelectSingleNode(".//dooroperatorid").InnerText;
                 context.JobsExtensions.Add(new JobExtension
                 {
-                    JobExtensionID = Int32.Parse(id),
+                    JobExtensionID = Int32.Parse(idEx),
                     JobID = Int32.Parse(jobid),
                     NumOfStops = Int32.Parse(numofstops),
                     JobTypeMain = jobtypemain,
@@ -1112,7 +1132,6 @@ namespace ProdFloor.Controllers
                     SHCRisers = Int32.Parse(shcrisers),
                     DoorOperatorID = Int32.Parse(dooroperatorid)
 
-
                 });
                 context.Database.OpenConnection();
                 try
@@ -1126,7 +1145,7 @@ namespace ProdFloor.Controllers
                     context.Database.CloseConnection();
                 }
 
-                var XMLHydro = xmlJob.SelectSingleNode("//hydrospecific");
+                var XMLHydro = node.SelectSingleNode(".//hydrospecific");
                 var idHidro = XMLHydro.SelectSingleNode(".//id").InnerText;
                 var starter = XMLHydro.SelectSingleNode(".//starter").InnerText;
                 var hp = XMLHydro.SelectSingleNode(".//hp").InnerText;
@@ -1161,7 +1180,7 @@ namespace ProdFloor.Controllers
                     ValveCoils = Int32.Parse(valvecoils),
                     ValveNum = Int32.Parse(valvenum),
                     ValveVoltage = Int32.Parse(valvevoltage),
-                    BatteryBrand = batterybrand == null ? "" : batterybrand,
+                    BatteryBrand = batterybrand == "Nulo" ? null : batterybrand,
                     Battery = Boolean.Parse(battery),
                     LifeJacket = Boolean.Parse(lifejacket),
                     LOS = Boolean.Parse(los),
@@ -1169,7 +1188,7 @@ namespace ProdFloor.Controllers
                     OilTank = Boolean.Parse(oiltank),
                     PSS = Boolean.Parse(pss),
                     Resync = Boolean.Parse(resync),
-                    VCI = Boolean.Parse(vci),
+                    VCI = Boolean.Parse(vci)
                 });
                 context.Database.OpenConnection();
                 try
@@ -1183,7 +1202,7 @@ namespace ProdFloor.Controllers
                     context.Database.CloseConnection();
                 }
 
-                var XMLGeneric = xmlJob.SelectSingleNode("//genericfeatures");
+                var XMLGeneric = node.SelectSingleNode(".//genericfeatures");
                 var idGeneric = XMLGeneric.SelectSingleNode(".//id").InnerText;
                 var fron2 = XMLGeneric.SelectSingleNode(".//fron2").InnerText;
                 var attendant = XMLGeneric.SelectSingleNode(".//attendant").InnerText;
@@ -1224,7 +1243,45 @@ namespace ProdFloor.Controllers
                 var specialinstructions = XMLGeneric.SelectSingleNode(".//specialinstructions").InnerText;
                 context.GenericFeaturesList.Add(new GenericFeatures
                 {
+                    GenericFeaturesID = Int32.Parse(idGeneric),
                     JobID = Int32.Parse(jobid),
+                    FRON2 = Boolean.Parse(fron2),
+                    Attendant = Boolean.Parse(attendant),
+                    CarToLobby = Boolean.Parse(cartolobby),
+                    EQ = Boolean.Parse(eq),
+                    EMT = Boolean.Parse(emt),
+                    EP = Boolean.Parse(ep),
+                    EPVoltage = Boolean.Parse(epvoltage),
+                    EPOtherCars = Boolean.Parse(epothercars),
+                    EPCarsNumber = epcarsnumber == "Nulo" ? null : epcarsnumber,
+                    EPContact = epcontact == "Nulo" ? null : epcontact,
+                    PTI = Boolean.Parse(pti),
+                    EPSelect = Boolean.Parse(epselect),
+                    FLO = Boolean.Parse(flo),
+                    Hosp = Boolean.Parse(hosp),
+                    Ind = Boolean.Parse(ind),
+                    INA = Boolean.Parse(ina),
+                    TopAccess = Boolean.Parse(topaccess),
+                    TopAccessLocation = topaccesslocation,
+                    BottomAccess = Boolean.Parse(bottomaccess),
+                    BottomAccessLocation = bottomaccesslocation == "Nulo" ? null : bottomaccesslocation,
+                    INCP = Boolean.Parse(incp),
+                    INCPButtons = incpbuttons == "Nulo" ? null : incpbuttons,
+                    SwitchStyle = switchstyle == "Nulo" ? null : switchstyle,
+                    LoadWeigher = Boolean.Parse(loadweigher),
+                    CTINSPST = Boolean.Parse(ctinspst),
+                    Roped = Boolean.Parse(roped),
+                    GovModel = govmodel == "Nulo" ? null : govmodel,
+                    Monitoring = monitoring == "Nulo" ? null : monitoring,
+                    CallEnable = Boolean.Parse(callenable),
+                    CarCallRead = Boolean.Parse(carcallread),
+                    HallCallRead = Boolean.Parse(hallcallread),
+                    CarKey = Boolean.Parse(carkey),
+                    HallKey = Boolean.Parse(hallkey),
+                    CRO = Boolean.Parse(cro),
+                    HCRO = Boolean.Parse(hcro),
+                    CarCallCodeSecurity = carcallcodesecurity == "Nulo" ? null : carcallcodesecurity,
+                    SpecialInstructions = specialinstructions == "Nulo" ? null : specialinstructions
                 });
                 context.Database.OpenConnection();
                 try
@@ -1237,7 +1294,226 @@ namespace ProdFloor.Controllers
                 {
                     context.Database.CloseConnection();
                 }
+
+                var XMLIndicator = node.SelectSingleNode(".//indicator");
+                var idIndicator = XMLIndicator.SelectSingleNode(".//id").InnerText;
+                var carcallsvoltage = XMLIndicator.SelectSingleNode(".//carcallsvoltage").InnerText;
+                var carcallsvoltagetype = XMLIndicator.SelectSingleNode(".//carcallsvoltagetype").InnerText;
+                var carcallstype = XMLIndicator.SelectSingleNode(".//carcallstype").InnerText;
+                var hallcallsvoltage = XMLIndicator.SelectSingleNode(".//hallcallsvoltage").InnerText;
+                var hallcallsvoltagetype = XMLIndicator.SelectSingleNode(".//hallcallsvoltagetype").InnerText;
+                var hallcallstype = XMLIndicator.SelectSingleNode(".//hallcallstype").InnerText;
+                var carpi = XMLIndicator.SelectSingleNode(".//carpi").InnerText;
+                var carpitype = XMLIndicator.SelectSingleNode(".//carpitype").InnerText;
+                var carpidiscretetype = XMLIndicator.SelectSingleNode(".//carpidiscretetype").InnerText;
+                var hallpi = XMLIndicator.SelectSingleNode(".//hallpi").InnerText;
+                var hallpitype = XMLIndicator.SelectSingleNode(".//hallpitype").InnerText;
+                var hallpidiscretetype = XMLIndicator.SelectSingleNode(".//hallpidiscretetype").InnerText;
+                var voiceannunciationpi = XMLIndicator.SelectSingleNode(".//voiceannunciationpi").InnerText;
+                var voiceannunciationpitype = XMLIndicator.SelectSingleNode(".//voiceannunciationpitype").InnerText;
+                var carlanterns = XMLIndicator.SelectSingleNode(".//carlanterns").InnerText;
+                var carlanternsstyle = XMLIndicator.SelectSingleNode(".//carlanternsstyle").InnerText;
+                var carlanternstype = XMLIndicator.SelectSingleNode(".//carlanternstype").InnerText;
+                var halllanterns = XMLIndicator.SelectSingleNode(".//halllanterns").InnerText;
+                var halllanternsstyle = XMLIndicator.SelectSingleNode(".//halllanternsstyle").InnerText;
+                var halllanternstype = XMLIndicator.SelectSingleNode(".//halllanternstype").InnerText;
+                var passingfloor = XMLIndicator.SelectSingleNode(".//passingfloor").InnerText;
+                var passingfloortype = XMLIndicator.SelectSingleNode(".//passingfloortype").InnerText;
+                var passingfloordiscretetype = XMLIndicator.SelectSingleNode(".//passingfloordiscretetype").InnerText;
+                var passingfloorenable = XMLIndicator.SelectSingleNode(".//passingfloorenable").InnerText;
+                var indicatorsvoltage = XMLIndicator.SelectSingleNode(".//indicatorsvoltage").InnerText;
+                var indicatorsvoltagetype = XMLIndicator.SelectSingleNode(".//indicatorsvoltagetype").InnerText;
+
+                context.Indicators.Add(new Indicator
+                {
+                    IndicatorID = Int32.Parse(idIndicator),
+                    JobID = Int32.Parse(jobid),
+                    CarCallsVoltage = carcallsvoltage,
+                    CarCallsVoltageType = carcallsvoltagetype,
+                    CarCallsType = carcallstype,
+                    HallCallsVoltage = hallcallsvoltage,
+                    HallCallsVoltageType = hallcallsvoltagetype,
+                    HallCallsType = hallcallstype,
+                    CarPI = Boolean.Parse(carpi),
+                    CarPIType = carpitype == "Nulo" ? null : carpitype,
+                    CarPIDiscreteType = carpidiscretetype == "Nulo" ? null : carpidiscretetype,
+                    HallPI = Boolean.Parse(hallpi),
+                    HallPIType = hallpitype == "Nulo" ? "" : hallpitype,
+                    HallPIDiscreteType = hallpidiscretetype == "Nulo" ? null : hallpidiscretetype,
+                    VoiceAnnunciationPI = Boolean.Parse(voiceannunciationpi),
+                    VoiceAnnunciationPIType = voiceannunciationpi == "Nulo" ? null : voiceannunciationpitype,
+                    CarLanterns = Boolean.Parse(carlanterns),
+                    CarLanternsStyle = carlanternsstyle == "Nulo" ? null : carlanternsstyle,
+                    CarLanternsType = carlanternstype == "Nulo" ? null : carlanternstype,
+                    HallLanterns = Boolean.Parse(halllanterns),
+                    HallLanternsStyle = halllanternsstyle == "Nulo" ? null : halllanternsstyle,
+                    HallLanternsType = halllanternstype == "Nulo" ? null : halllanternstype,
+                    PassingFloor = Boolean.Parse(passingfloor),
+                    PassingFloorType = passingfloortype == "Nulo" ? null : passingfloortype,
+                    PassingFloorDiscreteType = passingfloordiscretetype == "Nulo" ? null : passingfloordiscretetype,
+                    PassingFloorEnable = Boolean.Parse(passingfloorenable),
+                    IndicatorsVoltage = Int32.Parse(indicatorsvoltage),
+                    IndicatorsVoltageType = indicatorsvoltagetype == "Nulo" ? null : indicatorsvoltagetype
+
+                });
+                context.Database.OpenConnection();
+                try
+                {
+                    context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.Indicators ON");
+                    context.SaveChanges();
+                    context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.Indicators OFF");
+                }
+                finally
+                {
+                    context.Database.CloseConnection();
+                }
+
+
+                var XMLHoist = node.SelectSingleNode(".//hoistwaydata");
+                var idHoist = XMLHoist.SelectSingleNode(".//id").InnerText;
+                var hoistwaysnumber = XMLHoist.SelectSingleNode(".//hoistwaysnumber").InnerText;
+                var machinerooms = XMLHoist.SelectSingleNode(".//machinerooms").InnerText;
+                var capacity = XMLHoist.SelectSingleNode(".//capacity").InnerText;
+                var upspeed = XMLHoist.SelectSingleNode(".//upspeed").InnerText;
+                var downspeed = XMLHoist.SelectSingleNode(".//downspeed").InnerText;
+                var totaltravel = XMLHoist.SelectSingleNode(".//totaltravel").InnerText;
+                var landingsystemid = XMLHoist.SelectSingleNode(".//landingsystemid").InnerText;
+                var frontfirstserved = XMLHoist.SelectSingleNode(".//frontfirstserved").InnerText;
+                var rearfirstserved = XMLHoist.SelectSingleNode(".//rearfirstserved").InnerText;
+                var frontsecondserved = XMLHoist.SelectSingleNode(".//frontsecondserved").InnerText;
+                var rearsecondserved = XMLHoist.SelectSingleNode(".//rearsecondserved").InnerText;
+                var frontthirdserved = XMLHoist.SelectSingleNode(".//frontthirdserved").InnerText;
+                var rearthirdserved = XMLHoist.SelectSingleNode(".//rearthirdserved").InnerText;
+                var frontfourthserved = XMLHoist.SelectSingleNode(".//frontfourthserved").InnerText;
+                var rearfourthserved = XMLHoist.SelectSingleNode(".//rearfourthserved").InnerText;
+                var frontfifthserved = XMLHoist.SelectSingleNode(".//frontfifthserved").InnerText;
+                var rearfifthserved = XMLHoist.SelectSingleNode(".//rearfifthserved").InnerText;
+                var frontsexthserved = XMLHoist.SelectSingleNode(".//frontsexthserved").InnerText;
+                var rearsexthserved = XMLHoist.SelectSingleNode(".//rearsexthserved").InnerText;
+                var frontseventhserved = XMLHoist.SelectSingleNode(".//frontseventhserved").InnerText;
+                var rearseventhserved = XMLHoist.SelectSingleNode(".//rearseventhserved").InnerText;
+                var fronteightserved = XMLHoist.SelectSingleNode(".//fronteightserved").InnerText;
+                var reareightserved = XMLHoist.SelectSingleNode(".//reareightserved").InnerText;
+                var frontninthserved = XMLHoist.SelectSingleNode(".//frontninthserved").InnerText;
+                var rearninthserved = XMLHoist.SelectSingleNode(".//rearninthserved").InnerText;
+                var fronttenthserved = XMLHoist.SelectSingleNode(".//fronttenthserved").InnerText;
+                var reartenthserved = XMLHoist.SelectSingleNode(".//reartenthserved").InnerText;
+                var fronteleventhserved = XMLHoist.SelectSingleNode(".//fronteleventhserved").InnerText;
+                var reareleventhserved = XMLHoist.SelectSingleNode(".//reareleventhserved").InnerText;
+                var fronttwelvethserved = XMLHoist.SelectSingleNode(".//fronttwelvethserved").InnerText;
+                var reartwelvethserved = XMLHoist.SelectSingleNode(".//reartwelvethserved").InnerText;
+                var frontthirteenthserved = XMLHoist.SelectSingleNode(".//frontthirteenthserved").InnerText;
+                var rearthirteenthserved = XMLHoist.SelectSingleNode(".//rearthirteenthserved").InnerText;
+                var frontfourteenthserved = XMLHoist.SelectSingleNode(".//frontfourteenthserved").InnerText;
+                var rearfourteenthserved = XMLHoist.SelectSingleNode(".//rearfourteenthserved").InnerText;
+                var frontfifteenthserved = XMLHoist.SelectSingleNode(".//frontfifteenthserved").InnerText;
+                var rearfifteenthserved = XMLHoist.SelectSingleNode(".//rearfifteenthserved").InnerText;
+                var frontsixteenthserved = XMLHoist.SelectSingleNode(".//frontsixteenthserved").InnerText;
+                var rearsixteenthserved = XMLHoist.SelectSingleNode(".//rearsixteenthserved").InnerText;
+
+                context.HoistWayDatas.Add(new HoistWayData
+                {
+                    HoistWayDataID = Int32.Parse(idHoist),
+                    JobID = Int32.Parse(jobid),
+                    HoistWaysNumber = Int32.Parse(hoistwaysnumber),
+                    MachineRooms = Int32.Parse(machinerooms),
+                    Capacity = Int32.Parse(capacity),
+                    UpSpeed = Int32.Parse(upspeed),
+                    DownSpeed = Int32.Parse(downspeed),
+                    TotalTravel = Int32.Parse(totaltravel),
+                    LandingSystemID = Int32.Parse(landingsystemid),
+                    FrontFirstServed = Boolean.Parse(frontfirstserved),
+                    RearFirstServed = Boolean.Parse(rearfirstserved),
+                    FrontSecondServed = Boolean.Parse(frontsecondserved),
+                    RearSecondServed = Boolean.Parse(rearsecondserved),
+                    FrontThirdServed = Boolean.Parse(frontthirdserved),
+                    RearThirdServed = Boolean.Parse(rearthirdserved),
+                    FrontFourthServed = Boolean.Parse(frontfourthserved),
+                    RearFourthServed = Boolean.Parse(rearfourthserved),
+                    FrontFifthServed = Boolean.Parse(frontfifthserved),
+                    RearFifthServed = Boolean.Parse(rearfifthserved),
+                    FrontSexthServed = Boolean.Parse(frontsexthserved),
+                    RearSexthServed = Boolean.Parse(rearsexthserved),
+                    FrontSeventhServed = Boolean.Parse(frontseventhserved),
+                    RearSeventhServed = Boolean.Parse(rearseventhserved),
+                    FrontEightServed = Boolean.Parse(fronteightserved),
+                    RearEightServed = Boolean.Parse(reareightserved),
+                    FrontNinthServed = Boolean.Parse(frontninthserved),
+                    RearNinthServed = Boolean.Parse(rearninthserved),
+                    FrontTenthServed = Boolean.Parse(fronttenthserved),
+                    RearTenthServed = Boolean.Parse(reartenthserved),
+                    FrontEleventhServed = Boolean.Parse(fronteleventhserved),
+                    RearEleventhServed = Boolean.Parse(reareleventhserved),
+                    FrontTwelvethServed = Boolean.Parse(fronttwelvethserved),
+                    RearTwelvethServed = Boolean.Parse(reartwelvethserved),
+                    FrontThirteenthServed = Boolean.Parse(frontthirteenthserved),
+                    RearThirteenthServed = Boolean.Parse(rearthirteenthserved),
+                    FrontFourteenthServed = Boolean.Parse(frontfourteenthserved),
+                    RearFourteenthServed = Boolean.Parse(rearfourteenthserved),
+                    FrontFifteenthServed = Boolean.Parse(frontfifteenthserved),
+                    RearFifteenthServed = Boolean.Parse(rearfifteenthserved),
+                    FrontSixteenthServed = Boolean.Parse(frontsixteenthserved),
+                    RearSixteenthServed = Boolean.Parse(rearsixteenthserved),
+                });
+                context.Database.OpenConnection();
+                try
+                {
+                    context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.HoistWayDatas ON");
+                    context.SaveChanges();
+                    context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.HoistWayDatas OFF");
+                }
+                finally
+                {
+                    context.Database.CloseConnection();
+                }
+
+
+                var XMLSpecialF = node.SelectSingleNode(".//specialfeatures");
+                var XMLFeatures = XMLSpecialF.SelectNodes(".//specialfeature");
+                if(XMLFeatures != null)
+                {
+                    foreach (var Feature in XMLFeatures)
+                    {
+                        var idFeature = Feature.SelectSingleNode(".//id").InnerText;
+                        var description = Feature.SelectSingleNode(".//description").InnerText;
+                        context.SpecialFeatures.Add(new SpecialFeatures
+                        {
+                            SpecialFeaturesID = Int32.Parse(idFeature),
+                            JobID = Int32.Parse(jobid),
+                            Description = description
+
+                        });
+                        context.Database.OpenConnection();
+                        try
+                        {
+                            context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.SpecialFeatures ON");
+                            context.SaveChanges();
+                            context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.SpecialFeatures OFF");
+                        }
+                        finally
+                        {
+                            context.Database.CloseConnection();
+                        }
+                    }
+                }
+                else
+                {
+                    context.SpecialFeatures.Add(new SpecialFeatures
+                    {
+                        JobID = Int32.Parse(jobid),
+                        Description = null
+
+                    });
+                    context.SaveChanges();
+                }
             }
+        }
+
+        [HttpPost]
+        public IActionResult SeedXML(string buttonImportXML)
+        {
+            JobController.ImportXML(HttpContext.RequestServices);
+            return RedirectToAction(nameof(List));
         }
 
     }
