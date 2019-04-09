@@ -166,6 +166,13 @@ namespace ProdFloor.Controllers
 
                     TempData["message"] = $"You have approved the Job #{UpdateStatus.JobNum}";
                 }
+                else if (viewModel.buttonAction == "ToProduction" && currentUser.EngID == UpdateStatus.EngID)
+                {
+                    UpdateStatus.Status = "Test";
+                    repository.SaveJob(UpdateStatus);
+
+                    TempData["message"] = $"You have approved the Job #{UpdateStatus.JobNum}";
+                }
             }
             else
             {
