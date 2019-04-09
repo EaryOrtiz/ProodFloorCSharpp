@@ -173,6 +173,11 @@ namespace ProdFloor.Controllers
 
                     TempData["message"] = $"You have approved the Job #{UpdateStatus.JobNum}";
                 }
+                else
+                {
+                    TempData["alert"] = $"alert-danger";
+                    TempData["message"] = $"There was an error with your request{JobCrossID}";
+                }
             }
             else
             {
