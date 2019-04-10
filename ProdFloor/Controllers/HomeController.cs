@@ -171,7 +171,7 @@ namespace ProdFloor.Controllers
                     UpdateStatus.Status = "Test";
                     repository.SaveJob(UpdateStatus);
 
-                    TempData["message"] = $"You have approved the Job #{UpdateStatus.JobNum}";
+                    TempData["message"] = $"You have sent to production the Job #{UpdateStatus.JobNum}";
                 }
                 else
                 {
