@@ -332,7 +332,7 @@ namespace ProdFloor.Infrastructure
                 case "Battery Brand":
                     List<string> BatteryInHydro = jobrepository.HydroSpecifics.Where(d => d.BatteryBrand != null).Select(d => d.BatteryBrand).Distinct().ToList();
                     List<string> BatteryList = new List<string> { "HAPS", "R&R", "Other" };
-                    if(BatteryInHydro.Count > 0) BatteryList.AddRange(BatteryInHydro);
+                    if (BatteryInHydro.Count > 0) BatteryList.AddRange(BatteryInHydro);
 
                     return BatteryList.Distinct().AsQueryable();
                 default:
@@ -365,9 +365,6 @@ namespace ProdFloor.Infrastructure
             foreach (string option in options2)
             {
                 TagBuilder tag = new TagBuilder("option");
-                if (!string.IsNullOrEmpty(option))
-                {
-                    tag.Attributes["value"] = option;
                 tag.Attributes["value"] = option.ToString();
                 if (!string.IsNullOrEmpty(SelectedValue))
                 {
@@ -375,9 +372,9 @@ namespace ProdFloor.Infrastructure
                     {
                         tag.Attributes["selected"] = "selected";
                     }
-                    tag.InnerHtml.Append(option.ToString());
-                    result.InnerHtml.AppendHtml(tag);
                 }
+                tag.InnerHtml.Append(option.ToString());
+                result.InnerHtml.AppendHtml(tag);
             }
             output.Content.AppendHtml(result.InnerHtml);
             if (IsDisabled)
@@ -388,7 +385,6 @@ namespace ProdFloor.Infrastructure
             base.Process(context, output);
         }
     }
-
     public class IndicatorsTagHelper : TagHelper
     {
         private IItemRepository itemsrepository;
@@ -708,7 +704,7 @@ namespace ProdFloor.Infrastructure
 
         [HtmlAttributeName("asp-is-disabled")]
         public bool IsDisabled { set; get; }
-            
+
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
 
@@ -1289,7 +1285,7 @@ namespace ProdFloor.Infrastructure
             m_tag.Attributes["value"] = "";
             m_tag.InnerHtml.Append("Select a Type of operation");
             result.InnerHtml.AppendHtml(m_tag);
-            IQueryable<string> jobTypeAdd = ijobrepository.JobsExtensions.Select( j => j.JobTypeAdd ).Distinct().AsQueryable();
+            IQueryable<string> jobTypeAdd = ijobrepository.JobsExtensions.Select(j => j.JobTypeAdd).Distinct().AsQueryable();
             foreach (string jobTypesAdd in jobTypeAdd)
             {
                 TagBuilder tag = new TagBuilder("option");
@@ -1521,7 +1517,7 @@ namespace ProdFloor.Infrastructure
                 case "Brand":
                     return new List<string> { "Siemens", "Sprecher Schuh" }.AsQueryable();
                 case "Type":
-                    return new List<string> { "ATL", "YD","3/9", "6/12" }.AsQueryable();
+                    return new List<string> { "ATL", "YD", "3/9", "6/12" }.AsQueryable();
                 case "OverloadTable":
                     return new List<string> { "1", "2", "3", "4", "5", "N/A" }.AsQueryable();
                 default:
