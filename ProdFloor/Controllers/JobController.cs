@@ -137,9 +137,8 @@ namespace ProdFloor.Controllers
         /* Get de Edit; Si el ID recibido exite en el repositorio regresa un JobViewModel con los objetos relacionados a este ID,
          * de lo contrario regresa un mensaje de failure a la view List
          */
-        public IActionResult Edit(int ID)
+        public IActionResult Edit(int ID, string buttonAction)
         {
-
             AppUser currentUser = GetCurrentUser().Result;
             Job job = repository.Jobs.FirstOrDefault(j => j.JobID == ID);
             if (job == null)
@@ -163,7 +162,244 @@ namespace ProdFloor.Controllers
                 viewModel.CurrentTab = "Main";
                 return View(viewModel);
             }
+        }
 
+
+        public IActionResult CopyJob(int ID)
+        {
+            AppUser currentUser = GetCurrentUser().Result;
+            Job jobToCopy = repository.Jobs.FirstOrDefault(j => j.JobID == ID);
+            if (jobToCopy == null)
+            {
+                TempData["message"] = $"The requested Job doesn't exist.";
+                return RedirectToAction("List");
+            }
+            else
+            {
+                //Get the job
+                List<SpecialFeatures> SfList = repository.SpecialFeatures.Where(j => j.JobID == ID).ToList();
+                JobViewModel viewModel = new JobViewModel();
+                viewModel.CurrentJob = jobToCopy;
+                viewModel.CurrentJobExtension = repository.JobsExtensions.FirstOrDefault(j => j.JobID == ID);
+                viewModel.CurrentHydroSpecific = repository.HydroSpecifics.FirstOrDefault(j => j.JobID == ID);
+                viewModel.CurrentGenericFeatures = repository.GenericFeaturesList.FirstOrDefault(j => j.JobID == ID);
+                viewModel.CurrentIndicator = repository.Indicators.FirstOrDefault(j => j.JobID == ID);
+                viewModel.CurrentHoistWayData = repository.HoistWayDatas.FirstOrDefault(j => j.JobID == ID);
+                Job newJob = new Job
+                {
+                    Status = viewModel.CurrentJob.Status,
+                    EngID = currentUser.EngID,
+                    CrossAppEngID = viewModel.CurrentJob.CrossAppEngID,
+                    Name = "Change the name please",
+                    JobNum = 0,
+                    PO = 0,
+                    ShipDate = viewModel.CurrentJob.ShipDate,
+                    LatestFinishDate = viewModel.CurrentJob.LatestFinishDate,
+                    Cust = viewModel.CurrentJob.Cust,
+                    Contractor = viewModel.CurrentJob.Status,
+                    JobTypeID = viewModel.CurrentJob.JobTypeID,
+                    CityID = viewModel.CurrentJob.CityID,
+                    FireCodeID = viewModel.CurrentJob.FireCodeID,
+                };
+                repository.SaveJob(viewModel.CurrentJob);
+                viewModel.CurrentJob = repository.Jobs.FirstOrDefault(p => p.JobID == repository.Jobs.Max(x => x.JobID));
+                JobExtension NewJobExtension = new JobExtension()
+                {
+                    JobID = viewModel.CurrentJob.JobID,
+                    NumOfStops = viewModel.CurrentJobExtension.NumOfStops,
+                    JobTypeMain = viewModel.CurrentJobExtension.JobTypeMain,
+                    JobTypeAdd = viewModel.CurrentJobExtension.JobTypeAdd,
+                    InputVoltage = viewModel.CurrentJobExtension.InputVoltage,
+                    InputPhase = viewModel.CurrentJobExtension.InputPhase,
+                    InputFrecuency = viewModel.CurrentJobExtension.InputFrecuency,
+                    DoorGate = viewModel.CurrentJobExtension.DoorGate,
+                    DoorHoist = viewModel.CurrentJobExtension.DoorHoist,
+                    InfDetector = viewModel.CurrentJobExtension.InfDetector,
+                    MechSafEdge = viewModel.CurrentJobExtension.MechSafEdge,
+                    HeavyDoors = viewModel.CurrentJobExtension.HeavyDoors,
+                    CartopDoorButtons = viewModel.CurrentJobExtension.CartopDoorButtons,
+                    DoorHold = viewModel.CurrentJobExtension.DoorHold,
+                    Nudging = viewModel.CurrentJobExtension.Nudging,
+                    SCOP = viewModel.CurrentJobExtension.SCOP,
+                    SHC = viewModel.CurrentJobExtension.SHC,
+                    SHCRisers = viewModel.CurrentJobExtension.SHCRisers,
+                    AUXCOP = viewModel.CurrentJobExtension.AUXCOP,
+                    DoorOperatorID = viewModel.CurrentJobExtension.DoorOperatorID,
+                };
+                HydroSpecific NewHydroSpecific = new HydroSpecific
+                {
+                    JobID = viewModel.CurrentJob.JobID,
+                    Starter = viewModel.CurrentHydroSpecific.Starter,
+                    HP = viewModel.CurrentHydroSpecific.HP,
+                    FLA = viewModel.CurrentHydroSpecific.FLA,
+                    SPH = viewModel.CurrentHydroSpecific.SPH,
+                    MotorsNum = viewModel.CurrentHydroSpecific.MotorsNum,
+                    MotorsDisconnect = viewModel.CurrentHydroSpecific.MotorsDisconnect,
+                    ValveBrand = viewModel.CurrentHydroSpecific.ValveBrand,
+                    ValveCoils = viewModel.CurrentHydroSpecific.ValveCoils,
+                    ValveNum = viewModel.CurrentHydroSpecific.ValveNum,
+                    ValveVoltage = viewModel.CurrentHydroSpecific.ValveVoltage,
+                    BatteryBrand = viewModel.CurrentHydroSpecific.BatteryBrand,
+                    Battery = viewModel.CurrentHydroSpecific.Battery,
+                    LifeJacket = viewModel.CurrentHydroSpecific.LifeJacket,
+                    LOS = viewModel.CurrentHydroSpecific.LOS,
+                    OilCool = viewModel.CurrentHydroSpecific.OilCool,
+                    OilTank = viewModel.CurrentHydroSpecific.OilTank,
+                    PSS = viewModel.CurrentHydroSpecific.PSS,
+                    Resync = viewModel.CurrentHydroSpecific.Resync,
+                    VCI = viewModel.CurrentHydroSpecific.VCI
+                };
+                GenericFeatures NewGenericFeatures = new GenericFeatures
+                {
+                    JobID = viewModel.CurrentJob.JobID,
+                    FRON2 = viewModel.CurrentGenericFeatures.FRON2,
+                    Attendant = viewModel.CurrentGenericFeatures.Attendant,
+                    CarToLobby = viewModel.CurrentGenericFeatures.CarToLobby,
+                    EQ = viewModel.CurrentGenericFeatures.EQ,
+                    EMT = viewModel.CurrentGenericFeatures.EMT,
+                    EP = viewModel.CurrentGenericFeatures.EP,
+                    EPVoltage = viewModel.CurrentGenericFeatures.EPVoltage,
+                    EPOtherCars = viewModel.CurrentGenericFeatures.EPOtherCars,
+                    EPCarsNumber = viewModel.CurrentGenericFeatures.EPCarsNumber,
+                    EPContact = viewModel.CurrentGenericFeatures.EPContact,
+                    PTI = viewModel.CurrentGenericFeatures.PTI,
+                    EPSelect = viewModel.CurrentGenericFeatures.EPSelect,
+                    FLO = viewModel.CurrentGenericFeatures.FLO,
+                    Hosp = viewModel.CurrentGenericFeatures.Hosp,
+                    Ind = viewModel.CurrentGenericFeatures.Ind,
+                    INA = viewModel.CurrentGenericFeatures.INA,
+                    TopAccess = viewModel.CurrentGenericFeatures.TopAccess,
+                    TopAccessLocation = viewModel.CurrentGenericFeatures.TopAccessLocation,
+                    BottomAccess = viewModel.CurrentGenericFeatures.BottomAccess,
+                    BottomAccessLocation = viewModel.CurrentGenericFeatures.BottomAccessLocation,
+                    INCP = viewModel.CurrentGenericFeatures.INCP,
+                    INCPButtons = viewModel.CurrentGenericFeatures.INCPButtons,
+                    SwitchStyle = viewModel.CurrentGenericFeatures.SwitchStyle,
+                    LoadWeigher = viewModel.CurrentGenericFeatures.LoadWeigher,
+                    CTINSPST = viewModel.CurrentGenericFeatures.CTINSPST,
+                    Roped = viewModel.CurrentGenericFeatures.Roped,
+                    GovModel = viewModel.CurrentGenericFeatures.GovModel,
+                    Monitoring = viewModel.CurrentGenericFeatures.Monitoring,
+                    CallEnable = viewModel.CurrentGenericFeatures.CallEnable,
+                    CarCallRead = viewModel.CurrentGenericFeatures.CarCallRead,
+                    HallCallRead = viewModel.CurrentGenericFeatures.HallCallRead,
+                    CarKey = viewModel.CurrentGenericFeatures.CarKey,
+                    HallKey = viewModel.CurrentGenericFeatures.HallKey,
+                    CRO = viewModel.CurrentGenericFeatures.CRO,
+                    HCRO = viewModel.CurrentGenericFeatures.HCRO,
+                    CarCallCodeSecurity = viewModel.CurrentGenericFeatures.CarCallCodeSecurity,
+                    SpecialInstructions = viewModel.CurrentGenericFeatures.SpecialInstructions,
+                };
+                Indicator NewIndicator = new Indicator
+                {
+                    JobID = viewModel.CurrentJob.JobID,
+                    CarCallsVoltage = viewModel.CurrentIndicator.CarCallsVoltage,
+                    CarCallsVoltageType = viewModel.CurrentIndicator.CarCallsVoltageType,
+                    CarCallsType = viewModel.CurrentIndicator.CarCallsType,
+                    HallCallsVoltage = viewModel.CurrentIndicator.HallCallsVoltage,
+                    HallCallsVoltageType = viewModel.CurrentIndicator.HallCallsVoltageType,
+                    HallCallsType = viewModel.CurrentIndicator.HallCallsType,
+                    CarPI = viewModel.CurrentIndicator.CarPI,
+                    CarPIType = viewModel.CurrentIndicator.CarPIType,
+                    CarPIDiscreteType = viewModel.CurrentIndicator.CarPIDiscreteType,
+                    HallPI = viewModel.CurrentIndicator.HallPI,
+                    HallPIType = viewModel.CurrentIndicator.HallPIType,
+                    HallPIDiscreteType = viewModel.CurrentIndicator.HallPIDiscreteType,
+                    VoiceAnnunciationPI = viewModel.CurrentIndicator.VoiceAnnunciationPI,
+                    VoiceAnnunciationPIType = viewModel.CurrentIndicator.VoiceAnnunciationPIType,
+                    CarLanterns = viewModel.CurrentIndicator.CarLanterns,
+                    CarLanternsStyle = viewModel.CurrentIndicator.CarLanternsStyle,
+                    CarLanternsType = viewModel.CurrentIndicator.CarLanternsType,
+                    HallLanterns = viewModel.CurrentIndicator.HallLanterns,
+                    HallLanternsStyle = viewModel.CurrentIndicator.HallLanternsStyle,
+                    HallLanternsType = viewModel.CurrentIndicator.HallLanternsType,
+                    PassingFloor = viewModel.CurrentIndicator.PassingFloor,
+                    PassingFloorType = viewModel.CurrentIndicator.PassingFloorType,
+                    PassingFloorDiscreteType = viewModel.CurrentIndicator.PassingFloorDiscreteType,
+                    PassingFloorEnable = viewModel.CurrentIndicator.PassingFloorEnable,
+                    IndicatorsVoltage = viewModel.CurrentIndicator.IndicatorsVoltage,
+                    IndicatorsVoltageType = viewModel.CurrentIndicator.IndicatorsVoltageType
+                };
+                HoistWayData NewHoistWayData = new HoistWayData
+                {
+                    JobID = viewModel.CurrentJob.JobID,
+                    HoistWaysNumber = viewModel.CurrentHoistWayData.HoistWaysNumber,
+                    MachineRooms = viewModel.CurrentHoistWayData.MachineRooms,
+                    Capacity = viewModel.CurrentHoistWayData.Capacity,
+                    UpSpeed = viewModel.CurrentHoistWayData.UpSpeed,
+                    DownSpeed = viewModel.CurrentHoistWayData.DownSpeed,
+                    TotalTravel = viewModel.CurrentHoistWayData.TotalTravel,
+                    LandingSystemID = viewModel.CurrentHoistWayData.LandingSystemID,
+                    FrontFirstServed = viewModel.CurrentHoistWayData.FrontFirstServed,
+                    RearFirstServed = viewModel.CurrentHoistWayData.RearFirstServed,
+                    FrontSecondServed = viewModel.CurrentHoistWayData.FrontSecondServed,
+                    RearSecondServed = viewModel.CurrentHoistWayData.RearSecondServed,
+                    FrontThirdServed = viewModel.CurrentHoistWayData.FrontThirdServed,
+                    RearThirdServed = viewModel.CurrentHoistWayData.RearThirdServed,
+                    FrontFourthServed = viewModel.CurrentHoistWayData.FrontFourthServed,
+                    RearFourthServed = viewModel.CurrentHoistWayData.RearFourthServed,
+                    FrontFifthServed = viewModel.CurrentHoistWayData.FrontFifthServed,
+                    RearFifthServed = viewModel.CurrentHoistWayData.RearFifthServed,
+                    FrontSexthServed = viewModel.CurrentHoistWayData.FrontSexthServed,
+                    RearSexthServed = viewModel.CurrentHoistWayData.RearSexthServed,
+                    FrontSeventhServed = viewModel.CurrentHoistWayData.FrontSeventhServed,
+                    RearSeventhServed = viewModel.CurrentHoistWayData.RearSeventhServed,
+                    FrontEightServed = viewModel.CurrentHoistWayData.FrontEightServed,
+                    RearEightServed = viewModel.CurrentHoistWayData.RearEightServed,
+                    FrontNinthServed = viewModel.CurrentHoistWayData.FrontNinthServed,
+                    RearNinthServed = viewModel.CurrentHoistWayData.RearNinthServed,
+                    FrontTenthServed = viewModel.CurrentHoistWayData.FrontTenthServed,
+                    RearTenthServed = viewModel.CurrentHoistWayData.RearTenthServed,
+                    FrontEleventhServed = viewModel.CurrentHoistWayData.FrontEleventhServed,
+                    RearEleventhServed = viewModel.CurrentHoistWayData.RearEleventhServed,
+                    FrontTwelvethServed = viewModel.CurrentHoistWayData.FrontTwelvethServed,
+                    RearTwelvethServed = viewModel.CurrentHoistWayData.RearTwelvethServed,
+                    FrontThirteenthServed = viewModel.CurrentHoistWayData.FrontThirteenthServed,
+                    RearThirteenthServed = viewModel.CurrentHoistWayData.RearThirteenthServed,
+                    FrontFourteenthServed = viewModel.CurrentHoistWayData.FrontFourteenthServed,
+                    RearFourteenthServed = viewModel.CurrentHoistWayData.RearFourteenthServed,
+                    FrontFifteenthServed = viewModel.CurrentHoistWayData.FrontFifteenthServed,
+                    RearFifteenthServed = viewModel.CurrentHoistWayData.RearFifteenthServed,
+                    FrontSixteenthServed = viewModel.CurrentHoistWayData.FrontSixteenthServed,
+                    RearSixteenthServed = viewModel.CurrentHoistWayData.RearSixteenthServed
+                };
+                if (SfList != null)
+                {
+                    foreach (SpecialFeatures features in SfList)
+                    {
+                        SpecialFeatures NewspecialFeatures = new SpecialFeatures
+                        {
+                            JobID = viewModel.CurrentJob.JobID,
+                            Description = features.Description
+                        };
+                        repository.SaveSpecialFeatures(NewspecialFeatures);
+                    }
+                }
+                List<SpecialFeatures> NewSfList = repository.SpecialFeatures.Where(j => j.JobID == viewModel.CurrentJob.JobID).ToList();
+                if (NewSfList != null) viewModel.SpecialFeatureslist = NewSfList;
+                else viewModel.SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures() };
+                viewModel.CurrentTab = "Main";
+                viewModel.CurrentJobExtension = NewJobExtension;
+                viewModel.CurrentHydroSpecific = NewHydroSpecific;
+                viewModel.CurrentGenericFeatures = NewGenericFeatures;
+                viewModel.CurrentIndicator = NewIndicator;
+                viewModel.CurrentHoistWayData = NewHoistWayData;
+                //Copy and saved the new job
+                repository.SaveEngJobView(viewModel);
+
+                //Get the copied job
+                JobViewModel NewViewModel = new JobViewModel();
+                NewViewModel.CurrentJob = viewModel.CurrentJob;
+                NewViewModel.CurrentJobExtension = repository.JobsExtensions.FirstOrDefault(j => j.JobID == NewViewModel.CurrentJob.JobID);
+                NewViewModel.CurrentHydroSpecific = repository.HydroSpecifics.FirstOrDefault(j => j.JobID == NewViewModel.CurrentJob.JobID);
+                NewViewModel.CurrentGenericFeatures = repository.GenericFeaturesList.FirstOrDefault(j => j.JobID == NewViewModel.CurrentJob.JobID);
+                NewViewModel.CurrentIndicator = repository.Indicators.FirstOrDefault(j => j.JobID == NewViewModel.CurrentJob.JobID);
+                NewViewModel.CurrentHoistWayData = repository.HoistWayDatas.FirstOrDefault(j => j.JobID == NewViewModel.CurrentJob.JobID);
+                List<SpecialFeatures> VeryNewSfList = repository.SpecialFeatures.Where(j => j.JobID == NewViewModel.CurrentJob.JobID).ToList();
+                if (VeryNewSfList != null) NewViewModel.SpecialFeatureslist = VeryNewSfList;
+                else NewViewModel.SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures() };
+                return View(NewViewModel);
+            }
         }
 
         /* Post de Edit; recibe un JobViewModel, si todo esta bien procede a salvar cada objeto en el repositorio y en caso de que el status
@@ -1041,50 +1277,50 @@ namespace ProdFloor.Controllers
 
             foreach (var node in XMLJob)
             {
-                    var XMLJobBase = node.SelectSingleNode(".//jobbase");
-                    var id = XMLJobBase.SelectSingleNode(".//id").InnerText;
-                    var status = XMLJobBase.SelectSingleNode(".//status").InnerText;
-                    var engid = XMLJobBase.SelectSingleNode(".//engid").InnerText;
-                    var crossappengid = XMLJobBase.SelectSingleNode(".//crossappengid").InnerText;
-                    var name = XMLJobBase.SelectSingleNode(".//name").InnerText;
-                    var jobnum = XMLJobBase.SelectSingleNode(".//jobnum").InnerText;
-                    var po = XMLJobBase.SelectSingleNode(".//po").InnerText;
-                    var shipdate = XMLJobBase.SelectSingleNode(".//shipdate").InnerText;
-                    var latestfinishdate = XMLJobBase.SelectSingleNode(".//latestfinishdate").InnerText;
-                    var cust = XMLJobBase.SelectSingleNode(".//cust").InnerText;
-                    var contractor = XMLJobBase.SelectSingleNode(".//contractor").InnerText;
-                    var jobtypeid = XMLJobBase.SelectSingleNode(".//jobtypeid").InnerText;
-                    var cityid = XMLJobBase.SelectSingleNode(".//cityid").InnerText;
-                    var fireCodeid = XMLJobBase.SelectSingleNode(".//firecodeid").InnerText;
-                    context.Jobs.Add(new Job
-                    {
-                        JobID = Int32.Parse(id),
-                        Status = status,
-                        EngID = Int32.Parse(engid),
-                        CrossAppEngID = Int32.Parse(crossappengid),
-                        Name = name,
-                        JobNum = Int32.Parse(jobnum),
-                        PO = Int32.Parse(po),
-                        ShipDate = DateTime.Parse(shipdate),
-                        LatestFinishDate = DateTime.Parse(latestfinishdate),
-                        Cust = cust,
-                        Contractor = contractor,
-                        JobTypeID = Int32.Parse(jobtypeid),
-                        CityID = Int32.Parse(cityid),
-                        FireCodeID = Int32.Parse(fireCodeid),
+                var XMLJobBase = node.SelectSingleNode(".//jobbase");
+                var id = XMLJobBase.SelectSingleNode(".//id").InnerText;
+                var status = XMLJobBase.SelectSingleNode(".//status").InnerText;
+                var engid = XMLJobBase.SelectSingleNode(".//engid").InnerText;
+                var crossappengid = XMLJobBase.SelectSingleNode(".//crossappengid").InnerText;
+                var name = XMLJobBase.SelectSingleNode(".//name").InnerText;
+                var jobnum = XMLJobBase.SelectSingleNode(".//jobnum").InnerText;
+                var po = XMLJobBase.SelectSingleNode(".//po").InnerText;
+                var shipdate = XMLJobBase.SelectSingleNode(".//shipdate").InnerText;
+                var latestfinishdate = XMLJobBase.SelectSingleNode(".//latestfinishdate").InnerText;
+                var cust = XMLJobBase.SelectSingleNode(".//cust").InnerText;
+                var contractor = XMLJobBase.SelectSingleNode(".//contractor").InnerText;
+                var jobtypeid = XMLJobBase.SelectSingleNode(".//jobtypeid").InnerText;
+                var cityid = XMLJobBase.SelectSingleNode(".//cityid").InnerText;
+                var fireCodeid = XMLJobBase.SelectSingleNode(".//firecodeid").InnerText;
+                context.Jobs.Add(new Job
+                {
+                    JobID = Int32.Parse(id),
+                    Status = status,
+                    EngID = Int32.Parse(engid),
+                    CrossAppEngID = Int32.Parse(crossappengid),
+                    Name = name,
+                    JobNum = Int32.Parse(jobnum),
+                    PO = Int32.Parse(po),
+                    ShipDate = DateTime.Parse(shipdate),
+                    LatestFinishDate = DateTime.Parse(latestfinishdate),
+                    Cust = cust,
+                    Contractor = contractor,
+                    JobTypeID = Int32.Parse(jobtypeid),
+                    CityID = Int32.Parse(cityid),
+                    FireCodeID = Int32.Parse(fireCodeid),
 
-                    });
-                    context.Database.OpenConnection();
-                    try
-                    {
-                        context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.Jobs ON");
-                        context.SaveChanges();
-                        context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.Jobs OFF");
-                    }
-                    finally
-                    {
-                        context.Database.CloseConnection();
-                    }
+                });
+                context.Database.OpenConnection();
+                try
+                {
+                    context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.Jobs ON");
+                    context.SaveChanges();
+                    context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.Jobs OFF");
+                }
+                finally
+                {
+                    context.Database.CloseConnection();
+                }
 
                 var XMLJobExtension = node.SelectSingleNode(".//jobextension");
                 var idEx = XMLJobExtension.SelectSingleNode(".//id").InnerText;
@@ -1470,7 +1706,7 @@ namespace ProdFloor.Controllers
 
                 var XMLSpecialF = node.SelectSingleNode(".//specialfeatures");
                 var XMLFeatures = XMLSpecialF.SelectNodes(".//specialfeature");
-                if(XMLFeatures != null)
+                if (XMLFeatures != null)
                 {
                     foreach (var Feature in XMLFeatures)
                     {

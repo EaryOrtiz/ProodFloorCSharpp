@@ -24,6 +24,14 @@
     <li class="nav-item">
         <a class="nav-link @(Model.CurrentTab == "SpecialFeatures" ? "active" : " ")  @(Model.SpecialFeatureslist[0].JobID == 0 ? "disabled" : " ")" data-toggle="tab" href="#specialfeatures" role="tab">Special Features</a>
     </li>
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle  @(Model.CurrentJob.Status == "Incomplete" ? "disabled" : "")" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Special actions
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <a asp-action="CopyJob" asp-route-id="@Model.CurrentJob.JobID" class="dropdown-item">Copy Job </a>
+        </div>
+    </li>
 </ul>
 <!-- Tab panes -->
 <form asp-action="Edit" method="post">
