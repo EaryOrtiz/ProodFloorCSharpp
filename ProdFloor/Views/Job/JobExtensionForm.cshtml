@@ -14,13 +14,17 @@
         </div>
         <div class="form-group row">
             <label asp-for="CurrentJobExtension.JobTypeMain" class="col-sm-5 col-form-label"></label>
-            <div><span asp-validation-for="CurrentJobExtension.JobTypeMain" class="text-danger"></span></div>
-            <indicators select-for="JobType" selected-value="@Model.CurrentJobExtension.JobTypeMain" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" class="form-control-sm" asp-for="CurrentJobExtension.JobTypeMain"></indicators>
+            <div>
+                <span asp-validation-for="CurrentJobExtension.JobTypeMain" class="text-danger"></span>
+                <indicators select-for="JobType" selected-value="@Model.CurrentJobExtension.JobTypeMain" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" class="form-control form-control-sm" asp-for="CurrentJobExtension.JobTypeMain"></indicators>
+            </div>
         </div>
         <div class="form-group row">
             <label asp-for="CurrentJobExtension.JobTypeAdd" class="col-sm-5 col-form-label"></label>
-            <div><span asp-validation-for="CurrentJobExtension.JobTypeAdd" class="text-danger"></span></div>
-            <indicators select-for="JobType2" selected-value="@Model.CurrentJobExtension.JobTypeAdd" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" class="form-control-sm" asp-for="CurrentJobExtension.JobTypeAdd"></indicators>
+            <div>
+                <span asp-validation-for="CurrentJobExtension.JobTypeAdd" class="text-danger"></span>
+                <indicators select-for="JobType2" selected-value="@Model.CurrentJobExtension.JobTypeAdd" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" class="form-control form-control-sm" asp-for="CurrentJobExtension.JobTypeAdd"></indicators>
+            </div>
         </div>
         <div class="form-group row">
             <label asp-for="CurrentJobExtension.InputVoltage" class="col-sm-5 col-form-label"></label>
@@ -39,23 +43,34 @@
         </div>
         <div class="form-group row">
             <label asp-for="CurrentJobExtension.DoorHoist" class="col-sm-5 col-form-label"></label>
-            <div><span asp-validation-for="CurrentJobExtension.DoorHoist" class="text-danger"></span></div>
-            <custom-select select-for="Style" selected-value="@Model.CurrentJobExtension.DoorHoist" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" class="form-control-sm" asp-for="CurrentJobExtension.DoorHoist"></custom-select>
+            <div>
+                <span asp-validation-for="CurrentJobExtension.DoorHoist" class="text-danger"></span>
+                <custom-select select-for="Style" selected-value="@Model.CurrentJobExtension.DoorHoist" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" class="form-control form-control-sm" asp-for="CurrentJobExtension.DoorHoist"></custom-select>
+            </div>
         </div>
         <div class="form-group row">
             <label asp-for="CurrentJobExtension.DoorGate" class="col-sm-5 col-form-label"></label>
-            <door-operator-style-select id="Style" asp-for="@Model.CurrentJobExtension.DoorGate" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" selected-value="@Model.CurrentJobExtension.DoorOperatorID" class="form-control form-control-sm col-sm-3">
-            </door-operator-style-select>
+            <div>
+                <door-operator-style-select id="Style" asp-for="@Model.CurrentJobExtension.DoorGate" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" selected-value="@Model.CurrentJobExtension.DoorOperatorID" class="form-control form-control-sm">
+                </door-operator-style-select>
+                <span asp-validation-for="CurrentJobExtension.DoorGate" class="text-danger"></span>
+            </div>
         </div>
         <div class="form-group row">
             <label asp-for="CurrentJobExtension.DoorBrand" class="col-sm-5 col-form-label"></label>
-            <door-operator-brand-select id="Brand" asp-for="@Model.CurrentJobExtension.DoorBrand" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" selected-value="@Model.CurrentJobExtension.DoorOperatorID" class="form-control form-control-sm col-sm-3">
-            </door-operator-brand-select>
+            <div>
+                <door-operator-brand-select id="Brand" asp-for="@Model.CurrentJobExtension.DoorBrand" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" selected-value="@Model.CurrentJobExtension.DoorOperatorID" class="form-control form-control-sm">
+                </door-operator-brand-select>
+                <span asp-validation-for="CurrentJobExtension.DoorBrand" class="text-danger"></span>
+            </div>
         </div>
         <div class="form-group row">
             <label asp-for="CurrentJobExtension.DoorOperatorID" class="col-sm-5 col-form-label"></label>
-            <door-operator-select id="DoorOperatorID" asp-for="@Model.CurrentJobExtension.DoorOperatorID"  asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true )" selected-value="Model.CurrentJobExtension.DoorOperatorID" class="form-control form-control-sm col-sm-3">
-            </door-operator-select>
+            <div>
+                <door-operator-select id="DoorOperatorID" asp-for="@Model.CurrentJobExtension.DoorOperatorID" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true )" selected-value="Model.CurrentJobExtension.DoorOperatorID" class="form-control form-control-sm">
+                </door-operator-select>
+                <span asp-validation-for="CurrentJobExtension.DoorOperatorID" class="text-danger"></span>
+            </div>
         </div>
     </div>
     <div class="col-md-6">

@@ -13,17 +13,20 @@
 </form>
 @if (Model.RefernceData == true)
 {
-    <ul class="nav nav-tabs col-sm-7" role="tablist">
-        <li class="nav-item">
-            <a class="nav-link " data-toggle="tab" href="#silver" role="tab">Silver Table</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link " data-toggle="tab" href="#starter" role="tab">Starter</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#landingSearch" role="tab">Landing</a>
-        </li>
-    </ul>
+<ul class="nav nav-tabs col-sm-7" role="tablist">
+    <li class="nav-item">
+        <a class="nav-link active" data-toggle="tab" href="#silver" role="tab">Silver Label</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link " data-toggle="tab" href="#starter" role="tab">Starter</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#landingSearch" role="tab">Landing</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link @(Model.SHCisSelected == false ? "disabled" : " ")"  data-toggle="tab" href="#SHCSearch" role="tab">SHC Calculator</a>
+    </li>
+</ul>
     <div class="tab-content" style="padding:20px">
         <div class="tab-pane active" id="silver" role="tabpanel">
             <div class="col-5">
@@ -31,6 +34,12 @@
                     <label class="col-3 col-form-label">Name:</label>
                     <div class="col-5">
                         <input type="text" value="@Model.JobName" class="form-control form-control-sm col-12" disabled asp-for="JobName">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-3 col-form-label">Cust: &nbsp;</label>
+                    <div class="col-5">
+                        <input type="text" value="@Model.Cust" class="form-control form-control-sm col-sm-12" disabled asp-for="Cust">
                     </div>
                 </div>
                 <div class="form-group row">
@@ -103,7 +112,7 @@
                     </div>
                     <br />
                     <h4 style="position:center">Overload</h4>
-                    <div class="form-inline justify-content-md-center" >
+                    <div class="form-inline justify-content-md-center">
                         <div class="form-group row col-6">
                             MCE Part #: <input type="text" value="@Model.MCPartOver" class="form-control form-control-sm col-sm-10" disabled asp-for="MCPartOver">
                         </div>
@@ -116,31 +125,100 @@
                     <h4 style="position:center">Wire</h4>
                     <br />
                     <div class="form-inline">
-                        <input type="text" value="@Model.Size" class="form-control form-control-lg col-sm-2" disabled asp-for="Size">
+                        <input type="text" value="@Model.Size" class="form-control form-control-lg col-sm-2 text-center" disabled asp-for="Size">
                     </div>
                 </div>
             </div>
         </div>
         <div class="tab-pane " id="landingSearch" role="tabpanel">
             <div class="row">
-                <div class="row">
-                    <div class="col-sm">
-                        CarSpeed (FPM): <input type="text" value="@Model.CarSpeedFPM" class="form-control form-control-sm col-sm-10" disabled asp-for="CarSpeedFPM">
-                    </div>
-                    <div class="col-sm">
-                        Distance: <input type="text" value="@Model.Distance" class="form-control form-control-sm col-sm-10" disabled asp-for="Distance">
-                    </div>
-                    <div class="col-sm">
-                        "A" Landing Page: <input type="text" value="@Model.A" class="form-control form-control-sm col-sm-10" disabled asp-for="A">
-                    </div>
-                    <div class="col-sm">
-                        Slow Limit: <input type="text" value="@Model.SlowLimit" class="form-control form-control-sm col-sm-10" disabled asp-for="SlowLimit">
-                    </div>
-                    <div class="col-sm">
-                        Minium Floor Height: <input type="text" value="@Model.MiniumFloorHeight" class="form-control form-control-sm col-sm-10" disabled asp-for="MiniumFloorHeight">
-                    </div>
+                <div class="col-sm">
+                    <h3 class="text-center">Down Speed</h3>
                 </div>
             </div>
+            <br />
+            <div class="row">
+                <div class="col-sm">
+                    CarSpeed (FPM): <input type="text" value="@Model.CarSpeedFPM" class="form-control form-control-sm col-sm-10" disabled asp-for="CarSpeedFPM">
+                </div>
+                <div class="col-sm">
+                    Distance: <input type="text" value="@Model.Distance" class="form-control form-control-sm col-sm-10" disabled asp-for="Distance">
+                </div>
+                <div class="col-sm">
+                    Page L3: <input type="text" value="@Model.A" class="form-control form-control-sm col-sm-10" disabled asp-for="A">
+                </div>
+                <div class="col-sm">
+                    Page 2 & 7: <input type="text" value="@Model.SlowLimit" class="form-control form-control-sm col-sm-10" disabled asp-for="SlowLimit">
+                </div>
+                <div class="col-sm">
+                    Minium Floor Height: <input type="text" value="@Model.MiniumFloorHeight" class="form-control form-control-sm col-sm-10" disabled asp-for="MiniumFloorHeight">
+                </div>
+            </div>
+            <br /><br />
+            <div class="row">
+                <div class="col-sm">
+                    <h3 class="text-center">UP Speed</h3>
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-sm">
+                    CarSpeed (FPM): <input type="text" value="@Model.CarUpSpeedFPM" class="form-control form-control-sm col-sm-10" disabled asp-for="CarSpeedFPM">
+                </div>
+                <div class="col-sm">
+                    Distance: <input type="text" value="@Model.UPDistance" class="form-control form-control-sm col-sm-10" disabled asp-for="Distance">
+                </div>
+                <div class="col-sm">
+                    Page L3: <input type="text" value="@Model.UPA" class="form-control form-control-sm col-sm-10" disabled asp-for="A">
+                </div>
+                <div class="col-sm">
+                    Page 2 & 7: <input type="text" value="@Model.UPSlowLimit" class="form-control form-control-sm col-sm-10" disabled asp-for="SlowLimit">
+                </div>
+                <div class="col-sm">
+                    Minium Floor Height: <input type="text" value="@Model.UPMiniumFloorHeight" class="form-control form-control-sm col-sm-10" disabled asp-for="MiniumFloorHeight">
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane " id="SHCSearch" role="tabpanel">
+            <div class="row justify-content-md-center">
+                <div class="col-sm justify-content-md-center">
+                    <div class="row justify-content-md-center">
+                        <h3 class="text-center">Front</h3>
+                    </div>
+                    <br />
+                    <div class="row justify-content-md-center">
+                        Calculated SHC : <input type="text" value="@Model.calculatedFrontSHC" class="form-control form-control-md  text-center" disabled asp-for="calculatedFrontSHC">
+                    </div>
+                </div>
+                <div class="col-sm">
+                </div>
+                <div class="col-sm">
+                </div>
+                <div class="col-sm">
+                </div>
+                <div class="col-sm">
+                </div>
+            </div>
+            <br /><br />
+                  <div class="row justify-content-md-center">
+                      <div class="col-sm justify-content-md-center">
+                          <div class="row justify-content-md-center">
+                              <h3 class="text-center">Rear</h3>
+                          </div>
+                          <br />
+                          <div class="row justify-content-md-center">
+                              Calculated SHC : <input type="text" value="@Model.calculatedRearSHC" class="form-control form-control-md text-center" disabled asp-for="calculatedFrontSHC">
+                          </div>
+                      </div>
+                      <div class="col-sm">
+                      </div>
+                      <div class="col-sm">
+                      </div>
+                      <div class="col-sm">
+                      </div>
+                      <div class="col-sm">
+                      </div>
+                  </div>
         </div>
     </div>
 }

@@ -228,8 +228,6 @@ namespace ProdFloor.Models
         public bool PSS { get; set; }
         [Display(Name = "Resync operation")]
         public bool Resync { get; set; }
-        [Display(Name = "Roped Hydro")]
-        public bool Roped { get; set; }
         [Display(Name = "Viscosity Control")]
         public bool VCI { get; set; }
     }
@@ -333,8 +331,8 @@ namespace ProdFloor.Models
         public bool CRO { get; set; }
         [Display(Name = "HCRO")]
         public bool HCRO { get; set; }
-        [Display(Name = "Car call code security")]
 
+        [Display(Name = "Car call code security")]
         [StringLength(50, ErrorMessage = "The maximum length of the {0} field is {1}")]
         public string CarCallCodeSecurity { get; set; }
 

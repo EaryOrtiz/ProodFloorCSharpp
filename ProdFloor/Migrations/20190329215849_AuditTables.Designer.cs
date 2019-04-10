@@ -11,9 +11,10 @@ using System;
 namespace ProdFloor.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190329215849_AuditTables")]
+    partial class AuditTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -387,6 +388,8 @@ namespace ProdFloor.Migrations
                     b.Property<bool>("PSS");
 
                     b.Property<bool>("Resync");
+
+                    b.Property<bool>("Roped");
 
                     b.Property<int>("SPH");
 
