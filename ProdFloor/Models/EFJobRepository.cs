@@ -123,7 +123,6 @@ namespace ProdFloor.Models
                     dbEntry.OilTank = hydroSpecific.OilTank;
                     dbEntry.PSS = hydroSpecific.PSS;
                     dbEntry.Resync = hydroSpecific.Resync;
-                    dbEntry.Roped = hydroSpecific.Roped;
                     dbEntry.VCI = hydroSpecific.VCI;
                 }
             }
