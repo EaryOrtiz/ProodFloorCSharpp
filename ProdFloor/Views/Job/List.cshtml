@@ -26,7 +26,6 @@
         {
             <button type="submit" name="buttonImportXML" value="All" class="btn btn-danger btn-sm">Import All Jobs from XML <i class="fas fa-file-alt"></i></button>
         }
-        <button type="submit" name="buttonImportXML" value="One" class="btn btn-danger  btn-sm">Import One Job from XML <i class="fas fa-file-alt"></i></button>
     </form>
 </div>
 
@@ -35,6 +34,12 @@
 {
     @Html.Partial("JobSummary", j)
 }
+
+<div page-model="@Model.PagingInfo" page-action="List" page-classes-enabled="true"
+     page-class="btn" page-class-normal="btn-secondary"
+     page-class-selected="btn-primary" page-url-jobType="@Model.CurrentJobType"
+     class="btn-group pull-right m-1">
+</div>
 @if (Model.Jobs.Count() > 0)
 {
     <div>
@@ -43,8 +48,3 @@
         </form>
     </div>
 }
-<div page-model="@Model.PagingInfo" page-action="List" page-classes-enabled="true"
-     page-class="btn" page-class-normal="btn-secondary"
-     page-class-selected="btn-primary" page-url-jobType="@Model.CurrentJobType"
-     class="btn-group pull-right m-1">
-</div>
