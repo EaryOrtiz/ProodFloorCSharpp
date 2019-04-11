@@ -201,7 +201,7 @@ namespace ProdFloor.Controllers
                     CityID = viewModel.CurrentJob.CityID,
                     FireCodeID = viewModel.CurrentJob.FireCodeID,
                 };
-                repository.SaveJob(viewModel.CurrentJob);
+                repository.SaveJob(newJob);
                 viewModel.CurrentJob = repository.Jobs.FirstOrDefault(p => p.JobID == repository.Jobs.Max(x => x.JobID));
                 JobExtension NewJobExtension = new JobExtension()
                 {
@@ -378,7 +378,6 @@ namespace ProdFloor.Controllers
                 List<SpecialFeatures> NewSfList = repository.SpecialFeatures.Where(j => j.JobID == viewModel.CurrentJob.JobID).ToList();
                 if (NewSfList != null) viewModel.SpecialFeatureslist = NewSfList;
                 else viewModel.SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures() };
-                viewModel.CurrentTab = "Main";
                 viewModel.CurrentJobExtension = NewJobExtension;
                 viewModel.CurrentHydroSpecific = NewHydroSpecific;
                 viewModel.CurrentGenericFeatures = NewGenericFeatures;
@@ -389,6 +388,7 @@ namespace ProdFloor.Controllers
 
                 //Get the copied job
                 JobViewModel NewViewModel = new JobViewModel();
+                NewViewModel.CurrentTab = "Main";
                 NewViewModel.CurrentJob = viewModel.CurrentJob;
                 NewViewModel.CurrentJobExtension = repository.JobsExtensions.FirstOrDefault(j => j.JobID == NewViewModel.CurrentJob.JobID);
                 NewViewModel.CurrentHydroSpecific = repository.HydroSpecifics.FirstOrDefault(j => j.JobID == NewViewModel.CurrentJob.JobID);
@@ -398,7 +398,8 @@ namespace ProdFloor.Controllers
                 List<SpecialFeatures> VeryNewSfList = repository.SpecialFeatures.Where(j => j.JobID == NewViewModel.CurrentJob.JobID).ToList();
                 if (VeryNewSfList != null) NewViewModel.SpecialFeatureslist = VeryNewSfList;
                 else NewViewModel.SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures() };
-                return View(NewViewModel);
+                TempData["message"] = $"You have copied the job #{jobToCopy.JobNum} succesfully, please change the name, Job number and PO";
+                return View("Edit",NewViewModel);
             }
         }
 
