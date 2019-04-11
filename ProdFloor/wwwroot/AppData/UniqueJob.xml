@@ -1,24 +1,24 @@
 ﻿<UniqueJob>
   <Job>
     <JobBase>
-      <ID>70</ID>
+      <ID>60</ID>
       <Status>Test</Status>
-      <EngID>117</EngID>
+      <EngID>99972</EngID>
       <CrossAppEngID>99999</CrossAppEngID>
-      <Name>Eng Test 3</Name>
-      <JobNum>2016135465</JobNum>
-      <PO>3212222</PO>
+      <Name>EngTest2</Name>
+      <JobNum>2016005002</JobNum>
+      <PO>3000454</PO>
       <ShipDate>1/1/0001 12:00:00 AM</ShipDate>
       <LatestFinishDate>1/1/0001 12:00:00 AM</LatestFinishDate>
       <Cust>5</Cust>
-      <Contractor>Test</Contractor>
+      <Contractor>eliud</Contractor>
       <JobTypeID>1</JobTypeID>
       <CityID>36</CityID>
       <FireCodeID>18</FireCodeID>
     </JobBase>
     <JobExtension>
-      <ID>69</ID>
-      <JobID>70</JobID>
+      <ID>60</ID>
+      <JobID>60</JobID>
       <NumOfStops>4</NumOfStops>
       <JobTypeMain>Simplex</JobTypeMain>
       <JobTypeAdd>Selective Collective</JobTypeAdd>
@@ -40,8 +40,8 @@
       <AUXCOP>False</AUXCOP>
     </JobExtension>
     <HydroSpecific>
-      <ID>42</ID>
-      <JobID>70</JobID>
+      <ID>33</ID>
+      <JobID>60</JobID>
       <Starter>Siemens SS : 3/9</Starter>
       <HP>15</HP>
       <FLA>27</FLA>
@@ -63,8 +63,8 @@
       <VCI>True</VCI>
     </HydroSpecific>
     <GenericFeatures>
-      <ID>41</ID>
-      <JobID>70</JobID>
+      <ID>32</ID>
+      <JobID>60</JobID>
       <EPCarsNumber>Nulo</EPCarsNumber>
       <EPContact>Nulo</EPContact>
       <TopAccessLocation>Nulo</TopAccessLocation>
@@ -104,8 +104,8 @@
       <HCRO>False</HCRO>
     </GenericFeatures>
     <Indicator>
-      <ID>32</ID>
-      <JobID>70</JobID>
+      <ID>23</ID>
+      <JobID>60</JobID>
       <CarCallsVoltage>24</CarCallsVoltage>
       <CarCallsVoltageType>DC</CarCallsVoltageType>
       <CarCallsType>LED</CarCallsType>
@@ -134,8 +134,8 @@
       <PassingFloorEnable>False</PassingFloorEnable>
     </Indicator>
     <HoistWayData>
-      <ID>37</ID>
-      <JobID>70</JobID>
+      <ID>28</ID>
+      <JobID>60</JobID>
       <HoistWaysNumber>4</HoistWaysNumber>
       <MachineRooms>5</MachineRooms>
       <Capacity>3</Capacity>
