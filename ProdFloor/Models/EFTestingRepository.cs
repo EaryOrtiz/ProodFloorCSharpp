@@ -259,8 +259,9 @@ namespace ProdFloor.Models
                     dbEntry.Reason3ID = stop.Reason3ID;
                     dbEntry.Reason4ID = stop.Reason4ID;
                     dbEntry.Reason5ID = stop.Reason5ID;
-                    dbEntry.Start = stop.Start;
+                    dbEntry.StartDate = stop.StartDate;
                     dbEntry.StopDate = stop.StopDate;
+                    dbEntry.Elapsed = stop.Elapsed;
                     dbEntry.Description = stop.Description;
                 }
             }

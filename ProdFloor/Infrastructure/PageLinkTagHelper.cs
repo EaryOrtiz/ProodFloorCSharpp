@@ -1581,7 +1581,7 @@ namespace ProdFloor.Infrastructure
         [ViewContext]
         [HtmlAttributeNotBound]
         public ViewContext ViewContext { get; set; }
-
+        public int SelectedValue { get; set; }
         public int SelectedInR3Value { get; set; }
         public int SelectedInR2Value { get; set; }
         public int SelectedInR4Value { get; set; }
@@ -1617,7 +1617,7 @@ namespace ProdFloor.Infrastructure
                 Reason1 selectedR1 = repository.Reasons1.FirstOrDefault(c => c.Reason1ID == selectedR2.Reason1ID);
                 reason1ID = selectedR1.Reason1ID;
             }
-            if (SelectedInR4Value != 0)
+            else if (SelectedInR4Value != 0)
             {
                 Reason4 selectedR4 = repository.Reasons4.FirstOrDefault(c => c.Reason4ID == SelectedInR4Value);
                 Reason3 selectedR3 = repository.Reasons3.FirstOrDefault(c => c.Reason3ID == selectedR4.Reason3ID);
@@ -1625,18 +1625,22 @@ namespace ProdFloor.Infrastructure
                 Reason1 selectedR1 = repository.Reasons1.FirstOrDefault(c => c.Reason1ID == selectedR2.Reason1ID);
                 reason1ID = selectedR1.Reason1ID;
             }
-            if (SelectedInR3Value != 0)
+            else if (SelectedInR3Value != 0)
             {
                 Reason3 selectedR3 = repository.Reasons3.FirstOrDefault(c => c.Reason3ID == SelectedInR3Value);
                 Reason2 selectedR2 = repository.Reasons2.FirstOrDefault(c => c.Reason2ID == selectedR3.Reason2ID);
                 Reason1 selectedR1 = repository.Reasons1.FirstOrDefault(c => c.Reason1ID == selectedR2.Reason1ID);
                 reason1ID = selectedR1.Reason1ID;
             }
-            if (SelectedInR2Value != 0)
+            else if (SelectedInR2Value != 0)
             {
                 Reason2 selectedR2 = repository.Reasons2.FirstOrDefault(c => c.Reason2ID == SelectedInR2Value);
                 Reason1 selectedR1 = repository.Reasons1.FirstOrDefault(c => c.Reason1ID == selectedR2.Reason1ID);
                 reason1ID = selectedR1.Reason1ID;
+            }
+            else
+            {
+                reason1ID = SelectedValue;
             }
             IQueryable<Reason1> reason1s = repository.Reasons1.AsQueryable();
             foreach (Reason1 item in reason1s)

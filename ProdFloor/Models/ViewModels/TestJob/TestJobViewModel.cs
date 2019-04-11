@@ -12,6 +12,7 @@ namespace ProdFloor.Models.ViewModels.TestJob
         public TestFeature TestFeature { get; set; }
         public Step Step { get; set; }
         public StepsForJob StepsForJob { get; set; }
+        public Stop Stop { get; set; }
         public int CurrentTechnicianID { get; set; }
         public PagingInfo PagingInfo { get; set; }
         public Models.Job Job { get; set; }

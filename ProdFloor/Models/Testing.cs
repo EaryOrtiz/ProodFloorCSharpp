@@ -206,10 +206,10 @@ namespace ProdFloor.Models
         [Required(ErrorMessage = "Please enter a {0}")]
         public int Reason5ID { get; set; }
         [Required(ErrorMessage = "Please enter a {0} Date")]
-        public DateTime Start { get; set; }
+        public DateTime StartDate { get; set; }
         [Required(ErrorMessage = "Please enter a Stop Date")]
         public DateTime StopDate { get; set; }
-        [Required(ErrorMessage = "Please enter a {0}")]
+        public TimeSpan Elapsed { get; set; }
         public string Description { get; set; }
     }
 

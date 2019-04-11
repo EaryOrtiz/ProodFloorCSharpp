@@ -350,6 +350,17 @@ namespace ProdFloor.Controllers
             return View(NotFound());
         }
 
+        public IActionResult ContinueStep(int ID)
+        {
+            List<StepsForJob> stepsList = testingRepo.StepsForJobs.Where(m => m.TestJobID == ID).OrderBy(m => m.Consecutivo).ToList();
+            StepsForJob CurrentStep = stepsList.FirstOrDefault(m => m.Complete == false); CurrentStep.Start = DateTime.Now;
+            testingRepo.SaveStepsForJob(CurrentStep);
+            var stepInfo = testingRepo.Steps.FirstOrDefault(m => m.StepID == CurrentStep.StepID);
+            var testjobinfo = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == CurrentStep.TestJobID);
+            var job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == testjobinfo.JobID);
+            return View("StepsForJob", new TestJobViewModel { StepsForJob = CurrentStep, Step = stepInfo, Job = job, TestJob = testjobinfo });
+        }
+
         private async Task<AppUser> GetCurrentUser()
         {
             AppUser user = await userManager.GetUserAsync(HttpContext.User);

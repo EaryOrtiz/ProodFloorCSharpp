@@ -1,0 +1,25 @@
+﻿@model Stop
+@{
+    ViewBag.Title = "Stop";
+    Layout = "_AdminLayoutWO";
+}
+<form asp-controller="Stop" asp-action="NewStop" method="post">
+    <input type="hidden" asp-for="TestJobID"/>
+    <div class="container justify-content-md-center">
+        <h3>Razon del paro</h3>
+    </div>
+    <br />
+    <div class="form-group">
+        <label asp-for="Reason1ID" class="col-sm-2 col-form-label"></label>
+        <div>
+            <reasons1-select selected-value="@Model.Reason1ID" class="form-control-sm form-control" asp-for="Reason1ID"></reasons1-select>
+            <span asp-validation-for="Reason1ID" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="justify-content-md-center text-center">
+        <div class="btn-group row " style="position:center" role="group" aria-label="Basic example">
+            <button class="btn btn-primary" type="submit">Save</button>
+            <a asp-action="ContinueStep" asp-controller="TestJob" asp-route-id="@Model.TestJobID" class="btn btn-secondary">Cancel</a>
+        </div>
+    </div>
+</form>
