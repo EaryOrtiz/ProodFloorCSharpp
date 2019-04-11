@@ -187,7 +187,7 @@ namespace ProdFloor.Controllers
                 viewModel.CurrentHoistWayData = repository.HoistWayDatas.FirstOrDefault(j => j.JobID == ID);
                 Job newJob = new Job
                 {
-                    Status = viewModel.CurrentJob.Status,
+                    Status = "Working on it",
                     EngID = currentUser.EngID,
                     CrossAppEngID = viewModel.CurrentJob.CrossAppEngID,
                     Name = "Change the name please",
@@ -389,6 +389,7 @@ namespace ProdFloor.Controllers
                 //Get the copied job
                 JobViewModel NewViewModel = new JobViewModel();
                 NewViewModel.CurrentTab = "Main";
+                NewViewModel.CurrentUserID = currentUser.EngID;
                 NewViewModel.CurrentJob = viewModel.CurrentJob;
                 NewViewModel.CurrentJobExtension = repository.JobsExtensions.FirstOrDefault(j => j.JobID == NewViewModel.CurrentJob.JobID);
                 NewViewModel.CurrentHydroSpecific = repository.HydroSpecifics.FirstOrDefault(j => j.JobID == NewViewModel.CurrentJob.JobID);
