@@ -2,7 +2,7 @@
 @{
     ViewBag.Title = "Restar TestJob";
     Layout = "_AdminLayoutWO";
-    <script src="~/Scripts/CascadingR1R2R3R4.js" type="text/javascript"></script>
+    <script src="~/Scripts/CascadingR1R2R3R4R5.js" type="text/javascript"></script>
 }
 <div class="bg-dark m-1 p-1"><h4 style="color:white">Edit Reasons 5</h4></div>
 <form asp-action="RestarTestJob" method="post">
@@ -12,35 +12,35 @@
     <div class="form-group">
         <label asp-for="Stop.Reason1ID" class="col-sm-2 col-form-label"></label>
         <div>
-            <reasons1-select selected-value="@Model.Stop.Reason1ID" class="form-control-sm form-control col-2" asp-for="Stop.Reason1ID"></reasons1-select>
+            <reasons1-select selected-value="@Model.Stop.Reason1ID" class="form-control-sm form-control col-2" asp-for="Stop.Reason1ID" id="Reason1ID" ></reasons1-select>
             <span asp-validation-for="Stop.Reason1ID" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group">
         <label asp-for="Stop.Reason2ID" class="col-sm-2 col-form-label"></label>
         <div>
-            <reasons2-select selected-in-r5-value="@Model.Stop.Reason5ID" class="form-control-sm form-control col-2" asp-for="Stop.Reason2ID"></reasons2-select>
+            <reasons2-select selected-in-r5-value="@Model.Stop.Reason5ID" class="form-control-sm form-control col-2" asp-for="Stop.Reason2ID" id="Reason2ID"></reasons2-select>
             <span asp-validation-for="Stop.Reason2ID" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group">
         <label asp-for="Stop.Reason3ID" class="col-sm-2 col-form-label"></label>
         <div>
-            <reasons3-select selected-in-r5-value="@Model.Stop.Reason5ID" class="form-control-sm form-control col-2" asp-for="Stop.Reason3ID"></reasons3-select>
+            <reasons3-select selected-in-r5-value="@Model.Stop.Reason5ID" class="form-control-sm form-control col-2" asp-for="Stop.Reason3ID" id="Reason3ID"></reasons3-select>
             <span asp-validation-for="Stop.Reason3ID" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group">
         <label asp-for="Stop.Reason4ID" class="col-sm-2 col-form-label"></label>
         <div>
-            <reasons4-select selected-in-r5-value="@Model.Stop.Reason5ID" class="form-control-sm form-control col-2" asp-for="Stop.Reason4ID"></reasons4-select>
+            <reasons4-select selected-in-r5-value="@Model.Stop.Reason5ID" class="form-control-sm form-control col-2" asp-for="Stop.Reason4ID" id="Reason4ID"></reasons4-select>
             <span asp-validation-for="Stop.Reason4ID" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group">
         <label asp-for="Stop.Reason5ID" class="col-sm-2 col-form-label"></label>
         <div>
-            <reasons5-select selected-value="@Model.Stop.Reason5ID" class="form-control-sm form-control col-2" asp-for="Stop.Reason5ID"></reasons5-select>
+            <reasons5-select selected-value="@Model.Stop.Reason5ID" class="form-control-sm form-control col-2" asp-for="Stop.Reason5ID" id="Reason5ID"></reasons5-select>
             <span asp-validation-for="Stop.Reason5ID" class="text-danger"></span>
         </div>
     </div>
