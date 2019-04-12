@@ -1,0 +1,19 @@
+﻿@model ProdFloor.Models.ViewModels.TestJob.TestJobViewModel
+@{
+    ViewBag.Title = "Waiting for restar";
+    Layout = "_AdminLayoutWO";
+}
+<div class="container justify-content-md-center">
+    <div class="row justify-content-md-center"><h2>Job #@Model.Job.JobNum</h2></div>
+    <br />
+    <div class="row justify-content-md-center"><h3>Motivo del Paro</h3></div>
+    <br />
+    <div class="row justify-content-md-center"><h4>@Model.Stop.Reason1ID</h4></div>
+    <br />
+</div>
+<br />
+<div class="justify-content-md-center text-center">
+    <div class="btn-group row " style="position:center" role="group" aria-label="Basic example">
+        <a class="btn btn-danger btn-lg" asp-controller="Stop" asp-action="RestarTestJob" asp-route-id="@Model.Stop.StopID">Restar</a>
+    </div>
+</div>

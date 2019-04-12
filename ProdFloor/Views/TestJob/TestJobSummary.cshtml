@@ -13,10 +13,27 @@
     </div>
     <div class="card-text p-1">
         <form asp-action="Delete" method="post" asp-route-Id="@Model.TestJobID">
+            @if (Model.Status == "Stoped")
+            {
+                <a asp-action="WaitingForRestar" asp-controller="Stop"
+                   asp-route-id="@Model.TestJobID" class="btn btn-warning btn-sm">
+                    Continue
+                </a>
+            }
+            else if (Model.Status == "Working on it")
+            {
+                <a asp-action="ContinueStep" asp-controller="TestJob"
+                   asp-route-id="@Model.TestJobID" class="btn btn-info btn-sm">
+                    Continue
+                </a>
+            }
+            else
+            {
                 <a asp-action="Edit" class="btn btn-sm btn-warning"
                    asp-route-Id="@Model.TestJobID">
                     Edit
                 </a>
+            }
             <input type="hidden" name="ID" value="@Model.TestJobID" />
             <button type="submit" class="btn btn-danger btn-sm">
                 Delete

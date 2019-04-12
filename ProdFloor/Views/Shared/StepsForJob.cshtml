@@ -28,7 +28,7 @@
         <div class="btn-group row " style="position:center" role="group" aria-label="Basic example">
             <button type="submit" class="btn btn-primary" name="next" value="@prevNum" disabled="@(Model.StepsForJob.Consecutivo <= 1 ? true: false)">Atras</button>
             <button type="submit" class="btn btn-success" name="next" value="@nextNum">Siguiente</button>
-            <button type="submit" class="btn btn-warning" name="next" value="777">Stop</button>
+            <a class="btn btn-danger" asp-controller="Stop" asp-action="NewStop" asp-route-id="@Model.TestJob.TestJobID">Stop</a>
         </div>
     </div>
 </form>
