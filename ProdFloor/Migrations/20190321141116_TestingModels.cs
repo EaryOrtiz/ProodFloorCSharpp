@@ -229,10 +229,10 @@ namespace ProdFloor.Migrations
                     StopID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Description = table.Column<string>(nullable: false),
-                    Reason1ID = table.Column<int>(nullable: false),
-                    Reason2ID = table.Column<int>(nullable: false),
-                    Reason3ID = table.Column<int>(nullable: false),
-                    Reason4ID = table.Column<int>(nullable: false),
+                    Reason1 = table.Column<int>(nullable: true),
+                    Reason2 = table.Column<int>(nullable: true),
+                    Reason3 = table.Column<int>(nullable: true),
+                    Reason4 = table.Column<int>(nullable: true),
                     Reason5ID = table.Column<int>(nullable: false),
                     Start = table.Column<DateTime>(nullable: false),
                     StopDate = table.Column<DateTime>(nullable: false),
@@ -242,41 +242,17 @@ namespace ProdFloor.Migrations
                 {
                     table.PrimaryKey("PK_Stops", x => x.StopID);
                     table.ForeignKey(
-                        name: "FK_Stops_Reasons1_Reason1ID",
-                        column: x => x.Reason1ID,
-                        principalTable: "Reasons1",
-                        principalColumn: "Reason1ID",
-                        onDelete: ReferentialAction.NoAction);
-                    table.ForeignKey(
-                        name: "FK_Stops_Reasons2_Reason2ID",
-                        column: x => x.Reason2ID,
-                        principalTable: "Reasons2",
-                        principalColumn: "Reason2ID",
-                        onDelete: ReferentialAction.NoAction);
-                    table.ForeignKey(
-                        name: "FK_Stops_Reasons3_Reason3ID",
-                        column: x => x.Reason3ID,
-                        principalTable: "Reasons3",
-                        principalColumn: "Reason3ID",
-                        onDelete: ReferentialAction.NoAction);
-                    table.ForeignKey(
-                        name: "FK_Stops_Reasons4_Reason4ID",
-                        column: x => x.Reason4ID,
-                        principalTable: "Reasons4",
-                        principalColumn: "Reason4ID",
-                        onDelete: ReferentialAction.NoAction);
-                    table.ForeignKey(
                         name: "FK_Stops_Reasons5_Reason5ID",
                         column: x => x.Reason5ID,
                         principalTable: "Reasons5",
                         principalColumn: "Reason5ID",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Stops_TestJobs_TestJobID",
                         column: x => x.TestJobID,
                         principalTable: "TestJobs",
                         principalColumn: "TestJobID",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -309,26 +285,6 @@ namespace ProdFloor.Migrations
                 name: "IX_StepsForJobs_TestJobID",
                 table: "StepsForJobs",
                 column: "TestJobID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Stops_Reason1ID",
-                table: "Stops",
-                column: "Reason1ID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Stops_Reason2ID",
-                table: "Stops",
-                column: "Reason2ID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Stops_Reason3ID",
-                table: "Stops",
-                column: "Reason3ID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Stops_Reason4ID",
-                table: "Stops",
-                column: "Reason4ID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Stops_Reason5ID",

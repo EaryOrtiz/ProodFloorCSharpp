@@ -827,13 +827,13 @@ namespace ProdFloor.Migrations
 
                     b.Property<TimeSpan>("Elapsed");
 
-                    b.Property<int>("Reason1ID");
+                    b.Property<int?>("Reason1");
 
-                    b.Property<int>("Reason2ID");
+                    b.Property<int?>("Reason2");
 
-                    b.Property<int>("Reason3ID");
+                    b.Property<int?>("Reason3");
 
-                    b.Property<int>("Reason4ID");
+                    b.Property<int?>("Reason4");
 
                     b.Property<int>("Reason5ID");
 
@@ -844,14 +844,6 @@ namespace ProdFloor.Migrations
                     b.Property<int>("TestJobID");
 
                     b.HasKey("StopID");
-
-                    b.HasIndex("Reason1ID");
-
-                    b.HasIndex("Reason2ID");
-
-                    b.HasIndex("Reason3ID");
-
-                    b.HasIndex("Reason4ID");
 
                     b.HasIndex("Reason5ID");
 
@@ -1114,26 +1106,6 @@ namespace ProdFloor.Migrations
 
             modelBuilder.Entity("ProdFloor.Models.Stop", b =>
                 {
-                    b.HasOne("ProdFloor.Models.Reason1")
-                        .WithMany("_Stops")
-                        .HasForeignKey("Reason1ID")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("ProdFloor.Models.Reason2")
-                        .WithMany("_Stops")
-                        .HasForeignKey("Reason2ID")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("ProdFloor.Models.Reason3")
-                        .WithMany("_Stops")
-                        .HasForeignKey("Reason3ID")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("ProdFloor.Models.Reason4")
-                        .WithMany("_Stops")
-                        .HasForeignKey("Reason4ID")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("ProdFloor.Models.Reason5")
                         .WithMany("_Stops")
                         .HasForeignKey("Reason5ID")

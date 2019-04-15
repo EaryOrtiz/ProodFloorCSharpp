@@ -53,7 +53,6 @@ namespace ProdFloor.Models
                 .HasIndex(u => u.PO)
                 .IsUnique();
         }
-
         public class ApplicationDbContextFactory
             : IDesignTimeDbContextFactory<ApplicationDbContext>
         {

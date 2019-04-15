@@ -254,10 +254,10 @@ namespace ProdFloor.Models
                 if (dbEntry != null)
                 {
                     dbEntry.TestJobID = stop.TestJobID;
-                    dbEntry.Reason1ID = stop.Reason1ID;
-                    dbEntry.Reason2ID = stop.Reason2ID;
-                    dbEntry.Reason3ID = stop.Reason3ID;
-                    dbEntry.Reason4ID = stop.Reason4ID;
+                    dbEntry.Reason1 = stop.Reason1;
+                    dbEntry.Reason2 = stop.Reason2;
+                    dbEntry.Reason3= stop.Reason3;
+                    dbEntry.Reason4 = stop.Reason4;
                     dbEntry.Reason5ID = stop.Reason5ID;
                     dbEntry.StartDate = stop.StartDate;
                     dbEntry.StopDate = stop.StopDate;

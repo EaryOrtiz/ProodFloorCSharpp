@@ -160,6 +160,19 @@ namespace ProdFloor.Controllers
             }
         }
 
+        public ViewResult EditTestFeatures(int ID)
+        {
+            TestJob testJob = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == ID);
+            TestFeature testFeature = testingRepo.TestFeatures.FirstOrDefault(m => m.TestJobID == testJob.TestJobID);
+            TestJobViewModel viewModel = new TestJobViewModel
+            {
+                TestJob = testJob,
+                TestFeature = testFeature
+            };
+
+            return View("NewTestFeatures", viewModel);
+        }
+
         [HttpPost]
         public IActionResult NewTestFeatures(TestJobViewModel testJobView)
         {
@@ -359,6 +372,18 @@ namespace ProdFloor.Controllers
             var testjobinfo = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == CurrentStep.TestJobID);
             var job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == testjobinfo.JobID);
             return View("StepsForJob", new TestJobViewModel { StepsForJob = CurrentStep, Step = stepInfo, Job = job, TestJob = testjobinfo });
+        }
+
+        [HttpPost]
+        public IActionResult Delete(int ID)
+        {
+            TestJob deletedItem = testingRepo.DeleteTestJob(ID);
+
+            if (deletedItem != null)
+            {
+                TempData["message"] = $"{deletedItem.TestJobID} was deleted";
+            }
+            return RedirectToAction("List");
         }
 
         private async Task<AppUser> GetCurrentUser()

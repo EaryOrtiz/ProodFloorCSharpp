@@ -110,7 +110,6 @@ namespace ProdFloor.Models
         public string Description { get; set; }
 
         public List<Reason2> _Reason2s { get; set; }
-        public List<Stop> _Stops { get; set; }
     }
 
     public class Reason2
@@ -118,13 +117,11 @@ namespace ProdFloor.Models
         public int Reason2ID { get; set; }
 
         [Display(Name = "Reason 1")]
-        [Required(ErrorMessage = "Please enter a {0}")]
         public int Reason1ID { get; set; }
         [Required(ErrorMessage = "Please enter a {0}")]
         public string Description { get; set; }
 
         public List<Reason3> _Reason3s { get; set; }
-        public List<Stop> _Stops { get; set; }
     }
 
     public class Reason3
@@ -136,13 +133,11 @@ namespace ProdFloor.Models
         public int Reason1ID { get; set; }
 
         [Display(Name = "Reason 2")]
-        [Required(ErrorMessage = "Please enter a {0}")]
         public int Reason2ID { get; set; }
         [Required(ErrorMessage = "Please enter a {0}")]
         public string Description { get; set; }
 
         public List<Reason4> _Reason4s { get; set; }
-        public List<Stop> _Stops { get; set; }
     }
 
     public class Reason4
@@ -157,13 +152,11 @@ namespace ProdFloor.Models
         public int Reason2ID { get; set; }
 
         [Display(Name = "Reason 3")]
-        [Required(ErrorMessage = "Please enter a {0}")]
         public int Reason3ID { get; set; }
         [Required(ErrorMessage = "Please enter a {0}")]
         public string Description { get; set; }
 
         public List<Reason5> _Reason5s { get; set; }
-        public List<Stop> _Stops { get; set; }
     }
 
     public class Reason5
@@ -181,7 +174,6 @@ namespace ProdFloor.Models
         public int Reason3ID { get; set; }
 
         [Display(Name = "Reason 4")]
-        [Required(ErrorMessage = "Please enter a {0}")]
         public int Reason4ID { get; set; }
         [Required(ErrorMessage = "Please enter a {0}")]
         public string Description { get; set; }
@@ -195,17 +187,12 @@ namespace ProdFloor.Models
 
         [Required(ErrorMessage = "Please enter a {0}")]
         public int TestJobID { get; set; }
-        [Required(ErrorMessage = "Please enter a {0}")]
-        public int Reason1ID { get; set; }
-        [Required(ErrorMessage = "Please enter a {0}")]
-        public int Reason2ID { get; set; }
-        [Required(ErrorMessage = "Please enter a {0}")]
-        public int Reason3ID { get; set; }
-        [Required(ErrorMessage = "Please enter a {0}")]
-        public int Reason4ID { get; set; }
+        public int? Reason1 { get; set; }
+        public int? Reason2 { get; set; }
+        public int? Reason3 { get; set; }
+        public int? Reason4 { get; set; }
         [Required(ErrorMessage = "Please enter a {0}")]
         public int Reason5ID { get; set; }
-        [Required(ErrorMessage = "Please enter a {0} Date")]
         public DateTime StartDate { get; set; }
         [Required(ErrorMessage = "Please enter a Stop Date")]
         public DateTime StopDate { get; set; }
