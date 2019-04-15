@@ -307,13 +307,14 @@ namespace ProdFloor.Controllers
         [HttpPost]
         public IActionResult StepsForJob(TestJobViewModel viewModel, int next)
         {
-            var StepsForJobList = testingRepo.StepsForJobs.Where(m => m.TestJobID == viewModel.TestFeature.TestJobID).ToList();
+            List<StepsForJob> StepsForJobList = testingRepo.StepsForJobs.FromSql("select * from dbo.StepsForJobs where dbo.StepsForJobs.StepsForJobID "+
+                "IN( select  Max(dbo.StepsForJobs.StepsForJobID ) from dbo.StepsForJobs where dbo.StepsForJobs.TestJobID = {0} group by dbo.StepsForJobs.Consecutivo)",viewModel.TestJob.TestJobID).ToList();
             if (next == 0)
             {
                 return View("StepsForJob", viewModel);
 
             }//When all steps are completed
-            else if (next > StepsForJobList.Count())
+            else if (next > StepsForJobList.Distinct().Count())
             {
                 var currentStepForJob = StepsForJobList.FirstOrDefault(m => m.Consecutivo == viewModel.StepsForJob.Consecutivo); currentStepForJob.Stop = DateTime.Now;
                 currentStepForJob.Complete = true; TimeSpan elapsed = currentStepForJob.Stop - currentStepForJob.Start; currentStepForJob.Elapsed = elapsed;
@@ -365,8 +366,9 @@ namespace ProdFloor.Controllers
 
         public IActionResult ContinueStep(int ID)
         {
-            List<StepsForJob> stepsList = testingRepo.StepsForJobs.Where(m => m.TestJobID == ID).OrderBy(m => m.Consecutivo).ToList();
-            StepsForJob CurrentStep = stepsList.FirstOrDefault(m => m.Complete == false); CurrentStep.Start = DateTime.Now;
+            List<StepsForJob> StepsForJobList = testingRepo.StepsForJobs.FromSql("select * from dbo.StepsForJobs where dbo.StepsForJobs.StepsForJobID " +
+               "IN( select  Max(dbo.StepsForJobs.StepsForJobID ) from dbo.StepsForJobs where dbo.StepsForJobs.TestJobID = {0} group by dbo.StepsForJobs.Consecutivo)", ID).ToList();
+            StepsForJob CurrentStep = StepsForJobList.FirstOrDefault(m => m.Complete == false); CurrentStep.Start = DateTime.Now;
             testingRepo.SaveStepsForJob(CurrentStep);
             var stepInfo = testingRepo.Steps.FirstOrDefault(m => m.StepID == CurrentStep.StepID);
             var testjobinfo = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == CurrentStep.TestJobID);

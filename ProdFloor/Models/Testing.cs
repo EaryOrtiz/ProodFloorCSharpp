@@ -187,10 +187,10 @@ namespace ProdFloor.Models
 
         [Required(ErrorMessage = "Please enter a {0}")]
         public int TestJobID { get; set; }
-        public int? Reason1 { get; set; }
-        public int? Reason2 { get; set; }
-        public int? Reason3 { get; set; }
-        public int? Reason4 { get; set; }
+        public int Reason1 { get; set; }
+        public int Reason2 { get; set; }
+        public int Reason3 { get; set; }
+        public int Reason4 { get; set; }
         [Required(ErrorMessage = "Please enter a {0}")]
         public int Reason5ID { get; set; }
         public DateTime StartDate { get; set; }

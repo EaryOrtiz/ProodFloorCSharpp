@@ -11,9 +11,10 @@ using System;
 namespace ProdFloor.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190415135410_asdfghjkl")]
+    partial class asdfghjkl
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -827,13 +828,13 @@ namespace ProdFloor.Migrations
 
                     b.Property<TimeSpan>("Elapsed");
 
-                    b.Property<int>("Reason1");
+                    b.Property<int?>("Reason1");
 
-                    b.Property<int>("Reason2");
+                    b.Property<int?>("Reason2");
 
-                    b.Property<int>("Reason3");
+                    b.Property<int?>("Reason3");
 
-                    b.Property<int>("Reason4");
+                    b.Property<int?>("Reason4");
 
                     b.Property<int>("Reason5ID");
 

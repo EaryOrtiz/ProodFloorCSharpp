@@ -18,7 +18,7 @@
             <div class="form-group row">
                 <label asp-for="TestJob.Station" class="col-sm-2 col-form-label"></label>
                 <div>
-                    <custom-select selected-value="@Model.TestJob.JobLabel" class="form-control-sm form-control" asp-for="TestJob.Station" select-for="Station"></custom-select>
+                    <custom-select selected-value="@Model.TestJob.Station" class="form-control-sm form-control" asp-for="TestJob.Station" select-for="Station"></custom-select>
                     <span asp-validation-for="TestJob.Station" class="text-danger"></span>
                 </div>
             </div>
@@ -86,13 +86,13 @@
             </div>
             <div class="form-group row">
                 <div class="custom-control custom-checkbox">
-                    <input type="checkbox" asp-for="TestFeature.Overlay" class="custom-control-input">
+                    <input type="checkbox" asp-for="TestFeature.Custom" class="custom-control-input">
                     <label class="custom-control-label" asp-for="TestFeature.Custom"></label>
                 </div>
             </div>
             <div class="form-group row">
                 <div class="custom-control custom-checkbox">
-                    <input type="checkbox" asp-for="TestFeature.Overlay" class="custom-control-input">
+                    <input type="checkbox" asp-for="TestFeature.MRL" class="custom-control-input">
                     <label class="custom-control-label" asp-for="TestFeature.MRL"></label>
                 </div>
             </div>

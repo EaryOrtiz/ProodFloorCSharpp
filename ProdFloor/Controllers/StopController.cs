@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using ProdFloor.Models;
 using ProdFloor.Models.ViewModels.TestJob;
 
@@ -102,8 +103,9 @@ namespace ProdFloor.Controllers
             TestJob testJob = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == UpdatedStop.TestJobID);
             testJob.Status = "Working on it";
             testingRepo.SaveTestJob(testJob);
-            List<StepsForJob> stepsList = testingRepo.StepsForJobs.Where(m => m.TestJobID == testJob.TestJobID).OrderBy(m => m.Consecutivo).ToList();
-            StepsForJob CurrentStep = stepsList.FirstOrDefault(m => m.Complete == false); CurrentStep.Start = DateTime.Now;
+            List<StepsForJob> StepsForJobList = testingRepo.StepsForJobs.FromSql("select * from dbo.StepsForJobs where dbo.StepsForJobs.StepsForJobID " +
+               "IN( select  Max(dbo.StepsForJobs.StepsForJobID ) from dbo.StepsForJobs where dbo.StepsForJobs.TestJobID = {0} group by dbo.StepsForJobs.Consecutivo)", testJob.TestJobID).ToList();
+            StepsForJob CurrentStep = StepsForJobList.FirstOrDefault(m => m.Complete == false); CurrentStep.Start = DateTime.Now;
             testingRepo.SaveStepsForJob(CurrentStep);
             var stepInfo = testingRepo.Steps.FirstOrDefault(m => m.StepID == CurrentStep.StepID);
             var testjobinfo = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == CurrentStep.TestJobID);
