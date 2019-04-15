@@ -130,9 +130,9 @@
         </div>
         <div class="form-group row">
             <div class="custom-control custom-checkbox">
-                <input type="checkbox" asp-for="CurrentGenericFeatures.Ind" class="custom-control-input" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)">
-                <div><span asp-validation-for="CurrentGenericFeatures.Ind" class="text-danger" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></span></div>
-                <label class="custom-control-label" asp-for="CurrentGenericFeatures.Ind" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></label>
+                <input type="checkbox" asp-for="CurrentGenericFeatures.Pit" class="custom-control-input" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)">
+                <div><span asp-validation-for="CurrentGenericFeatures.Pit" class="text-danger" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></span></div>
+                <label class="custom-control-label" asp-for="CurrentGenericFeatures.Pit" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></label>
             </div>
         </div>
         <div class="form-group row">
@@ -268,10 +268,18 @@
                         <label class="custom-control-label" asp-for="CurrentGenericFeatures.HCRO" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></label>
                     </div>
                 </div><br /><br />
-                <div class="form-inline">
+                <div class="form-group row">
+                    <div class="form-inline">
+                        <input id="SecurityCodeSelected" asp-for="CurrentGenericFeatures.BSI" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-check-input" />
+                        <div><span asp-validation-for="CurrentGenericFeatures.BSI" class="text-danger" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></span></div>
+                        <label asp-for="CurrentGenericFeatures.BSI" class="col-form-label" style="margin-left:15px;"></label>
+                    </div>
+                </div>
+                <div id="SecurityCode" class="form-inline">
                     <label asp-for="CurrentGenericFeatures.CarCallCodeSecurity" class="col-form-label"></label>
                     <div>
-                        <input asp-for="CurrentGenericFeatures.CarCallCodeSecurity" style="margin-left:20px;" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control" />
+                        <custom-select select-for="CarCode" style="margin-left:65px;" selected-value="@Model.CurrentGenericFeatures.CarCallCodeSecurity"
+                                       asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="col-9 form-control form-control-sm" asp-for="CurrentGenericFeatures.CarCallCodeSecurity"></custom-select>
                         <span asp-validation-for="CurrentGenericFeatures.CarCallCodeSecurity" class="text-danger"></span>
                     </div>
                 </div><br />
@@ -358,6 +366,18 @@
         });
     </script>
 }
+@if (Model.CurrentGenericFeatures.CallEnable == false || Model.CurrentGenericFeatures.BSI == false)
+{
+    <script type="text/javascript">
+        $("#SecurityCodeSelected").ready(function () {
+            $("#SecurityCode").hide();
+        });
+
+        $("#SecurityCodeSelected").click(function () {
+            $("#SecurityCode")[this.checked ? "show" : "hide"]();
+        });
+    </script>
+}
 @if (Model.CurrentGenericFeatures.CallEnable == false)
 {
     <script type="text/javascript">
@@ -370,4 +390,5 @@
         });
     </script>
 }
+
 

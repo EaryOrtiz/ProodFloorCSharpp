@@ -156,7 +156,7 @@ namespace ProdFloor.Models
                     dbEntry.EPSelect = genericFeatures.EPSelect;
                     dbEntry.FLO = genericFeatures.FLO;
                     dbEntry.Hosp = genericFeatures.Hosp;
-                    dbEntry.Ind = genericFeatures.Ind;
+                    dbEntry.Pit = genericFeatures.Pit;
                     dbEntry.INA = genericFeatures.INA;
                     dbEntry.TopAccess = genericFeatures.TopAccess;
                     dbEntry.TopAccessLocation = genericFeatures.TopAccessLocation;
@@ -178,6 +178,7 @@ namespace ProdFloor.Models
                     dbEntry.CarKey = genericFeatures.CarKey;
                     dbEntry.CRO = genericFeatures.CRO;
                     dbEntry.HCRO = genericFeatures.HCRO;
+                    dbEntry.BSI = genericFeatures.BSI;
 
                 }
                 else

@@ -41,6 +41,7 @@ namespace ProdFloor.Models
         public DbSet<Overload_audit> Overload_Audits { get; set; }
         public DbSet<WireTypeSize_audit> WireTypeSize_Audits { get; set; }
 
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<Job>()

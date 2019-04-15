@@ -266,7 +266,7 @@ namespace ProdFloor.Controllers
                     EPSelect = viewModel.CurrentGenericFeatures.EPSelect,
                     FLO = viewModel.CurrentGenericFeatures.FLO,
                     Hosp = viewModel.CurrentGenericFeatures.Hosp,
-                    Ind = viewModel.CurrentGenericFeatures.Ind,
+                    Pit = viewModel.CurrentGenericFeatures.Pit,
                     INA = viewModel.CurrentGenericFeatures.INA,
                     TopAccess = viewModel.CurrentGenericFeatures.TopAccess,
                     TopAccessLocation = viewModel.CurrentGenericFeatures.TopAccessLocation,
@@ -803,7 +803,7 @@ namespace ProdFloor.Controllers
             if (!string.IsNullOrEmpty(searchViewModel.EPVoltage)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.EPVoltage == "Si" ? s._GenericFeatures.EPVoltage == true : s._GenericFeatures.EPVoltage == false);
             if (!string.IsNullOrEmpty(searchViewModel.INA)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.INA == "Si" ? s._GenericFeatures.INA == true : s._GenericFeatures.INA == false);
             if (!string.IsNullOrEmpty(searchViewModel.INCP)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.INCP == "Si" ? s._GenericFeatures.INCP == true : s._GenericFeatures.INCP == false);
-            if (!string.IsNullOrEmpty(searchViewModel.Ind)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.Ind == "Si" ? s._GenericFeatures.Ind == true : s._GenericFeatures.Ind == false);
+            if (!string.IsNullOrEmpty(searchViewModel.Ind)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.Ind == "Si" ? s._GenericFeatures.Pit == true : s._GenericFeatures.Pit == false);
             if (!string.IsNullOrEmpty(searchViewModel.LoadWeigher)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.LoadWeigher == "Si" ? s._GenericFeatures.LoadWeigher == true : s._GenericFeatures.LoadWeigher == false);
             if (!string.IsNullOrEmpty(searchViewModel.TopAccess)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.TopAccess == "Si" ? s._GenericFeatures.TopAccess == true : s._GenericFeatures.TopAccess == false);
             if (!string.IsNullOrEmpty(searchViewModel.CRO)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.CRO == "Si" ? s._GenericFeatures.CRO == true : s._GenericFeatures.CRO == false);
@@ -1073,8 +1073,8 @@ namespace ProdFloor.Controllers
                                 xw.WriteElementString("FLO", aux);
                                 aux = generic.Hosp ? "True" : "False";
                                 xw.WriteElementString("Hosp", aux);
-                                aux = generic.Ind ? "True" : "False";
-                                xw.WriteElementString("Ind", aux);
+                                aux = generic.Pit ? "True" : "False";
+                                xw.WriteElementString("Pit", aux);
                                 aux = generic.INA ? "True" : "False";
                                 xw.WriteElementString("INA", aux);
                                 aux = generic.TopAccess ? "True" : "False";
@@ -1103,6 +1103,8 @@ namespace ProdFloor.Controllers
                                 xw.WriteElementString("CRO", aux);
                                 aux = generic.HCRO ? "True" : "False";
                                 xw.WriteElementString("HCRO", aux);
+                                aux = generic.BSI ? "True" : "False";
+                                xw.WriteElementString("BSI", aux);
                                 xw.WriteEndElement();
                             }
                             Indicator indicator = repository.Indicators.FirstOrDefault(m => m.JobID == job.JobID);
@@ -1423,15 +1425,15 @@ namespace ProdFloor.Controllers
                             aux = generic.EPOtherCars ? "True" : "False";
                             xw.WriteElementString("EPOtherCars", aux);
                             aux = generic.PTI ? "True" : "False";
-                            xw.WriteElementString("PTI", aux);
+                            xw.WriteElementString("Pit", aux);
                             aux = generic.EPSelect ? "True" : "False";
                             xw.WriteElementString("EPSelect", aux);
                             aux = generic.FLO ? "True" : "False";
                             xw.WriteElementString("FLO", aux);
                             aux = generic.Hosp ? "True" : "False";
                             xw.WriteElementString("Hosp", aux);
-                            aux = generic.Ind ? "True" : "False";
-                            xw.WriteElementString("Ind", aux);
+                            aux = generic.Pit ? "True" : "False";
+                            xw.WriteElementString("Pit", aux);
                             aux = generic.INA ? "True" : "False";
                             xw.WriteElementString("INA", aux);
                             aux = generic.TopAccess ? "True" : "False";
@@ -1460,6 +1462,8 @@ namespace ProdFloor.Controllers
                             xw.WriteElementString("CRO", aux);
                             aux = generic.HCRO ? "True" : "False";
                             xw.WriteElementString("HCRO", aux);
+                            aux = generic.BSI ? "True" : "False";
+                            xw.WriteElementString("BSI", aux);
                             xw.WriteEndElement();
                         }
                         Indicator indicator = repository.Indicators.FirstOrDefault(m => m.JobID == job.JobID);
@@ -1814,7 +1818,7 @@ namespace ProdFloor.Controllers
                     var epselect = XMLGeneric.SelectSingleNode(".//epselect").InnerText;
                     var flo = XMLGeneric.SelectSingleNode(".//flo").InnerText;
                     var hosp = XMLGeneric.SelectSingleNode(".//hosp").InnerText;
-                    var ind = XMLGeneric.SelectSingleNode(".//ind").InnerText;
+                    var pit = XMLGeneric.SelectSingleNode(".//pit").InnerText;
                     var ina = XMLGeneric.SelectSingleNode(".//ina").InnerText;
                     var topaccess = XMLGeneric.SelectSingleNode(".//topaccess").InnerText;
                     var topaccesslocation = XMLGeneric.SelectSingleNode(".//topaccesslocation").InnerText;
@@ -1835,6 +1839,7 @@ namespace ProdFloor.Controllers
                     var hallkey = XMLGeneric.SelectSingleNode(".//hallkey").InnerText;
                     var cro = XMLGeneric.SelectSingleNode(".//cro").InnerText;
                     var hcro = XMLGeneric.SelectSingleNode(".//hcro").InnerText;
+                    var bsi = XMLGeneric.SelectSingleNode(".//bsi").InnerText;
                     var carcallcodesecurity = XMLGeneric.SelectSingleNode(".//carcallcodesecurity").InnerText;
                     var specialinstructions = XMLGeneric.SelectSingleNode(".//specialinstructions").InnerText;
                     context.GenericFeaturesList.Add(new GenericFeatures
@@ -1855,7 +1860,7 @@ namespace ProdFloor.Controllers
                         EPSelect = Boolean.Parse(epselect),
                         FLO = Boolean.Parse(flo),
                         Hosp = Boolean.Parse(hosp),
-                        Ind = Boolean.Parse(ind),
+                        Pit = Boolean.Parse(pit),
                         INA = Boolean.Parse(ina),
                         TopAccess = Boolean.Parse(topaccess),
                         TopAccessLocation = topaccesslocation,
@@ -1876,6 +1881,7 @@ namespace ProdFloor.Controllers
                         HallKey = Boolean.Parse(hallkey),
                         CRO = Boolean.Parse(cro),
                         HCRO = Boolean.Parse(hcro),
+                        BSI = Boolean.Parse(bsi),
                         CarCallCodeSecurity = carcallcodesecurity == "Nulo" ? null : carcallcodesecurity,
                         SpecialInstructions = specialinstructions == "Nulo" ? null : specialinstructions
                     });
@@ -2303,7 +2309,7 @@ namespace ProdFloor.Controllers
                 var epselect = XMLGeneric.SelectSingleNode(".//epselect").InnerText;
                 var flo = XMLGeneric.SelectSingleNode(".//flo").InnerText;
                 var hosp = XMLGeneric.SelectSingleNode(".//hosp").InnerText;
-                var ind = XMLGeneric.SelectSingleNode(".//ind").InnerText;
+                var pit = XMLGeneric.SelectSingleNode(".//pit").InnerText;
                 var ina = XMLGeneric.SelectSingleNode(".//ina").InnerText;
                 var topaccess = XMLGeneric.SelectSingleNode(".//topaccess").InnerText;
                 var topaccesslocation = XMLGeneric.SelectSingleNode(".//topaccesslocation").InnerText;
@@ -2324,6 +2330,7 @@ namespace ProdFloor.Controllers
                 var hallkey = XMLGeneric.SelectSingleNode(".//hallkey").InnerText;
                 var cro = XMLGeneric.SelectSingleNode(".//cro").InnerText;
                 var hcro = XMLGeneric.SelectSingleNode(".//hcro").InnerText;
+                var bsi = XMLGeneric.SelectSingleNode(".//bsi").InnerText;
                 var carcallcodesecurity = XMLGeneric.SelectSingleNode(".//carcallcodesecurity").InnerText;
                 var specialinstructions = XMLGeneric.SelectSingleNode(".//specialinstructions").InnerText;
                 context.GenericFeaturesList.Add(new GenericFeatures
@@ -2344,7 +2351,7 @@ namespace ProdFloor.Controllers
                     EPSelect = Boolean.Parse(epselect),
                     FLO = Boolean.Parse(flo),
                     Hosp = Boolean.Parse(hosp),
-                    Ind = Boolean.Parse(ind),
+                    Pit = Boolean.Parse(pit),
                     INA = Boolean.Parse(ina),
                     TopAccess = Boolean.Parse(topaccess),
                     TopAccessLocation = topaccesslocation,
@@ -2365,6 +2372,7 @@ namespace ProdFloor.Controllers
                     HallKey = Boolean.Parse(hallkey),
                     CRO = Boolean.Parse(cro),
                     HCRO = Boolean.Parse(hcro),
+                    BSI = Boolean.Parse(bsi),
                     CarCallCodeSecurity = carcallcodesecurity == "Nulo" ? null : carcallcodesecurity,
                     SpecialInstructions = specialinstructions == "Nulo" ? null : specialinstructions
                 });

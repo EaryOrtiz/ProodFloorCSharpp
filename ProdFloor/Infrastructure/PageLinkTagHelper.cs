@@ -323,6 +323,8 @@ namespace ProdFloor.Infrastructure
                     return itemsrepository.DoorOperators.Select(d => d.Style).Distinct();
                 case "SwitchStyle":
                     return new List<string> { "2-Position", "3-Position" }.AsQueryable();
+                case "CarCode":
+                    return new List<string> { "Key", "IMonitor" }.AsQueryable();
                 case "SPH":
                     return new List<string> { "80", "120" }.AsQueryable();
                 case "Starter":

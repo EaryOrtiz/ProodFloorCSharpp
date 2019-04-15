@@ -236,7 +236,7 @@ namespace ProdFloor.Models
     {
         public int GenericFeaturesID { get; set; }
         public int JobID { get; set; }
-        
+
         [Display(Name = "Additional Fire Recall")]
         public bool FRON2 { get; set; }
         [Display(Name = "Attendant Service")]
@@ -272,8 +272,8 @@ namespace ProdFloor.Models
         public bool FLO { get; set; }
         [Display(Name = "Hospital")]
         public bool Hosp { get; set; }
-        [Display(Name = "Independent")]
-        public bool Ind { get; set; }
+        [Display(Name = "Pit Flood")]
+        public bool Pit { get; set; }
 
         // Hoistway Access Options
         [Display(Name = "Hoistway Access")]
@@ -331,7 +331,8 @@ namespace ProdFloor.Models
         public bool CRO { get; set; }
         [Display(Name = "HCRO")]
         public bool HCRO { get; set; }
-
+        [Display(Name = "BSI")]
+        public bool BSI { get;set;}
         [Display(Name = "Car call code security")]
         [StringLength(50, ErrorMessage = "The maximum length of the {0} field is {1}")]
         public string CarCallCodeSecurity { get; set; }
