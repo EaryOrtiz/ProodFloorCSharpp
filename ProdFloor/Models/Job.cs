@@ -20,9 +20,14 @@ namespace ProdFloor.Models
         [NotMapped]
         public int CurrentUserID { get; set; }
 
-        [StringLength(78, ErrorMessage = "The maximum length of the {0} field is {1}")]
+        [StringLength(50, ErrorMessage = "The maximum length of the {0} field is {1}")]
         [Required(ErrorMessage = "Please enter a name")]
         public string Name { get; set; }
+
+        [Display(Name = "Name #2")]
+        [StringLength(50, ErrorMessage = "The maximum length of the {0} field is {1}")]
+        [Required(ErrorMessage = "Please enter a name #2")]
+        public string Name2 { get; set; }
 
         [Display(Name = "Job Number")]
         [Range(2015000000, 3030000000, ErrorMessage = "Job number is out of range")]

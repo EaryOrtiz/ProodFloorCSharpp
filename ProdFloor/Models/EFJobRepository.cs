@@ -37,6 +37,7 @@ namespace ProdFloor.Models
                 if (dbEntry != null)
                 {
                     dbEntry.Name = job.Name;
+                    dbEntry.Name2 = job.Name2;
                     dbEntry.JobNum = job.JobNum;
                     dbEntry.JobTypeID = job.JobTypeID;
                     dbEntry.ShipDate = job.ShipDate;

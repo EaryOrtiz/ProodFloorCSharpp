@@ -1,4 +1,4 @@
-﻿@model Job
+﻿@model JobViewModel
 @{
     ViewBag.Title = "New Job";
     Layout = "_AdminLayoutWO";
@@ -31,7 +31,7 @@
 <form asp-action="NewJob" method="post">
     <div class="tab-content" style="padding:20px">
         <div class="tab-pane active" id="home" role="tabpanel">
-            @Html.Partial("JobFormBase", Model)
+            @Html.Partial("JobForm", Model)
         </div>
         <div class="text-center">
             <button class="btn btn-primary" type="submit">Save</button>

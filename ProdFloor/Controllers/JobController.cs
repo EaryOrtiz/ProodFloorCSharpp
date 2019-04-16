@@ -94,31 +94,51 @@ namespace ProdFloor.Controllers
         */
         public ViewResult NewJob()
         {
-            return View(new Job());
+            JobViewModel viewModel =  new JobViewModel
+            {
+                CurrentJob = new Job(),
+                POList = new List<PO> { new PO { JobID = 0} }
+            };
+            return View(viewModel);
         }
 
         [HttpPost]
-        public IActionResult NewJob(Job newJob)
+        public IActionResult NewJob(JobViewModel newJob)
         {
             //Desactivar esta funcion para que funcione el test de Job
             AppUser currentUser = GetCurrentUser().Result;
-            if (ModelState.IsValid)
+            if (newJob.buttonAction == "AddPO")
+            {
+                newJob.POList.Add(new PO { JobID = 0 });
+                newJob.CurrentTab = "Main";
+            }
+            else if(ModelState.IsValid)
             {
                 //y esta esta tambien y poner denuevo el {currenuser.engId} en Los TempDatas cuando terminen los test 
-                newJob.EngID = currentUser.EngID;
-                newJob.CrossAppEngID = 117;
-                newJob.Status = "Incomplete";
-                repository.SaveJob(newJob);
+                newJob.CurrentJob.EngID = currentUser.EngID;
+                newJob.CurrentJob.CrossAppEngID = 117;
+                newJob.CurrentJob.Status = "Incomplete";
+                repository.SaveJob(newJob.CurrentJob);
+                Job currentJob = repository.Jobs.FirstOrDefault(p => p.JobID == repository.Jobs.Max(x => x.JobID));
+                foreach (PO items in newJob.POList)
+                {
+                    items.JobID = currentJob.JobID;
+                    repository.SavePO(items);
+                }
+                List<PO> POsList = repository.POs.Where(j => j.JobID == currentJob.JobID).ToList();
+                if (POsList != null) newJob.POList = POsList;
+                else newJob.POList = new List<PO> { new PO() };
                 JobViewModel newJobViewModel = new JobViewModel
                 {
                     CurrentUserID = currentUser.EngID,
-                    CurrentJob = newJob,
-                    CurrentJobExtension = new JobExtension { JobID = newJob.JobID },
+                    CurrentJob = newJob.CurrentJob,
+                    CurrentJobExtension = new JobExtension { JobID = newJob.CurrentJob.JobID },
                     CurrentHydroSpecific = new HydroSpecific(),
                     CurrentGenericFeatures = new GenericFeatures(),
                     CurrentIndicator = new Indicator(),
                     CurrentHoistWayData = new HoistWayData(),
                     SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures() },
+                    POList = newJob.POList,
                     CurrentTab = "Extension"
                 };
                 TempData["message"] = $"Job# {newJobViewModel.CurrentJob.JobNum} has been saved...{newJobViewModel.CurrentJob.JobID}...";
@@ -132,6 +152,7 @@ namespace ProdFloor.Controllers
                 TempData["alert"] = $"alert-danger";
                 return View(newJob);
             }
+            return View(newJob);
         }
 
         /* Get de Edit; Si el ID recibido exite en el repositorio regresa un JobViewModel con los objetos relacionados a este ID,
@@ -148,6 +169,7 @@ namespace ProdFloor.Controllers
             }
             else
             {
+                List<PO> POsList = repository.POs.Where(j => j.JobID == ID).ToList();
                 List<SpecialFeatures> SfList = repository.SpecialFeatures.Where(j => j.JobID == ID).ToList();
                 JobViewModel viewModel = new JobViewModel();
                 viewModel.CurrentJob = job;
@@ -158,6 +180,8 @@ namespace ProdFloor.Controllers
                 viewModel.CurrentHoistWayData = repository.HoistWayDatas.FirstOrDefault(j => j.JobID == ID);
                 if (SfList != null) viewModel.SpecialFeatureslist = SfList;
                 else viewModel.SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures() };
+                if (POsList != null) viewModel.POList = POsList;
+                else viewModel.POList = new List<PO> { new PO() };
                 viewModel.CurrentUserID = currentUser.EngID;
                 viewModel.CurrentTab = "Main";
                 return View(viewModel);
@@ -191,6 +215,7 @@ namespace ProdFloor.Controllers
                     EngID = currentUser.EngID,
                     CrossAppEngID = viewModel.CurrentJob.CrossAppEngID,
                     Name = "Change the name please",
+                    Name2 = "Change the name please",
                     JobNum = 0,
                     ShipDate = viewModel.CurrentJob.ShipDate,
                     LatestFinishDate = viewModel.CurrentJob.LatestFinishDate,
@@ -476,6 +501,22 @@ namespace ProdFloor.Controllers
                 TempData["message"] = $"There was an error with your request{fieldID}";
             }
             return Redirect(returnUrl);
+        }
+
+        [HttpPost]
+        public IActionResult DeletePOs(int fieldID, string returnUrl, JobViewModel viewModel)
+        {
+            PO deletedField = repository.DeletePO(fieldID);
+            if (deletedField != null)
+            {
+                TempData["message"] = $"{deletedField.POID} was deleted";
+            }
+            else
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"There was an error with your request{fieldID}";
+            }
+            return View(returnUrl);
         }
 
         /* Get de Continue; esta clase es para cuando el usuario estaba capturando un job y por algun motivo no lo termino;
@@ -964,6 +1005,7 @@ namespace ProdFloor.Controllers
                             xw.WriteElementString("EngID", job.EngID.ToString());
                             xw.WriteElementString("CrossAppEngID", job.CrossAppEngID.ToString());
                             xw.WriteElementString("Name", job.Name);
+                            xw.WriteElementString("Name2", job.Name2);
                             xw.WriteElementString("JobNum", job.JobNum.ToString());
                             xw.WriteElementString("ShipDate", job.ShipDate.ToString());
                             xw.WriteElementString("LatestFinishDate", job.LatestFinishDate.ToString());
@@ -1322,6 +1364,7 @@ namespace ProdFloor.Controllers
                         xw.WriteElementString("EngID", job.EngID.ToString());
                         xw.WriteElementString("CrossAppEngID", job.CrossAppEngID.ToString());
                         xw.WriteElementString("Name", job.Name);
+                        xw.WriteElementString("Name2", job.Name2);
                         xw.WriteElementString("JobNum", job.JobNum.ToString());
                         xw.WriteElementString("ShipDate", job.ShipDate.ToString());
                         xw.WriteElementString("LatestFinishDate", job.LatestFinishDate.ToString());
@@ -1672,6 +1715,7 @@ namespace ProdFloor.Controllers
                     var engid = XMLJobBase.SelectSingleNode(".//engid").InnerText;
                     var crossappengid = XMLJobBase.SelectSingleNode(".//crossappengid").InnerText;
                     var name = XMLJobBase.SelectSingleNode(".//name").InnerText;
+                    var name2 = XMLJobBase.SelectSingleNode(".//name2").InnerText;
                     var jobnum = XMLJobBase.SelectSingleNode(".//jobnum").InnerText;
                     var shipdate = XMLJobBase.SelectSingleNode(".//shipdate").InnerText;
                     var latestfinishdate = XMLJobBase.SelectSingleNode(".//latestfinishdate").InnerText;
@@ -1687,6 +1731,7 @@ namespace ProdFloor.Controllers
                         EngID = Int32.Parse(engid),
                         CrossAppEngID = Int32.Parse(crossappengid),
                         Name = name,
+                        Name2 =name2, 
                         JobNum = Int32.Parse(jobnum),
                         ShipDate = DateTime.Parse(shipdate),
                         LatestFinishDate = DateTime.Parse(latestfinishdate),
@@ -2149,6 +2194,7 @@ namespace ProdFloor.Controllers
                 var engid = XMLJobBase.SelectSingleNode(".//engid").InnerText;
                 var crossappengid = XMLJobBase.SelectSingleNode(".//crossappengid").InnerText;
                 var name = XMLJobBase.SelectSingleNode(".//name").InnerText;
+                var name2 = XMLJobBase.SelectSingleNode(".//name2").InnerText;
                 var jobnum = XMLJobBase.SelectSingleNode(".//jobnum").InnerText;
                 var shipdate = XMLJobBase.SelectSingleNode(".//shipdate").InnerText;
                 var latestfinishdate = XMLJobBase.SelectSingleNode(".//latestfinishdate").InnerText;
@@ -2164,6 +2210,7 @@ namespace ProdFloor.Controllers
                     EngID = Int32.Parse(engid),
                     CrossAppEngID = Int32.Parse(crossappengid),
                     Name = name,
+                    Name2 = name2,
                     JobNum = Int32.Parse(jobnum),
                     ShipDate = DateTime.Parse(shipdate),
                     LatestFinishDate = DateTime.Parse(latestfinishdate),
