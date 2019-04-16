@@ -98,7 +98,7 @@
     <table class="table table-sm form-control">
         <thead>
             <tr>
-                <th style="text-align:center;width:100%">PO &nbsp;<button asp-action="NewJob" type="submit" value="AddPO" name="buttonAction" class="btn btn-success btn-sm col-sm-2" 
+                <th style="text-align:center;width:100%">PO &nbsp;<button asp-action="AddPo" type="submit" value="AddPO" name="buttonAction" class="btn btn-success btn-sm col-sm-2" 
                 style="padding-top:10px;margin-bottom:10px;min-width:100px;float:left"><i class="fa fa-plus"></i></button>
                 </th>
             </tr>
@@ -112,12 +112,12 @@
                 <td>
                     @Html.TextBoxFor(m => m.POList[i].PONumb, new { Class = "form-control col-sm-2;", Style = "text-align:center;" })
                 </td>
-                @if (Model.CurrentJob.Status != null || Model.CurrentJob.Status != "Incomplete")
+                @if (Model.CurrentJob.Status != null && Model.CurrentJob.Status != "Incomplete")
                 {
                     <td style="text-align:center;">
                         <form asp-action="DeletePOs" method="post">
+                            <input type="hidden" asp-for="CurrentJob.JobID" />
                             <input type="hidden" name="fieldID" value="@Model.POList[i].POID" />
-                            <input type="hidden" name="returnUrl" value="\Job\Edit\@Model.POList[i].JobID" />
                             <button type="submit" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="btn btn-danger btn-sm">
                                 <i class="fa fa-minus-circle"></i>
                             </button>

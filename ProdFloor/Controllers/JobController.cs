@@ -107,43 +107,94 @@ namespace ProdFloor.Controllers
         {
             //Desactivar esta funcion para que funcione el test de Job
             AppUser currentUser = GetCurrentUser().Result;
-            if (newJob.buttonAction == "AddPO")
-            {
-                newJob.POList.Add(new PO { JobID = 0 });
-                newJob.CurrentTab = "Main";
-            }
-            else if(ModelState.IsValid)
+           if(ModelState.IsValid)
             {
                 //y esta esta tambien y poner denuevo el {currenuser.engId} en Los TempDatas cuando terminen los test 
-                newJob.CurrentJob.EngID = currentUser.EngID;
-                newJob.CurrentJob.CrossAppEngID = 117;
-                newJob.CurrentJob.Status = "Incomplete";
-                repository.SaveJob(newJob.CurrentJob);
-                Job currentJob = repository.Jobs.FirstOrDefault(p => p.JobID == repository.Jobs.Max(x => x.JobID));
-                foreach (PO items in newJob.POList)
+                if(newJob.CurrentJob.JobID == 0)
                 {
-                    items.JobID = currentJob.JobID;
-                    repository.SavePO(items);
-                }
-                List<PO> POsList = repository.POs.Where(j => j.JobID == currentJob.JobID).ToList();
-                if (POsList != null) newJob.POList = POsList;
-                else newJob.POList = new List<PO> { new PO() };
-                JobViewModel newJobViewModel = new JobViewModel
-                {
-                    CurrentUserID = currentUser.EngID,
-                    CurrentJob = newJob.CurrentJob,
-                    CurrentJobExtension = new JobExtension { JobID = newJob.CurrentJob.JobID },
-                    CurrentHydroSpecific = new HydroSpecific(),
-                    CurrentGenericFeatures = new GenericFeatures(),
-                    CurrentIndicator = new Indicator(),
-                    CurrentHoistWayData = new HoistWayData(),
-                    SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures() },
-                    POList = newJob.POList,
-                    CurrentTab = "Extension"
-                };
-                TempData["message"] = $"Job# {newJobViewModel.CurrentJob.JobNum} has been saved...{newJobViewModel.CurrentJob.JobID}...";
-                return View("NextForm", newJobViewModel);
+                    newJob.CurrentJob.EngID = currentUser.EngID;
+                    newJob.CurrentJob.CrossAppEngID = 117;
+                    newJob.CurrentJob.Status = "Incomplete";
+                    repository.SaveJob(newJob.CurrentJob);
+                    Job currentJob = repository.Jobs.FirstOrDefault(p => p.JobID == repository.Jobs.Max(x => x.JobID));
+                    try
+                    {
+                        foreach (PO items in newJob.POList)
+                        {
+                            items.JobID = currentJob.JobID;
+                            repository.SavePO(items);
+                        }
+                    }
+                    catch (DbUpdateException e)
+                    {
+                        TempData["message"] = $"That PO already exists. Please validate.";
+                        TempData["alert"] = $"alert-danger";
+                    }
 
+                    List<PO> POsList = repository.POs.Where(j => j.JobID == currentJob.JobID).ToList();
+                    if (POsList != null) newJob.POList = POsList;
+                    else newJob.POList = new List<PO> { new PO() };
+                    JobViewModel newJobViewModel = new JobViewModel
+                    {
+                        CurrentUserID = currentUser.EngID,
+                        CurrentJob = newJob.CurrentJob,
+                        CurrentJobExtension = new JobExtension { JobID = newJob.CurrentJob.JobID },
+                        CurrentHydroSpecific = new HydroSpecific(),
+                        CurrentGenericFeatures = new GenericFeatures(),
+                        CurrentIndicator = new Indicator(),
+                        CurrentHoistWayData = new HoistWayData(),
+                        SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures() },
+                        POList = newJob.POList,
+                        CurrentTab = "Extension"
+                    };
+                    TempData["message"] = $"Job# {newJobViewModel.CurrentJob.JobNum} has been saved...{newJobViewModel.CurrentJob.JobID}...";
+                    return View("NextForm", newJobViewModel);
+                }
+                else
+                {
+                    Job currentJob = repository.Jobs.FirstOrDefault(p => p.JobID == newJob.CurrentJob.JobID);
+                    try
+                    {
+                        foreach (PO items in newJob.POList)
+                        {
+                            items.JobID = currentJob.JobID;
+                            repository.SavePO(items);
+                        }
+                    }
+                    catch (DbUpdateException e)
+                    {
+                        TempData["message"] = $"That PO already exists. Please validate.";
+                        TempData["alert"] = $"alert-danger";
+                    }
+
+                    List<PO> POsList = repository.POs.Where(j => j.JobID == currentJob.JobID).ToList();
+                    List<SpecialFeatures> SfList = repository.SpecialFeatures.Where(j => j.JobID == currentJob.JobID).ToList();
+                    newJob.CurrentJobExtension = repository.JobsExtensions.FirstOrDefault(j => j.JobID == currentJob.JobID);
+                    newJob.CurrentHydroSpecific = repository.HydroSpecifics.FirstOrDefault(j => j.JobID == currentJob.JobID);
+                    newJob.CurrentGenericFeatures = repository.GenericFeaturesList.FirstOrDefault(j => j.JobID == currentJob.JobID);
+                    newJob.CurrentIndicator = repository.Indicators.FirstOrDefault(j => j.JobID == currentJob.JobID);
+                    newJob.CurrentHoistWayData = repository.HoistWayDatas.FirstOrDefault(j => j.JobID == currentJob.JobID);
+                    JobViewModel newJobViewModel = new JobViewModel();
+                    newJobViewModel.CurrentUserID = currentUser.EngID;
+                    newJobViewModel.CurrentJob = currentJob;
+                    if (newJob.CurrentJobExtension != null) newJobViewModel.CurrentJobExtension = newJob.CurrentJobExtension;
+                    else newJobViewModel.CurrentJobExtension = new JobExtension();
+                    if (newJob.CurrentHydroSpecific != null) newJobViewModel.CurrentHydroSpecific = newJob.CurrentHydroSpecific;
+                    else newJobViewModel.CurrentHydroSpecific = new HydroSpecific();
+                    if (newJob.CurrentGenericFeatures != null) newJobViewModel.CurrentGenericFeatures = newJob.CurrentGenericFeatures;
+                    else newJobViewModel.CurrentGenericFeatures = new GenericFeatures();
+                    if (newJob.CurrentIndicator != null) newJobViewModel.CurrentIndicator = newJob.CurrentIndicator;
+                    else newJobViewModel.CurrentIndicator = new Indicator();
+                    if (newJob.CurrentHoistWayData != null) newJobViewModel.CurrentHoistWayData = newJob.CurrentHoistWayData;
+                    else newJobViewModel.CurrentHoistWayData = new HoistWayData();
+                    if (POsList != null) newJobViewModel.POList = POsList;
+                    else newJobViewModel.POList = new List<PO> { new PO() };
+                    if (SfList != null) newJobViewModel.SpecialFeatureslist = SfList;
+                    else newJobViewModel.SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures() };
+                    newJobViewModel.CurrentTab = "Main";
+                    TempData["message"] = $"Job# {newJobViewModel.CurrentJob.JobNum} has been saved...{newJobViewModel.CurrentJob.JobID}...";
+                    return View("NextForm", newJobViewModel);
+                }
 
             }
             else
@@ -152,7 +203,6 @@ namespace ProdFloor.Controllers
                 TempData["alert"] = $"alert-danger";
                 return View(newJob);
             }
-            return View(newJob);
         }
 
         /* Get de Edit; Si el ID recibido exite en el repositorio regresa un JobViewModel con los objetos relacionados a este ID,
@@ -448,7 +498,15 @@ namespace ProdFloor.Controllers
                 {
                     multiEditViewModel.CurrentHydroSpecific.BatteryBrand = multiEditViewModel.CurrentHydroSpecific.OtherBatteryBrand;
                 }
-                repository.SaveEngJobView(multiEditViewModel);
+                try
+                {
+                    repository.SaveEngJobView(multiEditViewModel);
+                }
+                catch (DbUpdateException e)
+                {
+                    TempData["message"] = $"That PO already exists. Please validate.";
+                    TempData["alert"] = $"alert-danger";
+                }
 
                 multiEditViewModel.CurrentTab = "Main";
                 TempData["message"] = $"{multiEditViewModel.CurrentJob.JobNum} ID has been saved...{multiEditViewModel.CurrentJob.JobID}";
@@ -462,6 +520,48 @@ namespace ProdFloor.Controllers
                 return View(multiEditViewModel);
             }
         }
+
+        [HttpPost]
+        public IActionResult AddPo(JobViewModel jobView)
+        {
+            if(jobView.CurrentJob.JobID == 0)
+            {
+                if (jobView.buttonAction == "AddPO")
+                {
+                    jobView.POList.Add(new PO { JobID = 0 });
+                    jobView.CurrentTab = "Main";
+                }
+
+                return View("NewJob", jobView);
+
+            }else if (jobView.CurrentJob.Status == "Incomplete")
+            {
+                if (jobView.buttonAction == "AddPO")
+                {
+                    jobView.POList.Add(new PO { JobID = jobView.CurrentJob.JobID });
+                    if (jobView.CurrentJobExtension == null) jobView.CurrentJobExtension = new JobExtension();
+                    if (jobView.CurrentHydroSpecific == null)  jobView.CurrentHydroSpecific = new HydroSpecific();
+                    if (jobView.CurrentGenericFeatures == null)  jobView.CurrentGenericFeatures = new GenericFeatures();
+                    if (jobView.CurrentIndicator == null) jobView.CurrentIndicator = new Indicator();
+                    if (jobView.CurrentHoistWayData == null) jobView.CurrentHoistWayData = new HoistWayData();
+                    if (jobView.SpecialFeatureslist == null) jobView.SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures() };
+                    jobView.CurrentTab = "Main";
+                }
+
+                return View("NextForm", jobView);
+            }
+            else
+            {
+                if (jobView.buttonAction == "AddPO")
+                {
+                    jobView.POList.Add(new PO { JobID = jobView.CurrentJob.JobID });
+                    jobView.CurrentTab = "Main";
+                }
+                return View("Edit", jobView);
+            }
+            
+        }
+
 
         public IActionResult AddSF(int Id)
         {
@@ -510,13 +610,41 @@ namespace ProdFloor.Controllers
             if (deletedField != null)
             {
                 TempData["message"] = $"{deletedField.POID} was deleted";
+                AppUser currentUser = GetCurrentUser().Result;
+                Job job = repository.Jobs.FirstOrDefault(j => j.JobID == viewModel.CurrentJob.JobID);
+                if (job == null)
+                {
+                    TempData["message"] = $"The requested Job doesn't exist.";
+                    return RedirectToAction("List");
+                }
+                else
+                {
+                    return RedirectToAction("Edit", new { id = job.JobID });
+                    /*
+                    List<PO> POsList = repository.POs.Where(j => j.JobID == job.JobID).ToList();
+                    List<SpecialFeatures> SfList = repository.SpecialFeatures.Where(j => j.JobID == job.JobID).ToList();
+                    viewModel.CurrentJob = job;
+                    viewModel.CurrentJobExtension = repository.JobsExtensions.FirstOrDefault(j => j.JobID == job.JobID);
+                    viewModel.CurrentHydroSpecific = repository.HydroSpecifics.FirstOrDefault(j => j.JobID == job.JobID);
+                    viewModel.CurrentGenericFeatures = repository.GenericFeaturesList.FirstOrDefault(j => j.JobID == job.JobID);
+                    viewModel.CurrentIndicator = repository.Indicators.FirstOrDefault(j => j.JobID == job.JobID);
+                    viewModel.CurrentHoistWayData = repository.HoistWayDatas.FirstOrDefault(j => j.JobID == job.JobID);
+                    if (SfList != null) viewModel.SpecialFeatureslist = SfList;
+                    else viewModel.SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures() };
+                    if (POsList != null) viewModel.POList = POsList;
+                    else viewModel.POList = new List<PO> { new PO() };
+                    viewModel.CurrentUserID = currentUser.EngID;
+                    viewModel.CurrentTab = "Main";
+                    */
+                }
             }
             else
             {
                 TempData["alert"] = $"alert-danger";
                 TempData["message"] = $"There was an error with your request{fieldID}";
             }
-            return View(returnUrl);
+
+            return View("Edit", viewModel);
         }
 
         /* Get de Continue; esta clase es para cuando el usuario estaba capturando un job y por algun motivo no lo termino;
@@ -528,11 +656,14 @@ namespace ProdFloor.Controllers
             if (repository.Jobs.FirstOrDefault(j => j.JobID == ID) != null)
             {
                 List<SpecialFeatures> SfList = repository.SpecialFeatures.Where(j => j.JobID == ID).ToList();
+                List<PO> POsList = repository.POs.Where(j => j.JobID == ID).ToList();
                 JobViewModel continueJobViewModel = new JobViewModel();
                 AppUser currentUser = GetCurrentUser().Result;
                 continueJobViewModel.CurrentUserID = currentUser.EngID;
                 continueJobViewModel.CurrentTab = "Main";
                 continueJobViewModel.CurrentJob = repository.Jobs.FirstOrDefault(j => j.JobID == ID);
+                if (POsList != null) continueJobViewModel.POList = POsList;
+                else continueJobViewModel.POList = new List<PO> { new PO() };
                 continueJobViewModel.CurrentJobExtension = (repository.JobsExtensions.FirstOrDefault(j => j.JobID == ID) ?? new JobExtension());
                 continueJobViewModel.CurrentHydroSpecific = (repository.HydroSpecifics.FirstOrDefault(j => j.JobID == ID) ?? new HydroSpecific());
                 continueJobViewModel.CurrentGenericFeatures = (repository.GenericFeaturesList.FirstOrDefault(j => j.JobID == ID) ?? new GenericFeatures());
@@ -576,132 +707,134 @@ namespace ProdFloor.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    if (nextViewModel.CurrentJobExtension != null)
+                    try
                     {
-                        if (nextViewModel.CurrentHydroSpecific != null)
+                        if (nextViewModel.CurrentJobExtension != null)
                         {
-                            if (nextViewModel.CurrentGenericFeatures != null)
+                            if (nextViewModel.CurrentHydroSpecific != null)
                             {
-                                if (nextViewModel.CurrentIndicator != null)
+                                if (nextViewModel.CurrentGenericFeatures != null)
                                 {
-                                    if (nextViewModel.CurrentHoistWayData != null)
+                                    if (nextViewModel.CurrentIndicator != null)
                                     {
-                                        if (nextViewModel.SpecialFeatureslist != null)
+                                        if (nextViewModel.CurrentHoistWayData != null)
                                         {
-                                            nextViewModel.CurrentJob.Status = "Working on it";
-                                            repository.SaveEngJobView(nextViewModel);
-                                            nextViewModel.CurrentTab = "Main";
-                                            TempData["message"] = $"everything was saved";
-                                            // Here the Job Filling Status should be changed the Working on it
-                                            // Redirect to Hub??
-                                            return View(nextViewModel);
+                                            if (nextViewModel.SpecialFeatureslist != null)
+                                            {
+                                                nextViewModel.CurrentJob.Status = "Working on it";
+                                                repository.SaveEngJobView(nextViewModel);
+                                                nextViewModel.CurrentTab = "Main";
+                                                TempData["message"] = $"everything was saved";
+                                                // Here the Job Filling Status should be changed the Working on it
+                                                // Redirect to Hub??
+                                                return View(nextViewModel);
+                                            }
+                                            else
+                                            {
+                                                repository.SaveEngJobView(nextViewModel);
+                                                nextViewModel.CurrentTab = "SpecialFeatures";
+                                                TempData["message"] = $"HoistWayData was saved";
+                                                nextViewModel.SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures { JobID = nextViewModel.CurrentJob.JobID } };
+                                                return View(nextViewModel);
+                                            }
+
                                         }
                                         else
                                         {
                                             repository.SaveEngJobView(nextViewModel);
-                                            nextViewModel.CurrentTab = "SpecialFeatures";
-                                            TempData["message"] = $"HoistWayData was saved";
-                                            nextViewModel.SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures { JobID = nextViewModel.CurrentJob.JobID } };
+                                            nextViewModel.CurrentHoistWayData = new HoistWayData { JobID = nextViewModel.CurrentJob.JobID };
+                                            nextViewModel.SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures() };
+                                            nextViewModel.CurrentTab = "HoistWayData";
+                                            TempData["message"] = $"indicator was saved";
                                             return View(nextViewModel);
                                         }
-
                                     }
                                     else
                                     {
                                         repository.SaveEngJobView(nextViewModel);
-                                        nextViewModel.CurrentHoistWayData = new HoistWayData { JobID = nextViewModel.CurrentJob.JobID };
+                                        if (nextViewModel.CurrentJobExtension.SCOP == true)
+                                        {
+                                            nextViewModel.CurrentIndicator = new Indicator
+                                            {
+                                                JobID = nextViewModel.CurrentJob.JobID,
+                                                CarCallsVoltage = 24.ToString(),
+                                                CarCallsVoltageType = "DC",
+                                                CarCallsType = "LED",
+                                                HallCallsVoltage = 24.ToString(),
+                                                HallCallsVoltageType = "DC",
+                                                HallCallsType = "LED",
+                                                IndicatorsVoltage = 24,
+                                                IndicatorsVoltageType = "DC"
+                                            };
+                                        }
+                                        else
+                                        {
+                                            nextViewModel.CurrentIndicator = new Indicator { JobID = nextViewModel.CurrentJob.JobID };
+                                        }
+                                        nextViewModel.CurrentHoistWayData = new HoistWayData();
                                         nextViewModel.SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures() };
-                                        nextViewModel.CurrentTab = "HoistWayData";
-                                        TempData["message"] = $"indicator was saved";
+                                        nextViewModel.CurrentTab = "Indicator";
+                                        TempData["message"] = $"generic was saved";
                                         return View(nextViewModel);
                                     }
                                 }
                                 else
                                 {
+                                    if (nextViewModel.CurrentHydroSpecific.BatteryBrand == "Other" && !string.IsNullOrEmpty(nextViewModel.CurrentHydroSpecific.OtherBatteryBrand))
+                                    {
+                                        nextViewModel.CurrentHydroSpecific.BatteryBrand = nextViewModel.CurrentHydroSpecific.OtherBatteryBrand;
+                                    }
                                     repository.SaveEngJobView(nextViewModel);
-                                    if (nextViewModel.CurrentJobExtension.SCOP == true)
-                                    {
-                                        nextViewModel.CurrentIndicator = new Indicator
-                                        {
-                                            JobID = nextViewModel.CurrentJob.JobID,
-                                            CarCallsVoltage = 24.ToString(),
-                                            CarCallsVoltageType = "DC",
-                                            CarCallsType = "LED",
-                                            HallCallsVoltage = 24.ToString(),
-                                            HallCallsVoltageType = "DC",
-                                            HallCallsType = "LED",
-                                            IndicatorsVoltage = 24,
-                                            IndicatorsVoltageType = "DC"
-                                        };
-                                    }
-                                    else
-                                    {
-                                        nextViewModel.CurrentIndicator = new Indicator { JobID = nextViewModel.CurrentJob.JobID };
-                                    }
+                                    nextViewModel.CurrentGenericFeatures = new GenericFeatures { JobID = nextViewModel.CurrentJob.JobID };
+                                    nextViewModel.CurrentIndicator = new Indicator();
                                     nextViewModel.CurrentHoistWayData = new HoistWayData();
                                     nextViewModel.SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures() };
-                                    nextViewModel.CurrentTab = "Indicator";
-                                    TempData["message"] = $"generic was saved";
+                                    nextViewModel.CurrentTab = "GenericFeatures";
+                                    TempData["message"] = $"hydro specific was saved";
                                     return View(nextViewModel);
                                 }
                             }
                             else
                             {
-                                if (nextViewModel.CurrentHydroSpecific.BatteryBrand == "Other" && !string.IsNullOrEmpty(nextViewModel.CurrentHydroSpecific.OtherBatteryBrand))
-                                {
-                                    nextViewModel.CurrentHydroSpecific.BatteryBrand = nextViewModel.CurrentHydroSpecific.OtherBatteryBrand;
-                                }
                                 repository.SaveEngJobView(nextViewModel);
-                                nextViewModel.CurrentGenericFeatures = new GenericFeatures { JobID = nextViewModel.CurrentJob.JobID };
+                                nextViewModel.CurrentHydroSpecific = new HydroSpecific { JobID = nextViewModel.CurrentJob.JobID };
+                                nextViewModel.CurrentGenericFeatures = new GenericFeatures();
                                 nextViewModel.CurrentIndicator = new Indicator();
                                 nextViewModel.CurrentHoistWayData = new HoistWayData();
                                 nextViewModel.SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures() };
-                                nextViewModel.CurrentTab = "GenericFeatures";
-                                TempData["message"] = $"hydro specific was saved";
+                                nextViewModel.CurrentTab = "HydroSpecifics";
+                                TempData["message"] = $"jobextension was saved";
                                 return View(nextViewModel);
                             }
                         }
                         else
                         {
+
+
                             repository.SaveEngJobView(nextViewModel);
-                            nextViewModel.CurrentHydroSpecific = new HydroSpecific { JobID = nextViewModel.CurrentJob.JobID };
+                            JobExtension jobExt = repository.JobsExtensions.FirstOrDefault(j => j.JobID == nextViewModel.CurrentJob.JobID);
+                            nextViewModel.CurrentJobExtension = (jobExt ?? new JobExtension { JobID = nextViewModel.CurrentJob.JobID });
+                            nextViewModel.CurrentHydroSpecific = new HydroSpecific();
                             nextViewModel.CurrentGenericFeatures = new GenericFeatures();
                             nextViewModel.CurrentIndicator = new Indicator();
                             nextViewModel.CurrentHoistWayData = new HoistWayData();
                             nextViewModel.SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures() };
-                            nextViewModel.CurrentTab = "HydroSpecifics";
-                            TempData["message"] = $"jobextension was saved";
+                            nextViewModel.CurrentTab = "Extension";
+                            TempData["message"] = $"job was saved";
                             return View(nextViewModel);
                         }
                     }
-                    else
+                    catch (DbUpdateException e)
                     {
-
-                        try
-                        {
-                            repository.SaveEngJobView(nextViewModel);
-                        }
-                        catch (DbUpdateException e)
-                        {
-                            TempData["message"] = $"The Job PO #{nextViewModel.CurrentJob.JobNum} already exists or some fields are empty!";
-                            TempData["alert"] = $"alert-danger";
-                            return View(nextViewModel);
-                        }
-                        JobExtension jobExt = repository.JobsExtensions.FirstOrDefault(j => j.JobID == nextViewModel.CurrentJob.JobID);
-                        nextViewModel.CurrentJobExtension = (jobExt ?? new JobExtension { JobID = nextViewModel.CurrentJob.JobID });
-                        nextViewModel.CurrentHydroSpecific = new HydroSpecific();
-                        nextViewModel.CurrentGenericFeatures = new GenericFeatures();
-                        nextViewModel.CurrentIndicator = new Indicator();
-                        nextViewModel.CurrentHoistWayData = new HoistWayData();
-                        nextViewModel.SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures() };
-                        nextViewModel.CurrentTab = "Extension";
-                        TempData["message"] = $"job was saved";
-                        return View(nextViewModel);
+                        TempData["message"] = $"That PO already exists. Please validate.";
+                        TempData["alert"] = $"alert-danger";
                     }
+                    
                 }
                 else
                 {
                     nextViewModel.CurrentJob = (nextViewModel.CurrentJob ?? new Job());
+                    nextViewModel.POList = (nextViewModel.POList ?? new List<PO> { new PO() });
                     nextViewModel.CurrentJobExtension = (nextViewModel.CurrentJobExtension ?? new JobExtension());
                     nextViewModel.CurrentHydroSpecific = (nextViewModel.CurrentHydroSpecific ?? new HydroSpecific());
                     nextViewModel.CurrentGenericFeatures = (nextViewModel.CurrentGenericFeatures ?? new GenericFeatures());

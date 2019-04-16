@@ -329,7 +329,7 @@ namespace ProdFloor.Models
                 if (dbEntry != null)
                 {
                     dbEntry.JobID = po.JobID;
-                    dbEntry.PONumb = po.POID;
+                    dbEntry.PONumb = po.PONumb;
 
                 }
             }
