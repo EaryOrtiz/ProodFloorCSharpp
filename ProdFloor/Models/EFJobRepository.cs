@@ -22,6 +22,7 @@ namespace ProdFloor.Models
         public IQueryable<Indicator> Indicators => context.Indicators;
         public IQueryable<HoistWayData> HoistWayDatas => context.HoistWayDatas;
         public IQueryable<SpecialFeatures> SpecialFeatures => context.SpecialFeatures;
+        public IQueryable<PO> POs => context.POs;
 
         public void SaveJob(Job job)
         {
@@ -38,7 +39,6 @@ namespace ProdFloor.Models
                     dbEntry.Name = job.Name;
                     dbEntry.JobNum = job.JobNum;
                     dbEntry.JobTypeID = job.JobTypeID;
-                    dbEntry.PO = job.PO;
                     dbEntry.ShipDate = job.ShipDate;
                     dbEntry.LatestFinishDate = job.LatestFinishDate;
                     dbEntry.Cust = job.Cust;
@@ -310,6 +310,31 @@ namespace ProdFloor.Models
             context.SaveChanges();
            
         }
+        public void SavePO(PO po)
+        {
+            if (po != null && po.POID == 0)
+            {
+                List<PO> POs = context.POs.Where(p => p.JobID == po.JobID).ToList();
+                if (POs.Count != 1 || po.PONumb != 0)
+                {
+                    context.POs.Add(po);
+                }
+
+            }
+            else
+            {
+                PO dbEntry = context.POs
+                .FirstOrDefault(p => p.POID == po.POID);
+                if (dbEntry != null)
+                {
+                    dbEntry.JobID = po.JobID;
+                    dbEntry.PONumb = po.POID;
+
+                }
+            }
+            context.SaveChanges();
+
+        }
 
         public Job DeleteJob(int JobID)
         {
@@ -337,6 +362,8 @@ namespace ProdFloor.Models
             HoistWayData hoistWayData = context.HoistWayDatas
                 .FirstOrDefault(p => p.JobID == JobID);
             SpecialFeatures specialFeatures = context.SpecialFeatures
+                .FirstOrDefault(p => p.JobID == JobID);
+            PO pos = context.POs
                 .FirstOrDefault(p => p.JobID == JobID);
 
             try
@@ -377,8 +404,14 @@ namespace ProdFloor.Models
                     context.SpecialFeatures.Remove(specialFeatures);
                     context.SaveChanges();
                 }
-                
-            }catch(Exception e)
+                if (pos != null)
+                {
+                    context.POs.Remove(pos);
+                    context.SaveChanges();
+                }
+
+            }
+            catch(Exception e)
             {
 
             }
@@ -448,6 +481,17 @@ namespace ProdFloor.Models
             if (dbEntry != null)
             {
                 context.SpecialFeatures.Remove(dbEntry);
+                context.SaveChanges();
+            }
+            return dbEntry;
+        }
+        public PO DeletePO(int POID)
+        {
+            PO dbEntry = context.POs
+                .FirstOrDefault(p => p.POID == POID);
+            if (dbEntry != null)
+            {
+                context.POs.Remove(dbEntry);
                 context.SaveChanges();
             }
             return dbEntry;
@@ -551,6 +595,24 @@ namespace ProdFloor.Models
                         {
                             viewModelToSave.SpecialFeatureslist[i].SpecialFeaturesID = viewModelToSave.SpecialFeatureslist[i].SpecialFeaturesID;
                             SaveSpecialFeatures(viewModelToSave.SpecialFeatureslist[i]);
+                        }
+                    }
+                }
+            }
+            if (viewModelToSave.POList != null)
+            {
+                for (int i = 0; i < viewModelToSave.POList.Count; i++)
+                {
+                    if (viewModelToSave.POList[i].JobID != 0)
+                    {
+                        if (viewModelToSave.POList == null)
+                        {
+                            SavePO(viewModelToSave.POList[i]);
+                        }
+                        else
+                        {
+                            viewModelToSave.POList[i].POID = viewModelToSave.POList[i].POID;
+                            SavePO(viewModelToSave.POList[i]);
                         }
                     }
                 }

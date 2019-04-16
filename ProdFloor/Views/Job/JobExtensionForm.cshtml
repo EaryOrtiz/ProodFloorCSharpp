@@ -1,6 +1,7 @@
 ﻿@model JobViewModel
 @{
     <script src="~/Scripts/CascadingStyleBrandDoorOperator.js" type="text/javascript"></script>
+    <script src="~/Scripts/CascadingJobType.js" type="text/javascript"></script>
 }
 <input type="hidden" asp-for="CurrentJobExtension.JobID" />
 <input type="hidden" asp-for="CurrentJobExtension.JobExtensionID" />
@@ -16,14 +17,14 @@
             <label asp-for="CurrentJobExtension.JobTypeMain" class="col-sm-5 col-form-label"></label>
             <div>
                 <span asp-validation-for="CurrentJobExtension.JobTypeMain" class="text-danger"></span>
-                <indicators select-for="JobType" selected-value="@Model.CurrentJobExtension.JobTypeMain" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" class="form-control form-control-sm" asp-for="CurrentJobExtension.JobTypeMain"></indicators>
+                <indicators id="JobTypeMain" select-for="JobType" selected-value="@Model.CurrentJobExtension.JobTypeMain" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" class="form-control form-control-sm" asp-for="CurrentJobExtension.JobTypeMain"></indicators>
             </div>
         </div>
         <div class="form-group row">
             <label asp-for="CurrentJobExtension.JobTypeAdd" class="col-sm-5 col-form-label"></label>
             <div>
                 <span asp-validation-for="CurrentJobExtension.JobTypeAdd" class="text-danger"></span>
-                <indicators select-for="JobType2" selected-value="@Model.CurrentJobExtension.JobTypeAdd" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" class="form-control form-control-sm" asp-for="CurrentJobExtension.JobTypeAdd"></indicators>
+                <indicators id="JobTypeAdd" select-for="JobType2" selected-value="@Model.CurrentJobExtension.JobTypeAdd" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" class="form-control form-control-sm" asp-for="CurrentJobExtension.JobTypeAdd"></indicators>
             </div>
         </div>
         <div class="form-group row">

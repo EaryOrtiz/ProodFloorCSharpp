@@ -11,9 +11,10 @@ using System;
 namespace ProdFloor.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190416133248_FLAtoFloat")]
+    partial class FLAtoFloat
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -537,6 +538,8 @@ namespace ProdFloor.Migrations
                         .IsRequired()
                         .HasMaxLength(78);
 
+                    b.Property<int>("PO");
+
                     b.Property<DateTime>("ShipDate");
 
                     b.Property<string>("Status")
@@ -549,6 +552,9 @@ namespace ProdFloor.Migrations
                     b.HasIndex("FireCodeID");
 
                     b.HasIndex("JobTypeID");
+
+                    b.HasIndex("PO")
+                        .IsUnique();
 
                     b.ToTable("Jobs");
                 });
@@ -720,25 +726,6 @@ namespace ProdFloor.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("Overload_Audits");
-                });
-
-            modelBuilder.Entity("ProdFloor.Models.PO", b =>
-                {
-                    b.Property<int>("POID")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("JobID");
-
-                    b.Property<int>("PONumb");
-
-                    b.HasKey("POID");
-
-                    b.HasIndex("JobID");
-
-                    b.HasIndex("PONumb")
-                        .IsUnique();
-
-                    b.ToTable("POs");
                 });
 
             modelBuilder.Entity("ProdFloor.Models.Slowdown", b =>
@@ -987,14 +974,6 @@ namespace ProdFloor.Migrations
                     b.HasOne("ProdFloor.Models.Job")
                         .WithOne("_jobExtension")
                         .HasForeignKey("ProdFloor.Models.JobExtension", "JobID")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("ProdFloor.Models.PO", b =>
-                {
-                    b.HasOne("ProdFloor.Models.Job")
-                        .WithMany("_PO")
-                        .HasForeignKey("JobID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

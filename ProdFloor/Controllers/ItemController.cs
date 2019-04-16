@@ -377,7 +377,6 @@ namespace ProdFloor.Controllers
                         ViewModel.Contractor = JobSearch.Contractor;
                         ViewModel.JobTypeMain = JobSearch._jobExtension.JobTypeMain;
                         ViewModel.ValveBrand = JobSearch._HydroSpecific.ValveBrand;
-                        ViewModel.PO = JobSearch.PO;
                         ViewModel.HP = JobSearch._HydroSpecific.HP;
                         ViewModel.FireCodeName = FireCodeOne.Name;
                         ViewModel.LandingName = LandingOne.Name;
@@ -506,7 +505,6 @@ namespace ProdFloor.Controllers
                                 Contractor = ViewModel.Contractor,
                                 JobTypeMain = ViewModel.JobTypeMain,
                                 ValveBrand = ViewModel.ValveBrand,
-                                PO = JobSearch.PO,
                                 InputVoltage = ViewModel.InputVoltage,
                                 HP = ViewModel.HP,
                                 FireCodeName = ViewModel.FireCodeName,

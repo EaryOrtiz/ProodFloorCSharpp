@@ -29,11 +29,6 @@ namespace ProdFloor.Models
         [Required(ErrorMessage = "Please enter a Job Num")]
         public int JobNum { get; set; }
 
-        [Display(Name = "PO #")]
-        [Range(3000000, 4900000, ErrorMessage = "PO number is out of range")]
-        [Required(ErrorMessage = "Please enter a PO")]
-        public int PO { get; set; }
-
         [Display(Name = "Shipping Date")]
         [Required(ErrorMessage = "Please enter a Shipping Date")]
         public DateTime ShipDate { get; set; }
@@ -68,6 +63,7 @@ namespace ProdFloor.Models
         public Indicator _Indicator { get; set; }
         public HoistWayData _HoistWayData { get; set; }
         public List<SpecialFeatures> _SpecialFeatureslist { get; set; }
+        public List<PO> _PO { get; set; }
         [Display(Name = "Job Type")]
         public int JobTypeID { get; set; }
         [Display(Name = "City")]
@@ -75,6 +71,16 @@ namespace ProdFloor.Models
         [Display(Name = "Fire Code")]
         public int FireCodeID { get; set; }
 
+    }
+
+    public class PO
+    {
+        public int POID { get; set; }
+        public int JobID { get; set; }
+        [Display(Name = "PO #")]
+        [Range(3000000, 4900000, ErrorMessage = "PO number is out of range")]
+        [Required(ErrorMessage = "Please enter a PO")]
+        public int PONumb { get; set; }
     }
 
     public class JobExtension
@@ -175,7 +181,7 @@ namespace ProdFloor.Models
         public int HP { get; set; }
 
         [Required(ErrorMessage = "Please enter the FLA")]
-        public int FLA { get; set; }
+        public float FLA { get; set; }
 
         [Required(ErrorMessage = "Please enter the starts per hour")]
         public int SPH { get; set; }

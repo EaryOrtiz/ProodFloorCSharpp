@@ -12,7 +12,7 @@ namespace ProdFloor.Models
         IQueryable<Indicator> Indicators { get; }
         IQueryable<HoistWayData> HoistWayDatas { get; }
         IQueryable<SpecialFeatures> SpecialFeatures { get; }
-
+        IQueryable<PO> POs { get; }
 
         void SaveJob(Job job);
         void SaveJobExtension(JobExtension jobExtension);
@@ -21,6 +21,7 @@ namespace ProdFloor.Models
         void SaveIndicator(Indicator indicator);
         void SaveHoistWayData(HoistWayData hoistWayData);
         void SaveSpecialFeatures(SpecialFeatures specialFeatures);
+        void SavePO(PO po);
         void SaveEngJobView(JobViewModel viewModelToSave);
 
         Job DeleteJob(int jobID);
@@ -31,5 +32,6 @@ namespace ProdFloor.Models
         Indicator DeleteIndicator(int indicatorID);
         HoistWayData DeleteHoistWayData(int hoistWatDataID);
         SpecialFeatures DeleteSpecialFeatures(int specialFeaturesID);
+        PO DeletePO(int POID);
     }
 }

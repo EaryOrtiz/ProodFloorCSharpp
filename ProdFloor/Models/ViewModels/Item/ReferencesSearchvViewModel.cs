@@ -60,7 +60,7 @@ namespace ProdFloor.Models.ViewModels.Item
 
         //Starter Table
         public string Brand { get; set; }
-        public int FLA { get; set; }
+        public float FLA { get; set; }
         public string TypeS { get; set; }
         public string Volts { get; set; }
         public float HP { get; set; }

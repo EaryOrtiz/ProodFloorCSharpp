@@ -192,7 +192,6 @@ namespace ProdFloor.Controllers
                     CrossAppEngID = viewModel.CurrentJob.CrossAppEngID,
                     Name = "Change the name please",
                     JobNum = 0,
-                    PO = 0,
                     ShipDate = viewModel.CurrentJob.ShipDate,
                     LatestFinishDate = viewModel.CurrentJob.LatestFinishDate,
                     Cust = viewModel.CurrentJob.Cust,
@@ -643,7 +642,7 @@ namespace ProdFloor.Controllers
                         }
                         catch (DbUpdateException e)
                         {
-                            TempData["message"] = $"The Job PO #{nextViewModel.CurrentJob.PO} already exists or some fields are empty!";
+                            TempData["message"] = $"The Job PO #{nextViewModel.CurrentJob.JobNum} already exists or some fields are empty!";
                             TempData["alert"] = $"alert-danger";
                             return View(nextViewModel);
                         }
@@ -725,7 +724,6 @@ namespace ProdFloor.Controllers
 
             #region JobModelSearch
             if (searchViewModel.NumJobSearch >= 2015000000 && searchViewModel.NumJobSearch <= 2021000000) jobSearchRepo = jobSearchRepo.Where(s => s.JobNum == searchViewModel.NumJobSearch);
-            if (searchViewModel.POJobSearch >= 3000000 && searchViewModel.POJobSearch <= 4900000) jobSearchRepo = repository.Jobs.Where(s => s.PO == searchViewModel.POJobSearch);
             if (searchViewModel.EngID > 0) jobSearchRepo = jobSearchRepo.Where(s => s.EngID == searchViewModel.EngID);
             if (searchViewModel.CrossAppEngID > 0) jobSearchRepo = jobSearchRepo.Where(s => s.CrossAppEngID == searchViewModel.CrossAppEngID);
             if (searchViewModel.CityID > 0) jobSearchRepo = jobSearchRepo.Where(s => s.CityID == searchViewModel.CityID);
@@ -909,6 +907,35 @@ namespace ProdFloor.Controllers
             return Json(new SelectList(DoorOperatorList, "DoorOperatorID", "Name"));
         }
 
+        public JsonResult GetJobTypeAdd(string JobTypeMain)
+        {
+            IList<SelectList> JobTypeAddList = new List<SelectList>();
+
+            if(JobTypeMain == "Simplex")
+            {
+                IList<SelectListItem> Simplex = new List<SelectListItem>
+                {
+                new SelectListItem{Text = "Selective Collective", Value = "Selective Collective"},
+                new SelectListItem{Text = "SAPB Single Automatic Pushbutton", Value = "SAPB Single Automatic Pushbutton"},
+                new SelectListItem{Text = "SBC Single Button Collective", Value = "SBC Single Button Collective"}
+
+                };
+
+                return Json(new SelectList(Simplex, "Text", "Value"));
+            }
+            else
+            {
+                IList<SelectListItem> Duplex = new List<SelectListItem>
+                {
+                new SelectListItem{Text = "Selective Collective", Value = "Selective Collective"},
+                new SelectListItem{Text = "Group Operation", Value = "Group Operation"}
+
+                };
+                return Json(new SelectList(Duplex, "Text", "Value"));
+            }
+            
+        }
+
         [HttpPost]
         public FileStreamResult ExportJobToXML(int ID)
         {
@@ -938,7 +965,6 @@ namespace ProdFloor.Controllers
                             xw.WriteElementString("CrossAppEngID", job.CrossAppEngID.ToString());
                             xw.WriteElementString("Name", job.Name);
                             xw.WriteElementString("JobNum", job.JobNum.ToString());
-                            xw.WriteElementString("PO", job.PO.ToString());
                             xw.WriteElementString("ShipDate", job.ShipDate.ToString());
                             xw.WriteElementString("LatestFinishDate", job.LatestFinishDate.ToString());
                             xw.WriteElementString("Cust", job.Cust);
@@ -1297,7 +1323,6 @@ namespace ProdFloor.Controllers
                         xw.WriteElementString("CrossAppEngID", job.CrossAppEngID.ToString());
                         xw.WriteElementString("Name", job.Name);
                         xw.WriteElementString("JobNum", job.JobNum.ToString());
-                        xw.WriteElementString("PO", job.PO.ToString());
                         xw.WriteElementString("ShipDate", job.ShipDate.ToString());
                         xw.WriteElementString("LatestFinishDate", job.LatestFinishDate.ToString());
                         xw.WriteElementString("Cust", job.Cust);
@@ -1648,7 +1673,6 @@ namespace ProdFloor.Controllers
                     var crossappengid = XMLJobBase.SelectSingleNode(".//crossappengid").InnerText;
                     var name = XMLJobBase.SelectSingleNode(".//name").InnerText;
                     var jobnum = XMLJobBase.SelectSingleNode(".//jobnum").InnerText;
-                    var po = XMLJobBase.SelectSingleNode(".//po").InnerText;
                     var shipdate = XMLJobBase.SelectSingleNode(".//shipdate").InnerText;
                     var latestfinishdate = XMLJobBase.SelectSingleNode(".//latestfinishdate").InnerText;
                     var cust = XMLJobBase.SelectSingleNode(".//cust").InnerText;
@@ -1664,7 +1688,6 @@ namespace ProdFloor.Controllers
                         CrossAppEngID = Int32.Parse(crossappengid),
                         Name = name,
                         JobNum = Int32.Parse(jobnum),
-                        PO = Int32.Parse(po),
                         ShipDate = DateTime.Parse(shipdate),
                         LatestFinishDate = DateTime.Parse(latestfinishdate),
                         Cust = cust,
@@ -1772,7 +1795,7 @@ namespace ProdFloor.Controllers
                         JobID = Int32.Parse(jobid),
                         Starter = starter,
                         HP = Int32.Parse(hp),
-                        FLA = Int32.Parse(fla),
+                        FLA = float.Parse(fla),
                         SPH = Int32.Parse(sph),
                         MotorsNum = Int32.Parse(motorsnum),
                         MotorsDisconnect = Int32.Parse(motorsdisconnect),
@@ -2127,7 +2150,6 @@ namespace ProdFloor.Controllers
                 var crossappengid = XMLJobBase.SelectSingleNode(".//crossappengid").InnerText;
                 var name = XMLJobBase.SelectSingleNode(".//name").InnerText;
                 var jobnum = XMLJobBase.SelectSingleNode(".//jobnum").InnerText;
-                var po = XMLJobBase.SelectSingleNode(".//po").InnerText;
                 var shipdate = XMLJobBase.SelectSingleNode(".//shipdate").InnerText;
                 var latestfinishdate = XMLJobBase.SelectSingleNode(".//latestfinishdate").InnerText;
                 var cust = XMLJobBase.SelectSingleNode(".//cust").InnerText;
@@ -2143,7 +2165,6 @@ namespace ProdFloor.Controllers
                     CrossAppEngID = Int32.Parse(crossappengid),
                     Name = name,
                     JobNum = Int32.Parse(jobnum),
-                    PO = Int32.Parse(po),
                     ShipDate = DateTime.Parse(shipdate),
                     LatestFinishDate = DateTime.Parse(latestfinishdate),
                     Cust = cust,
@@ -2259,7 +2280,7 @@ namespace ProdFloor.Controllers
                     JobID = Int32.Parse(jobid),
                     Starter = starter,
                     HP = Int32.Parse(hp),
-                    FLA = Int32.Parse(fla),
+                    FLA = float.Parse(fla),
                     SPH = Int32.Parse(sph),
                     MotorsNum = Int32.Parse(motorsnum),
                     MotorsDisconnect = Int32.Parse(motorsdisconnect),
