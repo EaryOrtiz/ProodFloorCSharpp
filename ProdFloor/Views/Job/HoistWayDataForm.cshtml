@@ -1,6 +1,9 @@
 ﻿@model JobViewModel
 <input type="hidden" asp-for="CurrentHoistWayData.JobID" />
 <input type="hidden" asp-for="CurrentHoistWayData.HoistWayDataID" />
+<input type="hidden" asp-for="CurrentJob.JobID" />
+<input type="hidden" asp-for="CurrentJob.Status" />
+<input type="hidden" asp-for="CurrentJob.EngID" />
 <div class="form-row col-sm-12 justify-content-md-center" style="padding-bottom:15px">
     <div class="col-6 form-line border-right justify-content-md-center">
         <br />
@@ -148,7 +151,7 @@
                     </tr>
                 </tbody>
             </table>
-            
+
         </div>
     </div>
 </div>

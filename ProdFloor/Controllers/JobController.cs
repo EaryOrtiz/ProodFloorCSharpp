@@ -110,7 +110,7 @@ namespace ProdFloor.Controllers
            if(ModelState.IsValid)
             {
                 //y esta esta tambien y poner denuevo el {currenuser.engId} en Los TempDatas cuando terminen los test 
-                if(newJob.CurrentJob.JobID == 0)
+                if(newJob.CurrentJob.EngID == 0)
                 {
                     newJob.CurrentJob.EngID = currentUser.EngID;
                     newJob.CurrentJob.CrossAppEngID = 117;
@@ -132,19 +132,20 @@ namespace ProdFloor.Controllers
                     }
 
                     List<PO> POsList = repository.POs.Where(j => j.JobID == currentJob.JobID).ToList();
-                    if (POsList != null) newJob.POList = POsList;
-                    else newJob.POList = new List<PO> { new PO() };
+                    List <PO> POlistAUX = new List<PO>();
+                    if (POsList != null) POlistAUX = POsList;
+                    else POlistAUX = new List<PO> { new PO() };
                     JobViewModel newJobViewModel = new JobViewModel
                     {
                         CurrentUserID = currentUser.EngID,
-                        CurrentJob = newJob.CurrentJob,
+                        CurrentJob = currentJob,
                         CurrentJobExtension = new JobExtension { JobID = newJob.CurrentJob.JobID },
                         CurrentHydroSpecific = new HydroSpecific(),
                         CurrentGenericFeatures = new GenericFeatures(),
                         CurrentIndicator = new Indicator(),
                         CurrentHoistWayData = new HoistWayData(),
                         SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures() },
-                        POList = newJob.POList,
+                        POList = POlistAUX,
                         CurrentTab = "Extension"
                     };
                     TempData["message"] = $"Job# {newJobViewModel.CurrentJob.JobNum} has been saved...{newJobViewModel.CurrentJob.JobID}...";
@@ -524,7 +525,7 @@ namespace ProdFloor.Controllers
         [HttpPost]
         public IActionResult AddPo(JobViewModel jobView)
         {
-            if(jobView.CurrentJob.JobID == 0)
+            if(jobView.CurrentJob.Status == null)
             {
                 if (jobView.buttonAction == "AddPO")
                 {
@@ -536,18 +537,41 @@ namespace ProdFloor.Controllers
 
             }else if (jobView.CurrentJob.Status == "Incomplete")
             {
+
                 if (jobView.buttonAction == "AddPO")
                 {
                     jobView.POList.Add(new PO { JobID = jobView.CurrentJob.JobID });
-                    if (jobView.CurrentJobExtension == null) jobView.CurrentJobExtension = new JobExtension();
-                    if (jobView.CurrentHydroSpecific == null)  jobView.CurrentHydroSpecific = new HydroSpecific();
-                    if (jobView.CurrentGenericFeatures == null)  jobView.CurrentGenericFeatures = new GenericFeatures();
-                    if (jobView.CurrentIndicator == null) jobView.CurrentIndicator = new Indicator();
-                    if (jobView.CurrentHoistWayData == null) jobView.CurrentHoistWayData = new HoistWayData();
-                    if (jobView.SpecialFeatureslist == null) jobView.SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures() };
-                    jobView.CurrentTab = "Main";
-                }
+                    if (jobView.CurrentJobExtension == null)
+                    {
+                        jobView.CurrentJobExtension = new JobExtension();
+                    }
+                    if (jobView.CurrentHydroSpecific == null)
+                    {
+                        jobView.CurrentHydroSpecific = new HydroSpecific();
+                    }
+                    if (jobView.CurrentGenericFeatures == null)
+                    {
+                        jobView.CurrentGenericFeatures = new GenericFeatures();
+                    }
 
+                    if (jobView.CurrentIndicator == null)
+                    {
+                        jobView.CurrentIndicator = new Indicator();
+                    }
+                    if (jobView.CurrentHoistWayData == null)
+                    {
+                        jobView.CurrentHoistWayData = new HoistWayData();
+                    }
+                    if (jobView.SpecialFeatureslist == null)
+                    {
+                        jobView.SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures() };
+                    }
+                    else
+                    {
+                        return View("NextForm", jobView);
+                    }
+                }
+                jobView.CurrentTab = "Main";
                 return View("NextForm", jobView);
             }
             else
@@ -709,15 +733,15 @@ namespace ProdFloor.Controllers
                 {
                     try
                     {
-                        if (nextViewModel.CurrentJobExtension != null)
+                        if (nextViewModel.CurrentJobExtension != null && nextViewModel.CurrentJobExtension.JobID != 0)
                         {
-                            if (nextViewModel.CurrentHydroSpecific != null)
+                            if (nextViewModel.CurrentHydroSpecific != null && nextViewModel.CurrentHydroSpecific.JobID != 0)
                             {
-                                if (nextViewModel.CurrentGenericFeatures != null)
+                                if (nextViewModel.CurrentGenericFeatures != null && nextViewModel.CurrentGenericFeatures.JobID != 0)
                                 {
-                                    if (nextViewModel.CurrentIndicator != null)
+                                    if (nextViewModel.CurrentIndicator != null && nextViewModel.CurrentIndicator.JobID != 0)
                                     {
-                                        if (nextViewModel.CurrentHoistWayData != null)
+                                        if (nextViewModel.CurrentHoistWayData != null && nextViewModel.CurrentHoistWayData.JobID != 0)
                                         {
                                             if (nextViewModel.SpecialFeatureslist != null)
                                             {

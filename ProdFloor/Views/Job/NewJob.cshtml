@@ -31,7 +31,7 @@
 <form asp-action="NewJob" method="post">
     <div class="tab-content" style="padding:20px">
         <div class="tab-pane active" id="home" role="tabpanel">
-            @Html.Partial("JobForm", Model)
+            @Html.Partial("JobFormBase", Model)
         </div>
         <div class="text-center">
             <button class="btn btn-primary" type="submit">Save</button>

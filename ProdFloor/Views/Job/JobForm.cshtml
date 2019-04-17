@@ -7,6 +7,9 @@
 <input type="hidden" asp-for="CurrentJob.Status" />
 <input type="hidden" asp-for="CurrentJob.EngID" />
 <input type="hidden" asp-for="CurrentJob.CrossAppEngID" />
+<input type="hidden" asp-for="CurrentJob.CrossAppEngID" />
+<input type="hidden" asp-for="POList[0].JobID" />
+<input type="hidden" asp-for="POList[0].POID" />
 <div class="form-group row">
     <label asp-for="CurrentJob.Name" class="col-sm-2 col-form-label"></label>
     <div>
@@ -94,38 +97,73 @@
         <span asp-validation-for="CurrentJob.FireCodeID" class="text-danger"></span>
     </div>
 </div>
-<div class="table-responsive table-sm">
-    <table class="table table-sm form-control">
-        <thead>
-            <tr>
-                <th style="text-align:center;width:100%">PO &nbsp;<button asp-action="AddPo" type="submit" value="AddPO" name="buttonAction" class="btn btn-success btn-sm col-sm-2" 
-                style="padding-top:10px;margin-bottom:10px;min-width:100px;float:left"><i class="fa fa-plus"></i></button>
-                </th>
-            </tr>
-        </thead>
-        <tbody style="text-align:">
-            @for (int i = 0; i < Model.POList.Count; i++)
-            {
-                @Html.HiddenFor(m => m.POList[i].JobID)
-                @Html.HiddenFor(m => m.POList[i].POID)
-            <tr>
-                <td>
-                    @Html.TextBoxFor(m => m.POList[i].PONumb, new { Class = "form-control col-sm-2;", Style = "text-align:center;" })
-                </td>
-                @if (Model.CurrentJob.Status != null && Model.CurrentJob.Status != "Incomplete")
-                {
-                    <td style="text-align:center;">
-                        <form asp-action="DeletePOs" method="post">
-                            <input type="hidden" asp-for="CurrentJob.JobID" />
-                            <input type="hidden" name="fieldID" value="@Model.POList[i].POID" />
-                            <button type="submit" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="btn btn-danger btn-sm">
-                                <i class="fa fa-minus-circle"></i>
-                            </button>
-                        </form>
-                    </td>
-                }
-            </tr>
-            }
-        </tbody>
-    </table>
+<div class="form-group row">
+    <label asp-for="POList[0].PONumb" class="col-sm-2 col-form-label"></label>
+    <div class="form-inline">
+        <input asp-for="POList[0].PONumb" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" class="form-control col-sm-7" />
+        @if (Model.CurrentJob.Status != "Incomplete")
+        {
+            <button asp-action="AddPo" type="submit" value="AddPO" name="buttonAction" class="btn btn-success btn-sm col-sm-2" style="margin-left:20px;">
+                <i class="fa fa-plus"></i>
+            </button>
+        }
+        <span asp-validation-for="POList[0].PONumb" class="text-danger"></span>
+    </div>
 </div>
+@for (int i = 1; i < Model.POList.Count; i++)
+{
+    <input type="hidden" asp-for="POList[i].POID" />
+    <input type="hidden" asp-for="POList[i].JobID" />
+    <div class="form-group row">
+        <label asp-for="POList[i].PONumb" class="col-sm-2 col-form-label"></label>
+        <div class="form-inline">
+            <input asp-for="POList[i].PONumb" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" class="form-control col-sm-7" />
+            @if (Model.CurrentJob.Status != "Incomplete")
+            {
+                <form asp-action="DeletePOs" method="post">
+                    <input type="hidden" asp-for="CurrentJob.JobID" />
+                    <input type="hidden" name="fieldID" value="@Model.POList[i].POID" />
+                    <button type="submit" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="btn btn-danger btn-sm" style="margin-left:20px;">
+                        <i class="fa fa-minus-circle"></i>
+                    </button>
+                </form>
+            }
+            <span asp-validation-for="POList[i].PONumb" class="text-danger"></span>
+        </div>
+    </div>
+}
+@*<div class="table-responsive table-sm">
+        <table class="table table-sm form-control">
+            <thead>
+                <tr>
+                    <th style="text-align:center;width:100%">PO &nbsp;<button asp-action="AddPo" type="submit" value="AddPO" name="buttonAction" class="btn btn-success btn-sm col-sm-2"
+                    style="padding-top:10px;margin-bottom:10px;min-width:100px;float:left"><i class="fa fa-plus"></i></button>
+                    </th>
+                </tr>
+            </thead>
+            <tbody style="text-align:">
+                @for (int i = 0; i < Model.POList.Count; i++)
+                {
+                    @Html.HiddenFor(m => m.POList[i].JobID)
+                    @Html.HiddenFor(m => m.POList[i].POID)
+                <tr>
+                    <td>
+                        @Html.TextBoxFor(m => m.POList[i].PONumb, new { Class = "form-control col-sm-2;", Style = "text-align:center;" })
+                    </td>
+                    @if (Model.CurrentJob.Status != null && Model.CurrentJob.Status != "Incomplete")
+                    {
+                        <td style="text-align:center;">
+                            <form asp-action="DeletePOs" method="post">
+                                <input type="hidden" asp-for="CurrentJob.JobID" />
+                                <input type="hidden" name="fieldID" value="@Model.POList[i].POID" />
+                                <button type="submit" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="btn btn-danger btn-sm">
+                                    <i class="fa fa-minus-circle"></i>
+                                </button>
+                            </form>
+                        </td>
+                    }
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>*@
