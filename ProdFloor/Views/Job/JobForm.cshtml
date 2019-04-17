@@ -101,12 +101,9 @@
     <label asp-for="POList[0].PONumb" class="col-sm-2 col-form-label"></label>
     <div class="form-inline">
         <input asp-for="POList[0].PONumb" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" class="form-control col-sm-7" />
-        @if (Model.CurrentJob.Status != "Incomplete")
-        {
             <button asp-action="AddPo" type="submit" value="AddPO" name="buttonAction" class="btn btn-success btn-sm col-sm-2" style="margin-left:20px;">
                 <i class="fa fa-plus"></i>
             </button>
-        }
         <span asp-validation-for="POList[0].PONumb" class="text-danger"></span>
     </div>
 </div>
@@ -117,17 +114,14 @@
     <div class="form-group row">
         <label asp-for="POList[i].PONumb" class="col-sm-2 col-form-label"></label>
         <div class="form-inline">
-            <input asp-for="POList[i].PONumb" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" class="form-control col-sm-7" />
-            @if (Model.CurrentJob.Status != "Incomplete")
-            {
-                <form asp-action="DeletePOs" method="post">
+            <input asp-for="POList[i].PONumb" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" class="form-control col-sm-7" data-val="@false" />
+            <form asp-action="DeletePOs" method="post">
                     <input type="hidden" asp-for="CurrentJob.JobID" />
-                    <input type="hidden" name="fieldID" value="@Model.POList[i].POID" />
-                    <button type="submit" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="btn btn-danger btn-sm" style="margin-left:20px;">
+                    <input type="hidden" asp-for="@Model.fieldID" value="@Model.POList[i].POID" />
+                    <button  asp-action="DeletePOs" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="btn btn-danger btn-sm" style="margin-left:20px;">
                         <i class="fa fa-minus-circle"></i>
                     </button>
                 </form>
-            }
             <span asp-validation-for="POList[i].PONumb" class="text-danger"></span>
         </div>
     </div>

@@ -541,31 +541,12 @@ namespace ProdFloor.Controllers
                 if (jobView.buttonAction == "AddPO")
                 {
                     jobView.POList.Add(new PO { JobID = jobView.CurrentJob.JobID });
-                    if (jobView.CurrentJobExtension == null)
-                    {
-                        jobView.CurrentJobExtension = new JobExtension();
-                    }
-                    if (jobView.CurrentHydroSpecific == null)
-                    {
-                        jobView.CurrentHydroSpecific = new HydroSpecific();
-                    }
-                    if (jobView.CurrentGenericFeatures == null)
-                    {
-                        jobView.CurrentGenericFeatures = new GenericFeatures();
-                    }
-
-                    if (jobView.CurrentIndicator == null)
-                    {
-                        jobView.CurrentIndicator = new Indicator();
-                    }
-                    if (jobView.CurrentHoistWayData == null)
-                    {
-                        jobView.CurrentHoistWayData = new HoistWayData();
-                    }
-                    if (jobView.SpecialFeatureslist == null)
-                    {
-                        jobView.SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures() };
-                    }
+                    if (jobView.CurrentJobExtension == null) jobView.CurrentJobExtension = new JobExtension();
+                    if (jobView.CurrentHydroSpecific == null) jobView.CurrentHydroSpecific = new HydroSpecific();
+                    if (jobView.CurrentGenericFeatures == null) jobView.CurrentGenericFeatures = new GenericFeatures();
+                    if (jobView.CurrentIndicator == null) jobView.CurrentIndicator = new Indicator();
+                    if (jobView.CurrentHoistWayData == null) jobView.CurrentHoistWayData = new HoistWayData();
+                    if (jobView.SpecialFeatureslist == null) jobView.SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures() };
                     else
                     {
                         return View("NextForm", jobView);
@@ -628,23 +609,49 @@ namespace ProdFloor.Controllers
         }
 
         [HttpPost]
-        public IActionResult DeletePOs(int fieldID, string returnUrl, JobViewModel viewModel)
+        public IActionResult DeletePOs(JobViewModel viewModel)
         {
-            PO deletedField = repository.DeletePO(fieldID);
+            AppUser currentUser = GetCurrentUser().Result;
+            Job job = repository.Jobs.FirstOrDefault(j => j.JobID == viewModel.CurrentJob.JobID);
+            PO deletedField = repository.DeletePO(viewModel.fieldID);
             if (deletedField != null)
             {
                 TempData["message"] = $"{deletedField.POID} was deleted";
-                AppUser currentUser = GetCurrentUser().Result;
-                Job job = repository.Jobs.FirstOrDefault(j => j.JobID == viewModel.CurrentJob.JobID);
-                if (job == null)
+                if (job.Status == null)
                 {
                     TempData["message"] = $"The requested Job doesn't exist.";
-                    return RedirectToAction("List");
+                    return View("NewJob", viewModel);
+                }
+                else if (job.Status == "Incomplete")
+                {
+                    return RedirectToAction("Continue", new { id = job.JobID});
                 }
                 else
                 {
                     return RedirectToAction("Edit", new { id = job.JobID });
-                    /*
+                }
+            }
+            else if (job == null)
+            {
+                if(viewModel.CurrentJob.Status == null)
+                {
+                    return View("NewJob", viewModel);
+                }
+                else if (viewModel.CurrentJob.Status == "Incomplete")
+                {
+                    List<PO> POs = viewModel.POList.Where(m => m.POID != 0).ToList();
+                    viewModel.POList = POs;
+                    if (viewModel.CurrentJobExtension == null) viewModel.CurrentJobExtension = new JobExtension();
+                    if (viewModel.CurrentHydroSpecific == null) viewModel.CurrentHydroSpecific = new HydroSpecific();
+                    if (viewModel.CurrentGenericFeatures == null)viewModel.CurrentGenericFeatures = new GenericFeatures();
+                    if (viewModel.CurrentIndicator == null) viewModel.CurrentIndicator = new Indicator();
+                    if (viewModel.CurrentHoistWayData == null)viewModel.CurrentHoistWayData = new HoistWayData();
+                    if (viewModel.SpecialFeatureslist == null)viewModel.SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures() };
+
+                    return View("NextForm", viewModel);
+                }
+                else if (viewModel.CurrentJob.Status != "Incomplete")
+                {
                     List<PO> POsList = repository.POs.Where(j => j.JobID == job.JobID).ToList();
                     List<SpecialFeatures> SfList = repository.SpecialFeatures.Where(j => j.JobID == job.JobID).ToList();
                     viewModel.CurrentJob = job;
@@ -659,16 +666,41 @@ namespace ProdFloor.Controllers
                     else viewModel.POList = new List<PO> { new PO() };
                     viewModel.CurrentUserID = currentUser.EngID;
                     viewModel.CurrentTab = "Main";
-                    */
+                    return RedirectToAction("Edit", viewModel);
+                }
+                else
+                {
+                    TempData["alert"] = $"alert-danger";
+                    TempData["message"] = $"There was an error with your request{viewModel.fieldID}";
+                    return View("List");
                 }
             }
             else
             {
-                TempData["alert"] = $"alert-danger";
-                TempData["message"] = $"There was an error with your request{fieldID}";
-            }
+                if (job.Status == null)
+                {
+                    TempData["message"] = $"The requested Job doesn't exist.";
+                    return View("NewJob", viewModel);
+                }
+                else if (job.Status == "Incomplete")
+                {
+                    List<PO> POs = viewModel.POList.Where(m => m.POID != 0).ToList();
+                    viewModel.POList = POs;
+                    if (viewModel.CurrentJobExtension == null) viewModel.CurrentJobExtension = new JobExtension();
+                    if (viewModel.CurrentHydroSpecific == null) viewModel.CurrentHydroSpecific = new HydroSpecific();
+                    if (viewModel.CurrentGenericFeatures == null) viewModel.CurrentGenericFeatures = new GenericFeatures();
+                    if (viewModel.CurrentIndicator == null) viewModel.CurrentIndicator = new Indicator();
+                    if (viewModel.CurrentHoistWayData == null) viewModel.CurrentHoistWayData = new HoistWayData();
+                    if (viewModel.SpecialFeatureslist == null) viewModel.SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures() };
 
-            return View("Edit", viewModel);
+                    return View("NextForm", viewModel);
+                }
+                else
+                {
+                    return RedirectToAction("Edit", new { id = job.JobID });
+                }
+                
+            }
         }
 
         /* Get de Continue; esta clase es para cuando el usuario estaba capturando un job y por algun motivo no lo termino;
@@ -731,8 +763,6 @@ namespace ProdFloor.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    try
-                    {
                         if (nextViewModel.CurrentJobExtension != null && nextViewModel.CurrentJobExtension.JobID != 0)
                         {
                             if (nextViewModel.CurrentHydroSpecific != null && nextViewModel.CurrentHydroSpecific.JobID != 0)
@@ -833,8 +863,7 @@ namespace ProdFloor.Controllers
                         }
                         else
                         {
-
-
+                            
                             repository.SaveEngJobView(nextViewModel);
                             JobExtension jobExt = repository.JobsExtensions.FirstOrDefault(j => j.JobID == nextViewModel.CurrentJob.JobID);
                             nextViewModel.CurrentJobExtension = (jobExt ?? new JobExtension { JobID = nextViewModel.CurrentJob.JobID });
@@ -847,12 +876,6 @@ namespace ProdFloor.Controllers
                             TempData["message"] = $"job was saved";
                             return View(nextViewModel);
                         }
-                    }
-                    catch (DbUpdateException e)
-                    {
-                        TempData["message"] = $"That PO already exists. Please validate.";
-                        TempData["alert"] = $"alert-danger";
-                    }
                     
                 }
                 else

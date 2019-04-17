@@ -22,5 +22,6 @@ namespace ProdFloor.Models.ViewModels
         public string CurrentTab { get; set; }
         public string buttonAction { get; set; }
         public int CurrentUserID { get; set; }
+        public int fieldID { get; set; }
     }
 }

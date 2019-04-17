@@ -315,10 +315,10 @@ namespace ProdFloor.Models
         {
             if (po != null && po.POID == 0)
             {
-                List<PO> POs = context.POs.Where(p => p.JobID == po.JobID).ToList();
-                if (POs.Count != 1 || po.PONumb != 0)
+                List<int> AllPoS = context.POs.Select(m => m.PONumb).ToList();
+                if (!AllPoS.Contains(po.PONumb))
                 {
-                    context.POs.Add(po);
+                  context.POs.Add(po);
                 }
 
             }
@@ -333,7 +333,14 @@ namespace ProdFloor.Models
 
                 }
             }
-            context.SaveChanges();
+            try
+            {
+                context.SaveChanges();
+            }
+            catch (DbUpdateException)
+            {
+
+            }
 
         }
 
