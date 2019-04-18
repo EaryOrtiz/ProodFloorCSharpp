@@ -635,6 +635,8 @@ namespace ProdFloor.Controllers
             {
                 if(viewModel.CurrentJob.Status == null)
                 {
+                    List<PO> POs = viewModel.POList.Where(m => m.PONumb != 0).ToList();
+                    viewModel.POList = POs;
                     return View("NewJob", viewModel);
                 }
                 else if (viewModel.CurrentJob.Status == "Incomplete")
