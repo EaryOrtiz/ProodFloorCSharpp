@@ -633,32 +633,9 @@ namespace ProdFloor.Controllers
             }
             else if (job == null)
             {
-                if(viewModel.CurrentJob.Status == null)
-                {
-                    List<PO> POs = viewModel.POList.Where(m => m.PONumb != 0).ToList();
+                    List<PO> POs = viewModel.POList.Where(m => m.PONumb > 3000000 && m.PONumb < 4900000).ToList();
                     viewModel.POList = POs;
                     return View("NewJob", viewModel);
-                }
-                else if (viewModel.CurrentJob.Status == "Incomplete")
-                {
-                    List<PO> POs = viewModel.POList.Where(m => m.POID != 0).ToList();
-                    viewModel.POList = POs;
-                    viewModel.CurrentJob = job;
-                    if (viewModel.CurrentJobExtension == null) viewModel.CurrentJobExtension = new JobExtension();
-                    if (viewModel.CurrentHydroSpecific == null) viewModel.CurrentHydroSpecific = new HydroSpecific();
-                    if (viewModel.CurrentGenericFeatures == null)viewModel.CurrentGenericFeatures = new GenericFeatures();
-                    if (viewModel.CurrentIndicator == null) viewModel.CurrentIndicator = new Indicator();
-                    if (viewModel.CurrentHoistWayData == null)viewModel.CurrentHoistWayData = new HoistWayData();
-                    if (viewModel.SpecialFeatureslist == null)viewModel.SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures() };
-
-                    return View("NextForm", viewModel);
-                }
-                else
-                {
-                    TempData["alert"] = $"alert-danger";
-                    TempData["message"] = $"There was an error with your request{viewModel.fieldID}";
-                    return View("List");
-                }
             }
             else
             {
