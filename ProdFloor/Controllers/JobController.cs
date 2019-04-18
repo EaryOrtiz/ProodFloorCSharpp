@@ -641,6 +641,7 @@ namespace ProdFloor.Controllers
                 {
                     List<PO> POs = viewModel.POList.Where(m => m.POID != 0).ToList();
                     viewModel.POList = POs;
+                    viewModel.CurrentJob = job;
                     if (viewModel.CurrentJobExtension == null) viewModel.CurrentJobExtension = new JobExtension();
                     if (viewModel.CurrentHydroSpecific == null) viewModel.CurrentHydroSpecific = new HydroSpecific();
                     if (viewModel.CurrentGenericFeatures == null)viewModel.CurrentGenericFeatures = new GenericFeatures();
@@ -649,24 +650,6 @@ namespace ProdFloor.Controllers
                     if (viewModel.SpecialFeatureslist == null)viewModel.SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures() };
 
                     return View("NextForm", viewModel);
-                }
-                else if (viewModel.CurrentJob.Status != "Incomplete")
-                {
-                    List<PO> POsList = repository.POs.Where(j => j.JobID == job.JobID).ToList();
-                    List<SpecialFeatures> SfList = repository.SpecialFeatures.Where(j => j.JobID == job.JobID).ToList();
-                    viewModel.CurrentJob = job;
-                    viewModel.CurrentJobExtension = repository.JobsExtensions.FirstOrDefault(j => j.JobID == job.JobID);
-                    viewModel.CurrentHydroSpecific = repository.HydroSpecifics.FirstOrDefault(j => j.JobID == job.JobID);
-                    viewModel.CurrentGenericFeatures = repository.GenericFeaturesList.FirstOrDefault(j => j.JobID == job.JobID);
-                    viewModel.CurrentIndicator = repository.Indicators.FirstOrDefault(j => j.JobID == job.JobID);
-                    viewModel.CurrentHoistWayData = repository.HoistWayDatas.FirstOrDefault(j => j.JobID == job.JobID);
-                    if (SfList != null) viewModel.SpecialFeatureslist = SfList;
-                    else viewModel.SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures() };
-                    if (POsList != null) viewModel.POList = POsList;
-                    else viewModel.POList = new List<PO> { new PO() };
-                    viewModel.CurrentUserID = currentUser.EngID;
-                    viewModel.CurrentTab = "Main";
-                    return RedirectToAction("Edit", viewModel);
                 }
                 else
                 {
@@ -684,16 +667,7 @@ namespace ProdFloor.Controllers
                 }
                 else if (job.Status == "Incomplete")
                 {
-                    List<PO> POs = repository.POs.Where(m => m.JobID == job.JobID).ToList();
-                    viewModel.POList = POs;
-                    if (viewModel.CurrentJobExtension == null) viewModel.CurrentJobExtension = new JobExtension();
-                    if (viewModel.CurrentHydroSpecific == null) viewModel.CurrentHydroSpecific = new HydroSpecific();
-                    if (viewModel.CurrentGenericFeatures == null) viewModel.CurrentGenericFeatures = new GenericFeatures();
-                    if (viewModel.CurrentIndicator == null) viewModel.CurrentIndicator = new Indicator();
-                    if (viewModel.CurrentHoistWayData == null) viewModel.CurrentHoistWayData = new HoistWayData();
-                    if (viewModel.SpecialFeatureslist == null) viewModel.SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures() };
-
-                    return View("NextForm", viewModel);
+                    return RedirectToAction("Continue", new { id = job.JobID });
                 }
                 else
                 {
