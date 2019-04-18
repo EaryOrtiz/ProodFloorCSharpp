@@ -684,7 +684,7 @@ namespace ProdFloor.Controllers
                 }
                 else if (job.Status == "Incomplete")
                 {
-                    List<PO> POs = viewModel.POList.Where(m => m.POID != 0).ToList();
+                    List<PO> POs = repository.POs.Where(m => m.JobID == job.JobID).ToList();
                     viewModel.POList = POs;
                     if (viewModel.CurrentJobExtension == null) viewModel.CurrentJobExtension = new JobExtension();
                     if (viewModel.CurrentHydroSpecific == null) viewModel.CurrentHydroSpecific = new HydroSpecific();

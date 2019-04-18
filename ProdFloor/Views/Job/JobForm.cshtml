@@ -101,14 +101,18 @@
     <label asp-for="POList[0].PONumb" class="col-sm-2 col-form-label"></label>
     <div class="form-inline">
         <input asp-for="POList[0].PONumb" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" class="form-control col-sm-7" />
-            <button asp-action="AddPo" type="submit" value="AddPO" name="buttonAction" class="btn btn-success btn-sm col-sm-2" style="margin-left:20px;">
-                <i class="fa fa-plus"></i>
-            </button>
+        <button asp-action="AddPo" type="submit" value="AddPO" name="buttonAction" class="btn btn-success btn-sm col-sm-2" style="margin-left:20px;">
+            <i class="fa fa-plus"></i>
+        </button>
         <span asp-validation-for="POList[0].PONumb" class="text-danger"></span>
     </div>
 </div>
 @for (int i = 1; i < Model.POList.Count; i++)
 {
+<input type="hidden" asp-for="POList[i].POID" />
+    <input type="hidden" asp-for="@Model.fieldID" value="@Model.POList[i].POID" />
+    <input type="hidden" asp-for="POList[i].JobID" />
+    <input type="hidden" asp-for="CurrentJob.JobID" />
     <div class="form-group row">
         <label asp-for="POList[i].PONumb" class="col-sm-2 col-form-label"></label>
         <div class="form-inline">
