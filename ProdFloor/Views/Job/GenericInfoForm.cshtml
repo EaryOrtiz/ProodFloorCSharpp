@@ -86,7 +86,7 @@
                     <label class="custom-control-label" asp-for="CurrentGenericFeatures.EPOtherCars" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></label>
                 </div>
             </div>
-            <div class="form-group row">
+            <div class="form-group row" style="margin-bottom:0.5em;">
                 <label asp-for="CurrentGenericFeatures.EPCarsNumber" class="col-form-label"></label>
                 <div>
                     <indicators select-for="EPCars" style="margin-left:15px;" selected-value="@Model.CurrentGenericFeatures.EPCarsNumber"
@@ -94,7 +94,7 @@
                     <span asp-validation-for="CurrentGenericFeatures.EPCarsNumber" class="text-danger"></span>
                 </div>
             </div>
-            <div class="form-group row">
+            <div class="form-group row" style="margin-bottom:0.5em;">
                 <label asp-for="CurrentGenericFeatures.EPContact" class="col-form-label"></label>
                 <div>
                     <indicators select-for="EPContact" style="margin-left:65px;" selected-value="@Model.CurrentGenericFeatures.EPContact"
@@ -208,7 +208,7 @@
                 </div>
             </div>
             <div class="form-group row">
-                <label asp-for="CurrentGenericFeatures.Monitoring" class="col-form-label"></label>
+                <label asp-for="CurrentGenericFeatures.Monitoring" style="margin-bottom:0.5em;" class="col-form-label"></label>
                 <div>
                     <indicators select-for="Monitoring" style="margin-left:70px;" selected-value="@Model.CurrentGenericFeatures.Monitoring"
                                 asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class=" col-8 form-control form-control-sm" asp-for="CurrentGenericFeatures.Monitoring"></indicators>

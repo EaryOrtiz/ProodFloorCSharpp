@@ -5,8 +5,8 @@
 <input type="hidden" asp-for="CurrentJob.Status" />
 <input type="hidden" asp-for="CurrentJob.EngID" />
 <div class="form-row col-sm-12" style="padding-bottom:15px">
-    <div class="col-6 form-line border-right justify-content-md-center">
-        <div class="form-group row">
+    <div class="col-5 form-line border-right justify-content-md-center">
+        <div class="form-group row" style="margin-bottom:0.5em;">
             <label asp-for="CurrentHydroSpecific.Starter" class="col-sm-5 col-form-label"></label>
             <div>
                 <custom-select selected-value="@Model.CurrentHydroSpecific.Starter" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)"
@@ -28,7 +28,7 @@
                 <span asp-validation-for="CurrentHydroSpecific.FLA" class="text-danger"></span>
             </div>
         </div>
-        <div class="form-group row">
+        <div class="form-group row" style="margin-bottom:0.5em;">
             <label asp-for="CurrentHydroSpecific.SPH" class="col-sm-5 col-form-label"></label>
             <div>
                 <custom-select selected-value="@Model.CurrentHydroSpecific.SPH" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)"
@@ -50,7 +50,7 @@
                 <span asp-validation-for="CurrentHydroSpecific.MotorsDisconnect" class="text-danger"></span>
             </div>
         </div>
-        <div class="form-group row">
+        <div class="form-group row" style="margin-bottom:0.5em;">
             <label asp-for="CurrentHydroSpecific.ValveBrand" class="col-sm-5 col-form-label"></label>
             <div>
                 <custom-select selected-value="@Model.CurrentHydroSpecific.ValveBrand" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)"

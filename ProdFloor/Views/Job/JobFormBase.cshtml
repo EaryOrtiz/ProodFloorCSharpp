@@ -18,7 +18,7 @@
                 <span asp-validation-for="CurrentJob.Name2" class="text-danger"></span>
             </div>
         </div>
-        <div class="form-group row">
+        <div class="form-group row" style="margin-bottom:0.5em;">
             <label asp-for="CurrentJob.JobTypeID" class="col-sm-2 col-form-label"></label>
             <div>
                 <job-type-select selected-value="@Model.CurrentJob.JobTypeID" class="form-control form-control-sm" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" asp-for="CurrentJob.JobTypeID"></job-type-select>
@@ -60,7 +60,7 @@
                 <span asp-validation-for="CurrentJob.Contractor" class="text-danger"></span>
             </div>
         </div>
-        <div class="form-group row">
+        <div class="form-group row" style="margin-bottom:0.5em;">
             <label asp-for="CurrentJob.CountryID" class="col-sm-2 col-form-label"></label>
             <div>
                 <country-select id="CountryID" asp-for="@Model.CurrentJob.CountryID" class="form-control form-control-sm" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" selected-value="@Model.CurrentJob.CityID">
@@ -68,7 +68,7 @@
                 <span asp-validation-for="CurrentJob.CountryID" class="text-danger"></span>
             </div>
         </div>
-        <div class="form-group row">
+        <div class="form-group row" style="margin-bottom:0.5em;">
             <label asp-for="CurrentJob.StateID" class="col-sm-2 col-form-label"></label>
             <div>
                 <state-select id="StateID" asp-for="@Model.CurrentJob.StateID" class="form-control form-control-sm" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" selected-value="@Model.CurrentJob.CityID">
@@ -76,7 +76,7 @@
                 <span asp-validation-for="CurrentJob.StateID" class="text-danger"></span>
             </div>
         </div>
-        <div class="form-group row">
+        <div class="form-group row" style="margin-bottom:0.5em;">
             <label asp-for="CurrentJob.CityID" class="col-sm-2 col-form-label"></label>
             <div>
                 <city-select id="CityID" asp-for="@Model.CurrentJob.CityID" class="form-control form-control-sm" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" selected-value="Model.CurrentJob.CityID">
@@ -84,7 +84,7 @@
                 <span asp-validation-for="CurrentJob.CityID" class="text-danger"></span>
             </div>
         </div>
-        <div class="form-group row">
+        <div class="form-group row" style="margin-bottom:0.5em;">
             <label asp-for="CurrentJob.FireCodeID" class="col-sm-2 col-form-label"></label>
             <div>
                 <fire-code-select selected-value="@Model.CurrentJob.FireCodeID" class="form-control form-control-sm" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" asp-for="CurrentJob.FireCodeID"></fire-code-select>
