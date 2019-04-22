@@ -1778,7 +1778,66 @@ namespace ProdFloor.Models
                 {
                     context.Database.CloseConnection();
                 }
-            }
+
+                if (context.Jobs.Any() && !context.POs.Any())
+                {
+                    context.POs.AddRange(
+                        new PO
+                        {
+                            JobID = 1,
+                            POID = 1,
+                            PONumb = 3000001
+                        },
+                        new PO
+                        {
+                            JobID = 1,
+                            POID = 2,
+                            PONumb = 3000002
+                        },
+                        new PO
+                        {
+                            JobID = 2,
+                            POID = 3,
+                            PONumb = 3000003
+                        },
+                        new PO
+                        {
+                            JobID = 3,
+                            POID = 4,
+                            PONumb = 3000004
+                        },
+                        new PO
+                        {
+                            JobID = 4,
+                            POID = 5,
+                            PONumb = 3000005
+                        },
+                        new PO
+                        {
+                            JobID = 4,
+                            POID = 6,
+                            PONumb = 3000006
+                        },
+                        new PO
+                        {
+                            JobID = 4,
+                            POID = 7,
+                            PONumb = 300000
+                        }
+                        );
+                }
+                    context.Database.OpenConnection();
+                    try
+                    {
+                        context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.POs ON");
+                        context.SaveChanges();
+                        context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.POs OFF");
+                    }
+                    finally
+                    {
+                        context.Database.CloseConnection();
+                    }
+                }
         }
     }
 }

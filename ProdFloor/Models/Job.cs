@@ -26,7 +26,6 @@ namespace ProdFloor.Models
 
         [Display(Name = "Name #2")]
         [StringLength(50, ErrorMessage = "The maximum length of the {0} field is {1}")]
-        [Required(ErrorMessage = "Please enter a name #2")]
         public string Name2 { get; set; }
 
         [Display(Name = "Job Number")]
@@ -162,6 +161,15 @@ namespace ProdFloor.Models
 
         [Display(Name = "Serial Hall Calls")]
         public bool SHC { get; set; }
+
+        [Display(Name = "Swing Operation")]
+        public bool SwingOp { get; set; }
+
+        [Display(Name = "Back Up Dispatcher")]
+        public bool BackUpDisp { get; set; }
+
+        [Display(Name = "Alternate Riser")]
+        public bool AltRis { get; set; }
 
         [Display(Name = "SHC Risers #")]
         public int SHCRisers { get; set; }

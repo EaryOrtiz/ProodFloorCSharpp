@@ -67,6 +67,7 @@ namespace ProdFloor.Models.ViewModels.Item
         public string MCPart { get; set; }
         public string NewManufacturerPart { get; set; }
         public string OverloadTable { get; set; }
+        public int InputPhase { get; set; }
 
         //Overload
         public float AMPMin { get; set; } //FLA

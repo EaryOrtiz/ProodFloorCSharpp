@@ -525,7 +525,9 @@ namespace ProdFloor.Controllers
         [HttpPost]
         public IActionResult AddPo(JobViewModel jobView)
         {
-            if(jobView.CurrentJob.Status == null)
+            AppUser currentUser = GetCurrentUser().Result;
+
+            if (jobView.CurrentJob.Status == null)
             {
                 if (jobView.buttonAction == "AddPO")
                 {
@@ -537,7 +539,7 @@ namespace ProdFloor.Controllers
 
             }else if (jobView.CurrentJob.Status == "Incomplete")
             {
-
+                jobView.CurrentUserID = currentUser.EngID;
                 if (jobView.buttonAction == "AddPO")
                 {
                     jobView.POList.Add(new PO { JobID = jobView.CurrentJob.JobID });
@@ -557,6 +559,7 @@ namespace ProdFloor.Controllers
             }
             else
             {
+                jobView.CurrentUserID = currentUser.EngID;
                 if (jobView.buttonAction == "AddPO")
                 {
                     jobView.POList.Add(new PO { JobID = jobView.CurrentJob.JobID });
@@ -706,7 +709,7 @@ namespace ProdFloor.Controllers
         {
             AppUser currentUser = GetCurrentUser().Result;
             nextViewModel.CurrentUserID = currentUser.EngID;
-
+            if (nextViewModel.CurrentJob.JobID == 0 && nextViewModel.CurrentJob.Status == "Incomplete") nextViewModel.CurrentJob.JobID = nextViewModel.CurrentJobExtension.JobID;
             if (nextViewModel.buttonAction == "AddSF")
             {
                 nextViewModel.SpecialFeatureslist.Add(new SpecialFeatures { JobID = nextViewModel.CurrentJob.JobID });
@@ -878,7 +881,7 @@ namespace ProdFloor.Controllers
 
             var JobCount = repository.Jobs.Count();
             var jobSearchRepo = repository.Jobs.Include(j => j._jobExtension).Include(hy => hy._HydroSpecific).Include(g => g._GenericFeatures)
-                .Include(i => i._Indicator).Include(ho => ho._HoistWayData).Include(sp => sp._SpecialFeatureslist).AsQueryable();
+                .Include(i => i._Indicator).Include(ho => ho._HoistWayData).Include(sp => sp._SpecialFeatureslist).Include(po => po._PO).AsQueryable();
             IQueryable<string> statusQuery = from s in repository.Jobs orderby s.Status select s.Status;
             #region comments
             /*
@@ -903,8 +906,13 @@ namespace ProdFloor.Controllers
             if (searchViewModel.CityID > 0) jobSearchRepo = jobSearchRepo.Where(s => s.CityID == searchViewModel.CityID);
             if (searchViewModel.FireCodeID > 0) jobSearchRepo = jobSearchRepo.Where(s => s.FireCodeID == searchViewModel.FireCodeID);
             if (searchViewModel.JobTypeID > 0) jobSearchRepo = jobSearchRepo.Where(s => s.JobTypeID == searchViewModel.JobTypeID);
+            if (searchViewModel.POJobSearch > 3000000 && searchViewModel.POJobSearch < 4900000)
+            {
+                jobSearchRepo = jobSearchRepo.Where(a => a._PO.Any(b => b.PONumb.Equals(searchViewModel.POJobSearch)));
+            }
 
             if (!string.IsNullOrEmpty(searchViewModel.NameJobSearch)) jobSearchRepo = jobSearchRepo.Where(s => s.Name.Contains(searchViewModel.NameJobSearch));
+            if (!string.IsNullOrEmpty(searchViewModel.Name2)) jobSearchRepo = jobSearchRepo.Where(s => s.Name2.Contains(searchViewModel.Name2));
             if (!string.IsNullOrEmpty(searchViewModel.CustJobSearch)) jobSearchRepo = jobSearchRepo.Where(s => s.Cust.Contains(searchViewModel.CustJobSearch));
             if (!string.IsNullOrEmpty(searchViewModel.ContractorJobSearch)) jobSearchRepo = jobSearchRepo.Where(s => s.Contractor.Contains(searchViewModel.ContractorJobSearch));
             if (!string.IsNullOrEmpty(searchViewModel.StatusJobSearch)) jobSearchRepo = jobSearchRepo.Where(s => s.Status.Equals(searchViewModel.StatusJobSearch));
@@ -1097,12 +1105,24 @@ namespace ProdFloor.Controllers
 
                 return Json(new SelectList(Simplex, "Text", "Value"));
             }
+            else if(JobTypeMain == "Duplex")
+            {
+                IList<SelectListItem> Duplex = new List<SelectListItem>
+                {
+                new SelectListItem{Text = "Duplex Operation", Value = "Duplex Operation"},
+                new SelectListItem{Text = "Selective Collective", Value = "Selective Collective"},
+                new SelectListItem{Text = "Group Operation", Value = "Group Operation"}
+
+                };
+                return Json(new SelectList(Duplex, "Text", "Value"));
+            }
             else
             {
                 IList<SelectListItem> Duplex = new List<SelectListItem>
                 {
-                new SelectListItem{Text = "Selective Collective", Value = "Selective Collective"},
-                new SelectListItem{Text = "Group Operation", Value = "Group Operation"}
+                new SelectListItem{Text = "Group Operation", Value = "Group Operation"},
+                new SelectListItem{Text = "Duplex Operation", Value = "Duplex Operation"},
+                new SelectListItem{Text = "Selective Collective", Value = "Selective Collective"}
 
                 };
                 return Json(new SelectList(Duplex, "Text", "Value"));
@@ -1149,6 +1169,21 @@ namespace ProdFloor.Controllers
                             xw.WriteElementString("FireCodeID", job.FireCodeID.ToString());
                             xw.WriteEndElement();
 
+                            List<PO> pOsList = repository.POs.Where(m => m.JobID == job.JobID).ToList();
+                            if (pOsList.Count > 0)
+                            {
+                                xw.WriteStartElement("POs");
+                                foreach (PO po in pOsList)
+                                {
+                                        xw.WriteStartElement("PO");
+                                        xw.WriteElementString("ID", po.POID.ToString());
+                                        xw.WriteElementString("JobID", po.JobID.ToString());
+                                        xw.WriteElementString("PONumb", po.PONumb.ToString());
+                                        xw.WriteEndElement();
+                                }
+                                xw.WriteEndElement();
+                            }
+
                             JobExtension jobExtension = repository.JobsExtensions.First(m => m.JobID == job.JobID);
                             if (jobExtension != null)
                             {
@@ -1166,6 +1201,12 @@ namespace ProdFloor.Controllers
                                 xw.WriteElementString("DoorHoist", jobExtension.DoorHoist);
                                 xw.WriteElementString("SHCRisers", jobExtension.SHCRisers.ToString());
                                 xw.WriteElementString("DoorOperatorID", jobExtension.DoorOperatorID.ToString());
+                                aux = jobExtension.SwingOp ? "True" : "False";
+                                xw.WriteElementString("SwingOp", aux);
+                                aux = jobExtension.BackUpDisp ? "True" : "False";
+                                xw.WriteElementString("BackUpDisp", aux);
+                                aux = jobExtension.AltRis ? "True" : "False";
+                                xw.WriteElementString("AltRis", aux);
                                 aux = jobExtension.InfDetector ? "True" : "False";
                                 xw.WriteElementString("InfDetector", aux);
                                 aux = jobExtension.MechSafEdge ? "True" : "False";
@@ -1508,6 +1549,21 @@ namespace ProdFloor.Controllers
                         xw.WriteElementString("FireCodeID", job.FireCodeID.ToString());
                         xw.WriteEndElement();
 
+                        List<PO> pOsList = repository.POs.Where(m => m.JobID == job.JobID).ToList();
+                        if (pOsList.Count > 0)
+                        {
+                            xw.WriteStartElement("POs");
+                            foreach (PO po in pOsList)
+                            {
+                                xw.WriteStartElement("PO");
+                                xw.WriteElementString("ID", po.POID.ToString());
+                                xw.WriteElementString("JobID", po.JobID.ToString());
+                                xw.WriteElementString("PONumb", po.PONumb.ToString());
+                                xw.WriteEndElement();
+                            }
+                            xw.WriteEndElement();
+                        }
+
                         JobExtension jobExtension = repository.JobsExtensions.First(m => m.JobID == job.JobID);
                         if (jobExtension != null)
                         {
@@ -1525,6 +1581,12 @@ namespace ProdFloor.Controllers
                             xw.WriteElementString("DoorHoist", jobExtension.DoorHoist);
                             xw.WriteElementString("SHCRisers", jobExtension.SHCRisers.ToString());
                             xw.WriteElementString("DoorOperatorID", jobExtension.DoorOperatorID.ToString());
+                            aux = jobExtension.SwingOp ? "True" : "False";
+                            xw.WriteElementString("SwingOp", aux);
+                            aux = jobExtension.BackUpDisp ? "True" : "False";
+                            xw.WriteElementString("BackUpDisp", aux);
+                            aux = jobExtension.AltRis ? "True" : "False";
+                            xw.WriteElementString("AltRis", aux);
                             aux = jobExtension.InfDetector ? "True" : "False";
                             xw.WriteElementString("InfDetector", aux);
                             aux = jobExtension.MechSafEdge ? "True" : "False";
@@ -1909,6 +1971,9 @@ namespace ProdFloor.Controllers
                     var shcrisers = XMLJobExtension.SelectSingleNode(".//shcrisers").InnerText;
                     var auxcop = XMLJobExtension.SelectSingleNode(".//auxcop").InnerText;
                     var dooroperatorid = XMLJobExtension.SelectSingleNode(".//dooroperatorid").InnerText;
+                    var swingop = XMLJobExtension.SelectSingleNode(".//swingop").InnerText;
+                    var backupdisp = XMLJobExtension.SelectSingleNode(".//backupdisp").InnerText;
+                    var altris = XMLJobExtension.SelectSingleNode(".//altris").InnerText;
                     context.JobsExtensions.Add(new JobExtension
                     {
                         JobExtensionID = Int32.Parse(idEx),
@@ -1930,6 +1995,9 @@ namespace ProdFloor.Controllers
                         SCOP = Boolean.Parse(scop),
                         SHC = Boolean.Parse(shc),
                         AUXCOP = Boolean.Parse(auxcop),
+                        SwingOp = Boolean.Parse(swingop),
+                        AltRis = Boolean.Parse(altris),
+                        BackUpDisp = Boolean.Parse(backupdisp),
                         SHCRisers = Int32.Parse(shcrisers),
                         DoorOperatorID = Int32.Parse(dooroperatorid)
 
@@ -1944,6 +2012,36 @@ namespace ProdFloor.Controllers
                     finally
                     {
                         context.Database.CloseConnection();
+                    }
+
+
+                    var XMPOOOO = node.SelectSingleNode(".//pos");
+                    var XMLPOs = XMPOOOO.SelectNodes(".//po");
+                    if (XMLPOs != null)
+                    {
+                        foreach (var po in XMLPOs)
+                        {
+                            var idpo = po.SelectSingleNode(".//id").InnerText;
+                            var idPOnumb = po.SelectSingleNode(".//ponumb").InnerText;
+                            context.POs.Add(new PO
+                            {
+                                POID = Int32.Parse(idpo),
+                                JobID = Int32.Parse(jobid),
+                                PONumb = Int32.Parse(idPOnumb)
+
+                            });
+                            context.Database.OpenConnection();
+                            try
+                            {
+                                context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.POs ON");
+                                context.SaveChanges();
+                                context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.POs OFF");
+                            }
+                            finally
+                            {
+                                context.Database.CloseConnection();
+                            }
+                        }
                     }
 
                     var XMLHydro = node.SelectSingleNode(".//hydrospecific");
@@ -2391,6 +2489,9 @@ namespace ProdFloor.Controllers
                 var shc = XMLJobExtension.SelectSingleNode(".//shc").InnerText;
                 var shcrisers = XMLJobExtension.SelectSingleNode(".//shcrisers").InnerText;
                 var auxcop = XMLJobExtension.SelectSingleNode(".//auxcop").InnerText;
+                var swingop = XMLJobExtension.SelectSingleNode(".//swingop").InnerText;
+                var backupdisp = XMLJobExtension.SelectSingleNode(".//backupdisp").InnerText;
+                var altris = XMLJobExtension.SelectSingleNode(".//altris").InnerText;
                 var dooroperatorid = XMLJobExtension.SelectSingleNode(".//dooroperatorid").InnerText;
                 context.JobsExtensions.Add(new JobExtension
                 {
@@ -2413,6 +2514,9 @@ namespace ProdFloor.Controllers
                     SCOP = Boolean.Parse(scop),
                     SHC = Boolean.Parse(shc),
                     AUXCOP = Boolean.Parse(auxcop),
+                    SwingOp = Boolean.Parse(swingop),
+                    AltRis = Boolean.Parse(altris),
+                    BackUpDisp = Boolean.Parse(backupdisp),
                     SHCRisers = Int32.Parse(shcrisers),
                     DoorOperatorID = Int32.Parse(dooroperatorid)
 
@@ -2431,6 +2535,39 @@ namespace ProdFloor.Controllers
                 finally
                 {
                     context.Database.CloseConnection();
+                }
+
+                var XMLPOOO = node.SelectSingleNode(".//pos");
+                var XMLPOs= XMLPOOO.SelectNodes(".//po");
+                if (XMLPOs != null)
+                {
+                    foreach (var po in XMLPOs)
+                    {
+                        var idpo = po.SelectSingleNode(".//id").InnerText;
+                        var ponumb = po.SelectSingleNode(".//ponumb").InnerText;
+                        context.POs.Add(new PO
+                        {
+                            POID = Int32.Parse(idpo),
+                            JobID = Int32.Parse(jobid),
+                            PONumb = Int32.Parse(ponumb)
+
+                        });
+                        context.Database.OpenConnection();
+                        try
+                        {
+                            context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.POs ON");
+                            context.SaveChanges();
+                            context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.POs OFF");
+                        }
+                        catch (DbUpdateException e)
+                        {
+
+                        }
+                        finally
+                        {
+                            context.Database.CloseConnection();
+                        }
+                    }
                 }
 
                 var XMLHydro = node.SelectSingleNode(".//hydrospecific");

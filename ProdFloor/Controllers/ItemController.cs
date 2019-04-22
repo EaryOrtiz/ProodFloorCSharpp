@@ -388,6 +388,7 @@ namespace ProdFloor.Controllers
                         ViewModel.anyRear = JobSearch._HoistWayData.AnyRear;
                         ViewModel.FrontFloor = JobSearch._HoistWayData.FrontFloorOpenings;
                         ViewModel.RearFloor = JobSearch._HoistWayData.RearFloorOpenings;
+                        ViewModel.InputPhase = JobSearch._jobExtension.InputPhase;
                         var volts = JobSearch._jobExtension.InputVoltage;
                         ViewModel.InputVoltage = volts;
                         if (volts >= 200 && volts <= 220 && (ViewModel.StarterType == "ATL" || ViewModel.StarterType == "YD" || ViewModel.StarterType == "Sprecher SS : 6/12" || ViewModel.StarterType == "Sprecher SS : 3/9" || ViewModel.StarterType == "Siemens SS : 6/12" || ViewModel.StarterType == "Siemens SS : 3/9")) ViewModel.Volts = "208";
@@ -429,17 +430,29 @@ namespace ProdFloor.Controllers
 
                         //Lista para strater and overload table
                         List<Starter> StarterList = StarterReferSearch.Where(m => m.Volts == ViewModel.Volts && m.StarterType == JobSearch._HydroSpecific.Starter
-                        && m.FLA >= ViewModel.FLA && m.HP >= ViewModel.HP).OrderBy(o => o.FLA).Skip(0).Take(2).ToList();
+                        && m.FLA >= ViewModel.FLA && m.HP >= ViewModel.HP).OrderBy(o => o.FLA).Skip(0).Take(4).ToList();
 
                         if (StarterList.Count > 0)
                         {
-                            if (ViewModel.SPH == 80)
+                            if (ViewModel.SPH == 80 && ViewModel.InputPhase == 1 && ViewModel.StarterType == "ATL" && StarterList.Count > 2)
+                            {
+                               ViewModel.MCPart = StarterList[2].MCPart;
+                               ViewModel.NewManufacturerPart = StarterList[2].NewManufacturerPart;
+                               ViewModel.OverloadTable = StarterList[2].OverloadTable;
+                            }
+                            else if (ViewModel.SPH == 120 && ViewModel.InputPhase == 1 && ViewModel.StarterType == "ATL" && StarterList.Count > 3)
+                            {
+                                    ViewModel.MCPart = StarterList[3].MCPart;
+                                    ViewModel.NewManufacturerPart = StarterList[3].NewManufacturerPart;
+                                    ViewModel.OverloadTable = StarterList[3].OverloadTable;
+                            }
+                            else if (ViewModel.SPH == 80)
                             {
                                 ViewModel.MCPart = StarterList[0].MCPart;
                                 ViewModel.NewManufacturerPart = StarterList[0].NewManufacturerPart;
                                 ViewModel.OverloadTable = StarterList[0].OverloadTable;
                             }
-                            else if (ViewModel.SPH == 120 && StarterList.Count != 0)
+                            else if (ViewModel.SPH == 120 && StarterList.Count > 1)
                             {
                                 ViewModel.MCPart = StarterList[1].MCPart;
                                 ViewModel.NewManufacturerPart = StarterList[1].NewManufacturerPart;
@@ -454,15 +467,24 @@ namespace ProdFloor.Controllers
                                 TempData["alert"] = $"alert-danger";
                                 TempData["message"] = $"Starter Model out of range, please validate their SPH, HP, FLA and try again";
                             }
+                        }
+                        else
+                        {
+                            ViewModel.MCPart = "------Error------";
+                            ViewModel.NewManufacturerPart = "------Error------";
+                            ViewModel.OverloadTable = "N/A";
 
-                            //Overload Table
-                            if (ViewModel.OverloadTable != null && ViewModel.OverloadTable != "N/A")
-                            {
+                            TempData["alert"] = $"alert-danger";
+                            TempData["message"] = $"Starter Model out of range, please validate their SPH, HP, FLA and try again";
+                        }
+                        //Overload Table
+                        if (ViewModel.OverloadTable != null && ViewModel.OverloadTable != "N/A")
+                        {
                                 var OverLoadReg = OverloadReferSearch.FirstOrDefault(m => m.OverTableNum == Int32.Parse(ViewModel.OverloadTable)
                                 && m.AMPMin <= ViewModel.FLA && m.AMPMax >= ViewModel.FLA);
                                 ViewModel.MCPartOver = OverLoadReg.MCPart;
                                 ViewModel.SiemensPart = OverLoadReg.SiemensPart;
-                            }
+                         }
                             else
                             {
                                 ViewModel.MCPartOver = "N/A";
@@ -549,11 +571,6 @@ namespace ProdFloor.Controllers
                             return View(referSearch);
 
                             #endregion
-                        }
-
-                        TempData["alert"] = $"alert-danger";
-                        TempData["message"] = $"Some issue with the search, try again";
-                        return RedirectToAction("ReferencesSearch", referSearchAux);
 
                     }
 

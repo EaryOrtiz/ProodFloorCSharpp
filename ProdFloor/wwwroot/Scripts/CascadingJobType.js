@@ -13,7 +13,11 @@ $(function () {
                         },
                         success: function (data) {
                             $("#JobTypeAdd").prop("disabled", false);
-                            JobTypeAdd.append('<option value="">' + " --- Please Select a Type of Operation #2--- " + '</option>');
+                            $('#JobTypeMain').change(function () {
+                                if ($(this).val() != 'Group' && $(this).val() != 'Duplex') {
+                                    JobTypeAdd.append('<option value="">' + " --- Please Select a Type of Operation #2--- " + '</option>');
+                                } 
+                            });
                             $.each(data, function (idx, item) {
                                 JobTypeAdd.append('<option value="' + item.value + '">' + item.text + '</option>');
                             });

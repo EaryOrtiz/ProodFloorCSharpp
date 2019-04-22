@@ -81,15 +81,13 @@ namespace ProdFloor.Models
                     dbEntry.CartopDoorButtons = jobExtension.CartopDoorButtons;
                     dbEntry.DoorHold = jobExtension.DoorHold;
                     dbEntry.Nudging = jobExtension.Nudging;
-                    /*
-                    dbEntry.DoorBrand = jobExtension.DoorBrand;
-                    dbEntry.DoorModel = jobExtension.DoorModel;
-                    */
+                    dbEntry.AltRis = jobExtension.AltRis;
+                    dbEntry.BackUpDisp = jobExtension.BackUpDisp;
+                    dbEntry.SwingOp = jobExtension.SwingOp;
                     dbEntry.SCOP = jobExtension.SCOP;
                     dbEntry.SHC = jobExtension.SHC;
                     dbEntry.SHCRisers = jobExtension.SHCRisers;
                     dbEntry.AUXCOP = jobExtension.AUXCOP;
-                    
                 }
             }
             context.SaveChanges();

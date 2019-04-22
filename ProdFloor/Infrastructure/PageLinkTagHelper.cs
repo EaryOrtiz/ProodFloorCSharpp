@@ -436,7 +436,7 @@ namespace ProdFloor.Infrastructure
                 case "JobType":
                     return new List<string> { "Simplex", "Duplex", "Group" }.AsQueryable();
                 case "JobType2":
-                    return new List<string> { "Selective Collective", "Duplex Selective Collective", "Group Operation", "SAPB Single Automatic Pushbutton", "SBC Single Button Collective" }.AsQueryable();
+                    return new List<string> { "Selective Collective", "Duplex Operation", "Group Operation", "SAPB Single Automatic Pushbutton", "SBC Single Button Collective" }.AsQueryable();
                 default:
                     return new List<string> { "Chime", "Gong" }.AsQueryable();
             }
