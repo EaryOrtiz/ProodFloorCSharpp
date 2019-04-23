@@ -364,14 +364,14 @@ namespace ProdFloor.Models
         }
         public void SaveCustomFeature(CustomFeature customFeature)
         {
-            if (customFeature.CustomFeaturesID == 0)
+            if (customFeature.CustomFeatureID == 0)
             {
                 context.CustomFeatures.Add(customFeature);
             }
             else
             {
                 CustomFeature dbEntry = context.CustomFeatures
-                .FirstOrDefault(p => p.CustomFeaturesID == customFeature.CustomFeaturesID);
+                .FirstOrDefault(p => p.CustomFeatureID == customFeature.CustomFeatureID);
                 if (dbEntry != null)
                 {
                     dbEntry.CustomSoftwareID = customFeature.CustomSoftwareID;
@@ -580,7 +580,7 @@ namespace ProdFloor.Models
         public CustomFeature DeleteCustomFeature(int CustomFeatureID)
         {
             CustomFeature dbEntry = context.CustomFeatures
-                .FirstOrDefault(p => p.CustomFeaturesID == CustomFeatureID);
+                .FirstOrDefault(p => p.CustomFeatureID == CustomFeatureID);
             if (dbEntry != null)
             {
                 context.CustomFeatures.Remove(dbEntry);

@@ -10,7 +10,7 @@ using ProdFloor.Models.ViewModels.Job;
 
 namespace ProdFloor.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin,Engineer")]
     public class CustomSoftwareController : Controller
     {
         private IJobRepository Jobrepo;

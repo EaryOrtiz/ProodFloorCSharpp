@@ -266,8 +266,8 @@ namespace ProdFloor.Controllers
                     Status = "Working on it",
                     EngID = currentUser.EngID,
                     CrossAppEngID = viewModel.CurrentJob.CrossAppEngID,
-                    Name = "Change the name please",
-                    Name2 = "",
+                    Name = viewModel.CurrentJob.Name,
+                    Name2 = viewModel.CurrentJob.Name2,
                     JobNum = 0,
                     ShipDate = viewModel.CurrentJob.ShipDate,
                     LatestFinishDate = viewModel.CurrentJob.LatestFinishDate,
@@ -1102,6 +1102,7 @@ namespace ProdFloor.Controllers
             {
                 IList<SelectListItem> Simplex = new List<SelectListItem>
                 {
+                new SelectListItem{Text = " --- Please Select one --- ", Value = ""},
                 new SelectListItem{Text = "Selective Collective", Value = "Selective Collective"},
                 new SelectListItem{Text = "SAPB Single Automatic Pushbutton", Value = "SAPB Single Automatic Pushbutton"},
                 new SelectListItem{Text = "SBC Single Button Collective", Value = "SBC Single Button Collective"}
@@ -1115,8 +1116,6 @@ namespace ProdFloor.Controllers
                 IList<SelectListItem> Duplex = new List<SelectListItem>
                 {
                 new SelectListItem{Text = "Duplex Operation", Value = "Duplex Operation"},
-                new SelectListItem{Text = "Selective Collective", Value = "Selective Collective"},
-                new SelectListItem{Text = "Group Operation", Value = "Group Operation"}
 
                 };
                 return Json(new SelectList(Duplex, "Text", "Value"));
@@ -1126,8 +1125,6 @@ namespace ProdFloor.Controllers
                 IList<SelectListItem> Duplex = new List<SelectListItem>
                 {
                 new SelectListItem{Text = "Group Operation", Value = "Group Operation"},
-                new SelectListItem{Text = "Duplex Operation", Value = "Duplex Operation"},
-                new SelectListItem{Text = "Selective Collective", Value = "Selective Collective"}
 
                 };
                 return Json(new SelectList(Duplex, "Text", "Value"));

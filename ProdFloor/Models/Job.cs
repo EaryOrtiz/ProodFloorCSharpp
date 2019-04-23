@@ -658,7 +658,7 @@ namespace ProdFloor.Models
 
     public class CustomFeature
     {
-        public int CustomFeaturesID { get; set; }
+        public int CustomFeatureID { get; set; }
         public int CustomSoftwareID { get; set; }
         public int JobID { get; set; }
     }
