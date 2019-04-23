@@ -1,4 +1,5 @@
 ﻿using ProdFloor.Models.ViewModels;
+using ProdFloor.Models.ViewModels.Job;
 using System.Linq;
 
 namespace ProdFloor.Models
@@ -29,6 +30,7 @@ namespace ProdFloor.Models
         void SaveCustomSoftware(CustomSoftware customSoftware);
         void SaveTriggeringCustSoft(TriggeringCustSoft triggeringCustSoft);
         void SaveCustomFeature(CustomFeature customFeature);
+        void SaveJobCustomSoftware(CustomSoftwareViewModel viewModel);
 
         Job DeleteJob(int jobID);
         Job DeleteEngJob(int JobID);
@@ -42,5 +44,6 @@ namespace ProdFloor.Models
         CustomSoftware DeleteCustomSoftware(int CustomSoftwareID);
         TriggeringCustSoft DeleteTriggeringCustSoft(int TriggeringCustSoftID);
         CustomFeature DeleteCustomFeature(int CustomFeatureID);
+        CustomSoftware DeleteJobCustomSoftware(int CustomSoftwareID);
     }
 }

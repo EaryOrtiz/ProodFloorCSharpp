@@ -67,7 +67,7 @@ namespace ProdFloor.Models
         public Indicator _Indicator { get; set; }
         public HoistWayData _HoistWayData { get; set; }
         public List<SpecialFeatures> _SpecialFeatureslist { get; set; }
-        public List<CustomFeatures> _CustomFeatures { get; set; }
+        public List<CustomFeature> _CustomFeatures { get; set; }
         public List<PO> _PO { get; set; }
         [Display(Name = "Job Type")]
         public int JobTypeID { get; set; }
@@ -645,7 +645,7 @@ namespace ProdFloor.Models
         public string Description { get; set; }
         
         public List<TriggeringCustSoft> _TriggeringCustSofts { get; set; }
-        public List<CustomFeatures> _CustomFeatures { get; set; }
+        public List<CustomFeature> _CustomFeatures { get; set; }
     }
 
     public class TriggeringCustSoft

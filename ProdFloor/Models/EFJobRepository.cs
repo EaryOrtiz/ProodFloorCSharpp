@@ -599,6 +599,33 @@ namespace ProdFloor.Models
             }
             return dbEntry;
         }
+        public CustomSoftware DeleteJobCustomSoftware(int CustomSoftwareID)
+        {
+            CustomSoftware dbEntry = context.CustomSoftwares
+                .FirstOrDefault(p => p.CustomSoftwareID == CustomSoftwareID);
+            TriggeringCustSoft triggering = context.TriggeringCustSofts
+                .FirstOrDefault(p => p.CustomSoftwareID == CustomSoftwareID);
+            try
+            {
+                if (dbEntry != null)
+                {
+                    context.CustomSoftwares.Remove(dbEntry);
+                    context.SaveChanges();
+                }
+                if (triggering != null)
+                {
+                    context.TriggeringCustSofts.Remove(triggering);
+                    context.SaveChanges();
+                }
+
+            }
+            catch (Exception e)
+            {
+
+            }
+
+            return dbEntry;
+        }
 
         public void SaveEngJobView(JobViewModel viewModelToSave)
         {
@@ -721,7 +748,7 @@ namespace ProdFloor.Models
                 }
             }
         }
-        public void SaveJobCsutomSoftware(CustomSoftwareViewModel viewModelToSave)
+        public void SaveJobCustomSoftware(CustomSoftwareViewModel viewModelToSave)
         {
             SaveCustomSoftware(viewModelToSave.CustomSoftware);
             if (viewModelToSave.TriggeringList != null)
