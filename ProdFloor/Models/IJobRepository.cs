@@ -13,6 +13,9 @@ namespace ProdFloor.Models
         IQueryable<HoistWayData> HoistWayDatas { get; }
         IQueryable<SpecialFeatures> SpecialFeatures { get; }
         IQueryable<PO> POs { get; }
+        IQueryable<CustomSoftware> CustomSoftwares { get;}
+        IQueryable<TriggeringCustSoft> TriggeringCustSofts { get;}
+        IQueryable<CustomFeature> CustomFeatures { get;}
 
         void SaveJob(Job job);
         void SaveJobExtension(JobExtension jobExtension);
@@ -23,6 +26,9 @@ namespace ProdFloor.Models
         void SaveSpecialFeatures(SpecialFeatures specialFeatures);
         void SavePO(PO po);
         void SaveEngJobView(JobViewModel viewModelToSave);
+        void SaveCustomSoftware(CustomSoftware customSoftware);
+        void SaveTriggeringCustSoft(TriggeringCustSoft triggeringCustSoft);
+        void SaveCustomFeature(CustomFeature customFeature);
 
         Job DeleteJob(int jobID);
         Job DeleteEngJob(int JobID);
@@ -33,5 +39,8 @@ namespace ProdFloor.Models
         HoistWayData DeleteHoistWayData(int hoistWatDataID);
         SpecialFeatures DeleteSpecialFeatures(int specialFeaturesID);
         PO DeletePO(int POID);
+        CustomSoftware DeleteCustomSoftware(int CustomSoftwareID);
+        TriggeringCustSoft DeleteTriggeringCustSoft(int TriggeringCustSoftID);
+        CustomFeature DeleteCustomFeature(int CustomFeatureID);
     }
 }

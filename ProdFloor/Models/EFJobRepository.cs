@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProdFloor.Models.ViewModels;
+using ProdFloor.Models.ViewModels.Job;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +24,9 @@ namespace ProdFloor.Models
         public IQueryable<HoistWayData> HoistWayDatas => context.HoistWayDatas;
         public IQueryable<SpecialFeatures> SpecialFeatures => context.SpecialFeatures;
         public IQueryable<PO> POs => context.POs;
+        public IQueryable<CustomSoftware> CustomSoftwares => context.CustomSoftwares;
+        public IQueryable<TriggeringCustSoft> TriggeringCustSofts => context.TriggeringCustSofts;
+        public IQueryable<CustomFeature> CustomFeatures => context.CustomFeatures;
 
         public void SaveJob(Job job)
         {
@@ -285,29 +289,29 @@ namespace ProdFloor.Models
             context.SaveChanges();
         }
         public void SaveSpecialFeatures(SpecialFeatures specialFeatures)
-        {  
-                if (specialFeatures != null && specialFeatures.SpecialFeaturesID == 0)
+        {
+            if (specialFeatures != null && specialFeatures.SpecialFeaturesID == 0)
+            {
+                List<SpecialFeatures> specials = context.SpecialFeatures.Where(p => p.JobID == specialFeatures.JobID).ToList();
+                if (specials.Count != 1 || specialFeatures.Description != null)
                 {
-                    List<SpecialFeatures> specials = context.SpecialFeatures.Where(p => p.JobID == specialFeatures.JobID).ToList();
-                    if (specials.Count != 1 || specialFeatures.Description != null)
-                    {
-                        context.SpecialFeatures.Add(specialFeatures);
-                    }
-                    
+                    context.SpecialFeatures.Add(specialFeatures);
                 }
-                else
-                {
-                    SpecialFeatures dbEntry = context.SpecialFeatures
-                    .FirstOrDefault(p => p.SpecialFeaturesID == specialFeatures.SpecialFeaturesID);
-                    if (dbEntry != null)
-                    {
-                        dbEntry.JobID = specialFeatures.JobID;
-                        dbEntry.Description = specialFeatures.Description;
 
-                    }
+            }
+            else
+            {
+                SpecialFeatures dbEntry = context.SpecialFeatures
+                .FirstOrDefault(p => p.SpecialFeaturesID == specialFeatures.SpecialFeaturesID);
+                if (dbEntry != null)
+                {
+                    dbEntry.JobID = specialFeatures.JobID;
+                    dbEntry.Description = specialFeatures.Description;
+
                 }
+            }
             context.SaveChanges();
-           
+
         }
         public void SavePO(PO po)
         {
@@ -316,7 +320,7 @@ namespace ProdFloor.Models
                 List<int> AllPoS = context.POs.Select(m => m.PONumb).ToList();
                 if (!AllPoS.Contains(po.PONumb))
                 {
-                  context.POs.Add(po);
+                    context.POs.Add(po);
                 }
 
             }
@@ -339,6 +343,66 @@ namespace ProdFloor.Models
             {
 
             }
+
+        }
+        public void SaveCustomSoftware(CustomSoftware customSoftware)
+        {
+            if (customSoftware.CustomSoftwareID == 0)
+            {
+                context.CustomSoftwares.Add(customSoftware);
+            }
+            else
+            {
+                CustomSoftware dbEntry = context.CustomSoftwares
+                .FirstOrDefault(p => p.CustomSoftwareID == customSoftware.CustomSoftwareID);
+                if (dbEntry != null)
+                {
+                    dbEntry.Description = customSoftware.Description;
+                }
+            }
+            context.SaveChanges();
+        }
+        public void SaveCustomFeature(CustomFeature customFeature)
+        {
+            if (customFeature.CustomFeaturesID == 0)
+            {
+                context.CustomFeatures.Add(customFeature);
+            }
+            else
+            {
+                CustomFeature dbEntry = context.CustomFeatures
+                .FirstOrDefault(p => p.CustomFeaturesID == customFeature.CustomFeaturesID);
+                if (dbEntry != null)
+                {
+                    dbEntry.CustomSoftwareID = customFeature.CustomSoftwareID;
+                    dbEntry.JobID = customFeature.JobID;
+                }
+            }
+            context.SaveChanges();
+        }
+        public void SaveTriggeringCustSoft(TriggeringCustSoft triggering)
+        {
+            if (triggering != null && triggering.TriggeringCustSoftID == 0)
+            {
+                List<TriggeringCustSoft> specials = context.TriggeringCustSofts.Where(p => p.TriggeringCustSoftID == triggering.TriggeringCustSoftID).ToList();
+                if (specials.Count != 1 || triggering.Name != null)
+                {
+                    context.TriggeringCustSofts.Add(triggering);
+                }
+
+            }
+            else
+            {
+                TriggeringCustSoft dbEntry = context.TriggeringCustSofts
+                .FirstOrDefault(p => p.TriggeringCustSoftID == triggering.TriggeringCustSoftID);
+                if (dbEntry != null)
+                {
+                    dbEntry.CustomSoftwareID = triggering.CustomSoftwareID;
+                    dbEntry.Name = triggering.Name;
+                    dbEntry.isSelected = triggering.isSelected;
+                }
+            }
+            context.SaveChanges();
 
         }
 
@@ -374,7 +438,7 @@ namespace ProdFloor.Models
 
             try
             {
-                
+
                 if (dbEntry != null)
                 {
                     context.Jobs.Remove(dbEntry);
@@ -417,7 +481,7 @@ namespace ProdFloor.Models
                 }
 
             }
-            catch(Exception e)
+            catch (Exception e)
             {
 
             }
@@ -483,7 +547,7 @@ namespace ProdFloor.Models
         public SpecialFeatures DeleteSpecialFeatures(int specialFeaturesID)
         {
             SpecialFeatures dbEntry = context.SpecialFeatures
-                .FirstOrDefault(p => p.SpecialFeaturesID== specialFeaturesID);
+                .FirstOrDefault(p => p.SpecialFeaturesID == specialFeaturesID);
             if (dbEntry != null)
             {
                 context.SpecialFeatures.Remove(dbEntry);
@@ -498,6 +562,39 @@ namespace ProdFloor.Models
             if (dbEntry != null)
             {
                 context.POs.Remove(dbEntry);
+                context.SaveChanges();
+            }
+            return dbEntry;
+        }
+        public CustomSoftware DeleteCustomSoftware(int CustomSoftwareID)
+        {
+            CustomSoftware dbEntry = context.CustomSoftwares
+                .FirstOrDefault(p => p.CustomSoftwareID == CustomSoftwareID);
+            if (dbEntry != null)
+            {
+                context.CustomSoftwares.Remove(dbEntry);
+                context.SaveChanges();
+            }
+            return dbEntry;
+        }
+        public CustomFeature DeleteCustomFeature(int CustomFeatureID)
+        {
+            CustomFeature dbEntry = context.CustomFeatures
+                .FirstOrDefault(p => p.CustomFeaturesID == CustomFeatureID);
+            if (dbEntry != null)
+            {
+                context.CustomFeatures.Remove(dbEntry);
+                context.SaveChanges();
+            }
+            return dbEntry;
+        }
+        public TriggeringCustSoft DeleteTriggeringCustSoft(int TriggeringCustSoftID)
+        {
+            TriggeringCustSoft dbEntry = context.TriggeringCustSofts
+                .FirstOrDefault(p => p.TriggeringCustSoftID == TriggeringCustSoftID);
+            if (dbEntry != null)
+            {
+                context.TriggeringCustSofts.Remove(dbEntry);
                 context.SaveChanges();
             }
             return dbEntry;
@@ -587,7 +684,7 @@ namespace ProdFloor.Models
                 }
             }
 
-            if (viewModelToSave.SpecialFeatureslist != null )
+            if (viewModelToSave.SpecialFeatureslist != null)
             {
                 for (int i = 0; i < viewModelToSave.SpecialFeatureslist.Count; i++)
                 {
@@ -619,6 +716,28 @@ namespace ProdFloor.Models
                         {
                             viewModelToSave.POList[i].POID = viewModelToSave.POList[i].POID;
                             SavePO(viewModelToSave.POList[i]);
+                        }
+                    }
+                }
+            }
+        }
+        public void SaveJobCsutomSoftware(CustomSoftwareViewModel viewModelToSave)
+        {
+            SaveCustomSoftware(viewModelToSave.CustomSoftware);
+            if (viewModelToSave.TriggeringList != null)
+            {
+                for (int i = 0; i < viewModelToSave.TriggeringList.Count; i++)
+                {
+                    if (viewModelToSave.TriggeringList[i].CustomSoftwareID != 0)
+                    {
+                        if (viewModelToSave.TriggeringList == null)
+                        {
+                            SaveTriggeringCustSoft(viewModelToSave.TriggeringList[i]);
+                        }
+                        else
+                        {
+                            viewModelToSave.TriggeringList[i].TriggeringCustSoftID = viewModelToSave.TriggeringList[i].TriggeringCustSoftID;
+                            SaveTriggeringCustSoft(viewModelToSave.TriggeringList[i]);
                         }
                     }
                 }

@@ -67,6 +67,7 @@ namespace ProdFloor.Models
         public Indicator _Indicator { get; set; }
         public HoistWayData _HoistWayData { get; set; }
         public List<SpecialFeatures> _SpecialFeatureslist { get; set; }
+        public List<CustomFeatures> _CustomFeatures { get; set; }
         public List<PO> _PO { get; set; }
         [Display(Name = "Job Type")]
         public int JobTypeID { get; set; }
@@ -638,15 +639,27 @@ namespace ProdFloor.Models
         public Job Job { get; set; }
     }
 
-    /*It is not need it
-    public class StatusIndicator
+   public class CustomSoftware
     {
-        public int StatusIndicatorID { get; set; }
-        public int JobID { get; set; }
-
-        public string Name { get; set; }
-        public int Voltage { get; set; }
-        public string VoltageType { get; set; }
+        public int CustomSoftwareID { get; set; }
+        public string Description { get; set; }
+        
+        public List<TriggeringCustSoft> _TriggeringCustSofts { get; set; }
+        public List<CustomFeatures> _CustomFeatures { get; set; }
     }
-    */
+
+    public class TriggeringCustSoft
+    {
+        public int TriggeringCustSoftID { get; set; }
+        public int CustomSoftwareID { get; set; }
+        public string Name { get; set; }
+        public bool isSelected { get; set; }
+    }
+
+    public class CustomFeature
+    {
+        public int CustomFeaturesID { get; set; }
+        public int CustomSoftwareID { get; set; }
+        public int JobID { get; set; }
+    }
 }
