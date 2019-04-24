@@ -436,7 +436,7 @@ namespace ProdFloor.Infrastructure
                 case "JobType":
                     return new List<string> { "Simplex", "Duplex", "Group" }.AsQueryable();
                 case "JobType2":
-                    return new List<string> { "Selective Collective", "SAPB Single Automatic Pushbutton", "SBC Single Button Collective" }.AsQueryable();
+                    return new List<string> { "Selective Collective", "SAPB Single Automatic Pushbutton", "SBC Single Button Collective", "Duplex Operation", "Group Operation" }.AsQueryable();
                 default:
                     return new List<string> { "Chime", "Gong" }.AsQueryable();
             }
@@ -707,6 +707,8 @@ namespace ProdFloor.Infrastructure
 
         [HtmlAttributeName("asp-is-disabled")]
         public bool IsDisabled { set; get; }
+
+
             
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
@@ -894,11 +896,16 @@ namespace ProdFloor.Infrastructure
 
         public int SelectedValue { get; set; }
 
+        public int SelectFor { get; set; }
+
+        
         [HtmlAttributeName("asp-is-disabled")]
         public bool IsDisabled { set; get; }
 
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
+            
+
             IUrlHelper urlHelper = urlHelperFactory.GetUrlHelper(ViewContext);
             output.TagName = "select";
             TagBuilder result = new TagBuilder("select");
@@ -912,7 +919,8 @@ namespace ProdFloor.Infrastructure
             m_tag.Attributes["value"] = "";
             m_tag.InnerHtml.Append("Please select one");
             result.InnerHtml.AppendHtml(m_tag);
-            IQueryable<LandingSystem> landigSystems = itemsrepository.LandingSystems.AsQueryable();
+            var jobtypeName = itemsrepository.JobTypes.FirstOrDefault(m => m.JobTypeID == SelectFor).Name;
+            IQueryable<LandingSystem> landigSystems = itemsrepository.LandingSystems.Where(m => m.UsedIn == jobtypeName).AsQueryable();
             foreach (LandingSystem landingSys in landigSystems)
             {
                 TagBuilder tag = new TagBuilder("option");
@@ -1599,7 +1607,7 @@ namespace ProdFloor.Infrastructure
                                             ,"Custom","MRL","CTL2","Tarjeta CPI Incluida","Door Control en Cartop","Canada","Ontario","Manual Doors","Duplex","Serial Halls Calls"
                                             ,"Edge-LS","Rail-LS", "mView","iMonitor","HAPS Battery","2+ Starters", "MOD Door Operator"}.AsQueryable();
                 case "TriggerCustom":
-                    return new List<string> {"Contractor", "Fire Code","City", "VCI","Valve Brand","Switch Style","Landing System"}.AsQueryable();
+                    return new List<string> {"Contractor", "Fire Code","City", "VCI","Valve Brand","Switch Style","Landing System", "State" }.AsQueryable();
                 default:
                     return new List<string> {"Overlay", "Group","PC de Cliente", "Brake Coil Voltage > 10","EMBrake Module","EMCO Board","R6 Regen Unit","Local","ShortFloor"
                                             ,"Custom","MRL","CTL2","Tarjeta CPI Incluida","Door Control en Cartop","Canada","Ontario","Manual Doors","Duplex","Serial Halls Calls"

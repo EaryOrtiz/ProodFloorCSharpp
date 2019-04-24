@@ -52,7 +52,7 @@
         <div class="form-group row has-warning has-feedback" style="margin-bottom:0.5em;">
             <label asp-for="CurrentHoistWayData.LandingSystemID" class="col-sm-5 col-form-label"></label>
             <div>
-                <landing-sys-select selected-value="@Model.CurrentHoistWayData.LandingSystemID" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control form-control-sm" asp-for="CurrentHoistWayData.LandingSystemID"></landing-sys-select>
+                <landing-sys-select  select-for="@Model.CurrentJob.JobTypeID" selected-value="@Model.CurrentHoistWayData.LandingSystemID" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control form-control-sm" asp-for="CurrentHoistWayData.LandingSystemID"></landing-sys-select>
                 <span asp-validation-for="CurrentHoistWayData.LandingSystemID" class="text-danger"></span>
             </div>
         </div>

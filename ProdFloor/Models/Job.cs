@@ -608,10 +608,10 @@ namespace ProdFloor.Models
         }
 
         [Required(ErrorMessage = "Please enter a number of hoistways")]
-        [Display(Name = "Number of Hoistways")]
+        [Display(Name = "Hoistways Number")]
         public int HoistWaysNumber { get; set; }
         [Required(ErrorMessage = "Please enter a number of Machine Rooms")]
-        [Display(Name = "Number of Machine Rooms")]
+        [Display(Name = "Machine Rooms Number")]
         public int MachineRooms { get; set; }
 
         [Required(ErrorMessage = "Please enter the capacity")]

@@ -1652,13 +1652,13 @@ namespace ProdFloor.Models
                     {
                         LandingSystemID = 4,
                         Name = "LS-QUTE",
-                        UsedIn = "ElemHydro"
+                        UsedIn = "ElmHydro"
                     },
                     new LandingSystem
                     {
                         LandingSystemID = 5,
                         Name = "LS-EDGE",
-                        UsedIn = "ElemHydro"
+                        UsedIn = "ElmHydro"
                     },
                     new LandingSystem
                     {
@@ -1676,13 +1676,13 @@ namespace ProdFloor.Models
                     {
                         LandingSystemID = 8,
                         Name = "LS-Rail",
-                        UsedIn = "ElemTraction"
+                        UsedIn = "ElmHydro"
                     },
                     new LandingSystem
                     {
                         LandingSystemID = 9,
                         Name = "LS-EDGE",
-                        UsedIn = "ElemTraction"
+                        UsedIn = "ElmTract"
                     }
                     );
                 context.Database.OpenConnection();

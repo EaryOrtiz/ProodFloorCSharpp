@@ -352,6 +352,7 @@ namespace ProdFloor.Controllers
             var OverloadReferSearch = repository.Ovearloads.AsQueryable();
             var LandingList = repository.LandingSystems.AsQueryable();
             var FireCodeList = repository.FireCodes.AsQueryable();
+            var StatesList = repository.States.AsQueryable();
             var CitiesList = repository.Cities.AsQueryable();
             var POTotalList = jobrepo.POs.AsQueryable();
             ViewModel.status = null;
@@ -432,6 +433,14 @@ namespace ProdFloor.Controllers
 
                         #region CustomSoftWare
                         //Rellena las listas que se llenaran para la comparacion
+                        List<CustomFeature> FilteredCustomsF = jobrepo.CustomFeatures.Where(m => m.JobID == JobSearch.JobID).ToList();
+                        if(FilteredCustomsF.Count() > 0)
+                        {
+                            foreach(CustomFeature obj in FilteredCustomsF)
+                            {
+                                jobrepo.DeleteCustomFeature(obj.CustomFeatureID);
+                            }
+                        }
                         List<CustomSoftware> Customs = jobrepo.CustomSoftwares.Include(m => m._CustomFeatures).ToList();
                         List<TriggeringCustSoft> TriggersWithNameNull = jobrepo.TriggeringCustSofts.Where(m => m.Name == null).ToList();
                         List<TriggeringCustSoft> TriggersWithOutNameNull = jobrepo.TriggeringCustSofts.Where(m => m.Name != null).ToList();
@@ -479,6 +488,9 @@ namespace ProdFloor.Controllers
                                             {
                                                 case "Contractor": if (trigger.isSelected && trigger.itemToMatch == JobSearch.Contractor) { countAux++; } break;
                                                 case "Fire Code": if (trigger.isSelected && trigger.itemToMatch == FireCodeList.First(m => m.FireCodeID == JobSearch.FireCodeID).Name) { countAux++; } break;
+                                                case "State":
+                                                    City Onecity = CitiesList.FirstOrDefault(m => m.CityID == JobSearch.CityID);
+                                                    if ((trigger.isSelected && trigger.itemToMatch == StatesList.First(m => m.StateID == Onecity.StateID).Name)) { countAux++; } break;
                                                 case "City": if ((trigger.isSelected && trigger.itemToMatch == CitiesList.First(m => m.CityID == JobSearch.CityID).Name)) { countAux++; } break;
                                                 case "VCI": if (trigger.isSelected == JobSearch._HydroSpecific.VCI) { countAux++; } break;
                                                 case "Valve Brand": if (trigger.isSelected && trigger.itemToMatch == JobSearch._HydroSpecific.ValveBrand) { countAux++; } break;
@@ -503,9 +515,15 @@ namespace ProdFloor.Controllers
                                 }
                             }
                         }
-                        List<CustomFeature> FilteredCustomsF = jobrepo.CustomFeatures.Where(m => m.JobID == JobSearch.JobID).ToList();
-                        List<CustomSoftware> FilteredCustomSoftware = Customs.Where(m => m._CustomFeatures.Select(n => n.CustomSoftwareID).Equals(FilteredCustomsF.Select(s => s.CustomSoftwareID))).ToList();
+                        List<CustomSoftware> FilteredCustomSoftware = new List<CustomSoftware>();
+                        FilteredCustomsF = jobrepo.CustomFeatures.Where(m => m.JobID == JobSearch.JobID).ToList();
+                        foreach (CustomFeature custom in FilteredCustomsF)
+                        {
+                           CustomSoftware one = Customs.FirstOrDefault(m => m.CustomSoftwareID == custom.CustomSoftwareID);
+                           if(one != null)FilteredCustomSoftware.Add(one);
+                        }
                         
+
 
                         #endregion
 
@@ -513,7 +531,7 @@ namespace ProdFloor.Controllers
 
                         //Lista para strater and overload table
                         List<Starter> StarterList = StarterReferSearch.Where(m => m.Volts == ViewModel.Volts && m.StarterType == JobSearch._HydroSpecific.Starter
-                && m.FLA >= ViewModel.FLA && m.HP >= ViewModel.HP).OrderBy(o => o.FLA).Skip(0).Take(4).ToList();
+                        && m.FLA >= ViewModel.FLA && m.HP >= ViewModel.HP).OrderBy(o => o.FLA).Skip(0).Take(4).ToList();
 
                         if (StarterList.Count > 0)
                         {
