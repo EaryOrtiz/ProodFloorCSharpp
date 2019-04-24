@@ -654,6 +654,7 @@ namespace ProdFloor.Models
         public int CustomSoftwareID { get; set; }
         public string Name { get; set; }
         public bool isSelected { get; set; }
+        public string itemToMatch { get; set; }
     }
 
     public class CustomFeature

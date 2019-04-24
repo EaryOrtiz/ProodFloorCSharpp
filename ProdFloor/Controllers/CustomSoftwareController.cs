@@ -161,7 +161,7 @@ namespace ProdFloor.Controllers
         }
 
         [HttpPost]
-        public IActionResult DeleteCS(int fieldID, string returnUrl, CustomSoftwareViewModel viewModel)
+        public IActionResult DeleteCS(int fieldID, int customID)
         {
             TriggeringCustSoft deletedField = Jobrepo.DeleteTriggeringCustSoft(fieldID);
             if (deletedField != null)
@@ -173,7 +173,7 @@ namespace ProdFloor.Controllers
                 TempData["alert"] = $"alert-danger";
                 TempData["message"] = $"There was an error with your request{fieldID}";
             }
-            return Redirect(returnUrl);
+            return RedirectToAction("Edit", new { id = customID });
         }
 
         /*

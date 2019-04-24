@@ -1,9 +1,9 @@
 ﻿@model ProdFloor.Models.ViewModels.Job.CustomSoftwareViewModel
 <input type="hidden" asp-for="CustomSoftware.CustomSoftwareID" />
-<div class="form-group row">
-    <label asp-for="CustomSoftware.Description" class="col-sm-2 col-form-label"></label>
+<div class="form-group box-shadow">
+    <label asp-for="CustomSoftware.Description" class="col-form-label"></label>
     <div>
-        <input asp-for="CustomSoftware.Description" class="form-control col-sm-12" />
+        <textarea asp-for="CustomSoftware.Description"class="form-control box-shadow" rows="3"></textarea>
         <span asp-validation-for="CustomSoftware.Description" class="text-danger"></span>
     </div>
 </div>

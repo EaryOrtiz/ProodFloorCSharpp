@@ -400,6 +400,7 @@ namespace ProdFloor.Models
                     dbEntry.CustomSoftwareID = triggering.CustomSoftwareID;
                     dbEntry.Name = triggering.Name;
                     dbEntry.isSelected = triggering.isSelected;
+                    dbEntry.itemToMatch = triggering.itemToMatch;
                 }
             }
             context.SaveChanges();
