@@ -27,7 +27,7 @@
             <a class="nav-link @(Model.SHCisSelected == false ? "disabled" : " ")" data-toggle="tab" href="#SHCSearch" role="tab">SHC Calculator</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link @(User.IsInRole("Admin")  ? "disabled" : " ")" data-toggle="tab" href="#Custom" role="tab">Custom Software</a>
+            <a class="nav-link @(!User.IsInRole("Admin")  ? "disabled" : " ")" data-toggle="tab" href="#Custom" role="tab">Custom Software</a>
         </li>
     </ul>
     <div class="tab-content" style="padding:20px">
