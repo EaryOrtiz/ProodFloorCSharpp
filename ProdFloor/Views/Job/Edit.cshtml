@@ -29,9 +29,9 @@
             <i class="fas fa-ellipsis-v"></i>
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <a asp-action="CopyJob" asp-controller="Job"  asp-route-id="@Model.CurrentJob.JobID" class="dropdown-item">Copy Job </a>
+            <a asp-action="CopyJob" asp-controller="Job" asp-route-id="@Model.CurrentJob.JobID" class="dropdown-item">Copy Job </a>
             <form asp-action="ExportUniqueJobToXML" asp-controller="Job" method="post">
-                <button type="submit" asp-action="ExportUniqueJobToXML" asp-controller="Job"   asp-route-id="@Model.CurrentJob.JobID" class="dropdown-item">Export Job to XML </button>
+                <button type="submit" asp-action="ExportUniqueJobToXML" asp-controller="Job" asp-route-id="@Model.CurrentJob.JobID" class="dropdown-item">Export Job to XML </button>
             </form>
         </div>
     </li>
