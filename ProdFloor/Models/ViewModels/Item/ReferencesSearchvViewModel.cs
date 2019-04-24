@@ -12,6 +12,8 @@ namespace ProdFloor.Models.ViewModels.Item
         public List<Models.Job> JobsSearchList { get; set; }
         public List<HydroSpecific> HydroSpecificList { get; set; }
         public List<HoistWayData> HoistWayDataList { get; set; }
+        public List<PO> POList { get; set; }
+        public List<CustomSoftware> CustomSoftList { get; set; }
         public bool RefernceData { get; set; }
 
         //Atributos de Job
