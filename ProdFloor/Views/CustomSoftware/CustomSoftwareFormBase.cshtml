@@ -1,0 +1,9 @@
+﻿@model CustomSoftware
+<input type="hidden" asp-for="CustomSoftwareID" />
+<div class="form-group box-shadow">
+    <label asp-for="Description" class="col-form-label"></label>
+    <div>
+        <textarea asp-for="Description" class="form-control box-shadow" rows="3"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+</div>

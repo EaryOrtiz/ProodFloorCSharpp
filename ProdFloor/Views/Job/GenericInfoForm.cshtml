@@ -1,6 +1,9 @@
 ﻿@model JobViewModel
 <input type="hidden" asp-for="CurrentGenericFeatures.JobID" />
 <input type="hidden" asp-for="CurrentGenericFeatures.GenericFeaturesID" />
+<input type="hidden" asp-for="CurrentJob.JobID" />
+<input type="hidden" asp-for="CurrentJob.Status" />
+<input type="hidden" asp-for="CurrentJob.EngID" />
 <div class="form-row col-sm-12" style="padding-bottom:15px">
     <div class="col-4 form-line border-right justify-content-md-center">
         <div class="form-group row">
@@ -83,7 +86,7 @@
                     <label class="custom-control-label" asp-for="CurrentGenericFeatures.EPOtherCars" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></label>
                 </div>
             </div>
-            <div class="form-group row">
+            <div class="form-group row" style="margin-bottom:0.5em;">
                 <label asp-for="CurrentGenericFeatures.EPCarsNumber" class="col-form-label"></label>
                 <div>
                     <indicators select-for="EPCars" style="margin-left:15px;" selected-value="@Model.CurrentGenericFeatures.EPCarsNumber"
@@ -91,7 +94,7 @@
                     <span asp-validation-for="CurrentGenericFeatures.EPCarsNumber" class="text-danger"></span>
                 </div>
             </div>
-            <div class="form-group row">
+            <div class="form-group row" style="margin-bottom:0.5em;">
                 <label asp-for="CurrentGenericFeatures.EPContact" class="col-form-label"></label>
                 <div>
                     <indicators select-for="EPContact" style="margin-left:65px;" selected-value="@Model.CurrentGenericFeatures.EPContact"
@@ -130,9 +133,9 @@
         </div>
         <div class="form-group row">
             <div class="custom-control custom-checkbox">
-                <input type="checkbox" asp-for="CurrentGenericFeatures.Ind" class="custom-control-input" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)">
-                <div><span asp-validation-for="CurrentGenericFeatures.Ind" class="text-danger" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></span></div>
-                <label class="custom-control-label" asp-for="CurrentGenericFeatures.Ind" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></label>
+                <input type="checkbox" asp-for="CurrentGenericFeatures.Pit" class="custom-control-input" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)">
+                <div><span asp-validation-for="CurrentGenericFeatures.Pit" class="text-danger" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></span></div>
+                <label class="custom-control-label" asp-for="CurrentGenericFeatures.Pit" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></label>
             </div>
         </div>
         <div class="form-group row">
@@ -205,7 +208,7 @@
                 </div>
             </div>
             <div class="form-group row">
-                <label asp-for="CurrentGenericFeatures.Monitoring" class="col-form-label"></label>
+                <label asp-for="CurrentGenericFeatures.Monitoring" style="margin-bottom:0.5em;" class="col-form-label"></label>
                 <div>
                     <indicators select-for="Monitoring" style="margin-left:70px;" selected-value="@Model.CurrentGenericFeatures.Monitoring"
                                 asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class=" col-8 form-control form-control-sm" asp-for="CurrentGenericFeatures.Monitoring"></indicators>
@@ -268,10 +271,18 @@
                         <label class="custom-control-label" asp-for="CurrentGenericFeatures.HCRO" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></label>
                     </div>
                 </div><br /><br />
-                <div class="form-inline">
+                <div class="form-group row">
+                    <div class="form-inline">
+                        <input id="SecurityCodeSelected" asp-for="CurrentGenericFeatures.BSI" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-check-input" />
+                        <div><span asp-validation-for="CurrentGenericFeatures.BSI" class="text-danger" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></span></div>
+                        <label asp-for="CurrentGenericFeatures.BSI" class="col-form-label" style="margin-left:15px;"></label>
+                    </div>
+                </div>
+                <div id="SecurityCode" class="form-inline">
                     <label asp-for="CurrentGenericFeatures.CarCallCodeSecurity" class="col-form-label"></label>
                     <div>
-                        <input asp-for="CurrentGenericFeatures.CarCallCodeSecurity" style="margin-left:20px;" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control" />
+                        <custom-select select-for="CarCode" style="margin-left:65px;" selected-value="@Model.CurrentGenericFeatures.CarCallCodeSecurity"
+                                       asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="col-9 form-control form-control-sm" asp-for="CurrentGenericFeatures.CarCallCodeSecurity"></custom-select>
                         <span asp-validation-for="CurrentGenericFeatures.CarCallCodeSecurity" class="text-danger"></span>
                     </div>
                 </div><br />
@@ -358,6 +369,18 @@
         });
     </script>
 }
+@if (Model.CurrentGenericFeatures.CallEnable == false || Model.CurrentGenericFeatures.BSI == false)
+{
+    <script type="text/javascript">
+        $("#SecurityCodeSelected").ready(function () {
+            $("#SecurityCode").hide();
+        });
+
+        $("#SecurityCodeSelected").click(function () {
+            $("#SecurityCode")[this.checked ? "show" : "hide"]();
+        });
+    </script>
+}
 @if (Model.CurrentGenericFeatures.CallEnable == false)
 {
     <script type="text/javascript">
@@ -370,4 +393,5 @@
         });
     </script>
 }
+
 

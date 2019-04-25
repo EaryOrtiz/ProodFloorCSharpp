@@ -12,6 +12,8 @@ namespace ProdFloor.Models.ViewModels.Item
         public List<Models.Job> JobsSearchList { get; set; }
         public List<HydroSpecific> HydroSpecificList { get; set; }
         public List<HoistWayData> HoistWayDataList { get; set; }
+        public List<PO> POList { get; set; }
+        public List<CustomSoftware> CustomSoftList { get; set; }
         public bool RefernceData { get; set; }
 
         //Atributos de Job
@@ -60,13 +62,14 @@ namespace ProdFloor.Models.ViewModels.Item
 
         //Starter Table
         public string Brand { get; set; }
-        public int FLA { get; set; }
+        public float FLA { get; set; }
         public string TypeS { get; set; }
         public string Volts { get; set; }
         public float HP { get; set; }
         public string MCPart { get; set; }
         public string NewManufacturerPart { get; set; }
         public string OverloadTable { get; set; }
+        public int InputPhase { get; set; }
 
         //Overload
         public float AMPMin { get; set; } //FLA

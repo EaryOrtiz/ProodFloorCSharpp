@@ -20,19 +20,18 @@ namespace ProdFloor.Models
         [NotMapped]
         public int CurrentUserID { get; set; }
 
-        [StringLength(78, ErrorMessage = "The maximum length of the {0} field is {1}")]
+        [StringLength(50, ErrorMessage = "The maximum length of the {0} field is {1}")]
         [Required(ErrorMessage = "Please enter a name")]
         public string Name { get; set; }
+
+        [Display(Name = "Name #2")]
+        [StringLength(50, ErrorMessage = "The maximum length of the {0} field is {1}")]
+        public string Name2 { get; set; }
 
         [Display(Name = "Job Number")]
         [Range(2015000000, 3030000000, ErrorMessage = "Job number is out of range")]
         [Required(ErrorMessage = "Please enter a Job Num")]
         public int JobNum { get; set; }
-
-        [Display(Name = "PO #")]
-        [Range(3000000, 4900000, ErrorMessage = "PO number is out of range")]
-        [Required(ErrorMessage = "Please enter a PO")]
-        public int PO { get; set; }
 
         [Display(Name = "Shipping Date")]
         [Required(ErrorMessage = "Please enter a Shipping Date")]
@@ -68,6 +67,8 @@ namespace ProdFloor.Models
         public Indicator _Indicator { get; set; }
         public HoistWayData _HoistWayData { get; set; }
         public List<SpecialFeatures> _SpecialFeatureslist { get; set; }
+        public List<CustomFeature> _CustomFeatures { get; set; }
+        public List<PO> _PO { get; set; }
         [Display(Name = "Job Type")]
         public int JobTypeID { get; set; }
         [Display(Name = "City")]
@@ -75,6 +76,16 @@ namespace ProdFloor.Models
         [Display(Name = "Fire Code")]
         public int FireCodeID { get; set; }
 
+    }
+
+    public class PO
+    {
+        public int POID { get; set; }
+        public int JobID { get; set; }
+        [Display(Name = "PO #")]
+        [Range(3000000, 4900000, ErrorMessage = "PO number is out of range")]
+        [Required(ErrorMessage = "Please enter a PO")]
+        public int PONumb { get; set; }
     }
 
     public class JobExtension
@@ -152,6 +163,15 @@ namespace ProdFloor.Models
         [Display(Name = "Serial Hall Calls")]
         public bool SHC { get; set; }
 
+        [Display(Name = "Swing Operation")]
+        public bool SwingOp { get; set; }
+
+        [Display(Name = "Back Up Dispatcher")]
+        public bool BackUpDisp { get; set; }
+
+        [Display(Name = "Alternate Riser")]
+        public bool AltRis { get; set; }
+
         [Display(Name = "SHC Risers #")]
         public int SHCRisers { get; set; }
 
@@ -175,7 +195,7 @@ namespace ProdFloor.Models
         public int HP { get; set; }
 
         [Required(ErrorMessage = "Please enter the FLA")]
-        public int FLA { get; set; }
+        public float FLA { get; set; }
 
         [Required(ErrorMessage = "Please enter the starts per hour")]
         public int SPH { get; set; }
@@ -236,7 +256,7 @@ namespace ProdFloor.Models
     {
         public int GenericFeaturesID { get; set; }
         public int JobID { get; set; }
-        
+
         [Display(Name = "Additional Fire Recall")]
         public bool FRON2 { get; set; }
         [Display(Name = "Attendant Service")]
@@ -272,8 +292,8 @@ namespace ProdFloor.Models
         public bool FLO { get; set; }
         [Display(Name = "Hospital")]
         public bool Hosp { get; set; }
-        [Display(Name = "Independent")]
-        public bool Ind { get; set; }
+        [Display(Name = "Pit Flood")]
+        public bool Pit { get; set; }
 
         // Hoistway Access Options
         [Display(Name = "Hoistway Access")]
@@ -331,7 +351,8 @@ namespace ProdFloor.Models
         public bool CRO { get; set; }
         [Display(Name = "HCRO")]
         public bool HCRO { get; set; }
-
+        [Display(Name = "BSI")]
+        public bool BSI { get;set;}
         [Display(Name = "Car call code security")]
         [StringLength(50, ErrorMessage = "The maximum length of the {0} field is {1}")]
         public string CarCallCodeSecurity { get; set; }
@@ -587,10 +608,10 @@ namespace ProdFloor.Models
         }
 
         [Required(ErrorMessage = "Please enter a number of hoistways")]
-        [Display(Name = "Number of Hoistways")]
+        [Display(Name = "Hoistways Number")]
         public int HoistWaysNumber { get; set; }
         [Required(ErrorMessage = "Please enter a number of Machine Rooms")]
-        [Display(Name = "Number of Machine Rooms")]
+        [Display(Name = "Machine Rooms Number")]
         public int MachineRooms { get; set; }
 
         [Required(ErrorMessage = "Please enter the capacity")]
@@ -618,15 +639,28 @@ namespace ProdFloor.Models
         public Job Job { get; set; }
     }
 
-    /*It is not need it
-    public class StatusIndicator
+   public class CustomSoftware
     {
-        public int StatusIndicatorID { get; set; }
-        public int JobID { get; set; }
-
-        public string Name { get; set; }
-        public int Voltage { get; set; }
-        public string VoltageType { get; set; }
+        public int CustomSoftwareID { get; set; }
+        public string Description { get; set; }
+        
+        public List<TriggeringCustSoft> _TriggeringCustSofts { get; set; }
+        public List<CustomFeature> _CustomFeatures { get; set; }
     }
-    */
+
+    public class TriggeringCustSoft
+    {
+        public int TriggeringCustSoftID { get; set; }
+        public int CustomSoftwareID { get; set; }
+        public string Name { get; set; }
+        public bool isSelected { get; set; }
+        public string itemToMatch { get; set; }
+    }
+
+    public class CustomFeature
+    {
+        public int CustomFeatureID { get; set; }
+        public int CustomSoftwareID { get; set; }
+        public int JobID { get; set; }
+    }
 }

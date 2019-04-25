@@ -323,6 +323,8 @@ namespace ProdFloor.Infrastructure
                     return itemsrepository.DoorOperators.Select(d => d.Style).Distinct();
                 case "SwitchStyle":
                     return new List<string> { "2-Position", "3-Position" }.AsQueryable();
+                case "CarCode":
+                    return new List<string> { "Key", "IMonitor" }.AsQueryable();
                 case "SPH":
                     return new List<string> { "80", "120" }.AsQueryable();
                 case "Starter":
@@ -433,7 +435,7 @@ namespace ProdFloor.Infrastructure
                 case "JobType":
                     return new List<string> { "Simplex", "Duplex", "Group" }.AsQueryable();
                 case "JobType2":
-                    return new List<string> { "Selective Collective", "Duplex Selective Collective", "Group Operation" }.AsQueryable();
+                    return new List<string> { "Selective Collective", "SAPB Single Automatic Pushbutton", "SBC Single Button Collective", "Duplex Operation", "Group Operation" }.AsQueryable();
                 default:
                     return new List<string> { "Chime", "Gong" }.AsQueryable();
             }
@@ -458,7 +460,7 @@ namespace ProdFloor.Infrastructure
             }
             TagBuilder m_tag = new TagBuilder("option");
             m_tag.Attributes["value"] = "";
-            m_tag.InnerHtml.Append("---");
+            m_tag.InnerHtml.Append(" --- Please Select one--- ");
             result.InnerHtml.AppendHtml(m_tag);
             IQueryable<string> options = CaseFor(SelectFor);
             foreach (string option in options)
@@ -891,11 +893,16 @@ namespace ProdFloor.Infrastructure
 
         public int SelectedValue { get; set; }
 
+        public int SelectFor { get; set; }
+
+        
         [HtmlAttributeName("asp-is-disabled")]
         public bool IsDisabled { set; get; }
 
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
+            
+
             IUrlHelper urlHelper = urlHelperFactory.GetUrlHelper(ViewContext);
             output.TagName = "select";
             TagBuilder result = new TagBuilder("select");
@@ -909,7 +916,8 @@ namespace ProdFloor.Infrastructure
             m_tag.Attributes["value"] = "";
             m_tag.InnerHtml.Append("Please select one");
             result.InnerHtml.AppendHtml(m_tag);
-            IQueryable<LandingSystem> landigSystems = itemsrepository.LandingSystems.AsQueryable();
+            var jobtypeName = itemsrepository.JobTypes.FirstOrDefault(m => m.JobTypeID == SelectFor).Name;
+            IQueryable<LandingSystem> landigSystems = itemsrepository.LandingSystems.Where(m => m.UsedIn == jobtypeName).AsQueryable();
             foreach (LandingSystem landingSys in landigSystems)
             {
                 TagBuilder tag = new TagBuilder("option");
@@ -1556,6 +1564,85 @@ namespace ProdFloor.Infrastructure
                     tag.Attributes["selected"] = "selected";
                 }
                 tag.InnerHtml.Append(option);
+                result.InnerHtml.AppendHtml(tag);
+            }
+            output.Content.AppendHtml(result.InnerHtml);
+            if (IsDisabled)
+            {
+                var d = new TagHelperAttribute("disabled", "disabled");
+                output.Attributes.Add(d);
+            }
+            base.Process(context, output);
+        }
+    }
+
+    public class Trigger2SelectTagHelper : TagHelper
+    {
+        private IItemRepository itemsrepository;
+
+        private IUrlHelperFactory urlHelperFactory;
+
+        public ModelExpression AspFor { get; set; }
+
+        public string SelectFor { get; set; }
+
+        public Trigger2SelectTagHelper(IUrlHelperFactory helperFactory, IItemRepository itemsrepo)
+        {
+            urlHelperFactory = helperFactory;
+            itemsrepository = itemsrepo;
+        }
+
+        [HtmlAttributeName("asp-is-disabled")]
+        public bool IsDisabled { set; get; }
+
+        private IQueryable<string> CaseFor(string value)
+        {
+            switch (value)
+            {
+                case "TriggerFeature":
+                    return new List<string> {"Overlay", "Group","PC de Cliente", "Brake Coil Voltage > 10","EMBrake Module","EMCO Board","R6 Regen Unit","Local","Short Floor"
+                                            ,"Custom","MRL","CTL2","Tarjeta CPI Incluida","Door Control en Cartop","Canada","Ontario","Manual Doors","Duplex","Serial Halls Calls"
+                                            ,"Edge-LS","Rail-LS", "mView","iMonitor","HAPS Battery","2+ Starters", "MOD Door Operator"}.AsQueryable();
+                case "TriggerCustom":
+                    return new List<string> {"Contractor", "Fire Code","City", "VCI","Valve Brand","Switch Style","Landing System", "State" }.AsQueryable();
+                default:
+                    return new List<string> {"Overlay", "Group","PC de Cliente", "Brake Coil Voltage > 10","EMBrake Module","EMCO Board","R6 Regen Unit","Local","ShortFloor"
+                                            ,"Custom","MRL","CTL2","Tarjeta CPI Incluida","Door Control en Cartop","Canada","Ontario","Manual Doors","Duplex","Serial Halls Calls"
+                                            ,"Edge-LS","Rail-LS", "mView","iMonitor","HAPS Battery","2+ Starters", "MOD Door Operator"}.AsQueryable();
+            }
+        }
+
+        [ViewContext]
+        [HtmlAttributeNotBound]
+        public ViewContext ViewContext { get; set; }
+
+        public string SelectedValue { get; set; }
+
+        public override void Process(TagHelperContext context, TagHelperOutput output)
+        {
+            IUrlHelper urlHelper = urlHelperFactory.GetUrlHelper(ViewContext);
+            output.TagName = "select";
+            TagBuilder result = new TagBuilder("select");
+            string name = this.AspFor.Name;
+            if (!String.IsNullOrEmpty(name))
+            {
+                output.Attributes.Add("id", name);
+                output.Attributes.Add("name", name);
+            }
+            TagBuilder m_tag = new TagBuilder("option");
+            m_tag.Attributes["value"] = "";
+            m_tag.InnerHtml.Append("Please select one");
+            result.InnerHtml.AppendHtml(m_tag);
+            IQueryable<string> options2 = CaseFor(SelectFor);
+            foreach (string option in options2)
+            {
+                TagBuilder tag = new TagBuilder("option");
+                tag.Attributes["value"] = option.ToString();
+                if (option.ToString() == SelectedValue)
+                {
+                    tag.Attributes["selected"] = "selected";
+                }
+                tag.InnerHtml.Append(option.ToString());
                 result.InnerHtml.AppendHtml(tag);
             }
             output.Content.AppendHtml(result.InnerHtml);

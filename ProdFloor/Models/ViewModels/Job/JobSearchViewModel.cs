@@ -33,6 +33,7 @@ namespace ProdFloor.Models.ViewModels.Job
         public int JobTypeID { get; set; }
         public SelectList Status;
         public string StatusJobSearch { get; set; }
+        public string Name2 { get; set; }
 
         //Atributos de JobExtensions
         public string AuxCop { get; set; }

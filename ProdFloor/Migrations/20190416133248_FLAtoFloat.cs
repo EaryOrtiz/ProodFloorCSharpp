@@ -4,28 +4,24 @@ using System.Collections.Generic;
 
 namespace ProdFloor.Migrations
 {
-    public partial class DeleteValveModel : Migration
+    public partial class FLAtoFloat : Migration
     {
-
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            /*
-            migrationBuilder.DropColumn(
-                name: "ValveModel",
-                table: "HydroSpecifics");
-                */
+            migrationBuilder.AlterColumn<float>(
+                name: "FLA",
+                table: "HydroSpecifics",
+                nullable: false,
+                oldClrType: typeof(int));
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            /*
-            migrationBuilder.AddColumn<string>(
-                name: "ValveModel",
+            migrationBuilder.AlterColumn<int>(
+                name: "FLA",
                 table: "HydroSpecifics",
-                maxLength: 50,
                 nullable: false,
-                defaultValue: "");
-                */
+                oldClrType: typeof(float));
         }
     }
 }

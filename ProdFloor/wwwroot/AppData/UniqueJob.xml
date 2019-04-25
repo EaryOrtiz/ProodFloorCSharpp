@@ -8,63 +8,91 @@
       <Name>EngTest2</Name>
       <JobNum>2016005002</JobNum>
       <PO>3000454</PO>
+      <ID>86</ID>
+      <Status>Working on it</Status>
+      <EngID>99972</EngID>
+      <CrossAppEngID>117</CrossAppEngID>
+      <Name>Eng Test 4</Name>
+      <Name2>name 2</Name2>
+      <JobNum>2016555454</JobNum>
       <ShipDate>1/1/0001 12:00:00 AM</ShipDate>
       <LatestFinishDate>1/1/0001 12:00:00 AM</LatestFinishDate>
       <Cust>5</Cust>
       <Contractor>eliud</Contractor>
       <JobTypeID>1</JobTypeID>
-      <CityID>36</CityID>
-      <FireCodeID>18</FireCodeID>
+      <CityID>65</CityID>
+      <FireCodeID>17</FireCodeID>
     </JobBase>
+    <POs>
+      <PO>
+        <ID>183</ID>
+        <JobID>86</JobID>
+        <PONumb>3955447</PONumb>
+      </PO>
+      <PO>
+        <ID>184</ID>
+        <JobID>86</JobID>
+        <PONumb>3878889</PONumb>
+      </PO>
+    </POs>
     <JobExtension>
       <ID>60</ID>
       <JobID>60</JobID>
+      <ID>25</ID>
+      <JobID>86</JobID>
       <NumOfStops>4</NumOfStops>
       <JobTypeMain>Simplex</JobTypeMain>
       <JobTypeAdd>Selective Collective</JobTypeAdd>
       <InputVoltage>208</InputVoltage>
       <InputPhase>3</InputPhase>
       <InputFrecuency>60</InputFrecuency>
-      <DoorGate>Manual</DoorGate>
+      <DoorGate>Automatic</DoorGate>
       <DoorHoist>Automatic</DoorHoist>
       <SHCRisers>3</SHCRisers>
-      <DoorOperatorID>2</DoorOperatorID>
-      <InfDetector>False</InfDetector>
-      <MechSafEdge>False</MechSafEdge>
-      <HeavyDoors>False</HeavyDoors>
+      <DoorOperatorID>16</DoorOperatorID>
+      <SwingOp>False</SwingOp>
+      <BackUpDisp>False</BackUpDisp>
+      <AltRis>False</AltRis>
+      <InfDetector>True</InfDetector>
+      <MechSafEdge>True</MechSafEdge>
+      <HeavyDoors>True</HeavyDoors>
       <CartopDoorButtons>False</CartopDoorButtons>
       <DoorHold>False</DoorHold>
       <Nudging>False</Nudging>
       <SCOP>True</SCOP>
-      <SHC>True</SHC>
+      <SHC>False</SHC>
       <AUXCOP>False</AUXCOP>
     </JobExtension>
     <HydroSpecific>
       <ID>33</ID>
       <JobID>60</JobID>
+      <ID>19</ID>
+      <JobID>86</JobID>
       <Starter>Siemens SS : 3/9</Starter>
-      <HP>15</HP>
-      <FLA>27</FLA>
+      <HP>40</HP>
+      <FLA>52</FLA>
       <SPH>120</SPH>
-      <MotorsNum>4</MotorsNum>
+      <MotorsNum>3</MotorsNum>
       <MotorsDisconnect>3</MotorsDisconnect>
-      <ValveBrand>Maxton</ValveBrand>
+      <ValveBrand>Blain</ValveBrand>
       <ValveCoils>3</ValveCoils>
-      <ValveNum>4</ValveNum>
-      <ValveVoltage>3</ValveVoltage>
-      <BatteryBrand>Nulo</BatteryBrand>
-      <Battery>False</Battery>
+      <ValveNum>3</ValveNum>
+      <ValveVoltage>564654</ValveVoltage>
+      <BatteryBrand>Other</BatteryBrand>
+      <Battery>True</Battery>
       <LifeJacket>False</LifeJacket>
       <LOS>False</LOS>
       <OilCool>False</OilCool>
       <OilTank>False</OilTank>
-      <PSS>False</PSS>
+      <PSS>True</PSS>
       <Resync>True</Resync>
       <VCI>True</VCI>
     </HydroSpecific>
     <GenericFeatures>
       <ID>32</ID>
       <JobID>60</JobID>
+      <ID>17</ID>
+      <JobID>86</JobID>
       <EPCarsNumber>Nulo</EPCarsNumber>
       <EPContact>Nulo</EPContact>
       <TopAccessLocation>Nulo</TopAccessLocation>
@@ -77,17 +105,17 @@
       <SpecialInstructions>Nulo</SpecialInstructions>
       <FRON2>True</FRON2>
       <Attendant>True</Attendant>
-      <CarToLobby>True</CarToLobby>
+      <CarToLobby>False</CarToLobby>
       <EQ>False</EQ>
       <EMT>False</EMT>
       <EP>False</EP>
       <EPVoltage>False</EPVoltage>
       <EPOtherCars>False</EPOtherCars>
-      <PTI>False</PTI>
+      <Pit>False</Pit>
       <EPSelect>False</EPSelect>
       <FLO>False</FLO>
       <Hosp>False</Hosp>
-      <Ind>False</Ind>
+      <Pit>False</Pit>
       <INA>False</INA>
       <TopAccess>False</TopAccess>
       <BottomAccess>False</BottomAccess>
@@ -102,10 +130,13 @@
       <HallKey>False</HallKey>
       <CRO>False</CRO>
       <HCRO>False</HCRO>
+      <BSI>False</BSI>
     </GenericFeatures>
     <Indicator>
       <ID>23</ID>
       <JobID>60</JobID>
+      <ID>16</ID>
+      <JobID>86</JobID>
       <CarCallsVoltage>24</CarCallsVoltage>
       <CarCallsVoltageType>DC</CarCallsVoltageType>
       <CarCallsType>LED</CarCallsType>
@@ -114,12 +145,12 @@
       <HallCallsType>LED</HallCallsType>
       <CarPIType>Emotive</CarPIType>
       <CarPIDiscreteType>Multi-light</CarPIDiscreteType>
-      <HallPIType>CE Electronics</HallPIType>
-      <HallPIDiscreteType>Multi-light</HallPIDiscreteType>
-      <VoiceAnnunciationPIType>CE Electronics</VoiceAnnunciationPIType>
-      <CarLanternsStyle>CE Electronics</CarLanternsStyle>
-      <CarLanternsType>Gong</CarLanternsType>
-      <HallLanternsStyle>CE Electronics</HallLanternsStyle>
+      <HallPIType>Emotive</HallPIType>
+      <HallPIDiscreteType>One line per floor</HallPIDiscreteType>
+      <VoiceAnnunciationPIType>Emotive</VoiceAnnunciationPIType>
+      <CarLanternsStyle>Emotive</CarLanternsStyle>
+      <CarLanternsType>Chime</CarLanternsType>
+      <HallLanternsStyle>Emotive</HallLanternsStyle>
       <HallLanternsType>Gong</HallLanternsType>
       <PassingFloorType>CE Electronics</PassingFloorType>
       <PassingFloorDiscreteType>Chime</PassingFloorDiscreteType>
@@ -138,28 +169,32 @@
       <JobID>60</JobID>
       <HoistWaysNumber>4</HoistWaysNumber>
       <MachineRooms>5</MachineRooms>
+      <ID>16</ID>
+      <JobID>86</JobID>
+      <HoistWaysNumber>3</HoistWaysNumber>
+      <MachineRooms>3</MachineRooms>
       <Capacity>3</Capacity>
-      <UpSpeed>105</UpSpeed>
-      <DownSpeed>200</DownSpeed>
-      <TotalTravel>5</TotalTravel>
-      <LandingSystemID>2</LandingSystemID>
+      <UpSpeed>120</UpSpeed>
+      <DownSpeed>90</DownSpeed>
+      <TotalTravel>2</TotalTravel>
+      <LandingSystemID>3</LandingSystemID>
       <FrontFirstServed>True</FrontFirstServed>
       <RearFirstServed>False</RearFirstServed>
       <FrontSecondServed>True</FrontSecondServed>
-      <RearSecondServed>False</RearSecondServed>
-      <FrontThirdServed>True</FrontThirdServed>
-      <RearThirdServed>False</RearThirdServed>
-      <FrontFourthServed>True</FrontFourthServed>
-      <RearFourthServed>False</RearFourthServed>
+      <RearSecondServed>True</RearSecondServed>
+      <FrontThirdServed>False</FrontThirdServed>
+      <RearThirdServed>True</RearThirdServed>
+      <FrontFourthServed>False</FrontFourthServed>
+      <RearFourthServed>True</RearFourthServed>
       <FrontFifthServed>True</FrontFifthServed>
       <RearFifthServed>False</RearFifthServed>
       <FrontSexthServed>False</FrontSexthServed>
-      <RearSexthServed>True</RearSexthServed>
-      <FrontSeventhServed>True</FrontSeventhServed>
-      <RearSeventhServed>True</RearSeventhServed>
-      <FrontEightServed>True</FrontEightServed>
+      <RearSexthServed>False</RearSexthServed>
+      <FrontSeventhServed>False</FrontSeventhServed>
+      <RearSeventhServed>False</RearSeventhServed>
+      <FrontEightServed>False</FrontEightServed>
       <RearEightServed>False</RearEightServed>
-      <FrontNinthServed>True</FrontNinthServed>
+      <FrontNinthServed>False</FrontNinthServed>
       <RearNinthServed>False</RearNinthServed>
       <FrontTenthServed>False</FrontTenthServed>
       <RearTenthServed>False</RearTenthServed>
@@ -176,6 +211,12 @@
       <FrontSixteenthServed>False</FrontSixteenthServed>
       <RearSixteenthServed>False</RearSixteenthServed>
     </HoistWayData>
-    <SpecialFeatures />
+    <SpecialFeatures>
+      <SpecialFeature>
+        <ID>20</ID>
+        <JobID>86</JobID>
+        <Description>very special</Description>
+      </SpecialFeature>
+    </SpecialFeatures>
   </Job>
 </UniqueJob>

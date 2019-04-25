@@ -352,6 +352,9 @@ namespace ProdFloor.Controllers
             var OverloadReferSearch = repository.Ovearloads.AsQueryable();
             var LandingList = repository.LandingSystems.AsQueryable();
             var FireCodeList = repository.FireCodes.AsQueryable();
+            var StatesList = repository.States.AsQueryable();
+            var CitiesList = repository.Cities.AsQueryable();
+            var POTotalList = jobrepo.POs.AsQueryable();
             ViewModel.status = null;
 
             ReferencesSearchvViewModel referSearchAux = new ReferencesSearchvViewModel
@@ -362,6 +365,7 @@ namespace ProdFloor.Controllers
             if (ViewModel.NumJobSearch != 0)
             {
                 var JobSearch = jobSearch.FirstOrDefault(m => m.JobNum == ViewModel.NumJobSearch);
+
 
                 if (JobSearch != null)
                 {
@@ -377,7 +381,6 @@ namespace ProdFloor.Controllers
                         ViewModel.Contractor = JobSearch.Contractor;
                         ViewModel.JobTypeMain = JobSearch._jobExtension.JobTypeMain;
                         ViewModel.ValveBrand = JobSearch._HydroSpecific.ValveBrand;
-                        ViewModel.PO = JobSearch.PO;
                         ViewModel.HP = JobSearch._HydroSpecific.HP;
                         ViewModel.FireCodeName = FireCodeOne.Name;
                         ViewModel.LandingName = LandingOne.Name;
@@ -389,6 +392,8 @@ namespace ProdFloor.Controllers
                         ViewModel.anyRear = JobSearch._HoistWayData.AnyRear;
                         ViewModel.FrontFloor = JobSearch._HoistWayData.FrontFloorOpenings;
                         ViewModel.RearFloor = JobSearch._HoistWayData.RearFloorOpenings;
+                        ViewModel.InputPhase = JobSearch._jobExtension.InputPhase;
+                        ViewModel.POList = POTotalList.Where(m => m.JobID == JobSearch.JobID).ToList();
                         var volts = JobSearch._jobExtension.InputVoltage;
                         ViewModel.InputVoltage = volts;
                         if (volts >= 200 && volts <= 220 && (ViewModel.StarterType == "ATL" || ViewModel.StarterType == "YD" || ViewModel.StarterType == "Sprecher SS : 6/12" || ViewModel.StarterType == "Sprecher SS : 3/9" || ViewModel.StarterType == "Siemens SS : 6/12" || ViewModel.StarterType == "Siemens SS : 3/9")) ViewModel.Volts = "208";
@@ -426,21 +431,129 @@ namespace ProdFloor.Controllers
                         ViewModel.Type = WireTypeReg[0].Type;
                         #endregion
 
+                        #region CustomSoftWare
+                        //Rellena las listas que se llenaran para la comparacion
+                        List<CustomFeature> FilteredCustomsF = jobrepo.CustomFeatures.Where(m => m.JobID == JobSearch.JobID).ToList();
+                        if(FilteredCustomsF.Count() > 0)
+                        {
+                            foreach(CustomFeature obj in FilteredCustomsF)
+                            {
+                                jobrepo.DeleteCustomFeature(obj.CustomFeatureID);
+                            }
+                        }
+                        List<CustomSoftware> Customs = jobrepo.CustomSoftwares.Include(m => m._CustomFeatures).ToList();
+                        List<TriggeringCustSoft> TriggersWithNameNull = jobrepo.TriggeringCustSofts.Where(m => m.Name == null).ToList();
+                        List<TriggeringCustSoft> TriggersWithOutNameNull = jobrepo.TriggeringCustSofts.Where(m => m.Name != null).ToList();
+                        Job FeaturesFromJob = jobrepo.Jobs.Include(m => m._jobExtension).Include(m => m._HydroSpecific).Include(m => m._HoistWayData).Include(m => m._GenericFeatures)
+                            .First(m => m.JobNum == ViewModel.NumJobSearch);
+                        //Checa si la lista de steps no esta vacia
+                        if (Customs.Count > 0)
+                        {
+                            //inicia el contador del consecutivo
+                            int consecutivo = 1;
+
+                            //Checa cada step de la lista
+                            foreach (CustomSoftware custom in Customs)
+                            {
+                                //Obtiene el primer trigger del step actual step
+                                TriggeringCustSoft TriggerInStep = custom._TriggeringCustSofts.FirstOrDefault();
+
+                                //si su name es nulo significa que es un step por default, debido a esto lo agrega a step for Job
+                                if (TriggerInStep.Name == null)
+                                {
+                                    CustomFeature CustomForJob = new CustomFeature
+                                    {
+                                        CustomSoftwareID = custom.CustomSoftwareID,
+                                        JobID = JobSearch.JobID
+                                    };
+
+                                    jobrepo.SaveCustomFeature(CustomForJob);
+                                    consecutivo++;
+                                }
+                                /*si su name no es nulo significa que es un trigger optativo, debido a esto se comparara sus features con los del job
+                                y si concuerdan se anadira a steps for job*/
+                                else if (TriggerInStep.Name != null)
+                                {
+                                    //Crea una lista con todos los triggers del step actual
+                                    var triggers = jobrepo.TriggeringCustSofts.Where(m => m.CustomSoftwareID == custom.CustomSoftwareID).ToList();
+                                    //checa que la lista de triggers no este vacia
+                                    if (triggers.Count > 0)
+                                    {
+                                        int count = triggers.Count;
+                                        int countAux = 0;
+                                        //Checa que cada feature de la lista concuerde con los features del testjob
+                                        foreach (TriggeringCustSoft trigger in triggers)
+                                        {
+                                            switch (trigger.Name)
+                                            {
+                                                case "Contractor": if (trigger.isSelected && trigger.itemToMatch == JobSearch.Contractor) { countAux++; } break;
+                                                case "Fire Code": if (trigger.isSelected && trigger.itemToMatch == FireCodeList.First(m => m.FireCodeID == JobSearch.FireCodeID).Name) { countAux++; } break;
+                                                case "State":
+                                                    City Onecity = CitiesList.FirstOrDefault(m => m.CityID == JobSearch.CityID);
+                                                    if ((trigger.isSelected && trigger.itemToMatch == StatesList.First(m => m.StateID == Onecity.StateID).Name)) { countAux++; } break;
+                                                case "City": if ((trigger.isSelected && trigger.itemToMatch == CitiesList.First(m => m.CityID == JobSearch.CityID).Name)) { countAux++; } break;
+                                                case "VCI": if (trigger.isSelected == JobSearch._HydroSpecific.VCI) { countAux++; } break;
+                                                case "Valve Brand": if (trigger.isSelected && trigger.itemToMatch == JobSearch._HydroSpecific.ValveBrand) { countAux++; } break;
+                                                case "Switch Style": if (trigger.isSelected && trigger.itemToMatch == JobSearch._GenericFeatures.SwitchStyle) { countAux++; } break;
+                                                case "Landing System": if ((trigger.isSelected && trigger.itemToMatch == LandingList.First(m => m.LandingSystemID == JobSearch._HoistWayData.LandingSystemID).Name)) { countAux++; } break;
+                                                default: break;
+                                            }
+                                        }
+                                        //Si se vuelve valido agrega el step a la lista de steps for job
+                                        if (count == countAux)
+                                        {
+                                            CustomFeature CustomForJob = new CustomFeature
+                                            {
+                                                CustomSoftwareID = custom.CustomSoftwareID,
+                                                JobID = JobSearch.JobID
+                                            };
+
+                                            jobrepo.SaveCustomFeature(CustomForJob);
+                                            consecutivo++;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        List<CustomSoftware> FilteredCustomSoftware = new List<CustomSoftware>();
+                        FilteredCustomsF = jobrepo.CustomFeatures.Where(m => m.JobID == JobSearch.JobID).ToList();
+                        foreach (CustomFeature custom in FilteredCustomsF)
+                        {
+                           CustomSoftware one = Customs.FirstOrDefault(m => m.CustomSoftwareID == custom.CustomSoftwareID);
+                           if(one != null)FilteredCustomSoftware.Add(one);
+                        }
+                        
+
+
+                        #endregion
+
                         #region StarterAndOverload
 
                         //Lista para strater and overload table
                         List<Starter> StarterList = StarterReferSearch.Where(m => m.Volts == ViewModel.Volts && m.StarterType == JobSearch._HydroSpecific.Starter
-                        && m.FLA >= ViewModel.FLA && m.HP >= ViewModel.HP).OrderBy(o => o.FLA).Skip(0).Take(2).ToList();
+                        && m.FLA >= ViewModel.FLA && m.HP >= ViewModel.HP).OrderBy(o => o.FLA).Skip(0).Take(4).ToList();
 
                         if (StarterList.Count > 0)
                         {
-                            if (ViewModel.SPH == 80)
+                            if (ViewModel.SPH == 80 && ViewModel.InputPhase == 1 && ViewModel.StarterType == "ATL" && StarterList.Count > 2)
+                            {
+                                ViewModel.MCPart = StarterList[2].MCPart;
+                                ViewModel.NewManufacturerPart = StarterList[2].NewManufacturerPart;
+                                ViewModel.OverloadTable = StarterList[2].OverloadTable;
+                            }
+                            else if (ViewModel.SPH == 120 && ViewModel.InputPhase == 1 && ViewModel.StarterType == "ATL" && StarterList.Count > 3)
+                            {
+                                ViewModel.MCPart = StarterList[3].MCPart;
+                                ViewModel.NewManufacturerPart = StarterList[3].NewManufacturerPart;
+                                ViewModel.OverloadTable = StarterList[3].OverloadTable;
+                            }
+                            else if (ViewModel.SPH == 80)
                             {
                                 ViewModel.MCPart = StarterList[0].MCPart;
                                 ViewModel.NewManufacturerPart = StarterList[0].NewManufacturerPart;
                                 ViewModel.OverloadTable = StarterList[0].OverloadTable;
                             }
-                            else if (ViewModel.SPH == 120 && StarterList.Count != 0)
+                            else if (ViewModel.SPH == 120 && StarterList.Count > 1)
                             {
                                 ViewModel.MCPart = StarterList[1].MCPart;
                                 ViewModel.NewManufacturerPart = StarterList[1].NewManufacturerPart;
@@ -455,107 +568,116 @@ namespace ProdFloor.Controllers
                                 TempData["alert"] = $"alert-danger";
                                 TempData["message"] = $"Starter Model out of range, please validate their SPH, HP, FLA and try again";
                             }
+                        }
+                        else
+                        {
+                            ViewModel.MCPart = "------Error------";
+                            ViewModel.NewManufacturerPart = "------Error------";
+                            ViewModel.OverloadTable = "N/A";
 
-                            //Overload Table
-                            if (ViewModel.OverloadTable != null && ViewModel.OverloadTable != "N/A")
-                            {
-                                var OverLoadReg = OverloadReferSearch.FirstOrDefault(m => m.OverTableNum == Int32.Parse(ViewModel.OverloadTable)
-                                && m.AMPMin <= ViewModel.FLA && m.AMPMax >= ViewModel.FLA);
-                                ViewModel.MCPartOver = OverLoadReg.MCPart;
-                                ViewModel.SiemensPart = OverLoadReg.SiemensPart;
-                            }
-                            else
-                            {
-                                ViewModel.MCPartOver = "N/A";
-                                ViewModel.SiemensPart = "N/A";
-                            }
-
-                            #endregion
-
-                            #region SHC Calculator
-                            if (ViewModel.SHCisSelected)
-                            {
-                                ViewModel.calculatedFrontSHC = (70 + (10 * ViewModel.FrontFloor));
-                                if (ViewModel.anyRear)
-                                {
-                                    ViewModel.calculatedRearSHC = (70 + (10 * ViewModel.RearFloor));
-                                }
-                                else
-                                {
-                                    ViewModel.calculatedRearSHC = 0;
-                                }
-                            }
-                            else
-                            {
-                                ViewModel.calculatedFrontSHC = 0;
-                                ViewModel.calculatedRearSHC = 0;
-                            }
-
-                            #endregion
-
-                            #region ReferSearchVM
-
-                            ReferencesSearchvViewModel referSearch = new ReferencesSearchvViewModel
-                            {
-                                RefernceData = true,
-
-                                //JobData
-                                FLA = ViewModel.FLA,
-                                JobName = ViewModel.JobName,
-                                Cust = ViewModel.Cust,
-                                Contractor = ViewModel.Contractor,
-                                JobTypeMain = ViewModel.JobTypeMain,
-                                ValveBrand = ViewModel.ValveBrand,
-                                PO = JobSearch.PO,
-                                InputVoltage = ViewModel.InputVoltage,
-                                HP = ViewModel.HP,
-                                FireCodeName = ViewModel.FireCodeName,
-                                LandingName = ViewModel.LandingName,
-                                NumJobSearch = ViewModel.NumJobSearch,
-                                //****Slow Table
-
-                                //For Down Speed
-                                CarSpeedFPM = ViewModel.CarSpeedFPM,
-                                Distance = ViewModel.Distance,
-                                A = ViewModel.A,
-                                SlowLimit = ViewModel.SlowLimit,
-                                MiniumFloorHeight = ViewModel.MiniumFloorHeight,
-
-                                //For Down Speed
-                                CarUpSpeedFPM = ViewModel.CarUpSpeedFPM,
-                                UPDistance = ViewModel.UPDistance,
-                                UPA = ViewModel.UPA,
-                                UPSlowLimit = ViewModel.UPSlowLimit,
-                                UPMiniumFloorHeight = ViewModel.UPMiniumFloorHeight,
-
-                                //WireTypesSize
-                                AMPRating = ViewModel.AMPRating,
-                                Size = ViewModel.Size,
-                                Type = ViewModel.Type,
-
-                                //Starter
-                                MCPart = ViewModel.MCPart,
-                                NewManufacturerPart = ViewModel.NewManufacturerPart,
-
-                                //Overload
-                                MCPartOver = ViewModel.MCPartOver,
-                                SiemensPart = ViewModel.SiemensPart,
-
-                                //SHC Calculator
-                                calculatedFrontSHC = ViewModel.calculatedFrontSHC,
-                                calculatedRearSHC = ViewModel.calculatedRearSHC,
-                                SHCisSelected = ViewModel.SHCisSelected
-                                
-                            };
-
-                            return View(referSearch);
-
-                            #endregion
+                            TempData["alert"] = $"alert-danger";
+                            TempData["message"] = $"Starter Model out of range, please validate their SPH, HP, FLA and try again";
+                        }
+                        //Overload Table
+                        if (ViewModel.OverloadTable != null && ViewModel.OverloadTable != "N/A")
+                        {
+                            var OverLoadReg = OverloadReferSearch.FirstOrDefault(m => m.OverTableNum == Int32.Parse(ViewModel.OverloadTable)
+                            && m.AMPMin <= ViewModel.FLA && m.AMPMax >= ViewModel.FLA);
+                            ViewModel.MCPartOver = OverLoadReg.MCPart;
+                            ViewModel.SiemensPart = OverLoadReg.SiemensPart;
+                        }
+                        else
+                        {
+                            ViewModel.MCPartOver = "N/A";
+                            ViewModel.SiemensPart = "N/A";
                         }
 
-                        TempData["alert"] = $"alert-danger";
-                        TempData["message"] = $"Some issue with the search, try again";
-                        return RedirectToAction("ReferencesSearch", referSearchAux);
+                        #endregion
+
+                        #region SHC Calculator
+                        if (ViewModel.SHCisSelected)
+                        {
+                            ViewModel.calculatedFrontSHC = (70 + (10 * ViewModel.FrontFloor));
+                            if (ViewModel.anyRear)
+                            {
+                                ViewModel.calculatedRearSHC = (70 + (10 * ViewModel.RearFloor));
+                            }
+                            else
+                            {
+                                ViewModel.calculatedRearSHC = 0;
+                            }
+                        }
+                        else
+                        {
+                            ViewModel.calculatedFrontSHC = 0;
+                            ViewModel.calculatedRearSHC = 0;
+                        }
+
+                        #endregion
+
+                        #region ReferSearchVM
+
+                        ReferencesSearchvViewModel referSearch = new ReferencesSearchvViewModel
+                        {
+                            RefernceData = true,
+
+                            //JobData
+                            FLA = ViewModel.FLA,
+                            JobName = ViewModel.JobName,
+                            Cust = ViewModel.Cust,
+                            Contractor = ViewModel.Contractor,
+                            JobTypeMain = ViewModel.JobTypeMain,
+                            ValveBrand = ViewModel.ValveBrand,
+                            InputVoltage = ViewModel.InputVoltage,
+                            HP = ViewModel.HP,
+                            FireCodeName = ViewModel.FireCodeName,
+                            LandingName = ViewModel.LandingName,
+                            NumJobSearch = ViewModel.NumJobSearch,
+                            //****Slow Table
+
+                            //For Down Speed
+                            CarSpeedFPM = ViewModel.CarSpeedFPM,
+                            Distance = ViewModel.Distance,
+                            A = ViewModel.A,
+                            SlowLimit = ViewModel.SlowLimit,
+                            MiniumFloorHeight = ViewModel.MiniumFloorHeight,
+
+                            //For Down Speed
+                            CarUpSpeedFPM = ViewModel.CarUpSpeedFPM,
+                            UPDistance = ViewModel.UPDistance,
+                            UPA = ViewModel.UPA,
+                            UPSlowLimit = ViewModel.UPSlowLimit,
+                            UPMiniumFloorHeight = ViewModel.UPMiniumFloorHeight,
+
+                            //WireTypesSize
+                            AMPRating = ViewModel.AMPRating,
+                            Size = ViewModel.Size,
+                            Type = ViewModel.Type,
+
+                            //Starter
+                            MCPart = ViewModel.MCPart,
+                            NewManufacturerPart = ViewModel.NewManufacturerPart,
+
+                            //Overload
+                            MCPartOver = ViewModel.MCPartOver,
+                            SiemensPart = ViewModel.SiemensPart,
+
+                            //SHC Calculator
+                            calculatedFrontSHC = ViewModel.calculatedFrontSHC,
+                            calculatedRearSHC = ViewModel.calculatedRearSHC,
+                            SHCisSelected = ViewModel.SHCisSelected,
+
+                            //Custom
+                            CustomSoftList = FilteredCustomSoftware,
+
+                            //POList
+                            POList = ViewModel.POList
+
+                        };
+
+                        return View(referSearch);
+
+                        #endregion
 
                     }
 

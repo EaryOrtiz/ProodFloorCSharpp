@@ -11,9 +11,10 @@ using System;
 namespace ProdFloor.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190423192750_CustomModelAdded")]
+    partial class CustomModelAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -924,8 +925,6 @@ namespace ProdFloor.Migrations
                     b.Property<string>("Name");
 
                     b.Property<bool>("isSelected");
-
-                    b.Property<string>("itemToMatch");
 
                     b.HasKey("TriggeringCustSoftID");
 

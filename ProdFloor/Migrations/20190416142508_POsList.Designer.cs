@@ -11,9 +11,10 @@ using System;
 namespace ProdFloor.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190416142508_POsList")]
+    partial class POsList
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -90,36 +91,6 @@ namespace ProdFloor.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("Country_Audits");
-                });
-
-            modelBuilder.Entity("ProdFloor.Models.CustomFeature", b =>
-                {
-                    b.Property<int>("CustomFeatureID")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("CustomSoftwareID");
-
-                    b.Property<int>("JobID");
-
-                    b.HasKey("CustomFeatureID");
-
-                    b.HasIndex("CustomSoftwareID");
-
-                    b.HasIndex("JobID");
-
-                    b.ToTable("CustomFeatures");
-                });
-
-            modelBuilder.Entity("ProdFloor.Models.CustomSoftware", b =>
-                {
-                    b.Property<int>("CustomSoftwareID")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Description");
-
-                    b.HasKey("CustomSoftwareID");
-
-                    b.ToTable("CustomSoftwares");
                 });
 
             modelBuilder.Entity("ProdFloor.Models.DoorOperator", b =>
@@ -565,10 +536,7 @@ namespace ProdFloor.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(50);
-
-                    b.Property<string>("Name2")
-                        .HasMaxLength(50);
+                        .HasMaxLength(78);
 
                     b.Property<DateTime>("ShipDate");
 
@@ -592,10 +560,6 @@ namespace ProdFloor.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<bool>("AUXCOP");
-
-                    b.Property<bool>("AltRis");
-
-                    b.Property<bool>("BackUpDisp");
 
                     b.Property<bool>("CartopDoorButtons");
 
@@ -642,8 +606,6 @@ namespace ProdFloor.Migrations
                     b.Property<bool>("SHC");
 
                     b.Property<int>("SHCRisers");
-
-                    b.Property<bool>("SwingOp");
 
                     b.HasKey("JobExtensionID");
 
@@ -914,26 +876,6 @@ namespace ProdFloor.Migrations
                     b.ToTable("State_Audits");
                 });
 
-            modelBuilder.Entity("ProdFloor.Models.TriggeringCustSoft", b =>
-                {
-                    b.Property<int>("TriggeringCustSoftID")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("CustomSoftwareID");
-
-                    b.Property<string>("Name");
-
-                    b.Property<bool>("isSelected");
-
-                    b.Property<string>("itemToMatch");
-
-                    b.HasKey("TriggeringCustSoftID");
-
-                    b.HasIndex("CustomSoftwareID");
-
-                    b.ToTable("TriggeringCustSofts");
-                });
-
             modelBuilder.Entity("ProdFloor.Models.WireTypeSize_audit", b =>
                 {
                     b.Property<int>("ID")
@@ -978,19 +920,6 @@ namespace ProdFloor.Migrations
                     b.HasOne("ProdFloor.Models.State")
                         .WithMany("_Cities")
                         .HasForeignKey("StateID")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("ProdFloor.Models.CustomFeature", b =>
-                {
-                    b.HasOne("ProdFloor.Models.CustomSoftware")
-                        .WithMany("_CustomFeatures")
-                        .HasForeignKey("CustomSoftwareID")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("ProdFloor.Models.Job")
-                        .WithMany("_CustomFeatures")
-                        .HasForeignKey("JobID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -1083,14 +1012,6 @@ namespace ProdFloor.Migrations
                     b.HasOne("ProdFloor.Models.Country")
                         .WithMany("_States")
                         .HasForeignKey("CountryID")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("ProdFloor.Models.TriggeringCustSoft", b =>
-                {
-                    b.HasOne("ProdFloor.Models.CustomSoftware")
-                        .WithMany("_TriggeringCustSofts")
-                        .HasForeignKey("CustomSoftwareID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

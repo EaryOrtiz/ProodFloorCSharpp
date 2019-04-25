@@ -9,7 +9,7 @@
 <div class="row float-right" style="padding-right:20px">
 
     <div class="btn-group float-right">
-        <a class="btn btn-success btn-sm col-sm-2" asp-controller="Job" asp-action="NewJob" style="padding-top:10px;min-width:100px">
+        <a class="btn btn-success" asp-controller="Job" asp-action="NewJob">
             <i class="fa fa-plus"></i>
             New Job
         </a>
@@ -65,14 +65,14 @@
                             </a>*/
 
                             <form asp-action="SearchAux" asp-controller="Item" method="get">
-                                <button type="submit" value="@j.JobNum" name="JobNum" class="btn btn-dark btn-sm col-sm-4"
+                                <button type="submit" value="@j.JobNum" name="JobNum" class="btn btn-dark btn-sm"
                                         style="margin-bottom:10px;min-width:100px;float:left">
                                     WorkSheet
                                 </button>
                             </form>
                             <form asp-action="ToCross" method="post">
                                 <input type="hidden" name="JobCrossID" value="@j.JobID" />
-                                <button type="submit" value="ToCross" name="buttonAction" class="btn btn-warning btn-sm col-sm-4"
+                                <button type="submit" value="ToCross" name="buttonAction" class="btn btn-warning btn-sm"
                                         style="margin-bottom:10px;min-width:100px;float:left">
                                     Ready For Cross
                                 </button>
@@ -82,14 +82,14 @@
                         else if (j.Status == "Cross Approval Complete")
                         {
                             <form asp-action="SearchAux" asp-controller="Item" method="get">
-                                <button type="submit" value="@j.JobNum" name="JobNum" class="btn btn-dark btn-sm col-sm-4"
+                                <button type="submit" value="@j.JobNum" name="JobNum" class="btn btn-dark btn-sm"
                                         style="margin-bottom:10px;min-width:100px;float:left">
                                     WorkSheet
                                 </button>
                             </form>
                             <form asp-action="ToCross" method="post">
                                 <input type="hidden" name="JobCrossID" value="@j.JobID" />
-                                <button type="submit" value="ToProduction" name="buttonAction" class="btn btn-success btn-sm col-sm-7"
+                                <button type="submit" value="ToProduction" name="buttonAction" class="btn btn-success btn-sm"
                                         style="margin-bottom:10px;min-width:100px;float:left">
                                     To Production
                                 </button>
@@ -141,14 +141,14 @@
                         @if (j.Status == "Cross Approval Pending")
                         {
                             <form asp-action="SearchAux" asp-controller="Item" method="get">
-                                <button type="submit" value="@j.JobNum" name="JobNum" class="btn btn-dark btn-sm col-sm-4"
+                                <button type="submit" value="@j.JobNum" name="JobNum" class="btn btn-dark btn-sm"
                                         style="margin-bottom:10px;min-width:100px;float:left">
                                     WorkSheet
                                 </button>
                             </form>
                             <form asp-action="GetCross" method="post">
                                 <input type="hidden" name="JobCrossID" value="@j.JobID" />
-                                <button type="submit" class="btn btn-info btn-sm col-sm-7"
+                                <button type="submit" class="btn btn-info btn-sm"
                                         style="margin-bottom:10px;min-width:100px;float:left">
                                     Cross Approving
                                 </button>
@@ -157,14 +157,14 @@
                         else if (j.Status == "On Cross Approval")
                         {
                             <form asp-action="SearchAux" asp-controller="Item" method="get">
-                                <button type="submit" value="@j.JobNum" name="JobNum" class="btn btn-dark btn-sm col-sm-4"
+                                <button type="submit" value="@j.JobNum" name="JobNum" class="btn btn-dark btn-sm"
                                         style="margin-bottom:10px;min-width:100px;float:left">
                                     WorkSheet
                                 </button>
                             </form>
                             <form asp-action="ToCross" method="post">
                                 <input type="hidden" name="JobCrossID" value="@j.JobID" />
-                                <button type="submit" value="CrossApproved" name="buttonAction" class="btn btn-primary btn-sm col-sm-7"
+                                <button type="submit" value="CrossApproved" name="buttonAction" class="btn btn-primary btn-sm"
                                         style="margin-bottom:10px;min-width:100px;float:left">
                                     Cross Approved
                                 </button>

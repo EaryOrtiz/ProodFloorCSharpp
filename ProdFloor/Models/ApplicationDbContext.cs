@@ -23,6 +23,10 @@ namespace ProdFloor.Models
         public DbSet<JobType> JobTypes { get; set; }
         public DbSet<LandingSystem> LandingSystems { get; set; }
         public DbSet<SpecialFeatures> SpecialFeatures { get; set; }
+        public DbSet<PO> POs { get; set; }
+        public DbSet<CustomSoftware> CustomSoftwares { get; set; }
+        public DbSet<TriggeringCustSoft> TriggeringCustSofts { get; set; }
+        public DbSet<CustomFeature> CustomFeatures { get; set; }
         public DbSet<Slowdown> Slowdowns { get; set; }
         public DbSet<WireTypesSize> WireTypesSizes { get; set; }
         public DbSet<Starter> Starters { get; set; }
@@ -41,10 +45,11 @@ namespace ProdFloor.Models
         public DbSet<Overload_audit> Overload_Audits { get; set; }
         public DbSet<WireTypeSize_audit> WireTypeSize_Audits { get; set; }
 
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.Entity<Job>()
-                .HasIndex(u => u.PO)
+            builder.Entity<PO>()
+                .HasIndex(u => u.PONumb)
                 .IsUnique();
         }
 
