@@ -57,36 +57,43 @@ namespace ProdFloor.Controllers
          {
             AppUser currentUser = GetCurrentUser().Result;
             var jobSearch = jobRepo.Jobs.AsQueryable();
+            var POSearch = jobRepo.POs.AsQueryable();
             TestJobViewModel testJobSearchAux = new TestJobViewModel { };
 
             if (viewModel.POJobSearch >= 3000000 && viewModel.POJobSearch <= 4900000)
             {
                 try {
 
-                    var _jobSearch = jobSearch.First(m => m.PO == viewModel.POJobSearch);
-                    if (_jobSearch != null && _jobSearch.Status != "Incomplete")
+                    var onePO = POSearch.First(m => m.PONumb == viewModel.POJobSearch);
+                    if(onePO != null)
                     {
-
-                        TestJob testJob = new TestJob { JobID = _jobSearch.JobID, TechnicianID = currentUser.EngID, Status = "Working on it" };
-                        testingRepo.SaveTestJob(testJob);
-
-                        var currentTestJob = testingRepo.TestJobs
-                            .FirstOrDefault(p => p.TestJobID == testingRepo.TestJobs.Max(x => x.TestJobID));
-
-
-                        TestJobViewModel testJobView = new TestJobViewModel
+                        var _jobSearch = jobSearch.First(m => m.JobID == onePO.JobID);
+                        if (_jobSearch != null && _jobSearch.Status != "Incomplete")
                         {
-                            TestJob = currentTestJob,
-                        };
 
-                        return View("NewTestFeatures", testJobView);
+                            TestJob testJob = new TestJob { JobID = _jobSearch.JobID, TechnicianID = currentUser.EngID, Status = "Working on it" };
+                            testingRepo.SaveTestJob(testJob);
 
-                    }    
+                            var currentTestJob = testingRepo.TestJobs
+                                .FirstOrDefault(p => p.TestJobID == testingRepo.TestJobs.Max(x => x.TestJobID));
+
+
+                            TestJobViewModel testJobView = new TestJobViewModel
+                            {
+                                TestJob = currentTestJob,
+                            };
+
+                            return View("NewTestFeatures", testJobView);
+
+                        }
+                    } 
+                     
                 }
                 catch(Exception e)
                 {
-                    return View("NewDummyJob", new TestJobViewModel { Job = new Job {PO = viewModel.POJobSearch}, JobExtension = new JobExtension(), HydroSpecific = new HydroSpecific(),
-                      GenericFeatures = new GenericFeatures(), Indicator = new Indicator(), HoistWayData = new HoistWayData(), SpecialFeature = new SpecialFeatures()});
+                    return View("NewDummyJob", new TestJobViewModel { Job = new Job (), JobExtension = new JobExtension(), HydroSpecific = new HydroSpecific(),
+                      GenericFeatures = new GenericFeatures(), Indicator = new Indicator(), HoistWayData = new HoistWayData(), SpecialFeature = new SpecialFeatures(), PO = new PO { PONumb = viewModel.POJobSearch }
+                    });
                 }
             }
             else
@@ -138,6 +145,9 @@ namespace ProdFloor.Controllers
                 SpecialFeatures featureFake = viewModel.SpecialFeature; featureFake.JobID = currentJob.JobID; featureFake.Description = null;
                 jobRepo.SaveSpecialFeatures(featureFake);
 
+                PO POFake = viewModel.PO; POFake.JobID = currentJob.JobID;
+                jobRepo.SavePO(POFake);
+
                 //Create the new TestJob
                 TestJob testJob = new TestJob { JobID = currentJob.JobID, TechnicianID = currentUser.EngID, Status = "Working on it" };
                 testingRepo.SaveTestJob(testJob);
@@ -154,7 +164,7 @@ namespace ProdFloor.Controllers
             }
             catch (DbUpdateException e)
             {
-                TempData["message"] = $"El Job PO #{viewModel.Job.PO} ya existe por favor introduzca uno nuevo, o faltan campos por rellenar!";
+                TempData["message"] = $"El Job PO #ya existe por favor introduzca uno nuevo, o faltan campos por rellenar!";
                 TempData["alert"] = $"alert-danger";
                 return View("NewDummyJob", viewModel);
             }

@@ -28,13 +28,6 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label asp-for="Job.PO" class="col-sm-4 col-form-label"></label>
-                    <div>
-                        <input asp-for="Job.PO" class="form-control col-sm-11" value="@Model.Job.PO" />
-                        <span asp-validation-for="Job.PO" class="text-danger"></span>
-                    </div>
-                </div>
-                <div class="form-group row">
                     <label asp-for="Job.ShipDate" class="col-sm-4 col-form-label"></label>
                     <div>
                         <input asp-for="Job.ShipDate" class="form-control col-sm-11" />
@@ -72,6 +65,13 @@
                     <label asp-for="HoistWayData.LandingSystemID" class="col-sm-4 col-form-label"></label>
                     <landing-sys-select selected-value="@Model.HoistWayData.LandingSystemID" class="form-control-sm form-control col-sm-5" asp-for="HoistWayData.LandingSystemID"></landing-sys-select>
                     <span asp-validation-for="HoistWayData.LandingSystemID" class="text-danger"></span>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="PO.PONumb" class="col-sm-4 col-form-label"></label>
+                    <div class="form-inline">
+                        <input asp-for="PO.PONumb" readonly="@true" class="form-control col-sm-5" />
+                        <span asp-validation-for="PO.PONumb" class="text-danger"></span>
+                    </div>
                 </div>
             </div>
             <div class="col-6 form-line justify-content-md-center">

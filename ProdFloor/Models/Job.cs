@@ -50,7 +50,7 @@ namespace ProdFloor.Models
         [StringLength(50, ErrorMessage = "The maximum length of the {0} field is {1}")]
         [Required(ErrorMessage = "Please enter a Contractor")]
         public string Contractor { get; set; }
-        
+
         [NotMapped]
         [Display(Name = "Country")]
         [Required(ErrorMessage = "Please enter a Country")]
@@ -67,9 +67,9 @@ namespace ProdFloor.Models
         public Indicator _Indicator { get; set; }
         public HoistWayData _HoistWayData { get; set; }
         public List<SpecialFeatures> _SpecialFeatureslist { get; set; }
-        public List<TestJob> _TestJobs { get; set; }
         public List<CustomFeature> _CustomFeatures { get; set; }
         public List<PO> _PO { get; set; }
+        public List<TestJob> _TestJobs { get; set; }
         [Display(Name = "Job Type")]
         public int JobTypeID { get; set; }
         [Display(Name = "City")]

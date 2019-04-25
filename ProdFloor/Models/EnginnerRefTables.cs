@@ -50,16 +50,10 @@ namespace ProdFloor.Models
         public int StarterID { get; set; }
 
         [Required(ErrorMessage = "Please enter a FLA")]
-        public int FLA { get; set; }
-
-        [Required(ErrorMessage = "Please enter a Type")]
-        public string StarterType { get; set; }
+        public float FLA { get; set; }
 
         [Required(ErrorMessage = "Please enter a Starter")]
         public string StarterType { get; set; }
-
-        [Required(ErrorMessage = "Please enter a FLA")]
-        public int FLA { get; set; }
 
         [Required(ErrorMessage = "Please enter a Volt Number")]
         public string Volts { get; set; }

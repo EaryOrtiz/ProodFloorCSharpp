@@ -22,6 +22,7 @@ namespace ProdFloor.Models.ViewModels.TestJob
         public GenericFeatures GenericFeatures { get; set; }
         public Indicator Indicator { get; set; }
         public SpecialFeatures SpecialFeature { get; set; }
+        public PO PO { get; set; }
         [Range(3000000, 4900000, ErrorMessage = "PO number is out of range")]
         [Required(ErrorMessage = "Please enter a PO")]
         public int POJobSearch { get; set; }
@@ -32,5 +33,6 @@ namespace ProdFloor.Models.ViewModels.TestJob
         public List<TestFeature> TestFeatureList { get; set; }
         public List<Step> StepList { get; set; }
         public List<StepsForJob> StepsForJobList { get; set; }
+        public List<PO> POList { get; set; }
     }
 }

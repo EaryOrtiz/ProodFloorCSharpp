@@ -350,7 +350,7 @@ namespace ProdFloor.Controllers
             var jobSearch = jobrepo.Jobs.Include(j => j._HydroSpecific).Include(h => h._HoistWayData).Include(ex => ex._jobExtension).AsQueryable();
             var SlowReferSearch = repository.Slowdowns.AsQueryable();
             var WireReferSearch = repository.WireTypesSizes.AsQueryable();
-            var StarterReferSearch = repository.Starters.AsQueryable();
+            List<Starter> StarterRefer = repository.Starters.ToList();
             var OverloadReferSearch = repository.Ovearloads.AsQueryable();
             var LandingList = repository.LandingSystems.AsQueryable();
             var FireCodeList = repository.FireCodes.AsQueryable();
@@ -532,10 +532,8 @@ namespace ProdFloor.Controllers
                         #region StarterAndOverload
 
                         //Lista para strater and overload table
-                        List<Starter> StarterList = StarterReferSearch.Where(m => m.Volts.Contains(ViewModel.InputVoltage.ToString())
-                        && m.StarterType == JobSearch._HydroSpecific.Starter && m.FLA >= ViewModel.FLA && m.HP >= ViewModel.HP).OrderBy(o => o.FLA).Skip(0).Take(2).ToList();
 
-                        List<Starter> StarterList = StarterReferSearch.Where(m => m.Volts == ViewModel.Volts && m.StarterType == JobSearch._HydroSpecific.Starter
+                        List<Starter> StarterList = StarterRefer.Where(m => m.Volts == ViewModel.Volts && m.StarterType == JobSearch._HydroSpecific.Starter
                         && m.FLA >= ViewModel.FLA && m.HP >= ViewModel.HP).OrderBy(o => o.FLA).Skip(0).Take(4).ToList();
 
                         if (StarterList.Count > 0)
@@ -810,10 +808,8 @@ namespace ProdFloor.Controllers
                         context.Starters.Add(new Starter
                         {
                             StarterID = Int32.Parse(ID),
-                            FLA = Int32.Parse(fla),
-                            StarterType = type,
                             StarterType = starter,
-                            FLA = Int32.Parse(fla),
+                            FLA = float.Parse(fla),
                             Volts = volts,
                             HP = float.Parse(hp),
                             MCPart = mcepart,

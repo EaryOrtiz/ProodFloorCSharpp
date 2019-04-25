@@ -327,14 +327,8 @@ namespace ProdFloor.Infrastructure
                     return new List<string> { "S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9", "S10", "S11", "S12", "ELEM1", "ELEM2" }.AsQueryable();
                 case "Style":
                     return itemsrepository.DoorOperators.Select(s => s.Style).Distinct().AsQueryable();
-                case "Battery Brand":
-                    return  new List<string> { "HAPS", "R&R", "Other" }.AsQueryable();
                 case "JobType":
                     return itemsrepository.JobTypes.Select(d => d.Name).Distinct();
-                case "Style":
-                    return itemsrepository.DoorOperators.Select(d => d.Style).Distinct();
-                case "SwitchStyle":
-                    return new List<string> { "2-Position", "3-Position" }.AsQueryable();
                 case "CarCode":
                     return new List<string> { "Key", "IMonitor" }.AsQueryable();
                 case "SPH":
@@ -938,8 +932,12 @@ namespace ProdFloor.Infrastructure
             m_tag.Attributes["value"] = "";
             m_tag.InnerHtml.Append("Please select one");
             result.InnerHtml.AppendHtml(m_tag);
-            var jobtypeName = itemsrepository.JobTypes.FirstOrDefault(m => m.JobTypeID == SelectFor).Name;
-            IQueryable<LandingSystem> landigSystems = itemsrepository.LandingSystems.Where(m => m.UsedIn == jobtypeName).AsQueryable();
+            IQueryable<LandingSystem> landigSystems = itemsrepository.LandingSystems.AsQueryable();
+            if (SelectFor != 0) {
+                var jobtypeName = itemsrepository.JobTypes.FirstOrDefault(m => m.JobTypeID == SelectFor).Name;
+                landigSystems = itemsrepository.LandingSystems.Where(m => m.UsedIn == jobtypeName).AsQueryable();
+            }
+
             foreach (LandingSystem landingSys in landigSystems)
             {
                 TagBuilder tag = new TagBuilder("option");
@@ -1994,7 +1992,6 @@ namespace ProdFloor.Infrastructure
         }
     }
 
-    public class TriggerSelectTagHelper : TagHelper
     public class Trigger2SelectTagHelper : TagHelper
     {
         private IItemRepository itemsrepository;
@@ -2004,8 +2001,7 @@ namespace ProdFloor.Infrastructure
         public ModelExpression AspFor { get; set; }
 
         public string SelectFor { get; set; }
-
-        public TriggerSelectTagHelper(IUrlHelperFactory helperFactory, IItemRepository itemsrepo)
+        
         public Trigger2SelectTagHelper(IUrlHelperFactory helperFactory, IItemRepository itemsrepo)
         {
             urlHelperFactory = helperFactory;

@@ -17,7 +17,6 @@ namespace ProdFloor.Models
         public DbSet<Indicator> Indicators { get; set; }
         public DbSet<HoistWayData> HoistWayDatas { get; set; }
 
-
         //Items
 
         public DbSet<Country> Countries { get; set; }
@@ -28,8 +27,6 @@ namespace ProdFloor.Models
         public DbSet<JobType> JobTypes { get; set; }
         public DbSet<LandingSystem> LandingSystems { get; set; }
         public DbSet<SpecialFeatures> SpecialFeatures { get; set; }
-
-
 
         //Enginner Refernces Tables
 
@@ -54,13 +51,6 @@ namespace ProdFloor.Models
         public DbSet<Reason4> Reasons4 { get; set; }
         public DbSet<Reason5> Reasons5 { get; set; }
         public DbSet<Stop> Stops { get; set; }
-
-        protected override void OnModelCreating(ModelBuilder builder)
-        {
-            builder.Entity<Job>()
-                .HasIndex(u => u.PO)
-                .IsUnique();
-        }
         //ItemHistory
         public DbSet<Country_audit> Country_Audits { get; set; }
         public DbSet<State_audit> State_Audits { get; set; }

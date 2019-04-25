@@ -8,7 +8,7 @@ namespace ProdFloor.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AlterColumn<int>(
+            migrationBuilder.AlterColumn<float>(
                 name: "FLA",
                 table: "Starters",
                 nullable: false,
@@ -21,7 +21,7 @@ namespace ProdFloor.Migrations
                 name: "FLA",
                 table: "Starters",
                 nullable: false,
-                oldClrType: typeof(int));
+                oldClrType: typeof(float));
         }
     }
 }

@@ -18,8 +18,6 @@
         </div>
         <div class="form-group row" style="margin-bottom:0.5em;">
             <label asp-for="CurrentJobExtension.JobTypeMain" class="col-sm-5 col-form-label"></label>
-            <div><span asp-validation-for="CurrentJobExtension.JobTypeMain" class="text-danger"></span></div>
-            <indicators select-for="JobType" selected-value="@Model.CurrentJobExtension.JobTypeMain" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" class="form-control-sm form-control col-sm-3" asp-for="CurrentJobExtension.JobTypeMain"></indicators>
             <div>
                 <span asp-validation-for="CurrentJobExtension.JobTypeMain" class="text-danger"></span>
                 <indicators id="JobTypeMain" select-for="JobType" selected-value="@Model.CurrentJobExtension.JobTypeMain" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" class="form-control form-control-sm" asp-for="CurrentJobExtension.JobTypeMain"></indicators>
@@ -27,8 +25,6 @@
         </div>
         <div class="form-group row" style="margin-bottom:0.5em;">
             <label asp-for="CurrentJobExtension.JobTypeAdd" class="col-sm-5 col-form-label"></label>
-            <div><span asp-validation-for="CurrentJobExtension.JobTypeAdd" class="text-danger"></span></div>
-            <indicators select-for="JobType2" selected-value="@Model.CurrentJobExtension.JobTypeAdd" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" class="form-control-sm form-control col-sm-3" asp-for="CurrentJobExtension.JobTypeAdd"></indicators>
             <div>
                 <span asp-validation-for="CurrentJobExtension.JobTypeAdd" class="text-danger"></span>
                 <indicators id="JobTypeAdd" select-for="JobType2" selected-value="@Model.CurrentJobExtension.JobTypeAdd" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" class="form-control form-control-sm" asp-for="CurrentJobExtension.JobTypeAdd"></indicators>
@@ -49,12 +45,8 @@
             <div><span asp-validation-for="CurrentJobExtension.InputFrecuency" class="text-danger"></span></div>
             <input asp-for="CurrentJobExtension.InputFrecuency" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true )" class="form-control col-sm-6" />
         </div>
-        <div class="form-group row">
+        <div class="form-group row" style="margin-bottom:0.5em;">
             <label asp-for="CurrentJobExtension.DoorHoist" class="col-sm-5 col-form-label"></label>
-            <div><span asp-validation-for="CurrentJobExtension.DoorHoist" class="text-danger"></span></div>
-            <custom-select select-for="Style" selected-value="@Model.CurrentJobExtension.DoorHoist" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" class="form-control-sm form-control col-sm-3" asp-for="CurrentJobExtension.DoorHoist"></custom-select>
-        <div class="form-group row" style="margin-bottom:0.5em;" >
-            <label asp-for="CurrentJobExtension.DoorHoist"  class="col-sm-5 col-form-label"></label>
             <div>
                 <span asp-validation-for="CurrentJobExtension.DoorHoist" class="text-danger"></span>
                 <custom-select select-for="Style" selected-value="@Model.CurrentJobExtension.DoorHoist" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" class="form-control form-control-sm" asp-for="CurrentJobExtension.DoorHoist"></custom-select>
@@ -78,8 +70,6 @@
         </div>
         <div class="form-group row" style="margin-bottom:0.5em;">
             <label asp-for="CurrentJobExtension.DoorOperatorID" class="col-sm-5 col-form-label"></label>
-            <door-operator-select id="DoorOperatorID" asp-for="@Model.CurrentJobExtension.DoorOperatorID" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true )" selected-value="Model.CurrentJobExtension.DoorOperatorID" class="form-control form-control-sm col-sm-3">
-            </door-operator-select>
             <div>
                 <door-operator-select id="DoorOperatorID" asp-for="@Model.CurrentJobExtension.DoorOperatorID" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true )" selected-value="Model.CurrentJobExtension.DoorOperatorID" class="form-control form-control-sm">
                 </door-operator-select>
@@ -194,7 +184,6 @@
         $("#JobTypeMain").ready(function () {
             $("#GroupSelected").hide();
         });
-
         $('#JobTypeMain').change(function () {
             if ($(this).val() == 'Group') {
                 $('#GroupSelected').show();
