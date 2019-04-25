@@ -42,6 +42,24 @@ namespace ProdFloor.Migrations
                     b.ToTable("Cities");
                 });
 
+            modelBuilder.Entity("ProdFloor.Models.City_audit", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("AffectedItemID");
+
+                    b.Property<DateTime>("Date");
+
+                    b.Property<string>("Name");
+
+                    b.Property<string>("Statement");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("City_Audits");
+                });
+
             modelBuilder.Entity("ProdFloor.Models.Country", b =>
                 {
                     b.Property<int>("CountryID")
@@ -54,6 +72,54 @@ namespace ProdFloor.Migrations
                     b.HasKey("CountryID");
 
                     b.ToTable("Countries");
+                });
+
+            modelBuilder.Entity("ProdFloor.Models.Country_audit", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("AffectedItemID");
+
+                    b.Property<DateTime>("Date");
+
+                    b.Property<string>("Name");
+
+                    b.Property<string>("Statement");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Country_Audits");
+                });
+
+            modelBuilder.Entity("ProdFloor.Models.CustomFeature", b =>
+                {
+                    b.Property<int>("CustomFeatureID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("CustomSoftwareID");
+
+                    b.Property<int>("JobID");
+
+                    b.HasKey("CustomFeatureID");
+
+                    b.HasIndex("CustomSoftwareID");
+
+                    b.HasIndex("JobID");
+
+                    b.ToTable("CustomFeatures");
+                });
+
+            modelBuilder.Entity("ProdFloor.Models.CustomSoftware", b =>
+                {
+                    b.Property<int>("CustomSoftwareID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Description");
+
+                    b.HasKey("CustomSoftwareID");
+
+                    b.ToTable("CustomSoftwares");
                 });
 
             modelBuilder.Entity("ProdFloor.Models.DoorOperator", b =>
@@ -78,6 +144,24 @@ namespace ProdFloor.Migrations
                     b.ToTable("DoorOperators");
                 });
 
+            modelBuilder.Entity("ProdFloor.Models.DoorOperator_audit", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("AffectedItemID");
+
+                    b.Property<DateTime>("Date");
+
+                    b.Property<string>("Name");
+
+                    b.Property<string>("Statement");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("DoorOperator_Audits");
+                });
+
             modelBuilder.Entity("ProdFloor.Models.FireCode", b =>
                 {
                     b.Property<int>("FireCodeID")
@@ -92,12 +176,32 @@ namespace ProdFloor.Migrations
                     b.ToTable("FireCodes");
                 });
 
+            modelBuilder.Entity("ProdFloor.Models.FireCode_audit", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("AffectedItemID");
+
+                    b.Property<DateTime>("Date");
+
+                    b.Property<string>("Name");
+
+                    b.Property<string>("Statement");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("FireCode_Audits");
+                });
+
             modelBuilder.Entity("ProdFloor.Models.GenericFeatures", b =>
                 {
                     b.Property<int>("GenericFeaturesID")
                         .ValueGeneratedOnAdd();
 
                     b.Property<bool>("Attendant");
+
+                    b.Property<bool>("BSI");
 
                     b.Property<bool>("BottomAccess");
 
@@ -158,8 +262,6 @@ namespace ProdFloor.Migrations
                     b.Property<string>("INCPButtons")
                         .HasMaxLength(50);
 
-                    b.Property<bool>("Ind");
-
                     b.Property<int>("JobID");
 
                     b.Property<bool>("LoadWeigher");
@@ -168,6 +270,8 @@ namespace ProdFloor.Migrations
                         .HasMaxLength(100);
 
                     b.Property<bool>("PTI");
+
+                    b.Property<bool>("Pit");
 
                     b.Property<bool>("Roped");
 
@@ -294,7 +398,7 @@ namespace ProdFloor.Migrations
                     b.Property<string>("BatteryBrand")
                         .HasMaxLength(50);
 
-                    b.Property<int>("FLA");
+                    b.Property<float>("FLA");
 
                     b.Property<int>("HP");
 
@@ -461,9 +565,10 @@ namespace ProdFloor.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(78);
+                        .HasMaxLength(50);
 
-                    b.Property<int>("PO");
+                    b.Property<string>("Name2")
+                        .HasMaxLength(50);
 
                     b.Property<DateTime>("ShipDate");
 
@@ -490,6 +595,10 @@ namespace ProdFloor.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<bool>("AUXCOP");
+
+                    b.Property<bool>("AltRis");
+
+                    b.Property<bool>("BackUpDisp");
 
                     b.Property<bool>("CartopDoorButtons");
 
@@ -537,6 +646,8 @@ namespace ProdFloor.Migrations
 
                     b.Property<int>("SHCRisers");
 
+                    b.Property<bool>("SwingOp");
+
                     b.HasKey("JobExtensionID");
 
                     b.HasIndex("DoorOperatorID");
@@ -561,6 +672,24 @@ namespace ProdFloor.Migrations
                     b.ToTable("JobTypes");
                 });
 
+            modelBuilder.Entity("ProdFloor.Models.JobType_audit", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("AffectedItemID");
+
+                    b.Property<DateTime>("Date");
+
+                    b.Property<string>("Name");
+
+                    b.Property<string>("Statement");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("JobType__Audits");
+                });
+
             modelBuilder.Entity("ProdFloor.Models.LandingSystem", b =>
                 {
                     b.Property<int>("LandingSystemID")
@@ -577,6 +706,24 @@ namespace ProdFloor.Migrations
                     b.HasKey("LandingSystemID");
 
                     b.ToTable("LandingSystems");
+                });
+
+            modelBuilder.Entity("ProdFloor.Models.LandingSystem_audit", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("AffectedItemID");
+
+                    b.Property<DateTime>("Date");
+
+                    b.Property<string>("Name");
+
+                    b.Property<string>("Statement");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("LandingSystem_Audits");
                 });
 
             modelBuilder.Entity("ProdFloor.Models.Overload", b =>
@@ -680,6 +827,39 @@ namespace ProdFloor.Migrations
                     b.HasIndex("Reason4ID");
 
                     b.ToTable("Reasons5");
+            modelBuilder.Entity("ProdFloor.Models.Overload_audit", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("AffectedItemID");
+
+                    b.Property<DateTime>("Date");
+
+                    b.Property<string>("Statement");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Overload_Audits");
+                });
+
+            modelBuilder.Entity("ProdFloor.Models.PO", b =>
+                {
+                    b.Property<int>("POID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("JobID");
+
+                    b.Property<int>("PONumb");
+
+                    b.HasKey("POID");
+
+                    b.HasIndex("JobID");
+
+                    b.HasIndex("PONumb")
+                        .IsUnique();
+
+                    b.ToTable("POs");
                 });
 
             modelBuilder.Entity("ProdFloor.Models.Slowdown", b =>
@@ -700,6 +880,22 @@ namespace ProdFloor.Migrations
                     b.HasKey("SlowdownID");
 
                     b.ToTable("Slowdowns");
+                });
+
+            modelBuilder.Entity("ProdFloor.Models.Slowdown_audit", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("AffectedItemID");
+
+                    b.Property<DateTime>("Date");
+
+                    b.Property<string>("Statement");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Slowdown__Audits");
                 });
 
             modelBuilder.Entity("ProdFloor.Models.SpecialFeatures", b =>
@@ -748,6 +944,22 @@ namespace ProdFloor.Migrations
                     b.ToTable("Starters");
                 });
 
+            modelBuilder.Entity("ProdFloor.Models.Starter_audit", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("AffectedItemID");
+
+                    b.Property<DateTime>("Date");
+
+                    b.Property<string>("Statement");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Starter_Audits");
+                });
+
             modelBuilder.Entity("ProdFloor.Models.State", b =>
                 {
                     b.Property<int>("StateID")
@@ -765,7 +977,6 @@ namespace ProdFloor.Migrations
 
                     b.ToTable("States");
                 });
-
             modelBuilder.Entity("ProdFloor.Models.Step", b =>
                 {
                     b.Property<int>("StepID")
@@ -934,6 +1145,58 @@ namespace ProdFloor.Migrations
                     b.HasIndex("StepID");
 
                     b.ToTable("TriggeringFeatures");
+            modelBuilder.Entity("ProdFloor.Models.State_audit", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("AffectedItemID");
+
+                    b.Property<DateTime>("Date");
+
+                    b.Property<string>("Name");
+
+                    b.Property<string>("Statement");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("State_Audits");
+                });
+
+            modelBuilder.Entity("ProdFloor.Models.TriggeringCustSoft", b =>
+                {
+                    b.Property<int>("TriggeringCustSoftID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("CustomSoftwareID");
+
+                    b.Property<string>("Name");
+
+                    b.Property<bool>("isSelected");
+
+                    b.Property<string>("itemToMatch");
+
+                    b.HasKey("TriggeringCustSoftID");
+
+                    b.HasIndex("CustomSoftwareID");
+
+                    b.ToTable("TriggeringCustSofts");
+                });
+
+            modelBuilder.Entity("ProdFloor.Models.WireTypeSize_audit", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("AffectedItemID");
+
+                    b.Property<DateTime>("Date");
+
+                    b.Property<string>("Statement");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("WireTypeSize_Audits");
                 });
 
             modelBuilder.Entity("ProdFloor.Models.WireTypesSize", b =>
@@ -964,6 +1227,19 @@ namespace ProdFloor.Migrations
                     b.HasOne("ProdFloor.Models.State")
                         .WithMany("_Cities")
                         .HasForeignKey("StateID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("ProdFloor.Models.CustomFeature", b =>
+                {
+                    b.HasOne("ProdFloor.Models.CustomSoftware")
+                        .WithMany("_CustomFeatures")
+                        .HasForeignKey("CustomSoftwareID")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("ProdFloor.Models.Job")
+                        .WithMany("_CustomFeatures")
+                        .HasForeignKey("JobID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -1064,6 +1340,11 @@ namespace ProdFloor.Migrations
                     b.HasOne("ProdFloor.Models.Reason4")
                         .WithMany("_Reason5s")
                         .HasForeignKey("Reason4ID")
+            modelBuilder.Entity("ProdFloor.Models.PO", b =>
+                {
+                    b.HasOne("ProdFloor.Models.Job")
+                        .WithMany("_PO")
+                        .HasForeignKey("JobID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -1138,6 +1419,11 @@ namespace ProdFloor.Migrations
                     b.HasOne("ProdFloor.Models.Step")
                         .WithMany("_TriggeringFeatures")
                         .HasForeignKey("StepID")
+            modelBuilder.Entity("ProdFloor.Models.TriggeringCustSoft", b =>
+                {
+                    b.HasOne("ProdFloor.Models.CustomSoftware")
+                        .WithMany("_TriggeringCustSofts")
+                        .HasForeignKey("CustomSoftwareID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

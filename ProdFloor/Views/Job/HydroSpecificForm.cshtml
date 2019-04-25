@@ -117,18 +117,189 @@
         <label asp-for="CurrentHydroSpecific.VCI" class="col-form-label"></label>
         <div><span asp-validation-for="CurrentHydroSpecific.VCI" class="text-danger"></span></div>
         <input asp-for="CurrentHydroSpecific.VCI" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control" />
+<input type="hidden" asp-for="CurrentJob.JobID" />
+<input type="hidden" asp-for="CurrentJob.Status" />
+<input type="hidden" asp-for="CurrentJob.EngID" />
+<div class="form-row col-sm-12" style="padding-bottom:15px">
+    <div class="col-5 form-line border-right justify-content-md-center">
+        <div class="form-group row" style="margin-bottom:0.5em;">
+            <label asp-for="CurrentHydroSpecific.Starter" class="col-sm-5 col-form-label"></label>
+            <div>
+                <custom-select selected-value="@Model.CurrentHydroSpecific.Starter" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)"
+                               class="form-control-sm form-control" asp-for="CurrentHydroSpecific.Starter" select-for="Starter"></custom-select>
+                <span asp-validation-for="CurrentHydroSpecific.Starter" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="CurrentHydroSpecific.HP" class="col-sm-5 col-form-label"></label>
+            <div>
+                <input asp-for="CurrentHydroSpecific.HP" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control" />
+                <span asp-validation-for="CurrentHydroSpecific.HP" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="CurrentHydroSpecific.FLA" class="col-sm-5 col-form-label"></label>
+            <div>
+                <input asp-for="CurrentHydroSpecific.FLA" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control " />
+                <span asp-validation-for="CurrentHydroSpecific.FLA" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row" style="margin-bottom:0.5em;">
+            <label asp-for="CurrentHydroSpecific.SPH" class="col-sm-5 col-form-label"></label>
+            <div>
+                <custom-select selected-value="@Model.CurrentHydroSpecific.SPH" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)"
+                               class="form-control-sm form-control" asp-for="CurrentHydroSpecific.SPH" select-for="SPH"></custom-select>
+                <span asp-validation-for="CurrentHydroSpecific.SPH" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="CurrentHydroSpecific.MotorsNum" class="col-sm-5 col-form-label"></label>
+            <div>
+                <input asp-for="CurrentHydroSpecific.MotorsNum" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control " />
+                <span asp-validation-for="CurrentHydroSpecific.MotorsNum" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="CurrentHydroSpecific.MotorsDisconnect" class="col-sm-5 col-form-label"></label>
+            <div>
+                <input asp-for="CurrentHydroSpecific.MotorsDisconnect" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control " />
+                <span asp-validation-for="CurrentHydroSpecific.MotorsDisconnect" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row" style="margin-bottom:0.5em;">
+            <label asp-for="CurrentHydroSpecific.ValveBrand" class="col-sm-5 col-form-label"></label>
+            <div>
+                <custom-select selected-value="@Model.CurrentHydroSpecific.ValveBrand" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)"
+                               class="form-control-sm form-control" asp-for="CurrentHydroSpecific.ValveBrand" select-for="Valve Brand"></custom-select>
+                <span asp-validation-for="CurrentHydroSpecific.ValveBrand" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="CurrentHydroSpecific.ValveNum" class="col-sm-5 col-form-label"></label>
+            <div>
+                <input asp-for="CurrentHydroSpecific.ValveNum" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control " />
+                <span asp-validation-for="CurrentHydroSpecific.ValveNum" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="CurrentHydroSpecific.ValveCoils" class="col-sm-5 col-form-label"></label>
+            <div>
+                <input asp-for="CurrentHydroSpecific.ValveCoils" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control " />
+                <span asp-validation-for="CurrentHydroSpecific.ValveCoils" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="CurrentHydroSpecific.ValveVoltage" class="col-sm-5 col-form-label"></label>
+            <div>
+                <input asp-for="CurrentHydroSpecific.ValveVoltage" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control " />
+                <span asp-validation-for="CurrentHydroSpecific.ValveVoltage" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 justify-content-md-center">
+        @*Grid for checkboxes*@
+        <div class="container text-left" style="padding-left:30px;">
+            <div class="form-group row">
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" asp-for="CurrentHydroSpecific.LifeJacket" class="custom-control-input" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)">
+                    <div><span asp-validation-for="CurrentHydroSpecific.LifeJacket" class="text-danger" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></span></div>
+                    <label class="custom-control-label" asp-for="CurrentHydroSpecific.LifeJacket" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></label>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" asp-for="CurrentHydroSpecific.LOS" class="custom-control-input" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)">
+                    <div><span asp-validation-for="CurrentHydroSpecific.LOS" class="text-danger" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></span></div>
+                    <label class="custom-control-label" asp-for="CurrentHydroSpecific.LOS" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></label>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" asp-for="CurrentHydroSpecific.OilCool" class="custom-control-input" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)">
+                    <div><span asp-validation-for="CurrentHydroSpecific.OilCool" class="text-danger" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></span></div>
+                    <label class="custom-control-label" asp-for="CurrentHydroSpecific.OilCool" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></label>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" asp-for="CurrentHydroSpecific.OilTank" class="custom-control-input" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)">
+                    <div><span asp-validation-for="CurrentHydroSpecific.OilTank" class="text-danger" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></span></div>
+                    <label class="custom-control-label" asp-for="CurrentHydroSpecific.OilTank" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></label>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" asp-for="CurrentHydroSpecific.PSS" class="custom-control-input" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)">
+                    <div><span asp-validation-for="CurrentHydroSpecific.PSS" class="text-danger" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></span></div>
+                    <label class="custom-control-label" asp-for="CurrentHydroSpecific.PSS" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></label>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" asp-for="CurrentHydroSpecific.Resync" class="custom-control-input" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)">
+                    <div><span asp-validation-for="CurrentHydroSpecific.Resync" class="text-danger" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></span></div>
+                    <label class="custom-control-label" asp-for="CurrentHydroSpecific.Resync" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></label>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" asp-for="CurrentHydroSpecific.VCI" class="custom-control-input" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)">
+                    <div><span asp-validation-for="CurrentHydroSpecific.VCI" class="text-danger" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></span></div>
+                    <label class="custom-control-label" asp-for="CurrentHydroSpecific.VCI" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></label>
+                </div>
+            </div>
+            <hr style="width: 100%; color: black; height: 1px; background-color:floralwhite;" />
+            <div class="form-group row">
+                <div class="form-inline">
+                    <input id="BatterySelected" asp-for="CurrentHydroSpecific.Battery" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-check-input" />
+                    <div><span asp-validation-for="CurrentHydroSpecific.Battery" class="text-danger" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></span></div>
+                    <label asp-for="CurrentHydroSpecific.Battery" class="col-form-label" style="margin-left:15px;"></label>
+                </div>
+            </div>
+            <div class="form-group row" id="BatteryBrand" style="padding-left:15px;">
+                <label asp-for="CurrentHydroSpecific.BatteryBrand" class="col-form-label" style="margin-right:10px"></label>
+                <div>
+                    <custom-select id="OtherBatteryBrandSelected" selected-value="@Model.CurrentHydroSpecific.BatteryBrand" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)"
+                                   class="form-control-sm form-control" asp-for="CurrentHydroSpecific.BatteryBrand" select-for="Battery Brand"></custom-select>
+                    <span asp-validation-for="CurrentHydroSpecific.BatteryBrand" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row" id="OtherBatteryBrand" style="padding-left:30px;">
+                <label asp-for="CurrentHydroSpecific.OtherBatteryBrand" class="col-sm-3 col-form-label"></label>
+                <div>
+                    <input asp-for="CurrentHydroSpecific.OtherBatteryBrand" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control " />
+                    <span asp-validation-for="CurrentHydroSpecific.OtherBatteryBrand" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+@if (Model.CurrentHydroSpecific.Battery == false)
+{
+    <script type="text/javascript">
+        $("#BatterySelected").ready(function () {
+            $("#BatteryBrand").hide();
+        });
 
- @if(Model.CurrentHydroSpecific.Battery == false)
-    {
-        <script type="text/javascript">
-                $("#BatterySelected").ready(function () {
-                    $("#BatteryBrand").hide();
-                });
+        $("#BatterySelected").click(function () {
+            $("#BatteryBrand")[this.checked ? "show" : "hide"]();
+        });
+    </script>
+}
+@if (Model.CurrentHydroSpecific.BatteryBrand != "Other")
+{
+    <script type="text/javascript">
+        $("#OtherBatteryBrandSelected").ready(function () {
+            $("#OtherBatteryBrand").hide();
+        });
 
-            $("#BatterySelected").click(function () {
-                $("#BatteryBrand")[this.checked ? "show" : "hide"]();
-            });
-          </script>
-    }
+        $('#OtherBatteryBrandSelected').change(function () {
+            if ($(this).val() == 'Other') {
+                $('#OtherBatteryBrand').show();
+            } else {
+                $('#OtherBatteryBrand').hide();
+            }
+        });
+    </script>
+}
+

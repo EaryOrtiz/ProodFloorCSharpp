@@ -18,8 +18,10 @@ namespace ProdFloor.Models.ViewModels
         public HoistWayData CurrentHoistWayData { get; set; }
         //public SpecialFeatures CurrentSpecialFeatures { get; set; }
         public List<SpecialFeatures> SpecialFeatureslist { get; set; }
+        public List<PO> POList { get; set; }
         public string CurrentTab { get; set; }
         public string buttonAction { get; set; }
         public int CurrentUserID { get; set; }
+        public int fieldID { get; set; }
     }
 }

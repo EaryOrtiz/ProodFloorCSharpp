@@ -12,6 +12,8 @@ namespace ProdFloor.Models.ViewModels.Item
         public List<Models.Job> JobsSearchList { get; set; }
         public List<HydroSpecific> HydroSpecificList { get; set; }
         public List<HoistWayData> HoistWayDataList { get; set; }
+        public List<PO> POList { get; set; }
+        public List<CustomSoftware> CustomSoftList { get; set; }
         public bool RefernceData { get; set; }
 
         //Atributos de Job
@@ -22,6 +24,8 @@ namespace ProdFloor.Models.ViewModels.Item
 
         public int SPH { get; set; }
         public string JobName { get; set; }
+        public string StarterType { get; set; }
+        public string Cust { get; set; }
         public string Contractor { get; set; }
         public string FireCode { get; set; }
         public string JobTypeMain { get; set; }
@@ -32,14 +36,24 @@ namespace ProdFloor.Models.ViewModels.Item
         public int LandingID { get; set; }
         public string FireCodeName { get; set; }
         public int DownSpeed { get; set; }
+        public int UpSpeed { get; set; }
 
 
         //SlowLimit Table
+
+        //Down speed
         public int CarSpeedFPM { get; set; } ///Downs Speed
         public int Distance { get; set; }
         public int A { get; set; }
         public int SlowLimit { get; set; }
         public int MiniumFloorHeight { get; set; }
+
+        //Up speed
+        public int CarUpSpeedFPM { get; set; } ///UP Speed
+        public int UPDistance { get; set; }
+        public int UPA { get; set; }
+        public int UPSlowLimit { get; set; }
+        public int UPMiniumFloorHeight { get; set; }
 
         //Wiretypesize Table
         public string Type { get; set; }
@@ -48,13 +62,14 @@ namespace ProdFloor.Models.ViewModels.Item
 
         //Starter Table
         public string Brand { get; set; }
-        public int FLA { get; set; }
+        public float FLA { get; set; }
         public string TypeS { get; set; }
         public string Volts { get; set; }
         public float HP { get; set; }
         public string MCPart { get; set; }
         public string NewManufacturerPart { get; set; }
         public string OverloadTable { get; set; }
+        public int InputPhase { get; set; }
 
         //Overload
         public float AMPMin { get; set; } //FLA
@@ -62,5 +77,13 @@ namespace ProdFloor.Models.ViewModels.Item
         public int OverTableNum { get; set; }
         public string MCPartOver { get; set; }
         public string SiemensPart { get; set; }
+
+        //SHC Calculator
+        public int calculatedFrontSHC { get; set; }
+        public int calculatedRearSHC { get; set; }
+        public int FrontFloor { get; set; }
+        public int RearFloor { get; set; }
+        public bool anyRear { get; set; }
+        public bool SHCisSelected { get; set;}
     }
 }

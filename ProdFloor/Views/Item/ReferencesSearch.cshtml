@@ -5,29 +5,17 @@
 }
 
 <div class="row" style="padding-right:20px">
-    <h2 class="col-sm-10">M2000 Worksheet</h2>
+    <h2 class="col-sm-10">Worksheet for Job: @Model.NumJobSearch</h2>
 </div>
-<br />
-
 <form asp-controller="Item" asp-action="ReferencesSearch" method="get">
-    <div class="input-group">
-        <input type="text" class="form-control form-control-sm col-sm-2" asp-for="NumJobSearch" placeholder=" Please enter a Job Number">
-        <div class="input-group-append">
-            <button class="btn btn-dark" type="submit" value="Search">
-                <i class="fa fa-search" aria-hidden="true"></i>
-            </button>
-        </div>
-    </div>
-    <br />
-    <div>
-        <span asp-validation-for="NumJobSearch" class="text-danger"></span><br />
-    </div>
+    <input type="hidden" class="form-control form-control-sm col-sm-2" asp-for="NumJobSearch">
+    <span asp-validation-for="NumJobSearch" class="text-danger"></span><br />
 </form>
 @if (Model.RefernceData == true)
 {
-    <ul class="nav nav-tabs col-sm-7" role="tablist">
+    <ul class="nav nav-tabs " role="tablist">
         <li class="nav-item">
-            <a class="nav-link " data-toggle="tab" href="#silver" role="tab">Silver Table</a>
+            <a class="nav-link active" data-toggle="tab" href="#silver" role="tab">Silver Label</a>
         </li>
         <li class="nav-item">
             <a class="nav-link " data-toggle="tab" href="#starter" role="tab">Starter</a>
@@ -35,10 +23,19 @@
         <li class="nav-item">
             <a class="nav-link" data-toggle="tab" href="#landingSearch" role="tab">Landing</a>
         </li>
+        <li class="nav-item">
+            <a class="nav-link @(Model.SHCisSelected == false ? "disabled" : " ")" data-toggle="tab" href="#SHCSearch" role="tab">SHC Calculator</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link " data-toggle="tab" href="#Custom" role="tab">Custom Software</a>
+        </li>
     </ul>
     <div class="tab-content" style="padding:20px">
         <div class="tab-pane active" id="silver" role="tabpanel">
-                <div class="col-5 ">
+            <div class="form-row col-sm-12" style="padding-bottom:15px">
+                <div class="col-md-6">
+                    <h3 class="text-left">Job Info</h3>
+                    <br />
                     <div class="form-group row">
                         <label class="col-3 col-form-label">Name:</label>
                         <div class="col-5">
@@ -46,15 +43,15 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-3 col-form-label">Contractor: &nbsp;</label>
+                        <label class="col-3 col-form-label">Cust: &nbsp;</label>
                         <div class="col-5">
-                            <input type="text" value="@Model.Contractor" class="form-control form-control-sm col-sm-12" disabled asp-for="Contractor">
+                            <input type="text" value="@Model.Cust" class="form-control form-control-sm col-sm-12" disabled asp-for="Cust">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-3 col-form-label">PO: &nbsp;</label>
+                        <label class="col-3 col-form-label">Contractor: &nbsp;</label>
                         <div class="col-5">
-                            <input type="text" value="@Model.PO" class="form-control form-control-sm col-sm-12" disabled asp-for="PO">
+                            <input type="text" value="@Model.Contractor" class="form-control form-control-sm col-sm-12" disabled asp-for="Contractor">
                         </div>
                     </div>
                     <div class="form-group row">
@@ -82,53 +79,63 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-3 col-form-label">FireCode: &nbsp;</label> 
+                        <label class="col-3 col-form-label">FireCode: &nbsp;</label>
                         <div class="col-5">
                             <input type="text" value="@Model.FireCodeName" class="form-control form-control-sm col-sm-12" disabled asp-for="FireCodeName">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-3 col-form-label">Landing System: &nbsp;</label>  
+                        <label class="col-3 col-form-label">Landing System: &nbsp;</label>
                         <div class="col-5">
                             <input type="text" value="@Model.LandingName" class="form-control form-control-sm col-sm-12" disabled asp-for="LandingName">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-3 col-form-label">Type of Operation: &nbsp;</label> 
+                        <label class="col-3 col-form-label">Type of Operation: &nbsp;</label>
                         <div class="col-5">
                             <input type="text" value="@Model.JobTypeMain" class="form-control form-control-sm col-sm-12" disabled asp-for="JobTypeMain">
                         </div>
                     </div>
                 </div>
+                <div class="col float-left text-left">
+                    <h3 class="text-left">PO's List</h3>
+                    <br />
+                    @for (int i = 0; i < Model.POList.Count; i++)
+                    {
+                        <div class="form-group row">
+                            <label asp-for="POList[i].PONumb" class="col-sm-3 col-form-label"></label>
+                            <div class="form-inline">
+                                <input asp-for="POList[i].PONumb" class="form-control col-sm-7" readonly />
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div class="col float-left text-left">
+                </div>
+                <div class="col float-left text-left">
+                </div>
+            </div>
         </div>
         <div class="tab-pane " id="starter" role="tabpanel">
             <div class="row">
-                <div class="col-3  border-right" style="text-align:center;">
+                <div class="col-6  border-right" style="text-align:center;">
                     <h4 style="position:center">Starter Model</h4>
-                    <div class="form-group row">
-                        <div class="row">
-                            <div class="col-1"></div>
-                            <div class="col">
-                                MCE Part #: <input type="text" value="@Model.MCPart" class="form-control form-control-sm col-sm-10" disabled asp-for="MCPart">
-                            </div>
-                            <div class="col-5">
-                                Manufacturer Part #: <input type="text" value="@Model.NewManufacturerPart" class="form-control form-control-sm col-sm-10" disabled asp-for="NewManufacturerPart">
-                            </div>
-                            <div class="col-1"></div>
+                    <div class="form-inline justify-content-md-center" style="position:center">
+                        <div class="form-group row col-6">
+                            MCE Part #: <input type="text" value="@Model.MCPart" class="form-control form-control-sm col-sm-10" disabled asp-for="MCPart">
+                        </div>
+                        <div class="form-group row col-6">
+                            Manufacturer Part #: <input type="text" value="@Model.NewManufacturerPart" class="form-control form-control-sm col-sm-10" disabled asp-for="NewManufacturerPart">
                         </div>
                     </div>
                     <br />
                     <h4 style="position:center">Overload</h4>
-                    <div class="form-group row">
-                        <div class="row">
-                            <div class="col-1"></div>
-                            <div class="col">
-                                MCE Part #: <input type="text" value="@Model.MCPartOver" class="form-control form-control-sm col-sm-10" disabled asp-for="MCPartOver">
-                            </div>
-                            <div class="col-4">
-                                Siemens Part #: <input type="text" value="@Model.SiemensPart" class="form-control form-control-sm col-sm-10" disabled asp-for="SiemensPart">
-                            </div>
-                            <div class="col-1"></div>
+                    <div class="form-inline justify-content-md-center">
+                        <div class="form-group row col-6">
+                            MCE Part #: <input type="text" value="@Model.MCPartOver" class="form-control form-control-sm col-sm-10" disabled asp-for="MCPartOver">
+                        </div>
+                        <div class="form-group row col-6">
+                            Siemens Part #: <input type="text" value="@Model.SiemensPart" class="form-control form-control-sm col-sm-10" disabled asp-for="SiemensPart">
                         </div>
                     </div>
                 </div>
@@ -136,31 +143,112 @@
                     <h4 style="position:center">Wire</h4>
                     <br />
                     <div class="form-inline">
-                        <input type="text" value="@Model.Size" class="form-control form-control-lg col-sm-1" disabled asp-for="Size">
+                        <input type="text" value="@Model.Size" class="form-control form-control-lg col-sm-2 text-center" disabled asp-for="Size">
                     </div>
                 </div>
             </div>
         </div>
         <div class="tab-pane " id="landingSearch" role="tabpanel">
             <div class="row">
-                <div class="row">
-                    <div class="col-sm">
-                        CarSpeed (FPM): <input type="text" value="@Model.CarSpeedFPM" class="form-control form-control-sm col-sm-10" disabled asp-for="CarSpeedFPM">
-                    </div>
-                    <div class="col-sm">
-                        Distance: <input type="text" value="@Model.Distance" class="form-control form-control-sm col-sm-10" disabled asp-for="Distance">
-                    </div>
-                    <div class="col-sm">
-                        "A" Landing Page: <input type="text" value="@Model.A" class="form-control form-control-sm col-sm-10" disabled asp-for="A">
-                    </div>
-                    <div class="col-sm">
-                        Slow Limit: <input type="text" value="@Model.SlowLimit" class="form-control form-control-sm col-sm-10" disabled asp-for="SlowLimit">
-                    </div>
-                    <div class="col-sm">
-                        Minium Floor Height: <input type="text" value="@Model.MiniumFloorHeight" class="form-control form-control-sm col-sm-10" disabled asp-for="MiniumFloorHeight">
-                    </div>
+                <div class="col-sm">
+                    <h3 class="text-center">Down Speed</h3>
                 </div>
             </div>
+            <br />
+            <div class="row">
+                <div class="col-sm">
+                    CarSpeed (FPM): <input type="text" value="@Model.CarSpeedFPM" class="form-control form-control-sm col-sm-10" disabled asp-for="CarSpeedFPM">
+                </div>
+                <div class="col-sm">
+                    Distance: <input type="text" value="@Model.Distance" class="form-control form-control-sm col-sm-10" disabled asp-for="Distance">
+                </div>
+                <div class="col-sm">
+                    Page L3: <input type="text" value="@Model.A" class="form-control form-control-sm col-sm-10" disabled asp-for="A">
+                </div>
+                <div class="col-sm">
+                    Page 2 & 7: <input type="text" value="@Model.SlowLimit" class="form-control form-control-sm col-sm-10" disabled asp-for="SlowLimit">
+                </div>
+                <div class="col-sm">
+                    Minium Floor Height: <input type="text" value="@Model.MiniumFloorHeight" class="form-control form-control-sm col-sm-10" disabled asp-for="MiniumFloorHeight">
+                </div>
+            </div>
+            <br /><br />
+            <div class="row">
+                <div class="col-sm">
+                    <h3 class="text-center">UP Speed</h3>
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-sm">
+                    CarSpeed (FPM): <input type="text" value="@Model.CarUpSpeedFPM" class="form-control form-control-sm col-sm-10" disabled asp-for="CarSpeedFPM">
+                </div>
+                <div class="col-sm">
+                    Distance: <input type="text" value="@Model.UPDistance" class="form-control form-control-sm col-sm-10" disabled asp-for="Distance">
+                </div>
+                <div class="col-sm">
+                    Page L3: <input type="text" value="@Model.UPA" class="form-control form-control-sm col-sm-10" disabled asp-for="A">
+                </div>
+                <div class="col-sm">
+                    Page 2 & 7: <input type="text" value="@Model.UPSlowLimit" class="form-control form-control-sm col-sm-10" disabled asp-for="SlowLimit">
+                </div>
+                <div class="col-sm">
+                    Minium Floor Height: <input type="text" value="@Model.UPMiniumFloorHeight" class="form-control form-control-sm col-sm-10" disabled asp-for="MiniumFloorHeight">
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane " id="SHCSearch" role="tabpanel">
+            <div class="row justify-content-md-center">
+                <div class="col-sm justify-content-md-center">
+                    <div class="row justify-content-md-center">
+                        <h3 class="text-center">Front</h3>
+                    </div>
+                    <br />
+                    <div class="row justify-content-md-center">
+                        Calculated SHC : <input type="text" value="@Model.calculatedFrontSHC" class="form-control form-control-md  text-center" disabled asp-for="calculatedFrontSHC">
+                    </div>
+                </div>
+                <div class="col-sm">
+                </div>
+                <div class="col-sm">
+                </div>
+                <div class="col-sm">
+                </div>
+                <div class="col-sm">
+                </div>
+            </div>
+            <br /><br />
+            <div class="row justify-content-md-center">
+                <div class="col-sm justify-content-md-center">
+                    <div class="row justify-content-md-center">
+                        <h3 class="text-center">Rear</h3>
+                    </div>
+                    <br />
+                    <div class="row justify-content-md-center">
+                        Calculated SHC : <input type="text" value="@Model.calculatedRearSHC" class="form-control form-control-md text-center" disabled asp-for="calculatedFrontSHC">
+                    </div>
+                </div>
+                <div class="col-sm">
+                </div>
+                <div class="col-sm">
+                </div>
+                <div class="col-sm">
+                </div>
+                <div class="col-sm">
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane " id="Custom" role="tabpanel">
+            @for (int i = 0; i < Model.CustomSoftList.Count; i++)
+            {
+                <div class="form-group box-shadow">
+                    <label class="col-form-label">Custom Software for:</label>
+                    <div>
+                        <textarea asp-for="CustomSoftList[i].Description" class="form-control box-shadow" rows="3" readonly></textarea>
+                    </div>
+                </div>
+                <br />
+            }
         </div>
     </div>
 }

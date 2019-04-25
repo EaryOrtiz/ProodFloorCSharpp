@@ -17,7 +17,9 @@ namespace ProdFloor.Models
         public DbSet<Indicator> Indicators { get; set; }
         public DbSet<HoistWayData> HoistWayDatas { get; set; }
 
+
         //Items
+
         public DbSet<Country> Countries { get; set; }
         public DbSet<State> States { get; set; }
         public DbSet<City> Cities { get; set; }
@@ -28,7 +30,13 @@ namespace ProdFloor.Models
         public DbSet<SpecialFeatures> SpecialFeatures { get; set; }
 
 
+
         //Enginner Refernces Tables
+
+        public DbSet<PO> POs { get; set; }
+        public DbSet<CustomSoftware> CustomSoftwares { get; set; }
+        public DbSet<TriggeringCustSoft> TriggeringCustSofts { get; set; }
+        public DbSet<CustomFeature> CustomFeatures { get; set; }
         public DbSet<Slowdown> Slowdowns { get; set; }
         public DbSet<WireTypesSize> WireTypesSizes { get; set; }
         public DbSet<Starter> Starters { get; set; }
@@ -53,6 +61,27 @@ namespace ProdFloor.Models
                 .HasIndex(u => u.PO)
                 .IsUnique();
         }
+        //ItemHistory
+        public DbSet<Country_audit> Country_Audits { get; set; }
+        public DbSet<State_audit> State_Audits { get; set; }
+        public DbSet<City_audit> City_Audits { get; set; }
+        public DbSet<FireCode_audit> FireCode_Audits { get; set; }
+        public DbSet<DoorOperator_audit> DoorOperator_Audits { get; set; }
+        public DbSet<JobType_audit> JobType__Audits { get; set; }
+        public DbSet<LandingSystem_audit> LandingSystem_Audits { get; set; }
+        public DbSet<Starter_audit> Starter_Audits { get; set; }
+        public DbSet<Slowdown_audit> Slowdown__Audits { get; set; }
+        public DbSet<Overload_audit> Overload_Audits { get; set; }
+        public DbSet<WireTypeSize_audit> WireTypeSize_Audits { get; set; }
+
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.Entity<PO>()
+                .HasIndex(u => u.PONumb)
+                .IsUnique();
+        }
+
         public class ApplicationDbContextFactory
             : IDesignTimeDbContextFactory<ApplicationDbContext>
         {

@@ -1,0 +1,52 @@
+﻿@model ProdFloor.Models.ViewModels.Job.CustomSoftwareViewModel
+<div>
+    <button asp-action="NextFormCS" type="submit" value="AddSF" name="buttonAction" class="btn btn-success btn-sm col-sm-2" style="padding-top:10px;margin-bottom:10px;min-width:100px;float:left">
+        <i class="fa fa-plus"></i>&nbsp; Trigger Feature
+    </button>
+</div>
+<input type="hidden" asp-for="CustomSoftware.CustomSoftwareID" />
+<br /><br />
+<div class="table-responsive col-7">
+    <table class="table form-control">
+        <thead>
+            <tr class="d-flex">
+                <th class="col-7" style="width:100%">Feature</th>
+                <th class="col-8" style="width:100%">Item to Match</th>
+                <th class="col-2"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.TriggeringList.Count; i++)
+            {
+                @Html.HiddenFor(m => m.TriggeringList[i].CustomSoftwareID)
+                @Html.HiddenFor(m => m.TriggeringList[i].TriggeringCustSoftID)
+                <tr class="d-flex">
+                    <td class="col-7">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    @Html.CheckBoxFor(m => m.TriggeringList[i].isSelected, new { Class = "form-control;" })
+                                </div>
+                            </div>
+                            <trigger2-select class="form-control form-control-sm;" asp-for="@Model.TriggeringList[i].Name" select-for="TriggerCustom" selected-value="@Model.TriggeringList[i].Name"></trigger2-select>
+                        </div>
+                    </td>
+                    <td class="col-8">
+                        <div class="form-group">
+                                <input asp-for="@Model.TriggeringList[i].itemToMatch" class="form-control"/>
+                        </div>
+                    </td>
+                    <td class="col-2" style="text-align:center;">
+                        <form asp-action="DeleteCS" method="post">
+                            <input type="hidden" name="fieldID" value="@Model.TriggeringList[i].TriggeringCustSoftID" />
+                            <input type="hidden" name="customID" value="@Model.TriggeringList[i].CustomSoftwareID" />
+                            <button type="submit" class="btn btn-danger btn-sm"> 
+                                <i class="fa fa-minus-circle"></i>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

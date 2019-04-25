@@ -27,16 +27,13 @@
     <li class="nav-item" role="tab" id="city">
         <a asp-action="List" asp-controller="City" asp-route-country="" asp-route-state="" asp-route-Page="1" class="nav-link">Cities</a>
     </li>
+    <li class="nav-item" role="tab" id="custom">
+        <a asp-action="List" asp-controller="CustomSoftware" asp-route-Page="1" class="nav-link">Custom Software</a>
+    </li>
     <li class="nav-item" role="tab" id="Tables">
         <a data-toggle="collapse" href="#collapseTables" role="button" aria-expanded="false" aria-controls="collapseTables"
            class="nav-link">Enginner Refererences</a>
         <ul id="collapseTables" class="collapse" role="tabpanel" aria-labelledby="collapseTables" data-parent="#accordion">
-            <li class="nav-link"
-                style="padding:4px;text-align:center;margin-bottom:5px">
-                <a style="color:white" asp-action="ReferencesSearch"
-                   asp-controller="Item"
-                   asp-route-Page="1">Search References</a>
-            </li>
             <li class="nav-link"
                 style="padding:4px;text-align:center;margin-bottom:5px">
                 <a style="color:white" asp-action="List"

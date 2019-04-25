@@ -304,6 +304,8 @@ namespace ProdFloor.Models
                 {
                     dbEntry.FLA = starter.FLA;
                     dbEntry.StarterType = starter.StarterType;
+                    dbEntry.StarterType = starter.StarterType;
+                    dbEntry.FLA = starter.FLA;
                     dbEntry.Volts = starter.Volts;
                     dbEntry.HP = starter.HP;
                     dbEntry.MCPart = starter.MCPart;

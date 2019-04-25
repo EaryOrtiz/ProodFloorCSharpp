@@ -1652,13 +1652,13 @@ namespace ProdFloor.Models
                     {
                         LandingSystemID = 4,
                         Name = "LS-QUTE",
-                        UsedIn = "ElemHydro"
+                        UsedIn = "ElmHydro"
                     },
                     new LandingSystem
                     {
                         LandingSystemID = 5,
                         Name = "LS-EDGE",
-                        UsedIn = "ElemHydro"
+                        UsedIn = "ElmHydro"
                     },
                     new LandingSystem
                     {
@@ -1676,13 +1676,13 @@ namespace ProdFloor.Models
                     {
                         LandingSystemID = 8,
                         Name = "LS-Rail",
-                        UsedIn = "ElemTraction"
+                        UsedIn = "ElmHydro"
                     },
                     new LandingSystem
                     {
                         LandingSystemID = 9,
                         Name = "LS-EDGE",
-                        UsedIn = "ElemTraction"
+                        UsedIn = "ElmTract"
                     }
                     );
                 context.Database.OpenConnection();
@@ -1707,7 +1707,6 @@ namespace ProdFloor.Models
                         JobID = 1,
                         Name = "BRENTWOOD CONDOS",
                         JobNum = 2017088571,
-                        PO = 3398238,
                         Cust = "OTIS-MP",
                         CityID = 25,
                         FireCodeID = 11,
@@ -1724,7 +1723,6 @@ namespace ProdFloor.Models
                         JobID = 2,
                         Name = "Job Name 2",
                         JobNum = 2017088362,
-                        PO = 3398175,
                         Cust = "FAKE-2",
                         CityID = 60,
                         FireCodeID = 7,
@@ -1741,7 +1739,6 @@ namespace ProdFloor.Models
                         JobID = 3,
                         Name = "PACIFIC PALISADES LAUSD CHARTER HIGH SCHOOL",
                         JobNum = 2017088536,
-                        PO = 3397819,
                         Cust = "CAEE2999",
                         CityID = 61,
                         FireCodeID = 18,
@@ -1758,7 +1755,6 @@ namespace ProdFloor.Models
                         JobID = 4,
                         Name = "SMC ADMIN",
                         JobNum = 2017088535,
-                        PO = 3397817,
                         Cust = "CAEE3000",
                         CityID = 73,
                         FireCodeID = 18,
@@ -1782,7 +1778,66 @@ namespace ProdFloor.Models
                 {
                     context.Database.CloseConnection();
                 }
-            }
+
+                if (context.Jobs.Any() && !context.POs.Any())
+                {
+                    context.POs.AddRange(
+                        new PO
+                        {
+                            JobID = 1,
+                            POID = 1,
+                            PONumb = 3000001
+                        },
+                        new PO
+                        {
+                            JobID = 1,
+                            POID = 2,
+                            PONumb = 3000002
+                        },
+                        new PO
+                        {
+                            JobID = 2,
+                            POID = 3,
+                            PONumb = 3000003
+                        },
+                        new PO
+                        {
+                            JobID = 3,
+                            POID = 4,
+                            PONumb = 3000004
+                        },
+                        new PO
+                        {
+                            JobID = 4,
+                            POID = 5,
+                            PONumb = 3000005
+                        },
+                        new PO
+                        {
+                            JobID = 4,
+                            POID = 6,
+                            PONumb = 3000006
+                        },
+                        new PO
+                        {
+                            JobID = 4,
+                            POID = 7,
+                            PONumb = 300000
+                        }
+                        );
+                }
+                    context.Database.OpenConnection();
+                    try
+                    {
+                        context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.POs ON");
+                        context.SaveChanges();
+                        context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.POs OFF");
+                    }
+                    finally
+                    {
+                        context.Database.CloseConnection();
+                    }
+                }
         }
     }
 }

@@ -294,6 +294,8 @@ namespace ProdFloor.Infrastructure
     public class CustomSelectTagHelper : TagHelper
     {
         private IItemRepository itemsrepository;
+        private IJobRepository jobrepository;
+
 
         private IUrlHelperFactory urlHelperFactory;
 
@@ -301,10 +303,11 @@ namespace ProdFloor.Infrastructure
 
         public string SelectFor { get; set; }
 
-        public CustomSelectTagHelper(IUrlHelperFactory helperFactory, IItemRepository itemsrepo)
+        public CustomSelectTagHelper(IUrlHelperFactory helperFactory, IItemRepository itemsrepo, IJobRepository jobrepo)
         {
             urlHelperFactory = helperFactory;
             itemsrepository = itemsrepo;
+            jobrepository = jobrepo;
         }
 
         [HtmlAttributeName("asp-is-disabled")]
@@ -326,6 +329,26 @@ namespace ProdFloor.Infrastructure
                     return itemsrepository.DoorOperators.Select(s => s.Style).Distinct().AsQueryable();
                 case "Battery Brand":
                     return  new List<string> { "HAPS", "R&R", "Other" }.AsQueryable();
+                case "JobType":
+                    return itemsrepository.JobTypes.Select(d => d.Name).Distinct();
+                case "Style":
+                    return itemsrepository.DoorOperators.Select(d => d.Style).Distinct();
+                case "SwitchStyle":
+                    return new List<string> { "2-Position", "3-Position" }.AsQueryable();
+                case "CarCode":
+                    return new List<string> { "Key", "IMonitor" }.AsQueryable();
+                case "SPH":
+                    return new List<string> { "80", "120" }.AsQueryable();
+                case "Starter":
+                    return new List<string> { "Siemens SS : 6/12", "Siemens SS : 3/9", "Sprecher SS : 6/12", "Sprecher SS : 3/9", "ATL", "YD" }.AsQueryable();
+                case "Valve Brand":
+                    return new List<string> { "Maxton", "Blain", "EECO", "TKE | Dover", "Bucher", "Other" }.AsQueryable();
+                case "Battery Brand":
+                    List<string> BatteryInHydro = jobrepository.HydroSpecifics.Where(d => d.BatteryBrand != null).Select(d => d.BatteryBrand).Distinct().ToList();
+                    List<string> BatteryList = new List<string> { "HAPS", "R&R", "Other" };
+                    if(BatteryInHydro.Count > 0) BatteryList.AddRange(BatteryInHydro);
+
+                    return BatteryList.Distinct().AsQueryable();
                 default:
                     return new List<string> { "Beginning", "Program", "Logic", "Ending", "Complete" }.AsQueryable();
             }
@@ -357,9 +380,12 @@ namespace ProdFloor.Infrastructure
             {
                 TagBuilder tag = new TagBuilder("option");
                 tag.Attributes["value"] = option.ToString();
-                if (option.ToString() == SelectedValue)
+                if (!string.IsNullOrEmpty(SelectedValue))
                 {
-                    tag.Attributes["selected"] = "selected";
+                    if (option.ToString() == SelectedValue)
+                    {
+                        tag.Attributes["selected"] = "selected";
+                    }
                 }
                 tag.InnerHtml.Append(option.ToString());
                 result.InnerHtml.AppendHtml(tag);
@@ -422,7 +448,7 @@ namespace ProdFloor.Infrastructure
                 case "JobType":
                     return new List<string> { "Simplex", "Duplex", "Group" }.AsQueryable();
                 case "JobType2":
-                    return new List<string> { "Selective Collective", "Duplex Selective Collective", "Group Operation" }.AsQueryable();
+                    return new List<string> { "Selective Collective", "SAPB Single Automatic Pushbutton", "SBC Single Button Collective", "Duplex Operation", "Group Operation" }.AsQueryable();
                 default:
                     return new List<string> { "Chime", "Gong" }.AsQueryable();
             }
@@ -447,7 +473,7 @@ namespace ProdFloor.Infrastructure
             }
             TagBuilder m_tag = new TagBuilder("option");
             m_tag.Attributes["value"] = "";
-            m_tag.InnerHtml.Append("---");
+            m_tag.InnerHtml.Append(" --- Please Select one--- ");
             result.InnerHtml.AppendHtml(m_tag);
             IQueryable<string> options = CaseFor(SelectFor);
             foreach (string option in options)
@@ -695,6 +721,8 @@ namespace ProdFloor.Infrastructure
 
         [HtmlAttributeName("asp-is-disabled")]
         public bool IsDisabled { set; get; }
+
+
             
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
@@ -887,11 +915,16 @@ namespace ProdFloor.Infrastructure
 
         public int SelectedValue { get; set; }
 
+        public int SelectFor { get; set; }
+
+        
         [HtmlAttributeName("asp-is-disabled")]
         public bool IsDisabled { set; get; }
 
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
+            
+
             IUrlHelper urlHelper = urlHelperFactory.GetUrlHelper(ViewContext);
             output.TagName = "select";
             TagBuilder result = new TagBuilder("select");
@@ -905,7 +938,8 @@ namespace ProdFloor.Infrastructure
             m_tag.Attributes["value"] = "";
             m_tag.InnerHtml.Append("Please select one");
             result.InnerHtml.AppendHtml(m_tag);
-            IQueryable<LandingSystem> landigSystems = itemsrepository.LandingSystems.AsQueryable();
+            var jobtypeName = itemsrepository.JobTypes.FirstOrDefault(m => m.JobTypeID == SelectFor).Name;
+            IQueryable<LandingSystem> landigSystems = itemsrepository.LandingSystems.Where(m => m.UsedIn == jobtypeName).AsQueryable();
             foreach (LandingSystem landingSys in landigSystems)
             {
                 TagBuilder tag = new TagBuilder("option");
@@ -1961,6 +1995,7 @@ namespace ProdFloor.Infrastructure
     }
 
     public class TriggerSelectTagHelper : TagHelper
+    public class Trigger2SelectTagHelper : TagHelper
     {
         private IItemRepository itemsrepository;
 
@@ -1971,6 +2006,7 @@ namespace ProdFloor.Infrastructure
         public string SelectFor { get; set; }
 
         public TriggerSelectTagHelper(IUrlHelperFactory helperFactory, IItemRepository itemsrepo)
+        public Trigger2SelectTagHelper(IUrlHelperFactory helperFactory, IItemRepository itemsrepo)
         {
             urlHelperFactory = helperFactory;
             itemsrepository = itemsrepo;
@@ -1987,6 +2023,8 @@ namespace ProdFloor.Infrastructure
                     return new List<string> {"Overlay", "Group","PC de Cliente", "Brake Coil Voltage > 10","EMBrake Module","EMCO Board","R6 Regen Unit","Local","Short Floor"
                                             ,"Custom","MRL","CTL2","Tarjeta CPI Incluida","Door Control en Cartop","Canada","Ontario","Manual Doors","Duplex","Serial Halls Calls"
                                             ,"Edge-LS","Rail-LS", "mView","iMonitor","HAPS Battery","2+ Starters", "MOD Door Operator"}.AsQueryable();
+                case "TriggerCustom":
+                    return new List<string> {"Contractor", "Fire Code","City", "VCI","Valve Brand","Switch Style","Landing System", "State" }.AsQueryable();
                 default:
                     return new List<string> {"Overlay", "Group","PC de Cliente", "Brake Coil Voltage > 10","EMBrake Module","EMCO Board","R6 Regen Unit","Local","ShortFloor"
                                             ,"Custom","MRL","CTL2","Tarjeta CPI Incluida","Door Control en Cartop","Canada","Ontario","Manual Doors","Duplex","Serial Halls Calls"
