@@ -480,7 +480,7 @@ namespace ProdFloor.Controllers
                 if (VeryNewSfList != null) NewViewModel.SpecialFeatureslist = VeryNewSfList;
                 else NewViewModel.SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures() };
                 NewViewModel.POList = new List<PO> { new PO { JobID = NewViewModel.CurrentJob.JobID} };
-                TempData["message"] = $"You have copied the job #{jobToCopy.JobNum} succesfully, please change the name, Job number and PO";
+                TempData["message"] = $"You have copied the job #{jobToCopy.JobNum} succesfully, please change the Job number and PO";
                 return View("Edit", NewViewModel);
             }
         }
