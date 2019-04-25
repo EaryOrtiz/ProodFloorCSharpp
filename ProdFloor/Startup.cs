@@ -118,7 +118,7 @@ namespace ProdFloor
                     template: "{controller=Job}/{action=JobSearchList}/{id?}");
             });
             SeedData.EnsurePopulated(app);
-            IdentitySeedData.EnsurePopulated(app);
+            //IdentitySeedData.EnsurePopulated(app);
         }
     }
 }
