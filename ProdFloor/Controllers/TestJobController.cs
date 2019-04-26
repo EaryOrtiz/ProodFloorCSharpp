@@ -186,6 +186,14 @@ namespace ProdFloor.Controllers
         [HttpPost]
         public IActionResult NewTestFeatures(TestJobViewModel testJobView)
         {
+            List<StepsForJob> stepsForJobToDelete= testingRepo.StepsForJobs.Where(m => m.TestJobID == testJobView.TestJob.TestJobID).ToList();
+            if(stepsForJobToDelete.Count > 0)
+            {
+                foreach(StepsForJob step in stepsForJobToDelete)
+                {
+                    testingRepo.DeleteStepsForJob(step.StepsForJobID);
+                }
+            }
             //Checa que la lista de features no este vacia o nula
             if (testJobView.TestFeature != null)
             {
@@ -308,7 +316,9 @@ namespace ProdFloor.Controllers
                 var stepInfo = testingRepo.Steps.FirstOrDefault(m => m.StepID == stepsFor.StepID);
                 var testjobinfo = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == testJobView.TestJob.TestJobID);
                 var job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == testjobinfo.JobID);
-                return View("StepsForJob",new TestJobViewModel { StepsForJob = stepsFor, Step = stepInfo, Job = job, TestJob = testjobinfo});
+                var AllStepsForJob = testingRepo.StepsForJobs.Where(m => m.TestJobID == testJobView.TestFeature.TestJobID).ToList();
+                var AllStepsForJobInfo = testingRepo.Steps.Where(m => AllStepsForJob.Any(s => s.StepID == m.StepID)).ToList();
+                return View("StepsForJob",new TestJobViewModel { StepsForJob = stepsFor, Step = stepInfo, Job = job, TestJob = testjobinfo, StepList = AllStepsForJobInfo, StepsForJobList = AllStepsForJob});
             }
 
             return NotFound();
@@ -319,6 +329,7 @@ namespace ProdFloor.Controllers
         {
             List<StepsForJob> StepsForJobList = testingRepo.StepsForJobs.FromSql("select * from dbo.StepsForJobs where dbo.StepsForJobs.StepsForJobID "+
                 "IN( select  Max(dbo.StepsForJobs.StepsForJobID ) from dbo.StepsForJobs where dbo.StepsForJobs.TestJobID = {0} group by dbo.StepsForJobs.Consecutivo)",viewModel.TestJob.TestJobID).ToList();
+            var AllStepsForJobInfo = testingRepo.Steps.Where(m => StepsForJobList.Any(s => s.StepID == m.StepID)).ToList();
             if (next == 0)
             {
                 return View("StepsForJob", viewModel);
@@ -354,7 +365,7 @@ namespace ProdFloor.Controllers
                 var stepInfo = testingRepo.Steps.FirstOrDefault(m => m.StepID == nextStepFor.StepID);
                 var testjobinfo = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == viewModel.TestJob.TestJobID);
                 var job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == testjobinfo.JobID);
-                return View("StepsForJob", new TestJobViewModel { StepsForJob = nextStepFor, Step = stepInfo, Job = job, TestJob = testjobinfo });
+                return View("StepsForJob", new TestJobViewModel { StepsForJob = nextStepFor, Step = stepInfo, Job = job, TestJob = testjobinfo, StepList = AllStepsForJobInfo, StepsForJobList = StepsForJobList });
 
             }//For Previous Step
             else if(viewModel.StepsForJob.Consecutivo == (next + 1))
@@ -367,23 +378,45 @@ namespace ProdFloor.Controllers
                 var stepInfo = testingRepo.Steps.FirstOrDefault(m => m.StepID == previusStepFor.StepID);
                 var testjobinfo = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == viewModel.TestJob.TestJobID);
                 var job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == testjobinfo.JobID);
-                return View("StepsForJob", new TestJobViewModel { StepsForJob = previusStepFor, Step = stepInfo, Job = job, TestJob = testjobinfo });
+                return View("StepsForJob", new TestJobViewModel { StepsForJob = previusStepFor, Step = stepInfo, Job = job, TestJob = testjobinfo, StepList = AllStepsForJobInfo, StepsForJobList = StepsForJobList });
             }
             
             
             return View(NotFound());
         }
 
+        public ViewResult StepsForJobList(TestJobViewModel viewModel, int next)
+        {
+            List<StepsForJob> StepsForJobList = testingRepo.StepsForJobs.FromSql("select * from dbo.StepsForJobs where dbo.StepsForJobs.StepsForJobID " +
+                "IN( select  Max(dbo.StepsForJobs.StepsForJobID ) from dbo.StepsForJobs where dbo.StepsForJobs.TestJobID = {0} group by dbo.StepsForJobs.Consecutivo)", viewModel.TestJob.TestJobID).ToList();
+            var currentStepForJob = StepsForJobList.FirstOrDefault(m => m.Consecutivo == viewModel.StepsForJob.Consecutivo); currentStepForJob.Stop = DateTime.Now;
+            var AllStepsForJobInfo = testingRepo.Steps.Where(m => StepsForJobList.Any(s => s.StepID == m.StepID)).ToList();
+
+
+            currentStepForJob.Complete = true; TimeSpan elapsed = currentStepForJob.Stop - currentStepForJob.Start; currentStepForJob.Elapsed = elapsed;
+            testingRepo.SaveStepsForJob(currentStepForJob);
+
+            //NextStep
+            var stepsForAUX = StepsForJobList.FirstOrDefault(m => m.Consecutivo == next && m.Complete == false); stepsForAUX.Start = DateTime.Now;
+            testingRepo.SaveStepsForJob(stepsForAUX);
+            var nextStepFor = StepsForJobList.FirstOrDefault(m => m.Consecutivo == next);
+            var stepInfo = testingRepo.Steps.FirstOrDefault(m => m.StepID == nextStepFor.StepID);
+            var testjobinfo = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == viewModel.TestJob.TestJobID);
+            var job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == testjobinfo.JobID);
+            return View("StepsForJob", new TestJobViewModel { StepsForJob = nextStepFor, Step = stepInfo, Job = job, TestJob = testjobinfo, StepList = AllStepsForJobInfo, StepsForJobList = StepsForJobList });
+        }
+
         public IActionResult ContinueStep(int ID)
         {
             List<StepsForJob> StepsForJobList = testingRepo.StepsForJobs.FromSql("select * from dbo.StepsForJobs where dbo.StepsForJobs.StepsForJobID " +
                "IN( select  Max(dbo.StepsForJobs.StepsForJobID ) from dbo.StepsForJobs where dbo.StepsForJobs.TestJobID = {0} group by dbo.StepsForJobs.Consecutivo)", ID).ToList();
+            var AllStepsForJobInfo = testingRepo.Steps.Where(m => StepsForJobList.Any(s => s.StepID == m.StepID)).ToList();
             StepsForJob CurrentStep = StepsForJobList.FirstOrDefault(m => m.Complete == false); CurrentStep.Start = DateTime.Now;
             testingRepo.SaveStepsForJob(CurrentStep);
             var stepInfo = testingRepo.Steps.FirstOrDefault(m => m.StepID == CurrentStep.StepID);
             var testjobinfo = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == CurrentStep.TestJobID);
             var job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == testjobinfo.JobID);
-            return View("StepsForJob", new TestJobViewModel { StepsForJob = CurrentStep, Step = stepInfo, Job = job, TestJob = testjobinfo });
+            return View("StepsForJob", new TestJobViewModel { StepsForJob = CurrentStep, Step = stepInfo, Job = job, TestJob = testjobinfo, StepList = AllStepsForJobInfo, StepsForJobList = StepsForJobList });
         }
 
         [HttpPost]

@@ -23,7 +23,7 @@
                                     @Html.CheckBoxFor(m => m.TriggeringList[i].IsSelected, new { Class = "form-control;" })
                                 </div>
                             </div>
-                            <trigger-select class="form-control form-control-sm;" asp-for="@Model.TriggeringList[i].Name" select-for="TriggerFeature" selected-value="@Model.TriggeringList[i].Name"></trigger-select>
+                            <trigger2-select class="form-control form-control-sm;" asp-for="@Model.TriggeringList[i].Name" select-for="TriggerFeature" selected-value="@Model.TriggeringList[i].Name"></trigger2-select>
                             @*@Html.TextBoxFor(m => m.TriggeringList[i].Name, new { Class = "form-control col-8;" })*@
                         </div>
                     </td>

@@ -4,31 +4,139 @@
     Layout = "_AdminLayoutWO";
     int nextNum = Model.StepsForJob.Consecutivo + 1;
     int prevNum = Model.StepsForJob.Consecutivo - 1;
+    
 }
-<form asp-controller="TestJob" asp-action="StepsForJob" method="post">
-    <input type="hidden" asp-for="Job.JobNum" value="@Model.Job.JobNum" />
-    <input type="hidden" asp-for="Step.Stage" />
-    <input type="hidden" asp-for="TestJob.TestJobID" value="@Model.TestJob.TestJobID" />
-    <input type="hidden" asp-for="StepsForJob.Consecutivo" value="@Model.StepsForJob.Consecutivo" />
-    <input type="hidden" asp-for="StepsForJob.StepsForJobID" value="@Model.StepsForJob.StepsForJobID" />
-    <input type="hidden" asp-for="Step.Description" />
-    <input type="hidden" asp-for="TestFeature.TestJobID" value="@Model.TestJob.TestJobID" />
-    <input type="hidden" asp-for="TestJob.JobID" />
-    <div class="container justify-content-md-center">
-        <div class="row justify-content-md-center"><h2>@Model.Job.JobNum</h2></div>
-        <br />
-        <div class="row justify-content-md-center"><h3>@Model.Step.Stage</h3></div>
-        <br />
-        <div class="row justify-content-md-center"><h4>@Model.StepsForJob.Consecutivo</h4></div>
-        <br />
-        <div class="row justify-content-md-center"><h3>@Model.Step.Description</h3></div>
-    </div>
-    <br />
-    <div class="justify-content-md-center text-center">
-        <div class="btn-group row " style="position:center" role="group" aria-label="Basic example">
-            <button type="submit" class="btn btn-primary" name="next" value="@prevNum" disabled="@(Model.StepsForJob.Consecutivo <= 1 ? true: false)">Atras</button>
-            <button type="submit" class="btn btn-success" name="next" value="@nextNum">Siguiente</button>
-            <a class="btn btn-danger" asp-controller="Stop" asp-action="NewStop" asp-route-id="@Model.TestJob.TestJobID">Stop</a>
+<div class="row justify-content-md-end">
+    <button id="btnAllSteps" class="btn btn-outline-dark" type="button" data-toggle="collapse" data-target="#collapseStepsForJob" aria-expanded="false" aria-controls="collapseSteps" style="float:right">
+        <i class="fas fa-grip-lines"></i>
+    </button>
+</div>
+<div class="container">
+    
+    <div class="row">
+        <div class="col-sm">
+            <form asp-controller="TestJob" asp-action="StepsForJob" method="post">
+                <input type="hidden" asp-for="Job.JobNum" value="@Model.Job.JobNum" />
+                <input type="hidden" asp-for="Step.Stage" />
+                <input type="hidden" asp-for="TestJob.TestJobID" value="@Model.TestJob.TestJobID" />
+                <input type="hidden" asp-for="StepsForJob.Consecutivo" value="@Model.StepsForJob.Consecutivo" />
+                <input type="hidden" asp-for="StepsForJob.StepsForJobID" value="@Model.StepsForJob.StepsForJobID" />
+                <input type="hidden" asp-for="Step.Description" />
+                <input type="hidden" asp-for="TestFeature.TestJobID" value="@Model.TestJob.TestJobID" />
+                <input type="hidden" asp-for="TestJob.JobID" />
+
+                <br />
+                <div class="container justify-content-md-center">
+                    <div class="row justify-content-md-center"><h2>@Model.Job.JobNum</h2></div>
+                    <br />
+                    <div class="row justify-content-md-center"><h3>@Model.Step.Stage</h3></div>
+                    <br />
+                    <div class="row justify-content-md-center"><h4>@Model.StepsForJob.Consecutivo</h4></div>
+                    <br />
+                    <div class="row justify-content-md-center"><h3>@Model.Step.Description</h3></div>
+                </div>
+                <br />
+                <div class="justify-content-md-center text-center">
+                    <div class="btn-group row " style="position:center" role="group" aria-label="Basic example">
+                        <button type="submit" class="btn btn-primary" name="next" value="@prevNum" disabled="@(Model.StepsForJob.Consecutivo <= 1 ? true: false)">Atras</button>
+                        <button type="submit" class="btn btn-success" name="next" value="@nextNum">Siguiente</button>
+                        <a class="btn btn-danger" asp-controller="Stop" asp-action="NewStop" asp-route-id="@Model.TestJob.TestJobID">Stop</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-sm collapse" id="collapseStepsForJob">
+            <form asp-controller="TestJob" asp-action="StepsForJobList" method="get">
+                <input type="hidden" asp-for="TestJob.TestJobID" value="@Model.TestJob.TestJobID" />
+                <input type="hidden" asp-for="StepsForJob.Consecutivo" value="@Model.StepsForJob.Consecutivo" />
+                <div class="card card-body">
+                    @foreach (StepsForJob step in Model.StepsForJobList)
+                    {
+                        if (step.Complete)
+                        {
+                            <div class="form-group form-inline">
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">
+                                            <i class="fas fa-check-circle"></i>
+                                        </div>
+                                    </div>
+                                    @{ string descripcion = Model.StepList.FirstOrDefault(m => m.StepID == step.StepID).Description;}
+                                    <input asp-for="Step.Description" class="form-control col-sm" value="@descripcion" readonly />
+                                    <div class="input-group-prepend">
+                                        @if (step.Consecutivo < Model.StepsForJob.Consecutivo)
+                                        {
+                                            <div class="input-group-text">
+                                                <i class="fas fa-arrow-circle-right" data-toggle="modal" data-target="#stepModel1 @step.StepID"></i>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="input-group-text">
+                                                <i class="fas fa-arrow-circle-right"></i>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="form-group form-inline">
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">
+                                            <i class="fas fa-times-circle"></i>
+                                        </div>
+                                    </div>
+                                    @{ string descripcion = Model.StepList.FirstOrDefault(m => m.StepID == step.StepID).Description;}
+                                    <input asp-for="Step.Description" class="form-control col-sm" value="@descripcion" readonly />
+                                    @if (step.Consecutivo < Model.StepsForJob.Consecutivo)
+                                    {
+                                        <div class="input-group-text">
+                                            <i class="fas fa-arrow-circle-right" data-toggle="modal" data-target="#stepModel1 @step.StepID"></i>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="input-group-text">
+                                            <i class="fas fa-arrow-circle-right"></i>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        }
+                        <!-- Modal -->
+                        <div class="modal fade" id="stepModel1 @step.StepID" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle1" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLongTitle1"><i class="fas fa-exclamation-triangle"></i>&nbsp;Warning</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Estas seguro de que quieres regresar al paso #@step.Consecutivo?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancelar</button>
+                                        <button type="submit" class="btn btn-primary btn-sm" name="next" value="@step.Consecutivo">Go!</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <br />
+            </form>
         </div>
     </div>
-</form>
+</div>
+@{ 
+    <script type="text/javascript">
+        $('#btnAllSteps').click(function () {
+            $(this).find('i').toggleClass('fa-grip-lines').toggleClass('fa-grip-lines-vertical');
+        });
+    </script>
+}
