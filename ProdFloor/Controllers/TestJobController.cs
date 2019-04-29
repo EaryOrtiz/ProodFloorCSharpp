@@ -338,7 +338,7 @@ namespace ProdFloor.Controllers
             else if (next > StepsForJobList.Distinct().Count())
             {
                 var currentStepForJob = StepsForJobList.FirstOrDefault(m => m.Consecutivo == viewModel.StepsForJob.Consecutivo); currentStepForJob.Stop = DateTime.Now;
-                currentStepForJob.Complete = true; TimeSpan elapsed = currentStepForJob.Stop - currentStepForJob.Start; currentStepForJob.Elapsed = elapsed;
+                currentStepForJob.Complete = true; TimeSpan elapsed = currentStepForJob.Stop - currentStepForJob.Start; currentStepForJob.Elapsed += elapsed;
                 testingRepo.SaveStepsForJob(currentStepForJob);
                 var testjobinfo = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == viewModel.TestJob.TestJobID); testjobinfo.Status = "Completed";
                 testingRepo.SaveTestJob(testjobinfo);
@@ -355,13 +355,13 @@ namespace ProdFloor.Controllers
             else if (viewModel.StepsForJob.Consecutivo == (next - 1))
             {
                 var currentStepForJob = StepsForJobList.FirstOrDefault(m => m.Consecutivo == viewModel.StepsForJob.Consecutivo); currentStepForJob.Stop = DateTime.Now;
-                currentStepForJob.Complete = true; TimeSpan elapsed = currentStepForJob.Stop - currentStepForJob.Start; currentStepForJob.Elapsed = elapsed;
+                currentStepForJob.Complete = true; TimeSpan elapsed = currentStepForJob.Stop - currentStepForJob.Start; currentStepForJob.Elapsed += elapsed;
                 testingRepo.SaveStepsForJob(currentStepForJob);
 
                 //NextStep
-                var stepsForAUX = StepsForJobList.FirstOrDefault(m => m.Consecutivo == next && m.Complete == false); stepsForAUX.Start = DateTime.Now;
+                var stepsForAUX = StepsForJobList.FirstOrDefault(m => m.Complete == false); stepsForAUX.Start = DateTime.Now;
                 testingRepo.SaveStepsForJob(stepsForAUX);
-                var nextStepFor = StepsForJobList.FirstOrDefault(m => m.Consecutivo == next);
+                var nextStepFor = StepsForJobList.FirstOrDefault(m => m.StepsForJobID == stepsForAUX.StepsForJobID);
                 var stepInfo = testingRepo.Steps.FirstOrDefault(m => m.StepID == nextStepFor.StepID);
                 var testjobinfo = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == viewModel.TestJob.TestJobID);
                 var job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == testjobinfo.JobID);
@@ -371,10 +371,10 @@ namespace ProdFloor.Controllers
             else if(viewModel.StepsForJob.Consecutivo == (next + 1))
             {
                 //Previus step
-                var previusStepForAUX = StepsForJobList.FirstOrDefault(m => m.Consecutivo == next && m.Complete == true);
+                var previusStepForAUX = StepsForJobList.OrderByDescending(m =>m.Consecutivo).FirstOrDefault(m => m.Complete == true);
                 previusStepForAUX.Start = DateTime.Now; previusStepForAUX.Complete = false;
                 testingRepo.SaveStepsForJob(previusStepForAUX);
-                var previusStepFor = StepsForJobList.FirstOrDefault(m => m.Consecutivo == next);
+                var previusStepFor = StepsForJobList.FirstOrDefault(m => m.StepsForJobID == previusStepForAUX.StepsForJobID);
                 var stepInfo = testingRepo.Steps.FirstOrDefault(m => m.StepID == previusStepFor.StepID);
                 var testjobinfo = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == viewModel.TestJob.TestJobID);
                 var job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == testjobinfo.JobID);
@@ -389,17 +389,17 @@ namespace ProdFloor.Controllers
         {
             List<StepsForJob> StepsForJobList = testingRepo.StepsForJobs.FromSql("select * from dbo.StepsForJobs where dbo.StepsForJobs.StepsForJobID " +
                 "IN( select  Max(dbo.StepsForJobs.StepsForJobID ) from dbo.StepsForJobs where dbo.StepsForJobs.TestJobID = {0} group by dbo.StepsForJobs.Consecutivo)", viewModel.TestJob.TestJobID).ToList();
-            var currentStepForJob = StepsForJobList.FirstOrDefault(m => m.Consecutivo == viewModel.StepsForJob.Consecutivo); currentStepForJob.Stop = DateTime.Now;
+            
             var AllStepsForJobInfo = testingRepo.Steps.Where(m => StepsForJobList.Any(s => s.StepID == m.StepID)).ToList();
 
-
-            currentStepForJob.Complete = true; TimeSpan elapsed = currentStepForJob.Stop - currentStepForJob.Start; currentStepForJob.Elapsed = elapsed;
+            var currentStepForJob = StepsForJobList.FirstOrDefault(m => m.Consecutivo == viewModel.StepsForJob.Consecutivo); currentStepForJob.Stop = DateTime.Now;
+            currentStepForJob.Complete = false; TimeSpan elapsed = currentStepForJob.Stop - currentStepForJob.Start; currentStepForJob.Elapsed += elapsed;
             testingRepo.SaveStepsForJob(currentStepForJob);
 
             //NextStep
-            var stepsForAUX = StepsForJobList.FirstOrDefault(m => m.Consecutivo == next && m.Complete == false); stepsForAUX.Start = DateTime.Now;
+            var stepsForAUX = StepsForJobList.FirstOrDefault(m => m.Consecutivo == next && m.Complete == true); stepsForAUX.Start = DateTime.Now; stepsForAUX.Complete = false;
             testingRepo.SaveStepsForJob(stepsForAUX);
-            var nextStepFor = StepsForJobList.FirstOrDefault(m => m.Consecutivo == next);
+            var nextStepFor = StepsForJobList.FirstOrDefault(m => m.StepsForJobID == stepsForAUX.StepsForJobID);
             var stepInfo = testingRepo.Steps.FirstOrDefault(m => m.StepID == nextStepFor.StepID);
             var testjobinfo = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == viewModel.TestJob.TestJobID);
             var job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == testjobinfo.JobID);
