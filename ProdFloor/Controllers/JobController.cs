@@ -49,7 +49,8 @@ namespace ProdFloor.Controllers
                 Jobs = repository.Jobs
                     .OrderBy(p => p.JobID)
                     .Skip((jobPage - 1) * PageSize)
-                    .Take(PageSize),
+                    .Take(PageSize)
+                    .Where(s => s.Name != "Dummy Job"),
                 PagingInfo = new PagingInfo
                 {
                     CurrentPage = jobPage,
@@ -96,7 +97,7 @@ namespace ProdFloor.Controllers
         {
             JobViewModel viewModel =  new JobViewModel
             {
-                CurrentJob = new Job(),
+                CurrentJob = new Job { ShipDate = DateTime.Now, LatestFinishDate = DateTime.Now},
                 POList = new List<PO> { new PO { JobID = 0} }
             };
             return View(viewModel);

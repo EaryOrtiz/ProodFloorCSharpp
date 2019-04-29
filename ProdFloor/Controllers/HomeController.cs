@@ -48,6 +48,19 @@ namespace ProdFloor.Controllers
             
             if(engineer)
             {
+                var ToCross = repository.Jobs
+                        .Where(j => j.EngID == 1000000);
+
+                if (User.IsInRole("CrossApprover"))
+                {
+                    ToCross = repository.Jobs
+                        .Where(j => j.EngID != currentUser.EngID)
+                        .Where(j => j.Status == "Cross Approval Pending" || j.Status == "On Cross Approval")
+                        .OrderBy(p => p.JobID)
+                  .Skip((productionJobPage - 1) * PageSize)
+                  .Take(PageSize);
+                }
+
                 return View("EngineerDashBoard", new DashboardIndexViewModel
                 {
                     PendingJobs = repository.Jobs
@@ -65,12 +78,7 @@ namespace ProdFloor.Controllers
                         .Where(j => j.Status == "Incomplete" || j.Status == "Not Reviewed" || j.Status == "Working on it" || j.Status == "Cross Approval Complete")
                         .Count()
                     },
-                    ProductionJobs = repository.Jobs
-                        .Where(j => j.EngID != currentUser.EngID)
-                        .Where(j => j.Status == "Cross Approval Pending" || j.Status == "On Cross Approval" )
-                        .OrderBy(p => p.JobID)
-                  .Skip((productionJobPage - 1) * PageSize)
-                  .Take(PageSize),
+                    ProductionJobs = ToCross,
                     ProductionJobsPagingInfo = new PagingInfo
                     {
                         CurrentPage = productionJobPage,
