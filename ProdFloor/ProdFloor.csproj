@@ -31,6 +31,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Views\Shared\Components\TechMenu\" />
     <Folder Include="wwwroot\AppData\" />
   </ItemGroup>
 

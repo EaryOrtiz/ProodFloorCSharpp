@@ -4,8 +4,8 @@
     Layout = "_AdminLayoutWO";
 }
 <form asp-controller="TestJob" asp-action="NewTestFeatures" method="post">
-    <div class="form-row">
-        <div class="container text-left border-bottom">
+    <div class="row" style="margin-left:10px;">
+        <div class="col border-bottom">
             <h3>Test Job Info</h3>
             <br />
             <div class="form-group row">
@@ -23,8 +23,10 @@
                 </div>
             </div>
         </div>
-        <div class="container text-left">
-            <h3>Job Features</h3>
+    </div>
+    <div class="row">
+        <div class="col-3" style="margin-left:40px;">
+            <h3  style="margin-bottom:15px;">Job Features</h3>
             <br />
             <input type="hidden" asp-for="TestJob.JobID" />
             <input type="hidden" asp-for="TestJob.TestJobID" />
@@ -72,6 +74,9 @@
                     <label class="custom-control-label" asp-for="TestFeature.R6"></label>
                 </div>
             </div>
+        </div>
+        <div class="col">
+            <br /><br /><br />
             <div class="form-group row">
                 <div class="custom-control custom-checkbox">
                     <input type="checkbox" asp-for="TestFeature.Local" class="custom-control-input">
