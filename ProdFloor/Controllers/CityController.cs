@@ -27,7 +27,7 @@ namespace ProdFloor.Controllers
             return View(new CityListViewModel
             {
                 Cities = repository.Cities
-                .OrderBy(p => p.CityID)
+                .OrderBy(p => p.Name)
                 .Skip((page - 1) * PageSize)
                 .Take(PageSize).ToList(),
                 PagingInfo = new PagingInfo

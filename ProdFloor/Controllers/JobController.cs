@@ -42,11 +42,13 @@ namespace ProdFloor.Controllers
         //JobsListViewModel con los jobs filtrados por tipo y sorteados por JobID 
         public ViewResult List(int jobType, int jobPage = 1)
         {
-            var JobCount = repository.Jobs.Count();
+            var JobCount = repository.Jobs
+                     .Where(s => s.Status != "Pending").Count();
 
             return View(new JobsListViewModel
             {
                 Jobs = repository.Jobs
+                    .Where(s => s.Status != "Pending")
                     .OrderBy(p => p.JobID)
                     .Skip((jobPage - 1) * PageSize)
                     .Take(PageSize),
@@ -96,7 +98,7 @@ namespace ProdFloor.Controllers
         {
             JobViewModel viewModel =  new JobViewModel
             {
-                CurrentJob = new Job(),
+                CurrentJob = new Job { ShipDate = DateTime.Now, LatestFinishDate = DateTime.Now},
                 POList = new List<PO> { new PO { JobID = 0} }
             };
             return View(viewModel);

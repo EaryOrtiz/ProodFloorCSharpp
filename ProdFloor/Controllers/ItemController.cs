@@ -377,6 +377,7 @@ namespace ProdFloor.Controllers
                         ViewModel.SPH = JobSearch._HydroSpecific.SPH;
                         ViewModel.FLA = JobSearch._HydroSpecific.FLA;
                         ViewModel.JobName = JobSearch.Name;
+                        ViewModel.JobName2 = JobSearch.Name2;
                         ViewModel.Cust = JobSearch.Cust;
                         ViewModel.Contractor = JobSearch.Contractor;
                         ViewModel.JobTypeMain = JobSearch._jobExtension.JobTypeMain;
@@ -624,6 +625,7 @@ namespace ProdFloor.Controllers
                             //JobData
                             FLA = ViewModel.FLA,
                             JobName = ViewModel.JobName,
+                            JobName2 = ViewModel.JobName2,
                             Cust = ViewModel.Cust,
                             Contractor = ViewModel.Contractor,
                             JobTypeMain = ViewModel.JobTypeMain,
