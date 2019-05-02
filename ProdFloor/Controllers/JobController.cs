@@ -43,7 +43,7 @@ namespace ProdFloor.Controllers
         public ViewResult List(int jobType, int jobPage = 1)
         {
             var JobCount = repository.Jobs
-                    .Where(s => s.Status != "Pending").Count();
+                     .Where(s => s.Status != "Pending").Count();
 
             return View(new JobsListViewModel
             {
