@@ -34,5 +34,16 @@ namespace ProdFloor.Models.ViewModels.TestJob
         public List<Step> StepList { get; set; }
         public List<StepsForJob> StepsForJobList { get; set; }
         public List<PO> POList { get; set; }
+
+
+        //Dummy fields
+        public bool Canada { get; set; }
+        public bool Ontario { get; set; }
+        public bool MOD { get; set; }
+        public bool Manual { get; set; }
+        public bool IMonitor { get; set; }
+        public bool MView { get; set; }
+        [Display(Name = "+2 Starters")]
+        public bool TwosStarters { get; set; }
     }
 }

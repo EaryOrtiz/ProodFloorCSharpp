@@ -114,17 +114,27 @@ namespace ProdFloor.Controllers
                 Job Job = viewModel.Job;
                 Job.Contractor = "Fake"; Job.Cust = "Fake"; Job.FireCodeID = 1; Job.LatestFinishDate = new DateTime(1, 1, 1);
                 Job.EngID = currentUser.EngID; Job.Status = "Pending"; Job.CrossAppEngID = 1;
+                if (viewModel.Canada == true) Job.CityID = 10;
+                else Job.CityID = 40;
+                if (viewModel.Ontario == true) Job.CityID = 11;
+                else Job.CityID = 40;
                 jobRepo.SaveJob(Job);
                 Job currentJob = jobRepo.Jobs.FirstOrDefault(p => p.JobID == jobRepo.Jobs.Max(x => x.JobID));
 
                 //Save the dummy Job Extension
-                JobExtension currentExtension = viewModel.JobExtension; currentExtension.JobID = currentJob.JobID; currentExtension.InputFrecuency = 60; currentExtension.InputPhase = 3;
+                JobExtension currentExtension = viewModel.JobExtension; currentExtension.JobID = currentJob.JobID; currentExtension.InputFrecuency = 60; currentExtension.InputPhase = 3; currentExtension.DoorGate = "Fake";
                 currentExtension.InputVoltage = 1; currentExtension.NumOfStops = 2; currentExtension.SHCRisers = 1; currentExtension.DoorHoist = "Fake"; currentExtension.JobTypeAdd = "Fake";
+                if (viewModel.MOD == true) currentExtension.DoorOperatorID = 7;
+                else currentExtension.DoorOperatorID = 1;
+                if (viewModel.Manual == true) currentExtension.DoorOperatorID = 2;
+                else currentExtension.DoorOperatorID = 1;
                 jobRepo.SaveJobExtension(currentExtension);
 
                 //Save the dummy Job HydroSpecific
                 HydroSpecific currenHydroSpecific = viewModel.HydroSpecific; currenHydroSpecific.JobID = currentJob.JobID; currenHydroSpecific.FLA = 1; currenHydroSpecific.HP = 1;
                 currenHydroSpecific.SPH = 1; currenHydroSpecific.Starter = "Fake"; currenHydroSpecific.ValveCoils = 1; currenHydroSpecific.ValveBrand = "Fake";
+                if (viewModel.TwosStarters == true) currenHydroSpecific.MotorsNum = 3;
+                else currentExtension.DoorOperatorID = 1;
                 jobRepo.SaveHydroSpecific(currenHydroSpecific);
 
                 //Save the dummy job Indicators
@@ -140,8 +150,12 @@ namespace ProdFloor.Controllers
 
                 //Save the dummy Job HoistWayData
                 GenericFeatures currentGenericFeatures = viewModel.GenericFeatures; currentGenericFeatures.JobID = currentJob.JobID;
+                if (viewModel.IMonitor == true) currentGenericFeatures.Monitoring = "IMonitor Interface";
+                else currentGenericFeatures.Monitoring = "Fake";
                 jobRepo.SaveGenericFeatures(currentGenericFeatures);
-
+                if (viewModel.MView == true) currentGenericFeatures.Monitoring = "MView Interface";
+                else currentGenericFeatures.Monitoring = "Fake";
+                jobRepo.SaveGenericFeatures(currentGenericFeatures);
                 SpecialFeatures featureFake = viewModel.SpecialFeature; featureFake.JobID = currentJob.JobID; featureFake.Description = null;
                 jobRepo.SaveSpecialFeatures(featureFake);
 
@@ -281,7 +295,7 @@ namespace ProdFloor.Controllers
                                         case "mView": if (trigger.IsSelected == (FeaturesFromJob._GenericFeatures.Monitoring.Contains("MView"))) { countAux++; } break;
                                         case "iMonitor": if (trigger.IsSelected == (FeaturesFromJob._GenericFeatures.Monitoring.Contains("IMonitor"))) { countAux++; } break;
                                         case "HAPS Battery": if(FeaturesFromJob._HydroSpecific.Battery == true) {if (trigger.IsSelected == (FeaturesFromJob._HydroSpecific.BatteryBrand == "HAPS")) { countAux++; } break;} else {break; }      
-                                        case "2+ Starters": if (trigger.IsSelected == (FeaturesFromJob._HydroSpecific.MotorsNum > 2)) { countAux++; } break;
+                                        case "2+ Starters": if (trigger.IsSelected == (FeaturesFromJob._HydroSpecific.MotorsNum >= 2)) { countAux++; } break;
                                         case "MOD Door Operator": if (trigger.IsSelected == (FeaturesFromJob._jobExtension.DoorOperatorID == 7 || FeaturesFromJob._jobExtension.DoorOperatorID == 8)) { countAux++; } break;
                                         default: break;
                                     }

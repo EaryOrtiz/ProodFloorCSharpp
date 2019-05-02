@@ -8,6 +8,7 @@
     <form asp-controller="TestJob" asp-action="NewDummyJob" method="post">
         <input type="hidden" asp-for="@Model.Indicator.IndicatorID">
         <input type="hidden" asp-for="@Model.SpecialFeature.SpecialFeaturesID">
+        <input type="hidden" asp-for="@Model.GenericFeatures.GenericFeaturesID">
         <h3 class="text-left">Job Information</h3>
         <br>
         <div class="form-row col-sm-12" style="padding-bottom:15px">
@@ -40,22 +41,6 @@
                     <span asp-validation-for="Job.JobTypeID" class="text-danger"></span>
                 </div>
                 <div class="form-group row">
-                    <label asp-for="Job.CountryID" class="col-sm-4 col-form-label"></label>
-                    <country-select id="CountryID" asp-for="@Model.Job.CountryID" class="form-control-sm form-control col-sm-5" selected-value="@Model.Job.CityID">
-                    </country-select>
-                    <span asp-validation-for="Job.CountryID" class="text-danger"></span>
-                </div>
-                <div class="form-group row">
-                    <label asp-for="Job.StateID" class="col-sm-4 col-form-label"></label>
-                    <state-select id="StateID" asp-for="@Model.Job.StateID" class="form-control-sm form-control col-sm-5" selected-value="@Model.Job.CityID"></state-select>
-                    <span asp-validation-for="Job.StateID" class="text-danger"></span>
-                </div>
-                <div class="form-group row">
-                    <label asp-for="Job.CityID" class="col-sm-4 col-form-label"></label>
-                    <city-select id="CityID" asp-for="@Model.Job.CityID" class="form-control-sm form-control col-sm-5"></city-select>
-                    <span asp-validation-for="Job.CityID" class="text-danger"></span>
-                </div>
-                <div class="form-group row">
                     <label asp-for="JobExtension.JobTypeMain" class="col-sm-4 col-form-label"></label>
                     <span asp-validation-for="JobExtension.JobTypeMain" class="text-danger"></span>
                     <indicators select-for="JobType" selected-value="@Model.JobExtension.JobTypeMain" class="form-control-sm form-control col-sm-5" asp-for="JobExtension.JobTypeMain"></indicators>
@@ -76,34 +61,53 @@
             </div>
             <div class="col-6 form-line justify-content-md-center">
                 <div class="container">
-                    <div class="form-group row">
-                        <label asp-for="JobExtension.DoorGate" class="col-sm-4 col-form-label"></label>
-                        <door-operator-style-select id="Style" asp-for="@Model.JobExtension.DoorGate" selected-value="@Model.JobExtension.DoorOperatorID" class="form-control form-control-sm col-sm-5">
-                        </door-operator-style-select>
-                        <span asp-validation-for="JobExtension.DoorGate" class="text-danger"></span>
+                    <div class="form-group row" style="padding-left:15px;">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" asp-for="Canada" class="custom-control-input">
+                            <div><span asp-validation-for="Canada" class="text-danger"></span></div>
+                            <label class="custom-control-label" asp-for="Canada"></label>
+                        </div>
                     </div>
-                    <div class="form-group row">
-                        <label asp-for="JobExtension.DoorBrand" class="col-sm-4 col-form-label"></label>
-                        <door-operator-brand-select id="Brand" asp-for="@Model.JobExtension.DoorBrand" selected-value="@Model.JobExtension.DoorOperatorID" class="form-control form-control-sm col-sm-5">
-                        </door-operator-brand-select>
-                        <span asp-validation-for="JobExtension.DoorBrand" class="text-danger"></span>
+                    <div class="form-group row" style="padding-left:15px;">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" asp-for="Ontario" class="custom-control-input">
+                            <div><span asp-validation-for="Ontario" class="text-danger"></span></div>
+                            <label class="custom-control-label" asp-for="Ontario"></label>
+                        </div>
                     </div>
-                    <div class="form-group row">
-                        <label asp-for="JobExtension.DoorOperatorID" class="col-sm-4 col-form-label"></label>
-                        <door-operator-select id="DoorOperatorID" asp-for="@Model.JobExtension.DoorOperatorID" selected-value="Model.JobExtension.DoorOperatorID" class="form-control form-control-sm col-sm-5">
-                        </door-operator-select>
-                        <span asp-validation-for="JobExtension.DoorOperatorID" class="text-danger"></span>
+                    <div class="form-group row" style="padding-left:15px;">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" asp-for="MOD" class="custom-control-input">
+                            <div><span asp-validation-for="MOD" class="text-danger"></span></div>
+                            <label class="custom-control-label" asp-for="MOD"></label>
+                        </div>
                     </div>
-                    <div class="form-group row">
-                        <label asp-for="GenericFeatures.Monitoring" class="col-sm-4 col-form-label"></label>
-                        <indicators select-for="Monitoring" selected-value="@Model.GenericFeatures.Monitoring" class="form-control form-control-sm col-sm-5" asp-for="GenericFeatures.Monitoring"></indicators>
-                        <span asp-validation-for="GenericFeatures.Monitoring" class="text-danger"></span>
+                    <div class="form-group row" style="padding-left:15px;">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" asp-for="Manual" class="custom-control-input">
+                            <div><span asp-validation-for="Manual" class="text-danger"></span></div>
+                            <label class="custom-control-label" asp-for="Manual"></label>
+                        </div>
                     </div>
-                    <div class="form-group row">
-                        <label asp-for="HydroSpecific.MotorsNum" class="col-sm-4 col-form-label"></label>
-                        <div>
-                            <input asp-for="HydroSpecific.MotorsNum" class="form-control col-sm-10 " />
-                            <span asp-validation-for="HydroSpecific.MotorsNum" class="text-danger"></span>
+                    <div class="form-group row" style="padding-left:15px;">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" asp-for="IMonitor" class="custom-control-input">
+                            <div><span asp-validation-for="IMonitor" class="text-danger"></span></div>
+                            <label class="custom-control-label" asp-for="IMonitor"></label>
+                        </div>
+                    </div>
+                    <div class="form-group row" style="padding-left:15px;">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" asp-for="MView" class="custom-control-input">
+                            <div><span asp-validation-for="MView" class="text-danger"></span></div>
+                            <label class="custom-control-label" asp-for="MView"></label>
+                        </div>
+                    </div>
+                    <div class="form-group row" style="padding-left:15px;">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" asp-for="TwosStarters" class="custom-control-input">
+                            <div><span asp-validation-for="TwosStarters" class="text-danger"></span></div>
+                            <label class="custom-control-label" asp-for="TwosStarters"></label>
                         </div>
                     </div>
                     <div class="form-group row" style="padding-left:15px;">
@@ -122,7 +126,7 @@
                     </div>
                     <div class="form-group row" style="padding-left:15px;">
                         <div class="form-inline">
-                            <input id="BatterySelected" asp-for="HydroSpecific.Battery" class="form-check-input" />
+                            <input id="BatterySelected" asp-for="HydroSpecific.Battery" class="form-check-input" type="checkbox" />
                             <div><span asp-validation-for="HydroSpecific.Battery" class="text-danger"></span></div>
                             <label asp-for="HydroSpecific.Battery" class="col-form-label" style="margin-left:15px;"></label>
                         </div>
