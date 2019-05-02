@@ -42,15 +42,16 @@ namespace ProdFloor.Controllers
         //JobsListViewModel con los jobs filtrados por tipo y sorteados por JobID 
         public ViewResult List(int jobType, int jobPage = 1)
         {
-            var JobCount = repository.Jobs.Count();
+            var JobCount = repository.Jobs
+                    .Where(s => s.Status != "Pending").Count();
 
             return View(new JobsListViewModel
             {
                 Jobs = repository.Jobs
+                    .Where(s => s.Status != "Pending")
                     .OrderBy(p => p.JobID)
                     .Skip((jobPage - 1) * PageSize)
-                    .Take(PageSize)
-                    .Where(s => s.Name != "Dummy Job"),
+                    .Take(PageSize),
                 PagingInfo = new PagingInfo
                 {
                     CurrentPage = jobPage,
