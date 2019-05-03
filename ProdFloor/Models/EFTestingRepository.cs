@@ -42,6 +42,9 @@ namespace ProdFloor.Models
                     dbEntry.JobID = testJob.JobID;
                     dbEntry.TechnicianID = testJob.TechnicianID;
                     dbEntry.Status = testJob.Status;
+                    dbEntry.SinglePO = testJob.SinglePO;
+                    dbEntry.Station = testJob.Station;
+                    dbEntry.JobLabel = testJob.JobLabel;
                 }
             }
             context.SaveChanges();

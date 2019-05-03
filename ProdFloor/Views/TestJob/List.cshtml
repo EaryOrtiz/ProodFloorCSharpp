@@ -7,10 +7,13 @@
     <h2 class="col-sm-10">
         My Test Jobs
     </h2>
-    <a class="btn btn-success  col-sm-2" asp-action="NewTestJob" asp-controller="TestJob" style="padding-top:10px;min-width:100px">
-        <i class="fa fa-plus"></i>
-        New Test Job
-    </a>
+    @if (!(User.IsInRole("Technician")))
+    {
+        <a class="btn btn-success  col-sm-2" asp-action="NewTestJob" asp-controller="TestJob" style="padding-top:10px;min-width:100px">
+            <i class="fa fa-plus"></i>
+            New Test Job
+        </a>
+    }
 </div>
 <br /><br />
 @foreach (var j in Model.TestJobList)

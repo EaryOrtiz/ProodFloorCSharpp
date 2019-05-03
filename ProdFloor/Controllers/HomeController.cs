@@ -12,16 +12,20 @@ using ProdFloor.Models.ViewModels.Home;
 
 namespace ProdFloor.Controllers
 {
-    [Authorize(Roles ="Admin,Engineer")]
+    [Authorize(Roles = "Admin,Engineer,Technician")]
     public class HomeController : Controller
     {
         private IJobRepository repository;
+        private ITestingRepository testingRepo;
+        private IItemRepository itemRepo;
         public int PageSize = 3;
         private UserManager<AppUser> userManager;
 
-        public HomeController(IJobRepository repo, UserManager<AppUser> userMrg)
+        public HomeController(IJobRepository repo,IItemRepository item,ITestingRepository testRepo, UserManager<AppUser> userMrg)
         {
             repository = repo;
+            testingRepo = testRepo;
+            itemRepo = item;
             userManager = userMrg;
         }
 
@@ -45,8 +49,9 @@ namespace ProdFloor.Controllers
         {
             AppUser currentUser = GetCurrentUser().Result;
             bool engineer = GetCurrentUserRole("Engineer").Result;
-            
-            if(engineer)
+            bool tech = GetCurrentUserRole("Technician").Result;
+
+            if (engineer)
             {
                 return View("EngineerDashBoard", new DashboardIndexViewModel
                 {
@@ -80,6 +85,32 @@ namespace ProdFloor.Controllers
                         .Where(j => j.Status == "Cross Approval Pending" || j.Status == "Cross Approval Complete")
                         .Count()
                     }
+                });
+            }
+
+            if (tech)
+            {
+                var CurrentTestJobs = testingRepo.TestJobs
+                    .Where(j => j.TechnicianID == currentUser.EngID)
+                    .Where(j => j.Status == "Stoped" || j.Status == "Working on it")
+                  .OrderBy(p => p.TestJobID)
+                  .Skip((pendingJobPage - 1) * PageSize)
+                  .Take(PageSize);
+
+                return View("TechnicianDashBoard", new DashboardIndexViewModel
+                {
+                    PendingTestJobs = CurrentTestJobs,
+                    PendingJobsPagingInfo = new PagingInfo
+                    {
+                        CurrentPage = pendingJobPage,
+                        ItemsPerPage = PageSize,
+                        TotalItems = testingRepo.TestJobs
+                        .Where(j => j.TechnicianID == currentUser.EngID)
+                        .Where(j => j.Status == "Stoped" || j.Status == "Working on it")
+                        .Count()
+                    },
+                    PendingJobs = repository.Jobs.Where(m => CurrentTestJobs.Any(s => s.JobID == m.JobID)),
+                    JobTypesList = itemRepo.JobTypes.ToList()
                 });
             }
 

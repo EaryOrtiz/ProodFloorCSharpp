@@ -24,6 +24,7 @@
     <li class="nav-item" role="tab" id="state">
         <a asp-action="List" asp-controller="State" asp-route-country="" asp-route-Page="1" class="nav-link">States</a>
     </li>
+    
     <li class="nav-item" role="tab" id="city">
         <a asp-action="List" asp-controller="City" asp-route-country="" asp-route-state="" asp-route-Page="1" class="nav-link">Cities</a>
     </li>
@@ -76,6 +77,13 @@
                    asp-controller="Step"
                    asp-route-Page="1">Steps</a>
             </li>
+            <li class="nav-link"
+                style="padding:4px;text-align:center;margin-bottom:5px">
+                <a style="color:white"
+                   asp-controller="Stop"
+                   asp-route-stop=""
+                   asp-route-Page="1" asp-action="List">Stops</a>
+            </li>
         </ul>
     </li>
     <li class="nav-item" role="tab" id="Reasons">
@@ -85,23 +93,23 @@
             <ul id="collapseReasons" class="collapse" role="tabpanel" aria-labelledby="collapseReasons" data-parent="#accordion">
                 <li class="nav-link"
                     style="padding:4px;text-align:center;margin-bottom:5px">
-                    <button class="btn btn-sm btn-link" style="color:white"  asp-action="List" asp-controller="Reasons" asp-route-Page="1" asp-route-Reason="1">Reasons 1</button>
+                    <button class="btn btn-sm btn-link" style="color:white" asp-action="List" asp-controller="Reasons" asp-route-Page="1" asp-route-Reason="1">Reasons 1</button>
                 </li>
                 <li class="nav-link"
                     style="padding:4px;text-align:center;margin-bottom:5px">
-                    <button class="btn btn-sm btn-link" style="color:white"asp-action="List" asp-controller="Reasons" asp-route-Page="1" asp-route-Reason="2">Reasons 2</button>
+                    <button class="btn btn-sm btn-link" style="color:white" asp-action="List" asp-controller="Reasons" asp-route-Page="1" asp-route-Reason="2">Reasons 2</button>
                 </li>
                 <li class="nav-link"
                     style="padding:4px;text-align:center;margin-bottom:5px">
-                    <button class="btn btn-sm btn-link" style="color:white"  asp-action="List" asp-controller="Reasons" asp-route-Page="1" asp-route-Reason="3">Reasons 3</button>
+                    <button class="btn btn-sm btn-link" style="color:white" asp-action="List" asp-controller="Reasons" asp-route-Page="1" asp-route-Reason="3">Reasons 3</button>
                 </li>
                 <li class="nav-link"
                     style="padding:4px;text-align:center;margin-bottom:5px">
-                    <button class="btn btn-sm btn-link" style="color:white"  asp-action="List" asp-controller="Reasons" asp-route-Page="1" asp-route-Reason="4">Reasons 4</button>
+                    <button class="btn btn-sm btn-link" style="color:white" asp-action="List" asp-controller="Reasons" asp-route-Page="1" asp-route-Reason="4">Reasons 4</button>
                 </li>
                 <li class="nav-link"
                     style="padding:4px;text-align:center;margin-bottom:5px">
-                    <button class="btn btn-sm btn-link" style="color:white"  asp-action="List" asp-controller="Reasons" asp-route-Page="1" asp-route-Reason="5">Reasons 5</button>
+                    <button class="btn btn-sm btn-link" style="color:white" asp-action="List" asp-controller="Reasons" asp-route-Page="1" asp-route-Reason="5">Reasons 5</button>
                 </li>
             </ul>
         </form>

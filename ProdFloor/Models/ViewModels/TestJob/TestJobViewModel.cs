@@ -34,6 +34,7 @@ namespace ProdFloor.Models.ViewModels.TestJob
         public List<Step> StepList { get; set; }
         public List<StepsForJob> StepsForJobList { get; set; }
         public List<PO> POList { get; set; }
+        public List<Stop> StopList { get; set; }
 
 
         //Dummy fields

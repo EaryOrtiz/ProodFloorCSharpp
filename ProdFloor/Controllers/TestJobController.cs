@@ -12,7 +12,7 @@ using ProdFloor.Models.ViewModels.TestJob;
 
 namespace ProdFloor.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin,Technician")]
     public class TestJobController : Controller
     {
         private IJobRepository jobRepo;
@@ -30,6 +30,7 @@ namespace ProdFloor.Controllers
         public ViewResult List(int page = 1)
         {
             AppUser currentUser = GetCurrentUser().Result;
+
             TestJobViewModel testJobView = new TestJobViewModel
             {
                 TestJobList = testingRepo.TestJobs
@@ -71,7 +72,7 @@ namespace ProdFloor.Controllers
                         if (_jobSearch != null && _jobSearch.Status != "Incomplete")
                         {
 
-                            TestJob testJob = new TestJob { JobID = _jobSearch.JobID, TechnicianID = currentUser.EngID, Status = "Working on it" };
+                            TestJob testJob = new TestJob { JobID = _jobSearch.JobID, TechnicianID = currentUser.EngID, SinglePO = viewModel.POJobSearch, Status = "Working on it" };
                             testingRepo.SaveTestJob(testJob);
 
                             var currentTestJob = testingRepo.TestJobs
@@ -81,6 +82,7 @@ namespace ProdFloor.Controllers
                             TestJobViewModel testJobView = new TestJobViewModel
                             {
                                 TestJob = currentTestJob,
+                                Job = _jobSearch
                             };
 
                             return View("NewTestFeatures", testJobView);
@@ -163,7 +165,7 @@ namespace ProdFloor.Controllers
                 jobRepo.SavePO(POFake);
 
                 //Create the new TestJob
-                TestJob testJob = new TestJob { JobID = currentJob.JobID, TechnicianID = currentUser.EngID, Status = "Working on it" };
+                TestJob testJob = new TestJob { JobID = currentJob.JobID, TechnicianID = currentUser.EngID, SinglePO = POFake.PONumb, Status = "Working on it" };
                 testingRepo.SaveTestJob(testJob);
 
                 var currentTestJob = testingRepo.TestJobs.FirstOrDefault(p => p.TestJobID == testingRepo.TestJobs.Max(x => x.TestJobID));
@@ -172,6 +174,7 @@ namespace ProdFloor.Controllers
                 TestJobViewModel testJobView = new TestJobViewModel
                 {
                     TestJob = currentTestJob,
+                    Job = currentJob
                 };
 
                 return View("NewTestFeatures", testJobView);
@@ -187,11 +190,13 @@ namespace ProdFloor.Controllers
         public ViewResult EditTestFeatures(int ID)
         {
             TestJob testJob = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == ID);
+            Job CurrentJob = jobRepo.Jobs.FirstOrDefault(m => m.JobID == testJob.JobID);
             TestFeature testFeature = testingRepo.TestFeatures.FirstOrDefault(m => m.TestJobID == testJob.TestJobID);
             TestJobViewModel viewModel = new TestJobViewModel
             {
                 TestJob = testJob,
-                TestFeature = testFeature
+                TestFeature = testFeature,
+                Job = CurrentJob
             };
 
             return View("NewTestFeatures", viewModel);
@@ -450,6 +455,15 @@ namespace ProdFloor.Controllers
             AppUser user = await userManager.GetUserAsync(HttpContext.User);
 
             return user;
+        }
+
+        private async Task<bool> GetCurrentUserRole(string role)
+        {
+            AppUser user = await userManager.GetUserAsync(HttpContext.User);
+
+            bool isInRole = await userManager.IsInRoleAsync(user, role);
+
+            return isInRole;
         }
 
     }

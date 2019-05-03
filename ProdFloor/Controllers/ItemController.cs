@@ -14,6 +14,7 @@ using System;
 using HtmlAgilityPack;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ProdFloor.Controllers
 {
@@ -1102,6 +1103,60 @@ namespace ProdFloor.Controllers
             }
 
 
+        }
+
+        public JsonResult GetLandingSystem(int JobTypeID)
+        {
+            string JobTypeName = repository.JobTypes.FirstOrDefault(m => m.JobTypeID == JobTypeID).Name;
+
+            List<LandingSystem> LandingList= new List<LandingSystem>();
+            LandingList = (from landing in repository.LandingSystems where landing.UsedIn == JobTypeName select landing).ToList();
+            return Json(new SelectList(LandingList, "Name", "LandingSystemID"));
+        }
+
+        public JsonResult GetStation(int JobTypeID)
+        {
+            string JobTypeName = repository.JobTypes.FirstOrDefault(m => m.JobTypeID == JobTypeID).Name;
+
+            if (JobTypeName == "M2000")
+            {
+                IList<SelectListItem> M2000 = new List<SelectListItem>
+                {
+                new SelectListItem{Text = "S1", Value = "S1"},
+                new SelectListItem{Text = "S2", Value = "S2"},
+                new SelectListItem{Text = "S3", Value = "S3"},
+                new SelectListItem{Text = "S4", Value = "S4"},
+                new SelectListItem{Text = "S5", Value = "S5"},
+                new SelectListItem{Text = "S6", Value = "S6"}
+
+                };
+
+                return Json(new SelectList(M2000, "Text", "Value"));
+            }
+            else if (JobTypeName == "M4000")
+            {
+                IList<SelectListItem> M4000 = new List<SelectListItem>
+                {
+                new SelectListItem{Text = "S7", Value = "S7"},
+                new SelectListItem{Text = "S8", Value = "S8"},
+                new SelectListItem{Text = "S9", Value = "S9"},
+                new SelectListItem{Text = "S10", Value = "S10"},
+                new SelectListItem{Text = "S11", Value = "S11"},
+                new SelectListItem{Text = "S12", Value = "S12"}
+
+                };
+                return Json(new SelectList(M4000, "Text", "Value"));
+            }
+            else
+            {
+                IList<SelectListItem> Element = new List<SelectListItem>
+                {
+                new SelectListItem{Text = "ELEM1", Value = "ELEM1"},
+                new SelectListItem{Text = "ELEM2", Value = "ELEM2"},
+
+                };
+                return Json(new SelectList(Element, "Text", "Value"));
+            }
         }
     }
 }

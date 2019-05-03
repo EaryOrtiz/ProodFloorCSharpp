@@ -7,11 +7,12 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProdFloor.Models;
+using ProdFloor.Models.ViewModels;
 using ProdFloor.Models.ViewModels.TestJob;
 
 namespace ProdFloor.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin,Technician,Enginner")]
     public class StopController : Controller
     {
         private IJobRepository jobRepo;
@@ -25,6 +26,21 @@ namespace ProdFloor.Controllers
             testingRepo = repo;
             userManager = userMgr;
         }
+
+        public ViewResult List(int page = 1)
+            => View(new TestJobViewModel
+            {
+                StopList = testingRepo.Stops
+                .OrderBy(p => p.StopID)
+                .Skip((page - 1) * PageSize)
+                .Take(PageSize).ToList(),
+                PagingInfo = new PagingInfo
+                {
+                    CurrentPage = page,
+                    ItemsPerPage = PageSize,
+                    TotalItems = testingRepo.Stops.Count()
+                }
+            });
 
         private async Task<AppUser> GetCurrentUser()
         {
