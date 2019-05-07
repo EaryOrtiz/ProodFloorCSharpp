@@ -250,7 +250,7 @@ namespace ProdFloor.Controllers
                                 TestJobID = FeaturesFromTestJob.TestJobID,
                                 Start = DateTime.Now,
                                 Stop = DateTime.Now,
-                                Elapsed = new TimeSpan(1, 1, 1),
+                                Elapsed = new DateTime(1, 1, 1, 0, 0, 0),
                                 Consecutivo = consecutivo
                             };
 
@@ -314,7 +314,7 @@ namespace ProdFloor.Controllers
                                         TestJobID = FeaturesFromTestJob.TestJobID,
                                         Start = DateTime.Now,
                                         Stop = DateTime.Now,
-                                        Elapsed = new TimeSpan(1, 1, 1),
+                                        Elapsed = new DateTime(1, 1, 1, 0, 0, 0),
                                         Consecutivo = consecutivo
                                     };
                                     testingRepo.SaveStepsForJob(stepForJob);
@@ -357,7 +357,9 @@ namespace ProdFloor.Controllers
             else if (next > StepsForJobList.Distinct().Count())
             {
                 var currentStepForJob = StepsForJobList.FirstOrDefault(m => m.Consecutivo == viewModel.StepsForJob.Consecutivo); currentStepForJob.Stop = DateTime.Now;
-                currentStepForJob.Complete = true; TimeSpan elapsed = currentStepForJob.Stop - currentStepForJob.Start; currentStepForJob.Elapsed += elapsed;
+                currentStepForJob.Complete = true;
+                TimeSpan elapsed = currentStepForJob.Stop - currentStepForJob.Start;
+                currentStepForJob.Elapsed += elapsed;
                 testingRepo.SaveStepsForJob(currentStepForJob);
                 var testjobinfo = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == viewModel.TestJob.TestJobID); testjobinfo.Status = "Completed";
                 testingRepo.SaveTestJob(testjobinfo);
@@ -374,7 +376,9 @@ namespace ProdFloor.Controllers
             else if (viewModel.StepsForJob.Consecutivo == (next - 1))
             {
                 var currentStepForJob = StepsForJobList.FirstOrDefault(m => m.Consecutivo == viewModel.StepsForJob.Consecutivo); currentStepForJob.Stop = DateTime.Now;
-                currentStepForJob.Complete = true; TimeSpan elapsed = currentStepForJob.Stop - currentStepForJob.Start; currentStepForJob.Elapsed += elapsed;
+                currentStepForJob.Complete = true;
+                TimeSpan elapsed = currentStepForJob.Stop - currentStepForJob.Start;
+                currentStepForJob.Elapsed += elapsed;
                 testingRepo.SaveStepsForJob(currentStepForJob);
 
                 //NextStep

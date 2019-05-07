@@ -34,6 +34,13 @@ namespace ProdFloor.Controllers
                 .OrderBy(p => p.StopID)
                 .Skip((page - 1) * PageSize)
                 .Take(PageSize).ToList(),
+                JobList = jobRepo.Jobs.ToList(),
+                TestJobList = testingRepo.TestJobs.ToList(),
+                Reasons1List = testingRepo.Reasons1.ToList(),
+                Reasons2List = testingRepo.Reasons2.ToList(),
+                Reasons3List = testingRepo.Reasons3.ToList(),
+                Reasons4List = testingRepo.Reasons4.ToList(),
+                Reasons5List = testingRepo.Reasons5.ToList(),
                 PagingInfo = new PagingInfo
                 {
                     CurrentPage = page,
@@ -57,6 +64,7 @@ namespace ProdFloor.Controllers
         [HttpPost]
         public ViewResult NewStop(Stop Stop)
         {
+            bool admin = GetCurrentUserRole("Admin").Result;
             Stop NewtStop = new Stop
             {
                 TestJobID = Stop.TestJobID,
@@ -68,8 +76,8 @@ namespace ProdFloor.Controllers
                 Description = null,
                 StartDate = DateTime.Now,
                 StopDate = DateTime.Now,
-                Elapsed = new TimeSpan(0,0,0)
-            };
+                Elapsed = new DateTime(1, 1, 1, 0, 0, 0)
+        };
 
             testingRepo.SaveStop(NewtStop);
             Stop CurrentStop = testingRepo.Stops.FirstOrDefault(p => p.StopID == testingRepo.Stops.Max(x => x.StopID));
@@ -77,7 +85,14 @@ namespace ProdFloor.Controllers
             testJob.Status = "Stoped";
             testingRepo.SaveTestJob(testJob);
             Job job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == testJob.JobID);
-            return View("WaitingForRestar", new TestJobViewModel {  Job = job, Stop = CurrentStop });
+            if (admin)
+            {
+                Stop CurrentStop2 = testingRepo.Stops.FirstOrDefault(p => p.StopID == CurrentStop.StopID);
+                TestJob testJob2 = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == CurrentStop.TestJobID);
+                Job job2 = jobRepo.Jobs.FirstOrDefault(m => m.JobID == testJob.JobID);
+                return View("Edit", new TestJobViewModel { Job = job2, Stop = CurrentStop2, TestJob = testJob2 });
+            }
+            return View("WaitingForRestar", new TestJobViewModel {  Job = job, Stop = CurrentStop, TestJob = testJob});
         }
 
         public ViewResult WaitingForRestar(int ID)
@@ -95,13 +110,14 @@ namespace ProdFloor.Controllers
             Stop CurrentStop = testingRepo.Stops.FirstOrDefault(p => p.StopID == ID);
             TestJob testJob = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == CurrentStop.TestJobID);
             Job job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == testJob.JobID);
-            return View(new TestJobViewModel { Job = job, Stop = CurrentStop});
+            return View(new TestJobViewModel { Job = job, Stop = CurrentStop, TestJob = testJob});
         }
 
         [HttpPost]
         public IActionResult RestarTestJob(TestJobViewModel viewModel)
         {
             TimeSpan auxTime = (DateTime.Now - viewModel.Stop.StartDate);
+            viewModel.Stop.Elapsed += auxTime;
             Stop UpdatedStop = new Stop
             {
                 StopID = viewModel.Stop.StopID,
@@ -111,9 +127,10 @@ namespace ProdFloor.Controllers
                 Reason3 = viewModel.Stop.Reason3,
                 Reason4 = viewModel.Stop.Reason4,
                 Reason5ID = viewModel.Stop.Reason5ID,
+                Description = viewModel.Stop.Description,
                 StartDate = viewModel.Stop.StartDate,
                 StopDate = DateTime.Now,
-                Elapsed = auxTime
+                Elapsed = viewModel.Stop.Elapsed
             };
             testingRepo.SaveStop(UpdatedStop);
             TestJob testJob = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == UpdatedStop.TestJobID);
@@ -128,6 +145,53 @@ namespace ProdFloor.Controllers
             var testjobinfo = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == CurrentStep.TestJobID);
             var job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == testjobinfo.JobID);
             return View("StepsForJob", new TestJobViewModel { StepsForJob = CurrentStep, Step = stepInfo, Job = job, TestJob = testjobinfo, StepList = AllStepsForJobInfo, StepsForJobList = StepsForJobList });
+        }
+
+        public ViewResult Edit(int ID)
+        {
+            Stop CurrentStop = testingRepo.Stops.FirstOrDefault(p => p.StopID == ID);
+            TestJob testJob = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == CurrentStop.TestJobID);
+            Job job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == testJob.JobID);
+            return View(new TestJobViewModel { Job = job, Stop = CurrentStop, TestJob = testJob });
+        }
+
+        [HttpPost]
+        public IActionResult Edit(Stop stop)
+        {
+            if (ModelState.IsValid)
+            {
+                TimeSpan auxTime = (DateTime.Now - stop.StartDate);
+                stop.Elapsed += auxTime;
+                testingRepo.SaveStop(stop);
+                TempData["message"] = $"{stop.Description} has been saved..";
+                return RedirectToAction("List");
+            }
+            else
+            {
+                // there is something wrong with the data values
+                return View(stop);
+            }
+        }
+
+        [HttpPost]
+        public IActionResult Delete(int ID)
+        {
+            Stop deletedStop = testingRepo.DeleteStop(ID);
+
+            if (deletedStop != null)
+            {
+                TempData["message"] = $"{deletedStop.StopID} was deleted";
+            }
+            return RedirectToAction("List");
+        }
+
+        private async Task<bool> GetCurrentUserRole(string role)
+        {
+            AppUser user = await userManager.GetUserAsync(HttpContext.User);
+
+            bool isInRole = await userManager.IsInRoleAsync(user, role);
+
+            return isInRole;
         }
     }
 }

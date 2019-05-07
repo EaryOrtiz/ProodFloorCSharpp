@@ -30,11 +30,19 @@
                    asp-route-Id="@Model.TestJobID">
                     Edit
                 </a>
+
             }
             <input type="hidden" name="ID" value="@Model.TestJobID" />
             <button type="submit" class="btn btn-danger btn-sm">
                 Delete
             </button>
+            @if (User.IsInRole("Admin") && Model.Status == "Working on it")
+            {
+            <a asp-action="NewStop" asp-controller="Stop" class="btn btn-sm btn-dark"
+               asp-route-Id="@Model.TestJobID">
+                New Stop
+            </a>
+            }
         </form>
     </div>
 </div>

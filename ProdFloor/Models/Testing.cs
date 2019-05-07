@@ -96,7 +96,7 @@ namespace ProdFloor.Models
         [Required(ErrorMessage = "Please enter a {0} Date")]
         public DateTime Stop { get; set; }
         [Required(ErrorMessage = "Please enter a {0} Date")]
-        public TimeSpan Elapsed { get; set; }
+        public DateTime Elapsed { get; set; }
         [Required(ErrorMessage = "Please enter a {0}")]
         public bool Complete { get; set; }
         [Required(ErrorMessage = "Please enter a {0}")]
@@ -188,16 +188,21 @@ namespace ProdFloor.Models
 
         [Required(ErrorMessage = "Please enter a {0}")]
         public int TestJobID { get; set; }
+        [Display(Name = "Reason 1")]
         public int Reason1 { get; set; }
+        [Display(Name = "Reason 2")]
         public int Reason2 { get; set; }
+        [Display(Name = "Reason 3")]
         public int Reason3 { get; set; }
+        [Display(Name = "Reason 4")]
         public int Reason4 { get; set; }
+        [Display(Name = "Reason 5")]
         [Required(ErrorMessage = "Please enter a {0}")]
         public int Reason5ID { get; set; }
         public DateTime StartDate { get; set; }
         [Required(ErrorMessage = "Please enter a Stop Date")]
         public DateTime StopDate { get; set; }
-        public TimeSpan Elapsed { get; set; }
+        public DateTime Elapsed { get; set; }
         public string Description { get; set; }
     }
 

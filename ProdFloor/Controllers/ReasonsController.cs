@@ -282,28 +282,28 @@ namespace ProdFloor.Controllers
         public JsonResult GetReason2(int Reason1ID)
         {
             List<Reason2> Reasonlist = new List<Reason2>();
-            Reasonlist = (from reason2 in repository.Reasons2 where reason2.Reason1ID == Reason1ID select reason2).ToList();
+            Reasonlist = (from reason2 in repository.Reasons2 where reason2.Reason1ID == Reason1ID && reason2.Description != "-" select reason2).ToList();
             return Json(new SelectList(Reasonlist, "Reason2ID", "Description"));
         }
 
         public JsonResult GetReason3(int Reason2ID)
         {
             List<Reason3> Reasonlist = new List<Reason3>();
-            Reasonlist = (from reason3 in repository.Reasons3 where reason3.Reason2ID == Reason2ID select reason3).ToList();
+            Reasonlist = (from reason3 in repository.Reasons3 where reason3.Reason2ID == Reason2ID && reason3.Description != "-" select reason3).ToList();
             return Json(new SelectList(Reasonlist, "Reason3ID", "Description"));
         }
 
         public JsonResult GetReason4(int Reason3ID)
         {
             List<Reason4> Reasonlist = new List<Reason4>();
-            Reasonlist = (from reason4 in repository.Reasons4 where reason4.Reason3ID == Reason3ID select reason4).ToList();
+            Reasonlist = (from reason4 in repository.Reasons4 where reason4.Reason3ID == Reason3ID && reason4.Description != "-" select reason4).ToList();
             return Json(new SelectList(Reasonlist, "Reason4ID", "Description"));
         }
 
         public JsonResult GetReason5(int Reason4ID)
         {
             List<Reason5> Reasonlist = new List<Reason5>();
-            Reasonlist = (from reason5 in repository.Reasons5 where reason5.Reason4ID == Reason4ID select reason5).ToList();
+            Reasonlist = (from reason5 in repository.Reasons5 where reason5.Reason4ID == Reason4ID && reason5.Description != "-" select reason5).ToList();
             return Json(new SelectList(Reasonlist, "Reason5ID", "Description"));
         }
 
