@@ -27,7 +27,7 @@ namespace ProdFloor.Controllers
             => View(new StepViewModel
             {
                 StepList = testingrepo.Steps
-                .OrderBy(p => p.Order)
+                .OrderBy(p => p.JobTypeID)
                 .Skip((page - 1) * PageSize)
                 .Take(PageSize).ToList(),
                 JobTypesList = itemprepo.JobTypes.ToList(),

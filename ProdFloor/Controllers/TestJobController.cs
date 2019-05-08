@@ -366,7 +366,7 @@ namespace ProdFloor.Controllers
 
                 TempData["message"] = $"El Test Job {testjobinfo.TestJobID} se ha completado con exito!";
                 TempData["alert"] = $"alert-success";
-                return RedirectToAction(nameof(List), 1);
+                return RedirectToAction("Index","Home", 1);
             }
             else if (next == 777)
             {

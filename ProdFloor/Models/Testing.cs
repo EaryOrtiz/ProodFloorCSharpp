@@ -61,6 +61,7 @@ namespace ProdFloor.Models
     {
         public int StepID { get; set; }
 
+        [Display(Name = "Job Type")]
         public int JobTypeID { get; set; }
         [Required(ErrorMessage = "Please enter a {0}")]
         public string Stage { get; set; }

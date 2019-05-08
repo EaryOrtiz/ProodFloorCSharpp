@@ -87,7 +87,7 @@
                 @Html.DisplayFor(m => Model.Reasons5List.FirstOrDefault(n => n.Reason5ID == item.Reason5ID).Description)
             </td>
             <td>
-                @Html.DisplayFor(m => item.Description)
+                @Html.DisplayFor(m => item.Description.Substring(0, 50))
             </td>
             @if (User.IsInRole("Admin"))
             {
