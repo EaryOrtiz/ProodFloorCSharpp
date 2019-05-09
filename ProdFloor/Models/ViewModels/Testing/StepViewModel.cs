@@ -14,5 +14,6 @@ namespace ProdFloor.Models.ViewModels.Testing
         public string buttonAction { get; set; }
         public string CurrentTab { get; set; }
         public PagingInfo PagingInfo { get; set; }
+        public string JobTypeSelected { get; set; }
     }
 }

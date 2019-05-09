@@ -12,15 +12,25 @@
         New Step
     </a>
 </div>
-<br /><br />
+<br />
 <form asp-action="SeedXML" asp-controller="Step" method="post">
     @if (Model.StepList.Count() == 0)
     {
         <button type="submit" name="buttonImportXML" value="All" class="btn btn-danger btn-sm">Import All Jobs from XML <i class="fas fa-file-alt"></i></button>
     }
 </form>
+<form asp-controller="Step" asp-action="List" method="get">
+    <div class="btn-group" role="group">
+        <button class="btn btn-primary" type="submit" name="JobTypeName" value="Traction">Element Traction</button>
+        <button class="btn btn-info" type="submit" name="JobTypeName" value="Hydro">Element Hydro</button>
+        <button class="btn btn-warning" type="submit" name="JobTypeName" value="M2000">M2000</button>
+        <button class="btn btn-danger" type="submit" name="JobTypeName" value="M4000">M4000</button>
+        <button class="btn btn-dark" name="CleanFields" type="submit" value="true">All Steps</button>
+    </div>
+</form>
+<br />
 <div>
-    <table class="table table-striped border table-sm" style="text-align:center">
+    <table class="table table-hover table-striped border table-sm" style="text-align:center">
         <tr class="table-info">
             <th>
                 <label>Job Type</label>
@@ -36,6 +46,9 @@
             </th>
             <th>
                 <label>Order</label>
+            </th>
+            <th>
+                <label>Trigger Features</label>
             </th>
             <th></th>
         </tr>
@@ -59,6 +72,28 @@
                 <td>
                     @Html.DisplayFor(m => item.Order)
                 </td>
+                <td>
+                    @foreach (TriggeringFeature trigger in Model.TriggeringList.Where(n => n.StepID == item.StepID && n.Name != null && n.Name != ""))
+                    {
+                        <div class="form-group form-inline text-center" style="margin-bottom:0em;padding-bottom:0em;">
+                            <div class="input-group mb-3" style="margin-bottom:0em;padding-bottom:0em;">
+                                <div class="input-group-prepend" style="margin-bottom:0em;padding-bottom:0em;">
+                                    <div class="input-group-text">
+                                        @if (trigger.IsSelected)
+                                        {
+                                            <i class="fas fa-check-circle"></i>
+                                        }
+                                        else
+                                        {
+                                            <i class="fas fa-times-circle"></i>
+                                        }
+                                    </div>
+                                </div>
+                                <input type="text" class="form-control form-control-sm col-sm" value="@trigger.Name" readonly />
+                            </div>
+                        </div>
+                    }
+                </td>
                 <td style="width:100px">
                     <form asp-action="Delete" asp-route-id="@item.StepID" method="post">
                         <button type="submit" class="btn btn-danger btn-sm">
@@ -81,8 +116,7 @@
     </form>
 </div>
 <page-doorop page-model="@Model.PagingInfo" page-action="List" page-classes-enabled="true"
-             page-class="btn" page-class-normal="btn-secondary"
+             page-class="btn" page-class-normal="btn-secondary" page-url-JobTypeName="@Model.JobTypeSelected"
              page-class-selected="btn-primary"
              class="btn-group pull-right m-1">
 </page-doorop>
-<br />
