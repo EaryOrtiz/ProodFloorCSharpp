@@ -1,0 +1,1530 @@
+﻿<Steps>
+  <Step>
+    <StepID>7</StepID>
+    <JobTypeID>5</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Inicio de pruebas de Element Traction</Description>
+    <Order>0</Order>
+  </Step>
+  <Step>
+    <StepID>8</StepID>
+    <JobTypeID>5</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Configurar la pc para las pruebas</Description>
+    <Order>1</Order>
+  </Step>
+  <Step>
+    <StepID>9</StepID>
+    <JobTypeID>5</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Conseguir software(update) y parametros (XML)</Description>
+    <Order>2</Order>
+  </Step>
+  <Step>
+    <StepID>10</StepID>
+    <JobTypeID>5</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Crear carpeta del job y crear archivos de documentacion: drive, board information</Description>
+    <Order>3</Order>
+  </Step>
+  <Step>
+    <StepID>11</StepID>
+    <JobTypeID>5</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Capturar los numeros seriales de tarjetas y dispositivos</Description>
+    <Order>4</Order>
+  </Step>
+  <Step>
+    <StepID>12</StepID>
+    <JobTypeID>5</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Crear la documentacion de visual inspection list, Tech report y Passcode</Description>
+    <Order>5</Order>
+  </Step>
+  <Step>
+    <StepID>13</StepID>
+    <JobTypeID>5</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Inspeccionar Jumpers, switches y resistencias dinamicas</Description>
+    <Order>6</Order>
+  </Step>
+  <Step>
+    <StepID>14</StepID>
+    <JobTypeID>5</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Checar Voltajes</Description>
+    <Order>7</Order>
+  </Step>
+  <Step>
+    <StepID>15</StepID>
+    <JobTypeID>5</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Cargar el software(Update)</Description>
+    <Order>9</Order>
+  </Step>
+  <Step>
+    <StepID>16</StepID>
+    <JobTypeID>5</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Cargar los parametros</Description>
+    <Order>10</Order>
+  </Step>
+  <Step>
+    <StepID>17</StepID>
+    <JobTypeID>5</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Resetear los parametros del drive</Description>
+    <Order>11</Order>
+  </Step>
+  <Step>
+    <StepID>18</StepID>
+    <JobTypeID>5</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Llenar los parametros del drive (version test)</Description>
+    <Order>12</Order>
+  </Step>
+  <Step>
+    <StepID>19</StepID>
+    <JobTypeID>5</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Conectar arneces, cables del motor y cables de encoder</Description>
+    <Order>13</Order>
+  </Step>
+  <Step>
+    <StepID>20</StepID>
+    <JobTypeID>5</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Cargar el software en el LS-EDGE del cliente</Description>
+    <Order>14</Order>
+  </Step>
+  <Step>
+    <StepID>21</StepID>
+    <JobTypeID>5</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Ajustar la resistencia RB (3 veces el brake coil resistance de cliente)</Description>
+    <Order>15</Order>
+  </Step>
+  <Step>
+    <StepID>22</StepID>
+    <JobTypeID>5</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Ajustar los voltajes del freno de motor(version test)</Description>
+    <Order>16</Order>
+  </Step>
+  <Step>
+    <StepID>23</StepID>
+    <JobTypeID>5</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Verificar corrientes y velocidades de inspeccion (do display)</Description>
+    <Order>17</Order>
+  </Step>
+  <Step>
+    <StepID>24</StepID>
+    <JobTypeID>5</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Calibracion de hoistway learning</Description>
+    <Order>18</Order>
+  </Step>
+  <Step>
+    <StepID>25</StepID>
+    <JobTypeID>5</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Calibracion de la terminal de los switches</Description>
+    <Order>19</Order>
+  </Step>
+  <Step>
+    <StepID>26</StepID>
+    <JobTypeID>5</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Probar los "Speeds"(high, leveling y correction)</Description>
+    <Order>20</Order>
+  </Step>
+  <Step>
+    <StepID>27</StepID>
+    <JobTypeID>5</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Probar el AC drive(Encoder Loss, Phase Fault, DC bus voltage)</Description>
+    <Order>22</Order>
+  </Step>
+  <Step>
+    <StepID>28</StepID>
+    <JobTypeID>5</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Probar los terminal switches (UETS/DETS Overspeed)</Description>
+    <Order>23</Order>
+  </Step>
+  <Step>
+    <StepID>29</StepID>
+    <JobTypeID>5</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Probar los terminal slowdown (UNTS1/DNTS1 LOWER/UPER Overspeed)</Description>
+    <Order>24</Order>
+  </Step>
+  <Step>
+    <StepID>30</StepID>
+    <JobTypeID>5</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Probar los contactores (BRP, PMP, UFE/PM, BRFLT,BPSBR)</Description>
+    <Order>25</Order>
+  </Step>
+  <Step>
+    <StepID>31</StepID>
+    <JobTypeID>5</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Probar senales logicas marcadas en print</Description>
+    <Order>26</Order>
+  </Step>
+  <Step>
+    <StepID>32</StepID>
+    <JobTypeID>5</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Ajustar parametros de cliente XML</Description>
+    <Order>27</Order>
+  </Step>
+  <Step>
+    <StepID>33</StepID>
+    <JobTypeID>5</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Ajustar los voltajes del freno de motor(version cliente), traer resistencia de carga</Description>
+    <Order>28</Order>
+  </Step>
+  <Step>
+    <StepID>34</StepID>
+    <JobTypeID>5</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Llenar parametros de drive (version cliente)</Description>
+    <Order>29</Order>
+  </Step>
+  <Step>
+    <StepID>35</StepID>
+    <JobTypeID>5</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Extraer los parametros de la CPU(CCF)</Description>
+    <Order>30</Order>
+  </Step>
+  <Step>
+    <StepID>36</StepID>
+    <JobTypeID>5</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Introducir y activar passcode (si aplica)</Description>
+    <Order>31</Order>
+  </Step>
+  <Step>
+    <StepID>37</StepID>
+    <JobTypeID>5</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Verificar inspeccion final, construction mode</Description>
+    <Order>32</Order>
+  </Step>
+  <Step>
+    <StepID>38</StepID>
+    <JobTypeID>5</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Imprimir papeleria final</Description>
+    <Order>33</Order>
+  </Step>
+  <Step>
+    <StepID>39</StepID>
+    <JobTypeID>5</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Respaldar folder a servidor</Description>
+    <Order>35</Order>
+  </Step>
+  <Step>
+    <StepID>40</StepID>
+    <JobTypeID>5</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Fin de pruebas de Element Traction</Description>
+    <Order>37</Order>
+  </Step>
+  <Step>
+    <StepID>41</StepID>
+    <JobTypeID>1</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Inicion de pruebas de Element Hydro</Description>
+    <Order>0</Order>
+  </Step>
+  <Step>
+    <StepID>42</StepID>
+    <JobTypeID>1</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Configuracion inicial de pc</Description>
+    <Order>1</Order>
+  </Step>
+  <Step>
+    <StepID>43</StepID>
+    <JobTypeID>1</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Conseguir software (update) y parametros(XML)</Description>
+    <Order>2</Order>
+  </Step>
+  <Step>
+    <StepID>44</StepID>
+    <JobTypeID>5</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Hacer pruebas de Hipot</Description>
+    <Order>8</Order>
+  </Step>
+  <Step>
+    <StepID>45</StepID>
+    <JobTypeID>5</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Cross approval de papeleria</Description>
+    <Order>34</Order>
+  </Step>
+  <Step>
+    <StepID>46</StepID>
+    <JobTypeID>5</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Probar los overspeed(high, leveling y contract)</Description>
+    <Order>21</Order>
+  </Step>
+  <Step>
+    <StepID>47</StepID>
+    <JobTypeID>1</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Crear carpeta del job y crear archivos de documentacion: starter rec, board information</Description>
+    <Order>3</Order>
+  </Step>
+  <Step>
+    <StepID>48</StepID>
+    <JobTypeID>1</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Escanear codigos de barras de tarjetas y dispositivos</Description>
+    <Order>4</Order>
+  </Step>
+  <Step>
+    <StepID>49</StepID>
+    <JobTypeID>1</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Crear documentacion de visual inspection list, tech report y passcode</Description>
+    <Order>5</Order>
+  </Step>
+  <Step>
+    <StepID>50</StepID>
+    <JobTypeID>1</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Inspeccionar jumpers y switches</Description>
+    <Order>6</Order>
+  </Step>
+  <Step>
+    <StepID>51</StepID>
+    <JobTypeID>1</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Checar voltaje</Description>
+    <Order>7</Order>
+  </Step>
+  <Step>
+    <StepID>52</StepID>
+    <JobTypeID>1</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Hacer prueba de Hipot</Description>
+    <Order>8</Order>
+  </Step>
+  <Step>
+    <StepID>53</StepID>
+    <JobTypeID>1</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Flashar HAPS UNIT</Description>
+    <Order>9</Order>
+  </Step>
+  <Step>
+    <StepID>54</StepID>
+    <JobTypeID>1</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Cargar el software(update)</Description>
+    <Order>10</Order>
+  </Step>
+  <Step>
+    <StepID>55</StepID>
+    <JobTypeID>1</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Conectar arneces</Description>
+    <Order>11</Order>
+  </Step>
+  <Step>
+    <StepID>56</StepID>
+    <JobTypeID>1</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Cargar software en el LS-EDGE del cliente</Description>
+    <Order>12</Order>
+  </Step>
+  <Step>
+    <StepID>57</StepID>
+    <JobTypeID>1</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Cambiar parametro XML "Landing System Type" value="1" (solo Test)</Description>
+    <Order>12</Order>
+  </Step>
+  <Step>
+    <StepID>58</StepID>
+    <JobTypeID>1</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Verificar tolerancias de AC por medio de LabView</Description>
+    <Order>13</Order>
+  </Step>
+  <Step>
+    <StepID>59</StepID>
+    <JobTypeID>1</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Cargar los parametros de XML</Description>
+    <Order>14</Order>
+  </Step>
+  <Step>
+    <StepID>60</StepID>
+    <JobTypeID>1</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Agregar y modificar los datos del test</Description>
+    <Order>15</Order>
+  </Step>
+  <Step>
+    <StepID>61</StepID>
+    <JobTypeID>1</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Prueba automatizada por LabView</Description>
+    <Order>16</Order>
+  </Step>
+  <Step>
+    <StepID>62</StepID>
+    <JobTypeID>1</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Respaldar electronicamente el  reporte de prueba automatizada</Description>
+    <Order>17</Order>
+  </Step>
+  <Step>
+    <StepID>63</StepID>
+    <JobTypeID>1</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Hacer pruebas de tolerancia de voltajes Mod Door Operator</Description>
+    <Order>18</Order>
+  </Step>
+  <Step>
+    <StepID>64</StepID>
+    <JobTypeID>1</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Devolver parametros originales del cliente</Description>
+    <Order>19</Order>
+  </Step>
+  <Step>
+    <StepID>65</StepID>
+    <JobTypeID>1</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Extraer los parametros (CCF)</Description>
+    <Order>20</Order>
+  </Step>
+  <Step>
+    <StepID>66</StepID>
+    <JobTypeID>1</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Introducir el passcode</Description>
+    <Order>21</Order>
+  </Step>
+  <Step>
+    <StepID>67</StepID>
+    <JobTypeID>1</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Poner el controlador en Construction Mode</Description>
+    <Order>22</Order>
+  </Step>
+  <Step>
+    <StepID>68</StepID>
+    <JobTypeID>1</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Imprimir la papeleria final</Description>
+    <Order>23</Order>
+  </Step>
+  <Step>
+    <StepID>69</StepID>
+    <JobTypeID>1</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Cross Aproval de papeleria</Description>
+    <Order>24</Order>
+  </Step>
+  <Step>
+    <StepID>70</StepID>
+    <JobTypeID>1</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Hacer respaldo electronico de documentos al servidor</Description>
+    <Order>25</Order>
+  </Step>
+  <Step>
+    <StepID>71</StepID>
+    <JobTypeID>1</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Equipo en area de final</Description>
+    <Order>26</Order>
+  </Step>
+  <Step>
+    <StepID>72</StepID>
+    <JobTypeID>1</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Fin de pruebas Element Hydro</Description>
+    <Order>27</Order>
+  </Step>
+  <Step>
+    <StepID>73</StepID>
+    <JobTypeID>2</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Inicio de Test de M2000</Description>
+    <Order>0</Order>
+  </Step>
+  <Step>
+    <StepID>74</StepID>
+    <JobTypeID>2</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Documentacion inicial</Description>
+    <Order>1</Order>
+  </Step>
+  <Step>
+    <StepID>75</StepID>
+    <JobTypeID>2</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Traer material externo del controlador</Description>
+    <Order>2</Order>
+  </Step>
+  <Step>
+    <StepID>76</StepID>
+    <JobTypeID>2</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Inspeccion visual</Description>
+    <Order>3</Order>
+  </Step>
+  <Step>
+    <StepID>77</StepID>
+    <JobTypeID>2</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Preparacion de la PC (LabView)</Description>
+    <Order>4</Order>
+  </Step>
+  <Step>
+    <StepID>78</StepID>
+    <JobTypeID>2</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Conectar lineas principales de poder</Description>
+    <Order>5</Order>
+  </Step>
+  <Step>
+    <StepID>79</StepID>
+    <JobTypeID>2</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Chequeo preliminar de voltajes inicales</Description>
+    <Order>6</Order>
+  </Step>
+  <Step>
+    <StepID>80</StepID>
+    <JobTypeID>2</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Hacer pruebas de Hipot</Description>
+    <Order>7</Order>
+  </Step>
+  <Step>
+    <StepID>81</StepID>
+    <JobTypeID>2</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Programacion de "Flasheo"</Description>
+    <Order>8</Order>
+  </Step>
+  <Step>
+    <StepID>82</StepID>
+    <JobTypeID>2</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Conexion de arneces simulador del carro y arneces cartop</Description>
+    <Order>9</Order>
+  </Step>
+  <Step>
+    <StepID>83</StepID>
+    <JobTypeID>2</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Programacion del Firmware (Chip)</Description>
+    <Order>10</Order>
+  </Step>
+  <Step>
+    <StepID>84</StepID>
+    <JobTypeID>2</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Conexion de arneces del simulador</Description>
+    <Order>11</Order>
+  </Step>
+  <Step>
+    <StepID>85</StepID>
+    <JobTypeID>2</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Programacion y ajuste del Starter</Description>
+    <Order>12</Order>
+  </Step>
+  <Step>
+    <StepID>86</StepID>
+    <JobTypeID>2</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Programacion de parametros F1</Description>
+    <Order>13</Order>
+  </Step>
+  <Step>
+    <StepID>87</StepID>
+    <JobTypeID>2</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Programacion de hora y fecha</Description>
+    <Order>14</Order>
+  </Step>
+  <Step>
+    <StepID>88</StepID>
+    <JobTypeID>2</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Proghramacion de F4(Labels)</Description>
+    <Order>15</Order>
+  </Step>
+  <Step>
+    <StepID>89</StepID>
+    <JobTypeID>2</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Board Power Test SAFL &amp; SAFS (Pag 5)</Description>
+    <Order>16</Order>
+  </Step>
+  <Step>
+    <StepID>90</StepID>
+    <JobTypeID>2</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Motor Starter Test (Pag 6)</Description>
+    <Order>17</Order>
+  </Step>
+  <Step>
+    <StepID>91</StepID>
+    <JobTypeID>2</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Valve Control &amp; Limits(Pag 7)</Description>
+    <Order>18</Order>
+  </Step>
+  <Step>
+    <StepID>92</StepID>
+    <JobTypeID>2</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Safety &amp; Inspection (Pag 8) </Description>
+    <Order>19</Order>
+  </Step>
+  <Step>
+    <StepID>93</StepID>
+    <JobTypeID>2</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Door Locks &amp; Hoistway Access(Pag 9)</Description>
+    <Order>20</Order>
+  </Step>
+  <Step>
+    <StepID>94</StepID>
+    <JobTypeID>2</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Landing System (Pag 10)</Description>
+    <Order>21</Order>
+  </Step>
+  <Step>
+    <StepID>95</StepID>
+    <JobTypeID>2</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Door Interface (Pag 11, 11x)</Description>
+    <Order>22</Order>
+  </Step>
+  <Step>
+    <StepID>96</StepID>
+    <JobTypeID>2</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>C.O.P. Parte 1 (Pag 12)</Description>
+    <Order>23</Order>
+  </Step>
+  <Step>
+    <StepID>97</StepID>
+    <JobTypeID>2</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Door Interface (Pag CT1,CT2)</Description>
+    <Order>22</Order>
+  </Step>
+  <Step>
+    <StepID>98</StepID>
+    <JobTypeID>2</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>C.O.P Parte 1(Pag COP)</Description>
+    <Order>23</Order>
+  </Step>
+  <Step>
+    <StepID>99</StepID>
+    <JobTypeID>2</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Fire Service Phase I(Pag 13)</Description>
+    <Order>24</Order>
+  </Step>
+  <Step>
+    <StepID>100</StepID>
+    <JobTypeID>2</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Fire Service Phase 2(Pag12)</Description>
+    <Order>25</Order>
+  </Step>
+  <Step>
+    <StepID>101</StepID>
+    <JobTypeID>2</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Movement Indication(Pag 14)</Description>
+    <Order>26</Order>
+  </Step>
+  <Step>
+    <StepID>102</StepID>
+    <JobTypeID>2</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Fire Service Phase 2(Pag COP)</Description>
+    <Order>25</Order>
+  </Step>
+  <Step>
+    <StepID>103</StepID>
+    <JobTypeID>2</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Movement Inidcation(Pag COP)</Description>
+    <Order>26</Order>
+  </Step>
+  <Step>
+    <StepID>104</StepID>
+    <JobTypeID>2</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Car Calls (Pag COP)</Description>
+    <Order>27</Order>
+  </Step>
+  <Step>
+    <StepID>105</StepID>
+    <JobTypeID>2</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Calls (Pag 16)</Description>
+    <Order>28</Order>
+  </Step>
+  <Step>
+    <StepID>106</StepID>
+    <JobTypeID>2</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Serial Hall Calls (Pag SH)</Description>
+    <Order>29</Order>
+  </Step>
+  <Step>
+    <StepID>107</StepID>
+    <JobTypeID>2</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Programmable input &amp; output (Pag 15,17, etc)</Description>
+    <Order>30</Order>
+  </Step>
+  <Step>
+    <StepID>108</StepID>
+    <JobTypeID>2</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Pruebas con OVL del Job o switches para OVL</Description>
+    <Order>31</Order>
+  </Step>
+  <Step>
+    <StepID>109</StepID>
+    <JobTypeID>2</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Calibracion y prueba de EMCO Board</Description>
+    <Order>32</Order>
+  </Step>
+  <Step>
+    <StepID>110</StepID>
+    <JobTypeID>2</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Programable Inputs &amp; Outputs de Cartop(Pag CT1,CT2,etc)</Description>
+    <Order>33</Order>
+  </Step>
+  <Step>
+    <StepID>111</StepID>
+    <JobTypeID>2</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Pruebas con MGroup del Job o MGroup de prueba</Description>
+    <Order>34</Order>
+  </Step>
+  <Step>
+    <StepID>112</StepID>
+    <JobTypeID>2</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Documento de Compliance 42-CR-0001</Description>
+    <Order>35</Order>
+  </Step>
+  <Step>
+    <StepID>113</StepID>
+    <JobTypeID>2</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Pruebas de Factory Test Report 2010</Description>
+    <Order>36</Order>
+  </Step>
+  <Step>
+    <StepID>114</StepID>
+    <JobTypeID>2</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Flasheo de puerto CHP y/o MPU</Description>
+    <Order>37</Order>
+  </Step>
+  <Step>
+    <StepID>115</StepID>
+    <JobTypeID>2</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Configuracion de PC Imagen y softwares</Description>
+    <Order>38</Order>
+  </Step>
+  <Step>
+    <StepID>116</StepID>
+    <JobTypeID>2</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Prueba de Monitoring</Description>
+    <Order>39</Order>
+  </Step>
+  <Step>
+    <StepID>117</StepID>
+    <JobTypeID>2</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Modificacion de Parametros F1 version cliente</Description>
+    <Order>40</Order>
+  </Step>
+  <Step>
+    <StepID>118</StepID>
+    <JobTypeID>2</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Inspeccion Final</Description>
+    <Order>41</Order>
+  </Step>
+  <Step>
+    <StepID>119</StepID>
+    <JobTypeID>2</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Remover y remplazar componentes de test</Description>
+    <Order>42</Order>
+  </Step>
+  <Step>
+    <StepID>120</StepID>
+    <JobTypeID>2</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Passcode</Description>
+    <Order>43</Order>
+  </Step>
+  <Step>
+    <StepID>121</StepID>
+    <JobTypeID>2</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Papeleria final</Description>
+    <Order>44</Order>
+  </Step>
+  <Step>
+    <StepID>122</StepID>
+    <JobTypeID>2</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Cross Aproval de papeleria</Description>
+    <Order>45</Order>
+  </Step>
+  <Step>
+    <StepID>123</StepID>
+    <JobTypeID>2</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Respaldo electronico de la papeleria(SCAN)</Description>
+    <Order>46</Order>
+  </Step>
+  <Step>
+    <StepID>124</StepID>
+    <JobTypeID>2</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>desconexion de arneces del simulador</Description>
+    <Order>47</Order>
+  </Step>
+  <Step>
+    <StepID>125</StepID>
+    <JobTypeID>2</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Carro a estacion final</Description>
+    <Order>48</Order>
+  </Step>
+  <Step>
+    <StepID>126</StepID>
+    <JobTypeID>2</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Fin de pruebas M2000</Description>
+    <Order>49</Order>
+  </Step>
+  <Step>
+    <StepID>127</StepID>
+    <JobTypeID>4</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Inicio de Test M4000</Description>
+    <Order>0</Order>
+  </Step>
+  <Step>
+    <StepID>128</StepID>
+    <JobTypeID>4</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Documentacion Inicial</Description>
+    <Order>1</Order>
+  </Step>
+  <Step>
+    <StepID>129</StepID>
+    <JobTypeID>4</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Traer material externo al controlador</Description>
+    <Order>2</Order>
+  </Step>
+  <Step>
+    <StepID>130</StepID>
+    <JobTypeID>4</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Preparacion de la PC (LabView)</Description>
+    <Order>4</Order>
+  </Step>
+  <Step>
+    <StepID>131</StepID>
+    <JobTypeID>4</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Conectar lineas principales de poder</Description>
+    <Order>5</Order>
+  </Step>
+  <Step>
+    <StepID>132</StepID>
+    <JobTypeID>4</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Inspeccion Visual</Description>
+    <Order>3</Order>
+  </Step>
+  <Step>
+    <StepID>133</StepID>
+    <JobTypeID>4</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Chequeo preliminar de voltajes inciales</Description>
+    <Order>6</Order>
+  </Step>
+  <Step>
+    <StepID>134</StepID>
+    <JobTypeID>4</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Hacer pruebas de Hipot</Description>
+    <Order>7</Order>
+  </Step>
+  <Step>
+    <StepID>135</StepID>
+    <JobTypeID>4</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Programacion de "Flasheo"</Description>
+    <Order>8</Order>
+  </Step>
+  <Step>
+    <StepID>136</StepID>
+    <JobTypeID>4</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Conexion de arneces simulador del carro y arneces cartop</Description>
+    <Order>9</Order>
+  </Step>
+  <Step>
+    <StepID>137</StepID>
+    <JobTypeID>4</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Programacion del firmware (Chip)</Description>
+    <Order>10</Order>
+  </Step>
+  <Step>
+    <StepID>138</StepID>
+    <JobTypeID>4</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Conexion de arneces en el simulador</Description>
+    <Order>11</Order>
+  </Step>
+  <Step>
+    <StepID>139</StepID>
+    <JobTypeID>4</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Programacion de parametros de F1</Description>
+    <Order>12</Order>
+  </Step>
+  <Step>
+    <StepID>140</StepID>
+    <JobTypeID>4</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Programacion de parametros F7 version test</Description>
+    <Order>13</Order>
+  </Step>
+  <Step>
+    <StepID>141</StepID>
+    <JobTypeID>4</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Programacion de parametros F5 version test</Description>
+    <Order>14</Order>
+  </Step>
+  <Step>
+    <StepID>142</StepID>
+    <JobTypeID>4</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Programacion de hora y fecha</Description>
+    <Order>15</Order>
+  </Step>
+  <Step>
+    <StepID>143</StepID>
+    <JobTypeID>4</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Programacion de R6 Regen Unit</Description>
+    <Order>16</Order>
+  </Step>
+  <Step>
+    <StepID>144</StepID>
+    <JobTypeID>4</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Programacion de F4(Labels)</Description>
+    <Order>17</Order>
+  </Step>
+  <Step>
+    <StepID>145</StepID>
+    <JobTypeID>4</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>MBrake Module calibracion inicial</Description>
+    <Order>18</Order>
+  </Step>
+  <Step>
+    <StepID>146</StepID>
+    <JobTypeID>4</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Calibracion de EMbrake Coil Discreto Preliminar</Description>
+    <Order>18</Order>
+  </Step>
+  <Step>
+    <StepID>147</StepID>
+    <JobTypeID>4</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Calibracion de MBrake Coil Discreto Final</Description>
+    <Order>18</Order>
+  </Step>
+  <Step>
+    <StepID>148</StepID>
+    <JobTypeID>4</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Calibracion F6 Floor Learning</Description>
+    <Order>19</Order>
+  </Step>
+  <Step>
+    <StepID>149</StepID>
+    <JobTypeID>4</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Calibracion F7 Terminal Limits</Description>
+    <Order>20</Order>
+  </Step>
+  <Step>
+    <StepID>150</StepID>
+    <JobTypeID>4</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Board Power Test SAFL &amp; SAFS (Pag 5)</Description>
+    <Order>21</Order>
+  </Step>
+  <Step>
+    <StepID>151</StepID>
+    <JobTypeID>4</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Drive Interface (Pag 6)</Description>
+    <Order>22</Order>
+  </Step>
+  <Step>
+    <StepID>152</StepID>
+    <JobTypeID>4</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Emergency Brake (Pag 7)</Description>
+    <Order>23</Order>
+  </Step>
+  <Step>
+    <StepID>153</StepID>
+    <JobTypeID>4</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Safety &amp; Inspection (Pag 8)</Description>
+    <Order>24</Order>
+  </Step>
+  <Step>
+    <StepID>154</StepID>
+    <JobTypeID>4</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Door Locks &amp; Hoistway Access (Pag 9)</Description>
+    <Order>25</Order>
+  </Step>
+  <Step>
+    <StepID>155</StepID>
+    <JobTypeID>4</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Landing System (Pag 10)</Description>
+    <Order>26</Order>
+  </Step>
+  <Step>
+    <StepID>156</StepID>
+    <JobTypeID>4</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Door Interface (Pag 11, 11X)</Description>
+    <Order>27</Order>
+  </Step>
+  <Step>
+    <StepID>157</StepID>
+    <JobTypeID>4</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>C.O.P (Pag 12)</Description>
+    <Order>28</Order>
+  </Step>
+  <Step>
+    <StepID>158</StepID>
+    <JobTypeID>4</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Door Interface (Pag CT1,CT2)</Description>
+    <Order>27</Order>
+  </Step>
+  <Step>
+    <StepID>159</StepID>
+    <JobTypeID>4</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>C.O.P (Pag COP)</Description>
+    <Order>28</Order>
+  </Step>
+  <Step>
+    <StepID>160</StepID>
+    <JobTypeID>4</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Fire Service Phase 1(Pag 13)</Description>
+    <Order>29</Order>
+  </Step>
+  <Step>
+    <StepID>161</StepID>
+    <JobTypeID>4</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Fire Service Phase 2(Pag 12)</Description>
+    <Order>30</Order>
+  </Step>
+  <Step>
+    <StepID>162</StepID>
+    <JobTypeID>4</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Movement Indication (Pag 14)</Description>
+    <Order>31</Order>
+  </Step>
+  <Step>
+    <StepID>163</StepID>
+    <JobTypeID>4</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Fire Service Phase 2(Pag COP)</Description>
+    <Order>30</Order>
+  </Step>
+  <Step>
+    <StepID>164</StepID>
+    <JobTypeID>4</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Movement indication (Pag COP)</Description>
+    <Order>31</Order>
+  </Step>
+  <Step>
+    <StepID>165</StepID>
+    <JobTypeID>4</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Car Calls</Description>
+    <Order>32</Order>
+  </Step>
+  <Step>
+    <StepID>166</StepID>
+    <JobTypeID>4</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Calls (Pag 16)</Description>
+    <Order>33</Order>
+  </Step>
+  <Step>
+    <StepID>167</StepID>
+    <JobTypeID>4</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Serial Hall Calls</Description>
+    <Order>34</Order>
+  </Step>
+  <Step>
+    <StepID>168</StepID>
+    <JobTypeID>4</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Programmable Inputs &amp; Outputs</Description>
+    <Order>35</Order>
+  </Step>
+  <Step>
+    <StepID>169</StepID>
+    <JobTypeID>4</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Pruebas con OVL del Job o switches para OVL</Description>
+    <Order>36</Order>
+  </Step>
+  <Step>
+    <StepID>170</StepID>
+    <JobTypeID>4</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Calibracion y prueba de EMCO Board</Description>
+    <Order>37</Order>
+  </Step>
+  <Step>
+    <StepID>171</StepID>
+    <JobTypeID>4</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Progrmmable Inputs &amp; Outputs de Cartop (Pag CT1,CT2,etc)</Description>
+    <Order>38</Order>
+  </Step>
+  <Step>
+    <StepID>172</StepID>
+    <JobTypeID>4</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Pruebas con MGroup del Job o MGroup de prueba</Description>
+    <Order>39</Order>
+  </Step>
+  <Step>
+    <StepID>173</StepID>
+    <JobTypeID>4</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Pruebas de compliance documento 42-CR-0002</Description>
+    <Order>40</Order>
+  </Step>
+  <Step>
+    <StepID>174</StepID>
+    <JobTypeID>4</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Flasheo de puerto CHP y/o MPU</Description>
+    <Order>41</Order>
+  </Step>
+  <Step>
+    <StepID>175</StepID>
+    <JobTypeID>4</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Configuracion de pc imagen y softwares</Description>
+    <Order>42</Order>
+  </Step>
+  <Step>
+    <StepID>176</StepID>
+    <JobTypeID>4</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Prueba de Monitoring</Description>
+    <Order>43</Order>
+  </Step>
+  <Step>
+    <StepID>177</StepID>
+    <JobTypeID>4</JobTypeID>
+    <Stage>Ending</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Additional manual Test (Over speeds and Limits)</Description>
+    <Order>44</Order>
+  </Step>
+  <Step>
+    <StepID>178</StepID>
+    <JobTypeID>4</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Reportar a almacen por la pila de 12v cargada</Description>
+    <Order>45</Order>
+  </Step>
+  <Step>
+    <StepID>179</StepID>
+    <JobTypeID>4</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Programacion del PLC</Description>
+    <Order>46</Order>
+  </Step>
+  <Step>
+    <StepID>180</StepID>
+    <JobTypeID>4</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Monitoreo de video con panel</Description>
+    <Order>47</Order>
+  </Step>
+  <Step>
+    <StepID>181</StepID>
+    <JobTypeID>4</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Monitoreo de bateria</Description>
+    <Order>48</Order>
+  </Step>
+  <Step>
+    <StepID>182</StepID>
+    <JobTypeID>4</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Brake Release del MRL</Description>
+    <Order>49</Order>
+  </Step>
+  <Step>
+    <StepID>183</StepID>
+    <JobTypeID>4</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>MBrake Calibracion final</Description>
+    <Order>50</Order>
+  </Step>
+  <Step>
+    <StepID>184</StepID>
+    <JobTypeID>4</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Calibracion MBrake Coil discreto Final</Description>
+    <Order>50</Order>
+  </Step>
+  <Step>
+    <StepID>185</StepID>
+    <JobTypeID>4</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Modificacion de parametros F7 version cliente</Description>
+    <Order>51</Order>
+  </Step>
+  <Step>
+    <StepID>186</StepID>
+    <JobTypeID>4</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Modificaon de parametros F5 version cliente</Description>
+    <Order>52</Order>
+  </Step>
+  <Step>
+    <StepID>187</StepID>
+    <JobTypeID>4</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Modificacion de parametros F1 version cliente</Description>
+    <Order>53</Order>
+  </Step>
+  <Step>
+    <StepID>188</StepID>
+    <JobTypeID>4</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Inspeccion Final</Description>
+    <Order>54</Order>
+  </Step>
+  <Step>
+    <StepID>189</StepID>
+    <JobTypeID>4</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Remover y remplazar componentes de test</Description>
+    <Order>55</Order>
+  </Step>
+  <Step>
+    <StepID>190</StepID>
+    <JobTypeID>4</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Passcode</Description>
+    <Order>56</Order>
+  </Step>
+  <Step>
+    <StepID>191</StepID>
+    <JobTypeID>4</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Papeleria final</Description>
+    <Order>57</Order>
+  </Step>
+  <Step>
+    <StepID>192</StepID>
+    <JobTypeID>4</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Cross Aproval de papeleria</Description>
+    <Order>58</Order>
+  </Step>
+  <Step>
+    <StepID>193</StepID>
+    <JobTypeID>4</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Respaldo electronico de la papeleria (SCAN)</Description>
+    <Order>59</Order>
+  </Step>
+  <Step>
+    <StepID>194</StepID>
+    <JobTypeID>4</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Desconeccion arneces del simulador</Description>
+    <Order>60</Order>
+  </Step>
+  <Step>
+    <StepID>195</StepID>
+    <JobTypeID>4</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Carro a estacion final</Description>
+    <Order>61</Order>
+  </Step>
+  <Step>
+    <StepID>196</StepID>
+    <JobTypeID>4</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Fin de Pruebas M4000</Description>
+    <Order>62</Order>
+  </Step>
+  <Step>
+    <StepID>197</StepID>
+    <JobTypeID>5</JobTypeID>
+    <Stage>Beginning</Stage>
+    <ExpectedTime>1/1/0001 12:00:00 AM</ExpectedTime>
+    <Description>Equipo en area de final</Description>
+    <Order>36</Order>
+  </Step>
+</Steps>

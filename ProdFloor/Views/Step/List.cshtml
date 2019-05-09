@@ -13,6 +13,12 @@
     </a>
 </div>
 <br /><br />
+<form asp-action="SeedXML" asp-controller="Step" method="post">
+    @if (Model.StepList.Count() == 0)
+    {
+        <button type="submit" name="buttonImportXML" value="All" class="btn btn-danger btn-sm">Import All Jobs from XML <i class="fas fa-file-alt"></i></button>
+    }
+</form>
 <div>
     <table class="table table-striped border table-sm" style="text-align:center">
         <tr class="table-info">
@@ -67,6 +73,12 @@
             </tr>
         }
     </table>
+</div>
+<br />
+<div>
+    <form asp-controller="Step" asp-action="ExportToXML" method="post">
+        <button class="btn btn-sm " name="buttonXML" style="background-color:#DF0174;color:white">Export Table to an XML File</button>
+    </form>
 </div>
 <page-doorop page-model="@Model.PagingInfo" page-action="List" page-classes-enabled="true"
              page-class="btn" page-class-normal="btn-secondary"

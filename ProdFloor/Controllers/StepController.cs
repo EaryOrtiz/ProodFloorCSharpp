@@ -1,9 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml;
+using HtmlAgilityPack;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using ProdFloor.Models;
 using ProdFloor.Models.ViewModels;
 using ProdFloor.Models.ViewModels.Testing;
@@ -103,7 +108,7 @@ namespace ProdFloor.Controllers
                     TempData["alert"] = $"alert-danger";
                     return View(nextViewModel);
                 }
-                
+
             }
             return View(nextViewModel);
         }
@@ -180,14 +185,89 @@ namespace ProdFloor.Controllers
             return Redirect(returnUrl);
         }
 
-        /*
         [HttpPost]
-        public IActionResult SeedXML(string buttonImportXML)
+        public FileStreamResult ExportToXML()
         {
-            string resp = buttonImportXML;
-            ItemController.ImportXML(HttpContext.RequestServices, resp);
+            MemoryStream ms = new MemoryStream();
+            XmlWriterSettings xws = new XmlWriterSettings();
+            xws.OmitXmlDeclaration = true;
+            xws.Indent = true;
+
+            List<Step> steps = new List<Step>();
+            steps = testingrepo.Steps.ToList();
+
+            using (XmlWriter xw = XmlWriter.Create(ms, xws))
+            {
+                xw.WriteStartDocument();
+                xw.WriteStartElement("Steps");
+
+                foreach (Step step in steps)
+                {
+                    xw.WriteStartElement("Step");
+
+                    xw.WriteElementString("StepID", step.StepID.ToString());
+                    xw.WriteElementString("JobTypeID", step.JobTypeID.ToString());
+                    xw.WriteElementString("Stage", step.Stage.ToString());
+                    xw.WriteElementString("ExpectedTime", step.ExpectedTime.ToString());
+                    xw.WriteElementString("Description", step.Description);
+                    xw.WriteElementString("Order", step.Order.ToString());
+                    xw.WriteEndElement();
+                }
+
+                xw.WriteEndElement();
+                xw.WriteEndDocument();
+            }
+            ms.Position = 0;
+            return File(ms, "text/xml", "Steps.xml");
+        }
+
+        public static void ImportXML(IServiceProvider services)
+        {
+            ApplicationDbContext context = services.GetRequiredService<ApplicationDbContext>();
+
+
+            HtmlDocument doc = new HtmlDocument();
+            doc.Load(@"C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\Steps.xml");
+
+            var XMLobs = doc.DocumentNode.SelectNodes("//step");
+
+            foreach (var XMLob in XMLobs)
+            {
+                var stepid = XMLob.SelectSingleNode(".//stepid").InnerText;
+                var jobtypeid = XMLob.SelectSingleNode(".//jobtypeid").InnerText;
+                var stage = XMLob.SelectSingleNode(".//stage").InnerText;
+                var expectedtime = XMLob.SelectSingleNode(".//expectedtime").InnerText;
+                var description = XMLob.SelectSingleNode(".//description").InnerText;
+                var order = XMLob.SelectSingleNode(".//order").InnerText;
+
+                context.Steps.Add(new Step {
+                    StepID = Int32.Parse(stepid),
+                    JobTypeID = Int32.Parse(jobtypeid),
+                    Stage = stage,
+                    ExpectedTime = DateTime.Parse(expectedtime),
+                    Description = description,
+                    Order = Int32.Parse(order)
+                });
+                context.Database.OpenConnection();
+                try
+                {
+                    context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.Steps ON");
+                    context.SaveChanges();
+                    context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.Steps OFF");
+                }
+                finally
+                {
+                    context.Database.CloseConnection();
+                }
+            }
+
+        }
+
+        [HttpPost]
+        public IActionResult SeedXML()
+        {
+            StepController.ImportXML(HttpContext.RequestServices);
             return RedirectToAction(nameof(List));
         }
-        */
     }
 }
