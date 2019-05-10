@@ -549,7 +549,7 @@ namespace ProdFloor.Controllers
                 jobView.CurrentUserID = currentUser.EngID;
                 if (jobView.buttonAction == "AddPO")
                 {
-                    jobView.POList.Add(new PO { JobID = jobView.CurrentJob.JobID });
+                    jobView.POList.Add(new PO { JobID = jobView.CurrentJob.JobID, POID = 0});
                     if (jobView.CurrentJobExtension == null) jobView.CurrentJobExtension = new JobExtension();
                     if (jobView.CurrentHydroSpecific == null) jobView.CurrentHydroSpecific = new HydroSpecific();
                     if (jobView.CurrentGenericFeatures == null) jobView.CurrentGenericFeatures = new GenericFeatures();
@@ -560,6 +560,7 @@ namespace ProdFloor.Controllers
                     {
                         return View("NextForm", jobView);
                     }
+                    jobView.fieldID = 0;
                 }
                 jobView.CurrentTab = "Main";
                 return View("NextForm", jobView);
@@ -569,8 +570,9 @@ namespace ProdFloor.Controllers
                 jobView.CurrentUserID = currentUser.EngID;
                 if (jobView.buttonAction == "AddPO")
                 {
-                    jobView.POList.Add(new PO { JobID = jobView.CurrentJob.JobID });
+                    jobView.POList.Add(new PO { JobID = jobView.CurrentJob.JobID ,POID = 0 });
                     jobView.CurrentTab = "Main";
+                    jobView.fieldID = 0;
                 }
                 return View("Edit", jobView);
             }
@@ -622,8 +624,8 @@ namespace ProdFloor.Controllers
         public IActionResult DeletePOs(JobViewModel viewModel)
         {
             AppUser currentUser = GetCurrentUser().Result;
-            Job job = repository.Jobs.FirstOrDefault(j => j.JobID == viewModel.CurrentJob.JobID);
             PO deletedField = repository.DeletePO(viewModel.fieldID);
+            Job job = repository.Jobs.FirstOrDefault(j => j.JobID == viewModel.CurrentJob.JobID);
             if (deletedField != null)
             {
                 TempData["message"] = $"{deletedField.POID} was deleted";
