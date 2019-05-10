@@ -310,6 +310,23 @@ namespace ProdFloor.Controllers
                     xw.WriteElementString("Description", step.Description);
                     xw.WriteElementString("Order", step.Order.ToString());
                     xw.WriteEndElement();
+                    string aux;
+                    List<TriggeringFeature> triggerings = testingrepo.TriggeringFeatures.Where(m => m.StepID == step.StepID).ToList();
+                    if (triggerings.Count > 0)
+                    {
+                        xw.WriteStartElement("TriggerFeatures");
+                        foreach (TriggeringFeature trigger in triggerings)
+                        {
+                            xw.WriteStartElement("TriggerFeature");
+                            xw.WriteElementString("ID", trigger.TriggeringFeatureID.ToString());
+                            xw.WriteElementString("StepID", trigger.StepID.ToString());
+                            aux = !string.IsNullOrEmpty(trigger.Name) ? trigger.Name : "Nulo";
+                            xw.WriteElementString("Name", aux);
+                            xw.WriteElementString("IsSelected", trigger.IsSelected.ToString());
+                            xw.WriteEndElement();
+                        }
+                        xw.WriteEndElement();
+                    }
                 }
 
                 xw.WriteEndElement();
@@ -356,6 +373,38 @@ namespace ProdFloor.Controllers
                 finally
                 {
                     context.Database.CloseConnection();
+                }
+
+                var XMPOOOO = XMLob.SelectSingleNode(".//triggerFeatures");
+                var XMLPOs = XMPOOOO.SelectNodes(".//trigger");
+                if (XMLPOs != null)
+                {
+                    foreach (var po in XMLPOs)
+                    {
+                        var id = po.SelectSingleNode(".//id").InnerText;
+                        var sttepid = po.SelectSingleNode(".//stepid").InnerText;
+                        var name = po.SelectSingleNode(".//name").InnerText;
+                        var isselected = po.SelectSingleNode(".//isselected").InnerText;
+                        context.TriggeringFeatures.Add(new TriggeringFeature
+                        {
+                            TriggeringFeatureID = Int32.Parse(id),
+                            StepID = Int32.Parse(sttepid),
+                            Name = name,
+                            IsSelected = Boolean.Parse(isselected)
+
+                        });
+                        context.Database.OpenConnection();
+                        try
+                        {
+                            context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.TriggeringFeatures ON");
+                            context.SaveChanges();
+                            context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.TriggeringFeatures OFF");
+                        }
+                        finally
+                        {
+                            context.Database.CloseConnection();
+                        }
+                    }
                 }
             }
 
