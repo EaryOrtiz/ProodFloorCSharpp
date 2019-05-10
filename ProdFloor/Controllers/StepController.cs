@@ -389,7 +389,7 @@ namespace ProdFloor.Controllers
                         {
                             TriggeringFeatureID = Int32.Parse(id),
                             StepID = Int32.Parse(sttepid),
-                            Name = name,
+                            Name = name == "Nulo" ? null : name,
                             IsSelected = Boolean.Parse(isselected)
 
                         });
