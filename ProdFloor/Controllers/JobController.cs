@@ -45,6 +45,7 @@ namespace ProdFloor.Controllers
             var JobCount = repository.Jobs
                      .Where(s => s.Status != "Pending").Count();
 
+
             return View(new JobsListViewModel
             {
                 Jobs = repository.Jobs
