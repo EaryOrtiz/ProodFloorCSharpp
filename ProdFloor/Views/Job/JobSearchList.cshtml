@@ -12,27 +12,29 @@
 <br />
 
 <p>
-    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-        Job Information
-    </button>
-    <button class="btn btn-danger" type="button" data-toggle="collapse" data-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
-        JobExtension
-    </button>
-    <button class="btn btn-info" type="button" data-toggle="collapse" data-target="#collapse3" aria-expanded="false" aria-controls="collapse3">
-        HydroSpecifics
-    </button>
-    <button class="btn btn-warning" type="button" data-toggle="collapse" data-target="#collapse4" aria-expanded="false" aria-controls="collapse4">
-        Generic Features
-    </button>
-    <button class="btn btn-success" type="button" data-toggle="collapse" data-target="#collapse5" aria-expanded="false" aria-controls="collapse5">
-        Indicators
-    </button>
-    <button class="btn btn-dark" type="button" data-toggle="collapse" data-target="#collapse6" aria-expanded="false" aria-controls="collapse6">
-        HoistWayData
-    </button>
-    <button class="btn btn-light" type="button" data-toggle="collapse" data-target="#collapse7" aria-expanded="false" aria-controls="collapse7">
-        Special Features
-    </button>
+    <div class="btn-group">
+        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+            Job Information
+        </button>
+        <button class="btn btn-danger" type="button" data-toggle="collapse" data-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
+            JobExtension
+        </button>
+        <button class="btn btn-info" type="button" data-toggle="collapse" data-target="#collapse3" aria-expanded="false" aria-controls="collapse3">
+            HydroSpecifics
+        </button>
+        <button class="btn btn-warning" type="button" data-toggle="collapse" data-target="#collapse4" aria-expanded="false" aria-controls="collapse4">
+            Generic Features
+        </button>
+        <button class="btn btn-success" type="button" data-toggle="collapse" data-target="#collapse5" aria-expanded="false" aria-controls="collapse5">
+            Indicators
+        </button>
+        <button class="btn btn-dark" type="button" data-toggle="collapse" data-target="#collapse6" aria-expanded="false" aria-controls="collapse6">
+            HoistWayData
+        </button>
+        <button class="btn btn-light" type="button" data-toggle="collapse" data-target="#collapse7" aria-expanded="false" aria-controls="collapse7">
+            Special Features
+        </button>
+    </div>
 </p>
 <form asp-controller="Job" asp-action="JobSearchList" method="get">
     <div class="collapse" id="collapseExample">
@@ -533,7 +535,7 @@
     <br />
     <div>
         <button class="btn btn-dark" type="submit" value="Search"><i class="fa fa-search" aria-hidden="true"></i></button>
-        <button class="btn btn-success" name="CleanFields" type="submit" value="true">Clean</i></button>
+        <button class="btn btn-success" name="CleanFields" type="submit" value="true">Clean</button>
     </div>
 </form>
 <br />
@@ -547,7 +549,7 @@
 }
 <div page-model="@Model.PagingInfo" page-action="JobSearchList" page-classes-enabled="true"
      page-class="btn" page-class-normal="btn-secondary"
-     page-class-selected="btn-primary" page-url-jobType="@Model.JobsSearchList"
+     page-class-selected="btn-primary" page-url-jobType="@Model.JobTypeID"
      class="btn-group pull-right m-1">
 </div>
 @{

@@ -871,22 +871,7 @@ namespace ProdFloor.Controllers
 
         public async Task<IActionResult> JobSearchList(JobSearchViewModel searchViewModel, int jobPage = 1)
         {
-            if (searchViewModel.CleanFields)
-            {
-                var jobSearchNew = repository.Jobs.ToList();
-                JobSearchViewModel search = new JobSearchViewModel
-                {
-                    JobsSearchList = jobSearchNew,
-                    PagingInfo = new PagingInfo
-                    {
-                        CurrentPage = jobPage,
-                        ItemsPerPage = 10,
-                        TotalItems = jobSearchNew.Count()
-                    }
-                };
-
-                return RedirectToAction("JobSearchList", search);
-            }
+            if (searchViewModel.CleanFields) return RedirectToAction("JobSearchList");
 
             var JobCount = repository.Jobs.Count();
             var jobSearchRepo = repository.Jobs.Include(j => j._jobExtension).Include(hy => hy._HydroSpecific).Include(g => g._GenericFeatures)
