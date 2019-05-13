@@ -45,6 +45,7 @@ namespace ProdFloor.Controllers
             var JobCount = repository.Jobs
                      .Where(s => s.Status != "Pending").Count();
 
+
             return View(new JobsListViewModel
             {
                 Jobs = repository.Jobs
@@ -550,7 +551,7 @@ namespace ProdFloor.Controllers
                 jobView.CurrentUserID = currentUser.EngID;
                 if (jobView.buttonAction == "AddPO")
                 {
-                    jobView.POList.Add(new PO { JobID = jobView.CurrentJob.JobID });
+                    jobView.POList.Add(new PO { JobID = jobView.CurrentJob.JobID, POID = 0});
                     if (jobView.CurrentJobExtension == null) jobView.CurrentJobExtension = new JobExtension();
                     if (jobView.CurrentHydroSpecific == null) jobView.CurrentHydroSpecific = new HydroSpecific();
                     if (jobView.CurrentGenericFeatures == null) jobView.CurrentGenericFeatures = new GenericFeatures();
@@ -561,6 +562,7 @@ namespace ProdFloor.Controllers
                     {
                         return View("NextForm", jobView);
                     }
+                    jobView.fieldID = 0;
                 }
                 jobView.CurrentTab = "Main";
                 return View("NextForm", jobView);
@@ -570,8 +572,9 @@ namespace ProdFloor.Controllers
                 jobView.CurrentUserID = currentUser.EngID;
                 if (jobView.buttonAction == "AddPO")
                 {
-                    jobView.POList.Add(new PO { JobID = jobView.CurrentJob.JobID });
+                    jobView.POList.Add(new PO { JobID = jobView.CurrentJob.JobID ,POID = 0 });
                     jobView.CurrentTab = "Main";
+                    jobView.fieldID = 0;
                 }
                 return View("Edit", jobView);
             }
@@ -623,8 +626,8 @@ namespace ProdFloor.Controllers
         public IActionResult DeletePOs(JobViewModel viewModel)
         {
             AppUser currentUser = GetCurrentUser().Result;
-            Job job = repository.Jobs.FirstOrDefault(j => j.JobID == viewModel.CurrentJob.JobID);
             PO deletedField = repository.DeletePO(viewModel.fieldID);
+            Job job = repository.Jobs.FirstOrDefault(j => j.JobID == viewModel.CurrentJob.JobID);
             if (deletedField != null)
             {
                 TempData["message"] = $"{deletedField.POID} was deleted";
@@ -870,26 +873,11 @@ namespace ProdFloor.Controllers
 
         public async Task<IActionResult> JobSearchList(JobSearchViewModel searchViewModel, int jobPage = 1)
         {
-            if (searchViewModel.CleanFields)
-            {
-                var jobSearchNew = repository.Jobs.ToList();
-                JobSearchViewModel search = new JobSearchViewModel
-                {
-                    JobsSearchList = jobSearchNew,
-                    PagingInfo = new PagingInfo
-                    {
-                        CurrentPage = jobPage,
-                        ItemsPerPage = 10,
-                        TotalItems = jobSearchNew.Count()
-                    }
-                };
-
-                return RedirectToAction("JobSearchList", search);
-            }
+            if (searchViewModel.CleanFields) return RedirectToAction("JobSearchList");
 
             var JobCount = repository.Jobs.Count();
             var jobSearchRepo = repository.Jobs.Include(j => j._jobExtension).Include(hy => hy._HydroSpecific).Include(g => g._GenericFeatures)
-                .Include(i => i._Indicator).Include(ho => ho._HoistWayData).Include(sp => sp._SpecialFeatureslist).Include(po => po._PO).AsQueryable();
+                .Include(i => i._Indicator).Include(ho => ho._HoistWayData).Include(sp => sp._SpecialFeatureslist).Include(po => po._PO).Where(y => y.Status != "Pending").AsQueryable();
             IQueryable<string> statusQuery = from s in repository.Jobs orderby s.Status select s.Status;
             #region comments
             /*
