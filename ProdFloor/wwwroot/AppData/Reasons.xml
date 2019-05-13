@@ -1,0 +1,172 @@
+﻿<Reasons>
+  <Reason1>
+    <Reason1ID>0</Reason1ID>
+    <Description>-</Description>
+  </Reason1>
+  <Reason1>
+    <Reason1ID>1</Reason1ID>
+    <Description>Voltage is very low</Description>
+  </Reason1>
+  <Reason1>
+    <Reason1ID>2</Reason1ID>
+    <Description>Voltage is high</Description>
+  </Reason1>
+  <Reason1>
+    <Reason1ID>3</Reason1ID>
+    <Description>Custom Software</Description>
+  </Reason1>
+  <Reason1>
+    <Reason1ID>4</Reason1ID>
+    <Description>Missing Component</Description>
+  </Reason1>
+  <Reason2>
+    <Reason2ID>0</Reason2ID>
+    <Reason1ID>0</Reason1ID>
+    <Description>-</Description>
+  </Reason2>
+  <Reason2>
+    <Reason2ID>1</Reason2ID>
+    <Reason1ID>1</Reason1ID>
+    <Description>Voltage very low</Description>
+  </Reason2>
+  <Reason2>
+    <Reason2ID>2</Reason2ID>
+    <Reason1ID>2</Reason1ID>
+    <Description>It is high</Description>
+  </Reason2>
+  <Reason2>
+    <Reason2ID>3</Reason2ID>
+    <Reason1ID>3</Reason1ID>
+    <Description>Missing Custom</Description>
+  </Reason2>
+  <Reason2>
+    <Reason2ID>4</Reason2ID>
+    <Reason1ID>3</Reason1ID>
+    <Description>Custom software doesnt work</Description>
+  </Reason2>
+  <Reason2>
+    <Reason2ID>5</Reason2ID>
+    <Reason1ID>4</Reason1ID>
+    <Description>Component not in controller</Description>
+  </Reason2>
+  <Reason3>
+    <Reason3ID>0</Reason3ID>
+    <Reason2ID>0</Reason2ID>
+    <Description>-</Description>
+  </Reason3>
+  <Reason3>
+    <Reason3ID>1</Reason3ID>
+    <Reason2ID>1</Reason2ID>
+    <Description>other</Description>
+  </Reason3>
+  <Reason3>
+    <Reason3ID>2</Reason3ID>
+    <Reason2ID>2</Reason2ID>
+    <Description>For real, it is high</Description>
+  </Reason3>
+  <Reason3>
+    <Reason3ID>3</Reason3ID>
+    <Reason2ID>3</Reason2ID>
+    <Description>Hasnt being provided</Description>
+  </Reason3>
+  <Reason3>
+    <Reason3ID>4</Reason3ID>
+    <Reason2ID>4</Reason2ID>
+    <Description>Custom IO not working properly</Description>
+  </Reason3>
+  <Reason3>
+    <Reason3ID>5</Reason3ID>
+    <Reason2ID>4</Reason2ID>
+    <Description>Custom IO not present</Description>
+  </Reason3>
+  <Reason3>
+    <Reason3ID>6</Reason3ID>
+    <Reason2ID>5</Reason2ID>
+    <Description>Component not added in BOM</Description>
+  </Reason3>
+  <Reason3>
+    <Reason3ID>7</Reason3ID>
+    <Reason2ID>5</Reason2ID>
+    <Description>Component was kitted</Description>
+  </Reason3>
+  <Reason4>
+    <Reason4ID>0</Reason4ID>
+    <Reason3ID>0</Reason3ID>
+    <Description>-</Description>
+  </Reason4>
+  <Reason4>
+    <Reason4ID>1</Reason4ID>
+    <Reason3ID>1</Reason3ID>
+    <Description>Voltage is very low</Description>
+  </Reason4>
+  <Reason4>
+    <Reason4ID>2</Reason4ID>
+    <Reason3ID>2</Reason3ID>
+    <Description>I mean it, its HIGH!!</Description>
+  </Reason4>
+  <Reason4>
+    <Reason4ID>3</Reason4ID>
+    <Reason3ID>3</Reason3ID>
+    <Description>Not provided</Description>
+  </Reason4>
+  <Reason4>
+    <Reason4ID>4</Reason4ID>
+    <Reason3ID>4</Reason3ID>
+    <Description>Custom IO doesnt fit description</Description>
+  </Reason4>
+  <Reason4>
+    <Reason4ID>5</Reason4ID>
+    <Reason3ID>5</Reason3ID>
+    <Description>IO not there</Description>
+  </Reason4>
+  <Reason4>
+    <Reason4ID>6</Reason4ID>
+    <Reason3ID>6</Reason3ID>
+    <Description>Config didnt add it</Description>
+  </Reason4>
+  <Reason4>
+    <Reason4ID>7</Reason4ID>
+    <Reason3ID>7</Reason3ID>
+    <Description>Warehouse didnt supply it</Description>
+  </Reason4>
+  <Reason5>
+    <Reason5ID>0</Reason5ID>
+    <Reason4ID>0</Reason4ID>
+    <Description>-</Description>
+  </Reason5>
+  <Reason5>
+    <Reason5ID>1</Reason5ID>
+    <Reason4ID>1</Reason4ID>
+    <Description>Voltage very low</Description>
+  </Reason5>
+  <Reason5>
+    <Reason5ID>2</Reason5ID>
+    <Reason4ID>2</Reason4ID>
+    <Description>I'm ded serious it it HIGH</Description>
+  </Reason5>
+  <Reason5>
+    <Reason5ID>3</Reason5ID>
+    <Reason4ID>3</Reason4ID>
+    <Description>Not provided</Description>
+  </Reason5>
+  <Reason5>
+    <Reason5ID>4</Reason5ID>
+    <Reason4ID>4</Reason4ID>
+    <Description>Custom software updated</Description>
+  </Reason5>
+  <Reason5>
+    <Reason5ID>5</Reason5ID>
+    <Reason4ID>5</Reason4ID>
+    <Description>IO added</Description>
+  </Reason5>
+  <Reason5>
+    <Reason5ID>6</Reason5ID>
+    <Reason4ID>6</Reason4ID>
+    <Description>Alan added it</Description>
+  </Reason5>
+  <Reason5>
+    <Reason5ID>7</Reason5ID>
+    <Reason4ID>7</Reason4ID>
+    <Description>It has being supplied</Description>
+  </Reason5>
+</Reasons>

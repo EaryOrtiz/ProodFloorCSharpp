@@ -1,10 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml;
+using HtmlAgilityPack;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using ProdFloor.Models;
 using ProdFloor.Models.ViewModels;
 using ProdFloor.Models.ViewModels.Reasons;
@@ -134,11 +139,11 @@ namespace ProdFloor.Controllers
             return View();
         }
 
-        public ViewResult Edit(string btn,int ID)
+        public ViewResult Edit(string btn, int ID)
         {
             switch (btn)
             {
-                case "R1": return View("Reason1Edit",repository.Reasons1.FirstOrDefault(j => j.Reason1ID == ID));
+                case "R1": return View("Reason1Edit", repository.Reasons1.FirstOrDefault(j => j.Reason1ID == ID));
                 case "R2": return View("Reason2Edit", repository.Reasons2.FirstOrDefault(j => j.Reason2ID == ID));
                 case "R3": return View("Reason3Edit", repository.Reasons3.FirstOrDefault(j => j.Reason3ID == ID));
                 case "R4": return View("Reason4Edit", repository.Reasons4.FirstOrDefault(j => j.Reason4ID == ID));
@@ -305,6 +310,223 @@ namespace ProdFloor.Controllers
             List<Reason5> Reasonlist = new List<Reason5>();
             Reasonlist = (from reason5 in repository.Reasons5 where reason5.Reason4ID == Reason4ID && reason5.Description != "-" select reason5).ToList();
             return Json(new SelectList(Reasonlist, "Reason5ID", "Description"));
+        }
+
+        [HttpPost]
+        public FileStreamResult ExportToXML()
+        {
+            MemoryStream ms = new MemoryStream();
+            XmlWriterSettings xws = new XmlWriterSettings();
+            xws.OmitXmlDeclaration = true;
+            xws.Indent = true;
+
+            List<Reason1> reason1s = repository.Reasons1.Where(m => m.Reason1ID != 0).ToList();
+            List<Reason2> reason2s = repository.Reasons2.Where(m => m.Reason2ID != 0).ToList();
+            List<Reason3> reason3s = repository.Reasons3.Where(m => m.Reason3ID != 0).ToList();
+            List<Reason4> reason4s = repository.Reasons4.Where(m => m.Reason4ID != 0).ToList();
+            List<Reason5> reason5s = repository.Reasons5.Where(m => m.Reason5ID != 0).ToList();
+
+            if (reason5s.Count > 0)
+            {
+                using (XmlWriter xw = XmlWriter.Create(ms, xws))
+                {
+                    xw.WriteStartDocument();
+                    xw.WriteStartElement("Reasons");
+
+                    foreach (Reason1 reason1 in reason1s)
+                    {
+                        xw.WriteStartElement("Reason1");
+                        xw.WriteElementString("Reason1ID", reason1.Reason1ID.ToString());
+                        xw.WriteElementString("Description", reason1.Description.ToString());
+                        xw.WriteEndElement();
+                    }
+                    foreach (Reason2 reason2 in reason2s)
+                    {
+                        xw.WriteStartElement("Reason2");
+                        xw.WriteElementString("Reason2ID", reason2.Reason2ID.ToString());
+                        xw.WriteElementString("Reason1ID", reason2.Reason1ID.ToString());
+                        xw.WriteElementString("Description", reason2.Description.ToString());
+                        xw.WriteEndElement();
+                    }
+                    foreach (Reason3 reason3 in reason3s)
+                    {
+                        xw.WriteStartElement("Reason3");
+                        xw.WriteElementString("Reason3ID", reason3.Reason3ID.ToString());
+                        xw.WriteElementString("Reason2ID", reason3.Reason2ID.ToString());
+                        xw.WriteElementString("Description", reason3.Description.ToString());
+                        xw.WriteEndElement();
+                    }
+                    foreach (Reason4 reason4 in reason4s)
+                    {
+                        xw.WriteStartElement("Reason4");
+                        xw.WriteElementString("Reason4ID", reason4.Reason4ID.ToString());
+                        xw.WriteElementString("Reason3ID", reason4.Reason3ID.ToString());
+                        xw.WriteElementString("Description", reason4.Description.ToString());
+                        xw.WriteEndElement();
+                    }
+                    foreach (Reason5 reason5 in reason5s)
+                    {
+                        xw.WriteStartElement("Reason5");
+                        xw.WriteElementString("Reason5ID", reason5.Reason5ID.ToString());
+                        xw.WriteElementString("Reason4ID", reason5.Reason4ID.ToString());
+                        xw.WriteElementString("Description", reason5.Description.ToString());
+                        xw.WriteEndElement();
+                    }
+                    xw.WriteEndElement();
+                    xw.WriteEndDocument();
+                }
+                ms.Position = 0;
+                return File(ms, "text/xml", "Reasons.xml");
+            }
+
+            ms.Position = 0;
+            return File(ms, "text/xml", "Error.xml");
+        }
+
+        public static void ImportXML(IServiceProvider services)
+        {
+            ApplicationDbContext context = services.GetRequiredService<ApplicationDbContext>();
+            HtmlDocument doc = new HtmlDocument();
+            doc.Load(@"C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\Reasons.xml");
+
+            var XMLobs = doc.DocumentNode.SelectSingleNode("//reasons");
+
+            var XMLReasons1 = XMLobs.SelectNodes(".//reason1");
+            var XMLReasons2 = XMLobs.SelectNodes(".//reason2");
+            var XMLReasons3 = XMLobs.SelectNodes(".//reason3");
+            var XMLReasons4 = XMLobs.SelectNodes(".//reason5");
+            var XMLReasons5 = XMLobs.SelectNodes(".//reason4");
+
+            if (XMLobs != null && !context.Reasons5.Any())
+            {
+                foreach (var Reasons1 in XMLReasons1)
+                {
+                    var reason1id = Reasons1.SelectSingleNode(".//reason1id").InnerText;
+                    var description = Reasons1.SelectSingleNode(".//description").InnerText;
+                    context.Reasons1.Add(new Reason1
+                    {
+                        Reason1ID = Int32.Parse(reason1id),
+                        Description = description,
+
+                    });
+                    context.Database.OpenConnection();
+                    try
+                    {
+                        context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.Reasons1 ON");
+                        context.SaveChanges();
+                        context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.Reasons1 OFF");
+                    }
+                    finally
+                    {
+                        context.Database.CloseConnection();
+                    }
+                }
+                foreach (var Reasons2 in XMLReasons2)
+                {
+                    var reason2id = Reasons2.SelectSingleNode(".//reason2id").InnerText;
+                    var reason1id = Reasons2.SelectSingleNode(".//reason1id").InnerText;
+                    var description = Reasons2.SelectSingleNode(".//description").InnerText;
+                    context.Reasons2.Add(new Reason2
+                    {
+                        Reason2ID = Int32.Parse(reason2id),
+                        Reason1ID = Int32.Parse(reason1id),
+                        Description = description
+
+                    });
+                    context.Database.OpenConnection();
+                    try
+                    {
+                        context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.Reasons2 ON");
+                        context.SaveChanges();
+                        context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.Reasons2 OFF");
+                    }
+                    finally
+                    {
+                        context.Database.CloseConnection();
+                    }
+                }
+                foreach (var Reasons3 in XMLReasons3)
+                {
+                    var reason3id = Reasons3.SelectSingleNode(".//reason3id").InnerText;
+                    var reason2id = Reasons3.SelectSingleNode(".//reason2id").InnerText;
+                    var description = Reasons3.SelectSingleNode(".//description").InnerText;
+                    context.Reasons3.Add(new Reason3
+                    {
+                        Reason3ID = Int32.Parse(reason3id),
+                        Reason2ID = Int32.Parse(reason2id),
+                        Description = description
+
+                    });
+                    context.Database.OpenConnection();
+                    try
+                    {
+                        context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.Reasons3 ON");
+                        context.SaveChanges();
+                        context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.Reasons3 OFF");
+                    }
+                    finally
+                    {
+                        context.Database.CloseConnection();
+                    }
+                }
+                foreach (var Reasons4 in XMLReasons4)
+                {
+                    var reason4id = Reasons4.SelectSingleNode(".//reason4id").InnerText;
+                    var reason3id = Reasons4.SelectSingleNode(".//reason3id").InnerText;
+                    var description = Reasons4.SelectSingleNode(".//description").InnerText;
+                    context.Reasons4.Add(new Reason4
+                    {
+                        Reason4ID = Int32.Parse(reason4id),
+                        Reason3ID = Int32.Parse(reason3id),
+                        Description = description
+
+                    });
+                    context.Database.OpenConnection();
+                    try
+                    {
+                        context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.Reasons4 ON");
+                        context.SaveChanges();
+                        context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.Reasons4 OFF");
+                    }
+                    finally
+                    {
+                        context.Database.CloseConnection();
+                    }
+                }
+
+                foreach (var Reasons5 in XMLReasons5)
+                {
+                    var reason5id = Reasons5.SelectSingleNode(".//reason5id").InnerText;
+                    var reason4id = Reasons5.SelectSingleNode(".//reason4id").InnerText;
+                    var description = Reasons5.SelectSingleNode(".//description").InnerText;
+                    context.Reasons5.Add(new Reason5
+                    {
+                        Reason5ID = Int32.Parse(reason5id),
+                        Reason4ID = Int32.Parse(reason4id),
+                        Description = description
+
+                    });
+                    context.Database.OpenConnection();
+                    try
+                    {
+                        context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.Reasons5 ON");
+                        context.SaveChanges();
+                        context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.Reasons5 OFF");
+                    }
+                    finally
+                    {
+                        context.Database.CloseConnection();
+                    }
+                }
+            }
+
+        }
+
+        [HttpPost]
+        public IActionResult SeedXML()
+        {
+            ReasonsController.ImportXML(HttpContext.RequestServices);
+            return RedirectToAction(nameof(List));
         }
 
     }

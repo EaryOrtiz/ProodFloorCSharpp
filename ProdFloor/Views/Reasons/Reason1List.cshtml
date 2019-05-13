@@ -14,6 +14,12 @@
         </button>
     </form>
 </div>
+<form asp-action="SeedXML" asp-controller="Reasons" method="post">
+    @if (Model.Reasons1.Count() == 0)
+    {
+        <button type="submit" name="buttonImportXML" value="All" class="btn btn-danger btn-sm">Import All Jobs from XML <i class="fas fa-file-alt"></i></button>
+    }
+</form>
 <br />
 @foreach (var j in Model.Reasons1)
 {
