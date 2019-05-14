@@ -61,6 +61,10 @@ namespace ProdFloor.Models
         [Required(ErrorMessage = "Please enter a State")]
         public string StateID { get; set; }
 
+        [NotMapped]
+        [Display(Name = "Current Fire Code")]
+        public int CurrentFirecode { get; set; }
+
         public JobExtension _jobExtension { get; set; }
         public HydroSpecific _HydroSpecific { get; set; }
         public GenericFeatures _GenericFeatures { get; set; }

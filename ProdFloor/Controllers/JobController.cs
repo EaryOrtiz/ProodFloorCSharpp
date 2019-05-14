@@ -1069,6 +1069,14 @@ namespace ProdFloor.Controllers
             return Json(new SelectList(CityCascadeList, "CityID", "Name"));
         }
 
+        public JsonResult GetCurrentFireCode(int CityID)
+        {
+            int FirecodeOncityID = itemsrepository.Cities.FirstOrDefault(m => m.CityID == CityID).FirecodeID;
+            List<FireCode> FireCodeList = new List<FireCode>();
+            FireCodeList = (from firecode in itemsrepository.FireCodes where firecode.FireCodeID == FirecodeOncityID select firecode).ToList();
+            return Json(new SelectList(FireCodeList, "FireCodeID", "Name"));
+        }
+
         public JsonResult GetBrand(string Style)
         {
             List<DoorOperator> BrandList = new List<DoorOperator>();
