@@ -771,12 +771,18 @@ namespace ProdFloor.Infrastructure
         public ViewContext ViewContext { get; set; }
 
         public int SelectedValue { get; set; }
+        public int SelectedCurrentFireCode { get; set; }
 
         [HtmlAttributeName("asp-is-disabled")]
         public bool IsDisabled { set; get; }
 
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
+            if(SelectedCurrentFireCode != 0)
+            {
+                int FireCodeOnCity = itemsrepository.Cities.FirstOrDefault(m => m.CityID == SelectedCurrentFireCode).FirecodeID;
+                SelectedValue = FireCodeOnCity;
+            }
             IUrlHelper urlHelper = urlHelperFactory.GetUrlHelper(ViewContext);
             output.TagName = "select";
             TagBuilder result = new TagBuilder("select");
