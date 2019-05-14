@@ -154,6 +154,7 @@ namespace ProdFloor.Controllers
             AppUser user = await userManager.FindByIdAsync(id);
             if (user != null)
             {
+                user.ConfirmPassword = "";
                 return View(user);
             }
             else
