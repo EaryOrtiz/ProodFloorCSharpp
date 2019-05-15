@@ -597,6 +597,10 @@ namespace ProdFloor.Infrastructure
             m_tag.InnerHtml.Append("Please select a City");
             result.InnerHtml.AppendHtml(m_tag);
             IQueryable<City> city = itemsrepository.Cities.AsQueryable();
+            if (SelectedValue != 0) {
+                int SelectedStateInCityID = itemsrepository.Cities.FirstOrDefault(n => n.CityID == SelectedValue).StateID;
+                city = itemsrepository.Cities.Where(m => m.StateID == SelectedStateInCityID);
+            }
             foreach (City cities in city)
             {
                 TagBuilder tag = new TagBuilder("option");
@@ -657,13 +661,14 @@ namespace ProdFloor.Infrastructure
             m_tag.InnerHtml.Append("-- Select State --");
             result.InnerHtml.AppendHtml(m_tag);
             int stateID = 0;
+            IQueryable<State> state = itemsrepository.States.AsQueryable();
             if (SelectedValue != 0)
             {
                 City selectedCity = itemsrepository.Cities.FirstOrDefault(c => c.CityID == SelectedValue);
                 State selectedState = itemsrepository.States.FirstOrDefault(s => s.StateID == selectedCity.StateID);
                 stateID = selectedCity.StateID;
+                state = itemsrepository.States.Where(m => m.CountryID == selectedState.CountryID).AsQueryable();
             }
-            IQueryable<State> state = itemsrepository.States.AsQueryable();
             foreach (State states in state)
             {
                 TagBuilder tag = new TagBuilder("option");
@@ -986,16 +991,21 @@ namespace ProdFloor.Infrastructure
             m_tag.Attributes["value"] = "";
             m_tag.InnerHtml.Append("Please select one");
             result.InnerHtml.AppendHtml(m_tag);
-            IQueryable<DoorOperator> door = itemsrepository.DoorOperators.AsQueryable();
-            foreach (DoorOperator doors in door)
+            IQueryable<DoorOperator> doors = itemsrepository.DoorOperators.AsQueryable();
+            if (SelectedValue != 0)
+            {
+                string AuxDoor = itemsrepository.DoorOperators.FirstOrDefault(m =>m.DoorOperatorID == SelectedValue).Brand;
+                doors = itemsrepository.DoorOperators.Where(m => m.Brand == AuxDoor).AsQueryable();
+            }
+            foreach (DoorOperator uniqueDoor in doors)
             {
                 TagBuilder tag = new TagBuilder("option");
-                tag.Attributes["value"] = doors.DoorOperatorID.ToString();
-                if (doors.DoorOperatorID == SelectedValue)
+                tag.Attributes["value"] = uniqueDoor.DoorOperatorID.ToString();
+                if (uniqueDoor.DoorOperatorID == SelectedValue)
                 {
                     tag.Attributes["selected"] = "selected";
                 }
-                tag.InnerHtml.Append(doors.Name.ToString());
+                tag.InnerHtml.Append(uniqueDoor.Name.ToString());
                 result.InnerHtml.AppendHtml(tag);
             }
             output.Content.AppendHtml(result.InnerHtml);
@@ -1096,6 +1106,7 @@ namespace ProdFloor.Infrastructure
         public ViewContext ViewContext { get; set; }
 
         public int SelectedValue { get; set; }
+        public string SelectedStyle { get; set; }
 
         [HtmlAttributeName("asp-is-disabled")]
         public bool IsDisabled { set; get; }
@@ -1122,6 +1133,11 @@ namespace ProdFloor.Infrastructure
                 doorOperatorID = selectedDoor.DoorOperatorID;
             }
             IQueryable<DoorOperator> door = itemsrepository.DoorOperators.AsQueryable();
+            if (!string.IsNullOrEmpty(SelectedStyle))
+            {
+                door = itemsrepository.DoorOperators.FromSql("select * from dbo.DoorOperators where Style = {0} AND dbo.DoorOperators.DoorOperatorID in " +
+                "(Select max(dbo.DoorOperators.DoorOperatorID) FROM dbo.DoorOperators group by dbo.DoorOperators.Brand)", SelectedStyle).AsQueryable();
+            }
             foreach (DoorOperator doors in door)
             {
                 TagBuilder tag = new TagBuilder("option");
