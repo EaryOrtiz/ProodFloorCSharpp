@@ -435,9 +435,9 @@ namespace ProdFloor.Controllers
                         #region CustomSoftWare
                         //Rellena las listas que se llenaran para la comparacion
                         List<CustomFeature> FilteredCustomsF = jobrepo.CustomFeatures.Where(m => m.JobID == JobSearch.JobID).ToList();
-                        if(FilteredCustomsF.Count() > 0)
+                        if (FilteredCustomsF.Count() > 0)
                         {
-                            foreach(CustomFeature obj in FilteredCustomsF)
+                            foreach (CustomFeature obj in FilteredCustomsF)
                             {
                                 jobrepo.DeleteCustomFeature(obj.CustomFeatureID);
                             }
@@ -487,16 +487,36 @@ namespace ProdFloor.Controllers
                                         {
                                             switch (trigger.Name)
                                             {
-                                                case "Contractor": if (trigger.isSelected && trigger.itemToMatch == JobSearch.Contractor) { countAux++; } break;
-                                                case "Fire Code": if (trigger.isSelected && trigger.itemToMatch == FireCodeList.First(m => m.FireCodeID == JobSearch.FireCodeID).Name) { countAux++; } break;
+                                                case "Contractor":
+                                                    if (trigger.isSelected) if (trigger.itemToMatch == JobSearch.Contractor) countAux++;
+                                                    else if (trigger.itemToMatch != JobSearch.Contractor) countAux++;
+                                                    break;
+                                                case "Fire Code": 
+                                                    if (trigger.isSelected)if (trigger.itemToMatch == FireCodeList.First(m => m.FireCodeID == JobSearch.FireCodeID).Name) countAux++;
+                                                    else if (trigger.itemToMatch != FireCodeList.First(m => m.FireCodeID == JobSearch.FireCodeID).Name) countAux++;
+                                                    break;
                                                 case "State":
                                                     City Onecity = CitiesList.FirstOrDefault(m => m.CityID == JobSearch.CityID);
-                                                    if ((trigger.isSelected && trigger.itemToMatch == StatesList.First(m => m.StateID == Onecity.StateID).Name)) { countAux++; } break;
-                                                case "City": if ((trigger.isSelected && trigger.itemToMatch == CitiesList.First(m => m.CityID == JobSearch.CityID).Name)) { countAux++; } break;
+                                                    if (trigger.isSelected) if (trigger.itemToMatch == StatesList.First(m => m.StateID == Onecity.StateID).Name) countAux++;
+                                                    else if (trigger.itemToMatch != StatesList.First(m => m.StateID == Onecity.StateID).Name) countAux++;
+                                                    break;
+                                                case "City":
+                                                    if (trigger.isSelected) if (trigger.itemToMatch == CitiesList.First(m => m.CityID == JobSearch.CityID).Name) countAux++;
+                                                    else if (trigger.itemToMatch != CitiesList.First(m => m.CityID == JobSearch.CityID).Name) countAux++;
+                                                    break;
                                                 case "VCI": if (trigger.isSelected == JobSearch._HydroSpecific.VCI) { countAux++; } break;
-                                                case "Valve Brand": if (trigger.isSelected && trigger.itemToMatch == JobSearch._HydroSpecific.ValveBrand) { countAux++; } break;
-                                                case "Switch Style": if (trigger.isSelected && trigger.itemToMatch == JobSearch._GenericFeatures.SwitchStyle) { countAux++; } break;
-                                                case "Landing System": if ((trigger.isSelected && trigger.itemToMatch == LandingList.First(m => m.LandingSystemID == JobSearch._HoistWayData.LandingSystemID).Name)) { countAux++; } break;
+                                                case "Valve Brand":
+                                                    if (trigger.isSelected) if (trigger.itemToMatch == JobSearch._HydroSpecific.ValveBrand) countAux++;
+                                                    else if (trigger.itemToMatch != JobSearch._HydroSpecific.ValveBrand) countAux++;
+                                                    break;
+                                                case "Switch Style":
+                                                    if (trigger.isSelected) if (trigger.itemToMatch == JobSearch._GenericFeatures.SwitchStyle) countAux++;
+                                                    else if (trigger.itemToMatch != JobSearch._GenericFeatures.SwitchStyle) countAux++;
+                                                    break;
+                                                case "Landing System":
+                                                    if (trigger.isSelected) if (trigger.itemToMatch == LandingList.First(m => m.LandingSystemID == JobSearch._HoistWayData.LandingSystemID).Name) countAux++;
+                                                    else if (trigger.itemToMatch != LandingList.First(m => m.LandingSystemID == JobSearch._HoistWayData.LandingSystemID).Name) countAux++;
+                                                    break;
                                                 default: break;
                                             }
                                         }
@@ -520,10 +540,10 @@ namespace ProdFloor.Controllers
                         FilteredCustomsF = jobrepo.CustomFeatures.Where(m => m.JobID == JobSearch.JobID).ToList();
                         foreach (CustomFeature custom in FilteredCustomsF)
                         {
-                           CustomSoftware one = Customs.FirstOrDefault(m => m.CustomSoftwareID == custom.CustomSoftwareID);
-                           if(one != null)FilteredCustomSoftware.Add(one);
+                            CustomSoftware one = Customs.FirstOrDefault(m => m.CustomSoftwareID == custom.CustomSoftwareID);
+                            if (one != null) FilteredCustomSoftware.Add(one);
                         }
-                        
+
 
 
                         #endregion
