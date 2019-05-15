@@ -426,7 +426,8 @@ namespace ProdFloor.Infrastructure
                 case "CarPIDiscreteType":
                     return new List<string> { "Multi-light", "One line per floor", "Binary 00", "Binary 01" }.AsQueryable();
                 case "Monitoring":
-                    return new List<string> { "MView Complete", "MView Interface", "IMonitor Complete", "IMonitor Interface", "IDS Liftnet" }.AsQueryable();
+                    return new List<string> { "MView Complete", "MView Interface", "IMonitor Complete", "IMonitor Interface",
+                        "MView Complete & IMonitor Complete","MView Complete & IMonitor Interface","MView Interface & IMonitor Complete","MView Interface & IMonitor Interface", "IDS Liftnet" }.AsQueryable();
                 case "PIType":
                     return new List<string> { "Chime", "Gong" }.AsQueryable();
                 case "AccessSWLocation":
