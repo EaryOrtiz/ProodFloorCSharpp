@@ -1107,7 +1107,6 @@ namespace ProdFloor.Infrastructure
         public ViewContext ViewContext { get; set; }
 
         public int SelectedValue { get; set; }
-        public string SelectedStyle { get; set; }
 
         [HtmlAttributeName("asp-is-disabled")]
         public bool IsDisabled { set; get; }
@@ -1127,23 +1126,22 @@ namespace ProdFloor.Infrastructure
             m_tag.Attributes["value"] = "";
             m_tag.InnerHtml.Append("Please select a Brand");
             result.InnerHtml.AppendHtml(m_tag);
+            IQueryable<DoorOperator> door = itemsrepository.DoorOperators.AsQueryable();
             int doorOperatorID = 0;
+            string doorBrand = "";
             if (SelectedValue != 0)
             {
                 DoorOperator selectedDoor = itemsrepository.DoorOperators.FirstOrDefault(c => c.DoorOperatorID == SelectedValue);
                 doorOperatorID = selectedDoor.DoorOperatorID;
-            }
-            IQueryable<DoorOperator> door = itemsrepository.DoorOperators.AsQueryable();
-            if (!string.IsNullOrEmpty(SelectedStyle))
-            {
+                doorBrand = selectedDoor.Brand;
                 door = itemsrepository.DoorOperators.FromSql("select * from dbo.DoorOperators where Style = {0} AND dbo.DoorOperators.DoorOperatorID in " +
-                "(Select max(dbo.DoorOperators.DoorOperatorID) FROM dbo.DoorOperators group by dbo.DoorOperators.Brand)", SelectedStyle).AsQueryable();
+                "(Select max(dbo.DoorOperators.DoorOperatorID) FROM dbo.DoorOperators group by dbo.DoorOperators.Brand)", selectedDoor.Style).AsQueryable();
             }
             foreach (DoorOperator doors in door)
             {
                 TagBuilder tag = new TagBuilder("option");
                 tag.Attributes["value"] = doors.DoorOperatorID.ToString();
-                if (doors.DoorOperatorID == doorOperatorID)
+                if (doors.Brand == doorBrand)
                 {
                     tag.Attributes["selected"] = "selected";
                 }

@@ -488,34 +488,34 @@ namespace ProdFloor.Controllers
                                             switch (trigger.Name)
                                             {
                                                 case "Contractor":
-                                                    if (trigger.isSelected) if (trigger.itemToMatch == JobSearch.Contractor) countAux++;
-                                                    else if (trigger.itemToMatch != JobSearch.Contractor) countAux++;
+                                                    if (trigger.isSelected == true && trigger.itemToMatch == JobSearch.Contractor) countAux++;
+                                                    else if ((trigger.isSelected == false) && trigger.itemToMatch != JobSearch.Contractor) countAux++;
                                                     break;
-                                                case "Fire Code": 
-                                                    if (trigger.isSelected)if (trigger.itemToMatch == FireCodeList.First(m => m.FireCodeID == JobSearch.FireCodeID).Name) countAux++;
-                                                    else if (trigger.itemToMatch != FireCodeList.First(m => m.FireCodeID == JobSearch.FireCodeID).Name) countAux++;
+                                                case "Fire Code":
+                                                    if (trigger.isSelected == true && trigger.itemToMatch == FireCodeList.First(m => m.FireCodeID == JobSearch.FireCodeID).Name) countAux++;
+                                                    else if ((trigger.isSelected == false) && trigger.itemToMatch != FireCodeList.First(m => m.FireCodeID == JobSearch.FireCodeID).Name) countAux++;
                                                     break;
                                                 case "State":
                                                     City Onecity = CitiesList.FirstOrDefault(m => m.CityID == JobSearch.CityID);
-                                                    if (trigger.isSelected) if (trigger.itemToMatch == StatesList.First(m => m.StateID == Onecity.StateID).Name) countAux++;
-                                                    else if (trigger.itemToMatch != StatesList.First(m => m.StateID == Onecity.StateID).Name) countAux++;
+                                                    if (trigger.isSelected == true && trigger.itemToMatch == StatesList.First(m => m.StateID == Onecity.StateID).Name) countAux++;
+                                                    else if ((trigger.isSelected == false) && trigger.itemToMatch != StatesList.First(m => m.StateID == Onecity.StateID).Name) countAux++;
                                                     break;
                                                 case "City":
-                                                    if (trigger.isSelected) if (trigger.itemToMatch == CitiesList.First(m => m.CityID == JobSearch.CityID).Name) countAux++;
-                                                    else if (trigger.itemToMatch != CitiesList.First(m => m.CityID == JobSearch.CityID).Name) countAux++;
+                                                    if (trigger.isSelected == true && trigger.itemToMatch == CitiesList.First(m => m.CityID == JobSearch.CityID).Name) countAux++;
+                                                    else if ((trigger.isSelected == false) && trigger.itemToMatch != CitiesList.First(m => m.CityID == JobSearch.CityID).Name) countAux++;
                                                     break;
                                                 case "VCI": if (trigger.isSelected == JobSearch._HydroSpecific.VCI) { countAux++; } break;
                                                 case "Valve Brand":
-                                                    if (trigger.isSelected) if (trigger.itemToMatch == JobSearch._HydroSpecific.ValveBrand) countAux++;
-                                                    else if (trigger.itemToMatch != JobSearch._HydroSpecific.ValveBrand) countAux++;
+                                                    if (trigger.isSelected == true && trigger.itemToMatch == JobSearch._HydroSpecific.ValveBrand) countAux++;
+                                                    else if ((trigger.isSelected == false) && trigger.itemToMatch != JobSearch._HydroSpecific.ValveBrand) countAux++;
                                                     break;
                                                 case "Switch Style":
-                                                    if (trigger.isSelected) if (trigger.itemToMatch == JobSearch._GenericFeatures.SwitchStyle) countAux++;
-                                                    else if (trigger.itemToMatch != JobSearch._GenericFeatures.SwitchStyle) countAux++;
+                                                    if (trigger.isSelected == true && trigger.itemToMatch == JobSearch._GenericFeatures.SwitchStyle) countAux++;
+                                                    else if ((trigger.isSelected == false) && trigger.itemToMatch != JobSearch._GenericFeatures.SwitchStyle) countAux++;
                                                     break;
                                                 case "Landing System":
-                                                    if (trigger.isSelected) if (trigger.itemToMatch == LandingList.First(m => m.LandingSystemID == JobSearch._HoistWayData.LandingSystemID).Name) countAux++;
-                                                    else if (trigger.itemToMatch != LandingList.First(m => m.LandingSystemID == JobSearch._HoistWayData.LandingSystemID).Name) countAux++;
+                                                    if (trigger.isSelected == true && trigger.itemToMatch == LandingList.First(m => m.LandingSystemID == JobSearch._HoistWayData.LandingSystemID).Name) countAux++;
+                                                    else if ((trigger.isSelected == false) && trigger.itemToMatch != LandingList.First(m => m.LandingSystemID == JobSearch._HoistWayData.LandingSystemID).Name) countAux++;
                                                     break;
                                                 default: break;
                                             }
@@ -644,16 +644,16 @@ namespace ProdFloor.Controllers
 
                             //JobData
                             FLA = ViewModel.FLA,
-                            JobName = ViewModel.JobName,
-                            JobName2 = ViewModel.JobName2,
-                            Cust = ViewModel.Cust,
-                            Contractor = ViewModel.Contractor,
-                            JobTypeMain = ViewModel.JobTypeMain,
-                            ValveBrand = ViewModel.ValveBrand,
+                            JobName = ViewModel.JobName.ToUpper(),
+                            JobName2 = ViewModel.JobName2.ToUpper(),
+                            Cust = ViewModel.Cust.ToUpper(),
+                            Contractor = ViewModel.Contractor.ToUpper(),
+                            JobTypeMain = ViewModel.JobTypeMain.ToUpper(),
+                            ValveBrand = ViewModel.ValveBrand.ToUpper(),
                             InputVoltage = ViewModel.InputVoltage,
                             HP = ViewModel.HP,
-                            FireCodeName = ViewModel.FireCodeName,
-                            LandingName = ViewModel.LandingName,
+                            FireCodeName = ViewModel.FireCodeName.ToUpper(),
+                            LandingName = ViewModel.LandingName.ToUpper(),
                             NumJobSearch = ViewModel.NumJobSearch,
                             //****Slow Table
 

@@ -33,6 +33,9 @@
             <form asp-action="ExportUniqueJobToXML" asp-controller="Job" method="post">
                 <button type="submit" asp-action="ExportUniqueJobToXML" asp-controller="Job" asp-route-id="@Model.CurrentJob.JobID" class="dropdown-item">Export Job to XML </button>
             </form>
+            <form asp-action="SearchAux" asp-controller="Item" method="get">
+                <button asp-action="SearchAux" asp-controller="Item" type="submit" value="@Model.CurrentJob.JobNum" name="JobNum" class="dropdown-item">WorkSheet</button>
+            </form>
         </div>
     </li>
 </ul>
