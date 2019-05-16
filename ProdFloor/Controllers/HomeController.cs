@@ -84,7 +84,7 @@ namespace ProdFloor.Controllers
                         CurrentPage = productionJobPage,
                         ItemsPerPage = PageSize,
                         TotalItems = repository.Jobs
-                        .Where(j => j.EngID == currentUser.EngID)
+                        .Where(j => j.EngID != currentUser.EngID)
                         .Where(j => j.Status == "Cross Approval Pending" || j.Status == "Cross Approval Complete")
                         .Count()
                     }
