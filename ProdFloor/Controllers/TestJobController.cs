@@ -17,14 +17,16 @@ namespace ProdFloor.Controllers
     {
         private IJobRepository jobRepo;
         private ITestingRepository testingRepo;
+        private IItemRepository itemRepository;
         private UserManager<AppUser> userManager;
         public int PageSize = 10;
 
-        public TestJobController(ITestingRepository repo, IJobRepository repo2, UserManager<AppUser> userMgr)
+        public TestJobController(ITestingRepository repo, IJobRepository repo2,IItemRepository repo3,  UserManager<AppUser> userMgr)
         {
             jobRepo = repo2;
             testingRepo = repo;
             userManager = userMgr;
+            itemRepository = repo3;
         }
 
         public ViewResult List(int page = 1)
@@ -271,6 +273,9 @@ namespace ProdFloor.Controllers
                                 //Checa que cada feature de la lista concuerde con los features del testjob
                                 foreach (TriggeringFeature trigger in triggers)
                                 {
+                                    LandingSystem landing = itemRepository.LandingSystems.FirstOrDefault(m => m.LandingSystemID == FeaturesFromJob._HoistWayData.LandingSystemID);
+                                    City UniqueCity = itemRepository.Cities.FirstOrDefault(m => m.CityID == FeaturesFromJob.CityID);
+                                    State StateFromCity = itemRepository.States.FirstOrDefault(m => m.StateID == UniqueCity.StateID);
                                     switch (trigger.Name)
                                     {
                                         case "Overlay": if (trigger.IsSelected == FeaturesFromTestJob.Overlay) { countAux++; } break;
@@ -287,21 +292,54 @@ namespace ProdFloor.Controllers
                                         case "CTL2": if (trigger.IsSelected == FeaturesFromTestJob.CTL2) { countAux++; } break;
                                         case "Tarjeta CPI Incluida": if (trigger.IsSelected == FeaturesFromTestJob.TrajetaCPI) { countAux++; } break;
                                         case "Door Control en Cartop": if (trigger.IsSelected == FeaturesFromTestJob.Cartop) { countAux++; } break;
-                                        case "Canada": if (trigger.IsSelected == (FeaturesFromJob.CityID == 47 || FeaturesFromJob.CityID == 56 || FeaturesFromJob.CityID == 57
-                                                || FeaturesFromJob.CityID == 10 || FeaturesFromJob.CityID == 29 || FeaturesFromJob.CityID == 58 || FeaturesFromJob.CityID == 48
-                                                || FeaturesFromJob.CityID == 11 || FeaturesFromJob.CityID == 49 || FeaturesFromJob.CityID == 59 || FeaturesFromJob.CityID == 50)) { countAux++; } break;
-                                        case "Ontario": if (trigger.IsSelected == (FeaturesFromJob.CityID == 11)) { countAux++; } break;
-                                        case "Manual Doors": if (trigger.IsSelected == (FeaturesFromJob._jobExtension.DoorOperatorID == 2)) { countAux++; } break;
-                                        case "Duplex": if (trigger.IsSelected == (FeaturesFromJob._jobExtension.JobTypeMain == "Duplex")) { countAux++; } break;
+                                        case "Canada":
+                                            if (trigger.IsSelected == true && StateFromCity.CountryID == 2) countAux++;
+                                            else if (trigger.IsSelected == false && StateFromCity.CountryID != 2) countAux++;
+                                            break;
+                                        case "Ontario": if (trigger.IsSelected == true && FeaturesFromJob.CityID == 11)  countAux++;
+                                            else if (trigger.IsSelected == false && FeaturesFromJob.CityID != 11) countAux++;
+                                            break;
+                                        case "Manual Doors":
+                                            if (trigger.IsSelected == true && FeaturesFromJob._jobExtension.DoorOperatorID == 2) countAux++;
+                                            else if (trigger.IsSelected == false && FeaturesFromJob._jobExtension.DoorOperatorID != 2) countAux++;
+                                            break;
+                                        case "Duplex":
+                                            if (trigger.IsSelected == true && FeaturesFromJob._jobExtension.JobTypeMain == "Duplex") countAux++;
+                                            else if (trigger.IsSelected == false && FeaturesFromJob._jobExtension.JobTypeMain != "Duplex") countAux++;
+                                            break;
                                         case "Serial Halls Calls": if (trigger.IsSelected == FeaturesFromJob._jobExtension.SHC) { countAux++; } break;
-                                        case "Edge-LS": if (trigger.IsSelected == (FeaturesFromJob._jobExtension.DoorOperatorID == 2 || FeaturesFromJob._jobExtension.DoorOperatorID == 5
-                                                || FeaturesFromJob._jobExtension.DoorOperatorID == 7 || FeaturesFromJob._jobExtension.DoorOperatorID == 9)) { countAux++; } break;
-                                        case "Rail-LS": if (trigger.IsSelected == (FeaturesFromJob._jobExtension.DoorOperatorID == 6 || FeaturesFromJob._jobExtension.DoorOperatorID == 8)) { countAux++; } break;
-                                        case "mView": if (trigger.IsSelected == (FeaturesFromJob._GenericFeatures.Monitoring.Contains("MView"))) { countAux++; } break;
-                                        case "iMonitor": if (trigger.IsSelected == (FeaturesFromJob._GenericFeatures.Monitoring.Contains("IMonitor"))) { countAux++; } break;
-                                        case "HAPS Battery": if(FeaturesFromJob._HydroSpecific.Battery == true) {if (trigger.IsSelected == (FeaturesFromJob._HydroSpecific.BatteryBrand == "HAPS")) { countAux++; } break;} else {break; }      
-                                        case "2+ Starters": if (trigger.IsSelected == (FeaturesFromJob._HydroSpecific.MotorsNum >= 2)) { countAux++; } break;
-                                        case "MOD Door Operator": if (trigger.IsSelected == (FeaturesFromJob._jobExtension.DoorOperatorID == 7 || FeaturesFromJob._jobExtension.DoorOperatorID == 8)) { countAux++; } break;
+                                        case "Edge-LS":
+                                            if (trigger.IsSelected == true && landing.Name == "LS-EDGE") countAux++;
+                                            else if (trigger.IsSelected == false && landing.Name != "LS-EDGE") countAux++;
+                                            break;
+                                        case "Rail-LS":
+                                            if (trigger.IsSelected == true && landing.Name == "LS-Rail") countAux++;
+                                            else if (trigger.IsSelected == false && landing.Name != "LS-Rail") countAux++;
+                                            break;
+                                        case "mView":
+                                            if (trigger.IsSelected == true &&  (FeaturesFromJob._GenericFeatures.Monitoring.Contains("MView"))) countAux++;
+                                            else if (trigger.IsSelected == false && !(FeaturesFromJob._GenericFeatures.Monitoring.Contains("MView"))) countAux++;
+                                            break;
+                                        case "iMonitor":
+                                            if (trigger.IsSelected == true && (FeaturesFromJob._GenericFeatures.Monitoring.Contains("IMonitor"))) countAux++;
+                                            if (trigger.IsSelected == false && !(FeaturesFromJob._GenericFeatures.Monitoring.Contains("IMonitor"))) countAux++;
+                                            break;
+                                        case "HAPS Battery":
+                                            if (FeaturesFromJob._HydroSpecific.Battery == true)
+                                            {
+                                                if (trigger.IsSelected == true && FeaturesFromJob._HydroSpecific.BatteryBrand == "HAPS")countAux++;
+                                                else if (trigger.IsSelected == false && FeaturesFromJob._HydroSpecific.BatteryBrand != "HAPS") countAux++;
+                                                break;
+                                            }
+                                            else break;    
+                                        case "2+ Starters":
+                                            if (trigger.IsSelected == true && FeaturesFromJob._HydroSpecific.MotorsNum >= 2) countAux++;
+                                            else if (trigger.IsSelected == false && FeaturesFromJob._HydroSpecific.MotorsNum < 2) countAux++;
+                                            break;
+                                        case "MOD Door Operator":
+                                            if (trigger.IsSelected == true && (FeaturesFromJob._jobExtension.DoorOperatorID == 7 || FeaturesFromJob._jobExtension.DoorOperatorID == 8)) countAux++;
+                                            else if (trigger.IsSelected == false && (FeaturesFromJob._jobExtension.DoorOperatorID != 7 || FeaturesFromJob._jobExtension.DoorOperatorID != 8)) countAux++;
+                                            break;
                                         default: break;
                                     }
                                 }
