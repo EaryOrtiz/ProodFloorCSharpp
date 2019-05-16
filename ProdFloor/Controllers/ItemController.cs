@@ -637,7 +637,15 @@ namespace ProdFloor.Controllers
                         #endregion
 
                         #region ReferSearchVM
-
+                        try
+                        {
+                            string auxName2 = "---------------------------------------";
+                            if (ViewModel.JobName2 == null) ViewModel.JobName2 = auxName2;
+                        }
+                        catch(Exception e)
+                        {
+                            ViewModel.JobName2 = "-----------------------------------------";
+                        }
                         ReferencesSearchvViewModel referSearch = new ReferencesSearchvViewModel
                         {
                             RefernceData = true,
