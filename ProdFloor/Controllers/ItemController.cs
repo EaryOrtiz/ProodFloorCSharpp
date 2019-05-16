@@ -435,9 +435,9 @@ namespace ProdFloor.Controllers
                         #region CustomSoftWare
                         //Rellena las listas que se llenaran para la comparacion
                         List<CustomFeature> FilteredCustomsF = jobrepo.CustomFeatures.Where(m => m.JobID == JobSearch.JobID).ToList();
-                        if(FilteredCustomsF.Count() > 0)
+                        if (FilteredCustomsF.Count() > 0)
                         {
-                            foreach(CustomFeature obj in FilteredCustomsF)
+                            foreach (CustomFeature obj in FilteredCustomsF)
                             {
                                 jobrepo.DeleteCustomFeature(obj.CustomFeatureID);
                             }
@@ -487,16 +487,36 @@ namespace ProdFloor.Controllers
                                         {
                                             switch (trigger.Name)
                                             {
-                                                case "Contractor": if (trigger.isSelected && trigger.itemToMatch == JobSearch.Contractor) { countAux++; } break;
-                                                case "Fire Code": if (trigger.isSelected && trigger.itemToMatch == FireCodeList.First(m => m.FireCodeID == JobSearch.FireCodeID).Name) { countAux++; } break;
+                                                case "Contractor":
+                                                    if (trigger.isSelected == true && trigger.itemToMatch == JobSearch.Contractor) countAux++;
+                                                    else if ((trigger.isSelected == false) && trigger.itemToMatch != JobSearch.Contractor) countAux++;
+                                                    break;
+                                                case "Fire Code":
+                                                    if (trigger.isSelected == true && trigger.itemToMatch == FireCodeList.First(m => m.FireCodeID == JobSearch.FireCodeID).Name) countAux++;
+                                                    else if ((trigger.isSelected == false) && trigger.itemToMatch != FireCodeList.First(m => m.FireCodeID == JobSearch.FireCodeID).Name) countAux++;
+                                                    break;
                                                 case "State":
                                                     City Onecity = CitiesList.FirstOrDefault(m => m.CityID == JobSearch.CityID);
-                                                    if ((trigger.isSelected && trigger.itemToMatch == StatesList.First(m => m.StateID == Onecity.StateID).Name)) { countAux++; } break;
-                                                case "City": if ((trigger.isSelected && trigger.itemToMatch == CitiesList.First(m => m.CityID == JobSearch.CityID).Name)) { countAux++; } break;
+                                                    if (trigger.isSelected == true && trigger.itemToMatch == StatesList.First(m => m.StateID == Onecity.StateID).Name) countAux++;
+                                                    else if ((trigger.isSelected == false) && trigger.itemToMatch != StatesList.First(m => m.StateID == Onecity.StateID).Name) countAux++;
+                                                    break;
+                                                case "City":
+                                                    if (trigger.isSelected == true && trigger.itemToMatch == CitiesList.First(m => m.CityID == JobSearch.CityID).Name) countAux++;
+                                                    else if ((trigger.isSelected == false) && trigger.itemToMatch != CitiesList.First(m => m.CityID == JobSearch.CityID).Name) countAux++;
+                                                    break;
                                                 case "VCI": if (trigger.isSelected == JobSearch._HydroSpecific.VCI) { countAux++; } break;
-                                                case "Valve Brand": if (trigger.isSelected && trigger.itemToMatch == JobSearch._HydroSpecific.ValveBrand) { countAux++; } break;
-                                                case "Switch Style": if (trigger.isSelected && trigger.itemToMatch == JobSearch._GenericFeatures.SwitchStyle) { countAux++; } break;
-                                                case "Landing System": if ((trigger.isSelected && trigger.itemToMatch == LandingList.First(m => m.LandingSystemID == JobSearch._HoistWayData.LandingSystemID).Name)) { countAux++; } break;
+                                                case "Valve Brand":
+                                                    if (trigger.isSelected == true && trigger.itemToMatch == JobSearch._HydroSpecific.ValveBrand) countAux++;
+                                                    else if ((trigger.isSelected == false) && trigger.itemToMatch != JobSearch._HydroSpecific.ValveBrand) countAux++;
+                                                    break;
+                                                case "Switch Style":
+                                                    if (trigger.isSelected == true && trigger.itemToMatch == JobSearch._GenericFeatures.SwitchStyle) countAux++;
+                                                    else if ((trigger.isSelected == false) && trigger.itemToMatch != JobSearch._GenericFeatures.SwitchStyle) countAux++;
+                                                    break;
+                                                case "Landing System":
+                                                    if (trigger.isSelected == true && trigger.itemToMatch == LandingList.First(m => m.LandingSystemID == JobSearch._HoistWayData.LandingSystemID).Name) countAux++;
+                                                    else if ((trigger.isSelected == false) && trigger.itemToMatch != LandingList.First(m => m.LandingSystemID == JobSearch._HoistWayData.LandingSystemID).Name) countAux++;
+                                                    break;
                                                 default: break;
                                             }
                                         }
@@ -520,10 +540,10 @@ namespace ProdFloor.Controllers
                         FilteredCustomsF = jobrepo.CustomFeatures.Where(m => m.JobID == JobSearch.JobID).ToList();
                         foreach (CustomFeature custom in FilteredCustomsF)
                         {
-                           CustomSoftware one = Customs.FirstOrDefault(m => m.CustomSoftwareID == custom.CustomSoftwareID);
-                           if(one != null)FilteredCustomSoftware.Add(one);
+                            CustomSoftware one = Customs.FirstOrDefault(m => m.CustomSoftwareID == custom.CustomSoftwareID);
+                            if (one != null) FilteredCustomSoftware.Add(one);
                         }
-                        
+
 
 
                         #endregion
@@ -624,16 +644,16 @@ namespace ProdFloor.Controllers
 
                             //JobData
                             FLA = ViewModel.FLA,
-                            JobName = ViewModel.JobName,
-                            JobName2 = ViewModel.JobName2,
-                            Cust = ViewModel.Cust,
-                            Contractor = ViewModel.Contractor,
-                            JobTypeMain = ViewModel.JobTypeMain,
-                            ValveBrand = ViewModel.ValveBrand,
+                            JobName = ViewModel.JobName.ToUpper(),
+                            JobName2 = ViewModel.JobName2.ToUpper(),
+                            Cust = ViewModel.Cust.ToUpper(),
+                            Contractor = ViewModel.Contractor.ToUpper(),
+                            JobTypeMain = ViewModel.JobTypeMain.ToUpper(),
+                            ValveBrand = ViewModel.ValveBrand.ToUpper(),
                             InputVoltage = ViewModel.InputVoltage,
                             HP = ViewModel.HP,
-                            FireCodeName = ViewModel.FireCodeName,
-                            LandingName = ViewModel.LandingName,
+                            FireCodeName = ViewModel.FireCodeName.ToUpper(),
+                            LandingName = ViewModel.LandingName.ToUpper(),
                             NumJobSearch = ViewModel.NumJobSearch,
                             //****Slow Table
 

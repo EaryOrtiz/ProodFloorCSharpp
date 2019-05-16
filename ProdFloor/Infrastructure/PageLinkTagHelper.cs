@@ -425,7 +425,8 @@ namespace ProdFloor.Infrastructure
                 case "CarPIDiscreteType":
                     return new List<string> { "Multi-light", "One line per floor", "Binary 00", "Binary 01" }.AsQueryable();
                 case "Monitoring":
-                    return new List<string> { "MView Complete", "MView Interface", "IMonitor Complete", "IMonitor Interface", "IDS Liftnet" }.AsQueryable();
+                    return new List<string> { "MView Complete", "MView Interface", "IMonitor Complete", "IMonitor Interface",
+                        "MView Complete & IMonitor Complete","MView Complete & IMonitor Interface","MView Interface & IMonitor Complete","MView Interface & IMonitor Interface", "IDS Liftnet" }.AsQueryable();
                 case "PIType":
                     return new List<string> { "Chime", "Gong" }.AsQueryable();
                 case "AccessSWLocation":
@@ -596,6 +597,10 @@ namespace ProdFloor.Infrastructure
             m_tag.InnerHtml.Append("Please select a City");
             result.InnerHtml.AppendHtml(m_tag);
             IQueryable<City> city = itemsrepository.Cities.AsQueryable();
+            if (SelectedValue != 0) {
+                int SelectedStateInCityID = itemsrepository.Cities.FirstOrDefault(n => n.CityID == SelectedValue).StateID;
+                city = itemsrepository.Cities.Where(m => m.StateID == SelectedStateInCityID);
+            }
             foreach (City cities in city)
             {
                 TagBuilder tag = new TagBuilder("option");
@@ -656,13 +661,14 @@ namespace ProdFloor.Infrastructure
             m_tag.InnerHtml.Append("-- Select State --");
             result.InnerHtml.AppendHtml(m_tag);
             int stateID = 0;
+            IQueryable<State> state = itemsrepository.States.AsQueryable();
             if (SelectedValue != 0)
             {
                 City selectedCity = itemsrepository.Cities.FirstOrDefault(c => c.CityID == SelectedValue);
                 State selectedState = itemsrepository.States.FirstOrDefault(s => s.StateID == selectedCity.StateID);
                 stateID = selectedCity.StateID;
+                state = itemsrepository.States.Where(m => m.CountryID == selectedState.CountryID).AsQueryable();
             }
-            IQueryable<State> state = itemsrepository.States.AsQueryable();
             foreach (State states in state)
             {
                 TagBuilder tag = new TagBuilder("option");
@@ -983,16 +989,21 @@ namespace ProdFloor.Infrastructure
             m_tag.Attributes["value"] = "";
             m_tag.InnerHtml.Append("Please select one");
             result.InnerHtml.AppendHtml(m_tag);
-            IQueryable<DoorOperator> door = itemsrepository.DoorOperators.AsQueryable();
-            foreach (DoorOperator doors in door)
+            IQueryable<DoorOperator> doors = itemsrepository.DoorOperators.AsQueryable();
+            if (SelectedValue != 0)
+            {
+                string AuxDoor = itemsrepository.DoorOperators.FirstOrDefault(m =>m.DoorOperatorID == SelectedValue).Brand;
+                doors = itemsrepository.DoorOperators.Where(m => m.Brand == AuxDoor).AsQueryable();
+            }
+            foreach (DoorOperator uniqueDoor in doors)
             {
                 TagBuilder tag = new TagBuilder("option");
-                tag.Attributes["value"] = doors.DoorOperatorID.ToString();
-                if (doors.DoorOperatorID == SelectedValue)
+                tag.Attributes["value"] = uniqueDoor.DoorOperatorID.ToString();
+                if (uniqueDoor.DoorOperatorID == SelectedValue)
                 {
                     tag.Attributes["selected"] = "selected";
                 }
-                tag.InnerHtml.Append(doors.Name.ToString());
+                tag.InnerHtml.Append(uniqueDoor.Name.ToString());
                 result.InnerHtml.AppendHtml(tag);
             }
             output.Content.AppendHtml(result.InnerHtml);
@@ -1112,18 +1123,22 @@ namespace ProdFloor.Infrastructure
             m_tag.Attributes["value"] = "";
             m_tag.InnerHtml.Append("Please select a Brand");
             result.InnerHtml.AppendHtml(m_tag);
+            IQueryable<DoorOperator> door = itemsrepository.DoorOperators.AsQueryable();
             int doorOperatorID = 0;
+            string doorBrand = "";
             if (SelectedValue != 0)
             {
                 DoorOperator selectedDoor = itemsrepository.DoorOperators.FirstOrDefault(c => c.DoorOperatorID == SelectedValue);
                 doorOperatorID = selectedDoor.DoorOperatorID;
+                doorBrand = selectedDoor.Brand;
+                door = itemsrepository.DoorOperators.FromSql("select * from dbo.DoorOperators where Style = {0} AND dbo.DoorOperators.DoorOperatorID in " +
+                "(Select max(dbo.DoorOperators.DoorOperatorID) FROM dbo.DoorOperators group by dbo.DoorOperators.Brand)", selectedDoor.Style).AsQueryable();
             }
-            IQueryable<DoorOperator> door = itemsrepository.DoorOperators.AsQueryable();
             foreach (DoorOperator doors in door)
             {
                 TagBuilder tag = new TagBuilder("option");
                 tag.Attributes["value"] = doors.DoorOperatorID.ToString();
-                if (doors.DoorOperatorID == doorOperatorID)
+                if (doors.Brand == doorBrand)
                 {
                     tag.Attributes["selected"] = "selected";
                 }
