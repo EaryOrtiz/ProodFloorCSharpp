@@ -256,7 +256,6 @@ namespace ProdFloor.Controllers
             {
                 //Get the job
                 List<SpecialFeatures> SfList = repository.SpecialFeatures.Where(j => j.JobID == ID).ToList();
-                List<PO> POList = repository.POs.Where(j => j.JobID == ID).ToList();
                 JobViewModel viewModel = new JobViewModel();
                 viewModel.CurrentJob = jobToCopy;
                 viewModel.CurrentJobExtension = repository.JobsExtensions.FirstOrDefault(j => j.JobID == ID);
@@ -264,226 +263,14 @@ namespace ProdFloor.Controllers
                 viewModel.CurrentGenericFeatures = repository.GenericFeaturesList.FirstOrDefault(j => j.JobID == ID);
                 viewModel.CurrentIndicator = repository.Indicators.FirstOrDefault(j => j.JobID == ID);
                 viewModel.CurrentHoistWayData = repository.HoistWayDatas.FirstOrDefault(j => j.JobID == ID);
-                Job newJob = new Job
-                {
-                    Status = "Working on it",
-                    EngID = currentUser.EngID,
-                    CrossAppEngID = viewModel.CurrentJob.CrossAppEngID,
-                    Name = viewModel.CurrentJob.Name,
-                    Name2 = viewModel.CurrentJob.Name2,
-                    JobNum = 0,
-                    ShipDate = viewModel.CurrentJob.ShipDate,
-                    LatestFinishDate = viewModel.CurrentJob.LatestFinishDate,
-                    Cust = viewModel.CurrentJob.Cust,
-                    Contractor = viewModel.CurrentJob.Status,
-                    JobTypeID = viewModel.CurrentJob.JobTypeID,
-                    CityID = viewModel.CurrentJob.CityID,
-                    FireCodeID = viewModel.CurrentJob.FireCodeID,
-                };
-                repository.SaveJob(newJob);
-                viewModel.CurrentJob = repository.Jobs.FirstOrDefault(p => p.JobID == repository.Jobs.Max(x => x.JobID));
-                JobExtension NewJobExtension = new JobExtension()
-                {
-                    JobID = viewModel.CurrentJob.JobID,
-                    NumOfStops = viewModel.CurrentJobExtension.NumOfStops,
-                    JobTypeMain = viewModel.CurrentJobExtension.JobTypeMain,
-                    JobTypeAdd = viewModel.CurrentJobExtension.JobTypeAdd,
-                    InputVoltage = viewModel.CurrentJobExtension.InputVoltage,
-                    InputPhase = viewModel.CurrentJobExtension.InputPhase,
-                    InputFrecuency = viewModel.CurrentJobExtension.InputFrecuency,
-                    DoorGate = viewModel.CurrentJobExtension.DoorGate,
-                    DoorHoist = viewModel.CurrentJobExtension.DoorHoist,
-                    InfDetector = viewModel.CurrentJobExtension.InfDetector,
-                    MechSafEdge = viewModel.CurrentJobExtension.MechSafEdge,
-                    HeavyDoors = viewModel.CurrentJobExtension.HeavyDoors,
-                    CartopDoorButtons = viewModel.CurrentJobExtension.CartopDoorButtons,
-                    DoorHold = viewModel.CurrentJobExtension.DoorHold,
-                    Nudging = viewModel.CurrentJobExtension.Nudging,
-                    SCOP = viewModel.CurrentJobExtension.SCOP,
-                    SHC = viewModel.CurrentJobExtension.SHC,
-                    SHCRisers = viewModel.CurrentJobExtension.SHCRisers,
-                    AUXCOP = viewModel.CurrentJobExtension.AUXCOP,
-                    DoorOperatorID = viewModel.CurrentJobExtension.DoorOperatorID,
-                    SwingOp = viewModel.CurrentJobExtension.SwingOp,
-                    AltRis = viewModel.CurrentJobExtension.AltRis,
-                    BackUpDisp = viewModel.CurrentJobExtension.BackUpDisp 
-                };
-                HydroSpecific NewHydroSpecific = new HydroSpecific
-                {
-                    JobID = viewModel.CurrentJob.JobID,
-                    Starter = viewModel.CurrentHydroSpecific.Starter,
-                    HP = viewModel.CurrentHydroSpecific.HP,
-                    FLA = viewModel.CurrentHydroSpecific.FLA,
-                    SPH = viewModel.CurrentHydroSpecific.SPH,
-                    MotorsNum = viewModel.CurrentHydroSpecific.MotorsNum,
-                    MotorsDisconnect = viewModel.CurrentHydroSpecific.MotorsDisconnect,
-                    ValveBrand = viewModel.CurrentHydroSpecific.ValveBrand,
-                    ValveCoils = viewModel.CurrentHydroSpecific.ValveCoils,
-                    ValveNum = viewModel.CurrentHydroSpecific.ValveNum,
-                    ValveVoltage = viewModel.CurrentHydroSpecific.ValveVoltage,
-                    BatteryBrand = viewModel.CurrentHydroSpecific.BatteryBrand,
-                    Battery = viewModel.CurrentHydroSpecific.Battery,
-                    LifeJacket = viewModel.CurrentHydroSpecific.LifeJacket,
-                    LOS = viewModel.CurrentHydroSpecific.LOS,
-                    OilCool = viewModel.CurrentHydroSpecific.OilCool,
-                    OilTank = viewModel.CurrentHydroSpecific.OilTank,
-                    PSS = viewModel.CurrentHydroSpecific.PSS,
-                    Resync = viewModel.CurrentHydroSpecific.Resync,
-                    VCI = viewModel.CurrentHydroSpecific.VCI
-                };
-                GenericFeatures NewGenericFeatures = new GenericFeatures
-                {
-                    JobID = viewModel.CurrentJob.JobID,
-                    FRON2 = viewModel.CurrentGenericFeatures.FRON2,
-                    Attendant = viewModel.CurrentGenericFeatures.Attendant,
-                    CarToLobby = viewModel.CurrentGenericFeatures.CarToLobby,
-                    EQ = viewModel.CurrentGenericFeatures.EQ,
-                    EMT = viewModel.CurrentGenericFeatures.EMT,
-                    EP = viewModel.CurrentGenericFeatures.EP,
-                    EPVoltage = viewModel.CurrentGenericFeatures.EPVoltage,
-                    EPOtherCars = viewModel.CurrentGenericFeatures.EPOtherCars,
-                    EPCarsNumber = viewModel.CurrentGenericFeatures.EPCarsNumber,
-                    EPContact = viewModel.CurrentGenericFeatures.EPContact,
-                    PTI = viewModel.CurrentGenericFeatures.PTI,
-                    EPSelect = viewModel.CurrentGenericFeatures.EPSelect,
-                    FLO = viewModel.CurrentGenericFeatures.FLO,
-                    Hosp = viewModel.CurrentGenericFeatures.Hosp,
-                    Pit = viewModel.CurrentGenericFeatures.Pit,
-                    INA = viewModel.CurrentGenericFeatures.INA,
-                    TopAccess = viewModel.CurrentGenericFeatures.TopAccess,
-                    TopAccessLocation = viewModel.CurrentGenericFeatures.TopAccessLocation,
-                    BottomAccess = viewModel.CurrentGenericFeatures.BottomAccess,
-                    BottomAccessLocation = viewModel.CurrentGenericFeatures.BottomAccessLocation,
-                    INCP = viewModel.CurrentGenericFeatures.INCP,
-                    INCPButtons = viewModel.CurrentGenericFeatures.INCPButtons,
-                    SwitchStyle = viewModel.CurrentGenericFeatures.SwitchStyle,
-                    LoadWeigher = viewModel.CurrentGenericFeatures.LoadWeigher,
-                    CTINSPST = viewModel.CurrentGenericFeatures.CTINSPST,
-                    Roped = viewModel.CurrentGenericFeatures.Roped,
-                    GovModel = viewModel.CurrentGenericFeatures.GovModel,
-                    Monitoring = viewModel.CurrentGenericFeatures.Monitoring,
-                    CallEnable = viewModel.CurrentGenericFeatures.CallEnable,
-                    CarCallRead = viewModel.CurrentGenericFeatures.CarCallRead,
-                    HallCallRead = viewModel.CurrentGenericFeatures.HallCallRead,
-                    CarKey = viewModel.CurrentGenericFeatures.CarKey,
-                    HallKey = viewModel.CurrentGenericFeatures.HallKey,
-                    CRO = viewModel.CurrentGenericFeatures.CRO,
-                    HCRO = viewModel.CurrentGenericFeatures.HCRO,
-                    CarCallCodeSecurity = viewModel.CurrentGenericFeatures.CarCallCodeSecurity,
-                    SpecialInstructions = viewModel.CurrentGenericFeatures.SpecialInstructions,
-                };
-                Indicator NewIndicator = new Indicator
-                {
-                    JobID = viewModel.CurrentJob.JobID,
-                    CarCallsVoltage = viewModel.CurrentIndicator.CarCallsVoltage,
-                    CarCallsVoltageType = viewModel.CurrentIndicator.CarCallsVoltageType,
-                    CarCallsType = viewModel.CurrentIndicator.CarCallsType,
-                    HallCallsVoltage = viewModel.CurrentIndicator.HallCallsVoltage,
-                    HallCallsVoltageType = viewModel.CurrentIndicator.HallCallsVoltageType,
-                    HallCallsType = viewModel.CurrentIndicator.HallCallsType,
-                    CarPI = viewModel.CurrentIndicator.CarPI,
-                    CarPIType = viewModel.CurrentIndicator.CarPIType,
-                    CarPIDiscreteType = viewModel.CurrentIndicator.CarPIDiscreteType,
-                    HallPI = viewModel.CurrentIndicator.HallPI,
-                    HallPIType = viewModel.CurrentIndicator.HallPIType,
-                    HallPIDiscreteType = viewModel.CurrentIndicator.HallPIDiscreteType,
-                    VoiceAnnunciationPI = viewModel.CurrentIndicator.VoiceAnnunciationPI,
-                    VoiceAnnunciationPIType = viewModel.CurrentIndicator.VoiceAnnunciationPIType,
-                    CarLanterns = viewModel.CurrentIndicator.CarLanterns,
-                    CarLanternsStyle = viewModel.CurrentIndicator.CarLanternsStyle,
-                    CarLanternsType = viewModel.CurrentIndicator.CarLanternsType,
-                    HallLanterns = viewModel.CurrentIndicator.HallLanterns,
-                    HallLanternsStyle = viewModel.CurrentIndicator.HallLanternsStyle,
-                    HallLanternsType = viewModel.CurrentIndicator.HallLanternsType,
-                    PassingFloor = viewModel.CurrentIndicator.PassingFloor,
-                    PassingFloorType = viewModel.CurrentIndicator.PassingFloorType,
-                    PassingFloorDiscreteType = viewModel.CurrentIndicator.PassingFloorDiscreteType,
-                    PassingFloorEnable = viewModel.CurrentIndicator.PassingFloorEnable,
-                    IndicatorsVoltage = viewModel.CurrentIndicator.IndicatorsVoltage,
-                    IndicatorsVoltageType = viewModel.CurrentIndicator.IndicatorsVoltageType
-                };
-                HoistWayData NewHoistWayData = new HoistWayData
-                {
-                    JobID = viewModel.CurrentJob.JobID,
-                    HoistWaysNumber = viewModel.CurrentHoistWayData.HoistWaysNumber,
-                    MachineRooms = viewModel.CurrentHoistWayData.MachineRooms,
-                    Capacity = viewModel.CurrentHoistWayData.Capacity,
-                    UpSpeed = viewModel.CurrentHoistWayData.UpSpeed,
-                    DownSpeed = viewModel.CurrentHoistWayData.DownSpeed,
-                    TotalTravel = viewModel.CurrentHoistWayData.TotalTravel,
-                    LandingSystemID = viewModel.CurrentHoistWayData.LandingSystemID,
-                    FrontFirstServed = viewModel.CurrentHoistWayData.FrontFirstServed,
-                    RearFirstServed = viewModel.CurrentHoistWayData.RearFirstServed,
-                    FrontSecondServed = viewModel.CurrentHoistWayData.FrontSecondServed,
-                    RearSecondServed = viewModel.CurrentHoistWayData.RearSecondServed,
-                    FrontThirdServed = viewModel.CurrentHoistWayData.FrontThirdServed,
-                    RearThirdServed = viewModel.CurrentHoistWayData.RearThirdServed,
-                    FrontFourthServed = viewModel.CurrentHoistWayData.FrontFourthServed,
-                    RearFourthServed = viewModel.CurrentHoistWayData.RearFourthServed,
-                    FrontFifthServed = viewModel.CurrentHoistWayData.FrontFifthServed,
-                    RearFifthServed = viewModel.CurrentHoistWayData.RearFifthServed,
-                    FrontSexthServed = viewModel.CurrentHoistWayData.FrontSexthServed,
-                    RearSexthServed = viewModel.CurrentHoistWayData.RearSexthServed,
-                    FrontSeventhServed = viewModel.CurrentHoistWayData.FrontSeventhServed,
-                    RearSeventhServed = viewModel.CurrentHoistWayData.RearSeventhServed,
-                    FrontEightServed = viewModel.CurrentHoistWayData.FrontEightServed,
-                    RearEightServed = viewModel.CurrentHoistWayData.RearEightServed,
-                    FrontNinthServed = viewModel.CurrentHoistWayData.FrontNinthServed,
-                    RearNinthServed = viewModel.CurrentHoistWayData.RearNinthServed,
-                    FrontTenthServed = viewModel.CurrentHoistWayData.FrontTenthServed,
-                    RearTenthServed = viewModel.CurrentHoistWayData.RearTenthServed,
-                    FrontEleventhServed = viewModel.CurrentHoistWayData.FrontEleventhServed,
-                    RearEleventhServed = viewModel.CurrentHoistWayData.RearEleventhServed,
-                    FrontTwelvethServed = viewModel.CurrentHoistWayData.FrontTwelvethServed,
-                    RearTwelvethServed = viewModel.CurrentHoistWayData.RearTwelvethServed,
-                    FrontThirteenthServed = viewModel.CurrentHoistWayData.FrontThirteenthServed,
-                    RearThirteenthServed = viewModel.CurrentHoistWayData.RearThirteenthServed,
-                    FrontFourteenthServed = viewModel.CurrentHoistWayData.FrontFourteenthServed,
-                    RearFourteenthServed = viewModel.CurrentHoistWayData.RearFourteenthServed,
-                    FrontFifteenthServed = viewModel.CurrentHoistWayData.FrontFifteenthServed,
-                    RearFifteenthServed = viewModel.CurrentHoistWayData.RearFifteenthServed,
-                    FrontSixteenthServed = viewModel.CurrentHoistWayData.FrontSixteenthServed,
-                    RearSixteenthServed = viewModel.CurrentHoistWayData.RearSixteenthServed
-                };
-                if (SfList != null)
-                {
-                    foreach (SpecialFeatures features in SfList)
-                    {
-                        SpecialFeatures NewspecialFeatures = new SpecialFeatures
-                        {
-                            JobID = viewModel.CurrentJob.JobID,
-                            Description = features.Description
-                        };
-                        repository.SaveSpecialFeatures(NewspecialFeatures);
-                    }
-                }
-                List<SpecialFeatures> NewSfList = repository.SpecialFeatures.Where(j => j.JobID == viewModel.CurrentJob.JobID).ToList();
-                if (NewSfList != null) viewModel.SpecialFeatureslist = NewSfList;
-                else viewModel.SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures() };
-                viewModel.CurrentJobExtension = NewJobExtension;
-                viewModel.CurrentHydroSpecific = NewHydroSpecific;
-                viewModel.CurrentGenericFeatures = NewGenericFeatures;
-                viewModel.CurrentIndicator = NewIndicator;
-                viewModel.CurrentHoistWayData = NewHoistWayData;
-                //Copy and saved the new job
-                repository.SaveEngJobView(viewModel);
-
-                //Get the copied job
-                JobViewModel NewViewModel = new JobViewModel();
-                NewViewModel.CurrentTab = "Main";
-                NewViewModel.CurrentUserID = currentUser.EngID;
-                NewViewModel.CurrentJob = viewModel.CurrentJob;
-                NewViewModel.CurrentJobExtension = repository.JobsExtensions.FirstOrDefault(j => j.JobID == NewViewModel.CurrentJob.JobID);
-                NewViewModel.CurrentHydroSpecific = repository.HydroSpecifics.FirstOrDefault(j => j.JobID == NewViewModel.CurrentJob.JobID);
-                NewViewModel.CurrentGenericFeatures = repository.GenericFeaturesList.FirstOrDefault(j => j.JobID == NewViewModel.CurrentJob.JobID);
-                NewViewModel.CurrentIndicator = repository.Indicators.FirstOrDefault(j => j.JobID == NewViewModel.CurrentJob.JobID);
-                NewViewModel.CurrentHoistWayData = repository.HoistWayDatas.FirstOrDefault(j => j.JobID == NewViewModel.CurrentJob.JobID);
-                List<SpecialFeatures> VeryNewSfList = repository.SpecialFeatures.Where(j => j.JobID == NewViewModel.CurrentJob.JobID).ToList();
-                if (VeryNewSfList != null) NewViewModel.SpecialFeatureslist = VeryNewSfList;
-                else NewViewModel.SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures() };
-                NewViewModel.POList = new List<PO> { new PO { JobID = NewViewModel.CurrentJob.JobID} };
-                TempData["message"] = $"You have copied the job #{jobToCopy.JobNum} succesfully, please change the name, Job number and PO";
-                return View("Edit", NewViewModel);
+                viewModel.SpecialFeatureslist = SfList;
+                int jobNumAux = viewModel.CurrentJob.JobNum;
+                viewModel.CurrentJob.JobNum = 0;
+                viewModel.CurrentJob.Status = "Copied";
+                viewModel.POList = new List<PO> { new PO { JobID = viewModel.CurrentJob.JobID } };
+              
+                TempData["message"] = $"You have copied the job #{jobNumAux} succesfully, please change the name, Job number and PO";
+                return View("Edit", viewModel);
             }
         }
 
@@ -496,10 +283,41 @@ namespace ProdFloor.Controllers
         {
             AppUser currentUser = GetCurrentUser().Result;
             multiEditViewModel.CurrentUserID = currentUser.EngID;
+            string StatusAux = "Working on it";
+            if (multiEditViewModel.CurrentJob.Status == "Copied") StatusAux = "Copied";
             if (ModelState.IsValid)
             {
+                if (multiEditViewModel.CurrentJob.Status == "Copied")
+                {
+                    multiEditViewModel.CurrentJob.EngID = currentUser.EngID;
+                    multiEditViewModel.CurrentJob.JobID = 0;
+                    multiEditViewModel.CurrentJob.Status = "Working on it";
+                    repository.SaveJob(multiEditViewModel.CurrentJob);
+                    multiEditViewModel.CurrentJob = repository.Jobs.LastOrDefault();
+                    multiEditViewModel.CurrentJobExtension.JobID = multiEditViewModel.CurrentJob.JobID;
+                    multiEditViewModel.CurrentHydroSpecific.JobID = multiEditViewModel.CurrentJob.JobID;
+                    multiEditViewModel.CurrentGenericFeatures.JobID = multiEditViewModel.CurrentJob.JobID;
+                    multiEditViewModel.CurrentIndicator.JobID = multiEditViewModel.CurrentJob.JobID;
+                    multiEditViewModel.CurrentHoistWayData.JobID = multiEditViewModel.CurrentJob.JobID;
+                    multiEditViewModel.CurrentJobExtension.JobExtensionID = 0;
+                    multiEditViewModel.CurrentHydroSpecific.HydroSpecificID = 0;
+                    multiEditViewModel.CurrentGenericFeatures.GenericFeaturesID = 0;
+                    multiEditViewModel.CurrentIndicator.IndicatorID = 0;
+                    multiEditViewModel.CurrentHoistWayData.HoistWayDataID = 0;
+                    foreach(PO singlPO in multiEditViewModel.POList)
+                    {
+                        singlPO.POID = 0;
+                        singlPO.JobID = multiEditViewModel.CurrentJob.JobID;
+                    }
+                    foreach (SpecialFeatures special in multiEditViewModel.SpecialFeatureslist)
+                    {
+                        special.SpecialFeaturesID = 0;
+                        special.JobID = multiEditViewModel.CurrentJob.JobID;
+                    }
+                    multiEditViewModel.SpecialFeatureslist = multiEditViewModel.SpecialFeatureslist;
+                }
 
-                if (multiEditViewModel.CurrentJob.Status == "" || multiEditViewModel.CurrentJob.Status == null)
+                if (multiEditViewModel.CurrentJob.Status == "" || multiEditViewModel.CurrentJob.Status == null || multiEditViewModel.CurrentJob.Status == "Copied")
                 {
                     multiEditViewModel.CurrentJob.Status = "Working on it";
                 }
@@ -510,6 +328,24 @@ namespace ProdFloor.Controllers
                 try
                 {
                     repository.SaveEngJobView(multiEditViewModel);
+                    JobViewModel CopyJobViewModel = new JobViewModel();
+                    if (StatusAux == "Copied")
+                    {
+                       
+                        List<SpecialFeatures> SfList = repository.SpecialFeatures.Where(j => j.JobID == multiEditViewModel.CurrentJob.JobID).ToList();
+                        List<PO> PoList = repository.POs.Where(j => j.JobID == multiEditViewModel.CurrentJob.JobID).ToList();
+                        CopyJobViewModel.CurrentJob = multiEditViewModel.CurrentJob;
+                        CopyJobViewModel.CurrentJobExtension = repository.JobsExtensions.FirstOrDefault(j => j.JobID == multiEditViewModel.CurrentJob.JobID);
+                        CopyJobViewModel.CurrentHydroSpecific = repository.HydroSpecifics.FirstOrDefault(j => j.JobID == multiEditViewModel.CurrentJob.JobID);
+                        CopyJobViewModel.CurrentGenericFeatures = repository.GenericFeaturesList.FirstOrDefault(j => j.JobID == multiEditViewModel.CurrentJob.JobID);
+                        CopyJobViewModel.CurrentIndicator = repository.Indicators.FirstOrDefault(j => j.JobID == multiEditViewModel.CurrentJob.JobID);
+                        CopyJobViewModel.CurrentHoistWayData = repository.HoistWayDatas.FirstOrDefault(j => j.JobID == multiEditViewModel.CurrentJob.JobID);
+                        CopyJobViewModel.SpecialFeatureslist = SfList;
+                        CopyJobViewModel.POList = PoList;
+                        CopyJobViewModel.CurrentTab = "Main";
+                        TempData["message"] = $"{CopyJobViewModel.CurrentJob.JobNum} ID has been saved...{CopyJobViewModel.CurrentJob.JobID}";
+                        return RedirectToAction("Edit", new { id = multiEditViewModel.CurrentJob.JobID });
+                    }
                 }
                 catch (DbUpdateException e)
                 {
