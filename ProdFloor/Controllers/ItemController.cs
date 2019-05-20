@@ -390,6 +390,7 @@ namespace ProdFloor.Controllers
                         ViewModel.StarterType = JobSearch._HydroSpecific.Starter;
                         ViewModel.NumJobSearch = JobSearch.JobNum;
                         ViewModel.SHCisSelected = JobSearch._jobExtension.SHC;
+                        ViewModel.TotalTravel = JobSearch._HoistWayData.TotalTravel;
                         ViewModel.anyRear = JobSearch._HoistWayData.AnyRear;
                         ViewModel.FrontFloor = JobSearch._HoistWayData.FrontFloorOpenings;
                         ViewModel.RearFloor = JobSearch._HoistWayData.RearFloorOpenings;
@@ -618,10 +619,10 @@ namespace ProdFloor.Controllers
                         #region SHC Calculator
                         if (ViewModel.SHCisSelected)
                         {
-                            ViewModel.calculatedFrontSHC = (70 + (10 * ViewModel.FrontFloor));
+                            ViewModel.calculatedFrontSHC = ((ViewModel.TotalTravel) + 70 + (10 * ViewModel.FrontFloor));
                             if (ViewModel.anyRear)
                             {
-                                ViewModel.calculatedRearSHC = (70 + (10 * ViewModel.RearFloor));
+                                ViewModel.calculatedRearSHC = ((ViewModel.TotalTravel) + 70 + (10 * ViewModel.RearFloor));
                             }
                             else
                             {

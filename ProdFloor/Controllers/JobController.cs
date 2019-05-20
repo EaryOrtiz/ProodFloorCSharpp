@@ -268,7 +268,8 @@ namespace ProdFloor.Controllers
                 viewModel.CurrentJob.JobNum = 0;
                 viewModel.CurrentJob.Status = "Copied";
                 viewModel.POList = new List<PO> { new PO { JobID = viewModel.CurrentJob.JobID } };
-
+                viewModel.CurrentUserID = currentUser.EngID;
+                viewModel.CurrentJob.EngID = currentUser.EngID;
                 TempData["message"] = $"You have copied the job #{jobNumAux} succesfully, please change the name, Job number & PO";
                 return View("Edit", viewModel);
             }

@@ -38,6 +38,7 @@ namespace ProdFloor.Models.ViewModels.Item
         public string FireCodeName { get; set; }
         public int DownSpeed { get; set; }
         public int UpSpeed { get; set; }
+        public int TotalTravel { get; set; }
 
 
         //SlowLimit Table
