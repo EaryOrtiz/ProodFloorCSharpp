@@ -256,7 +256,6 @@ namespace ProdFloor.Controllers
             {
                 //Get the job
                 List<SpecialFeatures> SfList = repository.SpecialFeatures.Where(j => j.JobID == ID).ToList();
-                List<PO> POList = repository.POs.Where(j => j.JobID == ID).ToList();
                 JobViewModel viewModel = new JobViewModel();
                 viewModel.CurrentJob = jobToCopy;
                 viewModel.CurrentJobExtension = repository.JobsExtensions.FirstOrDefault(j => j.JobID == ID);
@@ -485,6 +484,14 @@ namespace ProdFloor.Controllers
                 NewViewModel.POList = new List<PO> { new PO { JobID = NewViewModel.CurrentJob.JobID} };
                 TempData["message"] = $"You have copied the job #{jobToCopy.JobNum} succesfully, please change the Job number and PO";
                 return View("Edit", NewViewModel);
+                viewModel.SpecialFeatureslist = SfList;
+                int jobNumAux = viewModel.CurrentJob.JobNum;
+                viewModel.CurrentJob.JobNum = 0;
+                viewModel.CurrentJob.Status = "Copied";
+                viewModel.POList = new List<PO> { new PO { JobID = viewModel.CurrentJob.JobID } };
+              
+                TempData["message"] = $"You have copied the job #{jobNumAux} succesfully, please change the name, Job number & PO";
+                return View("Edit", viewModel);
             }
         }
 
@@ -497,10 +504,41 @@ namespace ProdFloor.Controllers
         {
             AppUser currentUser = GetCurrentUser().Result;
             multiEditViewModel.CurrentUserID = currentUser.EngID;
+            string StatusAux = "Working on it";
+            if (multiEditViewModel.CurrentJob.Status == "Copied") StatusAux = "Copied";
             if (ModelState.IsValid)
             {
+                if (multiEditViewModel.CurrentJob.Status == "Copied")
+                {
+                    multiEditViewModel.CurrentJob.EngID = currentUser.EngID;
+                    multiEditViewModel.CurrentJob.JobID = 0;
+                    multiEditViewModel.CurrentJob.Status = "Working on it";
+                    repository.SaveJob(multiEditViewModel.CurrentJob);
+                    multiEditViewModel.CurrentJob = repository.Jobs.LastOrDefault();
+                    multiEditViewModel.CurrentJobExtension.JobID = multiEditViewModel.CurrentJob.JobID;
+                    multiEditViewModel.CurrentHydroSpecific.JobID = multiEditViewModel.CurrentJob.JobID;
+                    multiEditViewModel.CurrentGenericFeatures.JobID = multiEditViewModel.CurrentJob.JobID;
+                    multiEditViewModel.CurrentIndicator.JobID = multiEditViewModel.CurrentJob.JobID;
+                    multiEditViewModel.CurrentHoistWayData.JobID = multiEditViewModel.CurrentJob.JobID;
+                    multiEditViewModel.CurrentJobExtension.JobExtensionID = 0;
+                    multiEditViewModel.CurrentHydroSpecific.HydroSpecificID = 0;
+                    multiEditViewModel.CurrentGenericFeatures.GenericFeaturesID = 0;
+                    multiEditViewModel.CurrentIndicator.IndicatorID = 0;
+                    multiEditViewModel.CurrentHoistWayData.HoistWayDataID = 0;
+                    foreach(PO singlPO in multiEditViewModel.POList)
+                    {
+                        singlPO.POID = 0;
+                        singlPO.JobID = multiEditViewModel.CurrentJob.JobID;
+                    }
+                    foreach (SpecialFeatures special in multiEditViewModel.SpecialFeatureslist)
+                    {
+                        special.SpecialFeaturesID = 0;
+                        special.JobID = multiEditViewModel.CurrentJob.JobID;
+                    }
+                    multiEditViewModel.SpecialFeatureslist = multiEditViewModel.SpecialFeatureslist;
+                }
 
-                if (multiEditViewModel.CurrentJob.Status == "" || multiEditViewModel.CurrentJob.Status == null)
+                if (multiEditViewModel.CurrentJob.Status == "" || multiEditViewModel.CurrentJob.Status == null || multiEditViewModel.CurrentJob.Status == "Copied")
                 {
                     multiEditViewModel.CurrentJob.Status = "Working on it";
                 }
@@ -511,6 +549,24 @@ namespace ProdFloor.Controllers
                 try
                 {
                     repository.SaveEngJobView(multiEditViewModel);
+                    JobViewModel CopyJobViewModel = new JobViewModel();
+                    if (StatusAux == "Copied")
+                    {
+                       
+                        List<SpecialFeatures> SfList = repository.SpecialFeatures.Where(j => j.JobID == multiEditViewModel.CurrentJob.JobID).ToList();
+                        List<PO> PoList = repository.POs.Where(j => j.JobID == multiEditViewModel.CurrentJob.JobID).ToList();
+                        CopyJobViewModel.CurrentJob = multiEditViewModel.CurrentJob;
+                        CopyJobViewModel.CurrentJobExtension = repository.JobsExtensions.FirstOrDefault(j => j.JobID == multiEditViewModel.CurrentJob.JobID);
+                        CopyJobViewModel.CurrentHydroSpecific = repository.HydroSpecifics.FirstOrDefault(j => j.JobID == multiEditViewModel.CurrentJob.JobID);
+                        CopyJobViewModel.CurrentGenericFeatures = repository.GenericFeaturesList.FirstOrDefault(j => j.JobID == multiEditViewModel.CurrentJob.JobID);
+                        CopyJobViewModel.CurrentIndicator = repository.Indicators.FirstOrDefault(j => j.JobID == multiEditViewModel.CurrentJob.JobID);
+                        CopyJobViewModel.CurrentHoistWayData = repository.HoistWayDatas.FirstOrDefault(j => j.JobID == multiEditViewModel.CurrentJob.JobID);
+                        CopyJobViewModel.SpecialFeatureslist = SfList;
+                        CopyJobViewModel.POList = PoList;
+                        CopyJobViewModel.CurrentTab = "Main";
+                        TempData["message"] = $"{CopyJobViewModel.CurrentJob.JobNum} ID has been saved...{CopyJobViewModel.CurrentJob.JobID}";
+                        return RedirectToAction("Edit", new { id = multiEditViewModel.CurrentJob.JobID });
+                    }
                 }
                 catch (DbUpdateException e)
                 {
