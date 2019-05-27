@@ -442,19 +442,75 @@ namespace ProdFloor.Controllers
         }
 
         [HttpPost]
-        public IActionResult DeleteSF(int fieldID, string returnUrl, JobViewModel viewModel)
+        public IActionResult DeleteSF(int fieldID, JobViewModel viewModel)
         {
+            Job job = repository.Jobs.FirstOrDefault(j => j.JobID == viewModel.CurrentJob.JobID);
+            JobExtension extension = repository.JobsExtensions.FirstOrDefault(p => p.JobID == job.JobID);
+            HydroSpecific hydro = repository.HydroSpecifics.FirstOrDefault(p => p.JobID == job.JobID);
+            GenericFeatures generic = repository.GenericFeaturesList.FirstOrDefault(p => p.JobID == job.JobID);
+            Indicator indicator = repository.Indicators.FirstOrDefault(p => p.JobID == job.JobID);
+            HoistWayData hoist = repository.HoistWayDatas.FirstOrDefault(p => p.JobID == job.JobID);
+            List<PO> pOList = repository.POs.Where(m => m.JobID == job.JobID).ToList();
+            if (extension == null) extension = new JobExtension();
+            if (hydro == null) hydro = new HydroSpecific();
+            if (generic == null) generic = new GenericFeatures();
+            if (indicator == null) indicator = new Indicator();
+            if (hoist == null) hoist = new HoistWayData();
+            JobViewModel EditViewModel = new JobViewModel
+            {
+                CurrentJob = job,
+                CurrentJobExtension = extension,
+                CurrentHydroSpecific = hydro,
+                CurrentGenericFeatures = generic,
+                CurrentIndicator = indicator,
+                CurrentHoistWayData = hoist,
+                POList = pOList,
+                CurrentTab = "SpecialFeatures"
+            };
+            List<SpecialFeatures> specialFeaturesList = repository.SpecialFeatures.Where(j => j.JobID == job.JobID).ToList();
+            if (specialFeaturesList.Count <= 1)
+            {
+                SpecialFeatures NewSpecial = new SpecialFeatures
+                {
+                    JobID = job.JobID,
+                    Description = ""
+                };
+                repository.SaveSpecialFeatures(NewSpecial);
+            }
+
             SpecialFeatures deletedField = repository.DeleteSpecialFeatures(fieldID);
             if (deletedField != null)
             {
                 TempData["message"] = $"{deletedField.SpecialFeaturesID} was deleted";
+                if (job.Status == "Incomplete")
+                {
+                    EditViewModel.SpecialFeatureslist = specialFeaturesList.Where(d => d.Description != null).ToList();
+                    return View("Continue", EditViewModel);
+                }
+                else
+                {
+                    List<SpecialFeatures> NewspecialFeaturesList = repository.SpecialFeatures.Where(j => j.JobID == job.JobID).ToList();
+                    EditViewModel.SpecialFeatureslist = NewspecialFeaturesList;
+                    return View("Edit", EditViewModel);
+                }
             }
             else
             {
                 TempData["alert"] = $"alert-danger";
-                TempData["message"] = $"There was an error with your request{fieldID}";
+                TempData["message"] = $"There was an error with your request";
+
+                if (job.Status == "Incomplete")
+                {
+                    EditViewModel.SpecialFeatureslist = specialFeaturesList.Where(d => d.Description != null).ToList();
+                    return View("Continue", EditViewModel);
+                }
+                else
+                {
+                    List<SpecialFeatures> NewspecialFeaturesList = repository.SpecialFeatures.Where(j => j.JobID == job.JobID).ToList();
+                    EditViewModel.SpecialFeatureslist = NewspecialFeaturesList;
+                    return View("Edit", EditViewModel);
+                }
             }
-            return Redirect(returnUrl);
         }
 
         [HttpPost]
@@ -581,9 +637,11 @@ namespace ProdFloor.Controllers
                                                 repository.SaveEngJobView(nextViewModel);
                                                 nextViewModel.CurrentTab = "Main";
                                                 TempData["message"] = $"everything was saved";
-                                                // Here the Job Filling Status should be changed the Working on it
-                                                // Redirect to Hub??
-                                                return View(nextViewModel);
+                                            // Here the Job Filling Status should be changed the Working on it
+                                            // Redirect to Hub??
+                                            List<SpecialFeatures> NewspecialFeaturesList = repository.SpecialFeatures.Where(j => j.JobID == nextViewModel.CurrentJob.JobID).ToList();
+                                            nextViewModel.SpecialFeatureslist = NewspecialFeaturesList;
+                                            return View(nextViewModel);
                                             }
                                             else
                                             {
