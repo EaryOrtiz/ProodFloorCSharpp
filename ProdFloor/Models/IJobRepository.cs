@@ -17,6 +17,9 @@ namespace ProdFloor.Models
         IQueryable<CustomSoftware> CustomSoftwares { get;}
         IQueryable<TriggeringCustSoft> TriggeringCustSofts { get;}
         IQueryable<CustomFeature> CustomFeatures { get;}
+        IQueryable<Element> Elements { get; }
+        IQueryable<ElementHydro> ElementHydros { get; }
+        IQueryable<ElementTraction> ElementTractions { get; }
 
         void SaveJob(Job job);
         void SaveJobExtension(JobExtension jobExtension);
@@ -31,6 +34,9 @@ namespace ProdFloor.Models
         void SaveTriggeringCustSoft(TriggeringCustSoft triggeringCustSoft);
         void SaveCustomFeature(CustomFeature customFeature);
         void SaveJobCustomSoftware(CustomSoftwareViewModel viewModel);
+        void SaveElement(Element element);
+        void SaveElementHydro(ElementHydro elementHydro);
+        void SaveElementTraction(ElementTraction elementTraction);
 
         Job DeleteJob(int jobID);
         Job DeleteEngJob(int JobID);
@@ -45,5 +51,8 @@ namespace ProdFloor.Models
         TriggeringCustSoft DeleteTriggeringCustSoft(int TriggeringCustSoftID);
         CustomFeature DeleteCustomFeature(int CustomFeatureID);
         CustomSoftware DeleteJobCustomSoftware(int CustomSoftwareID);
+        Element DeleteElement(int ElementID);
+        ElementHydro DeleteElementHydro(int ElementHydroID);
+        ElementTraction DeletElementTraction(int ElementTractionID);
     }
 }

@@ -72,6 +72,9 @@ namespace ProdFloor.Models
         public HoistWayData _HoistWayData { get; set; }
         public List<SpecialFeatures> _SpecialFeatureslist { get; set; }
         public List<CustomFeature> _CustomFeatures { get; set; }
+        public List<Element> _Elements { get; set; }
+        public List<ElementHydro> _ElementHydros { get; set; }
+        public List<ElementTraction> _EementTractions { get; set; }
         public List<PO> _PO { get; set; }
         [Display(Name = "Job Type")]
         public int JobTypeID { get; set; }
@@ -666,5 +669,84 @@ namespace ProdFloor.Models
         public int CustomFeatureID { get; set; }
         public int CustomSoftwareID { get; set; }
         public int JobID { get; set; }
+    }
+
+    public class Element
+    {
+        public int ElementID { get; set; }
+        public int JobID { get; set; }
+
+        [Display(Name = "Car Gate")]
+        [StringLength(50, ErrorMessage = "The maximum length of the {0} field is {1}")]
+        [Required(ErrorMessage = "Please enter type of car gate")]
+        public string DoorGate { get; set; }
+
+        [NotMapped]
+        [Display(Name = "Door Operator Brand")]
+        [Required(ErrorMessage = "Please enter the door operator brand")]
+        public string DoorBrand { get; set; }
+
+        [Display(Name = "Door Operator")]
+        public int DoorOperatorID { get; set; }
+
+        public string INA { get; set; }
+        public bool INCP { get; set; }
+        public bool  CarKey { get; set; }
+        public bool  CarCardReader { get; set; }
+        public bool  CRO { get; set; }
+        public bool  HallKey { get; set; }
+        public bool  HallCardReader { get; set; }
+        public bool HCRO { get; set; }
+
+        public bool HAPS { get; set; }
+        public string LoadWeigher { get; set; }
+        public bool EP { get; set; }
+        public bool EMT { get; set; }
+        public bool PSS { get; set; }
+        public bool PTFLD { get; set; }
+        public bool VCI { get; set; }
+        public bool DHLD { get; set; }
+        public bool CReg { get; set; }
+        public bool Egress { get; set; }
+        public bool PHECutOut { get; set; }
+        public bool CTINSPST { get; set; }
+        public bool Traveler { get; set; }
+        public int Capacity { get; set; }
+        public int Speed { get; set; }
+        public int Voltage { get; set; }
+        public int Phase { get; set; }
+        public int Frequency { get; set; }
+
+    }
+
+    public class ElementHydro
+    {
+        public int ElementHydroID { get; set; }
+        public int JobID { get; set; }
+
+        public string Starter { get; set; }
+        public int HP { get; set; }
+        public int FLA { get; set; }
+        public int SPH { get; set; }
+        public string ValveBrand { get; set; }
+    }
+
+    public class ElementTraction
+    {
+        public int ElementTractionID { get; set; }
+        public int JobID { get; set; }
+
+        public string MachineLocation { get; set; }
+        public string VVVF { get; set; }
+        public string MotorBrand { get; set; }
+        public int HP { get; set; }
+        public int FLA { get; set; }
+        public bool Encoder { get; set; }
+        public bool ISO { get; set; }
+        public int PickVoltage { get; set; }
+        public int HoldVoltage { get; set; }
+        public int Resistance { get; set; }
+        public int Current { get; set; }
+        public string Contact { get; set; }
     }
 }

@@ -27,6 +27,9 @@ namespace ProdFloor.Models
         public IQueryable<CustomSoftware> CustomSoftwares => context.CustomSoftwares;
         public IQueryable<TriggeringCustSoft> TriggeringCustSofts => context.TriggeringCustSofts;
         public IQueryable<CustomFeature> CustomFeatures => context.CustomFeatures;
+        public IQueryable<Element> Elements => context.Elements;
+        public IQueryable<ElementHydro> ElementHydros => context.ElementHydros;
+        public IQueryable<ElementTraction> ElementTractions => context.ElementTractions;
 
         public void SaveJob(Job job)
         {
@@ -406,6 +409,108 @@ namespace ProdFloor.Models
             context.SaveChanges();
 
         }
+        public void SaveElement(Element element)
+        {
+            if (element.ElementID == 0)
+            {
+                context.Elements.Add(element);
+            }
+            else
+            {
+                Element dbEntry = context.Elements
+                .FirstOrDefault(p => p.ElementID == element.ElementID);
+                if (dbEntry != null)
+                {
+                    dbEntry.JobID = element.JobID;
+                    dbEntry.DoorGate = element.DoorGate;
+                    dbEntry.DoorOperatorID = element.DoorOperatorID;
+
+                    dbEntry.INA = element.INA;
+                    dbEntry.INCP = element.INCP;
+                    dbEntry.CarKey = element.CarKey;
+                    dbEntry.CarCardReader = element.CarCardReader;
+                    dbEntry.CRO = element.CRO;
+                    dbEntry.HallKey = element.HallKey;
+                    dbEntry.HallCardReader = element.HallCardReader;
+                    dbEntry.HCRO = element.HCRO;
+
+                    dbEntry.HAPS = element.HAPS;
+                    dbEntry.LoadWeigher = element.LoadWeigher;
+                    dbEntry.EP = element.EP;
+                    dbEntry.EMT = element.EMT;
+                    dbEntry.PSS = element.PSS;
+                    dbEntry.PTFLD = element.PTFLD;
+                    dbEntry.VCI = element.VCI;
+                    dbEntry.DHLD = element.DHLD;
+                    dbEntry.CReg = element.CReg;
+                    dbEntry.Egress = element.Egress;
+                    dbEntry.PHECutOut = element.PHECutOut;
+                    dbEntry.CTINSPST = element.CTINSPST;
+                    dbEntry.Traveler = element.Traveler;
+                    dbEntry.Capacity = element.Capacity;
+                    dbEntry.Speed = element.Speed;
+                    dbEntry.Voltage = element.Voltage;
+                    dbEntry.Phase = element.Phase;
+                    dbEntry.Frequency = element.Frequency;
+                    
+                }
+            }
+            context.SaveChanges();
+        }
+        public void SaveElementHydro(ElementHydro element)
+        {
+            if (element.ElementHydroID == 0)
+            {
+                context.ElementHydros.Add(element);
+            }
+            else
+            {
+                ElementHydro dbEntry = context.ElementHydros
+                .FirstOrDefault(p => p.ElementHydroID == element.ElementHydroID);
+                if (dbEntry != null)
+                {
+                    dbEntry.JobID = element.JobID;
+
+                    dbEntry.Starter = element.Starter;
+                    dbEntry.HP = element.HP;
+                    dbEntry.FLA = element.FLA;
+                    dbEntry.SPH = element.SPH;
+                    dbEntry.ValveBrand = element.ValveBrand;
+                }
+            }
+            context.SaveChanges();
+        }
+        public void SaveElementTraction(ElementTraction element)
+        {
+            if (element.ElementTractionID == 0)
+            {
+                context.ElementTractions.Add(element);
+            }
+            else
+            {
+                ElementTraction dbEntry = context.ElementTractions
+                .FirstOrDefault(p => p.ElementTractionID == element.ElementTractionID);
+                if (dbEntry != null)
+                {
+                    dbEntry.JobID = element.JobID;
+
+                    dbEntry.MachineLocation = element.MachineLocation;
+                    dbEntry.VVVF = element.VVVF;
+                    dbEntry.MotorBrand = element.MotorBrand;
+                    dbEntry.HP = element.HP;
+                    dbEntry.FLA = element.FLA;
+                    dbEntry.Encoder = element.Encoder;
+                    dbEntry.ISO = element.ISO;
+                    dbEntry.PickVoltage = element.PickVoltage;
+                    dbEntry.HoldVoltage = element.HoldVoltage;
+                    dbEntry.Resistance = element.Resistance;
+                    dbEntry.Current = element.Current;
+                    dbEntry.Contact = element.Contact;
+
+                }
+            }
+            context.SaveChanges();
+        }
 
         public Job DeleteJob(int JobID)
         {
@@ -544,6 +649,40 @@ namespace ProdFloor.Models
             }
             return dbEntry;
         }
+        public Element DeleteElement(int ElementID)
+        {
+            Element dbEntry = context.Elements
+                .FirstOrDefault(p => p.ElementID == ElementID);
+            if (dbEntry != null)
+            {
+                context.Elements.Remove(dbEntry);
+                context.SaveChanges();
+            }
+            return dbEntry;
+        }
+        public ElementHydro DeleteElementHydro(int ElementHydroID)
+        {
+            ElementHydro dbEntry = context.ElementHydros
+                .FirstOrDefault(p => p.ElementHydroID == ElementHydroID);
+            if (dbEntry != null)
+            {
+                context.ElementHydros.Remove(dbEntry);
+                context.SaveChanges();
+            }
+            return dbEntry;
+        }
+        public ElementTraction DeleteElementTraction(int ElementTractionID)
+        {
+            ElementTraction dbEntry = context.ElementTractions
+                .FirstOrDefault(p => p.ElementTractionID == ElementTractionID);
+            if (dbEntry != null)
+            {
+                context.ElementTractions.Remove(dbEntry);
+                context.SaveChanges();
+            }
+            return dbEntry;
+        }
+
 
         public SpecialFeatures DeleteSpecialFeatures(int specialFeaturesID)
         {
