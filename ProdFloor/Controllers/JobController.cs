@@ -444,6 +444,7 @@ namespace ProdFloor.Controllers
         [HttpPost]
         public IActionResult DeleteSF(int fieldID, JobViewModel viewModel)
         {
+            AppUser currentUser = GetCurrentUser().Result;
             Job job = repository.Jobs.FirstOrDefault(j => j.JobID == viewModel.CurrentJob.JobID);
             JobExtension extension = repository.JobsExtensions.FirstOrDefault(p => p.JobID == job.JobID);
             HydroSpecific hydro = repository.HydroSpecifics.FirstOrDefault(p => p.JobID == job.JobID);
@@ -465,7 +466,8 @@ namespace ProdFloor.Controllers
                 CurrentIndicator = indicator,
                 CurrentHoistWayData = hoist,
                 POList = pOList,
-                CurrentTab = "SpecialFeatures"
+                CurrentTab = "SpecialFeatures",
+                CurrentUserID = currentUser.EngID
             };
             List<SpecialFeatures> specialFeaturesList = repository.SpecialFeatures.Where(j => j.JobID == job.JobID).ToList();
             if (specialFeaturesList.Count <= 1)
@@ -614,7 +616,7 @@ namespace ProdFloor.Controllers
             if (nextViewModel.CurrentJob.JobID == 0 && nextViewModel.CurrentJob.Status == "Incomplete") nextViewModel.CurrentJob.JobID = nextViewModel.CurrentJobExtension.JobID;
             if (nextViewModel.buttonAction == "AddSF")
             {
-                nextViewModel.SpecialFeatureslist.Add(new SpecialFeatures { JobID = nextViewModel.CurrentJob.JobID });
+                nextViewModel.SpecialFeatureslist.Add(new SpecialFeatures { JobID = nextViewModel.CurrentJob.JobID, SpecialFeaturesID = 0 });
                 nextViewModel.CurrentTab = "SpecialFeatures";
             }
             else
@@ -641,6 +643,7 @@ namespace ProdFloor.Controllers
                                             // Redirect to Hub??
                                             List<SpecialFeatures> NewspecialFeaturesList = repository.SpecialFeatures.Where(j => j.JobID == nextViewModel.CurrentJob.JobID).ToList();
                                             nextViewModel.SpecialFeatureslist = NewspecialFeaturesList;
+                                            TempData["message"] = $"everything was saved";
                                             return View(nextViewModel);
                                             }
                                             else
