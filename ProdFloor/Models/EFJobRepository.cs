@@ -293,10 +293,9 @@ namespace ProdFloor.Models
             if (specialFeatures != null && specialFeatures.SpecialFeaturesID == 0)
             {
                 List<SpecialFeatures> specials = context.SpecialFeatures.Where(p => p.JobID == specialFeatures.JobID).ToList();
-                if (specials.Count != 1 || specialFeatures.Description != null)
-                {
-                    context.SpecialFeatures.Add(specialFeatures);
-                }
+                if (specials.Count == 0) context.SpecialFeatures.Add(specialFeatures);
+                else if (specials.Count == 1 && specialFeatures.Description != null)context.SpecialFeatures.Add(specialFeatures);
+                else if (specials.Count > 1 && !string.IsNullOrEmpty(specialFeatures.Description)) context.SpecialFeatures.Add(specialFeatures);
 
             }
             else
