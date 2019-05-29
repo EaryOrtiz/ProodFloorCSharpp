@@ -95,14 +95,42 @@ namespace ProdFloor.Controllers
          * del JobID el cual se especifica = al del Job recien creado; Si hay algun error en la forma recibida regresa el Job que recibio junto
          * a un mensaje de failure
         */
-        public ViewResult NewJob()
+        public ViewResult NewJob(string JobType)
         {
-            JobViewModel viewModel =  new JobViewModel
+            switch (JobType)
             {
-                CurrentJob = new Job { ShipDate = DateTime.Now, LatestFinishDate = DateTime.Now},
-                POList = new List<PO> { new PO { JobID = 0} }
-            };
-            return View(viewModel);
+                case "M2000":
+                    JobViewModel viewModel1 = new JobViewModel
+                    {
+                        CurrentJob = new Job { ShipDate = DateTime.Now, LatestFinishDate = DateTime.Now, JobTypeID = 2},
+                        POList = new List<PO> { new PO { JobID = 0 } }
+                    };
+                    return View(viewModel1);
+
+                case "Hydro":
+                    JobViewModel viewModel2 = new JobViewModel
+                    {
+                        CurrentJob = new Job { ShipDate = DateTime.Now, LatestFinishDate = DateTime.Now, JobTypeID = 1 },
+                        POList = new List<PO> { new PO { JobID = 0 } }
+                    };
+                    return View(viewModel2);
+
+                case "Traction":
+                    JobViewModel viewModel3 = new JobViewModel
+                    {
+                        CurrentJob = new Job { ShipDate = DateTime.Now, LatestFinishDate = DateTime.Now, JobTypeID = 5 },
+                        POList = new List<PO> { new PO { JobID = 0 } }
+                    };
+                    return View(viewModel3);
+
+                default: return View(NotFound());
+            }
+            
+        }
+
+        public IActionResult SelectJobType()
+        {
+            return View();
         }
 
         [HttpPost]

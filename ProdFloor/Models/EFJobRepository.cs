@@ -910,8 +910,6 @@ namespace ProdFloor.Models
             }
         }
 
-
-
         public void SaveEngElementHydroJobView(JobElementHydroViewModel viewModelToSave)
         {
             SaveJob(viewModelToSave.CurrentJob);
@@ -962,6 +960,24 @@ namespace ProdFloor.Models
                         {
                             viewModelToSave.SpecialFeatureslist[i].SpecialFeaturesID = viewModelToSave.SpecialFeatureslist[i].SpecialFeaturesID;
                             SaveSpecialFeatures(viewModelToSave.SpecialFeatureslist[i]);
+                        }
+                    }
+                }
+            }
+            if (viewModelToSave.POList != null)
+            {
+                for (int i = 0; i < viewModelToSave.POList.Count; i++)
+                {
+                    if (viewModelToSave.POList[i].JobID != 0)
+                    {
+                        if (viewModelToSave.POList == null)
+                        {
+                            SavePO(viewModelToSave.POList[i]);
+                        }
+                        else
+                        {
+                            viewModelToSave.POList[i].POID = viewModelToSave.POList[i].POID;
+                            SavePO(viewModelToSave.POList[i]);
                         }
                     }
                 }
@@ -1021,6 +1037,26 @@ namespace ProdFloor.Models
                     }
                 }
             }
+
+            if (viewModelToSave.POList != null)
+            {
+                for (int i = 0; i < viewModelToSave.POList.Count; i++)
+                {
+                    if (viewModelToSave.POList[i].JobID != 0)
+                    {
+                        if (viewModelToSave.POList == null)
+                        {
+                            SavePO(viewModelToSave.POList[i]);
+                        }
+                        else
+                        {
+                            viewModelToSave.POList[i].POID = viewModelToSave.POList[i].POID;
+                            SavePO(viewModelToSave.POList[i]);
+                        }
+                    }
+                }
+            }
+
         }
 
 
@@ -1033,6 +1069,8 @@ namespace ProdFloor.Models
             ElementHydro hydro= context.ElementHydros
                 .FirstOrDefault(p => p.JobID == JobID);
             SpecialFeatures specialFeatures = context.SpecialFeatures
+                .FirstOrDefault(p => p.JobID == JobID);
+            PO pos = context.POs
                 .FirstOrDefault(p => p.JobID == JobID);
 
             try
@@ -1059,6 +1097,11 @@ namespace ProdFloor.Models
                     context.SaveChanges();
                 }
 
+                if (pos != null)
+                {
+                    context.POs.Remove(pos);
+                    context.SaveChanges();
+                }
             }
             catch (Exception e)
             {
@@ -1067,7 +1110,6 @@ namespace ProdFloor.Models
 
             return dbEntry;
         }
-
         public Job DeleteEngElementTractionJob(int JobID)
         {
             Job dbEntry = context.Jobs
@@ -1077,6 +1119,8 @@ namespace ProdFloor.Models
             ElementTraction traction = context.ElementTractions
                 .FirstOrDefault(p => p.JobID == JobID);
             SpecialFeatures specialFeatures = context.SpecialFeatures
+                .FirstOrDefault(p => p.JobID == JobID);
+            PO pos = context.POs
                 .FirstOrDefault(p => p.JobID == JobID);
 
             try
@@ -1100,6 +1144,11 @@ namespace ProdFloor.Models
                 if (specialFeatures != null)
                 {
                     context.SpecialFeatures.Remove(specialFeatures);
+                    context.SaveChanges();
+                }
+                if (pos != null)
+                {
+                    context.POs.Remove(pos);
                     context.SaveChanges();
                 }
 
