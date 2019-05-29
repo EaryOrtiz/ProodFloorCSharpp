@@ -37,9 +37,13 @@ namespace ProdFloor.Models
         void SaveElement(Element element);
         void SaveElementHydro(ElementHydro elementHydro);
         void SaveElementTraction(ElementTraction elementTraction);
+        void SaveEngElementHydroJobView(JobElementHydroViewModel viewModelToSave);
+        void SaveEngElementTractionJobView(JobElementTractionViewModel viewModelToSave);
 
         Job DeleteJob(int jobID);
         Job DeleteEngJob(int JobID);
+        Job DeleteEngElementHydroJob(int JobID);
+        Job DeleteEngElementTractionJob(int JobID);
         JobExtension DeleteJobExtension(int jobExtensionID);
         HydroSpecific DeleteHydroSpecific(int hydroSpecificID);
         GenericFeatures DeleteGenericFeatures(int genericFeaturesID);
@@ -53,6 +57,6 @@ namespace ProdFloor.Models
         CustomSoftware DeleteJobCustomSoftware(int CustomSoftwareID);
         Element DeleteElement(int ElementID);
         ElementHydro DeleteElementHydro(int ElementHydroID);
-        ElementTraction DeletElementTraction(int ElementTractionID);
+        ElementTraction DeleteElementTraction(int ElementTractionID);
     }
 }

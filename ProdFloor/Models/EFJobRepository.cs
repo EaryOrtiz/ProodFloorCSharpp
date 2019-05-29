@@ -909,5 +909,207 @@ namespace ProdFloor.Models
                 }
             }
         }
+
+
+
+        public void SaveEngElementHydroJobView(JobElementHydroViewModel viewModelToSave)
+        {
+            SaveJob(viewModelToSave.CurrentJob);
+            if (viewModelToSave.Element != null)
+            {
+                if (viewModelToSave.Element.JobID != 0)
+                {
+                    Element element = Elements.FirstOrDefault(j => j.JobID == viewModelToSave.Element.ElementID);
+                    if (element == null)
+                    {
+                        SaveElement(viewModelToSave.Element);
+                    }
+                    else
+                    {
+                        viewModelToSave.Element.ElementID = element.ElementID;
+                        SaveElement(viewModelToSave.Element);
+                    }
+                }
+            }
+            if (viewModelToSave.ElementHydro != null)
+            {
+                if (viewModelToSave.ElementHydro.JobID != 0)
+                {
+                    ElementHydro hydro = ElementHydros.FirstOrDefault(j => j.JobID == viewModelToSave.ElementHydro.JobID);
+                    if (hydro == null)
+                    {
+                        SaveElementHydro(viewModelToSave.ElementHydro);
+                    }
+                    else
+                    {
+                        viewModelToSave.ElementHydro.ElementHydroID = hydro.ElementHydroID;
+                        SaveElementHydro(viewModelToSave.ElementHydro);
+                    }
+                }
+            }
+
+            if (viewModelToSave.SpecialFeatureslist != null)
+            {
+                for (int i = 0; i < viewModelToSave.SpecialFeatureslist.Count; i++)
+                {
+                    if (viewModelToSave.SpecialFeatureslist[i].JobID != 0)
+                    {
+                        if (viewModelToSave.SpecialFeatureslist == null)
+                        {
+                            SaveSpecialFeatures(viewModelToSave.SpecialFeatureslist[i]);
+                        }
+                        else
+                        {
+                            viewModelToSave.SpecialFeatureslist[i].SpecialFeaturesID = viewModelToSave.SpecialFeatureslist[i].SpecialFeaturesID;
+                            SaveSpecialFeatures(viewModelToSave.SpecialFeatureslist[i]);
+                        }
+                    }
+                }
+            }
+        }
+        public void SaveEngElementTractionJobView(JobElementTractionViewModel viewModelToSave)
+        {
+            SaveJob(viewModelToSave.CurrentJob);
+            if (viewModelToSave.Element != null)
+            {
+                if (viewModelToSave.Element.JobID != 0)
+                {
+                    Element element = Elements.FirstOrDefault(j => j.JobID == viewModelToSave.Element.ElementID);
+                    if (element == null)
+                    {
+                        SaveElement(viewModelToSave.Element);
+                    }
+                    else
+                    {
+                        viewModelToSave.Element.ElementID = element.ElementID;
+                        SaveElement(viewModelToSave.Element);
+                    }
+                }
+            }
+            if (viewModelToSave.ElementTraction != null)
+            {
+                if (viewModelToSave.ElementTraction.JobID != 0)
+                {
+                    ElementTraction hydro = ElementTractions.FirstOrDefault(j => j.JobID == viewModelToSave.ElementTraction.JobID);
+                    if (hydro == null)
+                    {
+                        SaveElementTraction(viewModelToSave.ElementTraction);
+                    }
+                    else
+                    {
+                        viewModelToSave.ElementTraction.ElementTractionID = hydro.ElementTractionID;
+                        SaveElementTraction(viewModelToSave.ElementTraction);
+                    }
+                }
+            }
+
+            if (viewModelToSave.SpecialFeatureslist != null)
+            {
+                for (int i = 0; i < viewModelToSave.SpecialFeatureslist.Count; i++)
+                {
+                    if (viewModelToSave.SpecialFeatureslist[i].JobID != 0)
+                    {
+                        if (viewModelToSave.SpecialFeatureslist == null)
+                        {
+                            SaveSpecialFeatures(viewModelToSave.SpecialFeatureslist[i]);
+                        }
+                        else
+                        {
+                            viewModelToSave.SpecialFeatureslist[i].SpecialFeaturesID = viewModelToSave.SpecialFeatureslist[i].SpecialFeaturesID;
+                            SaveSpecialFeatures(viewModelToSave.SpecialFeatureslist[i]);
+                        }
+                    }
+                }
+            }
+        }
+
+
+        public Job DeleteEngElementHydroJob(int JobID)
+        {
+            Job dbEntry = context.Jobs
+                .FirstOrDefault(p => p.JobID == JobID);
+            Element element = context.Elements
+                .FirstOrDefault(p => p.JobID == JobID);
+            ElementHydro hydro= context.ElementHydros
+                .FirstOrDefault(p => p.JobID == JobID);
+            SpecialFeatures specialFeatures = context.SpecialFeatures
+                .FirstOrDefault(p => p.JobID == JobID);
+
+            try
+            {
+
+                if (dbEntry != null)
+                {
+                    context.Jobs.Remove(dbEntry);
+                    context.SaveChanges();
+                }
+                if (element != null)
+                {
+                    context.Elements.Remove(element);
+                    context.SaveChanges();
+                }
+                if (hydro != null)
+                {
+                    context.ElementHydros.Remove(hydro);
+                    context.SaveChanges();
+                }
+                if (specialFeatures != null)
+                {
+                    context.SpecialFeatures.Remove(specialFeatures);
+                    context.SaveChanges();
+                }
+
+            }
+            catch (Exception e)
+            {
+
+            }
+
+            return dbEntry;
+        }
+
+        public Job DeleteEngElementTractionJob(int JobID)
+        {
+            Job dbEntry = context.Jobs
+                .FirstOrDefault(p => p.JobID == JobID);
+            Element element = context.Elements
+                .FirstOrDefault(p => p.JobID == JobID);
+            ElementTraction traction = context.ElementTractions
+                .FirstOrDefault(p => p.JobID == JobID);
+            SpecialFeatures specialFeatures = context.SpecialFeatures
+                .FirstOrDefault(p => p.JobID == JobID);
+
+            try
+            {
+
+                if (dbEntry != null)
+                {
+                    context.Jobs.Remove(dbEntry);
+                    context.SaveChanges();
+                }
+                if (element != null)
+                {
+                    context.Elements.Remove(element);
+                    context.SaveChanges();
+                }
+                if (traction != null)
+                {
+                    context.ElementTractions.Remove(traction);
+                    context.SaveChanges();
+                }
+                if (specialFeatures != null)
+                {
+                    context.SpecialFeatures.Remove(specialFeatures);
+                    context.SaveChanges();
+                }
+
+            }
+            catch (Exception e)
+            {
+
+            }
+
+            return dbEntry;
+        }
     }
 }
