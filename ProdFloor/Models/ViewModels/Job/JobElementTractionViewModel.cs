@@ -16,5 +16,6 @@ namespace ProdFloor.Models.ViewModels.Job
         public string buttonAction { get; set; }
         public int CurrentUserID { get; set; }
         public int fieldID { get; set; }
+        public string JobTypeName { get; set; }
     }
 }
