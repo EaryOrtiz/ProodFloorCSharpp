@@ -113,7 +113,7 @@ namespace ProdFloor.Controllers
                         CurrentJob = new Job { ShipDate = DateTime.Now, LatestFinishDate = DateTime.Now, JobTypeID = 1 },
                         POList = new List<PO> { new PO { JobID = 0 } }
                     };
-                    return View(viewModel2);
+                    return View("NewJobHydro",viewModel2);
 
                 case "Traction":
                     JobViewModel viewModel3 = new JobViewModel
@@ -121,16 +121,11 @@ namespace ProdFloor.Controllers
                         CurrentJob = new Job { ShipDate = DateTime.Now, LatestFinishDate = DateTime.Now, JobTypeID = 5 },
                         POList = new List<PO> { new PO { JobID = 0 } }
                     };
-                    return View(viewModel3);
+                    return View("NewJobTraction", viewModel3);
 
                 default: return View(NotFound());
             }
             
-        }
-
-        public IActionResult SelectJobType()
-        {
-            return View();
         }
 
         [HttpPost]
