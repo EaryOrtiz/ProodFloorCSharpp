@@ -451,6 +451,7 @@ namespace ProdFloor.Models
                     dbEntry.Voltage = element.Voltage;
                     dbEntry.Phase = element.Phase;
                     dbEntry.Frequency = element.Frequency;
+                    dbEntry.CallEnable = element.CallEnable;
                     
                 }
             }

@@ -697,6 +697,8 @@ namespace ProdFloor.Models
         public bool  HallKey { get; set; }
         public bool  HallCardReader { get; set; }
         public bool HCRO { get; set; }
+        [Display(Name = "Security")]
+        public bool CallEnable { get; set; }
 
         public bool HAPS { get; set; }
         public string LoadWeigher { get; set; }
