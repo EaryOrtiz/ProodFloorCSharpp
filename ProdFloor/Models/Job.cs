@@ -701,7 +701,6 @@ namespace ProdFloor.Models
         public bool CallEnable { get; set; }
 
         public bool HAPS { get; set; }
-        public string LoadWeigher { get; set; }
         public bool EP { get; set; }
         public bool EMT { get; set; }
         public bool PSS { get; set; }
@@ -713,11 +712,13 @@ namespace ProdFloor.Models
         public bool PHECutOut { get; set; }
         public bool CTINSPST { get; set; }
         public bool Traveler { get; set; }
+
         public int Capacity { get; set; }
         public int Speed { get; set; }
         public int Voltage { get; set; }
         public int Phase { get; set; }
         public int Frequency { get; set; }
+        public string LoadWeigher { get; set; }
 
     }
 
@@ -741,14 +742,16 @@ namespace ProdFloor.Models
         public string MachineLocation { get; set; }
         public string VVVF { get; set; }
         public string MotorBrand { get; set; }
-        public int HP { get; set; }
-        public int FLA { get; set; }
+        public string Contact { get; set; }
         public bool Encoder { get; set; }
         public bool ISO { get; set; }
+
+        public int HP { get; set; }
+        public int FLA { get; set; }
         public int PickVoltage { get; set; }
         public int HoldVoltage { get; set; }
         public int Resistance { get; set; }
         public int Current { get; set; }
-        public string Contact { get; set; }
+        
     }
 }

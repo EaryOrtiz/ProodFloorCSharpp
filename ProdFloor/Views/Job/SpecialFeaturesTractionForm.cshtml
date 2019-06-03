@@ -1,0 +1,48 @@
+﻿@model ProdFloor.Models.ViewModels.Job.JobElementTractionViewModel
+<input type="hidden" asp-for="CurrentJob.JobID" />
+<input type="hidden" asp-for="CurrentJob.Status" />
+<input type="hidden" asp-for="CurrentJob.EngID" />
+<button asp-action="NextForm" type="submit" value="AddSF" name="buttonAction" class="btn btn-success btn-sm col-sm-2" style="padding-top:10px;margin-bottom:10px;min-width:100px;float:left">
+    <i class="fa fa-plus"></i>&nbsp; Special Feature
+</button>
+<div class="table-responsive">
+    <table class="table form-control">
+        <thead>
+            <tr>
+                <th style="text-align:center;width:100%">Description</th>
+            </tr>
+        </thead>
+
+        <tbody style="text-align:">
+            @for (int i = 0; i < Model.SpecialFeatureslist.Count; i++)
+            {
+                <tr>
+                    <td>
+                        <input type="hidden" asp-for="SpecialFeatureslist[i].SpecialFeaturesID" value="@Model.SpecialFeatureslist[i].SpecialFeaturesID" />
+                        <input type="hidden" asp-for="SpecialFeatureslist[i].JobID" />
+                        @Html.TextBoxFor(m => m.SpecialFeatureslist[i].Description, new { Class = "form-control col-sm-2;", Style = "text-align:center;" })
+                    </td>
+                    <td style="text-align:center;">
+                        @if (Model.CurrentJob.Status != "Incomplete")
+                        {
+                            <form asp-action="DeleteSF" method="post">
+                                <input type="hidden" asp-for="CurrentJob.JobID" />
+                                <input type="hidden" name="fieldID" value="@Model.SpecialFeatureslist[i].SpecialFeaturesID" />
+                                <input type="hidden" name="returnUrl" value="\Job\Edit\@Model.SpecialFeatureslist[i].JobID" />
+                                <button type="submit" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="btn btn-danger btn-sm">
+                                    <i class="fa fa-minus-circle"></i>
+                                </button>
+                            </form>
+                        }
+
+                    </td>
+
+                </tr>
+
+            }
+        </tbody>
+
+    </table>
+
+</div>
+

@@ -299,8 +299,9 @@ namespace ProdFloor.Controllers
                     else hydroViewModel.POList = new List<PO> { new PO() };
                     hydroViewModel.CurrentUserID = currentUser.EngID;
                     hydroViewModel.CurrentTab = "Main";
+                    hydroViewModel.JobTypeName = JobTypeName(job.JobTypeID);
 
-                    return View(hydroViewModel);
+                    return View("EditHydro",hydroViewModel);
                 }
                 else if (JobTypeName(job.JobTypeID) == "ElmTract")
                 {
@@ -316,8 +317,9 @@ namespace ProdFloor.Controllers
                     else jobElementTractionView.POList = new List<PO> { new PO() };
                     jobElementTractionView.CurrentUserID = currentUser.EngID;
                     jobElementTractionView.CurrentTab = "Main";
+                    jobElementTractionView.JobTypeName = JobTypeName(job.JobTypeID);
 
-                    return View(jobElementTractionView);
+                    return View("EditTraction", jobElementTractionView);
                 }
                 else
                 {
@@ -336,6 +338,7 @@ namespace ProdFloor.Controllers
                     else viewModel.POList = new List<PO> { new PO() };
                     viewModel.CurrentUserID = currentUser.EngID;
                     viewModel.CurrentTab = "Main";
+                    viewModel.JobTypeName = JobTypeName(job.JobTypeID);
 
                     return View(viewModel);
                 }
@@ -815,9 +818,10 @@ namespace ProdFloor.Controllers
          */
         public IActionResult Continue(int ID)
         {
-            if (repository.Jobs.FirstOrDefault(j => j.JobID == ID) != null)
+            Job Job = repository.Jobs.FirstOrDefault(j => j.JobID == ID);
+            if (Job != null)
             {
-                if (JobTypeName(ID) == "ElmHydro")
+                if (JobTypeName(Job.JobTypeID) == "ElmHydro")
                 {
                     List<SpecialFeatures> SfList = repository.SpecialFeatures.Where(j => j.JobID == ID).ToList();
                     List<PO> POsList = repository.POs.Where(j => j.JobID == ID).ToList();
@@ -825,17 +829,18 @@ namespace ProdFloor.Controllers
                     AppUser currentUser = GetCurrentUser().Result;
                     continueJobViewModel.CurrentUserID = currentUser.EngID;
                     continueJobViewModel.CurrentTab = "Main";
-                    continueJobViewModel.CurrentJob = repository.Jobs.FirstOrDefault(j => j.JobID == ID);
+                    continueJobViewModel.CurrentJob = Job;
                     if (POsList != null) continueJobViewModel.POList = POsList;
                     else continueJobViewModel.POList = new List<PO> { new PO() };
                     continueJobViewModel.Element = (repository.Elements.FirstOrDefault(j => j.JobID == ID) ?? new Element());
                     continueJobViewModel.ElementHydro = (repository.ElementHydros.FirstOrDefault(j => j.JobID == ID) ?? new ElementHydro());
                     if (SfList.Count > 1) continueJobViewModel.SpecialFeatureslist = SfList;
                     else continueJobViewModel.SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures() };
+                    continueJobViewModel.JobTypeName = JobTypeName(Job.JobTypeID);
 
                     return View("NextFormHydro", continueJobViewModel);
                 }
-                else if (JobTypeName(ID) == "ElmTract")
+                else if (JobTypeName(Job.JobTypeID) == "ElmTract")
                 {
                     List<SpecialFeatures> SfList = repository.SpecialFeatures.Where(j => j.JobID == ID).ToList();
                     List<PO> POsList = repository.POs.Where(j => j.JobID == ID).ToList();
@@ -850,6 +855,7 @@ namespace ProdFloor.Controllers
                     continueJobViewModel.ElementTraction = (repository.ElementTractions.FirstOrDefault(j => j.JobID == ID) ?? new ElementTraction());
                     if (SfList.Count > 1) continueJobViewModel.SpecialFeatureslist = SfList;
                     else continueJobViewModel.SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures() };
+                    continueJobViewModel.JobTypeName = JobTypeName(Job.JobTypeID);
 
                     return View("NextFormTraction", continueJobViewModel);
                 }
@@ -861,7 +867,7 @@ namespace ProdFloor.Controllers
                     AppUser currentUser = GetCurrentUser().Result;
                     continueJobViewModel.CurrentUserID = currentUser.EngID;
                     continueJobViewModel.CurrentTab = "Main";
-                    continueJobViewModel.CurrentJob = repository.Jobs.FirstOrDefault(j => j.JobID == ID);
+                    continueJobViewModel.CurrentJob = Job;
                     if (POsList != null) continueJobViewModel.POList = POsList;
                     else continueJobViewModel.POList = new List<PO> { new PO() };
                     continueJobViewModel.CurrentJobExtension = (repository.JobsExtensions.FirstOrDefault(j => j.JobID == ID) ?? new JobExtension());
@@ -871,6 +877,7 @@ namespace ProdFloor.Controllers
                     continueJobViewModel.CurrentHoistWayData = (repository.HoistWayDatas.FirstOrDefault(j => j.JobID == ID) ?? new HoistWayData());
                     if (SfList.Count > 1) continueJobViewModel.SpecialFeatureslist = SfList;
                     else continueJobViewModel.SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures() };
+                    continueJobViewModel.JobTypeName = JobTypeName(Job.JobTypeID);
 
                     return View("NextForm", continueJobViewModel);
                 }

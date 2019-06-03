@@ -11,6 +11,7 @@
 <input type="hidden" asp-for="CurrentJob.CrossAppEngID" />
 <input type="hidden" asp-for="POList[0].JobID" />
 <input type="hidden" asp-for="POList[0].POID" />
+<input type="hidden" asp-for="CurrentJob.JobTypeID" />
 <div class="form-row col-sm-12" style="padding-bottom:15px">
     <div class="col-4 form-line border-right justify-content-md-center">
         <div class="form-group row">
@@ -27,11 +28,10 @@
                 <span asp-validation-for="CurrentJob.Name2" class="text-danger"></span>
             </div>
         </div>
-        <div class="form-group row" style="margin-bottom:0.5em;">
+        <div class="form-group row">
             <label asp-for="CurrentJob.JobTypeID" class="col-sm-3 col-form-label"></label>
             <div>
-                <job-type-select selected-value="@Model.CurrentJob.JobTypeID" class="form-control form-control-sm" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" asp-for="CurrentJob.JobTypeID"></job-type-select>
-                <span asp-validation-for="CurrentJob.JobTypeID" class="text-danger"></span>
+                <input asp-for="JobTypeName" readonly="@(true)" class="form-control col-sm-15" />
             </div>
         </div>
         <div class="form-group row @(Model.CurrentUserID != Model.CurrentJob.EngID ? "disabled" : "disabled")">
