@@ -330,7 +330,10 @@ namespace ProdFloor.Infrastructure
                 case "Starter":
                     return new List<string> { "Siemens SS : 6/12", "Siemens SS : 3/9", "Sprecher SS : 6/12", "Sprecher SS : 3/9", "ATL", "YD" }.AsQueryable();
                 case "Valve Brand":
-                    return new List<string> { "Maxton", "Blain", "EECO", "TKE | Dover", "Bucher", "Other" }.AsQueryable();
+                    List<string> ValveInHydro = jobrepository.HydroSpecifics.Where(d => d.ValveBrand != null).Select(d => d.ValveBrand).Distinct().ToList();
+                    List<string> ValveList = new List<string> { "Maxton", "Blain", "EECO", "TKE | Dover", "Bucher", "Other" };
+                    if (ValveInHydro.Count > 0) ValveList.AddRange(ValveInHydro);
+                    return ValveList.Distinct().AsQueryable();
                 case "Battery Brand":
                     List<string> BatteryInHydro = jobrepository.HydroSpecifics.Where(d => d.BatteryBrand != null).Select(d => d.BatteryBrand).Distinct().ToList();
                     List<string> BatteryList = new List<string> { "HAPS", "R&R", "Other" };

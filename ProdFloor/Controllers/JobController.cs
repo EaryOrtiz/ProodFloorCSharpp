@@ -14,6 +14,8 @@ using System.IO;
 using System.Xml;
 using HtmlAgilityPack;
 using Microsoft.Extensions.DependencyInjection;
+using TextCopy;
+using System.Diagnostics;
 
 namespace ProdFloor.Controllers
 {
@@ -700,6 +702,10 @@ namespace ProdFloor.Controllers
                                     if (nextViewModel.CurrentHydroSpecific.BatteryBrand == "Other" && !string.IsNullOrEmpty(nextViewModel.CurrentHydroSpecific.OtherBatteryBrand))
                                     {
                                         nextViewModel.CurrentHydroSpecific.BatteryBrand = nextViewModel.CurrentHydroSpecific.OtherBatteryBrand;
+                                    }
+                                    if (nextViewModel.CurrentHydroSpecific.ValveBrand == "Other" && !string.IsNullOrEmpty(nextViewModel.CurrentHydroSpecific.OtherValveBrand))
+                                    {
+                                        nextViewModel.CurrentHydroSpecific.ValveBrand = nextViewModel.CurrentHydroSpecific.OtherValveBrand;
                                     }
                                     repository.SaveEngJobView(nextViewModel);
                                     nextViewModel.CurrentGenericFeatures = new GenericFeatures { JobID = nextViewModel.CurrentJob.JobID };
@@ -2868,5 +2874,13 @@ namespace ProdFloor.Controllers
             return RedirectToAction(nameof(List));
         }
 
+        public IActionResult CopyClipToClipboard(string JobNum, int ID)
+        {
+            string LastFive = JobNum.Substring(5);
+            string FirstTwo = LastFive.Substring(0,2);
+            Clipboard.SetText(@"L:\"+FirstTwo+"000\\"+LastFive);
+            
+            return RedirectToAction("Edit", new { id = ID});
+        }
     }
 }

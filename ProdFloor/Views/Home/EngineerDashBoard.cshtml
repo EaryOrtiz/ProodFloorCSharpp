@@ -16,7 +16,7 @@
     </div>
 </div>
 <br />
-<h4>On Going Jobs</h4>
+<h4>Ongoing Jobs</h4>
 <table class="table">
     <thead class="thead-dark">
         <tr>
@@ -140,7 +140,7 @@
                         }
 
                     </td>
-                    <td>@j.ShipDate</td>
+                    <td>@j.ShipDate.ToShortDateString()</td>
                 </tr>
             }
         }
@@ -259,7 +259,7 @@
                                 </div>
                             }
                         </td>
-                        <td>@j.ShipDate</td>
+                        <td>@j.ShipDate.ToShortDateString()</td>
                     </tr>
                 }
             }
