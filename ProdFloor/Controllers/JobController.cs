@@ -268,6 +268,7 @@ namespace ProdFloor.Controllers
                 viewModel.SpecialFeatureslist = SfList;
                 int jobNumAux = viewModel.CurrentJob.JobNum;
                 viewModel.CurrentJob.JobNum = 0;
+                viewModel.CurrentUserID = currentUser.EngID;
                 viewModel.CurrentJob.Status = "Copied";
                 viewModel.POList = new List<PO> { new PO { JobID = viewModel.CurrentJob.JobID } };
               

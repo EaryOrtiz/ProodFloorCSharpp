@@ -232,6 +232,121 @@ namespace ProdFloor.Infrastructure
         }
     }
 
+    public class PageLinkDashBoardTagHelper : TagHelper
+    {
+        private IUrlHelperFactory urlHelperFactory;
+
+        public PageLinkDashBoardTagHelper(IUrlHelperFactory helperFactory)
+        {
+            urlHelperFactory = helperFactory;
+        }
+
+        [ViewContext]
+        [HtmlAttributeNotBound]
+        public ViewContext ViewContext { get; set; }
+
+
+
+        public string PageAction { get; set; }
+
+        [HtmlAttributeName(DictionaryAttributePrefix = "page-url-")]
+        public Dictionary<string, object> PageUrlValues { get; set; }
+            = new Dictionary<string, object>();
+
+        public bool PageClassesEnabled { get; set; } = false;
+        public string PageClass { get; set; }
+        public string PageClassNormal { get; set; }
+        public string PageClassSelected { get; set; }
+
+        public PagingInfo MyJobsPageModel { get; set; }
+        public PagingInfo OnCrossPageModel { get; set; }
+        public PagingInfo PendingToCrossPageModel { get; set; }
+        public string MyJobsUrlValue { get; set; }
+        public string OnCrossUrlValue { get; set; }
+        public string PendingToCrossUrlValue { get; set; }
+        public string Sort { get; set; }
+        public string CurrentModel { get; set; }
+
+        public override void Process(TagHelperContext context,
+        TagHelperOutput output)
+        {
+            if (!string.IsNullOrEmpty(CurrentModel))
+                {
+                    switch (CurrentModel)
+                    {
+                        case "MyJobs":
+
+                            IUrlHelper urlHelper = urlHelperFactory.GetUrlHelper(ViewContext);
+                            TagBuilder result = new TagBuilder("div");
+                            for (int i = 1; i <= MyJobsPageModel.TotalPages; i++)
+                            {
+                                TagBuilder tag = new TagBuilder("a");
+                                PageUrlValues[MyJobsUrlValue] = i;
+                                PageUrlValues[OnCrossUrlValue] = OnCrossPageModel.CurrentPage;
+                                PageUrlValues[PendingToCrossUrlValue] = PendingToCrossPageModel.CurrentPage;
+                                PageUrlValues[Sort] = MyJobsPageModel.sort;
+                                tag.Attributes["href"] = urlHelper.Action(PageAction, PageUrlValues);
+                                if (PageClassesEnabled)
+                                {
+                                    tag.AddCssClass(PageClass);
+                                    tag.AddCssClass(i == MyJobsPageModel.CurrentPage
+                                    ? PageClassSelected : PageClassNormal);
+                                }
+                                tag.InnerHtml.Append(i.ToString());
+                                result.InnerHtml.AppendHtml(tag);
+                            }
+                            output.Content.AppendHtml(result.InnerHtml);
+                            break;
+                        case "OncrossJobs":
+                            IUrlHelper urlHelper2 = urlHelperFactory.GetUrlHelper(ViewContext);
+                            TagBuilder result2 = new TagBuilder("div");
+                            for (int i = 1; i <= OnCrossPageModel.TotalPages; i++)
+                            {
+                                TagBuilder tag = new TagBuilder("a");
+                                PageUrlValues[MyJobsUrlValue] = MyJobsPageModel.CurrentPage;
+                                PageUrlValues[OnCrossUrlValue] = i;
+                                PageUrlValues[PendingToCrossUrlValue] = PendingToCrossPageModel.CurrentPage;
+                                PageUrlValues[Sort] = OnCrossPageModel.sort;
+                                tag.Attributes["href"] = urlHelper2.Action(PageAction, PageUrlValues);
+                                if (PageClassesEnabled)
+                                {
+                                    tag.AddCssClass(PageClass);
+                                    tag.AddCssClass(i == OnCrossPageModel.CurrentPage
+                                    ? PageClassSelected : PageClassNormal);
+                                }
+                                tag.InnerHtml.Append(i.ToString());
+                                result2.InnerHtml.AppendHtml(tag);
+                            }
+                            output.Content.AppendHtml(result2.InnerHtml);
+                            break;
+                        case "PendingJobs":
+                            IUrlHelper urlHelper3 = urlHelperFactory.GetUrlHelper(ViewContext);
+                            TagBuilder result3 = new TagBuilder("div");
+                            for (int i = 1; i <= PendingToCrossPageModel.TotalPages; i++)
+                            {
+                                TagBuilder tag = new TagBuilder("a");
+                                PageUrlValues[MyJobsUrlValue] = MyJobsPageModel.CurrentPage;
+                                PageUrlValues[OnCrossUrlValue] = OnCrossPageModel.CurrentPage;
+                                PageUrlValues[PendingToCrossUrlValue] = i;
+                                PageUrlValues[Sort] = OnCrossPageModel.sort;
+                                tag.Attributes["href"] = urlHelper3.Action(PageAction, PageUrlValues);
+                                if (PageClassesEnabled)
+                                {
+                                    tag.AddCssClass(PageClass);
+                                    tag.AddCssClass(i == PendingToCrossPageModel.CurrentPage
+                                    ? PageClassSelected : PageClassNormal);
+                                }
+                                tag.InnerHtml.Append(i.ToString());
+                                result3.InnerHtml.AppendHtml(tag);
+                            }
+                            output.Content.AppendHtml(result3.InnerHtml);
+                            break;
+                    }
+                
+            }
+        }
+    }
+
     public class MySelectTagHelper : TagHelper
     {
         private IItemRepository itemsrepository;
