@@ -232,6 +232,121 @@ namespace ProdFloor.Infrastructure
         }
     }
 
+    public class PageLinkDashBoardTagHelper : TagHelper
+    {
+        private IUrlHelperFactory urlHelperFactory;
+
+        public PageLinkDashBoardTagHelper(IUrlHelperFactory helperFactory)
+        {
+            urlHelperFactory = helperFactory;
+        }
+
+        [ViewContext]
+        [HtmlAttributeNotBound]
+        public ViewContext ViewContext { get; set; }
+
+
+
+        public string PageAction { get; set; }
+
+        [HtmlAttributeName(DictionaryAttributePrefix = "page-url-")]
+        public Dictionary<string, object> PageUrlValues { get; set; }
+            = new Dictionary<string, object>();
+
+        public bool PageClassesEnabled { get; set; } = false;
+        public string PageClass { get; set; }
+        public string PageClassNormal { get; set; }
+        public string PageClassSelected { get; set; }
+
+        public PagingInfo MyJobsPageModel { get; set; }
+        public PagingInfo OnCrossPageModel { get; set; }
+        public PagingInfo PendingToCrossPageModel { get; set; }
+        public string MyJobsUrlValue { get; set; }
+        public string OnCrossUrlValue { get; set; }
+        public string PendingToCrossUrlValue { get; set; }
+        public string Sort { get; set; }
+        public string CurrentModel { get; set; }
+
+        public override void Process(TagHelperContext context,
+        TagHelperOutput output)
+        {
+            if (!string.IsNullOrEmpty(CurrentModel))
+                {
+                    switch (CurrentModel)
+                    {
+                        case "MyJobs":
+
+                            IUrlHelper urlHelper = urlHelperFactory.GetUrlHelper(ViewContext);
+                            TagBuilder result = new TagBuilder("div");
+                            for (int i = 1; i <= MyJobsPageModel.TotalPages; i++)
+                            {
+                                TagBuilder tag = new TagBuilder("a");
+                                PageUrlValues[MyJobsUrlValue] = i;
+                                PageUrlValues[OnCrossUrlValue] = OnCrossPageModel.CurrentPage;
+                                PageUrlValues[PendingToCrossUrlValue] = PendingToCrossPageModel.CurrentPage;
+                                PageUrlValues[Sort] = MyJobsPageModel.sort;
+                                tag.Attributes["href"] = urlHelper.Action(PageAction, PageUrlValues);
+                                if (PageClassesEnabled)
+                                {
+                                    tag.AddCssClass(PageClass);
+                                    tag.AddCssClass(i == MyJobsPageModel.CurrentPage
+                                    ? PageClassSelected : PageClassNormal);
+                                }
+                                tag.InnerHtml.Append(i.ToString());
+                                result.InnerHtml.AppendHtml(tag);
+                            }
+                            output.Content.AppendHtml(result.InnerHtml);
+                            break;
+                        case "OncrossJobs":
+                            IUrlHelper urlHelper2 = urlHelperFactory.GetUrlHelper(ViewContext);
+                            TagBuilder result2 = new TagBuilder("div");
+                            for (int i = 1; i <= OnCrossPageModel.TotalPages; i++)
+                            {
+                                TagBuilder tag = new TagBuilder("a");
+                                PageUrlValues[MyJobsUrlValue] = MyJobsPageModel.CurrentPage;
+                                PageUrlValues[OnCrossUrlValue] = i;
+                                PageUrlValues[PendingToCrossUrlValue] = PendingToCrossPageModel.CurrentPage;
+                                PageUrlValues[Sort] = OnCrossPageModel.sort;
+                                tag.Attributes["href"] = urlHelper2.Action(PageAction, PageUrlValues);
+                                if (PageClassesEnabled)
+                                {
+                                    tag.AddCssClass(PageClass);
+                                    tag.AddCssClass(i == OnCrossPageModel.CurrentPage
+                                    ? PageClassSelected : PageClassNormal);
+                                }
+                                tag.InnerHtml.Append(i.ToString());
+                                result2.InnerHtml.AppendHtml(tag);
+                            }
+                            output.Content.AppendHtml(result2.InnerHtml);
+                            break;
+                        case "PendingJobs":
+                            IUrlHelper urlHelper3 = urlHelperFactory.GetUrlHelper(ViewContext);
+                            TagBuilder result3 = new TagBuilder("div");
+                            for (int i = 1; i <= PendingToCrossPageModel.TotalPages; i++)
+                            {
+                                TagBuilder tag = new TagBuilder("a");
+                                PageUrlValues[MyJobsUrlValue] = MyJobsPageModel.CurrentPage;
+                                PageUrlValues[OnCrossUrlValue] = OnCrossPageModel.CurrentPage;
+                                PageUrlValues[PendingToCrossUrlValue] = i;
+                                PageUrlValues[Sort] = OnCrossPageModel.sort;
+                                tag.Attributes["href"] = urlHelper3.Action(PageAction, PageUrlValues);
+                                if (PageClassesEnabled)
+                                {
+                                    tag.AddCssClass(PageClass);
+                                    tag.AddCssClass(i == PendingToCrossPageModel.CurrentPage
+                                    ? PageClassSelected : PageClassNormal);
+                                }
+                                tag.InnerHtml.Append(i.ToString());
+                                result3.InnerHtml.AppendHtml(tag);
+                            }
+                            output.Content.AppendHtml(result3.InnerHtml);
+                            break;
+                    }
+                
+            }
+        }
+    }
+
     public class MySelectTagHelper : TagHelper
     {
         private IItemRepository itemsrepository;
@@ -318,19 +433,22 @@ namespace ProdFloor.Infrastructure
             switch (value)
             {
                 case "JobType":
-                    return itemsrepository.JobTypes.Select(d => d.Name).Distinct();
+                    return itemsrepository.JobTypes.OrderBy(s => s.Name).Select(d => d.Name).Distinct();
                 case "Style":
-                    return itemsrepository.DoorOperators.Select(d => d.Style).Distinct();
+                    return itemsrepository.DoorOperators.OrderBy(s => s.Name).Select(d => d.Style).Distinct();
                 case "SwitchStyle":
                     return new List<string> { "2-Position", "3-Position" }.AsQueryable();
                 case "CarCode":
-                    return new List<string> { "Key", "IMonitor" }.AsQueryable();
+                    return new List<string> { "IMonitor","Key" }.AsQueryable();
                 case "SPH":
                     return new List<string> { "80", "120" }.AsQueryable();
                 case "Starter":
                     return new List<string> { "Siemens SS : 6/12", "Siemens SS : 3/9", "Sprecher SS : 6/12", "Sprecher SS : 3/9", "ATL", "YD" }.AsQueryable();
                 case "Valve Brand":
-                    return new List<string> { "Maxton", "Blain", "EECO", "TKE | Dover", "Bucher", "Other" }.AsQueryable();
+                    List<string> ValveInHydro = jobrepository.HydroSpecifics.Where(d => d.ValveBrand != null).Select(d => d.ValveBrand).Distinct().ToList();
+                    List<string> ValveList = new List<string> { "Blain", "Bucher", "EECO", "Maxton", "TKE | Dover",  "Other" };
+                    if (ValveInHydro.Count > 0) ValveList.AddRange(ValveInHydro);
+                    return ValveList.Distinct().AsQueryable();
                 case "Battery Brand":
                     List<string> BatteryInHydro = jobrepository.HydroSpecifics.Where(d => d.BatteryBrand != null).Select(d => d.BatteryBrand).Distinct().ToList();
                     List<string> BatteryList = new List<string> { "HAPS", "R&R", "Other" };
@@ -338,7 +456,7 @@ namespace ProdFloor.Infrastructure
 
                     return BatteryList.Distinct().AsQueryable();
                 default:
-                    return itemsrepository.JobTypes.Select(d => d.Name).Distinct();
+                    return itemsrepository.JobTypes.OrderBy(s => s.Name).Select(d => d.Name).Distinct();
             }
         }
 
@@ -415,18 +533,18 @@ namespace ProdFloor.Infrastructure
                 case "Volts_Type":
                     return new List<string> { "AC", "DC" }.AsQueryable();
                 case "CallType":
-                    return new List<string> { "LED", "Incandescent" }.AsQueryable();
+                    return new List<string> { "Incandescent", "LED" }.AsQueryable();
                 case "EPContact":
-                    return new List<string> { "NO", "NC" }.AsQueryable();
+                    return new List<string> { "NC","NO",  }.AsQueryable();
                 case "EPCars":
                     return new List<string> { "1", "2", "3", "4" }.AsQueryable();
                 case "PIDriver":
                     return new List<string> { "CE Electronics", "Emotive", "Discrete" }.AsQueryable();
                 case "CarPIDiscreteType":
-                    return new List<string> { "Multi-light", "One line per floor", "Binary 00", "Binary 01" }.AsQueryable();
+                    return new List<string> { "Binary 00", "Binary 01","Multi-light", "One line per floor", }.AsQueryable();
                 case "Monitoring":
-                    return new List<string> { "MView Complete", "MView Interface", "IMonitor Complete", "IMonitor Interface",
-                        "MView Complete & IMonitor Complete","MView Complete & IMonitor Interface","MView Interface & IMonitor Complete","MView Interface & IMonitor Interface", "IDS Liftnet" }.AsQueryable();
+                    return new List<string> { "IDS Liftnet","MView Interface & IMonitor Complete","MView Interface & IMonitor Interface", "MView Complete", "MView Interface", "IMonitor Complete", "IMonitor Interface",
+                        "MView Complete & IMonitor Complete","MView Complete & IMonitor Interface" }.AsQueryable();
                 case "PIType":
                     return new List<string> { "Chime", "Gong" }.AsQueryable();
                 case "AccessSWLocation":
@@ -599,7 +717,7 @@ namespace ProdFloor.Infrastructure
             IQueryable<City> city = itemsrepository.Cities.AsQueryable();
             if (SelectedValue != 0) {
                 int SelectedStateInCityID = itemsrepository.Cities.FirstOrDefault(n => n.CityID == SelectedValue).StateID;
-                city = itemsrepository.Cities.Where(m => m.StateID == SelectedStateInCityID);
+                city = itemsrepository.Cities.Where(m => m.StateID == SelectedStateInCityID).OrderBy(s => s.Name);
             }
             foreach (City cities in city)
             {
@@ -667,7 +785,7 @@ namespace ProdFloor.Infrastructure
                 City selectedCity = itemsrepository.Cities.FirstOrDefault(c => c.CityID == SelectedValue);
                 State selectedState = itemsrepository.States.FirstOrDefault(s => s.StateID == selectedCity.StateID);
                 stateID = selectedCity.StateID;
-                state = itemsrepository.States.Where(m => m.CountryID == selectedState.CountryID).AsQueryable();
+                state = itemsrepository.States.Where(m => m.CountryID == selectedState.CountryID).OrderBy(s => s.Name).AsQueryable();
             }
             foreach (State states in state)
             {
@@ -736,7 +854,7 @@ namespace ProdFloor.Infrastructure
                 State selectedState = itemsrepository.States.FirstOrDefault(s => s.StateID == selectedCity.StateID);
                 countryID = selectedState.CountryID;
             }
-            IQueryable<Country> country = itemsrepository.Countries.AsQueryable();
+            IQueryable<Country> country = itemsrepository.Countries.OrderBy(s => s.Name).AsQueryable();
             foreach (Country countries in country)
             {
                 TagBuilder tag = new TagBuilder("option");
@@ -802,7 +920,7 @@ namespace ProdFloor.Infrastructure
             m_tag.Attributes["value"] = "";
             m_tag.InnerHtml.Append("Please select a FireCode");
             result.InnerHtml.AppendHtml(m_tag);
-            IQueryable<FireCode> fireCode = itemsrepository.FireCodes.AsQueryable();
+            IQueryable<FireCode> fireCode = itemsrepository.FireCodes.OrderBy(s => s.Name).AsQueryable();
             foreach (FireCode fireCodes in fireCode)
             {
                 TagBuilder tag = new TagBuilder("option");
@@ -863,7 +981,7 @@ namespace ProdFloor.Infrastructure
             m_tag.InnerHtml.Append("Please select a FireCode");
             result.InnerHtml.AppendHtml(m_tag);
             IQueryable<FireCode> fireCode = itemsrepository.FireCodes.FromSql("select * from dbo.FireCodes " +
-                "Where dbo.FireCodes.FireCodeID IN (Select dbo.Jobs.FireCodeID From dbo.Jobs)").AsQueryable();
+                "Where dbo.FireCodes.FireCodeID IN (Select dbo.Jobs.FireCodeID From dbo.Jobs)").OrderBy(s => s.Name).AsQueryable();
             foreach (FireCode fireCodes in fireCode)
             {
                 TagBuilder tag = new TagBuilder("option");
@@ -929,7 +1047,7 @@ namespace ProdFloor.Infrastructure
             m_tag.InnerHtml.Append("Please select one");
             result.InnerHtml.AppendHtml(m_tag);
             var jobtypeName = itemsrepository.JobTypes.FirstOrDefault(m => m.JobTypeID == SelectFor).Name;
-            IQueryable<LandingSystem> landigSystems = itemsrepository.LandingSystems.Where(m => m.UsedIn == jobtypeName).AsQueryable();
+            IQueryable<LandingSystem> landigSystems = itemsrepository.LandingSystems.OrderBy(s => s.Name).Where(m => m.UsedIn == jobtypeName).AsQueryable();
             foreach (LandingSystem landingSys in landigSystems)
             {
                 TagBuilder tag = new TagBuilder("option");
@@ -993,7 +1111,7 @@ namespace ProdFloor.Infrastructure
             if (SelectedValue != 0)
             {
                 string AuxDoor = itemsrepository.DoorOperators.FirstOrDefault(m =>m.DoorOperatorID == SelectedValue).Brand;
-                doors = itemsrepository.DoorOperators.Where(m => m.Brand == AuxDoor).AsQueryable();
+                doors = itemsrepository.DoorOperators.Where(m => m.Brand == AuxDoor).OrderBy(s => s.Name).AsQueryable();
             }
             foreach (DoorOperator uniqueDoor in doors)
             {
@@ -1063,7 +1181,7 @@ namespace ProdFloor.Infrastructure
                 doorStyle = selectedDoor.Style;
             }
             IQueryable<DoorOperator> door = itemsrepository.DoorOperators.FromSql("select * from dbo.DoorOperators where dbo.DoorOperators.DoorOperatorID " +
-                "in (Select max(dbo.DoorOperators.DoorOperatorID) FROM dbo.DoorOperators group by dbo.DoorOperators.Style)").AsQueryable();
+                "in (Select max(dbo.DoorOperators.DoorOperatorID) FROM dbo.DoorOperators group by dbo.DoorOperators.Style)").OrderBy(s => s.Style).AsQueryable();
             foreach (DoorOperator doors in door)
             {
                 TagBuilder tag = new TagBuilder("option");
@@ -1132,7 +1250,7 @@ namespace ProdFloor.Infrastructure
                 doorOperatorID = selectedDoor.DoorOperatorID;
                 doorBrand = selectedDoor.Brand;
                 door = itemsrepository.DoorOperators.FromSql("select * from dbo.DoorOperators where Style = {0} AND dbo.DoorOperators.DoorOperatorID in " +
-                "(Select max(dbo.DoorOperators.DoorOperatorID) FROM dbo.DoorOperators group by dbo.DoorOperators.Brand)", selectedDoor.Style).AsQueryable();
+                "(Select max(dbo.DoorOperators.DoorOperatorID) FROM dbo.DoorOperators group by dbo.DoorOperators.Brand)", selectedDoor.Style).OrderBy(s => s.Brand).AsQueryable();
             }
             foreach (DoorOperator doors in door)
             {
@@ -1193,7 +1311,7 @@ namespace ProdFloor.Infrastructure
             m_tag.Attributes["value"] = "";
             m_tag.InnerHtml.Append("Please select a JobType");
             result.InnerHtml.AppendHtml(m_tag);
-            IQueryable<JobType> jobType = itemsrepository.JobTypes.AsQueryable();
+            IQueryable<JobType> jobType = itemsrepository.JobTypes.OrderBy(s => s.Name).AsQueryable();
             foreach (JobType jobTypes in jobType)
             {
                 TagBuilder tag = new TagBuilder("option");
@@ -1254,7 +1372,7 @@ namespace ProdFloor.Infrastructure
             m_tag.InnerHtml.Append("Please select a JobType");
             result.InnerHtml.AppendHtml(m_tag);
             IQueryable<JobType> jobType = itemsrepository.JobTypes.FromSql("select * from dbo.JobTypes " +
-                "Where dbo.JobTypes.JobTypeID IN (Select dbo.Jobs.JobTypeID From dbo.Jobs)").AsQueryable();
+                "Where dbo.JobTypes.JobTypeID IN (Select dbo.Jobs.JobTypeID From dbo.Jobs)").OrderBy(s => s.Name).AsQueryable();
             foreach (JobType jobTypes in jobType)
             {
                 TagBuilder tag = new TagBuilder("option");
@@ -1315,6 +1433,7 @@ namespace ProdFloor.Infrastructure
             m_tag.InnerHtml.Append("Select a Type of operation");
             result.InnerHtml.AppendHtml(m_tag);
             IQueryable<string> jobTypeAdd = ijobrepository.JobsExtensions.Select(j => j.JobTypeAdd).Distinct().AsQueryable();
+            IQueryable<string> jobTypeAdd = ijobrepository.JobsExtensions.OrderBy(s => s.JobTypeAdd).Select( j => j.JobTypeAdd ).Distinct().AsQueryable();
             foreach (string jobTypesAdd in jobTypeAdd)
             {
                 TagBuilder tag = new TagBuilder("option");
@@ -1374,7 +1493,7 @@ namespace ProdFloor.Infrastructure
             m_tag.Attributes["value"] = "";
             m_tag.InnerHtml.Append("Select a Type of operation #2");
             result.InnerHtml.AppendHtml(m_tag);
-            IQueryable<string> jobTypeMain = ijobrepository.JobsExtensions.Select(j => j.JobTypeMain).Distinct().AsQueryable();
+            IQueryable<string> jobTypeMain = ijobrepository.JobsExtensions.OrderBy(s => s.JobTypeMain).Select(j => j.JobTypeMain).Distinct().AsQueryable();
             foreach (string jobTypesMain in jobTypeMain)
             {
                 TagBuilder tag = new TagBuilder("option");
@@ -1495,7 +1614,7 @@ namespace ProdFloor.Infrastructure
             m_tag.InnerHtml.Append("Please select a Landing System");
             result.InnerHtml.AppendHtml(m_tag);
             IQueryable<LandingSystem> landingSys = itemsrepository.LandingSystems.FromSql("select * from dbo.LandingSystems " +
-                "Where dbo.LandingSystems.LandingSystemID IN (Select dbo.HoistWayDatas.LandingSystemID From dbo.HoistWayDatas)").AsQueryable();
+                "Where dbo.LandingSystems.LandingSystemID IN (Select dbo.HoistWayDatas.LandingSystemID From dbo.HoistWayDatas)").OrderBy(s => s.Name).AsQueryable();
             foreach (LandingSystem landingsSys in landingSys)
             {
                 TagBuilder tag = new TagBuilder("option");

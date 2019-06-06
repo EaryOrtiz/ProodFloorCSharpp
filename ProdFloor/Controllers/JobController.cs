@@ -14,6 +14,8 @@ using System.IO;
 using System.Xml;
 using HtmlAgilityPack;
 using Microsoft.Extensions.DependencyInjection;
+using TextCopy;
+using System.Diagnostics;
 
 namespace ProdFloor.Controllers
 {
@@ -266,6 +268,7 @@ namespace ProdFloor.Controllers
                 viewModel.SpecialFeatureslist = SfList;
                 int jobNumAux = viewModel.CurrentJob.JobNum;
                 viewModel.CurrentJob.JobNum = 0;
+                viewModel.CurrentUserID = currentUser.EngID;
                 viewModel.CurrentJob.Status = "Copied";
                 viewModel.POList = new List<PO> { new PO { JobID = viewModel.CurrentJob.JobID } };
                 viewModel.CurrentUserID = currentUser.EngID;
@@ -702,6 +705,10 @@ namespace ProdFloor.Controllers
                                     {
                                         nextViewModel.CurrentHydroSpecific.BatteryBrand = nextViewModel.CurrentHydroSpecific.OtherBatteryBrand;
                                     }
+                                    if (nextViewModel.CurrentHydroSpecific.ValveBrand == "Other" && !string.IsNullOrEmpty(nextViewModel.CurrentHydroSpecific.OtherValveBrand))
+                                    {
+                                        nextViewModel.CurrentHydroSpecific.ValveBrand = nextViewModel.CurrentHydroSpecific.OtherValveBrand;
+                                    }
                                     repository.SaveEngJobView(nextViewModel);
                                     nextViewModel.CurrentGenericFeatures = new GenericFeatures { JobID = nextViewModel.CurrentJob.JobID };
                                     nextViewModel.CurrentIndicator = new Indicator();
@@ -956,14 +963,14 @@ namespace ProdFloor.Controllers
         public JsonResult GetJobState(int CountryID)
         {
             List<State> JobStatelist = new List<State>();
-            JobStatelist = (from state in itemsrepository.States where state.CountryID == CountryID select state).ToList();
+            JobStatelist = (from state in itemsrepository.States where state.CountryID == CountryID  select state).OrderBy(s => s.Name).ToList();
             return Json(new SelectList(JobStatelist, "StateID", "Name"));
         }
 
         public JsonResult GetJobCity(int StateID)
         {
             List<City> CityCascadeList = new List<City>();
-            CityCascadeList = (from city in itemsrepository.Cities where city.StateID == StateID select city).ToList();
+            CityCascadeList = (from city in itemsrepository.Cities where city.StateID == StateID select city).OrderBy(s => s.Name).ToList();
             return Json(new SelectList(CityCascadeList, "CityID", "Name"));
         }
 
@@ -971,7 +978,7 @@ namespace ProdFloor.Controllers
         {
             int FirecodeOncityID = itemsrepository.Cities.FirstOrDefault(m => m.CityID == CityID).FirecodeID;
             List<FireCode> FireCodeList = new List<FireCode>();
-            FireCodeList = (from firecode in itemsrepository.FireCodes where firecode.FireCodeID == FirecodeOncityID select firecode).ToList();
+            FireCodeList = (from firecode in itemsrepository.FireCodes where firecode.FireCodeID == FirecodeOncityID select firecode).OrderBy(s => s.Name).ToList();
             return Json(new SelectList(FireCodeList, "FireCodeID", "Name"));
         }
 
@@ -979,14 +986,14 @@ namespace ProdFloor.Controllers
         {
             List<DoorOperator> BrandList = new List<DoorOperator>();
             BrandList = itemsrepository.DoorOperators.FromSql("select * from dbo.DoorOperators where Style = {0} AND dbo.DoorOperators.DoorOperatorID in " +
-                "(Select max(dbo.DoorOperators.DoorOperatorID) FROM dbo.DoorOperators group by dbo.DoorOperators.Brand)", Style).ToList();
+                "(Select max(dbo.DoorOperators.DoorOperatorID) FROM dbo.DoorOperators group by dbo.DoorOperators.Brand)", Style).OrderBy(s => s.Brand).ToList();
             return Json(new SelectList(BrandList, "Brand", "Brand"));
         }
 
         public JsonResult GetDoorOperatorID(string Brand)
         {
             List<DoorOperator> DoorOperatorList = new List<DoorOperator>();
-            DoorOperatorList = (from door in itemsrepository.DoorOperators where door.Brand == Brand select door).ToList();
+            DoorOperatorList = (from door in itemsrepository.DoorOperators where door.Brand == Brand select door).OrderBy(s => s.Name).ToList();
             return Json(new SelectList(DoorOperatorList, "DoorOperatorID", "Name"));
         }
 
@@ -2869,5 +2876,13 @@ namespace ProdFloor.Controllers
             return RedirectToAction(nameof(List));
         }
 
+        public IActionResult CopyClipToClipboard(string JobNum, int ID)
+        {
+            string LastFive = JobNum.Substring(5);
+            string FirstTwo = LastFive.Substring(0,2);
+            Clipboard.SetText(@"L:\"+FirstTwo+"000\\"+LastFive);
+            
+            return RedirectToAction("Edit", new { id = ID});
+        }
     }
 }
