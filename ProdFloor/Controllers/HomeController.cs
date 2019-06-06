@@ -47,9 +47,9 @@ namespace ProdFloor.Controllers
             AppUser currentUser = GetCurrentUser().Result;
             bool engineer = GetCurrentUserRole("Engineer").Result;
             if (filtrado != null) Sort = filtrado;
-            if(engineer)
+            if (engineer)
             {
-              
+
                 List<Job> MyjobsList = repository.Jobs
                     .Where(j => j.EngID == currentUser.EngID)
                     .Where(j => j.Status == "Incomplete" || j.Status == "Not Reviewed" || j.Status == "Working on it" || j.Status == "Cross Approval Complete").ToList();
@@ -106,12 +106,6 @@ namespace ProdFloor.Controllers
                     {
                         CurrentPage = OnCrossJobPage,
                         ItemsPerPage = PageSize,
-                        TotalItems = repository.Jobs
-                        .Where(j => j.EngID != currentUser.EngID)
-                        .Where(j => j.Status == "Cross Approval Pending" || j.Status == "Cross Approval Complete")
-                        .Count()
-                    }
-                });
                         TotalItems = OnCrossJobsList.Count(),
                         sort = Sort != "default" ? Sort : "deafult"
                     },
