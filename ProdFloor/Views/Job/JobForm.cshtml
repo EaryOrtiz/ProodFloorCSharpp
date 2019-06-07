@@ -57,6 +57,7 @@
                 <input type="hidden" asp-for="POList[i].POID" />
                 <input type="hidden" asp-for="POList[i].JobID" />
                 <input type="hidden" asp-for="CurrentJob.JobID" />
+                <input type="hidden" asp-for="CurrentJob.JobTypeID" />
                 <input type="hidden" asp-for="@Model.fieldID" value="@Model.POList.Last().POID" />
                 <div class="form-group row">
                     <label asp-for="POList[i].PONumb" class="col-sm-3 col-form-label"></label>
