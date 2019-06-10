@@ -134,6 +134,17 @@ namespace ProdFloor.Controllers
                     {
                         TempData["message"] = $"That PO already exists. Please validate.";
                         TempData["alert"] = $"alert-danger";
+
+                        newJob.CurrentJob = (newJob.CurrentJob ?? new Job());
+                        newJob.POList = (newJob.POList ?? new List<PO> { new PO() });
+                        newJob.CurrentJobExtension = (newJob.CurrentJobExtension ?? new JobExtension());
+                        newJob.CurrentHydroSpecific = (newJob.CurrentHydroSpecific ?? new HydroSpecific());
+                        newJob.CurrentGenericFeatures = (newJob.CurrentGenericFeatures ?? new GenericFeatures());
+                        newJob.CurrentIndicator = (newJob.CurrentIndicator ?? new Indicator());
+                        newJob.CurrentHoistWayData = (newJob.CurrentHoistWayData ?? new HoistWayData());
+                        newJob.SpecialFeatureslist = (newJob.SpecialFeatureslist ?? new List<SpecialFeatures> { new SpecialFeatures() });
+                        TempData["message"] = $"nothing was saved";
+                        return View(newJob);
                     }
 
                     List<PO> POsList = repository.POs.Where(j => j.JobID == currentJob.JobID).ToList();
@@ -154,6 +165,9 @@ namespace ProdFloor.Controllers
                         CurrentTab = "Extension"
                     };
                     TempData["message"] = $"Job# {newJobViewModel.CurrentJob.JobNum} has been saved...{newJobViewModel.CurrentJob.JobID}...";
+                    string LastFive = newJobViewModel.CurrentJob.JobNum.ToString().Substring(5);
+                    string FirstTwo = LastFive.Substring(0, 2);
+                    newJobViewModel.JobFolder = @"L:\" + FirstTwo + "000\\" + LastFive;
                     return View("NextForm", newJobViewModel);
                 }
                 else
@@ -225,9 +239,13 @@ namespace ProdFloor.Controllers
             }
             else
             {
+                
                 List<PO> POsList = repository.POs.Where(j => j.JobID == ID).ToList();
                 List<SpecialFeatures> SfList = repository.SpecialFeatures.Where(j => j.JobID == ID).ToList();
                 JobViewModel viewModel = new JobViewModel();
+                string LastFive = job.JobNum.ToString().Substring(5);
+                string FirstTwo = LastFive.Substring(0, 2);
+                viewModel.JobFolder =  @"L:\" + FirstTwo + "000\\" + LastFive;
                 viewModel.CurrentJob = job;
                 viewModel.CurrentJobExtension = repository.JobsExtensions.FirstOrDefault(j => j.JobID == ID);
                 viewModel.CurrentHydroSpecific = repository.HydroSpecifics.FirstOrDefault(j => j.JobID == ID);
@@ -581,6 +599,9 @@ namespace ProdFloor.Controllers
                 continueJobViewModel.CurrentUserID = currentUser.EngID;
                 continueJobViewModel.CurrentTab = "Main";
                 continueJobViewModel.CurrentJob = repository.Jobs.FirstOrDefault(j => j.JobID == ID);
+                string LastFive = continueJobViewModel.CurrentJob.JobNum.ToString().Substring(5);
+                string FirstTwo = LastFive.Substring(0, 2);
+                continueJobViewModel.JobFolder = @"L:\" + FirstTwo + "000\\" + LastFive;
                 if (POsList != null) continueJobViewModel.POList = POsList;
                 else continueJobViewModel.POList = new List<PO> { new PO() };
                 continueJobViewModel.CurrentJobExtension = (repository.JobsExtensions.FirstOrDefault(j => j.JobID == ID) ?? new JobExtension());
@@ -628,7 +649,11 @@ namespace ProdFloor.Controllers
                 {
                         if (nextViewModel.CurrentJobExtension != null && nextViewModel.CurrentJobExtension.JobID != 0)
                         {
-                            if (nextViewModel.CurrentHydroSpecific != null && nextViewModel.CurrentHydroSpecific.JobID != 0)
+                        string LastFive = nextViewModel.CurrentJob.JobNum.ToString().Substring(5);
+                        string FirstTwo = LastFive.Substring(0, 2);
+                        nextViewModel.JobFolder = @"L:\" + FirstTwo + "000\\" + LastFive;
+
+                        if (nextViewModel.CurrentHydroSpecific != null && nextViewModel.CurrentHydroSpecific.JobID != 0)
                             {
                                 if (nextViewModel.CurrentGenericFeatures != null && nextViewModel.CurrentGenericFeatures.JobID != 0)
                                 {

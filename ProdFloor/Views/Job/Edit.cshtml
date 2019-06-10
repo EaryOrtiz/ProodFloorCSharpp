@@ -36,10 +36,6 @@
             <form asp-action="SearchAux" asp-controller="Item" method="get">
                 <button asp-action="SearchAux" asp-controller="Item" type="submit" value="@Model.CurrentJob.JobNum" name="JobNum" class="dropdown-item">WorkSheet</button>
             </form>
-            <form asp-action="CopyClipToClipboard" asp-controller="Job" method="get">
-                <button asp-action="CopyClipToClipboard" asp-controller="Job" type="submit" value="@Model.CurrentJob.JobNum" name="JobNum" class="dropdown-item">Copy JobFile location</button>
-                <input type="hidden" value="@Model.CurrentJob.JobID" name="ID"/>
-            </form>
         </div>
     </li>
 </ul>
