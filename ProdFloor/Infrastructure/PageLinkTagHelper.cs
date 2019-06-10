@@ -1430,7 +1430,7 @@ namespace ProdFloor.Infrastructure
             }
             TagBuilder m_tag = new TagBuilder("option");
             m_tag.Attributes["value"] = "";
-            m_tag.InnerHtml.Append("Select a Type of operation");
+            m_tag.InnerHtml.Append("Select a type of operation");
             result.InnerHtml.AppendHtml(m_tag);
             IQueryable<string> jobTypeAdd = ijobrepository.JobsExtensions.OrderBy(s => s.JobTypeAdd).Select( j => j.JobTypeAdd ).Distinct().AsQueryable();
             foreach (string jobTypesAdd in jobTypeAdd)
