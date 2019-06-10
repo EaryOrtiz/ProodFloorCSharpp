@@ -50,14 +50,16 @@
     <div class="form-group row">
         <label asp-for="ElementTraction.MachineLocation" class="col-sm-2 col-form-label"></label>
         <div>
-            <input asp-for="ElementTraction.MachineLocation" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control " />
+            <custom-select selected-value="@Model.ElementTraction.MachineLocation" class="form-control form-control-sm" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)"
+                           asp-for="ElementTraction.MachineLocation" select-for="MachineLocation"></custom-select>
             <span asp-validation-for="ElementTraction.MachineLocation" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group row">
         <label asp-for="ElementTraction.VVVF" class="col-sm-2 col-form-label"></label>
         <div>
-            <input asp-for="ElementTraction.VVVF" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control " />
+            <custom-select selected-value="@Model.ElementTraction.VVVF" class="form-control form-control-sm" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)"
+                           asp-for="ElementTraction.VVVF" select-for="VVVF"></custom-select>
             <span asp-validation-for="ElementTraction.VVVF" class="text-danger"></span>
         </div>
     </div>
@@ -71,7 +73,8 @@
     <div class="form-group row">
         <label asp-for="ElementTraction.Contact" class="col-sm-2 col-form-label"></label>
         <div>
-            <input asp-for="ElementTraction.Contact" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control " />
+            <custom-select selected-value="@Model.ElementTraction.Contact" class="form-control form-control-sm" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)"
+                           asp-for="ElementTraction.Contact" select-for="Contact"></custom-select>
             <span asp-validation-for="ElementTraction.Contact" class="text-danger"></span>
         </div>
     </div>

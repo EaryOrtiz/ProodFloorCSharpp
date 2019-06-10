@@ -327,8 +327,20 @@ namespace ProdFloor.Infrastructure
                     return new List<string> { "Key", "IMonitor" }.AsQueryable();
                 case "SPH":
                     return new List<string> { "80", "120" }.AsQueryable();
+                case "INA":
+                    return new List<string> { "Top Bottom", "Top","bottom"}.AsQueryable();
+                case "LoadWeigher":
+                    return new List<string> {"Discrete", "EMCO","N/A" }.AsQueryable();
+                case "MachineLocation":
+                    return new List<string> { "Overhead", "Basement"}.AsQueryable();
+                case "VVVF":
+                    return new List<string> { "HPV900", "KEB","Yaskawa" }.AsQueryable();
+                case "Contact":
+                    return new List<string> { "N/C", "N/O" }.AsQueryable();
                 case "Starter":
                     return new List<string> { "Siemens SS : 6/12", "Siemens SS : 3/9", "Sprecher SS : 6/12", "Sprecher SS : 3/9", "ATL", "YD" }.AsQueryable();
+                case "StarterForElements":
+                    return new List<string> { "Siemens SS : 6/12", "Siemens SS : 3/9", "Sprecher SS : 6/12", "Sprecher SS : 3/9"}.AsQueryable();
                 case "Valve Brand":
                     return new List<string> { "Maxton", "Blain", "EECO", "TKE | Dover", "Bucher", "Other" }.AsQueryable();
                 case "Battery Brand":
@@ -1038,6 +1050,7 @@ namespace ProdFloor.Infrastructure
         public ViewContext ViewContext { get; set; }
 
         public int SelectedValue { get; set; }
+        public bool isElement { get; set; }
 
         [HtmlAttributeName("asp-is-disabled")]
         public bool IsDisabled { set; get; }
@@ -1067,24 +1080,48 @@ namespace ProdFloor.Infrastructure
             }
             IQueryable<DoorOperator> door = itemsrepository.DoorOperators.FromSql("select * from dbo.DoorOperators where dbo.DoorOperators.DoorOperatorID " +
                 "in (Select max(dbo.DoorOperators.DoorOperatorID) FROM dbo.DoorOperators group by dbo.DoorOperators.Style)").AsQueryable();
-            foreach (DoorOperator doors in door)
+            if (!isElement)
             {
-                TagBuilder tag = new TagBuilder("option");
-                tag.Attributes["value"] = doors.Style;
-                if (doors.Style == doorStyle)
+                foreach (DoorOperator doors in door)
                 {
-                    tag.Attributes["selected"] = doors.Style;
+                    TagBuilder tag = new TagBuilder("option");
+                    tag.Attributes["value"] = doors.Style;
+                    if (doors.Style == doorStyle)
+                    {
+                        tag.Attributes["selected"] = doors.Style;
+                    }
+                    tag.InnerHtml.Append(doors.Style);
+                    result.InnerHtml.AppendHtml(tag);
                 }
-                tag.InnerHtml.Append(doors.Style);
-                result.InnerHtml.AppendHtml(tag);
+                output.Content.AppendHtml(result.InnerHtml);
+                if (IsDisabled)
+                {
+                    var d = new TagHelperAttribute("disabled", "disabled");
+                    output.Attributes.Add(d);
+                }
+                base.Process(context, output);
             }
-            output.Content.AppendHtml(result.InnerHtml);
-            if (IsDisabled)
+            else
             {
-                var d = new TagHelperAttribute("disabled", "disabled");
-                output.Attributes.Add(d);
+                DoorOperator doorUnique = itemsrepository.DoorOperators.FirstOrDefault(m => m.Style == "Automatic");
+
+                    TagBuilder tag = new TagBuilder("option");
+                    tag.Attributes["value"] = doorUnique.Style;
+                    if (doorUnique.Style == doorStyle)
+                    {
+                        tag.Attributes["selected"] = doorUnique.Style;
+                    }
+                    tag.InnerHtml.Append(doorUnique.Style);
+                    result.InnerHtml.AppendHtml(tag);
+                output.Content.AppendHtml(result.InnerHtml);
+                if (IsDisabled)
+                {
+                    var d = new TagHelperAttribute("disabled", "disabled");
+                    output.Attributes.Add(d);
+                }
+                base.Process(context, output);
             }
-            base.Process(context, output);
+            
         }
     }
 

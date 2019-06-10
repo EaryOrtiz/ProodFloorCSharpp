@@ -48,21 +48,23 @@
         <div class="form-group row">
             <label asp-for="Element.LoadWeigher" class="col-sm-4 col-form-label"></label>
             <div>
-                <input asp-for="Element.LoadWeigher" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" class="form-control col-sm-8" />
+                <custom-select selected-value="@Model.Element.LoadWeigher" class="form-control form-control-sm" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)"
+                               asp-for="Element.LoadWeigher" select-for="LoadWeigher"></custom-select>
                 <span asp-validation-for="Element.LoadWeigher" class="text-danger"></span>
             </div>
         </div>
         <div class="form-group row">
             <label asp-for="Element.INA" class="col-sm-4 col-form-label"></label>
             <div>
-                <input asp-for="Element.INA" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" class="form-control col-sm-8" />
+                <custom-select selected-value="@Model.Element.INA" class="form-control form-control-sm" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)"
+                   asp-for="Element.INA" select-for="INA"></custom-select>
                 <span asp-validation-for="Element.INA" class="text-danger"></span>
             </div>
         </div>
         <div class="form-group row" style="margin-bottom:0.5em;">
             <label asp-for="Element.DoorGate" class="col-sm-4 col-form-label"></label>
             <div>
-                <door-operator-style-select id="Style" asp-for="Element.DoorGate" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" selected-value="@Model.Element.DoorOperatorID" class="form-control form-control-sm">
+                <door-operator-style-select id="Style" asp-for="Element.DoorGate" is-element="true" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" selected-value="@Model.Element.DoorOperatorID" class="form-control form-control-sm">
                 </door-operator-style-select>
                 <span asp-validation-for="Element.DoorGate" class="text-danger"></span>
             </div>

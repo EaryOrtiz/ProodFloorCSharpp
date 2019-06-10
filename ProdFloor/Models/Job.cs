@@ -689,6 +689,7 @@ namespace ProdFloor.Models
         [Display(Name = "Door Operator")]
         public int DoorOperatorID { get; set; }
 
+        [Required(ErrorMessage = "Please enter the INA")]
         public string INA { get; set; }
         public bool INCP { get; set; }
         public bool  CarKey { get; set; }
@@ -713,11 +714,17 @@ namespace ProdFloor.Models
         public bool CTINSPST { get; set; }
         public bool Traveler { get; set; }
 
+        [Required(ErrorMessage = "Please enter the Capacity")]
         public int Capacity { get; set; }
+        [Required(ErrorMessage = "Please enter the Speed")]
         public int Speed { get; set; }
+        [Required(ErrorMessage = "Please enter the Voltage")]
         public int Voltage { get; set; }
+        [Required(ErrorMessage = "Please enter the Phase")]
         public int Phase { get; set; }
+        [Required(ErrorMessage = "Please enter the Frequency")]
         public int Frequency { get; set; }
+        [Required(ErrorMessage = "Please enter the LoadWeigher")]
         public string LoadWeigher { get; set; }
 
     }
@@ -727,10 +734,15 @@ namespace ProdFloor.Models
         public int ElementHydroID { get; set; }
         public int JobID { get; set; }
 
+        [Required(ErrorMessage = "Please enter the Starter")]
         public string Starter { get; set; }
+        [Required(ErrorMessage = "Please enter the HP")]
         public int HP { get; set; }
+        [Required(ErrorMessage = "Please enter the FLA")]
         public int FLA { get; set; }
+        [Required(ErrorMessage = "Please enter the SPH")]
         public int SPH { get; set; }
+        [Required(ErrorMessage = "Please enter the ValveBrand")]
         public string ValveBrand { get; set; }
     }
 
@@ -739,18 +751,29 @@ namespace ProdFloor.Models
         public int ElementTractionID { get; set; }
         public int JobID { get; set; }
 
+        [Required(ErrorMessage = "Please enter the MachineLocation")]
         public string MachineLocation { get; set; }
+        [Required(ErrorMessage = "Please enter the VVVF")]
         public string VVVF { get; set; }
+        [Required(ErrorMessage = "Please enter the MotorBrand")]
         public string MotorBrand { get; set; }
+        [Required(ErrorMessage = "Please enter the Contact")]
         public string Contact { get; set; }
+
         public bool Encoder { get; set; }
         public bool ISO { get; set; }
 
+        [Required(ErrorMessage = "Please enter the HP")]
         public int HP { get; set; }
+        [Required(ErrorMessage = "Please enter the FLA")]
         public int FLA { get; set; }
+        [Required(ErrorMessage = "Please enter the PickVoltage")]
         public int PickVoltage { get; set; }
+        [Required(ErrorMessage = "Please enter the HoldVoltage")]
         public int HoldVoltage { get; set; }
+        [Required(ErrorMessage = "Please enter the Resistance")]
         public int Resistance { get; set; }
+        [Required(ErrorMessage = "Please enter the Current")]
         public int Current { get; set; }
         
     }

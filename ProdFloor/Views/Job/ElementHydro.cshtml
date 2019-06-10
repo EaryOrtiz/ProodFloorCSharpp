@@ -10,7 +10,7 @@
             <label asp-for="ElementHydro.Starter" class="col-sm-3 col-form-label"></label>
             <div>
                 <custom-select selected-value="@Model.ElementHydro.Starter" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)"
-                               class="form-control-sm form-control" asp-for="ElementHydro.Starter" select-for="Starter"></custom-select>
+                               class="form-control-sm form-control" asp-for="ElementHydro.Starter" select-for="StarterForElements"></custom-select>
                 <span asp-validation-for="ElementHydro.Starter" class="text-danger"></span>
             </div>
         </div>

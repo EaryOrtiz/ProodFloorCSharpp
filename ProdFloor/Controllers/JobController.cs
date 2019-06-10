@@ -1317,12 +1317,20 @@ namespace ProdFloor.Controllers
                         Element elem = repository.Elements.FirstOrDefault(j => j.JobID == nextViewModel.CurrentJob.JobID);
                         nextViewModel.Element = (elem ?? new Element { JobID = nextViewModel.CurrentJob.JobID });
                         nextViewModel.ElementHydro = new ElementHydro();
+                        nextViewModel.SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures() };
                         nextViewModel.CurrentTab = "Element";
                         TempData["message"] = $"job was saved";
                         return View(nextViewModel);
                     }
 
                 }
+                nextViewModel.CurrentJob = (nextViewModel.CurrentJob ?? new Job());
+                nextViewModel.POList = (nextViewModel.POList ?? new List<PO> { new PO() });
+                nextViewModel.Element = (nextViewModel.Element ?? new Element());
+                nextViewModel.ElementHydro = (nextViewModel.ElementHydro ?? new ElementHydro());
+                nextViewModel.SpecialFeatureslist = (nextViewModel.SpecialFeatureslist ?? new List<SpecialFeatures> { new SpecialFeatures() });
+                TempData["message"] = $"nothing was saved";
+                return View(nextViewModel);
             }
 
             return View(nextViewModel);
@@ -1387,6 +1395,7 @@ namespace ProdFloor.Controllers
                         Element elem = repository.Elements.FirstOrDefault(j => j.JobID == nextViewModel.CurrentJob.JobID);
                         nextViewModel.Element = (elem ?? new Element { JobID = nextViewModel.CurrentJob.JobID });
                         nextViewModel.ElementTraction = new ElementTraction();
+                        nextViewModel.SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures() };
                         nextViewModel.CurrentTab = "Element";
                         TempData["message"] = $"job was saved";
                         return View(nextViewModel);
@@ -1394,7 +1403,13 @@ namespace ProdFloor.Controllers
 
                 }
 
-                return View(NotFound());
+                nextViewModel.CurrentJob = (nextViewModel.CurrentJob ?? new Job());
+                nextViewModel.POList = (nextViewModel.POList ?? new List<PO> { new PO() });
+                nextViewModel.Element = (nextViewModel.Element ?? new Element());
+                nextViewModel.ElementTraction = (nextViewModel.ElementTraction ?? new ElementTraction());
+                nextViewModel.SpecialFeatureslist = (nextViewModel.SpecialFeatureslist ?? new List<SpecialFeatures> { new SpecialFeatures() });
+                TempData["message"] = $"nothing was saved";
+                return View(nextViewModel);
             }
 
             return View(nextViewModel);
