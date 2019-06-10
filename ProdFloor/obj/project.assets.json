@@ -13747,23 +13747,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\temp\\.nuget\\packages\\": {},
+    "C:\\Users\\Administrator\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\eary.ortiz\\Documents\\GitHub\\ProodFloorCSharpp\\ProdFloor\\ProdFloor.csproj",
+      "projectUniqueName": "C:\\Users\\Administrator\\Documents\\GitHub\\ProodFloorCSharpp\\ProdFloor\\ProdFloor.csproj",
       "projectName": "ProdFloor",
-      "projectPath": "C:\\Users\\eary.ortiz\\Documents\\GitHub\\ProodFloorCSharpp\\ProdFloor\\ProdFloor.csproj",
-      "packagesPath": "C:\\Users\\temp\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\eary.ortiz\\Documents\\GitHub\\ProodFloorCSharpp\\ProdFloor\\obj\\",
+      "projectPath": "C:\\Users\\Administrator\\Documents\\GitHub\\ProodFloorCSharpp\\ProdFloor\\ProdFloor.csproj",
+      "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Administrator\\Documents\\GitHub\\ProodFloorCSharpp\\ProdFloor\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\temp\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Administrator\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -13796,7 +13796,6 @@
             "version": "[2.0.3, )"
           },
           "Microsoft.NETCore.App": {
-            "suppressParent": "All",
             "target": "Package",
             "version": "[2.0.0, )",
             "autoReferenced": true
