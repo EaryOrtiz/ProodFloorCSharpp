@@ -139,27 +139,35 @@ namespace ProdFloor.Controllers
             AppUser currentUser = GetCurrentUser().Result;
             if (ModelState.IsValid)
             {
-                //y esta esta tambien y poner denuevo el {currenuser.engId} en Los TempDatas cuando terminen los test 
-                if (newJob.CurrentJob.EngID == 0)
+                List<PO> PoAux = new List<PO>();
+                foreach (PO itemes in newJob.POList)
                 {
+                    try
+                    {
+                        PO poUniqueAUx = repository.POs.FirstOrDefault(m => m.PONumb == itemes.PONumb);
+                        PoAux.Add(poUniqueAUx);
+                    }
+                    catch (Exception)
+                    {
+                        continue;
+                    }
+
+                }
+                if (PoAux.Count <= 0 || PoAux[0] == null)
+                {
+                    //y esta esta tambien y poner denuevo el {currenuser.engId} en Los TempDatas cuando terminen los test 
                     newJob.CurrentJob.EngID = currentUser.EngID;
                     newJob.CurrentJob.CrossAppEngID = 117;
                     newJob.CurrentJob.Status = "Incomplete";
                     repository.SaveJob(newJob.CurrentJob);
                     Job currentJob = repository.Jobs.FirstOrDefault(p => p.JobID == repository.Jobs.Max(x => x.JobID));
-                    try
+
+                    foreach (PO items in newJob.POList)
                     {
-                        foreach (PO items in newJob.POList)
-                        {
-                            items.JobID = currentJob.JobID;
-                            repository.SavePO(items);
-                        }
+                        items.JobID = currentJob.JobID;
+                        repository.SavePO(items);
                     }
-                    catch (DbUpdateException e)
-                    {
-                        TempData["message"] = $"That PO already exists. Please validate.";
-                        TempData["alert"] = $"alert-danger";
-                    }
+
 
                     List<PO> POsList = repository.POs.Where(j => j.JobID == currentJob.JobID).ToList();
                     List<PO> POlistAUX = new List<PO>();
@@ -214,54 +222,11 @@ namespace ProdFloor.Controllers
                         TempData["message"] = $"Job# {newJobViewModel.CurrentJob.JobNum} has been saved...{newJobViewModel.CurrentJob.JobID}...";
                         return View("NextForm", newJobViewModel);
                     }
-
-                }
-                else
-                {
-                    Job currentJob = repository.Jobs.FirstOrDefault(p => p.JobID == newJob.CurrentJob.JobID);
-                    try
-                    {
-                        foreach (PO items in newJob.POList)
-                        {
-                            items.JobID = currentJob.JobID;
-                            repository.SavePO(items);
-                        }
-                    }
-                    catch (DbUpdateException e)
-                    {
-                        TempData["message"] = $"That PO already exists. Please validate.";
-                        TempData["alert"] = $"alert-danger";
-                    }
-
-                    List<PO> POsList = repository.POs.Where(j => j.JobID == currentJob.JobID).ToList();
-                    List<SpecialFeatures> SfList = repository.SpecialFeatures.Where(j => j.JobID == currentJob.JobID).ToList();
-                    newJob.CurrentJobExtension = repository.JobsExtensions.FirstOrDefault(j => j.JobID == currentJob.JobID);
-                    newJob.CurrentHydroSpecific = repository.HydroSpecifics.FirstOrDefault(j => j.JobID == currentJob.JobID);
-                    newJob.CurrentGenericFeatures = repository.GenericFeaturesList.FirstOrDefault(j => j.JobID == currentJob.JobID);
-                    newJob.CurrentIndicator = repository.Indicators.FirstOrDefault(j => j.JobID == currentJob.JobID);
-                    newJob.CurrentHoistWayData = repository.HoistWayDatas.FirstOrDefault(j => j.JobID == currentJob.JobID);
-                    JobViewModel newJobViewModel = new JobViewModel();
-                    newJobViewModel.CurrentUserID = currentUser.EngID;
-                    newJobViewModel.CurrentJob = currentJob;
-                    if (newJob.CurrentJobExtension != null) newJobViewModel.CurrentJobExtension = newJob.CurrentJobExtension;
-                    else newJobViewModel.CurrentJobExtension = new JobExtension();
-                    if (newJob.CurrentHydroSpecific != null) newJobViewModel.CurrentHydroSpecific = newJob.CurrentHydroSpecific;
-                    else newJobViewModel.CurrentHydroSpecific = new HydroSpecific();
-                    if (newJob.CurrentGenericFeatures != null) newJobViewModel.CurrentGenericFeatures = newJob.CurrentGenericFeatures;
-                    else newJobViewModel.CurrentGenericFeatures = new GenericFeatures();
-                    if (newJob.CurrentIndicator != null) newJobViewModel.CurrentIndicator = newJob.CurrentIndicator;
-                    else newJobViewModel.CurrentIndicator = new Indicator();
-                    if (newJob.CurrentHoistWayData != null) newJobViewModel.CurrentHoistWayData = newJob.CurrentHoistWayData;
-                    else newJobViewModel.CurrentHoistWayData = new HoistWayData();
-                    if (POsList != null) newJobViewModel.POList = POsList;
-                    else newJobViewModel.POList = new List<PO> { new PO() };
-                    if (SfList != null) newJobViewModel.SpecialFeatureslist = SfList;
-                    else newJobViewModel.SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures() };
-                    newJobViewModel.CurrentTab = "Main";
-                    TempData["message"] = $"Job# {newJobViewModel.CurrentJob.JobNum} has been saved...{newJobViewModel.CurrentJob.JobID}...";
-                    return View("NextForm", newJobViewModel);
                 }
 
+                TempData["message"] = $"One of the POs already exists. Please validate.";
+                TempData["alert"] = $"alert-danger";
+                return View(newJob);
             }
             else
             {
@@ -301,7 +266,7 @@ namespace ProdFloor.Controllers
                     hydroViewModel.CurrentTab = "Main";
                     hydroViewModel.JobTypeName = JobTypeName(job.JobTypeID);
 
-                    return View("EditHydro",hydroViewModel);
+                    return View("EditHydro", hydroViewModel);
                 }
                 else if (JobTypeName(job.JobTypeID) == "ElmTract")
                 {
@@ -1086,7 +1051,7 @@ namespace ProdFloor.Controllers
 
                     return View("NextForm", continueJobViewModel);
                 }
-                
+
             }
             else
             {
