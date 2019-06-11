@@ -742,7 +742,7 @@ namespace ProdFloor.Controllers
                 case "Wire":
 
                     HtmlDocument doc = new HtmlDocument();
-                    doc.Load(@"C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\WireTypesSizes.xml");
+                    doc.Load(@"C:\Users\\Administrator\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\WireTypesSizes.xml");
 
                     var XMLobs = doc.DocumentNode.SelectNodes("//wiretypessize");
 
@@ -770,7 +770,7 @@ namespace ProdFloor.Controllers
 
                 case "Slowdown":
                     HtmlDocument doc3 = new HtmlDocument();
-                    doc3.Load(@"C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\Slowdowns.xml");
+                    doc3.Load(@"C:\Users\\Administrator\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\Slowdowns.xml");
 
                     var XMLobs3 = doc3.DocumentNode.SelectNodes("//slowdown");
 
@@ -809,7 +809,7 @@ namespace ProdFloor.Controllers
 
                 case "Starter":
                     HtmlDocument doc4 = new HtmlDocument();
-                    doc4.Load(@"C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\Starters.xml");
+                    doc4.Load(@"C:\Users\Administrator\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\Starters.xml");
 
                     var XMLobs4 = doc4.DocumentNode.SelectNodes("//starter");
 
@@ -852,7 +852,7 @@ namespace ProdFloor.Controllers
 
                 case "Overload":
                     HtmlDocument doc5 = new HtmlDocument();
-                    doc5.Load(@"C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\Overloads.xml");
+                    doc5.Load(@"C:\Users\\Administrator\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\Overloads.xml");
 
                     var XMLobs5 = doc5.DocumentNode.SelectNodes("//overload");
 
@@ -891,7 +891,7 @@ namespace ProdFloor.Controllers
 
                 case "Country":
                     HtmlDocument doc6 = new HtmlDocument();
-                    doc6.Load(@"C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\Countries.xml");
+                    doc6.Load(@"C:\Users\\Administrator\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\Countries.xml");
 
                     var XMLobs6 = doc6.DocumentNode.SelectNodes("//country");
 
@@ -922,7 +922,7 @@ namespace ProdFloor.Controllers
 
                 case "State":
                     HtmlDocument doc2 = new HtmlDocument();
-                    doc2.Load(@"C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\States.xml");
+                    doc2.Load(@"C:\Users\\Administrator\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\States.xml");
 
                     var XMLobs2 = doc2.DocumentNode.SelectNodes("//state");
 
@@ -952,7 +952,7 @@ namespace ProdFloor.Controllers
 
                 case "City":
                     HtmlDocument doc7 = new HtmlDocument();
-                    doc7.Load(@"C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\Cities.xml");
+                    doc7.Load(@"C:\Users\\Administrator\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\Cities.xml");
 
                     var XMLobs7 = doc7.DocumentNode.SelectNodes("//city");
 
@@ -991,7 +991,7 @@ namespace ProdFloor.Controllers
 
                 case "LandingSys":
                     HtmlDocument doc8 = new HtmlDocument();
-                    doc8.Load(@"C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\LandingSystems.xml");
+                    doc8.Load(@"C:\Users\Administrator\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\LandingSystems.xml");
 
                     var XMLobs8 = doc8.DocumentNode.SelectNodes("//landingsystem");
 
@@ -1024,7 +1024,7 @@ namespace ProdFloor.Controllers
 
                 case "FireCode":
                     HtmlDocument doc9 = new HtmlDocument();
-                    doc9.Load(@"C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\FireCodes.xml");
+                    doc9.Load(@"C:\Users\Administrator\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\FireCodes.xml");
 
                     var XMLobs9 = doc9.DocumentNode.SelectNodes("//firecode");
 
@@ -1055,7 +1055,7 @@ namespace ProdFloor.Controllers
 
                 case "DoorOperator":
                     HtmlDocument doc10 = new HtmlDocument();
-                    doc10.Load(@"C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\DoorOperators.xml");
+                    doc10.Load(@"C:\Users\Administrator\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\DoorOperators.xml");
 
                     var XMLobs10 = doc10.DocumentNode.SelectNodes("//dooroperator");
 
@@ -1090,7 +1090,7 @@ namespace ProdFloor.Controllers
 
                 case "JobType":
                     HtmlDocument doc11 = new HtmlDocument();
-                    doc11.Load(@"C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\JobTypes.xml");
+                    doc11.Load(@"C:\Users\Administrator\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\JobTypes.xml");
 
                     var XMLobs11 = doc11.DocumentNode.SelectNodes("//jobtype");
 
