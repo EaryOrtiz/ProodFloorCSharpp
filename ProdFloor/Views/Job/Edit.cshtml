@@ -34,8 +34,10 @@
                 <button type="submit" asp-action="ExportUniqueJobToXML" asp-controller="Job" asp-route-id="@Model.CurrentJob.JobID" class="dropdown-item">Export Job to XML </button>
             </form>
             <form asp-action="SearchAux" asp-controller="Item" method="get">
-                <button asp-action="SearchAux" asp-controller="Item" type="submit" value="@Model.CurrentJob.JobNum" name="JobNum" class="dropdown-item">WorkSheet</button>
+                <button asp-action="SearchAux" asp-controller="Item" type="submit" value="@Model.CurrentJob.JobNum" name="JobNum" class="btn dropdown-item">WorkSheet</button>
             </form>
+                <input class="btn dropdown-item" value="Copy Location " onclick="myFunction()" />
+                <input class="form-control form-control-sm col-sm-10 dropdown-item" style="margin-right:15px" type="text" id="copy" value="@Model.JobFolder" />
         </div>
     </li>
 </ul>
@@ -95,3 +97,17 @@
         </div>
     </div>
 </form>
+<script type="text/javascript">
+
+
+    function myFunction() {
+        /* Get the text field */
+        var copyText = document.getElementById("copy");
+
+        /* Select the text field */
+        copyText.select();
+
+        /* Copy the text inside the text field */
+        document.execCommand("copy");
+    }
+</script>
