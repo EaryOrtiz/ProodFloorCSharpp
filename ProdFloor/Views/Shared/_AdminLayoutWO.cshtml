@@ -13,9 +13,6 @@
     <title>@ViewBag.Title</title>
 </head>
 <body>
-    @using Microsoft.AspNetCore.Identity
-    @inject SignInManager<AppUser> SignInManager
-    @inject UserManager<AppUser> UserManager
     <header>
         <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
             <a class="navbar-brand" href="\">@(ViewBag.Brand == null ? "ProdFloor" : ViewBag.Brand)</a>
@@ -98,11 +95,8 @@
                 @RenderBody()
             </main>
         </div>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+        <script src="~/lib/bootstrap/assets/js/vendor/popper.min.js"></script>
     </div>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
-    <script src="~/lib/bootstrap/assets/js/vendor/popper.min.js"></script>
-    <script src="~/lib/bootstrap/assets/js/vendor/popper.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
 </body>
 </html>

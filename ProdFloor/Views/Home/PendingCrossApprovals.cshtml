@@ -1,0 +1,111 @@
+﻿@model DashboardIndexViewModel
+<h4>Pending Cross Approval(s)</h4>
+<table class="table table-sm">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">
+                Job# &nbsp;
+                <div class="btn-group">
+                    <form asp-controller="Home" asp-action="Index" method="get">
+                        <button class="btn-outline-dark btn btn-sm" style="background-color:transparent;" type="submit" name="filtrado" value="3JobNumAsc"><i class="fa fa-sort-amount-down-alt"></i></button>
+                    </form>
+                    <form asp-controller="Home" asp-action="Index" method="get">
+                        <button class="btn btn-outline-dark btn-sm" style="background-color:transparent;" type="submit" name="filtrado" value="3JobNumDesc"><i class="fas fa-sort-amount-down"></i></button>
+                    </form>
+                </div>
+            </th>
+            <th scope="col">
+                Name &nbsp;
+                <div class="btn-group">
+                    <form asp-controller="Home" asp-action="Index" method="get">
+                        <button class="btn-outline-dark btn btn-sm" style="background-color:transparent;" type="submit" name="filtrado" value="3NameAsc"><i class="fa fa-sort-amount-down-alt"></i></button>
+                    </form>
+                    <form asp-controller="Home" asp-action="Index" method="get">
+                        <button class="btn btn-outline-dark btn-sm" style="background-color:transparent;" type="submit" name="filtrado" value="3NameDesc"><i class="fas fa-sort-amount-down"></i></button>
+                    </form>
+                </div>
+            </th>
+            <th scope="col">Cross Approval Status</th>
+            <th scope="col">Options</th>
+            <th scope="col">
+                Latest Finish&nbsp;
+                <div class="btn-group">
+                    <form asp-controller="Home" asp-action="Index" method="get">
+                        <button class="btn-outline-dark btn btn-sm" style="background-color:transparent;" type="submit" name="filtrado" value="3DateAsc"><i class="fa fa-sort-amount-down-alt"></i></button>
+                    </form>
+                    <form asp-controller="Home" asp-action="Index" method="get">
+                        <button class="btn btn-outline-dark btn-sm" style="background-color:transparent;" type="submit" name="filtrado" value="3DateDesc"><i class="fas fa-sort-amount-down"></i></button>
+                    </form>
+                </div>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.PendingToCrossJobs.Count() == 0)
+        {
+            <tr>
+                <td>No pending Jobs to Cross Aprroving!</td>
+            </tr>
+        }
+        else
+        {
+            @foreach (var j in Model.PendingToCrossJobs)
+            {
+                <tr>
+                    <th scope="row">@j.JobNum</th>
+                    <td>@j.Name</td>
+                    <td>@j.Status</td>
+                    <td>
+                        @if (j.Status == "Cross Approval Pending")
+                        {
+                            <form asp-action="SearchAux" asp-controller="Item" method="get">
+                                <button type="submit" value="@j.JobNum" name="JobNum" class="btn btn-light" style="float:left;background-color:transparent">
+                                    <i class="fas fa-file-word"></i>
+                                </button>
+                            </form>
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#exampleModal @j.JobID">
+                                Cross Approving
+                            </button>
+                            <!-- Modal -->
+                            <div class="modal fade" id="exampleModal @j.JobID" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLongTitle"><i class="fas fa-exclamation-triangle"></i>Cross Approval Assing</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            Please confirm that you will cross approve the job #@j.JobNum?
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
+                                            <form asp-action="GetCross" method="post">
+                                                <input type="hidden" name="JobCrossID" value="@j.JobID" />
+                                                <button type="submit" class="btn btn-info btn-sm">
+                                                    Take to Cross Approving
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </td>
+                    <td>@j.LatestFinishDate.ToShortDateString()</td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+@if (Model.PendingToCrossJobs.Count() > 0)
+{
+    <page-link-dash-board current-model="PendingJobs" my-jobs-page-model="@Model.MyJobsPagingInfo" page-action="Index" page-classes-enabled="true"
+                          page-class="btn" page-class-normal="btn-secondary" on-cross-page-model="@Model.OnCrossJobsPagingInfo" pending-to-cross-page-model="@Model.PendingToCrossJobsPagingInfo"
+                          page-class-selected="btn-primary" my-jobs-url-value="MyJobsPage" on-cross-url-value="OnCrossJobPage"
+                          pending-to-cross-url-value="PendingToCrossJobPage" sort="Sort"
+                          class="btn-group pull-right m-1">
+    </page-link-dash-board>
+}
