@@ -1245,7 +1245,7 @@ namespace ProdFloor.Controllers
 
                             if (nextViewModel.SpecialFeatureslist != null)
                             {
-                                nextViewModel.CurrentJob.Status = "Working on it";
+                                nextViewModel.CurrentJob.Status = "Cross Approval Complete";
                                 repository.SaveEngElementHydroJobView(nextViewModel);
                                 nextViewModel.CurrentTab = "Main";
                                 TempData["message"] = $"everything was saved";
@@ -1323,7 +1323,7 @@ namespace ProdFloor.Controllers
 
                             if (nextViewModel.SpecialFeatureslist != null)
                             {
-                                nextViewModel.CurrentJob.Status = "Working on it";
+                                nextViewModel.CurrentJob.Status = "Cross Approval Complete";
                                 repository.SaveEngElementTractionJobView(nextViewModel);
                                 nextViewModel.CurrentTab = "Main";
                                 TempData["message"] = $"everything was saved";
