@@ -295,8 +295,6 @@ namespace ProdFloor.Infrastructure
     {
         private IItemRepository itemsrepository;
         private IJobRepository jobrepository;
-
-
         private IUrlHelperFactory urlHelperFactory;
 
         public ModelExpression AspFor { get; set; }
@@ -328,9 +326,9 @@ namespace ProdFloor.Infrastructure
                 case "SPH":
                     return new List<string> { "80", "120" }.AsQueryable();
                 case "INA":
-                    return new List<string> { "Top Bottom", "Top","bottom"}.AsQueryable();
+                    return new List<string> { "Top & Bottom", "Top","bottom"}.AsQueryable();
                 case "LoadWeigher":
-                    return new List<string> {"Discrete", "EMCO","N/A" }.AsQueryable();
+                    return new List<string> {"Discrete", "EMCO" }.AsQueryable();
                 case "MachineLocation":
                     return new List<string> { "Overhead", "Basement"}.AsQueryable();
                 case "VVVF":
@@ -372,8 +370,15 @@ namespace ProdFloor.Infrastructure
                 output.Attributes.Add("name", name);
             }
             TagBuilder m_tag = new TagBuilder("option");
-            m_tag.Attributes["value"] = "";
-            m_tag.InnerHtml.Append("Please select one");
+            if(SelectFor == "LoadWeigher")
+            {
+                m_tag.Attributes["value"] = "N/A";
+                m_tag.InnerHtml.Append("N/A");
+            }else
+            {
+                m_tag.Attributes["value"] = "";
+                m_tag.InnerHtml.Append("Please select one");
+            }
             result.InnerHtml.AppendHtml(m_tag);
             IQueryable<string> options2 = CaseFor(SelectFor);
             foreach (string option in options2)
@@ -1069,7 +1074,7 @@ namespace ProdFloor.Infrastructure
             TagBuilder m_tag = new TagBuilder("option");
             m_tag.Attributes["value"] = "";
             m_tag.InnerHtml.Append("Please select a Style");
-            result.InnerHtml.AppendHtml(m_tag);
+            if (!isElement) result.InnerHtml.AppendHtml(m_tag);
             int doorOperatorID = 0;
             string doorStyle = "";
             if (SelectedValue != 0)

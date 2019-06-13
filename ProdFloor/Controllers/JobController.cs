@@ -1599,7 +1599,7 @@ namespace ProdFloor.Controllers
         {
             List<DoorOperator> BrandList = new List<DoorOperator>();
             BrandList = itemsrepository.DoorOperators.FromSql("select * from dbo.DoorOperators where Style = {0} AND dbo.DoorOperators.DoorOperatorID in " +
-                "(Select max(dbo.DoorOperators.DoorOperatorID) FROM dbo.DoorOperators group by dbo.DoorOperators.Brand)", Style).ToList();
+                "(Select max(dbo.DoorOperators.DoorOperatorID) FROM dbo.DoorOperators group by dbo.DoorOperators.Brand)", Style).OrderBy(s => s.Brand).ToList();
             return Json(new SelectList(BrandList, "Brand", "Brand"));
         }
 

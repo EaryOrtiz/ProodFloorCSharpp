@@ -452,7 +452,15 @@ namespace ProdFloor.Models
                     dbEntry.Phase = element.Phase;
                     dbEntry.Frequency = element.Frequency;
                     dbEntry.CallEnable = element.CallEnable;
-                    
+                    dbEntry.CTL = element.CTL;
+                    dbEntry.CTF = element.CTF;
+                    dbEntry.CSD = element.CSD;
+                    dbEntry.EQ = element.EQ;
+                    dbEntry.LJ = element.LJ;
+                    dbEntry.LOS = element.LOS;
+                    dbEntry.PFGE = element.PFGE;
+                    dbEntry.FRON2 = element.FRON2;
+
                 }
             }
             context.SaveChanges();

@@ -4,92 +4,97 @@
 <input type="hidden" asp-for="CurrentJob.JobID" />
 <input type="hidden" asp-for="CurrentJob.Status" />
 <input type="hidden" asp-for="CurrentJob.EngID" />
-<div class="form-group col-sm-12" style="padding-bottom:15px">
-    <div class="form-group row">
-        <label asp-for="ElementTraction.HP" class="col-sm-2 col-form-label"></label>
-        <div>
-            <input asp-for="ElementTraction.HP" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control" />
-            <span asp-validation-for="ElementTraction.HP" class="text-danger"></span>
+<div class="form-group row col-sm-12" style="padding-bottom:15px">
+    <div class="col-md-4 border-right">
+        <div class="form-group row">
+            <label asp-for="ElementTraction.MachineLocation" class="col-sm-5 col-form-label"></label>
+            <div>
+                <custom-select selected-value="@Model.ElementTraction.MachineLocation" class="form-control form-control-sm" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)"
+                               asp-for="ElementTraction.MachineLocation" select-for="MachineLocation"></custom-select>
+                <span asp-validation-for="ElementTraction.MachineLocation" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="ElementTraction.MotorBrand" class="col-sm-5 col-form-label"></label>
+            <div>
+                <input asp-for="ElementTraction.MotorBrand" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control " />
+                <span asp-validation-for="ElementTraction.MotorBrand" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="ElementTraction.HP" class="col-sm-5 col-form-label"></label>
+            <div>
+                <input asp-for="ElementTraction.HP" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control" />
+                <span asp-validation-for="ElementTraction.HP" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="ElementTraction.FLA" class="col-sm-5 col-form-label"></label>
+            <div>
+                <input asp-for="ElementTraction.FLA" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control " />
+                <span asp-validation-for="ElementTraction.FLA" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="ElementTraction.VVVF" class="col-sm-5 col-form-label"></label>
+            <div>
+                <custom-select selected-value="@Model.ElementTraction.VVVF" class="form-control form-control-sm" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)"
+                               asp-for="ElementTraction.VVVF" select-for="VVVF"></custom-select>
+                <span asp-validation-for="ElementTraction.VVVF" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="custom-control custom-checkbox">
+                <input type="checkbox" asp-for="ElementTraction.Encoder" class="custom-control-input" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)">
+                <div><span asp-validation-for="ElementTraction.Encoder" class="text-danger" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></span></div>
+                <label class="custom-control-label" asp-for="ElementTraction.Encoder" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></label>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="custom-control custom-checkbox">
+                <input type="checkbox" asp-for="ElementTraction.ISO" class="custom-control-input" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)">
+                <div><span asp-validation-for="ElementTraction.ISO" class="text-danger" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></span></div>
+                <label class="custom-control-label" asp-for="ElementTraction.ISO" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></label>
+            </div>
         </div>
     </div>
-    <div class="form-group row">
-        <label asp-for="ElementTraction.FLA" class="col-sm-2 col-form-label"></label>
-        <div>
-            <input asp-for="ElementTraction.FLA" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control " />
-            <span asp-validation-for="ElementTraction.FLA" class="text-danger"></span>
+    <div class="col-md-6">
+
+        <div class="form-group row">
+            <label asp-for="ElementTraction.PickVoltage" class="col-sm-2 col-form-label"></label>
+            <div>
+                <input asp-for="ElementTraction.PickVoltage" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control" />
+                <span asp-validation-for="ElementTraction.PickVoltage" class="text-danger"></span>
+            </div>
         </div>
-    </div>
-    <div class="form-group row">
-        <label asp-for="ElementTraction.PickVoltage" class="col-sm-2 col-form-label"></label>
-        <div>
-            <input asp-for="ElementTraction.PickVoltage" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control" />
-            <span asp-validation-for="ElementTraction.PickVoltage" class="text-danger"></span>
+        <div class="form-group row">
+            <label asp-for="ElementTraction.HoldVoltage" class="col-sm-2 col-form-label"></label>
+            <div>
+                <input asp-for="ElementTraction.HoldVoltage" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control " />
+                <span asp-validation-for="ElementTraction.HoldVoltage" class="text-danger"></span>
+            </div>
         </div>
-    </div>
-    <div class="form-group row">
-        <label asp-for="ElementTraction.HoldVoltage" class="col-sm-2 col-form-label"></label>
-        <div>
-            <input asp-for="ElementTraction.HoldVoltage" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control " />
-            <span asp-validation-for="ElementTraction.HoldVoltage" class="text-danger"></span>
+        <div class="form-group row">
+            <label asp-for="ElementTraction.Resistance" class="col-sm-2 col-form-label"></label>
+            <div>
+                <input asp-for="ElementTraction.Resistance" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control" />
+                <span asp-validation-for="ElementTraction.Resistance" class="text-danger"></span>
+            </div>
         </div>
-    </div>
-    <div class="form-group row">
-        <label asp-for="ElementTraction.Resistance" class="col-sm-2 col-form-label"></label>
-        <div>
-            <input asp-for="ElementTraction.Resistance" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control" />
-            <span asp-validation-for="ElementTraction.Resistance" class="text-danger"></span>
+        <div class="form-group row">
+            <label asp-for="ElementTraction.Current" class="col-sm-2 col-form-label"></label>
+            <div>
+                <input asp-for="ElementTraction.Current" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control " />
+                <span asp-validation-for="ElementTraction.Current" class="text-danger"></span>
+            </div>
         </div>
-    </div>
-    <div class="form-group row">
-        <label asp-for="ElementTraction.Current" class="col-sm-2 col-form-label"></label>
-        <div>
-            <input asp-for="ElementTraction.Current" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control " />
-            <span asp-validation-for="ElementTraction.Current" class="text-danger"></span>
-        </div>
-    </div>
-    <div class="form-group row">
-        <label asp-for="ElementTraction.MachineLocation" class="col-sm-2 col-form-label"></label>
-        <div>
-            <custom-select selected-value="@Model.ElementTraction.MachineLocation" class="form-control form-control-sm" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)"
-                           asp-for="ElementTraction.MachineLocation" select-for="MachineLocation"></custom-select>
-            <span asp-validation-for="ElementTraction.MachineLocation" class="text-danger"></span>
-        </div>
-    </div>
-    <div class="form-group row">
-        <label asp-for="ElementTraction.VVVF" class="col-sm-2 col-form-label"></label>
-        <div>
-            <custom-select selected-value="@Model.ElementTraction.VVVF" class="form-control form-control-sm" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)"
-                           asp-for="ElementTraction.VVVF" select-for="VVVF"></custom-select>
-            <span asp-validation-for="ElementTraction.VVVF" class="text-danger"></span>
-        </div>
-    </div>
-    <div class="form-group row">
-        <label asp-for="ElementTraction.MotorBrand" class="col-sm-2 col-form-label"></label>
-        <div>
-            <input asp-for="ElementTraction.MotorBrand" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control " />
-            <span asp-validation-for="ElementTraction.MotorBrand" class="text-danger"></span>
-        </div>
-    </div>
-    <div class="form-group row">
-        <label asp-for="ElementTraction.Contact" class="col-sm-2 col-form-label"></label>
-        <div>
-            <custom-select selected-value="@Model.ElementTraction.Contact" class="form-control form-control-sm" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)"
-                           asp-for="ElementTraction.Contact" select-for="Contact"></custom-select>
-            <span asp-validation-for="ElementTraction.Contact" class="text-danger"></span>
-        </div>
-    </div>
-    <div class="form-group row">
-        <div class="custom-control custom-checkbox">
-            <input type="checkbox" asp-for="ElementTraction.Encoder" class="custom-control-input" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)">
-            <div><span asp-validation-for="ElementTraction.Encoder" class="text-danger" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></span></div>
-            <label class="custom-control-label" asp-for="ElementTraction.Encoder" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></label>
-        </div>
-    </div>
-    <div class="form-group row">
-        <div class="custom-control custom-checkbox">
-            <input type="checkbox" asp-for="ElementTraction.ISO" class="custom-control-input" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)">
-            <div><span asp-validation-for="ElementTraction.ISO" class="text-danger" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></span></div>
-            <label class="custom-control-label" asp-for="ElementTraction.ISO" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></label>
+        <div class="form-group row">
+            <label asp-for="ElementTraction.Contact" class="col-sm-2 col-form-label"></label>
+            <div>
+                <custom-select selected-value="@Model.ElementTraction.Contact" class="form-control form-control-sm" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)"
+                               asp-for="ElementTraction.Contact" select-for="Contact"></custom-select>
+                <span asp-validation-for="ElementTraction.Contact" class="text-danger"></span>
+            </div>
         </div>
     </div>
 </div>

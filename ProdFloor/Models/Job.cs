@@ -707,12 +707,32 @@ namespace ProdFloor.Models
         public bool PSS { get; set; }
         public bool PTFLD { get; set; }
         public bool VCI { get; set; }
-        public bool DHLD { get; set; }
         public bool CReg { get; set; }
         public bool Egress { get; set; }
         public bool PHECutOut { get; set; }
         public bool CTINSPST { get; set; }
         public bool Traveler { get; set; }
+        public bool LOS { get; set; }
+        public bool PFGE { get; set; }
+        public bool FRON2 { get; set; }
+
+        [Display(Name = "Car To Lobby")]
+        public bool CTL { get; set; }
+
+        [Display(Name = "Car Shutdown")]
+        public bool CSD { get; set; }
+
+        [Display(Name = "Car to Floor")]
+        public bool CTF { get; set; }
+
+        [Display(Name = "Earthquake")]
+        public bool EQ { get; set; }
+
+        [Display(Name = "Life Jacket")]
+        public bool LJ { get; set; }
+
+        [Display(Name = "Door Hold")]
+        public bool DHLD { get; set; }
 
         [Required(ErrorMessage = "Please enter the Capacity")]
         public int Capacity { get; set; }
@@ -737,9 +757,9 @@ namespace ProdFloor.Models
         [Required(ErrorMessage = "Please enter the Starter")]
         public string Starter { get; set; }
         [Required(ErrorMessage = "Please enter the HP")]
-        public int HP { get; set; }
+        public float HP { get; set; }
         [Required(ErrorMessage = "Please enter the FLA")]
-        public int FLA { get; set; }
+        public float FLA { get; set; }
         [Required(ErrorMessage = "Please enter the SPH")]
         public int SPH { get; set; }
         [Required(ErrorMessage = "Please enter the ValveBrand")]
@@ -764,9 +784,9 @@ namespace ProdFloor.Models
         public bool ISO { get; set; }
 
         [Required(ErrorMessage = "Please enter the HP")]
-        public int HP { get; set; }
+        public float HP { get; set; }
         [Required(ErrorMessage = "Please enter the FLA")]
-        public int FLA { get; set; }
+        public float FLA { get; set; }
         [Required(ErrorMessage = "Please enter the PickVoltage")]
         public int PickVoltage { get; set; }
         [Required(ErrorMessage = "Please enter the HoldVoltage")]
@@ -774,7 +794,7 @@ namespace ProdFloor.Models
         [Required(ErrorMessage = "Please enter the Resistance")]
         public int Resistance { get; set; }
         [Required(ErrorMessage = "Please enter the Current")]
-        public int Current { get; set; }
+        public float Current { get; set; }
         
     }
 }
