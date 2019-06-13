@@ -14,5 +14,7 @@ namespace ProdFloor.Models.ViewModels
         public string CurrentItem { get; set; }
         public string CurrentCategory { get; set; }
         public string buttonAction { get; set; }
+        public List<JobType> JobTypes { get; set; }
+        public List<PO> POs { get; set; }
     }
 }

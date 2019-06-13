@@ -17,12 +17,14 @@ namespace ProdFloor.Controllers
     public class HomeController : Controller
     {
         private IJobRepository repository;
+        private IItemRepository itemRepo;
         public int PageSize = 3;
         private UserManager<AppUser> userManager;
 
-        public HomeController(IJobRepository repo, UserManager<AppUser> userMrg)
+        public HomeController(IJobRepository repo,IItemRepository itemRepository, UserManager<AppUser> userMrg)
         {
             repository = repo;
+            itemRepo = itemRepository;
             userManager = userMrg;
         }
 
@@ -49,6 +51,10 @@ namespace ProdFloor.Controllers
             if (filtrado != null) Sort = filtrado;
             if (engineer)
             {
+
+                List<JobType> JobTyPeList = itemRepo.JobTypes.ToList();
+
+                List<PO> POsList = repository.POs.ToList();
 
                 List<Job> MyjobsList = repository.Jobs
                     .Where(j => j.EngID == currentUser.EngID)
@@ -99,8 +105,10 @@ namespace ProdFloor.Controllers
                         ItemsPerPage = PageSize,
                         TotalItems = MyjobsList.Count(),
                         sort = Sort != "default" ? Sort : "deafult"
+                        
                     },
-
+                    JobTypes = JobTyPeList,
+                    POs = POsList,
                     OnCrossJobs = OnCrossJobsList.Skip((OnCrossJobPage - 1) * PageSize).Take(PageSize),
                     OnCrossJobsPagingInfo = new PagingInfo
                     {
@@ -213,6 +221,13 @@ namespace ProdFloor.Controllers
 
                     TempData["message"] = $"You have sent to production the Job #{UpdateStatus.JobNum}";
                 }
+                else if (viewModel.buttonAction == "Completed" && currentUser.EngID == UpdateStatus.EngID)
+                {
+                    UpdateStatus.Status = "Completed";
+                    repository.SaveJob(UpdateStatus);
+
+                    TempData["message"] = $"You have sent to Completed the Job #{UpdateStatus.JobNum}";
+                }
                 else
                 {
                     TempData["alert"] = $"alert-danger";
@@ -247,6 +262,12 @@ namespace ProdFloor.Controllers
             }
             return RedirectToAction("Index");
         }
+
+        public string JobTypeName(int ID)
+        {
+            return itemRepo.JobTypes.FirstOrDefault(m => m.JobTypeID == ID).Name;
+        }
+
     }
 
 }

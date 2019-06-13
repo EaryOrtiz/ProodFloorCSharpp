@@ -20,5 +20,25 @@ namespace ProdFloor.Models
         [Display(Name = "Confirm password")]
         [Compare("password", ErrorMessage = "The passwords do not match.")]
         public string ConfirmPassword { get; set; }
+
+        [NotMapped]
+        public string FullName {
+            get
+            {
+                string[] FullNameArray = UserName.Split('.');
+                if(FullNameArray.Length == 2)
+                {
+                    string FirstName = FullNameArray[0].Substring(0, 1).ToUpper() + FullNameArray[0].Substring(1);
+                    string LastName = FullNameArray[1].Substring(0, 1).ToUpper() + FullNameArray[1].Substring(1);
+                    string FullNameAux = FirstName + " " + LastName;
+                    return FullNameAux;
+                }
+                else
+                {
+                    return "The user is not a Engineer";
+                }
+                
+
+        }   }
     }
 }
