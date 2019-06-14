@@ -55,7 +55,7 @@
                     }
                     else
                     {
-                        <li class="nav-item"><a title="Edit Profile" class="nav-link" asp-controller="Account" asp-action="Edit" asp-route-Id="@UserManager.GetUserId(User)">Hello, @User.Identity.Name</a></li>
+                        <li class="nav-item"><a title="Edit Profile" class="nav-link" asp-controller="Account" asp-action="Edit" asp-route-Id="@UserManager.GetUserId(User)">Hello, @UserManager.GetUserAsync(User).Result.FullName</a></li>
                         <li class="nav-item"><a class="nav-link" href="\Account\LogOut"> Log out <span class="fas fa-sign-out-alt"></span></a></li>
                     }
                 </ul>
