@@ -110,12 +110,15 @@
                         }
                         else if (j.Status == "Cross Approval Complete")
                         {
-                            <form asp-action="SearchAux" asp-controller="Item" method="get">
-                                <button type="submit" value="@j.JobNum" name="JobNum" class="btn btn-dark btn-sm"
-                                        style="margin-bottom:10px;min-width:100px;float:left">
-                                    WorkSheet
-                                </button>
-                            </form>
+                            if (j.JobTypeID == 2 || j.JobTypeID == 3 || j.JobTypeID == 4)
+                            {
+                                <form asp-action="SearchAux" asp-controller="Item" method="get">
+                                    <button type="submit" value="@j.JobNum" name="JobNum" class="btn btn-dark btn-sm"
+                                            style="margin-bottom:10px;min-width:100px;float:left">
+                                        WorkSheet
+                                    </button>
+                                </form>
+                            }
                             <!-- Button trigger modal -->
                             <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#exampleModal @j.JobID">
                                 Ready For Production
@@ -192,12 +195,15 @@
                         <td>
                             @if (j.Status == "Cross Approval Pending")
                             {
-                                <form asp-action="SearchAux" asp-controller="Item" method="get">
-                                    <button type="submit" value="@j.JobNum" name="JobNum" class="btn btn-dark btn-sm"
-                                            style="margin-bottom:10px;min-width:100px;float:left">
-                                        WorkSheet
-                                    </button>
-                                </form>
+                                if (j.JobTypeID == 2 || j.JobTypeID == 3 || j.JobTypeID == 4)
+                                {
+                                    <form asp-action="SearchAux" asp-controller="Item" method="get">
+                                        <button type="submit" value="@j.JobNum" name="JobNum" class="btn btn-dark btn-sm"
+                                                style="margin-bottom:10px;min-width:100px;float:left">
+                                            WorkSheet
+                                        </button>
+                                    </form>
+                                }
                                 <!-- Button trigger modal -->
                                 <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#exampleModal @j.JobID">
                                     Cross Approving
@@ -230,12 +236,15 @@
                             }
                             else if (j.Status == "On Cross Approval")
                             {
-                                <form asp-action="SearchAux" asp-controller="Item" method="get">
-                                    <button type="submit" value="@j.JobNum" name="JobNum" class="btn btn-dark btn-sm"
-                                            style="margin-bottom:10px;min-width:100px;float:left">
-                                        WorkSheet
-                                    </button>
-                                </form>
+                                if (j.JobTypeID == 2 || j.JobTypeID == 3 || j.JobTypeID == 4)
+                                {
+                                    <form asp-action="SearchAux" asp-controller="Item" method="get">
+                                        <button type="submit" value="@j.JobNum" name="JobNum" class="btn btn-dark btn-sm"
+                                                style="margin-bottom:10px;min-width:100px;float:left">
+                                            WorkSheet
+                                        </button>
+                                    </form>
+                                }
                                 <!-- Button trigger modal -->
                                 <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal @j.JobID">
                                     Cross Approved
