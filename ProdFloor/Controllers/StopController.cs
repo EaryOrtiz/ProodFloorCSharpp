@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -192,6 +194,47 @@ namespace ProdFloor.Controllers
             bool isInRole = await userManager.IsInRoleAsync(user, role);
 
             return isInRole;
+        }
+
+
+        [HttpPost]
+        public FileStreamResult ExportToXML()
+        {
+            MemoryStream ms = new MemoryStream();
+            XmlWriterSettings xws = new XmlWriterSettings();
+            xws.OmitXmlDeclaration = true;
+            xws.Indent = true;
+
+            List<Stop> stops = testingRepo.Stops.ToList();
+
+            using (XmlWriter xw = XmlWriter.Create(ms, xws))
+            {
+                xw.WriteStartDocument();
+                xw.WriteStartElement("Stops");
+
+                foreach (Stop stop in stops)
+                {
+                    xw.WriteStartElement("Stop");
+
+                    xw.WriteElementString("StopID", stop.StopID.ToString());
+                    xw.WriteElementString("TestJobID", stop.TestJobID.ToString());
+                    xw.WriteElementString("Reason1", stop.Reason1.ToString());
+                    xw.WriteElementString("Reason2", stop.Reason2.ToString());
+                    xw.WriteElementString("Reason3", stop.Reason3.ToString());
+                    xw.WriteElementString("Reason4", stop.Reason4.ToString());
+                    xw.WriteElementString("Reason5ID", stop.Reason5ID.ToString());
+                    xw.WriteElementString("StartDate", stop.StartDate.ToString());
+                    xw.WriteElementString("StopDate", stop.StopDate.ToString());
+                    xw.WriteElementString("Elapsed", stop.Elapsed.ToString());
+                    xw.WriteElementString("Description", stop.Description.ToString());
+                    xw.WriteEndElement();
+                }
+
+                xw.WriteEndElement();
+                xw.WriteEndDocument();
+            }
+            ms.Position = 0;
+            return File(ms, "text/xml", "Stops.xml");
         }
     }
 }
