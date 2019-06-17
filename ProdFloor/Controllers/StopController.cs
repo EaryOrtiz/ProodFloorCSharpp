@@ -4,10 +4,12 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml;
+using HtmlAgilityPack;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using ProdFloor.Models;
 using ProdFloor.Models.ViewModels;
 using ProdFloor.Models.ViewModels.TestJob;
@@ -235,6 +237,71 @@ namespace ProdFloor.Controllers
             }
             ms.Position = 0;
             return File(ms, "text/xml", "Stops.xml");
+        }
+
+        public static void ImportXML(IServiceProvider services)
+        {
+            ApplicationDbContext context = services.GetRequiredService<ApplicationDbContext>();
+            XmlDocument doc = new XmlDocument();
+            doc.Load(@"C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\Stops.xml");
+
+            var XMLobs = doc.DocumentElement.SelectSingleNode("//Stops");
+
+            var XMLStop = XMLobs.SelectNodes(".//Stop");
+
+            if (XMLobs != null && context.Reasons5.Any() && !context.Stops.Any())
+            {
+                foreach(XmlElement stop in XMLStop)
+                {
+                    var StopID = stop.SelectSingleNode(".//StopID").InnerText;
+                    var TestJobID = stop.SelectSingleNode(".//TestJobID").InnerText;
+                    var Reason1 = stop.SelectSingleNode(".//Reason1").InnerText;
+                    var Reason2 = stop.SelectSingleNode(".//Reason2").InnerText;
+                    var Reason3 = stop.SelectSingleNode(".//Reason3").InnerText;
+                    var Reason4 = stop.SelectSingleNode(".//Reason4").InnerText;
+                    var Reason5ID = stop.SelectSingleNode(".//Reason5ID").InnerText;
+                    var StartDate = stop.SelectSingleNode(".//StartDate").InnerText;
+                    var StopDate = stop.SelectSingleNode(".//StopDate").InnerText;
+                    var Elapsed = stop.SelectSingleNode(".//Elapsed").InnerText;
+                    var Description = stop.SelectSingleNode(".//Description").InnerText;
+                    context.Stops.Add(new Stop
+                    {
+                        StopID = Int32.Parse(StopID),
+                        TestJobID = Int32.Parse(TestJobID),
+                        Reason1 = Int32.Parse(Reason1),
+                        Reason2 = Int32.Parse(Reason2),
+                        Reason3 = Int32.Parse(Reason3),
+                        Reason4 = Int32.Parse(Reason4),
+                        Reason5ID = Int32.Parse(Reason5ID),
+                        StartDate = DateTime.Parse(StartDate),
+                        StopDate = DateTime.Parse(StopDate),
+                        Elapsed = DateTime.Parse(Elapsed),
+                        Description = Description,
+
+                    });
+                    context.Database.OpenConnection();
+                    try
+                    {
+                        context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.Stops ON");
+                        context.SaveChanges();
+                        context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.Stops OFF");
+                    }
+                    finally
+                    {
+                        context.Database.CloseConnection();
+                    }
+
+                }
+                
+            }
+
+        }
+
+        [HttpPost]
+        public IActionResult SeedXML()
+        {
+            ImportXML(HttpContext.RequestServices);
+            return RedirectToAction(nameof(List));
         }
     }
 }
