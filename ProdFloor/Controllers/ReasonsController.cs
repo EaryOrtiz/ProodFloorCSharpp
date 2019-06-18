@@ -166,7 +166,7 @@ namespace ProdFloor.Controllers
             {
                 repository.SaveReason1(reason);
                 TempData["message"] = $"{reason.Reason1ID},, has been saved...";
-                return RedirectToAction("List", new { Page = 1, Reason = 1 });
+                return RedirectToAction("List", new { Page = 1, ReasonNumber = 1 });
             }
             else
             {
@@ -182,7 +182,7 @@ namespace ProdFloor.Controllers
             {
                 repository.SaveReason2(reason);
                 TempData["message"] = $"{reason.Reason2ID},, has been saved...";
-                return RedirectToAction("List", new { Page = 1, Reason = 2 });
+                return RedirectToAction("List", new { Page = 1, ReasonNumber = 2 });
             }
             else
             {
@@ -198,7 +198,7 @@ namespace ProdFloor.Controllers
             {
                 repository.SaveReason3(reason);
                 TempData["message"] = $"{reason.Reason3ID}, has been saved...";
-                return RedirectToAction("List", new { Page = 1, Reason = 3 });
+                return RedirectToAction("List", new { Page = 1, ReasonNumber = 3 });
             }
             else
             {
@@ -214,7 +214,7 @@ namespace ProdFloor.Controllers
             {
                 repository.SaveReason4(reason);
                 TempData["message"] = $"{reason.Reason4ID},, has been saved...";
-                return RedirectToAction("List", new { Page = 1, Reason = 4 });
+                return RedirectToAction("List", new { Page = 1, ReasonNumber = 4 });
             }
             else
             {
@@ -230,7 +230,7 @@ namespace ProdFloor.Controllers
             {
                 repository.SaveReason5(reason);
                 TempData["message"] = $"{reason.Reason5ID},, has been saved...";
-                return RedirectToAction("List", new { Page = 1, Reason = 5 });
+                return RedirectToAction("List", new { Page = 1, ReasonNumber = 5 });
             }
             else
             {
