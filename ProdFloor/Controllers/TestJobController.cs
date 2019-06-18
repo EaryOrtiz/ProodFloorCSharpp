@@ -21,7 +21,7 @@ namespace ProdFloor.Controllers
         private UserManager<AppUser> userManager;
         public int PageSize = 10;
 
-        public TestJobController(ITestingRepository repo, IJobRepository repo2,IItemRepository repo3,  UserManager<AppUser> userMgr)
+        public TestJobController(ITestingRepository repo, IJobRepository repo2, IItemRepository repo3, UserManager<AppUser> userMgr)
         {
             jobRepo = repo2;
             testingRepo = repo;
@@ -57,7 +57,7 @@ namespace ProdFloor.Controllers
 
         [HttpPost]
         public IActionResult SearchJob(TestJobViewModel viewModel)
-         {
+        {
             AppUser currentUser = GetCurrentUser().Result;
             var jobSearch = jobRepo.Jobs.AsQueryable();
             var POSearch = jobRepo.POs.AsQueryable();
@@ -65,10 +65,11 @@ namespace ProdFloor.Controllers
 
             if (viewModel.POJobSearch >= 3000000 && viewModel.POJobSearch <= 4900000)
             {
-                try {
+                try
+                {
 
                     var onePO = POSearch.First(m => m.PONumb == viewModel.POJobSearch);
-                    if(onePO != null)
+                    if (onePO != null)
                     {
                         var _jobSearch = jobSearch.First(m => m.JobID == onePO.JobID);
                         if (_jobSearch != null && _jobSearch.Status != "Incomplete")
@@ -90,13 +91,21 @@ namespace ProdFloor.Controllers
                             return View("NewTestFeatures", testJobView);
 
                         }
-                    } 
-                     
+                    }
+
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
-                    return View("NewDummyJob", new TestJobViewModel { Job = new Job (), JobExtension = new JobExtension(), HydroSpecific = new HydroSpecific(),
-                      GenericFeatures = new GenericFeatures(), Indicator = new Indicator(), HoistWayData = new HoistWayData(), SpecialFeature = new SpecialFeatures(), PO = new PO { PONumb = viewModel.POJobSearch }
+                    return View("NewDummyJob", new TestJobViewModel
+                    {
+                        Job = new Job(),
+                        JobExtension = new JobExtension(),
+                        HydroSpecific = new HydroSpecific(),
+                        GenericFeatures = new GenericFeatures(),
+                        Indicator = new Indicator(),
+                        HoistWayData = new HoistWayData(),
+                        SpecialFeature = new SpecialFeatures(),
+                        PO = new PO { PONumb = viewModel.POJobSearch }
                     });
                 }
             }
@@ -112,7 +121,16 @@ namespace ProdFloor.Controllers
         public IActionResult NewDummyJob(TestJobViewModel viewModel)
         {
             AppUser currentUser = GetCurrentUser().Result;
+            PO poUniqueAUx = new PO();
             try
+            {
+                poUniqueAUx = jobRepo.POs.FirstOrDefault(m => m.PONumb == viewModel.PO.PONumb);
+            }
+            catch (Exception)
+            {
+
+            }
+            if (poUniqueAUx == null && viewModel.PO.PONumb != 0)
             {
                 //Save the dummyJob
                 Job Job = viewModel.Job;
@@ -172,7 +190,6 @@ namespace ProdFloor.Controllers
 
                 var currentTestJob = testingRepo.TestJobs.FirstOrDefault(p => p.TestJobID == testingRepo.TestJobs.Max(x => x.TestJobID));
 
-
                 TestJobViewModel testJobView = new TestJobViewModel
                 {
                     TestJob = currentTestJob,
@@ -181,7 +198,7 @@ namespace ProdFloor.Controllers
 
                 return View("NewTestFeatures", testJobView);
             }
-            catch (DbUpdateException e)
+            else
             {
                 TempData["message"] = $"El Job PO #ya existe por favor introduzca uno nuevo, o faltan campos por rellenar!";
                 TempData["alert"] = $"alert-danger";
@@ -207,10 +224,10 @@ namespace ProdFloor.Controllers
         [HttpPost]
         public IActionResult NewTestFeatures(TestJobViewModel testJobView)
         {
-            List<StepsForJob> stepsForJobToDelete= testingRepo.StepsForJobs.Where(m => m.TestJobID == testJobView.TestJob.TestJobID).ToList();
-            if(stepsForJobToDelete.Count > 0)
+            List<StepsForJob> stepsForJobToDelete = testingRepo.StepsForJobs.Where(m => m.TestJobID == testJobView.TestJob.TestJobID).ToList();
+            if (stepsForJobToDelete.Count > 0)
             {
-                foreach(StepsForJob step in stepsForJobToDelete)
+                foreach (StepsForJob step in stepsForJobToDelete)
                 {
                     testingRepo.DeleteStepsForJob(step.StepsForJobID);
                 }
@@ -296,7 +313,8 @@ namespace ProdFloor.Controllers
                                             if (trigger.IsSelected == true && StateFromCity.CountryID == 2) countAux++;
                                             else if (trigger.IsSelected == false && StateFromCity.CountryID != 2) countAux++;
                                             break;
-                                        case "Ontario": if (trigger.IsSelected == true && FeaturesFromJob.CityID == 11)  countAux++;
+                                        case "Ontario":
+                                            if (trigger.IsSelected == true && FeaturesFromJob.CityID == 11) countAux++;
                                             else if (trigger.IsSelected == false && FeaturesFromJob.CityID != 11) countAux++;
                                             break;
                                         case "Manual Doors":
@@ -317,7 +335,7 @@ namespace ProdFloor.Controllers
                                             else if (trigger.IsSelected == false && landing.Name != "LS-Rail") countAux++;
                                             break;
                                         case "mView":
-                                            if (trigger.IsSelected == true &&  (FeaturesFromJob._GenericFeatures.Monitoring.Contains("MView"))) countAux++;
+                                            if (trigger.IsSelected == true && (FeaturesFromJob._GenericFeatures.Monitoring.Contains("MView"))) countAux++;
                                             else if (trigger.IsSelected == false && !(FeaturesFromJob._GenericFeatures.Monitoring.Contains("MView"))) countAux++;
                                             break;
                                         case "iMonitor":
@@ -327,11 +345,11 @@ namespace ProdFloor.Controllers
                                         case "HAPS Battery":
                                             if (FeaturesFromJob._HydroSpecific.Battery == true)
                                             {
-                                                if (trigger.IsSelected == true && FeaturesFromJob._HydroSpecific.BatteryBrand == "HAPS")countAux++;
+                                                if (trigger.IsSelected == true && FeaturesFromJob._HydroSpecific.BatteryBrand == "HAPS") countAux++;
                                                 else if (trigger.IsSelected == false && FeaturesFromJob._HydroSpecific.BatteryBrand != "HAPS") countAux++;
                                                 break;
                                             }
-                                            else break;    
+                                            else break;
                                         case "2+ Starters":
                                             if (trigger.IsSelected == true && FeaturesFromJob._HydroSpecific.MotorsNum >= 2) countAux++;
                                             else if (trigger.IsSelected == false && FeaturesFromJob._HydroSpecific.MotorsNum < 2) countAux++;
@@ -375,7 +393,7 @@ namespace ProdFloor.Controllers
                 var job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == testjobinfo.JobID);
                 var AllStepsForJob = testingRepo.StepsForJobs.Where(m => m.TestJobID == testJobView.TestFeature.TestJobID).ToList();
                 var AllStepsForJobInfo = testingRepo.Steps.Where(m => AllStepsForJob.Any(s => s.StepID == m.StepID)).ToList();
-                return View("StepsForJob",new TestJobViewModel { StepsForJob = stepsFor, Step = stepInfo, Job = job, TestJob = testjobinfo, StepList = AllStepsForJobInfo, StepsForJobList = AllStepsForJob});
+                return View("StepsForJob", new TestJobViewModel { StepsForJob = stepsFor, Step = stepInfo, Job = job, TestJob = testjobinfo, StepList = AllStepsForJobInfo, StepsForJobList = AllStepsForJob });
             }
 
             return NotFound();
@@ -384,8 +402,8 @@ namespace ProdFloor.Controllers
         [HttpPost]
         public IActionResult StepsForJob(TestJobViewModel viewModel, int next)
         {
-            List<StepsForJob> StepsForJobList = testingRepo.StepsForJobs.FromSql("select * from dbo.StepsForJobs where dbo.StepsForJobs.StepsForJobID "+
-                "IN( select  Max(dbo.StepsForJobs.StepsForJobID ) from dbo.StepsForJobs where dbo.StepsForJobs.TestJobID = {0} group by dbo.StepsForJobs.Consecutivo)",viewModel.TestJob.TestJobID).ToList();
+            List<StepsForJob> StepsForJobList = testingRepo.StepsForJobs.FromSql("select * from dbo.StepsForJobs where dbo.StepsForJobs.StepsForJobID " +
+                "IN( select  Max(dbo.StepsForJobs.StepsForJobID ) from dbo.StepsForJobs where dbo.StepsForJobs.TestJobID = {0} group by dbo.StepsForJobs.Consecutivo)", viewModel.TestJob.TestJobID).ToList();
             var AllStepsForJobInfo = testingRepo.Steps.Where(m => StepsForJobList.Any(s => s.StepID == m.StepID)).ToList();
             if (next == 0)
             {
@@ -404,7 +422,7 @@ namespace ProdFloor.Controllers
 
                 TempData["message"] = $"El Test Job {testjobinfo.TestJobID} se ha completado con exito!";
                 TempData["alert"] = $"alert-success";
-                return RedirectToAction("Index","Home", 1);
+                return RedirectToAction("Index", "Home", 1);
             }
             else if (next == 777)
             {
@@ -429,10 +447,10 @@ namespace ProdFloor.Controllers
                 return View("StepsForJob", new TestJobViewModel { StepsForJob = nextStepFor, Step = stepInfo, Job = job, TestJob = testjobinfo, StepList = AllStepsForJobInfo, StepsForJobList = StepsForJobList });
 
             }//For Previous Step
-            else if(viewModel.StepsForJob.Consecutivo == (next + 1))
+            else if (viewModel.StepsForJob.Consecutivo == (next + 1))
             {
                 //Previus step
-                var previusStepForAUX = StepsForJobList.OrderByDescending(m =>m.Consecutivo).FirstOrDefault(m => m.Complete == true);
+                var previusStepForAUX = StepsForJobList.OrderByDescending(m => m.Consecutivo).FirstOrDefault(m => m.Complete == true);
                 previusStepForAUX.Start = DateTime.Now; previusStepForAUX.Complete = false;
                 testingRepo.SaveStepsForJob(previusStepForAUX);
                 var previusStepFor = StepsForJobList.FirstOrDefault(m => m.StepsForJobID == previusStepForAUX.StepsForJobID);
@@ -441,8 +459,8 @@ namespace ProdFloor.Controllers
                 var job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == testjobinfo.JobID);
                 return View("StepsForJob", new TestJobViewModel { StepsForJob = previusStepFor, Step = stepInfo, Job = job, TestJob = testjobinfo, StepList = AllStepsForJobInfo, StepsForJobList = StepsForJobList });
             }
-            
-            
+
+
             return View(NotFound());
         }
 
@@ -450,7 +468,7 @@ namespace ProdFloor.Controllers
         {
             List<StepsForJob> StepsForJobList = testingRepo.StepsForJobs.FromSql("select * from dbo.StepsForJobs where dbo.StepsForJobs.StepsForJobID " +
                 "IN( select  Max(dbo.StepsForJobs.StepsForJobID ) from dbo.StepsForJobs where dbo.StepsForJobs.TestJobID = {0} group by dbo.StepsForJobs.Consecutivo)", viewModel.TestJob.TestJobID).ToList();
-            
+
             var AllStepsForJobInfo = testingRepo.Steps.Where(m => StepsForJobList.Any(s => s.StepID == m.StepID)).ToList();
 
             var currentStepForJob = StepsForJobList.FirstOrDefault(m => m.Consecutivo == viewModel.StepsForJob.Consecutivo); currentStepForJob.Stop = DateTime.Now;

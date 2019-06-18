@@ -1637,7 +1637,7 @@ namespace ProdFloor.Infrastructure
             }
             TagBuilder m_tag = new TagBuilder("option");
             m_tag.Attributes["value"] = "default";
-            m_tag.InnerHtml.Append("-- Select Reason 1 --");
+            m_tag.InnerHtml.Append("Select a Reason 1");
             result.InnerHtml.AppendHtml(m_tag);
             int reason1ID = 0;
             if (SelectedInR5Value != 0)
@@ -1735,7 +1735,7 @@ namespace ProdFloor.Infrastructure
             }
             TagBuilder m_tag = new TagBuilder("option");
             m_tag.Attributes["value"] = "default";
-            m_tag.InnerHtml.Append("-- Select Reason 2 --");
+            m_tag.InnerHtml.Append("Select a Reason 2");
             result.InnerHtml.AppendHtml(m_tag);
             int reason2ID = 0;
             if (SelectedInR5Value != 0)
@@ -1819,7 +1819,7 @@ namespace ProdFloor.Infrastructure
             }
             TagBuilder m_tag = new TagBuilder("option");
             m_tag.Attributes["value"] = "default";
-            m_tag.InnerHtml.Append("-- Select Reason 3 --");
+            m_tag.InnerHtml.Append("Select a Reason 3");
             result.InnerHtml.AppendHtml(m_tag);
             int reason3ID = 0;
             if (SelectedInR5Value != 0)
@@ -1894,7 +1894,7 @@ namespace ProdFloor.Infrastructure
             }
             TagBuilder m_tag = new TagBuilder("option");
             m_tag.Attributes["value"] = "default";
-            m_tag.InnerHtml.Append("-- Select Reason 4 --");
+            m_tag.InnerHtml.Append("Select a Reason 4");
             result.InnerHtml.AppendHtml(m_tag);
             int reason4ID = 0;
             if (SelectedInR5Value != 0)
@@ -1962,7 +1962,7 @@ namespace ProdFloor.Infrastructure
             }
             TagBuilder m_tag = new TagBuilder("option");
             m_tag.Attributes["value"] = "default";
-            m_tag.InnerHtml.Append("-- Select Reason 5 --");
+            m_tag.InnerHtml.Append("Select a Reason 5");
             result.InnerHtml.AppendHtml(m_tag);
             int reason5ID = 0;
             if (SelectedValue != 0)
