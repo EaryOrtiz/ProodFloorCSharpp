@@ -9,14 +9,14 @@
     <div class="form-group">
         <label asp-for="Reason1ID" class="col-sm-2 col-form-label"></label>
         <div>
-            <reasons1-select selected-in-r2-value="@Model.Reason2ID" class="form-control-sm form-control col-2" asp-for="Reason1ID"></reasons1-select>
+            <reasons1-select selected-in-r2-value="@Model.Reason2ID" class="form-control-sm form-control col-6" asp-for="Reason1ID"></reasons1-select>
             <span asp-validation-for="Reason1ID" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group">
         <label asp-for="Description"></label>
         <div><span asp-validation-for="Description" class="text-danger"></span></div>
-        <input asp-for="Description" class="form-control" />
+        <input asp-for="Description" class="form-control-sm form-control col-6" />
     </div>
     <div class="text-center">
         <button class="btn btn-primary" type="submit">Save</button>
