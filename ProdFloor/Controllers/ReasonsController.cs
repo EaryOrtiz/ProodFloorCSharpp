@@ -26,17 +26,19 @@ namespace ProdFloor.Controllers
         {
             repository = testingrepo;
         }
-        public ViewResult List(int reason, int separator, int page = 1)
+        public ViewResult List(int reasonNumber, int separator, int page = 1)
         {
 
-            switch (reason)
+            switch (reasonNumber)
             {
                 case 1:
-                    var ReasonCount = repository.Reasons1.Count();
+                    var ReasonCount = repository.Reasons1
+                        .Where(s => s.Description != "-").Count();
 
                     return View("Reason1List", new ReasonViewModel
                     {
                         Reasons1 = repository.Reasons1
+                        .Where(s => s.Description != "-")
                         .OrderBy(p => p.Reason1ID)
                         .Skip((page - 1) * PageSize)
                         .Take(PageSize).ToList(),
@@ -55,6 +57,7 @@ namespace ProdFloor.Controllers
                     return View("Reason2List", new ReasonViewModel
                     {
                         Reasons2 = repository.Reasons2
+                        .Where(s => s.Description != "-")
                         .OrderBy(p => p.Reason2ID)
                         .Skip((page - 1) * PageSize)
                         .Take(PageSize).ToList(),
@@ -73,6 +76,7 @@ namespace ProdFloor.Controllers
                     return View("Reason3List", new ReasonViewModel
                     {
                         Reasons3 = repository.Reasons3
+                        .Where(s => s.Description != "-")
                         .OrderBy(p => p.Reason3ID)
                         .Skip((page - 1) * PageSize)
                         .Take(PageSize).ToList(),
@@ -91,6 +95,7 @@ namespace ProdFloor.Controllers
                     return View("Reason4List", new ReasonViewModel
                     {
                         Reasons4 = repository.Reasons4
+                        .Where(s => s.Description != "-")
                         .OrderBy(p => p.Reason4ID)
                         .Skip((page - 1) * PageSize)
                         .Take(PageSize).ToList(),
@@ -109,6 +114,7 @@ namespace ProdFloor.Controllers
                     return View("Reason5List", new ReasonViewModel
                     {
                         Reasons5 = repository.Reasons5
+                        .Where(s => s.Description != "-")
                         .OrderBy(p => p.Reason5ID)
                         .Skip((page - 1) * PageSize)
                         .Take(PageSize).ToList(),
