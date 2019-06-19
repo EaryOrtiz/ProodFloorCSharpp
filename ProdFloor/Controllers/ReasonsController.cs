@@ -251,7 +251,7 @@ namespace ProdFloor.Controllers
                     {
                         TempData["message"] = $"{deleteReason.Reason1ID} was deleted";
                     }
-                    return RedirectToAction("List", new { Page = 1, Reason = 1 });
+                    return RedirectToAction("List", new { Page = 1, ReasonNumber = 1 });
 
                 case "R2":
                     Reason2 deleteReason2 = repository.DeleteReason2(ID);
@@ -260,7 +260,7 @@ namespace ProdFloor.Controllers
                     {
                         TempData["message"] = $"{deleteReason2.Reason2ID} was deleted";
                     }
-                    return RedirectToAction("List", new { Page = 1, Reason = 2 });
+                    return RedirectToAction("List", new { Page = 1, ReasonNumber = 2 });
                 case "R3":
                     Reason3 deleteReason3 = repository.DeleteReason3(ID);
 
@@ -268,7 +268,7 @@ namespace ProdFloor.Controllers
                     {
                         TempData["message"] = $"{deleteReason3.Reason3ID} was deleted";
                     }
-                    return RedirectToAction("List", new { Page = 1, Reason = 3 });
+                    return RedirectToAction("List", new { Page = 1, ReasonNumber = 3 });
                 case "R4":
                     Reason4 deleteReason4 = repository.DeleteReason4(ID);
 
@@ -276,7 +276,7 @@ namespace ProdFloor.Controllers
                     {
                         TempData["message"] = $"{deleteReason4.Reason4ID} was deleted";
                     }
-                    return RedirectToAction("List", new { Page = 1, Reason = 4 });
+                    return RedirectToAction("List", new { Page = 1, ReasonNumber = 4 });
                 case "R5":
                     Reason5 deleteReason5 = repository.DeleteReason5(ID);
 
@@ -284,7 +284,7 @@ namespace ProdFloor.Controllers
                     {
                         TempData["message"] = $"{deleteReason5.Reason5ID} was deleted";
                     }
-                    return RedirectToAction("List", new { Page = 1, Reason = 5 });
+                    return RedirectToAction("List", new { Page = 1, ReasonNumber = 5 });
             }
 
             return NotFound();
