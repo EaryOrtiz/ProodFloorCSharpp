@@ -297,12 +297,12 @@ namespace ProdFloor.Controllers
             using (XmlWriter xw = XmlWriter.Create(ms, xws))
             {
                 xw.WriteStartDocument();
-                xw.WriteStartElement("Steps");
+                xw.WriteStartElement("AllSteps");
 
+                xw.WriteStartElement("Steps");
                 foreach (Step step in steps)
                 {
                     xw.WriteStartElement("Step");
-
                     xw.WriteElementString("StepID", step.StepID.ToString());
                     xw.WriteElementString("JobTypeID", step.JobTypeID.ToString());
                     xw.WriteElementString("Stage", step.Stage.ToString());
@@ -329,6 +329,7 @@ namespace ProdFloor.Controllers
                         
                 }
                 xw.WriteEndElement();
+                xw.WriteEndElement();
                 xw.WriteEndDocument();
             }
 
@@ -344,9 +345,12 @@ namespace ProdFloor.Controllers
             HtmlDocument doc = new HtmlDocument();
             doc.Load(@"C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\Steps.xml");
 
-            var ALLXMLobs = doc.DocumentNode.SelectSingleNode("//steps");
+            var ALLSteps = doc.DocumentNode.SelectSingleNode("//allsteps");
+
+            var ALLXMLobs = ALLSteps.SelectSingleNode("//steps");
             var XMLobs = ALLXMLobs.SelectNodes("//step");
-            var ALLtriggers = doc.DocumentNode.SelectSingleNode("//triggerfeature");
+
+            var ALLtriggers = ALLSteps.SelectSingleNode("//triggerfeatures");
             var triggers = ALLtriggers.SelectNodes("//triggerfeature");
 
             foreach (var XMLob in XMLobs)
