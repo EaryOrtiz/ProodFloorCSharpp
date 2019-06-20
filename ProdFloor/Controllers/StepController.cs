@@ -291,18 +291,18 @@ namespace ProdFloor.Controllers
             xws.OmitXmlDeclaration = true;
             xws.Indent = true;
 
-            List<Step> steps = new List<Step>();
-            steps = testingrepo.Steps.ToList();
+            List<Step> steps = testingrepo.Steps.ToList();
+            List<TriggeringFeature> triggerings = testingrepo.TriggeringFeatures.ToList();
 
             using (XmlWriter xw = XmlWriter.Create(ms, xws))
             {
                 xw.WriteStartDocument();
-                xw.WriteStartElement("Steps");
+                xw.WriteStartElement("AllSteps");
 
+                xw.WriteStartElement("Steps");
                 foreach (Step step in steps)
                 {
                     xw.WriteStartElement("Step");
-
                     xw.WriteElementString("StepID", step.StepID.ToString());
                     xw.WriteElementString("JobTypeID", step.JobTypeID.ToString());
                     xw.WriteElementString("Stage", step.Stage.ToString());
@@ -310,11 +310,12 @@ namespace ProdFloor.Controllers
                     xw.WriteElementString("Description", step.Description);
                     xw.WriteElementString("Order", step.Order.ToString());
                     xw.WriteEndElement();
-                    string aux;
-                    List<TriggeringFeature> triggerings = testingrepo.TriggeringFeatures.Where(m => m.StepID == step.StepID).ToList();
-                    if (triggerings.Count > 0)
-                    {
-                        xw.WriteStartElement("TriggerFeatures");
+                }
+                xw.WriteEndElement();
+                xw.WriteStartElement("TriggerFeatures");
+                string aux;
+                foreach (TriggeringFeature triggering in triggerings)
+                {
                         foreach (TriggeringFeature trigger in triggerings)
                         {
                             xw.WriteStartElement("TriggerFeature");
@@ -325,13 +326,13 @@ namespace ProdFloor.Controllers
                             xw.WriteElementString("IsSelected", trigger.IsSelected.ToString());
                             xw.WriteEndElement();
                         }
-                        xw.WriteEndElement();
-                    }
+                        
                 }
-
+                xw.WriteEndElement();
                 xw.WriteEndElement();
                 xw.WriteEndDocument();
             }
+
             ms.Position = 0;
             return File(ms, "text/xml", "Steps.xml");
         }
@@ -344,8 +345,13 @@ namespace ProdFloor.Controllers
             HtmlDocument doc = new HtmlDocument();
             doc.Load(@"C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\Steps.xml");
 
-            var allXMLobs = doc.DocumentNode.SelectSingleNode("//steps");
-            var XMLobs = allXMLobs.SelectNodes("//step");
+            var ALLSteps = doc.DocumentNode.SelectSingleNode("//allsteps");
+
+            var ALLXMLobs = ALLSteps.SelectSingleNode("//steps");
+            var XMLobs = ALLXMLobs.SelectNodes("//step");
+
+            var ALLtriggers = ALLSteps.SelectSingleNode("//triggerfeatures");
+            var triggers = ALLtriggers.SelectNodes("//triggerfeature");
 
             foreach (var XMLob in XMLobs)
             {
@@ -376,11 +382,7 @@ namespace ProdFloor.Controllers
                     context.Database.CloseConnection();
                 }
 
-                var XMPOOOO = XMLob.SelectSingleNode(".//triggerFeatures");
-                var XMLPOs = XMPOOOO.SelectNodes(".//trigger");
-                if (XMLPOs != null)
-                {
-                    foreach (var po in XMLPOs)
+                    foreach (var po in triggers)
                     {
                         var id = po.SelectSingleNode(".//id").InnerText;
                         var sttepid = po.SelectSingleNode(".//stepid").InnerText;
@@ -406,7 +408,6 @@ namespace ProdFloor.Controllers
                             context.Database.CloseConnection();
                         }
                     }
-                }
             }
 
         }
