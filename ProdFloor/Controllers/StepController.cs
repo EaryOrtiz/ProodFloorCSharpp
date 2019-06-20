@@ -30,7 +30,7 @@ namespace ProdFloor.Controllers
 
         public ViewResult List(string JobTypeName, int page = 1)
         {
-            
+
             switch (JobTypeName)
             {
                 case "Hydro":
@@ -41,7 +41,7 @@ namespace ProdFloor.Controllers
                         .OrderBy(p => p.Order)
                         .Skip((page - 1) * PageSize)
                         .Take(PageSize).ToList(),
-                         TriggeringList = testingrepo
+                        TriggeringList = testingrepo
                             .TriggeringFeatures.ToList(),
                         JobTypesList = itemprepo.JobTypes.ToList(),
                         JobTypeSelected = JobTypeName,
@@ -139,7 +139,7 @@ namespace ProdFloor.Controllers
                     };
                     return View(stepView6);
             }
-           
+
         }
 
         public ViewResult NewStep()
@@ -316,17 +316,14 @@ namespace ProdFloor.Controllers
                 string aux;
                 foreach (TriggeringFeature triggering in triggerings)
                 {
-                        foreach (TriggeringFeature trigger in triggerings)
-                        {
-                            xw.WriteStartElement("TriggerFeature");
-                            xw.WriteElementString("ID", trigger.TriggeringFeatureID.ToString());
-                            xw.WriteElementString("StepID", trigger.StepID.ToString());
-                            aux = !string.IsNullOrEmpty(trigger.Name) ? trigger.Name : "Nulo";
-                            xw.WriteElementString("Name", aux);
-                            xw.WriteElementString("IsSelected", trigger.IsSelected.ToString());
-                            xw.WriteEndElement();
-                        }
-                        
+                    xw.WriteStartElement("TriggerFeature");
+                    xw.WriteElementString("ID", triggering.TriggeringFeatureID.ToString());
+                    xw.WriteElementString("StepID", triggering.StepID.ToString());
+                    aux = !string.IsNullOrEmpty(triggering.Name) ? triggering.Name : "Nulo";
+                    xw.WriteElementString("Name", aux);
+                    xw.WriteElementString("IsSelected", triggering.IsSelected.ToString());
+                    xw.WriteEndElement();
+
                 }
                 xw.WriteEndElement();
                 xw.WriteEndElement();
@@ -362,7 +359,8 @@ namespace ProdFloor.Controllers
                 var description = XMLob.SelectSingleNode(".//description").InnerText;
                 var order = XMLob.SelectSingleNode(".//order").InnerText;
 
-                context.Steps.Add(new Step {
+                context.Steps.Add(new Step
+                {
                     StepID = Int32.Parse(stepid),
                     JobTypeID = Int32.Parse(jobtypeid),
                     Stage = stage,
@@ -381,33 +379,32 @@ namespace ProdFloor.Controllers
                 {
                     context.Database.CloseConnection();
                 }
+            }
+            foreach (var po in triggers)
+            {
+                var id = po.SelectSingleNode(".//id").InnerText;
+                var sttepid = po.SelectSingleNode(".//stepid").InnerText;
+                var name = po.SelectSingleNode(".//name").InnerText;
+                var isselected = po.SelectSingleNode(".//isselected").InnerText;
+                context.TriggeringFeatures.Add(new TriggeringFeature
+                {
+                    TriggeringFeatureID = Int32.Parse(id),
+                    StepID = Int32.Parse(sttepid),
+                    Name = name == "Nulo" ? null : name,
+                    IsSelected = Boolean.Parse(isselected)
 
-                    foreach (var po in triggers)
-                    {
-                        var id = po.SelectSingleNode(".//id").InnerText;
-                        var sttepid = po.SelectSingleNode(".//stepid").InnerText;
-                        var name = po.SelectSingleNode(".//name").InnerText;
-                        var isselected = po.SelectSingleNode(".//isselected").InnerText;
-                        context.TriggeringFeatures.Add(new TriggeringFeature
-                        {
-                            TriggeringFeatureID = Int32.Parse(id),
-                            StepID = Int32.Parse(sttepid),
-                            Name = name == "Nulo" ? null : name,
-                            IsSelected = Boolean.Parse(isselected)
-
-                        });
-                        context.Database.OpenConnection();
-                        try
-                        {
-                            context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.TriggeringFeatures ON");
-                            context.SaveChanges();
-                            context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.TriggeringFeatures OFF");
-                        }
-                        finally
-                        {
-                            context.Database.CloseConnection();
-                        }
-                    }
+                });
+                context.Database.OpenConnection();
+                try
+                {
+                    context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.TriggeringFeatures ON");
+                    context.SaveChanges();
+                    context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.TriggeringFeatures OFF");
+                }
+                finally
+                {
+                    context.Database.CloseConnection();
+                }
             }
 
         }

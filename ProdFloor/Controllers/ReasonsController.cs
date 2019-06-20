@@ -410,14 +410,14 @@ namespace ProdFloor.Controllers
             var ALLReasons1 = XMLobs.SelectSingleNode(".//reasons1");
             var ALLReasons2 = XMLobs.SelectSingleNode(".//reasons2");
             var ALLReasons3 = XMLobs.SelectSingleNode(".//reasons3");
-            var ALLReasons4 = XMLobs.SelectSingleNode(".//reasons5");
-            var ALLReasons5 = XMLobs.SelectSingleNode(".//reasons4");
+            var ALLReasons4 = XMLobs.SelectSingleNode(".//reasons4");
+            var ALLReasons5 = XMLobs.SelectSingleNode(".//reasons5");
 
             var XMLReasons1 = ALLReasons1.SelectNodes(".//reason1");
             var XMLReasons2 = ALLReasons2.SelectNodes(".//reason2");
             var XMLReasons3 = ALLReasons3.SelectNodes(".//reason3");
-            var XMLReasons4 = ALLReasons4.SelectNodes(".//reason5");
-            var XMLReasons5 = ALLReasons5.SelectNodes(".//reason4");
+            var XMLReasons4 = ALLReasons4.SelectNodes(".//reason4");
+            var XMLReasons5 = ALLReasons5.SelectNodes(".//reason5");
 
             if (XMLobs != null && !context.Reasons5.Any())
             {
