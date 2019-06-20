@@ -7,6 +7,14 @@
     <Description>Inicio de pruebas de Element Traction</Description>
     <Order>0</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>7</ID>
+      <StepID>7</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>8</StepID>
     <JobTypeID>5</JobTypeID>
@@ -15,6 +23,14 @@
     <Description>Configurar la pc para las pruebas</Description>
     <Order>1</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>8</ID>
+      <StepID>8</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>9</StepID>
     <JobTypeID>5</JobTypeID>
@@ -23,6 +39,14 @@
     <Description>Conseguir software(update) y parametros (XML)</Description>
     <Order>2</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>9</ID>
+      <StepID>9</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>10</StepID>
     <JobTypeID>5</JobTypeID>
@@ -31,6 +55,14 @@
     <Description>Crear carpeta del job y crear archivos de documentacion: drive, board information</Description>
     <Order>3</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>10</ID>
+      <StepID>10</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>11</StepID>
     <JobTypeID>5</JobTypeID>
@@ -39,6 +71,14 @@
     <Description>Capturar los numeros seriales de tarjetas y dispositivos</Description>
     <Order>4</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>11</ID>
+      <StepID>11</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>12</StepID>
     <JobTypeID>5</JobTypeID>
@@ -47,6 +87,14 @@
     <Description>Crear la documentacion de visual inspection list, Tech report y Passcode</Description>
     <Order>5</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>12</ID>
+      <StepID>12</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>13</StepID>
     <JobTypeID>5</JobTypeID>
@@ -55,6 +103,14 @@
     <Description>Inspeccionar Jumpers, switches y resistencias dinamicas</Description>
     <Order>6</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>13</ID>
+      <StepID>13</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>14</StepID>
     <JobTypeID>5</JobTypeID>
@@ -63,6 +119,14 @@
     <Description>Checar Voltajes</Description>
     <Order>7</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>14</ID>
+      <StepID>14</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>15</StepID>
     <JobTypeID>5</JobTypeID>
@@ -71,6 +135,14 @@
     <Description>Cargar el software(Update)</Description>
     <Order>9</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>15</ID>
+      <StepID>15</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>16</StepID>
     <JobTypeID>5</JobTypeID>
@@ -79,6 +151,14 @@
     <Description>Cargar los parametros</Description>
     <Order>10</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>16</ID>
+      <StepID>16</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>17</StepID>
     <JobTypeID>5</JobTypeID>
@@ -87,6 +167,14 @@
     <Description>Resetear los parametros del drive</Description>
     <Order>11</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>17</ID>
+      <StepID>17</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>18</StepID>
     <JobTypeID>5</JobTypeID>
@@ -95,6 +183,14 @@
     <Description>Llenar los parametros del drive (version test)</Description>
     <Order>12</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>18</ID>
+      <StepID>18</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>19</StepID>
     <JobTypeID>5</JobTypeID>
@@ -103,6 +199,14 @@
     <Description>Conectar arneces, cables del motor y cables de encoder</Description>
     <Order>13</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>19</ID>
+      <StepID>19</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>20</StepID>
     <JobTypeID>5</JobTypeID>
@@ -111,6 +215,14 @@
     <Description>Cargar el software en el LS-EDGE del cliente</Description>
     <Order>14</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>20</ID>
+      <StepID>20</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>21</StepID>
     <JobTypeID>5</JobTypeID>
@@ -119,6 +231,14 @@
     <Description>Ajustar la resistencia RB (3 veces el brake coil resistance de cliente)</Description>
     <Order>15</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>21</ID>
+      <StepID>21</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>22</StepID>
     <JobTypeID>5</JobTypeID>
@@ -127,6 +247,14 @@
     <Description>Ajustar los voltajes del freno de motor(version test)</Description>
     <Order>16</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>22</ID>
+      <StepID>22</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>23</StepID>
     <JobTypeID>5</JobTypeID>
@@ -135,6 +263,14 @@
     <Description>Verificar corrientes y velocidades de inspeccion (do display)</Description>
     <Order>17</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>23</ID>
+      <StepID>23</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>24</StepID>
     <JobTypeID>5</JobTypeID>
@@ -143,6 +279,14 @@
     <Description>Calibracion de hoistway learning</Description>
     <Order>18</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>24</ID>
+      <StepID>24</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>25</StepID>
     <JobTypeID>5</JobTypeID>
@@ -151,6 +295,14 @@
     <Description>Calibracion de la terminal de los switches</Description>
     <Order>19</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>25</ID>
+      <StepID>25</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>26</StepID>
     <JobTypeID>5</JobTypeID>
@@ -159,6 +311,14 @@
     <Description>Probar los "Speeds"(high, leveling y correction)</Description>
     <Order>20</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>26</ID>
+      <StepID>26</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>27</StepID>
     <JobTypeID>5</JobTypeID>
@@ -167,6 +327,14 @@
     <Description>Probar el AC drive(Encoder Loss, Phase Fault, DC bus voltage)</Description>
     <Order>22</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>27</ID>
+      <StepID>27</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>28</StepID>
     <JobTypeID>5</JobTypeID>
@@ -175,6 +343,14 @@
     <Description>Probar los terminal switches (UETS/DETS Overspeed)</Description>
     <Order>23</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>28</ID>
+      <StepID>28</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>29</StepID>
     <JobTypeID>5</JobTypeID>
@@ -183,6 +359,14 @@
     <Description>Probar los terminal slowdown (UNTS1/DNTS1 LOWER/UPER Overspeed)</Description>
     <Order>24</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>29</ID>
+      <StepID>29</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>30</StepID>
     <JobTypeID>5</JobTypeID>
@@ -191,6 +375,14 @@
     <Description>Probar los contactores (BRP, PMP, UFE/PM, BRFLT,BPSBR)</Description>
     <Order>25</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>30</ID>
+      <StepID>30</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>31</StepID>
     <JobTypeID>5</JobTypeID>
@@ -199,6 +391,14 @@
     <Description>Probar senales logicas marcadas en print</Description>
     <Order>26</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>31</ID>
+      <StepID>31</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>32</StepID>
     <JobTypeID>5</JobTypeID>
@@ -207,6 +407,14 @@
     <Description>Ajustar parametros de cliente XML</Description>
     <Order>27</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>32</ID>
+      <StepID>32</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>33</StepID>
     <JobTypeID>5</JobTypeID>
@@ -215,6 +423,14 @@
     <Description>Ajustar los voltajes del freno de motor(version cliente), traer resistencia de carga</Description>
     <Order>28</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>33</ID>
+      <StepID>33</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>34</StepID>
     <JobTypeID>5</JobTypeID>
@@ -223,6 +439,14 @@
     <Description>Llenar parametros de drive (version cliente)</Description>
     <Order>29</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>34</ID>
+      <StepID>34</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>35</StepID>
     <JobTypeID>5</JobTypeID>
@@ -231,6 +455,14 @@
     <Description>Extraer los parametros de la CPU(CCF)</Description>
     <Order>30</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>35</ID>
+      <StepID>35</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>36</StepID>
     <JobTypeID>5</JobTypeID>
@@ -239,6 +471,14 @@
     <Description>Introducir y activar passcode (si aplica)</Description>
     <Order>31</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>36</ID>
+      <StepID>36</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>37</StepID>
     <JobTypeID>5</JobTypeID>
@@ -247,6 +487,14 @@
     <Description>Verificar inspeccion final, construction mode</Description>
     <Order>32</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>37</ID>
+      <StepID>37</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>38</StepID>
     <JobTypeID>5</JobTypeID>
@@ -255,6 +503,14 @@
     <Description>Imprimir papeleria final</Description>
     <Order>33</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>38</ID>
+      <StepID>38</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>39</StepID>
     <JobTypeID>5</JobTypeID>
@@ -263,6 +519,14 @@
     <Description>Respaldar folder a servidor</Description>
     <Order>35</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>39</ID>
+      <StepID>39</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>40</StepID>
     <JobTypeID>5</JobTypeID>
@@ -271,6 +535,14 @@
     <Description>Fin de pruebas de Element Traction</Description>
     <Order>37</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>40</ID>
+      <StepID>40</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>41</StepID>
     <JobTypeID>1</JobTypeID>
@@ -279,6 +551,14 @@
     <Description>Inicion de pruebas de Element Hydro</Description>
     <Order>0</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>41</ID>
+      <StepID>41</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>42</StepID>
     <JobTypeID>1</JobTypeID>
@@ -287,6 +567,14 @@
     <Description>Configuracion inicial de pc</Description>
     <Order>1</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>42</ID>
+      <StepID>42</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>43</StepID>
     <JobTypeID>1</JobTypeID>
@@ -295,6 +583,14 @@
     <Description>Conseguir software (update) y parametros(XML)</Description>
     <Order>2</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>43</ID>
+      <StepID>43</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>44</StepID>
     <JobTypeID>5</JobTypeID>
@@ -303,6 +599,14 @@
     <Description>Hacer pruebas de Hipot</Description>
     <Order>8</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>44</ID>
+      <StepID>44</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>45</StepID>
     <JobTypeID>5</JobTypeID>
@@ -311,6 +615,14 @@
     <Description>Cross approval de papeleria</Description>
     <Order>34</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>45</ID>
+      <StepID>45</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>46</StepID>
     <JobTypeID>5</JobTypeID>
@@ -319,6 +631,14 @@
     <Description>Probar los overspeed(high, leveling y contract)</Description>
     <Order>21</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>46</ID>
+      <StepID>46</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>47</StepID>
     <JobTypeID>1</JobTypeID>
@@ -327,6 +647,14 @@
     <Description>Crear carpeta del job y crear archivos de documentacion: starter rec, board information</Description>
     <Order>3</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>47</ID>
+      <StepID>47</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>48</StepID>
     <JobTypeID>1</JobTypeID>
@@ -335,6 +663,14 @@
     <Description>Escanear codigos de barras de tarjetas y dispositivos</Description>
     <Order>4</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>48</ID>
+      <StepID>48</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>49</StepID>
     <JobTypeID>1</JobTypeID>
@@ -343,6 +679,14 @@
     <Description>Crear documentacion de visual inspection list, tech report y passcode</Description>
     <Order>5</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>49</ID>
+      <StepID>49</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>50</StepID>
     <JobTypeID>1</JobTypeID>
@@ -351,6 +695,14 @@
     <Description>Inspeccionar jumpers y switches</Description>
     <Order>6</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>50</ID>
+      <StepID>50</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>51</StepID>
     <JobTypeID>1</JobTypeID>
@@ -359,6 +711,14 @@
     <Description>Checar voltaje</Description>
     <Order>7</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>51</ID>
+      <StepID>51</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>52</StepID>
     <JobTypeID>1</JobTypeID>
@@ -367,6 +727,14 @@
     <Description>Hacer prueba de Hipot</Description>
     <Order>8</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>52</ID>
+      <StepID>52</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>53</StepID>
     <JobTypeID>1</JobTypeID>
@@ -375,6 +743,14 @@
     <Description>Flashar HAPS UNIT</Description>
     <Order>9</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>53</ID>
+      <StepID>53</StepID>
+      <Name>HAPS Battery</Name>
+      <IsSelected>True</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>54</StepID>
     <JobTypeID>1</JobTypeID>
@@ -383,6 +759,14 @@
     <Description>Cargar el software(update)</Description>
     <Order>10</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>54</ID>
+      <StepID>54</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>55</StepID>
     <JobTypeID>1</JobTypeID>
@@ -391,6 +775,14 @@
     <Description>Conectar arneces</Description>
     <Order>11</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>55</ID>
+      <StepID>55</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>56</StepID>
     <JobTypeID>1</JobTypeID>
@@ -399,6 +791,14 @@
     <Description>Cargar software en el LS-EDGE del cliente</Description>
     <Order>12</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>56</ID>
+      <StepID>56</StepID>
+      <Name>Edge-LS</Name>
+      <IsSelected>True</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>57</StepID>
     <JobTypeID>1</JobTypeID>
@@ -407,6 +807,14 @@
     <Description>Cambiar parametro XML "Landing System Type" value="1" (solo Test)</Description>
     <Order>12</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>57</ID>
+      <StepID>57</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>58</StepID>
     <JobTypeID>1</JobTypeID>
@@ -415,6 +823,14 @@
     <Description>Verificar tolerancias de AC por medio de LabView</Description>
     <Order>13</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>58</ID>
+      <StepID>58</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>59</StepID>
     <JobTypeID>1</JobTypeID>
@@ -423,6 +839,14 @@
     <Description>Cargar los parametros de XML</Description>
     <Order>14</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>59</ID>
+      <StepID>59</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>60</StepID>
     <JobTypeID>1</JobTypeID>
@@ -431,6 +855,14 @@
     <Description>Agregar y modificar los datos del test</Description>
     <Order>15</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>60</ID>
+      <StepID>60</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>61</StepID>
     <JobTypeID>1</JobTypeID>
@@ -439,6 +871,14 @@
     <Description>Prueba automatizada por LabView</Description>
     <Order>16</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>61</ID>
+      <StepID>61</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>62</StepID>
     <JobTypeID>1</JobTypeID>
@@ -447,6 +887,14 @@
     <Description>Respaldar electronicamente el  reporte de prueba automatizada</Description>
     <Order>17</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>62</ID>
+      <StepID>62</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>63</StepID>
     <JobTypeID>1</JobTypeID>
@@ -455,6 +903,14 @@
     <Description>Hacer pruebas de tolerancia de voltajes Mod Door Operator</Description>
     <Order>18</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>63</ID>
+      <StepID>63</StepID>
+      <Name>MOD Door Operator</Name>
+      <IsSelected>True</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>64</StepID>
     <JobTypeID>1</JobTypeID>
@@ -463,6 +919,14 @@
     <Description>Devolver parametros originales del cliente</Description>
     <Order>19</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>64</ID>
+      <StepID>64</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>65</StepID>
     <JobTypeID>1</JobTypeID>
@@ -471,6 +935,14 @@
     <Description>Extraer los parametros (CCF)</Description>
     <Order>20</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>65</ID>
+      <StepID>65</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>66</StepID>
     <JobTypeID>1</JobTypeID>
@@ -479,6 +951,14 @@
     <Description>Introducir el passcode</Description>
     <Order>21</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>66</ID>
+      <StepID>66</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>67</StepID>
     <JobTypeID>1</JobTypeID>
@@ -487,6 +967,14 @@
     <Description>Poner el controlador en Construction Mode</Description>
     <Order>22</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>67</ID>
+      <StepID>67</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>68</StepID>
     <JobTypeID>1</JobTypeID>
@@ -495,6 +983,14 @@
     <Description>Imprimir la papeleria final</Description>
     <Order>23</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>68</ID>
+      <StepID>68</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>69</StepID>
     <JobTypeID>1</JobTypeID>
@@ -503,6 +999,14 @@
     <Description>Cross Aproval de papeleria</Description>
     <Order>24</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>69</ID>
+      <StepID>69</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>70</StepID>
     <JobTypeID>1</JobTypeID>
@@ -511,6 +1015,14 @@
     <Description>Hacer respaldo electronico de documentos al servidor</Description>
     <Order>25</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>70</ID>
+      <StepID>70</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>71</StepID>
     <JobTypeID>1</JobTypeID>
@@ -519,6 +1031,14 @@
     <Description>Equipo en area de final</Description>
     <Order>26</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>71</ID>
+      <StepID>71</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>72</StepID>
     <JobTypeID>1</JobTypeID>
@@ -527,6 +1047,14 @@
     <Description>Fin de pruebas Element Hydro</Description>
     <Order>27</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>72</ID>
+      <StepID>72</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>73</StepID>
     <JobTypeID>2</JobTypeID>
@@ -535,6 +1063,14 @@
     <Description>Inicio de Test de M2000</Description>
     <Order>0</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>73</ID>
+      <StepID>73</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>74</StepID>
     <JobTypeID>2</JobTypeID>
@@ -543,6 +1079,14 @@
     <Description>Documentacion inicial</Description>
     <Order>1</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>74</ID>
+      <StepID>74</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>75</StepID>
     <JobTypeID>2</JobTypeID>
@@ -551,6 +1095,14 @@
     <Description>Traer material externo del controlador</Description>
     <Order>2</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>75</ID>
+      <StepID>75</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>76</StepID>
     <JobTypeID>2</JobTypeID>
@@ -559,6 +1111,14 @@
     <Description>Inspeccion visual</Description>
     <Order>3</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>76</ID>
+      <StepID>76</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>77</StepID>
     <JobTypeID>2</JobTypeID>
@@ -567,6 +1127,14 @@
     <Description>Preparacion de la PC (LabView)</Description>
     <Order>4</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>77</ID>
+      <StepID>77</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>78</StepID>
     <JobTypeID>2</JobTypeID>
@@ -575,6 +1143,14 @@
     <Description>Conectar lineas principales de poder</Description>
     <Order>5</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>78</ID>
+      <StepID>78</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>79</StepID>
     <JobTypeID>2</JobTypeID>
@@ -583,6 +1159,14 @@
     <Description>Chequeo preliminar de voltajes inicales</Description>
     <Order>6</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>79</ID>
+      <StepID>79</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>80</StepID>
     <JobTypeID>2</JobTypeID>
@@ -591,6 +1175,14 @@
     <Description>Hacer pruebas de Hipot</Description>
     <Order>7</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>80</ID>
+      <StepID>80</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>81</StepID>
     <JobTypeID>2</JobTypeID>
@@ -599,6 +1191,14 @@
     <Description>Programacion de "Flasheo"</Description>
     <Order>8</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>81</ID>
+      <StepID>81</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>82</StepID>
     <JobTypeID>2</JobTypeID>
@@ -607,6 +1207,14 @@
     <Description>Conexion de arneces simulador del carro y arneces cartop</Description>
     <Order>9</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>82</ID>
+      <StepID>82</StepID>
+      <Name>Door Control en Cartop</Name>
+      <IsSelected>True</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>83</StepID>
     <JobTypeID>2</JobTypeID>
@@ -615,6 +1223,14 @@
     <Description>Programacion del Firmware (Chip)</Description>
     <Order>10</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>83</ID>
+      <StepID>83</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>84</StepID>
     <JobTypeID>2</JobTypeID>
@@ -623,6 +1239,14 @@
     <Description>Conexion de arneces del simulador</Description>
     <Order>11</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>84</ID>
+      <StepID>84</StepID>
+      <Name>Door Control en Cartop</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>85</StepID>
     <JobTypeID>2</JobTypeID>
@@ -631,6 +1255,14 @@
     <Description>Programacion y ajuste del Starter</Description>
     <Order>12</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>85</ID>
+      <StepID>85</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>86</StepID>
     <JobTypeID>2</JobTypeID>
@@ -639,6 +1271,14 @@
     <Description>Programacion de parametros F1</Description>
     <Order>13</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>86</ID>
+      <StepID>86</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>87</StepID>
     <JobTypeID>2</JobTypeID>
@@ -647,6 +1287,14 @@
     <Description>Programacion de hora y fecha</Description>
     <Order>14</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>87</ID>
+      <StepID>87</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>88</StepID>
     <JobTypeID>2</JobTypeID>
@@ -655,6 +1303,14 @@
     <Description>Programacion de F4(Labels)</Description>
     <Order>15</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>88</ID>
+      <StepID>88</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>89</StepID>
     <JobTypeID>2</JobTypeID>
@@ -663,6 +1319,14 @@
     <Description>Board Power Test SAFL &amp; SAFS (Pag 5)</Description>
     <Order>16</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>89</ID>
+      <StepID>89</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>90</StepID>
     <JobTypeID>2</JobTypeID>
@@ -671,6 +1335,14 @@
     <Description>Motor Starter Test (Pag 6)</Description>
     <Order>17</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>90</ID>
+      <StepID>90</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>91</StepID>
     <JobTypeID>2</JobTypeID>
@@ -679,6 +1351,14 @@
     <Description>Valve Control &amp; Limits(Pag 7)</Description>
     <Order>18</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>91</ID>
+      <StepID>91</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>92</StepID>
     <JobTypeID>2</JobTypeID>
@@ -687,6 +1367,14 @@
     <Description>Safety &amp; Inspection (Pag 8) </Description>
     <Order>19</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>92</ID>
+      <StepID>92</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>93</StepID>
     <JobTypeID>2</JobTypeID>
@@ -695,6 +1383,14 @@
     <Description>Door Locks &amp; Hoistway Access(Pag 9)</Description>
     <Order>20</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>93</ID>
+      <StepID>93</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>94</StepID>
     <JobTypeID>2</JobTypeID>
@@ -703,6 +1399,14 @@
     <Description>Landing System (Pag 10)</Description>
     <Order>21</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>94</ID>
+      <StepID>94</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>95</StepID>
     <JobTypeID>2</JobTypeID>
@@ -711,6 +1415,14 @@
     <Description>Door Interface (Pag 11, 11x)</Description>
     <Order>22</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>95</ID>
+      <StepID>95</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>96</StepID>
     <JobTypeID>2</JobTypeID>
@@ -719,6 +1431,14 @@
     <Description>C.O.P. Parte 1 (Pag 12)</Description>
     <Order>23</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>96</ID>
+      <StepID>96</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>97</StepID>
     <JobTypeID>2</JobTypeID>
@@ -727,6 +1447,14 @@
     <Description>Door Interface (Pag CT1,CT2)</Description>
     <Order>22</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>97</ID>
+      <StepID>97</StepID>
+      <Name>Door Control en Cartop</Name>
+      <IsSelected>True</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>98</StepID>
     <JobTypeID>2</JobTypeID>
@@ -735,6 +1463,14 @@
     <Description>C.O.P Parte 1(Pag COP)</Description>
     <Order>23</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>98</ID>
+      <StepID>98</StepID>
+      <Name>Door Control en Cartop</Name>
+      <IsSelected>True</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>99</StepID>
     <JobTypeID>2</JobTypeID>
@@ -743,6 +1479,14 @@
     <Description>Fire Service Phase I(Pag 13)</Description>
     <Order>24</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>99</ID>
+      <StepID>99</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>100</StepID>
     <JobTypeID>2</JobTypeID>
@@ -751,6 +1495,14 @@
     <Description>Fire Service Phase 2(Pag12)</Description>
     <Order>25</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>100</ID>
+      <StepID>100</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>101</StepID>
     <JobTypeID>2</JobTypeID>
@@ -759,6 +1511,14 @@
     <Description>Movement Indication(Pag 14)</Description>
     <Order>26</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>101</ID>
+      <StepID>101</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>102</StepID>
     <JobTypeID>2</JobTypeID>
@@ -767,6 +1527,14 @@
     <Description>Fire Service Phase 2(Pag COP)</Description>
     <Order>25</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>102</ID>
+      <StepID>102</StepID>
+      <Name>Tarjeta CPI Incluida</Name>
+      <IsSelected>True</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>103</StepID>
     <JobTypeID>2</JobTypeID>
@@ -775,6 +1543,14 @@
     <Description>Movement Inidcation(Pag COP)</Description>
     <Order>26</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>103</ID>
+      <StepID>103</StepID>
+      <Name>Tarjeta CPI Incluida</Name>
+      <IsSelected>True</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>104</StepID>
     <JobTypeID>2</JobTypeID>
@@ -783,6 +1559,14 @@
     <Description>Car Calls (Pag COP)</Description>
     <Order>27</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>104</ID>
+      <StepID>104</StepID>
+      <Name>Tarjeta CPI Incluida</Name>
+      <IsSelected>True</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>105</StepID>
     <JobTypeID>2</JobTypeID>
@@ -791,6 +1575,14 @@
     <Description>Calls (Pag 16)</Description>
     <Order>28</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>105</ID>
+      <StepID>105</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>106</StepID>
     <JobTypeID>2</JobTypeID>
@@ -799,6 +1591,14 @@
     <Description>Serial Hall Calls (Pag SH)</Description>
     <Order>29</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>106</ID>
+      <StepID>106</StepID>
+      <Name>Serial Halls Calls</Name>
+      <IsSelected>True</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>107</StepID>
     <JobTypeID>2</JobTypeID>
@@ -807,6 +1607,14 @@
     <Description>Programmable input &amp; output (Pag 15,17, etc)</Description>
     <Order>30</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>107</ID>
+      <StepID>107</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>108</StepID>
     <JobTypeID>2</JobTypeID>
@@ -815,6 +1623,14 @@
     <Description>Pruebas con OVL del Job o switches para OVL</Description>
     <Order>31</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>108</ID>
+      <StepID>108</StepID>
+      <Name>Overlay</Name>
+      <IsSelected>True</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>109</StepID>
     <JobTypeID>2</JobTypeID>
@@ -823,6 +1639,14 @@
     <Description>Calibracion y prueba de EMCO Board</Description>
     <Order>32</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>109</ID>
+      <StepID>109</StepID>
+      <Name>EMCO Board</Name>
+      <IsSelected>True</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>110</StepID>
     <JobTypeID>2</JobTypeID>
@@ -831,6 +1655,14 @@
     <Description>Programable Inputs &amp; Outputs de Cartop(Pag CT1,CT2,etc)</Description>
     <Order>33</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>110</ID>
+      <StepID>110</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>111</StepID>
     <JobTypeID>2</JobTypeID>
@@ -839,6 +1671,14 @@
     <Description>Pruebas con MGroup del Job o MGroup de prueba</Description>
     <Order>34</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>111</ID>
+      <StepID>111</StepID>
+      <Name>Local</Name>
+      <IsSelected>True</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>112</StepID>
     <JobTypeID>2</JobTypeID>
@@ -847,6 +1687,20 @@
     <Description>Documento de Compliance 42-CR-0001</Description>
     <Order>35</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>112</ID>
+      <StepID>112</StepID>
+      <Name>CTL2</Name>
+      <IsSelected>True</IsSelected>
+    </TriggerFeature>
+    <TriggerFeature>
+      <ID>113</ID>
+      <StepID>112</StepID>
+      <Name>Canada</Name>
+      <IsSelected>True</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>113</StepID>
     <JobTypeID>2</JobTypeID>
@@ -855,6 +1709,26 @@
     <Description>Pruebas de Factory Test Report 2010</Description>
     <Order>36</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>114</ID>
+      <StepID>113</StepID>
+      <Name>CTL2</Name>
+      <IsSelected>True</IsSelected>
+    </TriggerFeature>
+    <TriggerFeature>
+      <ID>115</ID>
+      <StepID>113</StepID>
+      <Name>Canada</Name>
+      <IsSelected>True</IsSelected>
+    </TriggerFeature>
+    <TriggerFeature>
+      <ID>116</ID>
+      <StepID>113</StepID>
+      <Name>Ontario</Name>
+      <IsSelected>True</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>114</StepID>
     <JobTypeID>2</JobTypeID>
@@ -863,6 +1737,20 @@
     <Description>Flasheo de puerto CHP y/o MPU</Description>
     <Order>37</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>117</ID>
+      <StepID>114</StepID>
+      <Name>mView</Name>
+      <IsSelected>True</IsSelected>
+    </TriggerFeature>
+    <TriggerFeature>
+      <ID>118</ID>
+      <StepID>114</StepID>
+      <Name>iMonitor</Name>
+      <IsSelected>True</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>115</StepID>
     <JobTypeID>2</JobTypeID>
@@ -871,6 +1759,26 @@
     <Description>Configuracion de PC Imagen y softwares</Description>
     <Order>38</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>119</ID>
+      <StepID>115</StepID>
+      <Name>mView</Name>
+      <IsSelected>True</IsSelected>
+    </TriggerFeature>
+    <TriggerFeature>
+      <ID>120</ID>
+      <StepID>115</StepID>
+      <Name>iMonitor</Name>
+      <IsSelected>True</IsSelected>
+    </TriggerFeature>
+    <TriggerFeature>
+      <ID>121</ID>
+      <StepID>115</StepID>
+      <Name>PC de Cliente</Name>
+      <IsSelected>True</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>116</StepID>
     <JobTypeID>2</JobTypeID>
@@ -879,6 +1787,20 @@
     <Description>Prueba de Monitoring</Description>
     <Order>39</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>122</ID>
+      <StepID>116</StepID>
+      <Name>mView</Name>
+      <IsSelected>True</IsSelected>
+    </TriggerFeature>
+    <TriggerFeature>
+      <ID>123</ID>
+      <StepID>116</StepID>
+      <Name>iMonitor</Name>
+      <IsSelected>True</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>117</StepID>
     <JobTypeID>2</JobTypeID>
@@ -887,6 +1809,14 @@
     <Description>Modificacion de Parametros F1 version cliente</Description>
     <Order>40</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>124</ID>
+      <StepID>117</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>118</StepID>
     <JobTypeID>2</JobTypeID>
@@ -895,6 +1825,14 @@
     <Description>Inspeccion Final</Description>
     <Order>41</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>125</ID>
+      <StepID>118</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>119</StepID>
     <JobTypeID>2</JobTypeID>
@@ -903,6 +1841,14 @@
     <Description>Remover y remplazar componentes de test</Description>
     <Order>42</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>126</ID>
+      <StepID>119</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>120</StepID>
     <JobTypeID>2</JobTypeID>
@@ -911,6 +1857,14 @@
     <Description>Passcode</Description>
     <Order>43</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>127</ID>
+      <StepID>120</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>121</StepID>
     <JobTypeID>2</JobTypeID>
@@ -919,6 +1873,14 @@
     <Description>Papeleria final</Description>
     <Order>44</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>128</ID>
+      <StepID>121</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>122</StepID>
     <JobTypeID>2</JobTypeID>
@@ -927,6 +1889,14 @@
     <Description>Cross Aproval de papeleria</Description>
     <Order>45</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>129</ID>
+      <StepID>122</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>123</StepID>
     <JobTypeID>2</JobTypeID>
@@ -935,6 +1905,14 @@
     <Description>Respaldo electronico de la papeleria(SCAN)</Description>
     <Order>46</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>130</ID>
+      <StepID>123</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>124</StepID>
     <JobTypeID>2</JobTypeID>
@@ -943,6 +1921,14 @@
     <Description>desconexion de arneces del simulador</Description>
     <Order>47</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>131</ID>
+      <StepID>124</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>125</StepID>
     <JobTypeID>2</JobTypeID>
@@ -951,6 +1937,14 @@
     <Description>Carro a estacion final</Description>
     <Order>48</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>132</ID>
+      <StepID>125</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>126</StepID>
     <JobTypeID>2</JobTypeID>
@@ -959,6 +1953,14 @@
     <Description>Fin de pruebas M2000</Description>
     <Order>49</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>133</ID>
+      <StepID>126</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>127</StepID>
     <JobTypeID>4</JobTypeID>
@@ -967,6 +1969,14 @@
     <Description>Inicio de Test M4000</Description>
     <Order>0</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>134</ID>
+      <StepID>127</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>128</StepID>
     <JobTypeID>4</JobTypeID>
@@ -975,6 +1985,14 @@
     <Description>Documentacion Inicial</Description>
     <Order>1</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>135</ID>
+      <StepID>128</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>129</StepID>
     <JobTypeID>4</JobTypeID>
@@ -983,6 +2001,14 @@
     <Description>Traer material externo al controlador</Description>
     <Order>2</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>136</ID>
+      <StepID>129</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>130</StepID>
     <JobTypeID>4</JobTypeID>
@@ -991,6 +2017,14 @@
     <Description>Preparacion de la PC (LabView)</Description>
     <Order>4</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>137</ID>
+      <StepID>130</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>131</StepID>
     <JobTypeID>4</JobTypeID>
@@ -999,6 +2033,14 @@
     <Description>Conectar lineas principales de poder</Description>
     <Order>5</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>138</ID>
+      <StepID>131</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>132</StepID>
     <JobTypeID>4</JobTypeID>
@@ -1007,6 +2049,14 @@
     <Description>Inspeccion Visual</Description>
     <Order>3</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>139</ID>
+      <StepID>132</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>133</StepID>
     <JobTypeID>4</JobTypeID>
@@ -1015,6 +2065,14 @@
     <Description>Chequeo preliminar de voltajes inciales</Description>
     <Order>6</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>140</ID>
+      <StepID>133</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>134</StepID>
     <JobTypeID>4</JobTypeID>
@@ -1023,6 +2081,14 @@
     <Description>Hacer pruebas de Hipot</Description>
     <Order>7</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>141</ID>
+      <StepID>134</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>135</StepID>
     <JobTypeID>4</JobTypeID>
@@ -1031,6 +2097,14 @@
     <Description>Programacion de "Flasheo"</Description>
     <Order>8</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>142</ID>
+      <StepID>135</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>136</StepID>
     <JobTypeID>4</JobTypeID>
@@ -1039,6 +2113,14 @@
     <Description>Conexion de arneces simulador del carro y arneces cartop</Description>
     <Order>9</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>143</ID>
+      <StepID>136</StepID>
+      <Name>Door Control en Cartop</Name>
+      <IsSelected>True</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>137</StepID>
     <JobTypeID>4</JobTypeID>
@@ -1047,6 +2129,14 @@
     <Description>Programacion del firmware (Chip)</Description>
     <Order>10</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>144</ID>
+      <StepID>137</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>138</StepID>
     <JobTypeID>4</JobTypeID>
@@ -1055,6 +2145,14 @@
     <Description>Conexion de arneces en el simulador</Description>
     <Order>11</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>145</ID>
+      <StepID>138</StepID>
+      <Name>Door Control en Cartop</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>139</StepID>
     <JobTypeID>4</JobTypeID>
@@ -1063,6 +2161,14 @@
     <Description>Programacion de parametros de F1</Description>
     <Order>12</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>146</ID>
+      <StepID>139</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>140</StepID>
     <JobTypeID>4</JobTypeID>
@@ -1071,6 +2177,14 @@
     <Description>Programacion de parametros F7 version test</Description>
     <Order>13</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>147</ID>
+      <StepID>140</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>141</StepID>
     <JobTypeID>4</JobTypeID>
@@ -1079,6 +2193,14 @@
     <Description>Programacion de parametros F5 version test</Description>
     <Order>14</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>148</ID>
+      <StepID>141</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>142</StepID>
     <JobTypeID>4</JobTypeID>
@@ -1087,6 +2209,14 @@
     <Description>Programacion de hora y fecha</Description>
     <Order>15</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>149</ID>
+      <StepID>142</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>143</StepID>
     <JobTypeID>4</JobTypeID>
@@ -1095,6 +2225,14 @@
     <Description>Programacion de R6 Regen Unit</Description>
     <Order>16</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>150</ID>
+      <StepID>143</StepID>
+      <Name>R6 Regen Unit</Name>
+      <IsSelected>True</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>144</StepID>
     <JobTypeID>4</JobTypeID>
@@ -1103,6 +2241,14 @@
     <Description>Programacion de F4(Labels)</Description>
     <Order>17</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>151</ID>
+      <StepID>144</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>145</StepID>
     <JobTypeID>4</JobTypeID>
@@ -1111,6 +2257,14 @@
     <Description>MBrake Module calibracion inicial</Description>
     <Order>18</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>152</ID>
+      <StepID>145</StepID>
+      <Name>EMBrake Module</Name>
+      <IsSelected>True</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>146</StepID>
     <JobTypeID>4</JobTypeID>
@@ -1119,6 +2273,20 @@
     <Description>Calibracion de EMbrake Coil Discreto Preliminar</Description>
     <Order>18</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>153</ID>
+      <StepID>146</StepID>
+      <Name>EMBrake Module</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+    <TriggerFeature>
+      <ID>154</ID>
+      <StepID>146</StepID>
+      <Name>Brake Coil Voltage &gt; 10</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>147</StepID>
     <JobTypeID>4</JobTypeID>
@@ -1127,6 +2295,20 @@
     <Description>Calibracion de MBrake Coil Discreto Final</Description>
     <Order>18</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>155</ID>
+      <StepID>147</StepID>
+      <Name>EMBrake Module</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+    <TriggerFeature>
+      <ID>156</ID>
+      <StepID>147</StepID>
+      <Name>Brake Coil Voltage &gt; 10</Name>
+      <IsSelected>True</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>148</StepID>
     <JobTypeID>4</JobTypeID>
@@ -1135,6 +2317,14 @@
     <Description>Calibracion F6 Floor Learning</Description>
     <Order>19</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>157</ID>
+      <StepID>148</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>149</StepID>
     <JobTypeID>4</JobTypeID>
@@ -1143,6 +2333,14 @@
     <Description>Calibracion F7 Terminal Limits</Description>
     <Order>20</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>158</ID>
+      <StepID>149</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>150</StepID>
     <JobTypeID>4</JobTypeID>
@@ -1151,6 +2349,14 @@
     <Description>Board Power Test SAFL &amp; SAFS (Pag 5)</Description>
     <Order>21</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>159</ID>
+      <StepID>150</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>151</StepID>
     <JobTypeID>4</JobTypeID>
@@ -1159,6 +2365,14 @@
     <Description>Drive Interface (Pag 6)</Description>
     <Order>22</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>160</ID>
+      <StepID>151</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>152</StepID>
     <JobTypeID>4</JobTypeID>
@@ -1167,6 +2381,14 @@
     <Description>Emergency Brake (Pag 7)</Description>
     <Order>23</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>161</ID>
+      <StepID>152</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>153</StepID>
     <JobTypeID>4</JobTypeID>
@@ -1175,6 +2397,14 @@
     <Description>Safety &amp; Inspection (Pag 8)</Description>
     <Order>24</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>162</ID>
+      <StepID>153</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>154</StepID>
     <JobTypeID>4</JobTypeID>
@@ -1183,6 +2413,14 @@
     <Description>Door Locks &amp; Hoistway Access (Pag 9)</Description>
     <Order>25</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>163</ID>
+      <StepID>154</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>155</StepID>
     <JobTypeID>4</JobTypeID>
@@ -1191,6 +2429,14 @@
     <Description>Landing System (Pag 10)</Description>
     <Order>26</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>164</ID>
+      <StepID>155</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>156</StepID>
     <JobTypeID>4</JobTypeID>
@@ -1199,6 +2445,14 @@
     <Description>Door Interface (Pag 11, 11X)</Description>
     <Order>27</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>165</ID>
+      <StepID>156</StepID>
+      <Name>Door Control en Cartop</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>157</StepID>
     <JobTypeID>4</JobTypeID>
@@ -1207,6 +2461,14 @@
     <Description>C.O.P (Pag 12)</Description>
     <Order>28</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>166</ID>
+      <StepID>157</StepID>
+      <Name>Door Control en Cartop</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>158</StepID>
     <JobTypeID>4</JobTypeID>
@@ -1215,6 +2477,14 @@
     <Description>Door Interface (Pag CT1,CT2)</Description>
     <Order>27</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>167</ID>
+      <StepID>158</StepID>
+      <Name>Door Control en Cartop</Name>
+      <IsSelected>True</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>159</StepID>
     <JobTypeID>4</JobTypeID>
@@ -1223,6 +2493,14 @@
     <Description>C.O.P (Pag COP)</Description>
     <Order>28</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>168</ID>
+      <StepID>159</StepID>
+      <Name>Door Control en Cartop</Name>
+      <IsSelected>True</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>160</StepID>
     <JobTypeID>4</JobTypeID>
@@ -1231,6 +2509,14 @@
     <Description>Fire Service Phase 1(Pag 13)</Description>
     <Order>29</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>169</ID>
+      <StepID>160</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>161</StepID>
     <JobTypeID>4</JobTypeID>
@@ -1239,6 +2525,14 @@
     <Description>Fire Service Phase 2(Pag 12)</Description>
     <Order>30</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>170</ID>
+      <StepID>161</StepID>
+      <Name>Tarjeta CPI Incluida</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>162</StepID>
     <JobTypeID>4</JobTypeID>
@@ -1247,6 +2541,14 @@
     <Description>Movement Indication (Pag 14)</Description>
     <Order>31</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>171</ID>
+      <StepID>162</StepID>
+      <Name>Tarjeta CPI Incluida</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>163</StepID>
     <JobTypeID>4</JobTypeID>
@@ -1255,6 +2557,14 @@
     <Description>Fire Service Phase 2(Pag COP)</Description>
     <Order>30</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>172</ID>
+      <StepID>163</StepID>
+      <Name>Tarjeta CPI Incluida</Name>
+      <IsSelected>True</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>164</StepID>
     <JobTypeID>4</JobTypeID>
@@ -1263,6 +2573,14 @@
     <Description>Movement indication (Pag COP)</Description>
     <Order>31</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>173</ID>
+      <StepID>164</StepID>
+      <Name>Tarjeta CPI Incluida</Name>
+      <IsSelected>True</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>165</StepID>
     <JobTypeID>4</JobTypeID>
@@ -1271,6 +2589,14 @@
     <Description>Car Calls</Description>
     <Order>32</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>174</ID>
+      <StepID>165</StepID>
+      <Name>Tarjeta CPI Incluida</Name>
+      <IsSelected>True</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>166</StepID>
     <JobTypeID>4</JobTypeID>
@@ -1279,6 +2605,14 @@
     <Description>Calls (Pag 16)</Description>
     <Order>33</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>175</ID>
+      <StepID>166</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>167</StepID>
     <JobTypeID>4</JobTypeID>
@@ -1287,6 +2621,14 @@
     <Description>Serial Hall Calls</Description>
     <Order>34</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>176</ID>
+      <StepID>167</StepID>
+      <Name>Serial Halls Calls</Name>
+      <IsSelected>True</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>168</StepID>
     <JobTypeID>4</JobTypeID>
@@ -1295,6 +2637,14 @@
     <Description>Programmable Inputs &amp; Outputs</Description>
     <Order>35</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>177</ID>
+      <StepID>168</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>169</StepID>
     <JobTypeID>4</JobTypeID>
@@ -1303,6 +2653,14 @@
     <Description>Pruebas con OVL del Job o switches para OVL</Description>
     <Order>36</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>178</ID>
+      <StepID>169</StepID>
+      <Name>Overlay</Name>
+      <IsSelected>True</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>170</StepID>
     <JobTypeID>4</JobTypeID>
@@ -1311,6 +2669,20 @@
     <Description>Calibracion y prueba de EMCO Board</Description>
     <Order>37</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>179</ID>
+      <StepID>170</StepID>
+      <Name>Overlay</Name>
+      <IsSelected>True</IsSelected>
+    </TriggerFeature>
+    <TriggerFeature>
+      <ID>180</ID>
+      <StepID>170</StepID>
+      <Name>EMCO Board</Name>
+      <IsSelected>True</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>171</StepID>
     <JobTypeID>4</JobTypeID>
@@ -1319,6 +2691,14 @@
     <Description>Progrmmable Inputs &amp; Outputs de Cartop (Pag CT1,CT2,etc)</Description>
     <Order>38</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>181</ID>
+      <StepID>171</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>172</StepID>
     <JobTypeID>4</JobTypeID>
@@ -1327,6 +2707,14 @@
     <Description>Pruebas con MGroup del Job o MGroup de prueba</Description>
     <Order>39</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>182</ID>
+      <StepID>172</StepID>
+      <Name>Local</Name>
+      <IsSelected>True</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>173</StepID>
     <JobTypeID>4</JobTypeID>
@@ -1335,6 +2723,20 @@
     <Description>Pruebas de compliance documento 42-CR-0002</Description>
     <Order>40</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>183</ID>
+      <StepID>173</StepID>
+      <Name>CTL2</Name>
+      <IsSelected>True</IsSelected>
+    </TriggerFeature>
+    <TriggerFeature>
+      <ID>184</ID>
+      <StepID>173</StepID>
+      <Name>Ontario</Name>
+      <IsSelected>True</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>174</StepID>
     <JobTypeID>4</JobTypeID>
@@ -1343,6 +2745,20 @@
     <Description>Flasheo de puerto CHP y/o MPU</Description>
     <Order>41</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>185</ID>
+      <StepID>174</StepID>
+      <Name>mView</Name>
+      <IsSelected>True</IsSelected>
+    </TriggerFeature>
+    <TriggerFeature>
+      <ID>186</ID>
+      <StepID>174</StepID>
+      <Name>iMonitor</Name>
+      <IsSelected>True</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>175</StepID>
     <JobTypeID>4</JobTypeID>
@@ -1351,6 +2767,26 @@
     <Description>Configuracion de pc imagen y softwares</Description>
     <Order>42</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>187</ID>
+      <StepID>175</StepID>
+      <Name>mView</Name>
+      <IsSelected>True</IsSelected>
+    </TriggerFeature>
+    <TriggerFeature>
+      <ID>188</ID>
+      <StepID>175</StepID>
+      <Name>iMonitor</Name>
+      <IsSelected>True</IsSelected>
+    </TriggerFeature>
+    <TriggerFeature>
+      <ID>189</ID>
+      <StepID>175</StepID>
+      <Name>PC de Cliente</Name>
+      <IsSelected>True</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>176</StepID>
     <JobTypeID>4</JobTypeID>
@@ -1359,6 +2795,20 @@
     <Description>Prueba de Monitoring</Description>
     <Order>43</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>190</ID>
+      <StepID>176</StepID>
+      <Name>mView</Name>
+      <IsSelected>True</IsSelected>
+    </TriggerFeature>
+    <TriggerFeature>
+      <ID>191</ID>
+      <StepID>176</StepID>
+      <Name>iMonitor</Name>
+      <IsSelected>True</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>177</StepID>
     <JobTypeID>4</JobTypeID>
@@ -1367,6 +2817,14 @@
     <Description>Additional manual Test (Over speeds and Limits)</Description>
     <Order>44</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>192</ID>
+      <StepID>177</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>178</StepID>
     <JobTypeID>4</JobTypeID>
@@ -1375,6 +2833,14 @@
     <Description>Reportar a almacen por la pila de 12v cargada</Description>
     <Order>45</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>193</ID>
+      <StepID>178</StepID>
+      <Name>MRL</Name>
+      <IsSelected>True</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>179</StepID>
     <JobTypeID>4</JobTypeID>
@@ -1383,6 +2849,14 @@
     <Description>Programacion del PLC</Description>
     <Order>46</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>194</ID>
+      <StepID>179</StepID>
+      <Name>MRL</Name>
+      <IsSelected>True</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>180</StepID>
     <JobTypeID>4</JobTypeID>
@@ -1391,6 +2865,14 @@
     <Description>Monitoreo de video con panel</Description>
     <Order>47</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>195</ID>
+      <StepID>180</StepID>
+      <Name>MRL</Name>
+      <IsSelected>True</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>181</StepID>
     <JobTypeID>4</JobTypeID>
@@ -1399,6 +2881,14 @@
     <Description>Monitoreo de bateria</Description>
     <Order>48</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>196</ID>
+      <StepID>181</StepID>
+      <Name>MRL</Name>
+      <IsSelected>True</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>182</StepID>
     <JobTypeID>4</JobTypeID>
@@ -1407,6 +2897,14 @@
     <Description>Brake Release del MRL</Description>
     <Order>49</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>197</ID>
+      <StepID>182</StepID>
+      <Name>MRL</Name>
+      <IsSelected>True</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>183</StepID>
     <JobTypeID>4</JobTypeID>
@@ -1415,6 +2913,14 @@
     <Description>MBrake Calibracion final</Description>
     <Order>50</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>198</ID>
+      <StepID>183</StepID>
+      <Name>EMBrake Module</Name>
+      <IsSelected>True</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>184</StepID>
     <JobTypeID>4</JobTypeID>
@@ -1423,6 +2929,20 @@
     <Description>Calibracion MBrake Coil discreto Final</Description>
     <Order>50</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>199</ID>
+      <StepID>184</StepID>
+      <Name>EMBrake Module</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+    <TriggerFeature>
+      <ID>200</ID>
+      <StepID>184</StepID>
+      <Name>Brake Coil Voltage &gt; 10</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>185</StepID>
     <JobTypeID>4</JobTypeID>
@@ -1431,6 +2951,14 @@
     <Description>Modificacion de parametros F7 version cliente</Description>
     <Order>51</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>201</ID>
+      <StepID>185</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>186</StepID>
     <JobTypeID>4</JobTypeID>
@@ -1439,6 +2967,14 @@
     <Description>Modificaon de parametros F5 version cliente</Description>
     <Order>52</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>202</ID>
+      <StepID>186</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>187</StepID>
     <JobTypeID>4</JobTypeID>
@@ -1447,6 +2983,14 @@
     <Description>Modificacion de parametros F1 version cliente</Description>
     <Order>53</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>203</ID>
+      <StepID>187</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>188</StepID>
     <JobTypeID>4</JobTypeID>
@@ -1455,6 +2999,14 @@
     <Description>Inspeccion Final</Description>
     <Order>54</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>204</ID>
+      <StepID>188</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>189</StepID>
     <JobTypeID>4</JobTypeID>
@@ -1463,6 +3015,14 @@
     <Description>Remover y remplazar componentes de test</Description>
     <Order>55</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>205</ID>
+      <StepID>189</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>190</StepID>
     <JobTypeID>4</JobTypeID>
@@ -1471,6 +3031,14 @@
     <Description>Passcode</Description>
     <Order>56</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>206</ID>
+      <StepID>190</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>191</StepID>
     <JobTypeID>4</JobTypeID>
@@ -1479,6 +3047,14 @@
     <Description>Papeleria final</Description>
     <Order>57</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>207</ID>
+      <StepID>191</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>192</StepID>
     <JobTypeID>4</JobTypeID>
@@ -1487,6 +3063,14 @@
     <Description>Cross Aproval de papeleria</Description>
     <Order>58</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>208</ID>
+      <StepID>192</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>193</StepID>
     <JobTypeID>4</JobTypeID>
@@ -1495,6 +3079,14 @@
     <Description>Respaldo electronico de la papeleria (SCAN)</Description>
     <Order>59</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>209</ID>
+      <StepID>193</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>194</StepID>
     <JobTypeID>4</JobTypeID>
@@ -1503,6 +3095,14 @@
     <Description>Desconeccion arneces del simulador</Description>
     <Order>60</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>210</ID>
+      <StepID>194</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>195</StepID>
     <JobTypeID>4</JobTypeID>
@@ -1511,6 +3111,14 @@
     <Description>Carro a estacion final</Description>
     <Order>61</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>211</ID>
+      <StepID>195</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>196</StepID>
     <JobTypeID>4</JobTypeID>
@@ -1519,6 +3127,14 @@
     <Description>Fin de Pruebas M4000</Description>
     <Order>62</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>212</ID>
+      <StepID>196</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
   <Step>
     <StepID>197</StepID>
     <JobTypeID>5</JobTypeID>
@@ -1527,4 +3143,12 @@
     <Description>Equipo en area de final</Description>
     <Order>36</Order>
   </Step>
+  <TriggerFeatures>
+    <TriggerFeature>
+      <ID>213</ID>
+      <StepID>197</StepID>
+      <Name>Nulo</Name>
+      <IsSelected>False</IsSelected>
+    </TriggerFeature>
+  </TriggerFeatures>
 </Steps>

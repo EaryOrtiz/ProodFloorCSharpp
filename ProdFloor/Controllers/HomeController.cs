@@ -27,6 +27,7 @@ namespace ProdFloor.Controllers
             repository = repo;
             testingRepo = testRepo;
             itemRepo = item;
+            userManager = userMrg;
         }
 
         private async Task<bool> GetCurrentUserRole(string role)
@@ -45,7 +46,7 @@ namespace ProdFloor.Controllers
             return user;
         }
 
-        public ActionResult Index(string filtrado, string Sort = "default", int MyJobsPage = 1, int OnCrossJobPage = 1, int PendingToCrossJobPage = 1)
+        public ActionResult Index(string filtrado, string Sort = "default", int MyJobsPage = 1, int OnCrossJobPage = 1, int PendingToCrossJobPage = 1,int pendingJobPage = 1)
         {
             AppUser currentUser = GetCurrentUser().Result;
             bool engineer = GetCurrentUserRole("Engineer").Result;
@@ -140,7 +141,7 @@ namespace ProdFloor.Controllers
                     .Where(j => j.TechnicianID == currentUser.EngID)
                     .Where(j => j.Status == "Stoped" || j.Status == "Working on it")
                   .OrderBy(p => p.TestJobID)
-                  .Skip((MyJobsPage - 1) * PageSize)
+                  .Skip((pendingJobPage - 1) * PageSize)
                   .Take(PageSize);
 
                 return View("TechnicianDashBoard", new DashboardIndexViewModel
@@ -148,7 +149,7 @@ namespace ProdFloor.Controllers
                     PendingTestJobs = CurrentTestJobs,
                     PendingJobsPagingInfo = new PagingInfo
                     {
-                        CurrentPage = MyJobsPage,
+                        CurrentPage = pendingJobPage,
                         ItemsPerPage = PageSize,
                         TotalItems = testingRepo.TestJobs
                         .Where(j => j.TechnicianID == currentUser.EngID)

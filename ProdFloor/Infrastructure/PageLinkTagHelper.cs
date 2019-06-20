@@ -1111,8 +1111,12 @@ namespace ProdFloor.Infrastructure
             m_tag.Attributes["value"] = "";
             m_tag.InnerHtml.Append("Please select one");
             result.InnerHtml.AppendHtml(m_tag);
-            var jobtypeName = itemsrepository.JobTypes.FirstOrDefault(m => m.JobTypeID == SelectFor).Name;
-            IQueryable<LandingSystem> landigSystems = itemsrepository.LandingSystems.OrderBy(s => s.Name).Where(m => m.UsedIn == jobtypeName).AsQueryable();
+            IQueryable<LandingSystem> landigSystems = itemsrepository.LandingSystems.OrderBy(s => s.Name).AsQueryable();
+            if (SelectFor != 0)
+            {
+                var jobtypeName = itemsrepository.JobTypes.FirstOrDefault(m => m.JobTypeID == SelectFor).Name;
+                landigSystems = itemsrepository.LandingSystems.OrderBy(s => s.Name).Where(m => m.UsedIn == jobtypeName).AsQueryable();
+            }
             foreach (LandingSystem landingSys in landigSystems)
             {
                 TagBuilder tag = new TagBuilder("option");
@@ -1356,7 +1360,7 @@ namespace ProdFloor.Infrastructure
         [HtmlAttributeNotBound]
         public ViewContext ViewContext { get; set; }
 
-        public int SelectedValue { get; set; } = 0;
+        public int SelectedValue { get; set; }
 
         [HtmlAttributeName("asp-is-disabled")]
         public bool IsDisabled { set; get; }
@@ -1381,7 +1385,7 @@ namespace ProdFloor.Infrastructure
             {
                 TagBuilder tag = new TagBuilder("option");
                 tag.Attributes["value"] = jobTypes.JobTypeID.ToString();
-                if (SelectedValue != 0 && jobTypes.JobTypeID == SelectedValue)
+                if (jobTypes.JobTypeID == SelectedValue)
                 {
                     tag.Attributes["selected"] = "selected";
                 }
@@ -1397,7 +1401,6 @@ namespace ProdFloor.Infrastructure
             base.Process(context, output);
         }
     }
-
     public class JobTypeInJobSelectTagHelper : TagHelper
     {
         private IItemRepository itemsrepository;

@@ -344,7 +344,8 @@ namespace ProdFloor.Controllers
             HtmlDocument doc = new HtmlDocument();
             doc.Load(@"C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\Steps.xml");
 
-            var XMLobs = doc.DocumentNode.SelectNodes("//step");
+            var allXMLobs = doc.DocumentNode.SelectSingleNode("//steps");
+            var XMLobs = allXMLobs.SelectNodes("//step");
 
             foreach (var XMLob in XMLobs)
             {
