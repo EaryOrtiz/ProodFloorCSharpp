@@ -5,7 +5,7 @@
     <FLA>18</FLA>
     <Volts>240</Volts>
     <HP>5</HP>
-    <MCEPart>50-50-0002</MCEPart>
+    <MCEPart>50-05-0002</MCEPart>
     <NewManufacturerPart>72GG34AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -15,7 +15,7 @@
     <FLA>18</FLA>
     <Volts>380/415</Volts>
     <HP>7.5</HP>
-    <MCEPart>50-50-0002</MCEPart>
+    <MCEPart>50-05-0002</MCEPart>
     <NewManufacturerPart>72GG34AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -25,7 +25,7 @@
     <FLA>18</FLA>
     <Volts>460</Volts>
     <HP>10</HP>
-    <MCEPart>50-50-0002</MCEPart>
+    <MCEPart>50-05-0002</MCEPart>
     <NewManufacturerPart>72GG34AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -35,7 +35,7 @@
     <FLA>18</FLA>
     <Volts>575</Volts>
     <HP>15</HP>
-    <MCEPart>50-50-0013</MCEPart>
+    <MCEPart>50-05-0013</MCEPart>
     <NewManufacturerPart>72GG35AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -45,7 +45,7 @@
     <FLA>22</FLA>
     <Volts>208</Volts>
     <HP>5</HP>
-    <MCEPart>50-50-0001</MCEPart>
+    <MCEPart>50-05-0001</MCEPart>
     <NewManufacturerPart>72EG34AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -55,7 +55,7 @@
     <FLA>22</FLA>
     <Volts>240</Volts>
     <HP>7.5</HP>
-    <MCEPart>50-50-0001</MCEPart>
+    <MCEPart>50-05-0001</MCEPart>
     <NewManufacturerPart>72EG34AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -65,7 +65,7 @@
     <FLA>22</FLA>
     <Volts>380/415</Volts>
     <HP>10</HP>
-    <MCEPart>50-50-0001</MCEPart>
+    <MCEPart>50-05-0001</MCEPart>
     <NewManufacturerPart>72EG34AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -75,7 +75,7 @@
     <FLA>22</FLA>
     <Volts>460</Volts>
     <HP>15</HP>
-    <MCEPart>50-50-0001</MCEPart>
+    <MCEPart>50-05-0001</MCEPart>
     <NewManufacturerPart>72EG34AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -85,7 +85,7 @@
     <FLA>22</FLA>
     <Volts>208</Volts>
     <HP>5</HP>
-    <MCEPart>50-50-0003</MCEPart>
+    <MCEPart>50-05-0003</MCEPart>
     <NewManufacturerPart>72HG34AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -95,7 +95,7 @@
     <FLA>22</FLA>
     <Volts>240</Volts>
     <HP>7.5</HP>
-    <MCEPart>50-50-0003</MCEPart>
+    <MCEPart>50-05-0003</MCEPart>
     <NewManufacturerPart>72HG34AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -105,7 +105,7 @@
     <FLA>22</FLA>
     <Volts>380/415</Volts>
     <HP>10</HP>
-    <MCEPart>50-50-0003</MCEPart>
+    <MCEPart>50-05-0003</MCEPart>
     <NewManufacturerPart>72HG34AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -115,7 +115,7 @@
     <FLA>22</FLA>
     <Volts>460</Volts>
     <HP>15</HP>
-    <MCEPart>50-50-0003</MCEPart>
+    <MCEPart>50-05-0003</MCEPart>
     <NewManufacturerPart>72HG34AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -125,7 +125,7 @@
     <FLA>22</FLA>
     <Volts>575</Volts>
     <HP>20</HP>
-    <MCEPart>50-50-0014</MCEPart>
+    <MCEPart>50-05-0014</MCEPart>
     <NewManufacturerPart>72HG35AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -135,7 +135,7 @@
     <FLA>28</FLA>
     <Volts>208</Volts>
     <HP>7.5</HP>
-    <MCEPart>50-50-0004</MCEPart>
+    <MCEPart>50-05-0004</MCEPart>
     <NewManufacturerPart>72JG34AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -145,7 +145,7 @@
     <FLA>28</FLA>
     <Volts>240</Volts>
     <HP>10</HP>
-    <MCEPart>50-50-0004</MCEPart>
+    <MCEPart>50-05-0004</MCEPart>
     <NewManufacturerPart>72JG34AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -155,7 +155,7 @@
     <FLA>28</FLA>
     <Volts>380/415</Volts>
     <HP>15</HP>
-    <MCEPart>50-50-0004</MCEPart>
+    <MCEPart>50-05-0004</MCEPart>
     <NewManufacturerPart>72JG34AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -165,7 +165,7 @@
     <FLA>28</FLA>
     <Volts>460</Volts>
     <HP>20</HP>
-    <MCEPart>50-50-0004</MCEPart>
+    <MCEPart>50-05-0004</MCEPart>
     <NewManufacturerPart>72JG34AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -175,7 +175,7 @@
     <FLA>28</FLA>
     <Volts>575</Volts>
     <HP>25</HP>
-    <MCEPart>50-50-0015</MCEPart>
+    <MCEPart>50-05-0015</MCEPart>
     <NewManufacturerPart>72JG35AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -185,7 +185,7 @@
     <FLA>35</FLA>
     <Volts>208</Volts>
     <HP>7.5</HP>
-    <MCEPart>50-50-0002</MCEPart>
+    <MCEPart>50-05-0002</MCEPart>
     <NewManufacturerPart>72GG34AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -195,7 +195,7 @@
     <FLA>35</FLA>
     <Volts>240</Volts>
     <HP>10</HP>
-    <MCEPart>50-50-0002</MCEPart>
+    <MCEPart>50-05-0002</MCEPart>
     <NewManufacturerPart>72GG34AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -205,7 +205,7 @@
     <FLA>35</FLA>
     <Volts>380/415</Volts>
     <HP>20</HP>
-    <MCEPart>50-50-0002</MCEPart>
+    <MCEPart>50-05-0002</MCEPart>
     <NewManufacturerPart>72GG34AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -215,7 +215,7 @@
     <FLA>35</FLA>
     <Volts>460</Volts>
     <HP>25</HP>
-    <MCEPart>50-50-0002</MCEPart>
+    <MCEPart>50-05-0002</MCEPart>
     <NewManufacturerPart>72GG34AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -225,7 +225,7 @@
     <FLA>35</FLA>
     <Volts>575</Volts>
     <HP>30</HP>
-    <MCEPart>50-50-0013</MCEPart>
+    <MCEPart>50-05-0013</MCEPart>
     <NewManufacturerPart>72GG35AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -235,7 +235,7 @@
     <FLA>35</FLA>
     <Volts>208</Volts>
     <HP>7.5</HP>
-    <MCEPart>50-50-0005</MCEPart>
+    <MCEPart>50-05-0005</MCEPart>
     <NewManufacturerPart>72KG34AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -245,7 +245,7 @@
     <FLA>35</FLA>
     <Volts>240</Volts>
     <HP>10</HP>
-    <MCEPart>50-50-0005</MCEPart>
+    <MCEPart>50-05-0005</MCEPart>
     <NewManufacturerPart>72KG34AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -255,7 +255,7 @@
     <FLA>35</FLA>
     <Volts>380/415</Volts>
     <HP>20</HP>
-    <MCEPart>50-50-0005</MCEPart>
+    <MCEPart>50-05-0005</MCEPart>
     <NewManufacturerPart>72KG34AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -265,7 +265,7 @@
     <FLA>35</FLA>
     <Volts>460</Volts>
     <HP>25</HP>
-    <MCEPart>50-50-0005</MCEPart>
+    <MCEPart>50-05-0005</MCEPart>
     <NewManufacturerPart>72KG34AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -275,7 +275,7 @@
     <FLA>35</FLA>
     <Volts>575</Volts>
     <HP>30</HP>
-    <MCEPart>50-50-0016</MCEPart>
+    <MCEPart>50-05-0016</MCEPart>
     <NewManufacturerPart>72KG35AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -285,7 +285,7 @@
     <FLA>42</FLA>
     <Volts>208</Volts>
     <HP>10</HP>
-    <MCEPart>50-50-0003</MCEPart>
+    <MCEPart>50-05-0003</MCEPart>
     <NewManufacturerPart>72HG34AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -295,7 +295,7 @@
     <FLA>42</FLA>
     <Volts>240</Volts>
     <HP>15</HP>
-    <MCEPart>50-50-0003</MCEPart>
+    <MCEPart>50-05-0003</MCEPart>
     <NewManufacturerPart>72HG34AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -305,7 +305,7 @@
     <FLA>42</FLA>
     <Volts>380/415</Volts>
     <HP>25</HP>
-    <MCEPart>50-50-0003</MCEPart>
+    <MCEPart>50-05-0003</MCEPart>
     <NewManufacturerPart>72HG34AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -315,7 +315,7 @@
     <FLA>42</FLA>
     <Volts>460</Volts>
     <HP>30</HP>
-    <MCEPart>50-50-0003</MCEPart>
+    <MCEPart>50-05-0003</MCEPart>
     <NewManufacturerPart>72HG34AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -325,7 +325,7 @@
     <FLA>42</FLA>
     <Volts>575</Volts>
     <HP>40</HP>
-    <MCEPart>50-50-0014</MCEPart>
+    <MCEPart>50-05-0014</MCEPart>
     <NewManufacturerPart>72HG35AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -335,7 +335,7 @@
     <FLA>42</FLA>
     <Volts>208</Volts>
     <HP>10</HP>
-    <MCEPart>50-50-0006</MCEPart>
+    <MCEPart>50-05-0006</MCEPart>
     <NewManufacturerPart>72LG34AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -345,7 +345,7 @@
     <FLA>42</FLA>
     <Volts>240</Volts>
     <HP>15</HP>
-    <MCEPart>50-50-0006</MCEPart>
+    <MCEPart>50-05-0006</MCEPart>
     <NewManufacturerPart>72LG34AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -355,7 +355,7 @@
     <FLA>42</FLA>
     <Volts>380/415</Volts>
     <HP>25</HP>
-    <MCEPart>50-50-0006</MCEPart>
+    <MCEPart>50-05-0006</MCEPart>
     <NewManufacturerPart>72LG34AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -365,7 +365,7 @@
     <FLA>42</FLA>
     <Volts>460</Volts>
     <HP>30</HP>
-    <MCEPart>50-50-0006</MCEPart>
+    <MCEPart>50-05-0006</MCEPart>
     <NewManufacturerPart>72LG34AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -375,7 +375,7 @@
     <FLA>42</FLA>
     <Volts>575</Volts>
     <HP>40</HP>
-    <MCEPart>50-50-0011</MCEPart>
+    <MCEPart>50-05-0011</MCEPart>
     <NewManufacturerPart>72LG35AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -385,7 +385,7 @@
     <FLA>55</FLA>
     <Volts>208</Volts>
     <HP>15</HP>
-    <MCEPart>50-50-0004</MCEPart>
+    <MCEPart>50-05-0004</MCEPart>
     <NewManufacturerPart>72JG34AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -395,7 +395,7 @@
     <FLA>55</FLA>
     <Volts>240</Volts>
     <HP>20</HP>
-    <MCEPart>50-50-0004</MCEPart>
+    <MCEPart>50-05-0004</MCEPart>
     <NewManufacturerPart>72JG34AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -405,7 +405,7 @@
     <FLA>55</FLA>
     <Volts>380/415</Volts>
     <HP>30</HP>
-    <MCEPart>50-50-0004</MCEPart>
+    <MCEPart>50-05-0004</MCEPart>
     <NewManufacturerPart>72JG34AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -415,7 +415,7 @@
     <FLA>55</FLA>
     <Volts>460</Volts>
     <HP>40</HP>
-    <MCEPart>50-50-0004</MCEPart>
+    <MCEPart>50-05-0004</MCEPart>
     <NewManufacturerPart>72JG34AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -425,7 +425,7 @@
     <FLA>55</FLA>
     <Volts>575</Volts>
     <HP>50</HP>
-    <MCEPart>50-50-0015</MCEPart>
+    <MCEPart>50-05-0015</MCEPart>
     <NewManufacturerPart>72JG35AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -435,7 +435,7 @@
     <FLA>55</FLA>
     <Volts>208</Volts>
     <HP>15</HP>
-    <MCEPart>50-50-0007</MCEPart>
+    <MCEPart>50-05-0007</MCEPart>
     <NewManufacturerPart>72MG34AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -445,7 +445,7 @@
     <FLA>55</FLA>
     <Volts>240</Volts>
     <HP>20</HP>
-    <MCEPart>50-50-0007</MCEPart>
+    <MCEPart>50-05-0007</MCEPart>
     <NewManufacturerPart>72MG34AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -455,7 +455,7 @@
     <FLA>55</FLA>
     <Volts>380/415</Volts>
     <HP>30</HP>
-    <MCEPart>50-50-0007</MCEPart>
+    <MCEPart>50-05-0007</MCEPart>
     <NewManufacturerPart>72MG34AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -465,7 +465,7 @@
     <FLA>55</FLA>
     <Volts>460</Volts>
     <HP>40</HP>
-    <MCEPart>50-50-0007</MCEPart>
+    <MCEPart>50-05-0007</MCEPart>
     <NewManufacturerPart>72MG34AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -475,7 +475,7 @@
     <FLA>55</FLA>
     <Volts>575</Volts>
     <HP>50</HP>
-    <MCEPart>50-50-0017</MCEPart>
+    <MCEPart>50-05-0017</MCEPart>
     <NewManufacturerPart>72MG35AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -485,7 +485,7 @@
     <FLA>68</FLA>
     <Volts>208</Volts>
     <HP>20</HP>
-    <MCEPart>50-50-0005</MCEPart>
+    <MCEPart>50-05-0005</MCEPart>
     <NewManufacturerPart>72KG34AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -495,7 +495,7 @@
     <FLA>68</FLA>
     <Volts>240</Volts>
     <HP>25</HP>
-    <MCEPart>50-50-0005</MCEPart>
+    <MCEPart>50-05-0005</MCEPart>
     <NewManufacturerPart>72KG34AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -505,7 +505,7 @@
     <FLA>68</FLA>
     <Volts>380/4115</Volts>
     <HP>40</HP>
-    <MCEPart>50-50-0005</MCEPart>
+    <MCEPart>50-05-0005</MCEPart>
     <NewManufacturerPart>72KG34AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -515,7 +515,7 @@
     <FLA>68</FLA>
     <Volts>460</Volts>
     <HP>50</HP>
-    <MCEPart>50-50-0005</MCEPart>
+    <MCEPart>50-05-0005</MCEPart>
     <NewManufacturerPart>72KG34AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -525,7 +525,7 @@
     <FLA>68</FLA>
     <Volts>575</Volts>
     <HP>60</HP>
-    <MCEPart>50-50-0016</MCEPart>
+    <MCEPart>50-05-0016</MCEPart>
     <NewManufacturerPart>72KG35AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -535,7 +535,7 @@
     <FLA>68</FLA>
     <Volts>208</Volts>
     <HP>20</HP>
-    <MCEPart>50-50-0008</MCEPart>
+    <MCEPart>50-05-0008</MCEPart>
     <NewManufacturerPart>72NG34AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -545,7 +545,7 @@
     <FLA>68</FLA>
     <Volts>240</Volts>
     <HP>25</HP>
-    <MCEPart>50-50-0008</MCEPart>
+    <MCEPart>50-05-0008</MCEPart>
     <NewManufacturerPart>72NG34AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -555,7 +555,7 @@
     <FLA>68</FLA>
     <Volts>380/415</Volts>
     <HP>40</HP>
-    <MCEPart>50-50-0008</MCEPart>
+    <MCEPart>50-05-0008</MCEPart>
     <NewManufacturerPart>72NG34AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -565,7 +565,7 @@
     <FLA>68</FLA>
     <Volts>460</Volts>
     <HP>50</HP>
-    <MCEPart>50-50-0008</MCEPart>
+    <MCEPart>50-05-0008</MCEPart>
     <NewManufacturerPart>72NG34AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -575,7 +575,7 @@
     <FLA>68</FLA>
     <Volts>575</Volts>
     <HP>60</HP>
-    <MCEPart>50-50-0018</MCEPart>
+    <MCEPart>50-05-0018</MCEPart>
     <NewManufacturerPart>72NG35AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -585,7 +585,7 @@
     <FLA>80</FLA>
     <Volts>208</Volts>
     <HP>25</HP>
-    <MCEPart>50-50-0006</MCEPart>
+    <MCEPart>50-05-0006</MCEPart>
     <NewManufacturerPart>72LG34AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -595,7 +595,7 @@
     <FLA>80</FLA>
     <Volts>240</Volts>
     <HP>30</HP>
-    <MCEPart>50-50-0006</MCEPart>
+    <MCEPart>50-05-0006</MCEPart>
     <NewManufacturerPart>72LG34AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -605,7 +605,7 @@
     <FLA>80</FLA>
     <Volts>380/415</Volts>
     <HP>50</HP>
-    <MCEPart>50-50-0006</MCEPart>
+    <MCEPart>50-05-0006</MCEPart>
     <NewManufacturerPart>72LG34AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -615,7 +615,7 @@
     <FLA>80</FLA>
     <Volts>460</Volts>
     <HP>60</HP>
-    <MCEPart>50-50-0006</MCEPart>
+    <MCEPart>50-05-0006</MCEPart>
     <NewManufacturerPart>72LG34AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -625,7 +625,7 @@
     <FLA>80</FLA>
     <Volts>575</Volts>
     <HP>75</HP>
-    <MCEPart>50-50-0011</MCEPart>
+    <MCEPart>50-05-0011</MCEPart>
     <NewManufacturerPart>72LG35AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -635,7 +635,7 @@
     <FLA>80</FLA>
     <Volts>208</Volts>
     <HP>25</HP>
-    <MCEPart>50-50-0009</MCEPart>
+    <MCEPart>50-05-0009</MCEPart>
     <NewManufacturerPart>72PG34AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -645,7 +645,7 @@
     <FLA>80</FLA>
     <Volts>240</Volts>
     <HP>30</HP>
-    <MCEPart>50-50-0009</MCEPart>
+    <MCEPart>50-05-0009</MCEPart>
     <NewManufacturerPart>72PG34AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -655,7 +655,7 @@
     <FLA>80</FLA>
     <Volts>380/415</Volts>
     <HP>50</HP>
-    <MCEPart>50-50-0009</MCEPart>
+    <MCEPart>50-05-0009</MCEPart>
     <NewManufacturerPart>72PG34AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -665,7 +665,7 @@
     <FLA>80</FLA>
     <Volts>460</Volts>
     <HP>60</HP>
-    <MCEPart>50-50-0009</MCEPart>
+    <MCEPart>50-05-0009</MCEPart>
     <NewManufacturerPart>72PG34AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -675,7 +675,7 @@
     <FLA>80</FLA>
     <Volts>575</Volts>
     <HP>75</HP>
-    <MCEPart>50-50-0019</MCEPart>
+    <MCEPart>50-05-0019</MCEPart>
     <NewManufacturerPart>72PG35AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -685,7 +685,7 @@
     <FLA>105</FLA>
     <Volts>208</Volts>
     <HP>30</HP>
-    <MCEPart>50-50-0007</MCEPart>
+    <MCEPart>50-05-0007</MCEPart>
     <NewManufacturerPart>72MG34AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -695,7 +695,7 @@
     <FLA>105</FLA>
     <Volts>240</Volts>
     <HP>40</HP>
-    <MCEPart>50-50-0007</MCEPart>
+    <MCEPart>50-05-0007</MCEPart>
     <NewManufacturerPart>72MG34AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -705,7 +705,7 @@
     <FLA>105</FLA>
     <Volts>380/415</Volts>
     <HP>60</HP>
-    <MCEPart>50-50-0007</MCEPart>
+    <MCEPart>50-05-0007</MCEPart>
     <NewManufacturerPart>72MG34AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -715,7 +715,7 @@
     <FLA>105</FLA>
     <Volts>460</Volts>
     <HP>75</HP>
-    <MCEPart>50-50-0007</MCEPart>
+    <MCEPart>50-05-0007</MCEPart>
     <NewManufacturerPart>72MG34AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -725,7 +725,7 @@
     <FLA>105</FLA>
     <Volts>575</Volts>
     <HP>100</HP>
-    <MCEPart>50-50-0017</MCEPart>
+    <MCEPart>50-05-0017</MCEPart>
     <NewManufacturerPart>72MG35AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -735,7 +735,7 @@
     <FLA>130</FLA>
     <Volts>208</Volts>
     <HP>42</HP>
-    <MCEPart>50-50-0008</MCEPart>
+    <MCEPart>50-05-0008</MCEPart>
     <NewManufacturerPart>72NG34AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -745,7 +745,7 @@
     <FLA>130</FLA>
     <Volts>240</Volts>
     <HP>50</HP>
-    <MCEPart>50-50-0008</MCEPart>
+    <MCEPart>50-05-0008</MCEPart>
     <NewManufacturerPart>72NG34AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -755,7 +755,7 @@
     <FLA>130</FLA>
     <Volts>380/415</Volts>
     <HP>75</HP>
-    <MCEPart>50-50-0008</MCEPart>
+    <MCEPart>50-05-0008</MCEPart>
     <NewManufacturerPart>72NG34AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -765,7 +765,7 @@
     <FLA>130</FLA>
     <Volts>460</Volts>
     <HP>100</HP>
-    <MCEPart>50-50-0008</MCEPart>
+    <MCEPart>50-05-0008</MCEPart>
     <NewManufacturerPart>72NG34AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -775,7 +775,7 @@
     <FLA>130</FLA>
     <Volts>575</Volts>
     <HP>125</HP>
-    <MCEPart>50-50-0018</MCEPart>
+    <MCEPart>50-05-0018</MCEPart>
     <NewManufacturerPart>72NG35AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -785,7 +785,7 @@
     <FLA>130</FLA>
     <Volts>208</Volts>
     <HP>40</HP>
-    <MCEPart>50-50-0010</MCEPart>
+    <MCEPart>50-05-0010</MCEPart>
     <NewManufacturerPart>72RG34AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -795,7 +795,7 @@
     <FLA>130</FLA>
     <Volts>240</Volts>
     <HP>50</HP>
-    <MCEPart>50-50-0010</MCEPart>
+    <MCEPart>50-05-0010</MCEPart>
     <NewManufacturerPart>72RG34AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -805,7 +805,7 @@
     <FLA>157</FLA>
     <Volts>208</Volts>
     <HP>50</HP>
-    <MCEPart>50-50-0009</MCEPart>
+    <MCEPart>50-05-0009</MCEPart>
     <NewManufacturerPart>72PG34AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -815,7 +815,7 @@
     <FLA>157</FLA>
     <Volts>240</Volts>
     <HP>60</HP>
-    <MCEPart>50-50-0009</MCEPart>
+    <MCEPart>50-05-0009</MCEPart>
     <NewManufacturerPart>72PG34AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -825,7 +825,7 @@
     <FLA>157</FLA>
     <Volts>380/415</Volts>
     <HP>100</HP>
-    <MCEPart>50-50-0009</MCEPart>
+    <MCEPart>50-05-0009</MCEPart>
     <NewManufacturerPart>72PG34AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -835,7 +835,7 @@
     <FLA>157</FLA>
     <Volts>460</Volts>
     <HP>125</HP>
-    <MCEPart>50-50-0009</MCEPart>
+    <MCEPart>50-05-0009</MCEPart>
     <NewManufacturerPart>72PG34AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -845,7 +845,7 @@
     <FLA>157</FLA>
     <Volts>575</Volts>
     <HP>150</HP>
-    <MCEPart>50-50-0019</MCEPart>
+    <MCEPart>50-05-0019</MCEPart>
     <NewManufacturerPart>72PG35AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -855,7 +855,7 @@
     <FLA>252</FLA>
     <Volts>208</Volts>
     <HP>75</HP>
-    <MCEPart>50-50-0010</MCEPart>
+    <MCEPart>50-05-0010</MCEPart>
     <NewManufacturerPart>72RG34AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -865,7 +865,7 @@
     <FLA>252</FLA>
     <Volts>240</Volts>
     <HP>100</HP>
-    <MCEPart>50-50-0010</MCEPart>
+    <MCEPart>50-05-0010</MCEPart>
     <NewManufacturerPart>72RG34AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
@@ -995,7 +995,7 @@
     <FLA>27</FLA>
     <Volts>208</Volts>
     <HP>7.5</HP>
-    <MCEPart>35-12-0207</MCEPart>
+    <MCEPart>35-12-1035</MCEPart>
     <NewManufacturerPart>3RT1035-1AK60</NewManufacturerPart>
     <OverloadTable>2</OverloadTable>
   </Starter>
@@ -1005,7 +1005,7 @@
     <FLA>27</FLA>
     <Volts>240</Volts>
     <HP>10</HP>
-    <MCEPart>35-12-0207</MCEPart>
+    <MCEPart>35-12-1035</MCEPart>
     <NewManufacturerPart>3RT1035-1AK60</NewManufacturerPart>
     <OverloadTable>2</OverloadTable>
   </Starter>
@@ -1015,7 +1015,7 @@
     <FLA>27</FLA>
     <Volts>480</Volts>
     <HP>20</HP>
-    <MCEPart>35-12-0207</MCEPart>
+    <MCEPart>35-12-1035</MCEPart>
     <NewManufacturerPart>3RT1035-1AK60</NewManufacturerPart>
     <OverloadTable>2</OverloadTable>
   </Starter>
@@ -1025,7 +1025,7 @@
     <FLA>27</FLA>
     <Volts>575</Volts>
     <HP>25</HP>
-    <MCEPart>35-12-0207</MCEPart>
+    <MCEPart>35-12-1035</MCEPart>
     <NewManufacturerPart>3RT1035-1AK60</NewManufacturerPart>
     <OverloadTable>2</OverloadTable>
   </Starter>
@@ -1195,7 +1195,7 @@
     <FLA>104</FLA>
     <Volts>208</Volts>
     <HP>30</HP>
-    <MCEPart>35-95-0110</MCEPart>
+    <MCEPart>35-12-1054</MCEPart>
     <NewManufacturerPart>3RT1054-6AF36</NewManufacturerPart>
     <OverloadTable>4</OverloadTable>
   </Starter>
@@ -1205,7 +1205,7 @@
     <FLA>104</FLA>
     <Volts>240</Volts>
     <HP>40</HP>
-    <MCEPart>35-95-0110</MCEPart>
+    <MCEPart>35-12-1054</MCEPart>
     <NewManufacturerPart>3RT1054-6AF36</NewManufacturerPart>
     <OverloadTable>4</OverloadTable>
   </Starter>
@@ -1215,7 +1215,7 @@
     <FLA>104</FLA>
     <Volts>480</Volts>
     <HP>75</HP>
-    <MCEPart>35-95-0110</MCEPart>
+    <MCEPart>35-12-1054</MCEPart>
     <NewManufacturerPart>3RT1054-6AF36</NewManufacturerPart>
     <OverloadTable>4</OverloadTable>
   </Starter>
@@ -1225,7 +1225,7 @@
     <FLA>104</FLA>
     <Volts>575</Volts>
     <HP>100</HP>
-    <MCEPart>35-95-0110</MCEPart>
+    <MCEPart>35-12-1054</MCEPart>
     <NewManufacturerPart>3RT1054-6AF36</NewManufacturerPart>
     <OverloadTable>4</OverloadTable>
   </Starter>

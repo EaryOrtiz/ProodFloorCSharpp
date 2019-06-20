@@ -35,9 +35,13 @@ namespace ProdFloor.Models
 
         [Display(Name = "Shipping Date")]
         [Required(ErrorMessage = "Please enter a Shipping Date")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}")]
         public DateTime ShipDate { get; set; }
 
         [Display(Name = "Finish Date")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}")]
         [Required(ErrorMessage = "Please enter a Latest Finish Date")]
         public DateTime LatestFinishDate { get; set; }
 
@@ -60,6 +64,10 @@ namespace ProdFloor.Models
         [Display(Name = "State")]
         [Required(ErrorMessage = "Please enter a State")]
         public string StateID { get; set; }
+
+        [NotMapped]
+        [Display(Name = "Current Fire Code")]
+        public int CurrentFirecode { get; set; }
 
         public JobExtension _jobExtension { get; set; }
         public HydroSpecific _HydroSpecific { get; set; }
@@ -236,6 +244,11 @@ namespace ProdFloor.Models
         [Display(Name = "Other Brand")]
         [StringLength(50, ErrorMessage = "The maximum length of the {0} field is {1}")]
         public string OtherBatteryBrand { get; set; }
+
+        [NotMapped]
+        [Display(Name = "Other Valve Brand")]
+        [StringLength(50, ErrorMessage = "The maximum length of the {0} field is {1}")]
+        public string OtherValveBrand { get; set; }
 
         [Display(Name = "Life Jacket")]
         public bool LifeJacket { get; set; }

@@ -8,7 +8,7 @@ using ProdFloor.Models;
 
 namespace ProdFloor.Controllers
 {
-    [Authorize(Roles ="Admin")]
+    [Authorize(Roles = "Admin,Engineer")]
     public class AccountController : Controller
     {
 
@@ -154,6 +154,7 @@ namespace ProdFloor.Controllers
             AppUser user = await userManager.FindByIdAsync(id);
             if (user != null)
             {
+                user.ConfirmPassword = "";
                 return View(user);
             }
             else
@@ -199,6 +200,8 @@ namespace ProdFloor.Controllers
                     IdentityResult result = await userManager.UpdateAsync(user);
                     if (result.Succeeded)
                     {
+                        bool engineer = GetCurrentUserRole("Engineer").Result;
+                        if (engineer) return RedirectToAction("Index", "Home");
                         return RedirectToAction("Index");
                     }
                     else
@@ -212,6 +215,15 @@ namespace ProdFloor.Controllers
                 ModelState.AddModelError("", "User Not Found");
             }
             return View(user);
+        }
+
+        private async Task<bool> GetCurrentUserRole(string role)
+        {
+            AppUser user = await userManager.GetUserAsync(HttpContext.User);
+
+            bool isInRole = await userManager.IsInRoleAsync(user, role);
+
+            return isInRole;
         }
     }
 }

@@ -380,6 +380,7 @@ namespace ProdFloor.Controllers
                         ViewModel.SPH = JobSearch._HydroSpecific.SPH;
                         ViewModel.FLA = JobSearch._HydroSpecific.FLA;
                         ViewModel.JobName = JobSearch.Name;
+                        ViewModel.JobName2 = JobSearch.Name2;
                         ViewModel.Cust = JobSearch.Cust;
                         ViewModel.Contractor = JobSearch.Contractor;
                         ViewModel.JobTypeMain = JobSearch._jobExtension.JobTypeMain;
@@ -392,6 +393,7 @@ namespace ProdFloor.Controllers
                         ViewModel.StarterType = JobSearch._HydroSpecific.Starter;
                         ViewModel.NumJobSearch = JobSearch.JobNum;
                         ViewModel.SHCisSelected = JobSearch._jobExtension.SHC;
+                        ViewModel.TotalTravel = JobSearch._HoistWayData.TotalTravel;
                         ViewModel.anyRear = JobSearch._HoistWayData.AnyRear;
                         ViewModel.FrontFloor = JobSearch._HoistWayData.FrontFloorOpenings;
                         ViewModel.RearFloor = JobSearch._HoistWayData.RearFloorOpenings;
@@ -437,9 +439,9 @@ namespace ProdFloor.Controllers
                         #region CustomSoftWare
                         //Rellena las listas que se llenaran para la comparacion
                         List<CustomFeature> FilteredCustomsF = jobrepo.CustomFeatures.Where(m => m.JobID == JobSearch.JobID).ToList();
-                        if(FilteredCustomsF.Count() > 0)
+                        if (FilteredCustomsF.Count() > 0)
                         {
-                            foreach(CustomFeature obj in FilteredCustomsF)
+                            foreach (CustomFeature obj in FilteredCustomsF)
                             {
                                 jobrepo.DeleteCustomFeature(obj.CustomFeatureID);
                             }
@@ -489,16 +491,36 @@ namespace ProdFloor.Controllers
                                         {
                                             switch (trigger.Name)
                                             {
-                                                case "Contractor": if (trigger.isSelected && trigger.itemToMatch == JobSearch.Contractor) { countAux++; } break;
-                                                case "Fire Code": if (trigger.isSelected && trigger.itemToMatch == FireCodeList.First(m => m.FireCodeID == JobSearch.FireCodeID).Name) { countAux++; } break;
+                                                case "Contractor":
+                                                    if (trigger.isSelected == true && trigger.itemToMatch == JobSearch.Contractor) countAux++;
+                                                    else if ((trigger.isSelected == false) && trigger.itemToMatch != JobSearch.Contractor) countAux++;
+                                                    break;
+                                                case "Fire Code":
+                                                    if (trigger.isSelected == true && trigger.itemToMatch == FireCodeList.First(m => m.FireCodeID == JobSearch.FireCodeID).Name) countAux++;
+                                                    else if ((trigger.isSelected == false) && trigger.itemToMatch != FireCodeList.First(m => m.FireCodeID == JobSearch.FireCodeID).Name) countAux++;
+                                                    break;
                                                 case "State":
                                                     City Onecity = CitiesList.FirstOrDefault(m => m.CityID == JobSearch.CityID);
-                                                    if ((trigger.isSelected && trigger.itemToMatch == StatesList.First(m => m.StateID == Onecity.StateID).Name)) { countAux++; } break;
-                                                case "City": if ((trigger.isSelected && trigger.itemToMatch == CitiesList.First(m => m.CityID == JobSearch.CityID).Name)) { countAux++; } break;
+                                                    if (trigger.isSelected == true && trigger.itemToMatch == StatesList.First(m => m.StateID == Onecity.StateID).Name) countAux++;
+                                                    else if ((trigger.isSelected == false) && trigger.itemToMatch != StatesList.First(m => m.StateID == Onecity.StateID).Name) countAux++;
+                                                    break;
+                                                case "City":
+                                                    if (trigger.isSelected == true && trigger.itemToMatch == CitiesList.First(m => m.CityID == JobSearch.CityID).Name) countAux++;
+                                                    else if ((trigger.isSelected == false) && trigger.itemToMatch != CitiesList.First(m => m.CityID == JobSearch.CityID).Name) countAux++;
+                                                    break;
                                                 case "VCI": if (trigger.isSelected == JobSearch._HydroSpecific.VCI) { countAux++; } break;
-                                                case "Valve Brand": if (trigger.isSelected && trigger.itemToMatch == JobSearch._HydroSpecific.ValveBrand) { countAux++; } break;
-                                                case "Switch Style": if (trigger.isSelected && trigger.itemToMatch == JobSearch._GenericFeatures.SwitchStyle) { countAux++; } break;
-                                                case "Landing System": if ((trigger.isSelected && trigger.itemToMatch == LandingList.First(m => m.LandingSystemID == JobSearch._HoistWayData.LandingSystemID).Name)) { countAux++; } break;
+                                                case "Valve Brand":
+                                                    if (trigger.isSelected == true && trigger.itemToMatch == JobSearch._HydroSpecific.ValveBrand) countAux++;
+                                                    else if ((trigger.isSelected == false) && trigger.itemToMatch != JobSearch._HydroSpecific.ValveBrand) countAux++;
+                                                    break;
+                                                case "Switch Style":
+                                                    if (trigger.isSelected == true && trigger.itemToMatch == JobSearch._GenericFeatures.SwitchStyle) countAux++;
+                                                    else if ((trigger.isSelected == false) && trigger.itemToMatch != JobSearch._GenericFeatures.SwitchStyle) countAux++;
+                                                    break;
+                                                case "Landing System":
+                                                    if (trigger.isSelected == true && trigger.itemToMatch == LandingList.First(m => m.LandingSystemID == JobSearch._HoistWayData.LandingSystemID).Name) countAux++;
+                                                    else if ((trigger.isSelected == false) && trigger.itemToMatch != LandingList.First(m => m.LandingSystemID == JobSearch._HoistWayData.LandingSystemID).Name) countAux++;
+                                                    break;
                                                 default: break;
                                             }
                                         }
@@ -522,10 +544,10 @@ namespace ProdFloor.Controllers
                         FilteredCustomsF = jobrepo.CustomFeatures.Where(m => m.JobID == JobSearch.JobID).ToList();
                         foreach (CustomFeature custom in FilteredCustomsF)
                         {
-                           CustomSoftware one = Customs.FirstOrDefault(m => m.CustomSoftwareID == custom.CustomSoftwareID);
-                           if(one != null)FilteredCustomSoftware.Add(one);
+                            CustomSoftware one = Customs.FirstOrDefault(m => m.CustomSoftwareID == custom.CustomSoftwareID);
+                            if (one != null) FilteredCustomSoftware.Add(one);
                         }
-                        
+
 
 
                         #endregion
@@ -601,10 +623,10 @@ namespace ProdFloor.Controllers
                         #region SHC Calculator
                         if (ViewModel.SHCisSelected)
                         {
-                            ViewModel.calculatedFrontSHC = (70 + (10 * ViewModel.FrontFloor));
+                            ViewModel.calculatedFrontSHC = ((ViewModel.TotalTravel) + 70 + (10 * ViewModel.FrontFloor));
                             if (ViewModel.anyRear)
                             {
-                                ViewModel.calculatedRearSHC = (70 + (10 * ViewModel.RearFloor));
+                                ViewModel.calculatedRearSHC = ((ViewModel.TotalTravel) + 70 + (10 * ViewModel.RearFloor));
                             }
                             else
                             {
@@ -620,22 +642,31 @@ namespace ProdFloor.Controllers
                         #endregion
 
                         #region ReferSearchVM
-
+                        try
+                        {
+                            string auxName2 = "---------------------------------------";
+                            if (ViewModel.JobName2 == null) ViewModel.JobName2 = auxName2;
+                        }
+                        catch(Exception e)
+                        {
+                            ViewModel.JobName2 = "-----------------------------------------";
+                        }
                         ReferencesSearchvViewModel referSearch = new ReferencesSearchvViewModel
                         {
                             RefernceData = true,
 
                             //JobData
                             FLA = ViewModel.FLA,
-                            JobName = ViewModel.JobName,
-                            Cust = ViewModel.Cust,
-                            Contractor = ViewModel.Contractor,
-                            JobTypeMain = ViewModel.JobTypeMain,
-                            ValveBrand = ViewModel.ValveBrand,
+                            JobName = ViewModel.JobName.ToUpper(),
+                            JobName2 = ViewModel.JobName2.ToUpper(),
+                            Cust = ViewModel.Cust.ToUpper(),
+                            Contractor = ViewModel.Contractor.ToUpper(),
+                            JobTypeMain = ViewModel.JobTypeMain.ToUpper(),
+                            ValveBrand = ViewModel.ValveBrand.ToUpper(),
                             InputVoltage = ViewModel.InputVoltage,
                             HP = ViewModel.HP,
-                            FireCodeName = ViewModel.FireCodeName,
-                            LandingName = ViewModel.LandingName,
+                            FireCodeName = ViewModel.FireCodeName.ToUpper(),
+                            LandingName = ViewModel.LandingName.ToUpper(),
                             NumJobSearch = ViewModel.NumJobSearch,
                             //****Slow Table
 
@@ -724,7 +755,7 @@ namespace ProdFloor.Controllers
                 case "Wire":
 
                     HtmlDocument doc = new HtmlDocument();
-                    doc.Load(@"C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\WireTypesSizes.xml");
+                    doc.Load(@"C:\Users\Administrator\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\WireTypesSizes.xml");
 
                     var XMLobs = doc.DocumentNode.SelectNodes("//wiretypessize");
 
@@ -752,7 +783,7 @@ namespace ProdFloor.Controllers
 
                 case "Slowdown":
                     HtmlDocument doc3 = new HtmlDocument();
-                    doc3.Load(@"C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\Slowdowns.xml");
+                    doc3.Load(@"C:\Users\Administrator\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\Slowdowns.xml");
 
                     var XMLobs3 = doc3.DocumentNode.SelectNodes("//slowdown");
 
@@ -791,7 +822,7 @@ namespace ProdFloor.Controllers
 
                 case "Starter":
                     HtmlDocument doc4 = new HtmlDocument();
-                    doc4.Load(@"C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\Starters.xml");
+                    doc4.Load(@"C:\Users\Administrator\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\Starters.xml");
 
                     var XMLobs4 = doc4.DocumentNode.SelectNodes("//starter");
 
@@ -834,7 +865,7 @@ namespace ProdFloor.Controllers
 
                 case "Overload":
                     HtmlDocument doc5 = new HtmlDocument();
-                    doc5.Load(@"C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\Overloads.xml");
+                    doc5.Load(@"C:\Users\Administrator\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\Overloads.xml");
 
                     var XMLobs5 = doc5.DocumentNode.SelectNodes("//overload");
 
@@ -873,7 +904,7 @@ namespace ProdFloor.Controllers
 
                 case "Country":
                     HtmlDocument doc6 = new HtmlDocument();
-                    doc6.Load(@"C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\Countries.xml");
+                    doc6.Load(@"C:\Users\Administrator\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\Countries.xml");
 
                     var XMLobs6 = doc6.DocumentNode.SelectNodes("//country");
 
@@ -904,7 +935,7 @@ namespace ProdFloor.Controllers
 
                 case "State":
                     HtmlDocument doc2 = new HtmlDocument();
-                    doc2.Load(@"C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\States.xml");
+                    doc2.Load(@"C:\Users\Administrator\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\States.xml");
 
                     var XMLobs2 = doc2.DocumentNode.SelectNodes("//state");
 
@@ -934,7 +965,7 @@ namespace ProdFloor.Controllers
 
                 case "City":
                     HtmlDocument doc7 = new HtmlDocument();
-                    doc7.Load(@"C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\Cities.xml");
+                    doc7.Load(@"C:\Users\Administrator\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\Cities.xml");
 
                     var XMLobs7 = doc7.DocumentNode.SelectNodes("//city");
 
@@ -973,7 +1004,7 @@ namespace ProdFloor.Controllers
 
                 case "LandingSys":
                     HtmlDocument doc8 = new HtmlDocument();
-                    doc8.Load(@"C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\LandingSystems.xml");
+                    doc8.Load(@"C:\Users\Administrator\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\LandingSystems.xml");
 
                     var XMLobs8 = doc8.DocumentNode.SelectNodes("//landingsystem");
 
@@ -1006,7 +1037,7 @@ namespace ProdFloor.Controllers
 
                 case "FireCode":
                     HtmlDocument doc9 = new HtmlDocument();
-                    doc9.Load(@"C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\FireCodes.xml");
+                    doc9.Load(@"C:\Users\Administrator\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\FireCodes.xml");
 
                     var XMLobs9 = doc9.DocumentNode.SelectNodes("//firecode");
 
@@ -1037,10 +1068,9 @@ namespace ProdFloor.Controllers
 
                 case "DoorOperator":
                     HtmlDocument doc10 = new HtmlDocument();
-                    doc10.Load(@"C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\DoorOperators.xml");
+                    doc10.Load(@"C:\Users\Administrator\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\DoorOperators.xml");
 
                     var XMLobs10 = doc10.DocumentNode.SelectNodes("//dooroperator");
-
                     foreach (var XMLob in XMLobs10)
                     {
                         var ID = XMLob.SelectSingleNode(".//id").InnerText;
@@ -1072,7 +1102,7 @@ namespace ProdFloor.Controllers
 
                 case "JobType":
                     HtmlDocument doc11 = new HtmlDocument();
-                    doc11.Load(@"C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\JobTypes.xml");
+                    doc11.Load(@"C:\Users\Administrator\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\JobTypes.xml");
 
                     var XMLobs11 = doc11.DocumentNode.SelectNodes("//jobtype");
 

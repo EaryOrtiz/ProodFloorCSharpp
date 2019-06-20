@@ -71,7 +71,7 @@
         <div class="form-group row" style="margin-bottom:0.5em;">
             <label asp-for="CurrentJobExtension.DoorOperatorID" class="col-sm-5 col-form-label"></label>
             <div>
-                <door-operator-select id="DoorOperatorID" asp-for="@Model.CurrentJobExtension.DoorOperatorID" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true )" selected-value="Model.CurrentJobExtension.DoorOperatorID" class="form-control form-control-sm">
+                <door-operator-select  id="DoorOperatorID" asp-for="@Model.CurrentJobExtension.DoorOperatorID" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true )" selected-value="Model.CurrentJobExtension.DoorOperatorID"  class="form-control form-control-sm">
                 </door-operator-select>
                 <span asp-validation-for="CurrentJobExtension.DoorOperatorID" class="text-danger"></span>
             </div>

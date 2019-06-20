@@ -1,6 +1,13 @@
 ﻿<UniqueJob>
   <Job>
     <JobBase>
+      <ID>60</ID>
+      <Status>Test</Status>
+      <EngID>99972</EngID>
+      <CrossAppEngID>99999</CrossAppEngID>
+      <Name>EngTest2</Name>
+      <JobNum>2016005002</JobNum>
+      <PO>3000454</PO>
       <ID>86</ID>
       <Status>Working on it</Status>
       <EngID>99972</EngID>
@@ -11,7 +18,7 @@
       <ShipDate>1/1/0001 12:00:00 AM</ShipDate>
       <LatestFinishDate>1/1/0001 12:00:00 AM</LatestFinishDate>
       <Cust>5</Cust>
-      <Contractor>Test</Contractor>
+      <Contractor>eliud</Contractor>
       <JobTypeID>1</JobTypeID>
       <CityID>65</CityID>
       <FireCodeID>17</FireCodeID>
@@ -29,6 +36,8 @@
       </PO>
     </POs>
     <JobExtension>
+      <ID>60</ID>
+      <JobID>60</JobID>
       <ID>25</ID>
       <JobID>86</JobID>
       <NumOfStops>4</NumOfStops>
@@ -55,6 +64,8 @@
       <AUXCOP>False</AUXCOP>
     </JobExtension>
     <HydroSpecific>
+      <ID>33</ID>
+      <JobID>60</JobID>
       <ID>19</ID>
       <JobID>86</JobID>
       <Starter>Siemens SS : 3/9</Starter>
@@ -78,6 +89,8 @@
       <VCI>True</VCI>
     </HydroSpecific>
     <GenericFeatures>
+      <ID>32</ID>
+      <JobID>60</JobID>
       <ID>17</ID>
       <JobID>86</JobID>
       <EPCarsNumber>Nulo</EPCarsNumber>
@@ -120,6 +133,8 @@
       <BSI>False</BSI>
     </GenericFeatures>
     <Indicator>
+      <ID>23</ID>
+      <JobID>60</JobID>
       <ID>16</ID>
       <JobID>86</JobID>
       <CarCallsVoltage>24</CarCallsVoltage>
@@ -150,6 +165,10 @@
       <PassingFloorEnable>False</PassingFloorEnable>
     </Indicator>
     <HoistWayData>
+      <ID>28</ID>
+      <JobID>60</JobID>
+      <HoistWaysNumber>4</HoistWaysNumber>
+      <MachineRooms>5</MachineRooms>
       <ID>16</ID>
       <JobID>86</JobID>
       <HoistWaysNumber>3</HoistWaysNumber>

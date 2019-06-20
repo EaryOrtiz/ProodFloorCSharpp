@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.0",
-    "signature": "12e7054a322e9aa09a2aef087ae60e21a0b6c4f6"
+    "signature": "d97d210856bf5a672d7f1e36c4a8bfcb9554cb49"
   },
   "compilationOptions": {
     "defines": [
@@ -27,7 +27,8 @@
           "HtmlAgilityPack": "1.9.2",
           "Microsoft.AspNetCore.All": "2.0.3",
           "Microsoft.NETCore.App": "2.0.0",
-          "Microsoft.VisualStudio.Web.CodeGeneration.Design": "2.0.4"
+          "Microsoft.VisualStudio.Web.CodeGeneration.Design": "2.0.4",
+          "TextCopy": "1.5.2"
         },
         "runtime": {
           "ProdFloor.dll": {}
@@ -4655,6 +4656,17 @@
           "ref/netstandard1.3/System.Xml.XPath.XmlDocument.dll": {}
         }
       },
+      "TextCopy/1.5.2": {
+        "runtime": {
+          "lib/netstandard2.0/TextCopy.dll": {
+            "assemblyVersion": "1.5.2.0",
+            "fileVersion": "1.5.2.0"
+          }
+        },
+        "compile": {
+          "lib/netstandard2.0/TextCopy.dll": {}
+        }
+      },
       "WindowsAzure.Storage/8.1.4": {
         "dependencies": {
           "Microsoft.Data.OData": "5.8.2",
@@ -6990,6 +7002,13 @@
       "sha512": "sha512-A/uxsWi/Ifzkmd4ArTLISMbfFs6XpRPsXZonrIqyTY70xi8t+mDtvSM5Os0RqyRDobjMBwIDHDL4NOIbkDwf7A==",
       "path": "system.xml.xpath.xmldocument/4.3.0",
       "hashPath": "system.xml.xpath.xmldocument.4.3.0.nupkg.sha512"
+    },
+    "TextCopy/1.5.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-+Ic4/YUpPp/o2xLFd6Mz9nlaqu5QK+HwaAXX/F7/ymMAkVlFcfiLv94V2aMOQeRG/WF0LWvKoTLl9AYFLJ0QpA==",
+      "path": "textcopy/1.5.2",
+      "hashPath": "textcopy.1.5.2.nupkg.sha512"
     },
     "WindowsAzure.Storage/8.1.4": {
       "type": "package",

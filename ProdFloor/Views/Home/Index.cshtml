@@ -24,7 +24,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var j in Model.PendingJobs)
+        @foreach (var j in Model.MyJobs)
         {
             <tr>
                 <th scope="row">@j.JobNum</th>
@@ -34,8 +34,8 @@
         }
     </tbody>
 </table>
-<div page-model="@Model.PendingJobsPagingInfo" page-action="Index" page-classes-enabled="true"
-     page-class="btn" page-class-normal="btn-secondary" additional-page-model="@Model.ProductionJobsPagingInfo"
+<div page-model="@Model.MyJobsPagingInfo" page-action="Index" page-classes-enabled="true"
+     page-class="btn" page-class-normal="btn-secondary" additional-page-model="@Model.MyJobsPagingInfo"
      page-class-selected="btn-primary" dash-board-enabled="true" main-url-value ="pendingJobPage" 
      add-url-value="productionJobPage" 
      class="btn-group pull-right m-1">
@@ -52,7 +52,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var j in Model.ProductionJobs)
+        @foreach (var j in Model.PendingToCrossJobs)
         {
             <tr>
                 <th scope="row">@j.JobNum</th>
@@ -62,8 +62,8 @@
         }
     </tbody>
 </table>
-<div page-model="@Model.ProductionJobsPagingInfo" page-action="Index" page-classes-enabled="true"
-     page-class="btn" page-class-normal="btn-secondary" additional-page-model="@Model.PendingJobsPagingInfo"
+<div page-model="@Model.PendingToCrossJobsPagingInfo" page-action="Index" page-classes-enabled="true"
+     page-class="btn" page-class-normal="btn-secondary" additional-page-model="@Model.PendingToCrossJobsPagingInfo"
      page-class-selected="btn-primary" dash-board-enabled="true" main-url-value="productionJobPage" add-url-value ="pendingJobPage" 
      class="btn-group pull-right m-1">
 </div>

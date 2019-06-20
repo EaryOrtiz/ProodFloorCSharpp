@@ -2,11 +2,12 @@
 @{
 
     <script src="~/Scripts/CascadingCountryStateCity.js" type="text/javascript"></script>
+    <script src="~/Scripts/CascadingCityFireCode.js" type="text/javascript"></script>
 }
 <input type="hidden" asp-for="CurrentJob.CrossAppEngID" />
 <input type="hidden" asp-for="POList[0].JobID" />
 <input type="hidden" asp-for="POList[0].POID" />
-<div class="form-row col-sm-12"  style="padding-bottom:15px">
+<div class="form-row col-sm-12" style="padding-bottom:15px">
     <div class="col-4 form-line border-right justify-content-md-center">
         <div class="form-group row">
             <label asp-for="CurrentJob.Name" class="col-sm-3 col-form-label"></label>
@@ -46,29 +47,25 @@
                 <span asp-validation-for="POList[0].PONumb" class="text-danger"></span>
             </div>
         </div>
-        @for (int i = 1; i < Model.POList.Count; i++)
-        {
-            <input type="hidden" asp-for="POList[i].POID" />
-            <input type="hidden" asp-for="@Model.fieldID" value="@Model.POList[i].POID" />
-            <input type="hidden" asp-for="POList[i].JobID" />
-            <input type="hidden" asp-for="CurrentJob.JobID" />
-            <div class="form-group row">
-                <label asp-for="POList[i].PONumb" class="col-sm-3 col-form-label"></label>
-                <div class="form-inline">
-                    <input asp-for="POList[i].PONumb" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" class="form-control col-sm-7" data-val="@false" />
-                    <form asp-action="DeletePOs" method="post">
-                        <input type="hidden" asp-for="POList[i].POID" />
-                        <input type="hidden" asp-for="POList[i].JobID" />
-                        <input type="hidden" asp-for="CurrentJob.JobID" />
-                        <input type="hidden" asp-for="@Model.fieldID" value="@Model.POList[i].POID" />
+        <form asp-action="DeletePOs" method="post">
+            @for (int i = 1; i < Model.POList.Count; i++)
+            {
+                <input type="hidden" asp-for="POList[i].POID" />
+                <input type="hidden" asp-for="POList[i].JobID" />
+                <input type="hidden" asp-for="CurrentJob.JobID" />
+                <input type="hidden" asp-for="@Model.fieldID" value="@Model.POList.Last().POID" />
+                <div class="form-group row">
+                    <label asp-for="POList[i].PONumb" class="col-sm-3 col-form-label"></label>
+                    <div class="form-inline">
+                        <input asp-for="POList[i].PONumb" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" class="form-control col-sm-7" data-val="@false" />
                         <button asp-action="DeletePOs" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="btn btn-danger btn-sm" style="margin-left:20px;">
                             <i class="fa fa-minus-circle"></i>
                         </button>
-                    </form>
-                    <span asp-validation-for="POList[i].PONumb" class="text-danger"></span>
+                        <span asp-validation-for="POList[i].PONumb" class="text-danger"></span>
+                    </div>
                 </div>
-            </div>
-        }
+            }
+        </form>
     </div>
     <div class="col-md-6 justify-content-md-center">
         <div class="container text-left" style="padding-left:30px;">
@@ -125,6 +122,13 @@
                 </div>
             </div>
             <div class="form-group row" style="margin-bottom:0.5em;">
+                <label asp-for="CurrentJob.CurrentFirecode" class="col-sm-3 col-form-label"></label>
+                <div>
+                    <fire-code-select selected-current-fire-code="@Model.CurrentJob.CityID" class="form-control form-control-sm" id="CurrentFireCode" asp-is-disabled="@true" asp-for="CurrentJob.CurrentFirecode"></fire-code-select>
+                    <span asp-validation-for="CurrentJob.CurrentFirecode" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row" style="margin-bottom:0.5em;">
                 <label asp-for="CurrentJob.FireCodeID" class="col-sm-3 col-form-label"></label>
                 <div>
                     <fire-code-select selected-value="@Model.CurrentJob.FireCodeID" class="form-control form-control-sm" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" asp-for="CurrentJob.FireCodeID"></fire-code-select>
@@ -132,5 +136,6 @@
                 </div>
             </div>
         </div>
-     </div>
+     
+    </div>
 </div>
