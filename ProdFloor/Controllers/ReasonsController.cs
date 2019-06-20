@@ -339,6 +339,7 @@ namespace ProdFloor.Controllers
                     xw.WriteStartDocument();
                     xw.WriteStartElement("Reasons");
 
+                    xw.WriteStartElement("Reasons1");
                     foreach (Reason1 reason1 in reason1s)
                     {
                         xw.WriteStartElement("Reason1");
@@ -346,6 +347,8 @@ namespace ProdFloor.Controllers
                         xw.WriteElementString("Description", reason1.Description.ToString());
                         xw.WriteEndElement();
                     }
+                    xw.WriteEndElement();
+                    xw.WriteStartElement("Reasons2");
                     foreach (Reason2 reason2 in reason2s)
                     {
                         xw.WriteStartElement("Reason2");
@@ -354,6 +357,8 @@ namespace ProdFloor.Controllers
                         xw.WriteElementString("Description", reason2.Description.ToString());
                         xw.WriteEndElement();
                     }
+                    xw.WriteEndElement();
+                    xw.WriteStartElement("Reasons3");
                     foreach (Reason3 reason3 in reason3s)
                     {
                         xw.WriteStartElement("Reason3");
@@ -362,6 +367,8 @@ namespace ProdFloor.Controllers
                         xw.WriteElementString("Description", reason3.Description.ToString());
                         xw.WriteEndElement();
                     }
+                    xw.WriteEndElement();
+                    xw.WriteStartElement("Reasons4");
                     foreach (Reason4 reason4 in reason4s)
                     {
                         xw.WriteStartElement("Reason4");
@@ -370,6 +377,8 @@ namespace ProdFloor.Controllers
                         xw.WriteElementString("Description", reason4.Description.ToString());
                         xw.WriteEndElement();
                     }
+                    xw.WriteEndElement();
+                    xw.WriteStartElement("Reasons5");
                     foreach (Reason5 reason5 in reason5s)
                     {
                         xw.WriteStartElement("Reason5");
@@ -378,6 +387,7 @@ namespace ProdFloor.Controllers
                         xw.WriteElementString("Description", reason5.Description.ToString());
                         xw.WriteEndElement();
                     }
+                    xw.WriteEndElement();
                     xw.WriteEndElement();
                     xw.WriteEndDocument();
                 }
@@ -397,11 +407,17 @@ namespace ProdFloor.Controllers
 
             var XMLobs = doc.DocumentNode.SelectSingleNode("//reasons");
 
-            var XMLReasons1 = XMLobs.SelectNodes(".//reason1");
-            var XMLReasons2 = XMLobs.SelectNodes(".//reason2");
-            var XMLReasons3 = XMLobs.SelectNodes(".//reason3");
-            var XMLReasons4 = XMLobs.SelectNodes(".//reason5");
-            var XMLReasons5 = XMLobs.SelectNodes(".//reason4");
+            var ALLReasons1 = XMLobs.SelectSingleNode(".//reasons1");
+            var ALLReasons2 = XMLobs.SelectSingleNode(".//reasons2");
+            var ALLReasons3 = XMLobs.SelectSingleNode(".//reasons3");
+            var ALLReasons4 = XMLobs.SelectSingleNode(".//reasons5");
+            var ALLReasons5 = XMLobs.SelectSingleNode(".//reasons4");
+
+            var XMLReasons1 = ALLReasons1.SelectNodes(".//reason1");
+            var XMLReasons2 = ALLReasons2.SelectNodes(".//reason2");
+            var XMLReasons3 = ALLReasons3.SelectNodes(".//reason3");
+            var XMLReasons4 = ALLReasons4.SelectNodes(".//reason5");
+            var XMLReasons5 = ALLReasons5.SelectNodes(".//reason4");
 
             if (XMLobs != null && !context.Reasons5.Any())
             {

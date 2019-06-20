@@ -85,6 +85,7 @@ namespace ProdFloor.Controllers
 
             testingRepo.SaveStop(NewtStop);
             Stop CurrentStop = testingRepo.Stops.FirstOrDefault(p => p.StopID == testingRepo.Stops.Max(x => x.StopID));
+            string Reason1Name = testingRepo.Reasons1.FirstOrDefault(m => m.Reason1ID == CurrentStop.Reason1).Description;
             TestJob testJob = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == CurrentStop.TestJobID);
             testJob.Status = "Stoped";
             testingRepo.SaveTestJob(testJob);
@@ -96,7 +97,7 @@ namespace ProdFloor.Controllers
                 Job job2 = jobRepo.Jobs.FirstOrDefault(m => m.JobID == testJob.JobID);
                 return View("Edit", new TestJobViewModel { Job = job2, Stop = CurrentStop2, TestJob = testJob2 });
             }
-            return View("WaitingForRestar", new TestJobViewModel {  Job = job, Stop = CurrentStop, TestJob = testJob});
+            return View("WaitingForRestar", new TestJobViewModel {  Job = job, Stop = CurrentStop, TestJob = testJob, Reason1Name = Reason1Name});
         }
 
         public ViewResult WaitingForRestar(int ID)
@@ -104,9 +105,10 @@ namespace ProdFloor.Controllers
             TestJob testJob = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == ID);
             Stop CurrentStop = testingRepo.Stops.FirstOrDefault(p => p.TestJobID == testJob.TestJobID && p.StopID == testingRepo.Stops.Max(x => x.StopID));
             testJob.Status = "Stoped";
+            string Reason1Name = testingRepo.Reasons1.FirstOrDefault(m => m.Reason1ID == CurrentStop.Reason1).Description;
             testingRepo.SaveTestJob(testJob);
             Job job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == testJob.JobID);
-            return View(new TestJobViewModel { Job = job, Stop = CurrentStop });
+            return View(new TestJobViewModel { Job = job, Stop = CurrentStop, Reason1Name = Reason1Name });
         }
 
         public ViewResult RestarTestJob(int ID)

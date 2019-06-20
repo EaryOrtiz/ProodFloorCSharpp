@@ -242,12 +242,12 @@ namespace ProdFloor.Controllers
                 testingRepo.SaveTestFeature(testJobView.TestFeature);
 
                 //Rellena las listas que se llenaran para la comparacion
-                List<Step> Steps = testingRepo.Steps.OrderBy(m => m.Order).ToList();
                 List<TriggeringFeature> TriggersWithNameNull = testingRepo.TriggeringFeatures.Where(m => m.Name == null).ToList();
                 List<TriggeringFeature> TriggersWithOutNameNull = testingRepo.TriggeringFeatures.Where(m => m.Name != null).ToList();
                 var FeaturesFromTestJob = testingRepo.TestFeatures.First(m => m.TestJobID == testJobView.TestFeature.TestJobID);
                 Job FeaturesFromJob = jobRepo.Jobs.Include(m => m._jobExtension).Include(m => m._HydroSpecific).Include(m => m._HoistWayData).Include(m => m._GenericFeatures)
                     .First(m => m.JobID == testJobView.TestJob.JobID);
+                List<Step> Steps = testingRepo.Steps.OrderBy(m => m.Order).Where(m => m.JobTypeID == FeaturesFromJob.JobTypeID).ToList();
                 //Checa si la lista de steps no esta vacia
                 if (Steps.Count > 0)
                 {
@@ -335,12 +335,20 @@ namespace ProdFloor.Controllers
                                             else if (trigger.IsSelected == false && landing.Name != "LS-Rail") countAux++;
                                             break;
                                         case "mView":
-                                            if (trigger.IsSelected == true && (FeaturesFromJob._GenericFeatures.Monitoring.Contains("MView"))) countAux++;
-                                            else if (trigger.IsSelected == false && !(FeaturesFromJob._GenericFeatures.Monitoring.Contains("MView"))) countAux++;
+                                            if(FeaturesFromJob._GenericFeatures.Monitoring != null)
+                                            {
+                                                if (trigger.IsSelected == true && (FeaturesFromJob._GenericFeatures.Monitoring.Contains("MView"))) countAux++;
+                                                else if (trigger.IsSelected == false && !(FeaturesFromJob._GenericFeatures.Monitoring.Contains("MView"))) countAux++;
+                                                break;
+                                            }
                                             break;
                                         case "iMonitor":
-                                            if (trigger.IsSelected == true && (FeaturesFromJob._GenericFeatures.Monitoring.Contains("IMonitor"))) countAux++;
-                                            if (trigger.IsSelected == false && !(FeaturesFromJob._GenericFeatures.Monitoring.Contains("IMonitor"))) countAux++;
+                                            if (FeaturesFromJob._GenericFeatures.Monitoring != null)
+                                            {
+                                                if (trigger.IsSelected == true && (FeaturesFromJob._GenericFeatures.Monitoring.Contains("IMonitor"))) countAux++;
+                                                else if (trigger.IsSelected == false && !(FeaturesFromJob._GenericFeatures.Monitoring.Contains("IMonitor"))) countAux++;
+                                                break;
+                                            }
                                             break;
                                         case "HAPS Battery":
                                             if (FeaturesFromJob._HydroSpecific.Battery == true)

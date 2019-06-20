@@ -1,6 +1,6 @@
 $(function () {
-    
-            $("#Reason1ID").change(function () {
+
+    $("#Reason1ID").ready(function () {
                 var Reason1ID = $("#Reason1ID").val();
                 var Reason2ID = $('#Reason2ID');
                 Reason2ID.empty();

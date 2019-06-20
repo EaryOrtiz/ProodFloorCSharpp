@@ -40,6 +40,7 @@ namespace ProdFloor.Models.ViewModels.TestJob
         public List<Reason3> Reasons3List { get; set; }
         public List<Reason4> Reasons4List { get; set; }
         public List<Reason5> Reasons5List { get; set; }
+        public string Reason1Name { get; set; }
 
 
         //Dummy fields
