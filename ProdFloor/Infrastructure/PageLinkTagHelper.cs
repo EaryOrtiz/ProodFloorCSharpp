@@ -495,10 +495,6 @@ namespace ProdFloor.Infrastructure
                     return new List<string> { "-", "A", "B", "C", "D", "E", "F", "G", "H"}.AsQueryable();
                 case "Station":
                     return new List<string> { "S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9", "S10", "S11", "S12", "ELEM1", "ELEM2" }.AsQueryable();
-                case "Style":
-                    return itemsrepository.DoorOperators.Select(s => s.Style).Distinct().AsQueryable();
-                case "JobType":
-                    return itemsrepository.JobTypes.Select(d => d.Name).Distinct();
                 case "CarCode":
                     return new List<string> { "IMonitor","Key" }.AsQueryable();
                 case "SPH":
@@ -923,7 +919,6 @@ namespace ProdFloor.Infrastructure
                 Country selectedCountry = itemsrepository.Countries.FirstOrDefault(s => s.CountryID == SelectedDefaultValue);
                 countryID = selectedCountry.CountryID;
             }
-            IQueryable<Country> country = itemsrepository.Countries.AsQueryable();
             IQueryable<Country> country = itemsrepository.Countries.OrderBy(s => s.Name).AsQueryable();
             foreach (Country countries in country)
             {
@@ -1095,13 +1090,13 @@ namespace ProdFloor.Infrastructure
 
         public int SelectFor { get; set; }
 
-        
+
         [HtmlAttributeName("asp-is-disabled")]
         public bool IsDisabled { set; get; }
 
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
-            
+
 
             IUrlHelper urlHelper = urlHelperFactory.GetUrlHelper(ViewContext);
             output.TagName = "select";
@@ -1116,11 +1111,6 @@ namespace ProdFloor.Infrastructure
             m_tag.Attributes["value"] = "";
             m_tag.InnerHtml.Append("Please select one");
             result.InnerHtml.AppendHtml(m_tag);
-            IQueryable<LandingSystem> landigSystems = itemsrepository.LandingSystems.AsQueryable();
-            if (SelectFor != 0) {
-                var jobtypeName = itemsrepository.JobTypes.FirstOrDefault(m => m.JobTypeID == SelectFor).Name;
-                landigSystems = itemsrepository.LandingSystems.Where(m => m.UsedIn == jobtypeName).AsQueryable();
-            }
             var jobtypeName = itemsrepository.JobTypes.FirstOrDefault(m => m.JobTypeID == SelectFor).Name;
             IQueryable<LandingSystem> landigSystems = itemsrepository.LandingSystems.OrderBy(s => s.Name).Where(m => m.UsedIn == jobtypeName).AsQueryable();
             foreach (LandingSystem landingSys in landigSystems)

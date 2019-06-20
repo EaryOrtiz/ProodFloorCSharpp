@@ -22,16 +22,11 @@ namespace ProdFloor.Controllers
         public int PageSize = 3;
         private UserManager<AppUser> userManager;
 
-        public HomeController(IJobRepository repo,IItemRepository item,ITestingRepository testRepo, UserManager<AppUser> userMrg)
+        public HomeController(IJobRepository repo, IItemRepository item, ITestingRepository testRepo, UserManager<AppUser> userMrg)
         {
             repository = repo;
             testingRepo = testRepo;
             itemRepo = item;
-        public HomeController(IJobRepository repo,IItemRepository itemRepository, UserManager<AppUser> userMrg)
-        {
-            repository = repo;
-            itemRepo = itemRepository;
-            userManager = userMrg;
         }
 
         private async Task<bool> GetCurrentUserRole(string role)
@@ -145,7 +140,7 @@ namespace ProdFloor.Controllers
                     .Where(j => j.TechnicianID == currentUser.EngID)
                     .Where(j => j.Status == "Stoped" || j.Status == "Working on it")
                   .OrderBy(p => p.TestJobID)
-                  .Skip((pendingJobPage - 1) * PageSize)
+                  .Skip((MyJobsPage - 1) * PageSize)
                   .Take(PageSize);
 
                 return View("TechnicianDashBoard", new DashboardIndexViewModel
@@ -153,7 +148,7 @@ namespace ProdFloor.Controllers
                     PendingTestJobs = CurrentTestJobs,
                     PendingJobsPagingInfo = new PagingInfo
                     {
-                        CurrentPage = pendingJobPage,
+                        CurrentPage = MyJobsPage,
                         ItemsPerPage = PageSize,
                         TotalItems = testingRepo.TestJobs
                         .Where(j => j.TechnicianID == currentUser.EngID)
