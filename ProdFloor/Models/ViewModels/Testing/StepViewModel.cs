@@ -15,5 +15,16 @@ namespace ProdFloor.Models.ViewModels.Testing
         public string CurrentTab { get; set; }
         public PagingInfo PagingInfo { get; set; }
         public string JobTypeSelected { get; set; }
+
+        public List<Step> StepsForElmHydroList { get; set; }
+        public List<Step> StepsForElmTractionList { get; set; }
+        public List<Step> StepsForM200List { get; set; }
+        public List<Step> StepsForM4000List { get; set; }
+
+        public PagingInfo ElmHydroPagingInfo { get; set; }
+        public PagingInfo ElmTractionPagingInfo { get; set; }
+        public PagingInfo M2000PagingInfo { get; set; }
+        public PagingInfo M4000PagingInfo { get; set; }
+        
     }
 }

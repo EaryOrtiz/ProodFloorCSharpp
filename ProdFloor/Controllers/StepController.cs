@@ -28,118 +28,67 @@ namespace ProdFloor.Controllers
             itemprepo = repo2;
         }
 
-        public ViewResult List(string JobTypeName, int page = 1)
+        public ViewResult List(string filtrado,string JobTypeName = "Traction", int ElmHydroPage = 1, int ElmTractionPage = 1, int M2000Page = 1, int M4000Page = 1)
         {
+            if (filtrado != null && filtrado != "Traction") JobTypeName = filtrado;
+            List<Step> StepList = testingrepo.Steps.ToList();
 
             switch (JobTypeName)
             {
                 case "Hydro":
-                    StepViewModel stepView = new StepViewModel
-                    {
-                        StepList = testingrepo.Steps
-                        .Where(s => s.JobTypeID == 1)
-                        .OrderBy(p => p.Order)
-                        .Skip((page - 1) * PageSize)
-                        .Take(PageSize).ToList(),
-                        TriggeringList = testingrepo
-                            .TriggeringFeatures.ToList(),
-                        JobTypesList = itemprepo.JobTypes.ToList(),
-                        JobTypeSelected = JobTypeName,
-                        PagingInfo = new PagingInfo
-                        {
-                            CurrentPage = page,
-                            ItemsPerPage = PageSize,
-                            TotalItems = testingrepo.Steps
-                        .Where(s => s.JobTypeID == 1).Count()
-                        }
-                    };
-                    return View(stepView);
-
+                    StepList = testingrepo.Steps.Where(s => s.JobTypeID == 1).OrderBy(p => p.Order)
+                        .Skip((ElmHydroPage - 1) * PageSize).Take(PageSize).ToList(); break;
                 case "Traction":
-                    StepViewModel stepView2 = new StepViewModel
-                    {
-                        StepList = testingrepo.Steps
-                        .Where(s => s.JobTypeID == 5)
-                        .OrderBy(p => p.Order)
-                        .Skip((page - 1) * PageSize)
-                        .Take(PageSize).ToList(),
-                        TriggeringList = testingrepo
-                            .TriggeringFeatures.ToList(),
-                        JobTypesList = itemprepo.JobTypes.ToList(),
-                        JobTypeSelected = JobTypeName,
-                        PagingInfo = new PagingInfo
-                        {
-                            CurrentPage = page,
-                            ItemsPerPage = PageSize,
-                            TotalItems = testingrepo.Steps
-                        .Where(s => s.JobTypeID == 5).Count()
-                        }
-                    };
-                    return View(stepView2);
-
+                        StepList = testingrepo.Steps.Where(s => s.JobTypeID == 5).OrderBy(p => p.Order)
+                        .Skip((ElmTractionPage - 1) * PageSize).Take(PageSize).ToList(); break;
                 case "M2000":
-                    StepViewModel stepView3 = new StepViewModel
-                    {
-                        StepList = testingrepo.Steps
-                        .Where(s => s.JobTypeID == 2)
-                        .OrderBy(p => p.Order)
-                        .Skip((page - 1) * PageSize)
-                        .Take(PageSize).ToList(),
-                        TriggeringList = testingrepo
-                            .TriggeringFeatures.ToList(),
-                        JobTypesList = itemprepo.JobTypes.ToList(),
-                        JobTypeSelected = JobTypeName,
-                        PagingInfo = new PagingInfo
-                        {
-                            CurrentPage = page,
-                            ItemsPerPage = PageSize,
-                            TotalItems = testingrepo.Steps
-                        .Where(s => s.JobTypeID == 2).Count()
-                        }
-                    };
-                    return View(stepView3);
+                    StepList = testingrepo.Steps.Where(s => s.JobTypeID == 2).OrderBy(p => p.Order)
+                    .Skip((M2000Page - 1) * PageSize).Take(PageSize).ToList();break;
                 case "M4000":
-                    StepViewModel stepView4 = new StepViewModel
-                    {
-                        StepList = testingrepo.Steps
-                        .Where(s => s.JobTypeID == 4)
-                        .OrderBy(p => p.Order)
-                        .Skip((page - 1) * PageSize)
-                        .Take(PageSize).ToList(),
-                        TriggeringList = testingrepo
-                            .TriggeringFeatures.ToList(),
-                        JobTypesList = itemprepo.JobTypes.ToList(),
-                        JobTypeSelected = JobTypeName,
-                        PagingInfo = new PagingInfo
-                        {
-                            CurrentPage = page,
-                            ItemsPerPage = PageSize,
-                            TotalItems = testingrepo.Steps
-                        .Where(s => s.JobTypeID == 4).Count()
-                        }
-                    };
-                    return View(stepView4);
-
-                default:
-                    StepViewModel stepView6 = new StepViewModel
-                    {
-                        StepList = testingrepo.Steps
-                    .OrderBy(p => p.JobTypeID)
-                    .Skip((page - 1) * PageSize)
-                    .Take(PageSize).ToList(),
-                        TriggeringList = testingrepo
-                        .TriggeringFeatures.ToList(),
-                        JobTypesList = itemprepo.JobTypes.ToList(),
-                        PagingInfo = new PagingInfo
-                        {
-                            CurrentPage = page,
-                            ItemsPerPage = PageSize,
-                            TotalItems = testingrepo.Steps.Count()
-                        }
-                    };
-                    return View(stepView6);
+                    StepList = testingrepo.Steps.Where(s => s.JobTypeID == 4).OrderBy(p => p.Order)
+                        .Skip((M4000Page - 1) * PageSize).Take(PageSize).ToList();break;
             }
 
+            StepViewModel stepView = new StepViewModel
+            {
+                StepList = StepList,
+                ElmHydroPagingInfo = new PagingInfo
+                {
+                    CurrentPage = ElmHydroPage,
+                    JobTypeName = JobTypeName,
+                    ItemsPerPage = PageSize,
+                    TotalItems = testingrepo.Steps
+                        .Where(s => s.JobTypeID == 1).Count()
+                },
+                ElmTractionPagingInfo = new PagingInfo
+                {
+                    CurrentPage = ElmTractionPage,
+                    ItemsPerPage = PageSize,
+                    JobTypeName = JobTypeName,
+                    TotalItems = testingrepo.Steps
+                        .Where(s => s.JobTypeID == 5).Count()
+                },
+                M2000PagingInfo = new PagingInfo
+                {
+                    CurrentPage = M2000Page,
+                    ItemsPerPage = PageSize,
+                    JobTypeName = JobTypeName,
+                    TotalItems = testingrepo.Steps
+                        .Where(s => s.JobTypeID == 2).Count()
+                },
+                M4000PagingInfo = new PagingInfo
+                {
+                    CurrentPage = M4000Page,
+                    ItemsPerPage = PageSize,
+                    JobTypeName = JobTypeName,
+                    TotalItems = testingrepo.Steps
+                        .Where(s => s.JobTypeID == 4).Count()
+                },
+                TriggeringList = testingrepo.TriggeringFeatures.ToList(),
+                JobTypeSelected = JobTypeName,
+                JobTypesList = itemprepo.JobTypes.ToList(),
+            };
+            return View(stepView);
         }
 
         public ViewResult NewStep()

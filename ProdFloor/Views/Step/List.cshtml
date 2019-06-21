@@ -21,10 +21,10 @@
 </form>
 <form asp-controller="Step" asp-action="List" method="get">
     <div class="btn-group" role="group">
-        <button class="btn btn-primary" type="submit" name="JobTypeName" value="Traction">Element Traction</button>
-        <button class="btn btn-info" type="submit" name="JobTypeName" value="Hydro">Element Hydro</button>
-        <button class="btn btn-warning" type="submit" name="JobTypeName" value="M2000">M2000</button>
-        <button class="btn btn-danger" type="submit" name="JobTypeName" value="M4000">M4000</button>
+        <button class="btn btn-primary" type="submit" name="filtrado" value="Traction">Element Traction</button>
+        <button class="btn btn-info" type="submit" name="filtrado" value="Hydro">Element Hydro</button>
+        <button class="btn btn-warning" type="submit" name="filtrado" value="M2000">M2000</button>
+        <button class="btn btn-danger" type="submit" name="filtrado" value="M4000">M4000</button>
         <button class="btn btn-dark" name="CleanFields" type="submit" value="true">All Steps</button>
     </div>
 </form>
@@ -115,8 +115,8 @@
         <button class="btn btn-sm " name="buttonXML" style="background-color:#DF0174;color:white">Export Table to an XML File</button>
     </form>
 </div>
-<page-doorop page-model="@Model.PagingInfo" page-action="List" page-classes-enabled="true"
-             page-class="btn" page-class-normal="btn-secondary" page-url-JobTypeName="@Model.JobTypeSelected"
-             page-class-selected="btn-primary"
-             class="btn-group pull-right m-1">
-</page-doorop>
+<page-link-steps elm-hydro-paging-info="@Model.ElmHydroPagingInfo" elm-traction-paging-info="@Model.ElmTractionPagingInfo" m2000-paging-info="@Model.M2000PagingInfo" m4000-paging-info="Model.M4000PagingInfo"
+                 page-action="List"  job-type-selected="JobTypeName" page-class="btn" page-class-normal="btn-secondary" page-classes-enabled="true" current-model="@Model.JobTypeSelected"
+                 page-class-selected="btn-primary"  elm-hydro-url-value="ElmHydroPage" elm-traction-url-value="ElmTractionPage" m2000-url-value="M2000Page"  m4000-url-value="M4000Page"
+                 class="btn-group pull-right m-1">
+</page-link-steps>

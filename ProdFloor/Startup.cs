@@ -36,16 +36,17 @@ namespace ProdFloor
                 opts.Password.RequireNonAlphanumeric = true;
                 opts.Password.RequireLowercase = true;
                 opts.Password.RequireUppercase = true;
-                opts.Password.RequireDigit = true;})
+                opts.Password.RequireDigit = true;
+            })
                 .AddEntityFrameworkStores<AppIdentityDbContext>()
                 .AddDefaultTokenProviders();
 
-            services.AddTransient<IJobRepository, EFJobRepository>();
-            services.AddTransient<IItemRepository, EFItemRepository>();
-            services.AddTransient<ITestingRepository, EFTestingRepository>();
-            services.AddMvc();
-            services.AddMemoryCache();
-            services.AddSession();
+                services.AddTransient<IJobRepository, EFJobRepository>();
+                services.AddTransient<IItemRepository, EFItemRepository>();
+                services.AddTransient<ITestingRepository, EFTestingRepository>();
+                services.AddMvc();
+                services.AddMemoryCache();
+                services.AddSession();
             services.Configure<IISOptions>(options =>
             {
                 options.ForwardClientCertificate = false;
@@ -83,14 +84,13 @@ namespace ProdFloor
 
                 routes.MapRoute(
                     name: null,
-                    template: "{Step}/Page{page:int}",
-                    defaults: new { controller = "Step", action = "List" }
-                );
+                    template: "{MyJobsPage:int}_{OnCrossJobPage:int}_{PendingToCrossJobPage:int}_{Sort}",
+                    defaults: new { controller = "Home", action = "Index" });
 
                 routes.MapRoute(
                     name: null,
-                    template: "{MyJobsPage:int}_{OnCrossJobPage:int}_{PendingToCrossJobPage:int}_{Sort}",
-                    defaults: new { controller = "Home", action = "Index" });
+                    template: "{ElmHydroPage:int}_{ElmTractionPage:int}_{M2000Page:int}_{M4000Page:int}_{JobTypeName}",
+                    defaults: new { controller = "Step", action = "List" });
 
                 routes.MapRoute(
                     name: null,

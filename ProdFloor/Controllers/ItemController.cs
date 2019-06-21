@@ -1017,7 +1017,7 @@ namespace ProdFloor.Controllers
                         context.LandingSystems.Add(new LandingSystem
                         {
                             LandingSystemID = Int32.Parse(ID),
-                            UsedIn = ID,
+                            UsedIn = usein,
                             Name = name
                         });
 
@@ -1139,8 +1139,7 @@ namespace ProdFloor.Controllers
         {
             string JobTypeName = repository.JobTypes.FirstOrDefault(m => m.JobTypeID == JobTypeID).Name;
 
-            List<LandingSystem> LandingList= new List<LandingSystem>();
-            LandingList = (from landing in repository.LandingSystems where landing.UsedIn == JobTypeName select landing).ToList();
+            List<LandingSystem> LandingList = (from landing in repository.LandingSystems where landing.UsedIn == JobTypeName select landing).ToList();
             return Json(new SelectList(LandingList, "Name", "LandingSystemID"));
         }
 

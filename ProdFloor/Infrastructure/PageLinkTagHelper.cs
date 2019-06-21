@@ -322,78 +322,216 @@ namespace ProdFloor.Infrastructure
         TagHelperOutput output)
         {
             if (!string.IsNullOrEmpty(CurrentModel))
+            {
+                switch (CurrentModel)
                 {
-                    switch (CurrentModel)
-                    {
-                        case "MyJobs":
+                    case "MyJobs":
 
-                            IUrlHelper urlHelper = urlHelperFactory.GetUrlHelper(ViewContext);
-                            TagBuilder result = new TagBuilder("div");
-                            for (int i = 1; i <= MyJobsPageModel.TotalPages; i++)
+                        IUrlHelper urlHelper = urlHelperFactory.GetUrlHelper(ViewContext);
+                        TagBuilder result = new TagBuilder("div");
+                        for (int i = 1; i <= MyJobsPageModel.TotalPages; i++)
+                        {
+                            TagBuilder tag = new TagBuilder("a");
+                            PageUrlValues[MyJobsUrlValue] = i;
+                            PageUrlValues[OnCrossUrlValue] = OnCrossPageModel.CurrentPage;
+                            PageUrlValues[PendingToCrossUrlValue] = PendingToCrossPageModel.CurrentPage;
+                            PageUrlValues[Sort] = MyJobsPageModel.sort;
+                            tag.Attributes["href"] = urlHelper.Action(PageAction, PageUrlValues);
+                            if (PageClassesEnabled)
                             {
-                                TagBuilder tag = new TagBuilder("a");
-                                PageUrlValues[MyJobsUrlValue] = i;
-                                PageUrlValues[OnCrossUrlValue] = OnCrossPageModel.CurrentPage;
-                                PageUrlValues[PendingToCrossUrlValue] = PendingToCrossPageModel.CurrentPage;
-                                PageUrlValues[Sort] = MyJobsPageModel.sort;
-                                tag.Attributes["href"] = urlHelper.Action(PageAction, PageUrlValues);
-                                if (PageClassesEnabled)
-                                {
-                                    tag.AddCssClass(PageClass);
-                                    tag.AddCssClass(i == MyJobsPageModel.CurrentPage
-                                    ? PageClassSelected : PageClassNormal);
-                                }
-                                tag.InnerHtml.Append(i.ToString());
-                                result.InnerHtml.AppendHtml(tag);
+                                tag.AddCssClass(PageClass);
+                                tag.AddCssClass(i == MyJobsPageModel.CurrentPage
+                                ? PageClassSelected : PageClassNormal);
                             }
-                            output.Content.AppendHtml(result.InnerHtml);
-                            break;
-                        case "OncrossJobs":
-                            IUrlHelper urlHelper2 = urlHelperFactory.GetUrlHelper(ViewContext);
-                            TagBuilder result2 = new TagBuilder("div");
-                            for (int i = 1; i <= OnCrossPageModel.TotalPages; i++)
+                            tag.InnerHtml.Append(i.ToString());
+                            result.InnerHtml.AppendHtml(tag);
+                        }
+                        output.Content.AppendHtml(result.InnerHtml);
+                        break;
+                    case "OncrossJobs":
+                        IUrlHelper urlHelper2 = urlHelperFactory.GetUrlHelper(ViewContext);
+                        TagBuilder result2 = new TagBuilder("div");
+                        for (int i = 1; i <= OnCrossPageModel.TotalPages; i++)
+                        {
+                            TagBuilder tag = new TagBuilder("a");
+                            PageUrlValues[MyJobsUrlValue] = MyJobsPageModel.CurrentPage;
+                            PageUrlValues[OnCrossUrlValue] = i;
+                            PageUrlValues[PendingToCrossUrlValue] = PendingToCrossPageModel.CurrentPage;
+                            PageUrlValues[Sort] = OnCrossPageModel.sort;
+                            tag.Attributes["href"] = urlHelper2.Action(PageAction, PageUrlValues);
+                            if (PageClassesEnabled)
                             {
-                                TagBuilder tag = new TagBuilder("a");
-                                PageUrlValues[MyJobsUrlValue] = MyJobsPageModel.CurrentPage;
-                                PageUrlValues[OnCrossUrlValue] = i;
-                                PageUrlValues[PendingToCrossUrlValue] = PendingToCrossPageModel.CurrentPage;
-                                PageUrlValues[Sort] = OnCrossPageModel.sort;
-                                tag.Attributes["href"] = urlHelper2.Action(PageAction, PageUrlValues);
-                                if (PageClassesEnabled)
-                                {
-                                    tag.AddCssClass(PageClass);
-                                    tag.AddCssClass(i == OnCrossPageModel.CurrentPage
-                                    ? PageClassSelected : PageClassNormal);
-                                }
-                                tag.InnerHtml.Append(i.ToString());
-                                result2.InnerHtml.AppendHtml(tag);
+                                tag.AddCssClass(PageClass);
+                                tag.AddCssClass(i == OnCrossPageModel.CurrentPage
+                                ? PageClassSelected : PageClassNormal);
                             }
-                            output.Content.AppendHtml(result2.InnerHtml);
-                            break;
-                        case "PendingJobs":
-                            IUrlHelper urlHelper3 = urlHelperFactory.GetUrlHelper(ViewContext);
-                            TagBuilder result3 = new TagBuilder("div");
-                            for (int i = 1; i <= PendingToCrossPageModel.TotalPages; i++)
+                            tag.InnerHtml.Append(i.ToString());
+                            result2.InnerHtml.AppendHtml(tag);
+                        }
+                        output.Content.AppendHtml(result2.InnerHtml);
+                        break;
+                    case "PendingJobs":
+                        IUrlHelper urlHelper3 = urlHelperFactory.GetUrlHelper(ViewContext);
+                        TagBuilder result3 = new TagBuilder("div");
+                        for (int i = 1; i <= PendingToCrossPageModel.TotalPages; i++)
+                        {
+                            TagBuilder tag = new TagBuilder("a");
+                            PageUrlValues[MyJobsUrlValue] = MyJobsPageModel.CurrentPage;
+                            PageUrlValues[OnCrossUrlValue] = OnCrossPageModel.CurrentPage;
+                            PageUrlValues[PendingToCrossUrlValue] = i;
+                            PageUrlValues[Sort] = OnCrossPageModel.sort;
+                            tag.Attributes["href"] = urlHelper3.Action(PageAction, PageUrlValues);
+                            if (PageClassesEnabled)
                             {
-                                TagBuilder tag = new TagBuilder("a");
-                                PageUrlValues[MyJobsUrlValue] = MyJobsPageModel.CurrentPage;
-                                PageUrlValues[OnCrossUrlValue] = OnCrossPageModel.CurrentPage;
-                                PageUrlValues[PendingToCrossUrlValue] = i;
-                                PageUrlValues[Sort] = OnCrossPageModel.sort;
-                                tag.Attributes["href"] = urlHelper3.Action(PageAction, PageUrlValues);
-                                if (PageClassesEnabled)
-                                {
-                                    tag.AddCssClass(PageClass);
-                                    tag.AddCssClass(i == PendingToCrossPageModel.CurrentPage
-                                    ? PageClassSelected : PageClassNormal);
-                                }
-                                tag.InnerHtml.Append(i.ToString());
-                                result3.InnerHtml.AppendHtml(tag);
+                                tag.AddCssClass(PageClass);
+                                tag.AddCssClass(i == PendingToCrossPageModel.CurrentPage
+                                ? PageClassSelected : PageClassNormal);
                             }
-                            output.Content.AppendHtml(result3.InnerHtml);
-                            break;
+                            tag.InnerHtml.Append(i.ToString());
+                            result3.InnerHtml.AppendHtml(tag);
+                        }
+                        output.Content.AppendHtml(result3.InnerHtml);
+                        break;
+                }
+
+            }
+        }
+    }
+
+    public class PageLinkStepsTagHelper : TagHelper
+    {
+        private IUrlHelperFactory urlHelperFactory;
+
+        public PageLinkStepsTagHelper(IUrlHelperFactory helperFactory)
+        {
+            urlHelperFactory = helperFactory;
+        }
+
+        [ViewContext]
+        [HtmlAttributeNotBound]
+        public ViewContext ViewContext { get; set; }
+
+
+        public string PageAction { get; set; }
+
+        [HtmlAttributeName(DictionaryAttributePrefix = "page-url-")]
+        public Dictionary<string, object> PageUrlValues { get; set; }
+            = new Dictionary<string, object>();
+
+        public bool PageClassesEnabled { get; set; } = false;
+        public string PageClass { get; set; }
+        public string PageClassNormal { get; set; }
+        public string PageClassSelected { get; set; }
+
+        public PagingInfo ElmHydroPagingInfo { get; set; }
+        public PagingInfo ElmTractionPagingInfo { get; set; }
+        public PagingInfo M2000PagingInfo { get; set; }
+        public PagingInfo M4000PagingInfo { get; set; }
+        public string ElmHydroUrlValue { get; set; }
+        public string ElmTractionUrlValue { get; set; }
+        public string M2000UrlValue { get; set; }
+        public string M4000UrlValue { get; set; }
+        public string JobTypeSelected { get; set; }
+        public string CurrentModel { get; set; }
+
+        public override void Process(TagHelperContext context,
+        TagHelperOutput output)
+        {
+            switch (CurrentModel)
+            {
+                case "Hydro":
+
+                    IUrlHelper urlHelper = urlHelperFactory.GetUrlHelper(ViewContext);
+                    TagBuilder result = new TagBuilder("div");
+                    for (int i = 1; i <= ElmHydroPagingInfo.TotalPages; i++)
+                    {
+                        TagBuilder tag = new TagBuilder("a");
+                        PageUrlValues[ElmHydroUrlValue] = i;
+                        PageUrlValues[ElmTractionUrlValue] = ElmTractionPagingInfo.CurrentPage;
+                        PageUrlValues[M2000UrlValue] = M2000PagingInfo.CurrentPage;
+                        PageUrlValues[M4000UrlValue] = M4000PagingInfo.CurrentPage;
+                        PageUrlValues[JobTypeSelected] = ElmHydroPagingInfo.JobTypeName;
+                        tag.Attributes["href"] = urlHelper.Action(PageAction, PageUrlValues);
+                        if (PageClassesEnabled)
+                        {
+                            tag.AddCssClass(PageClass);
+                            tag.AddCssClass(i == ElmHydroPagingInfo.CurrentPage
+                            ? PageClassSelected : PageClassNormal);
+                        }
+                        tag.InnerHtml.Append(i.ToString());
+                        result.InnerHtml.AppendHtml(tag);
                     }
-                
+                    output.Content.AppendHtml(result.InnerHtml);
+                    break;
+                case "Traction":
+                    IUrlHelper urlHelper2 = urlHelperFactory.GetUrlHelper(ViewContext);
+                    TagBuilder result2 = new TagBuilder("div");
+                    for (int i = 1; i <= ElmTractionPagingInfo.TotalPages; i++)
+                    {
+                        TagBuilder tag = new TagBuilder("a");
+                        PageUrlValues[ElmHydroUrlValue] = ElmHydroPagingInfo.CurrentPage;
+                        PageUrlValues[ElmTractionUrlValue] = i;
+                        PageUrlValues[M2000UrlValue] = M2000PagingInfo.CurrentPage;
+                        PageUrlValues[M4000UrlValue] = M4000PagingInfo.CurrentPage;
+                        PageUrlValues[JobTypeSelected] = ElmTractionPagingInfo.JobTypeName;
+                        tag.Attributes["href"] = urlHelper2.Action(PageAction, PageUrlValues);
+                        if (PageClassesEnabled)
+                        {
+                            tag.AddCssClass(PageClass);
+                            tag.AddCssClass(i == ElmTractionPagingInfo.CurrentPage
+                            ? PageClassSelected : PageClassNormal);
+                        }
+                        tag.InnerHtml.Append(i.ToString());
+                        result2.InnerHtml.AppendHtml(tag);
+                    }
+                    output.Content.AppendHtml(result2.InnerHtml);
+                    break;
+                case "M2000":
+                    IUrlHelper urlHelper3 = urlHelperFactory.GetUrlHelper(ViewContext);
+                    TagBuilder result3 = new TagBuilder("div");
+                    for (int i = 1; i <= M2000PagingInfo.TotalPages; i++)
+                    {
+                        TagBuilder tag = new TagBuilder("a");
+                        PageUrlValues[ElmHydroUrlValue] = ElmHydroPagingInfo.CurrentPage;
+                        PageUrlValues[ElmTractionUrlValue] = ElmTractionPagingInfo.CurrentPage;
+                        PageUrlValues[M2000UrlValue] = i;
+                        PageUrlValues[M4000UrlValue] = M4000PagingInfo.CurrentPage;
+                        PageUrlValues[JobTypeSelected] = M2000PagingInfo.JobTypeName;
+                        tag.Attributes["href"] = urlHelper3.Action(PageAction, PageUrlValues);
+                        if (PageClassesEnabled)
+                        {
+                            tag.AddCssClass(PageClass);
+                            tag.AddCssClass(i == M2000PagingInfo.CurrentPage
+                            ? PageClassSelected : PageClassNormal);
+                        }
+                        tag.InnerHtml.Append(i.ToString());
+                        result3.InnerHtml.AppendHtml(tag);
+                    }
+                    output.Content.AppendHtml(result3.InnerHtml);
+                    break;
+                case "M4000":
+                    IUrlHelper urlHelper4 = urlHelperFactory.GetUrlHelper(ViewContext);
+                    TagBuilder result4 = new TagBuilder("div");
+                    for (int i = 1; i <= M4000PagingInfo.TotalPages; i++)
+                    {
+                        TagBuilder tag = new TagBuilder("a");
+                        PageUrlValues[ElmHydroUrlValue] = ElmHydroPagingInfo.CurrentPage;
+                        PageUrlValues[ElmTractionUrlValue] = ElmTractionPagingInfo.CurrentPage;
+                        PageUrlValues[M2000UrlValue] = M2000PagingInfo.CurrentPage;
+                        PageUrlValues[M4000UrlValue] = i;
+                        PageUrlValues[JobTypeSelected] = M4000PagingInfo.JobTypeName;
+                        tag.Attributes["href"] = urlHelper4.Action(PageAction, PageUrlValues);
+                        if (PageClassesEnabled)
+                        {
+                            tag.AddCssClass(PageClass);
+                            tag.AddCssClass(i == M4000PagingInfo.CurrentPage
+                            ? PageClassSelected : PageClassNormal);
+                        }
+                        tag.InnerHtml.Append(i.ToString());
+                        result4.InnerHtml.AppendHtml(tag);
+                    }
+                    output.Content.AppendHtml(result4.InnerHtml);
+                    break;
             }
         }
     }
@@ -492,18 +630,18 @@ namespace ProdFloor.Infrastructure
                 case "Stage":
                     return new List<string> { "Beginning", "Program", "Logic", "Ending", "Complete" }.AsQueryable();
                 case "Label":
-                    return new List<string> { "-", "A", "B", "C", "D", "E", "F", "G", "H"}.AsQueryable();
+                    return new List<string> { "-", "A", "B", "C", "D", "E", "F", "G", "H" }.AsQueryable();
                 case "Station":
                     return new List<string> { "S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9", "S10", "S11", "S12", "ELEM1", "ELEM2" }.AsQueryable();
                 case "CarCode":
-                    return new List<string> { "IMonitor","Key" }.AsQueryable();
+                    return new List<string> { "IMonitor", "Key" }.AsQueryable();
                 case "SPH":
                     return new List<string> { "80", "120" }.AsQueryable();
                 case "Starter":
                     return new List<string> { "Siemens SS : 6/12", "Siemens SS : 3/9", "Sprecher SS : 6/12", "Sprecher SS : 3/9", "ATL", "YD" }.AsQueryable();
                 case "Valve Brand":
                     List<string> ValveInHydro = jobrepository.HydroSpecifics.Where(d => d.ValveBrand != null).Select(d => d.ValveBrand).Distinct().ToList();
-                    List<string> ValveList = new List<string> { "Blain", "Bucher", "EECO", "Maxton", "TKE | Dover",  "Other" };
+                    List<string> ValveList = new List<string> { "Blain", "Bucher", "EECO", "Maxton", "TKE | Dover", "Other" };
                     if (ValveInHydro.Count > 0) ValveList.AddRange(ValveInHydro);
                     return ValveList.Distinct().AsQueryable();
                 case "Battery Brand":
@@ -563,6 +701,7 @@ namespace ProdFloor.Infrastructure
             base.Process(context, output);
         }
     }
+
     public class IndicatorsTagHelper : TagHelper
     {
         private IItemRepository itemsrepository;
@@ -593,13 +732,13 @@ namespace ProdFloor.Infrastructure
                 case "CallType":
                     return new List<string> { "Incandescent", "LED" }.AsQueryable();
                 case "EPContact":
-                    return new List<string> { "NC","NO",  }.AsQueryable();
+                    return new List<string> { "NC", "NO", }.AsQueryable();
                 case "EPCars":
                     return new List<string> { "1", "2", "3", "4" }.AsQueryable();
                 case "PIDriver":
                     return new List<string> { "CE Electronics", "Emotive", "Discrete" }.AsQueryable();
                 case "CarPIDiscreteType":
-                    return new List<string> { "Binary 00", "Binary 01","Multi-light", "One line per floor", }.AsQueryable();
+                    return new List<string> { "Binary 00", "Binary 01", "Multi-light", "One line per floor", }.AsQueryable();
                 case "Monitoring":
                     return new List<string> { "IDS Liftnet","MView Interface & IMonitor Complete","MView Interface & IMonitor Interface", "MView Complete", "MView Interface", "IMonitor Complete", "IMonitor Interface",
                         "MView Complete & IMonitor Complete","MView Complete & IMonitor Interface" }.AsQueryable();
@@ -773,7 +912,8 @@ namespace ProdFloor.Infrastructure
             m_tag.InnerHtml.Append("Please select a City");
             result.InnerHtml.AppendHtml(m_tag);
             IQueryable<City> city = itemsrepository.Cities.AsQueryable();
-            if (SelectedValue != 0) {
+            if (SelectedValue != 0)
+            {
                 int SelectedStateInCityID = itemsrepository.Cities.FirstOrDefault(n => n.CityID == SelectedValue).StateID;
                 city = itemsrepository.Cities.Where(m => m.StateID == SelectedStateInCityID).OrderBy(s => s.Name);
             }
@@ -967,7 +1107,7 @@ namespace ProdFloor.Infrastructure
 
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
-            if(SelectedCurrentFireCode != 0)
+            if (SelectedCurrentFireCode != 0)
             {
                 int FireCodeOnCity = itemsrepository.Cities.FirstOrDefault(m => m.CityID == SelectedCurrentFireCode).FirecodeID;
                 SelectedValue = FireCodeOnCity;
@@ -1179,7 +1319,7 @@ namespace ProdFloor.Infrastructure
             IQueryable<DoorOperator> doors = itemsrepository.DoorOperators.AsQueryable();
             if (SelectedValue != 0)
             {
-                string AuxDoor = itemsrepository.DoorOperators.FirstOrDefault(m =>m.DoorOperatorID == SelectedValue).Brand;
+                string AuxDoor = itemsrepository.DoorOperators.FirstOrDefault(m => m.DoorOperatorID == SelectedValue).Brand;
                 doors = itemsrepository.DoorOperators.Where(m => m.Brand == AuxDoor).OrderBy(s => s.Name).AsQueryable();
             }
             foreach (DoorOperator uniqueDoor in doors)
@@ -1500,7 +1640,7 @@ namespace ProdFloor.Infrastructure
             m_tag.Attributes["value"] = "";
             m_tag.InnerHtml.Append("Select a type of operation");
             result.InnerHtml.AppendHtml(m_tag);
-            IQueryable<string> jobTypeAdd = ijobrepository.JobsExtensions.OrderBy(s => s.JobTypeAdd).Select( j => j.JobTypeAdd ).Distinct().AsQueryable();
+            IQueryable<string> jobTypeAdd = ijobrepository.JobsExtensions.OrderBy(s => s.JobTypeAdd).Select(j => j.JobTypeAdd).Distinct().AsQueryable();
             foreach (string jobTypesAdd in jobTypeAdd)
             {
                 TagBuilder tag = new TagBuilder("option");
@@ -2188,7 +2328,7 @@ namespace ProdFloor.Infrastructure
         public ModelExpression AspFor { get; set; }
 
         public string SelectFor { get; set; }
-        
+
         public Trigger2SelectTagHelper(IUrlHelperFactory helperFactory, IItemRepository itemsrepo)
         {
             urlHelperFactory = helperFactory;
@@ -2207,7 +2347,7 @@ namespace ProdFloor.Infrastructure
                                             ,"Custom","MRL","CTL2","Tarjeta CPI Incluida","Door Control en Cartop","Canada","Ontario","Manual Doors","Duplex","Serial Halls Calls"
                                             ,"Edge-LS","Rail-LS", "mView","iMonitor","HAPS Battery","2+ Starters", "MOD Door Operator"}.AsQueryable();
                 case "TriggerCustom":
-                    return new List<string> {"Contractor", "Fire Code","City", "VCI","Valve Brand","Switch Style","Landing System", "State" }.AsQueryable();
+                    return new List<string> { "Contractor", "Fire Code", "City", "VCI", "Valve Brand", "Switch Style", "Landing System", "State" }.AsQueryable();
                 default:
                     return new List<string> {"Overlay", "Group","PC de Cliente", "Brake Coil Voltage > 10","EMBrake Module","EMCO Board","R6 Regen Unit","Local","ShortFloor"
                                             ,"Custom","MRL","CTL2","Tarjeta CPI Incluida","Door Control en Cartop","Canada","Ontario","Manual Doors","Duplex","Serial Halls Calls"

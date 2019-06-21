@@ -2857,14 +2857,5 @@ namespace ProdFloor.Controllers
             JobController.ImportXML(HttpContext.RequestServices, buttonImportXML);
             return RedirectToAction(nameof(List));
         }
-
-        public IActionResult CopyClipToClipboard(string JobNum, int ID)
-        {
-            string LastFive = JobNum.Substring(5);
-            string FirstTwo = LastFive.Substring(0, 2);
-            Clipboard.SetText(@"L:\" + FirstTwo + "000\\" + LastFive);
-
-            return RedirectToAction("Edit", new { id = ID });
-        }
     }
 }
