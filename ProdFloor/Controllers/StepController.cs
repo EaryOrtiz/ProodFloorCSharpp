@@ -30,7 +30,7 @@ namespace ProdFloor.Controllers
 
         public ViewResult List(string filtrado,string JobTypeName = "Traction", int ElmHydroPage = 1, int ElmTractionPage = 1, int M2000Page = 1, int M4000Page = 1)
         {
-            if (filtrado != null && filtrado != "Traction") JobTypeName = filtrado;
+            if (filtrado != null ) JobTypeName = filtrado;
             List<Step> StepList = testingrepo.Steps.ToList();
 
             switch (JobTypeName)
