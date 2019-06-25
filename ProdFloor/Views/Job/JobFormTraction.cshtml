@@ -46,8 +46,8 @@
             </div>
             @for (int i = 1; i < Model.POList.Count; i++)
             {
-                <input type="hidden" asp-for="POList[i].POID" />
-                <input type="hidden" asp-for="POList[i].JobID" />
+                <input type="hidden" asp-for="POList[i].POID" value="@Model.POList[i].POID"/>
+                <input type="hidden" asp-for="POList[i].JobID" value="@Model.POList[i].JobID" />
                 <input type="hidden" asp-for="@Model.fieldID" value="@Model.POList.Last().POID" />
                 <div class="form-group row">
                     <label asp-for="POList[i].PONumb" class="col-sm-3 col-form-label"></label>

@@ -105,7 +105,7 @@ namespace ProdFloor.Controllers
                         ItemsPerPage = PageSize,
                         TotalItems = MyjobsList.Count(),
                         sort = Sort != "default" ? Sort : "deafult"
-                        
+
                     },
                     JobTypes = JobTyPeList,
                     POs = POsList,
@@ -114,13 +114,6 @@ namespace ProdFloor.Controllers
                     {
                         CurrentPage = OnCrossJobPage,
                         ItemsPerPage = PageSize,
-                        TotalItems = repository.Jobs
-                        .Where(j => j.EngID != currentUser.EngID)
-                        .Where(j => j.Status == "Cross Approval Pending" || j.Status == "On Cross Approval")
-                        .Count()
-                    }
-                });
-
                         TotalItems = OnCrossJobsList.Count(),
                         sort = Sort != "default" ? Sort : "deafult"
                     },
