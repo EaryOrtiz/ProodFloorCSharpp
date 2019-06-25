@@ -2,6 +2,7 @@
 @{
     ViewBag.Title = "ProdFloor";
     Layout = "_AdminLayoutWO";
+
 }
 <h2 class="col-sm-10">
     Jobs Dashboard
@@ -163,8 +164,25 @@
      add-url-value="productionJobPage"
      class="btn-group pull-right m-1">
 </div>
+    <div class="btn-group float-right">
+        <a class="btn btn-success" asp-controller="Job" asp-action="NewJob">
+            <i class="fa fa-plus"></i>
+            New Job
+        </a>
+    </div>
+</div>
+<br />
+@if (Model.MyJobs != null)
+{
+    @Html.Partial("OngoingJobs", Model)
+}
+<br />
 @if (User.IsInRole("CrossApprover"))
 {
+    @if (Model.OnCrossJobs != null)
+    {
+        @Html.Partial("OngoingCrossApprovals", Model)
+    }
     <br />
     <h4>Jobs On Cross Approval</h4>
     <table class="table">
@@ -282,13 +300,8 @@
             }
         </tbody>
     </table>
-    @if (Model.ProductionJobs.Count() > 0)
+    @if (Model.OnCrossJobs != null)
     {
-        <div page-model="@Model.ProductionJobsPagingInfo" page-action="Index" page-classes-enabled="true"
-             page-class="btn" page-class-normal="btn-secondary" additional-page-model="@Model.PendingJobsPagingInfo"
-             page-class-selected="btn-primary" dash-board-enabled="true" main-url-value="productionJobPage" add-url-value="pendingJobPage"
-             class="btn-group pull-right m-1">
-        </div>
+        @Html.Partial("PendingCrossApprovals", Model)
     }
-
 }

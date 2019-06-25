@@ -14,6 +14,8 @@ using System.IO;
 using System.Xml;
 using HtmlAgilityPack;
 using Microsoft.Extensions.DependencyInjection;
+using TextCopy;
+using System.Diagnostics;
 
 namespace ProdFloor.Controllers
 {
@@ -130,6 +132,13 @@ namespace ProdFloor.Controllers
                 default: return View(NotFound());
             }
 
+            JobViewModel viewModel = new JobViewModel
+            {
+                CurrentJob = new Job { ShipDate = DateTime.Now, LatestFinishDate = DateTime.Now },
+                POList = new List<PO> { new PO { JobID = 0 } }
+            };
+            return View(viewModel);
+
         }
 
         [HttpPost]
@@ -141,6 +150,7 @@ namespace ProdFloor.Controllers
             {
                 List<PO> PoAux = new List<PO>();
                 foreach (PO itemes in newJob.POList)
+
                 {
                     try
                     {
@@ -155,6 +165,21 @@ namespace ProdFloor.Controllers
                 }
                 if (PoAux.Count <= 0 || PoAux[0] == null)
                 {
+                    try
+                    {
+                        PO poUniqueAUx = repository.POs.FirstOrDefault(m => m.PONumb == itemes.PONumb);
+                        PoAux.Add(poUniqueAUx);
+                    }
+                    catch (Exception)
+                    {
+
+                        continue;
+                    }
+
+                }
+                if (PoAux.Count <= 0 || PoAux[0] == null)
+                {
+
                     //y esta esta tambien y poner denuevo el {currenuser.engId} en Los TempDatas cuando terminen los test 
                     newJob.CurrentJob.EngID = currentUser.EngID;
                     newJob.CurrentJob.CrossAppEngID = 117;
@@ -222,6 +247,25 @@ namespace ProdFloor.Controllers
                         TempData["message"] = $"Job# {newJobViewModel.CurrentJob.JobNum} has been saved...{newJobViewModel.CurrentJob.JobID}...";
                         return View("NextForm", newJobViewModel);
                     }
+                        CurrentUserID = currentUser.EngID,
+                        CurrentJob = currentJob,
+                        CurrentJobExtension = new JobExtension { JobID = newJob.CurrentJob.JobID },
+                        CurrentHydroSpecific = new HydroSpecific(),
+                        CurrentGenericFeatures = new GenericFeatures(),
+                        CurrentIndicator = new Indicator(),
+                        CurrentHoistWayData = new HoistWayData(),
+                        SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures() },
+                        POList = POlistAUX,
+                        CurrentTab = "Extension"
+                    };
+                    TempData["message"] = $"Job# {newJobViewModel.CurrentJob.JobNum} has been saved...{newJobViewModel.CurrentJob.JobID}...";
+                    return View("NextForm", newJobViewModel);
+                }
+                else
+                {
+                    TempData["message"] = $"One of the POs already exists. Please validate.";
+                    TempData["alert"] = $"alert-danger";
+                    return View(newJob);
                 }
 
                 TempData["message"] = $"One of the POs already exists. Please validate.";
@@ -307,6 +351,26 @@ namespace ProdFloor.Controllers
 
                     return View(viewModel);
                 }
+
+                List<PO> POsList = repository.POs.Where(j => j.JobID == ID).ToList();
+                List<SpecialFeatures> SfList = repository.SpecialFeatures.Where(j => j.JobID == ID).ToList();
+                JobViewModel viewModel = new JobViewModel();
+                string LastFive = job.JobNum.ToString().Substring(5);
+                string FirstTwo = LastFive.Substring(0, 2);
+                viewModel.JobFolder = @"L:\" + FirstTwo + "000\\" + LastFive;
+                viewModel.CurrentJob = job;
+                viewModel.CurrentJobExtension = repository.JobsExtensions.FirstOrDefault(j => j.JobID == ID);
+                viewModel.CurrentHydroSpecific = repository.HydroSpecifics.FirstOrDefault(j => j.JobID == ID);
+                viewModel.CurrentGenericFeatures = repository.GenericFeaturesList.FirstOrDefault(j => j.JobID == ID);
+                viewModel.CurrentIndicator = repository.Indicators.FirstOrDefault(j => j.JobID == ID);
+                viewModel.CurrentHoistWayData = repository.HoistWayDatas.FirstOrDefault(j => j.JobID == ID);
+                if (SfList != null) viewModel.SpecialFeatureslist = SfList;
+                else viewModel.SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures() };
+                if (POsList != null) viewModel.POList = POsList;
+                else viewModel.POList = new List<PO> { new PO() };
+                viewModel.CurrentUserID = currentUser.EngID;
+                viewModel.CurrentTab = "Main";
+                return View(viewModel);
             }
         }
 
@@ -334,8 +398,11 @@ namespace ProdFloor.Controllers
                 viewModel.SpecialFeatureslist = SfList;
                 int jobNumAux = viewModel.CurrentJob.JobNum;
                 viewModel.CurrentJob.JobNum = 0;
+                viewModel.CurrentUserID = currentUser.EngID;
                 viewModel.CurrentJob.Status = "Copied";
                 viewModel.POList = new List<PO> { new PO { JobID = viewModel.CurrentJob.JobID } };
+                viewModel.CurrentUserID = currentUser.EngID;
+                viewModel.CurrentJob.EngID = currentUser.EngID;
 
                 TempData["message"] = $"You have copied the job #{jobNumAux} succesfully, please change the name, Job number & PO";
                 return View("Edit", viewModel);
@@ -1052,6 +1119,27 @@ namespace ProdFloor.Controllers
                     return View("NextForm", continueJobViewModel);
                 }
 
+                List<SpecialFeatures> SfList = repository.SpecialFeatures.Where(j => j.JobID == ID).ToList();
+                List<PO> POsList = repository.POs.Where(j => j.JobID == ID).ToList();
+                JobViewModel continueJobViewModel = new JobViewModel();
+                AppUser currentUser = GetCurrentUser().Result;
+                continueJobViewModel.CurrentUserID = currentUser.EngID;
+                continueJobViewModel.CurrentTab = "Main";
+                continueJobViewModel.CurrentJob = repository.Jobs.FirstOrDefault(j => j.JobID == ID);
+                string LastFive = continueJobViewModel.CurrentJob.JobNum.ToString().Substring(5);
+                string FirstTwo = LastFive.Substring(0, 2);
+                continueJobViewModel.JobFolder = @"L:\" + FirstTwo + "000\\" + LastFive;
+                if (POsList != null) continueJobViewModel.POList = POsList;
+                else continueJobViewModel.POList = new List<PO> { new PO() };
+                continueJobViewModel.CurrentJobExtension = (repository.JobsExtensions.FirstOrDefault(j => j.JobID == ID) ?? new JobExtension());
+                continueJobViewModel.CurrentHydroSpecific = (repository.HydroSpecifics.FirstOrDefault(j => j.JobID == ID) ?? new HydroSpecific());
+                continueJobViewModel.CurrentGenericFeatures = (repository.GenericFeaturesList.FirstOrDefault(j => j.JobID == ID) ?? new GenericFeatures());
+                continueJobViewModel.CurrentIndicator = (repository.Indicators.FirstOrDefault(j => j.JobID == ID) ?? new Indicator());
+                continueJobViewModel.CurrentHoistWayData = (repository.HoistWayDatas.FirstOrDefault(j => j.JobID == ID) ?? new HoistWayData());
+                if (SfList.Count > 1) continueJobViewModel.SpecialFeatureslist = SfList;
+                else continueJobViewModel.SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures() };
+
+                return View("NextForm", continueJobViewModel);
             }
             else
             {
@@ -1089,6 +1177,11 @@ namespace ProdFloor.Controllers
                 {
                     if (nextViewModel.CurrentJobExtension != null && nextViewModel.CurrentJobExtension.JobID != 0)
                     {
+
+                        string LastFive = nextViewModel.CurrentJob.JobNum.ToString().Substring(5);
+                        string FirstTwo = LastFive.Substring(0, 2);
+                        nextViewModel.JobFolder = @"L:\" + FirstTwo + "000\\" + LastFive;
+
                         if (nextViewModel.CurrentHydroSpecific != null && nextViewModel.CurrentHydroSpecific.JobID != 0)
                         {
                             if (nextViewModel.CurrentGenericFeatures != null && nextViewModel.CurrentGenericFeatures.JobID != 0)
@@ -1164,6 +1257,11 @@ namespace ProdFloor.Controllers
                                 if (nextViewModel.CurrentHydroSpecific.BatteryBrand == "Other" && !string.IsNullOrEmpty(nextViewModel.CurrentHydroSpecific.OtherBatteryBrand))
                                 {
                                     nextViewModel.CurrentHydroSpecific.BatteryBrand = nextViewModel.CurrentHydroSpecific.OtherBatteryBrand;
+                                }
+
+                                if (nextViewModel.CurrentHydroSpecific.ValveBrand == "Other" && !string.IsNullOrEmpty(nextViewModel.CurrentHydroSpecific.OtherValveBrand))
+                                {
+                                    nextViewModel.CurrentHydroSpecific.ValveBrand = nextViewModel.CurrentHydroSpecific.OtherValveBrand;
                                 }
                                 repository.SaveEngJobView(nextViewModel);
                                 nextViewModel.CurrentGenericFeatures = new GenericFeatures { JobID = nextViewModel.CurrentJob.JobID };
@@ -1576,14 +1674,14 @@ namespace ProdFloor.Controllers
         public JsonResult GetJobState(int CountryID)
         {
             List<State> JobStatelist = new List<State>();
-            JobStatelist = (from state in itemsrepository.States where state.CountryID == CountryID select state).ToList();
+            JobStatelist = (from state in itemsrepository.States where state.CountryID == CountryID select state).OrderBy(s => s.Name).ToList();
             return Json(new SelectList(JobStatelist, "StateID", "Name"));
         }
 
         public JsonResult GetJobCity(int StateID)
         {
             List<City> CityCascadeList = new List<City>();
-            CityCascadeList = (from city in itemsrepository.Cities where city.StateID == StateID select city).ToList();
+            CityCascadeList = (from city in itemsrepository.Cities where city.StateID == StateID select city).OrderBy(s => s.Name).ToList();
             return Json(new SelectList(CityCascadeList, "CityID", "Name"));
         }
 
@@ -1591,7 +1689,7 @@ namespace ProdFloor.Controllers
         {
             int FirecodeOncityID = itemsrepository.Cities.FirstOrDefault(m => m.CityID == CityID).FirecodeID;
             List<FireCode> FireCodeList = new List<FireCode>();
-            FireCodeList = (from firecode in itemsrepository.FireCodes where firecode.FireCodeID == FirecodeOncityID select firecode).ToList();
+            FireCodeList = (from firecode in itemsrepository.FireCodes where firecode.FireCodeID == FirecodeOncityID select firecode).OrderBy(s => s.Name).ToList();
             return Json(new SelectList(FireCodeList, "FireCodeID", "Name"));
         }
 
@@ -1606,7 +1704,7 @@ namespace ProdFloor.Controllers
         public JsonResult GetDoorOperatorID(string Brand)
         {
             List<DoorOperator> DoorOperatorList = new List<DoorOperator>();
-            DoorOperatorList = (from door in itemsrepository.DoorOperators where door.Brand == Brand select door).ToList();
+            DoorOperatorList = (from door in itemsrepository.DoorOperators where door.Brand == Brand select door).OrderBy(s => s.Name).ToList();
             return Json(new SelectList(DoorOperatorList, "DoorOperatorID", "Name"));
         }
 
@@ -3488,6 +3586,7 @@ namespace ProdFloor.Controllers
             JobController.ImportXML(HttpContext.RequestServices, buttonImportXML);
             return RedirectToAction(nameof(List));
         }
+
 
         public string JobTypeName(int ID)
         {

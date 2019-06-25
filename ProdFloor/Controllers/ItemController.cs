@@ -390,6 +390,7 @@ namespace ProdFloor.Controllers
                         ViewModel.StarterType = JobSearch._HydroSpecific.Starter;
                         ViewModel.NumJobSearch = JobSearch.JobNum;
                         ViewModel.SHCisSelected = JobSearch._jobExtension.SHC;
+                        ViewModel.TotalTravel = JobSearch._HoistWayData.TotalTravel;
                         ViewModel.anyRear = JobSearch._HoistWayData.AnyRear;
                         ViewModel.FrontFloor = JobSearch._HoistWayData.FrontFloorOpenings;
                         ViewModel.RearFloor = JobSearch._HoistWayData.RearFloorOpenings;
@@ -618,10 +619,10 @@ namespace ProdFloor.Controllers
                         #region SHC Calculator
                         if (ViewModel.SHCisSelected)
                         {
-                            ViewModel.calculatedFrontSHC = (70 + (10 * ViewModel.FrontFloor));
+                            ViewModel.calculatedFrontSHC = ((ViewModel.TotalTravel) + 70 + (10 * ViewModel.FrontFloor));
                             if (ViewModel.anyRear)
                             {
-                                ViewModel.calculatedRearSHC = (70 + (10 * ViewModel.RearFloor));
+                                ViewModel.calculatedRearSHC = ((ViewModel.TotalTravel) + 70 + (10 * ViewModel.RearFloor));
                             }
                             else
                             {
@@ -637,7 +638,15 @@ namespace ProdFloor.Controllers
                         #endregion
 
                         #region ReferSearchVM
-
+                        try
+                        {
+                            string auxName2 = "---------------------------------------";
+                            if (ViewModel.JobName2 == null) ViewModel.JobName2 = auxName2;
+                        }
+                        catch(Exception e)
+                        {
+                            ViewModel.JobName2 = "-----------------------------------------";
+                        }
                         ReferencesSearchvViewModel referSearch = new ReferencesSearchvViewModel
                         {
                             RefernceData = true,
@@ -771,7 +780,6 @@ namespace ProdFloor.Controllers
                 case "Slowdown":
                     HtmlDocument doc3 = new HtmlDocument();
                     doc3.Load(@"C:\Users\\Administrator\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\Slowdowns.xml");
-
                     var XMLobs3 = doc3.DocumentNode.SelectNodes("//slowdown");
 
                     foreach (var XMLob in XMLobs3)
@@ -891,7 +899,7 @@ namespace ProdFloor.Controllers
 
                 case "Country":
                     HtmlDocument doc6 = new HtmlDocument();
-                    doc6.Load(@"C:\Users\\Administrator\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\Countries.xml");
+                    doc6.Load(@"C:\Users\Administrator\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\Countries.xml");
 
                     var XMLobs6 = doc6.DocumentNode.SelectNodes("//country");
 
@@ -923,7 +931,6 @@ namespace ProdFloor.Controllers
                 case "State":
                     HtmlDocument doc2 = new HtmlDocument();
                     doc2.Load(@"C:\Users\\Administrator\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\States.xml");
-
                     var XMLobs2 = doc2.DocumentNode.SelectNodes("//state");
 
                     if (context.Countries.Any())
@@ -953,6 +960,7 @@ namespace ProdFloor.Controllers
                 case "City":
                     HtmlDocument doc7 = new HtmlDocument();
                     doc7.Load(@"C:\Users\\Administrator\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\Cities.xml");
+
 
                     var XMLobs7 = doc7.DocumentNode.SelectNodes("//city");
 
@@ -1058,7 +1066,6 @@ namespace ProdFloor.Controllers
                     doc10.Load(@"C:\Users\Administrator\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\DoorOperators.xml");
 
                     var XMLobs10 = doc10.DocumentNode.SelectNodes("//dooroperator");
-
                     foreach (var XMLob in XMLobs10)
                     {
                         var ID = XMLob.SelectSingleNode(".//id").InnerText;
