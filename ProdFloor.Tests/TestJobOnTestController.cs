@@ -26,17 +26,12 @@ namespace ProdFloor.Tests
             Mock<IJobRepository> mock = new Mock<IJobRepository>();
             Mock<ITestingRepository> mockTesting = new Mock<ITestingRepository>();
             Mock<IItemRepository> mockItem = new Mock<IItemRepository>();
+            // Arrange - create mock temp data
+            Mock<ITempDataDictionary> tempData = new Mock<ITempDataDictionary>();
             List<AppUser> _users = new List<AppUser>
             {
                 new AppUser{ EngID = 1 },
                 new AppUser{ EngID = 2 }
-            };
-            TestJob testJob = new TestJob()
-            {
-                TestJobID = 1,
-                TechnicianID = 1,
-                JobID = 1,
-                SinglePO = 30002110,
             };
             mockItem.Setup(m => m.DoorOperators).Returns((new DoorOperator[]
             {
@@ -86,9 +81,9 @@ namespace ProdFloor.Tests
             }).AsQueryable());
             mock.Setup(m => m.HoistWayDatas).Returns((new HoistWayData[]
             {
-                new HoistWayData {JobID = 1, HoistWayDataID = 1, LandingSystemID  = 1},
-                new HoistWayData {JobID = 2, HoistWayDataID = 2, LandingSystemID  = 2},
-                new HoistWayData {JobID = 3, HoistWayDataID = 3, LandingSystemID  = 2},
+                new HoistWayData {JobID = 1, HoistWayDataID = 1, LandingSystemID  = 3},
+                new HoistWayData {JobID = 2, HoistWayDataID = 2, LandingSystemID  = 8},
+                new HoistWayData {JobID = 3, HoistWayDataID = 3, LandingSystemID  = 8},
             }).AsQueryable());
             mock.Setup(m => m.GenericFeaturesList).Returns((new GenericFeatures[]
             {
@@ -115,9 +110,9 @@ namespace ProdFloor.Tests
                 new TriggeringFeature {TriggeringFeatureID = 5, StepID = 3, IsSelected = false},
                 new TriggeringFeature {TriggeringFeatureID = 6, StepID = 5, IsSelected = false},
             }).AsQueryable());
-            mockTesting.Setup(m => m.TestJobs).Returns((new TestJob[]{
-                testJob
-            }).AsQueryable());
+            TestJob testJob = new TestJob() {TestJobID = 1, TechnicianID = 1,JobID = 1, SinglePO = 30002110};
+
+            mockTesting.Setup(m => m.TestJobs).Returns((new TestJob[]{ testJob }).AsQueryable());
             mockTesting.Setup(m => m.TestFeatures).Returns((new TestFeature[]
             {
                 new TestFeature {TestFeatureID = 1, TestJobID = 1, Cartop = false, ShortFloor = false, CTL2 = false, Custom = false
@@ -126,7 +121,10 @@ namespace ProdFloor.Tests
             }).AsQueryable());
 
 
-            TestJobController controller = new TestJobController(mockTesting.Object, mock.Object,  mockItem.Object, mockusers.Object);
+            TestJobController controller = new TestJobController(mockTesting.Object, mock.Object, mockItem.Object, mockusers.Object)
+            {
+                TempData = tempData.Object
+            };
             controller.PageSize = 3;
 
             TestJobViewModel viewModel = new TestJobViewModel()
@@ -134,11 +132,14 @@ namespace ProdFloor.Tests
                 TestJob = testJob
             };
             // Act 
-            Func<ViewResult, TestJobViewModel> GetModel = result => result?.ViewData?.Model as TestJobViewModel;
-            StepsForJob stepsForJob = GetModel(controller.NewTestFeatures(viewModel))?.StepsForJob;
+            //var result  = (GetViewModel<TestJobViewModel>(controller.NewTestFeatures(viewModel) as IActionResult));
+            TestJobViewModel result = controller.NewTestFeatures(viewModel).ViewData.Model as TestJobViewModel;
 
             // Assert
-            
+            Assert.Equal(1, result.StepsForJobList[0].StepID);
+            Assert.Equal(2, result.StepsForJobList[1].StepID);
+            Assert.Equal(3, result.StepsForJobList[2].StepID);
+
         }
 
         private T GetViewModel<T>(IActionResult result) where T : class
