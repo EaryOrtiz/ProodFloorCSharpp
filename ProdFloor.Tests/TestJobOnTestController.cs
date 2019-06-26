@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using ProdFloor.Models.ViewModels.Job;
-using ProdFloor.Models.ViewModels.TestJob
+using ProdFloor.Models.ViewModels.TestJob;
 using System.IO;
 using System.Security.Principal;
 namespace ProdFloor.Tests
@@ -38,31 +38,6 @@ namespace ProdFloor.Tests
                 JobID = 1,
                 SinglePO = 30002110,
             };
-            Mock<UserManager<AppUser>> mockusers = MockUserManager<AppUser>(_users);
-            mock.Setup(m => m.Jobs).Returns((new Job[] {
-                new Job {JobID = 1, Name = "P1"},
-                new Job {JobID = 2, Name = "P2"},
-                new Job {JobID = 2, Name = "P3"},
-            }).AsQueryable());
-            mock.Setup(m => m.JobsExtensions).Returns((new JobExtension[]
-            {
-                new JobExtension {JobID = 1, JobExtensionID = 1, DoorOperatorID  = 8},
-                new JobExtension {JobID = 2, JobExtensionID = 2, DoorOperatorID  = 7},
-                new JobExtension {JobID = 3, JobExtensionID = 3, DoorOperatorID  = 22},
-            }).AsQueryable());
-            mock.Setup(m => m.HydroSpecifics).Returns((new HydroSpecific[]
-            {
-                new HydroSpecific {JobID = 1, HydroSpecificID = 1, BatteryBrand  = "HAPS"},
-                new HydroSpecific {JobID = 2, HydroSpecificID = 2, BatteryBrand  = "Duracell"},
-                new HydroSpecific {JobID = 3, HydroSpecificID = 3, BatteryBrand  = "HAPS"},
-               
-            }).AsQueryable());
-            mock.Setup(m => m.HoistWayDatas).Returns((new HoistWayData[]
-            {
-                new HoistWayData {JobID = 1, HoistWayDataID = 1, LandingSystemID  = 1},
-                new HoistWayData {JobID = 2, HoistWayDataID = 2, LandingSystemID  = 2},
-                new HoistWayData {JobID = 3, HoistWayDataID = 3, LandingSystemID  = 2},
-            }).AsQueryable());
             mockItem.Setup(m => m.DoorOperators).Returns((new DoorOperator[]
             {
                 new DoorOperator {DoorOperatorID = 7, Style = "Automatic", Name  = "MOD(230V)"},
@@ -74,6 +49,52 @@ namespace ProdFloor.Tests
                 new LandingSystem {LandingSystemID = 7, UsedIn = "M2000", Name  = "LS-EDGE"},
                 new LandingSystem {LandingSystemID = 8, UsedIn = "M4000", Name  = "LS-EDGE"},
                 new LandingSystem {LandingSystemID = 3, UsedIn = "M3000", Name  = "LS-QUTE"},
+            }).AsQueryable());
+            mockItem.Setup(m => m.Countries).Returns((new Country[]
+            {
+                new Country {CountryID = 1, Name  = "USA"},
+                new Country {CountryID = 2, Name  = "Canada"},
+            }).AsQueryable());
+            mockItem.Setup(m => m.States).Returns((new State[]
+            {
+                new State { StateID = 1, CountryID = 1, Name  = "Chicago"},
+                new State { StateID = 2, CountryID = 2, Name  = "Ontario"},
+            }).AsQueryable());
+            mockItem.Setup(m => m.Cities).Returns((new City[]
+            {
+                new City { StateID = 1, CityID = 1, Name  = "other"},
+                new City { StateID = 2, CityID = 2, Name  = "other"},
+            }).AsQueryable());
+            Mock<UserManager<AppUser>> mockusers = MockUserManager(_users);
+            mock.Setup(m => m.Jobs).Returns((new Job[] {
+                new Job {JobID = 1, Name = "P1"},
+                new Job {JobID = 2, Name = "P2"},
+                new Job {JobID = 2, Name = "P3"},
+            }).AsQueryable());
+            mock.Setup(m => m.JobsExtensions).Returns((new JobExtension[]
+            {
+                new JobExtension {JobID = 1, JobExtensionID = 1, DoorOperatorID  = 8, JobTypeMain = "Duplex", SHC = false},
+                new JobExtension {JobID = 2, JobExtensionID = 2, DoorOperatorID  = 7, JobTypeMain = "Duplex", SHC = false},
+                new JobExtension {JobID = 3, JobExtensionID = 3, DoorOperatorID  = 22, JobTypeMain = "Duplex", SHC = false},
+            }).AsQueryable());
+            mock.Setup(m => m.HydroSpecifics).Returns((new HydroSpecific[]
+            {
+                new HydroSpecific {JobID = 1, HydroSpecificID = 1, BatteryBrand  = "HAPS", MotorsNum = 1},
+                new HydroSpecific {JobID = 2, HydroSpecificID = 2, BatteryBrand  = "Duracell", MotorsNum = 1},
+                new HydroSpecific {JobID = 3, HydroSpecificID = 3, BatteryBrand  = "HAPS", MotorsNum = 1},
+               
+            }).AsQueryable());
+            mock.Setup(m => m.HoistWayDatas).Returns((new HoistWayData[]
+            {
+                new HoistWayData {JobID = 1, HoistWayDataID = 1, LandingSystemID  = 1},
+                new HoistWayData {JobID = 2, HoistWayDataID = 2, LandingSystemID  = 2},
+                new HoistWayData {JobID = 3, HoistWayDataID = 3, LandingSystemID  = 2},
+            }).AsQueryable());
+            mock.Setup(m => m.GenericFeaturesList).Returns((new GenericFeatures[]
+            {
+                new GenericFeatures {JobID = 1, GenericFeaturesID = 1, Monitoring  = "Other"},
+                new GenericFeatures {JobID = 2, GenericFeaturesID = 2, Monitoring  = "Other"},
+                new GenericFeatures {JobID = 3, GenericFeaturesID = 3, Monitoring  = "Other"},
             }).AsQueryable());
             mockTesting.Setup(m => m.Steps).Returns((new Step[]
             {
@@ -90,9 +111,18 @@ namespace ProdFloor.Tests
                 new TriggeringFeature {TriggeringFeatureID = 1, StepID = 2, IsSelected = true , Name = "MOD Door Operator"},
                 new TriggeringFeature {TriggeringFeatureID = 2, StepID = 4, IsSelected = true , Name = "HAPS Battery"},
                 new TriggeringFeature {TriggeringFeatureID = 3, StepID = 6, IsSelected = true , Name = "Edge-LS"},
+                new TriggeringFeature {TriggeringFeatureID = 4, StepID = 1, IsSelected = false},
+                new TriggeringFeature {TriggeringFeatureID = 5, StepID = 3, IsSelected = false},
+                new TriggeringFeature {TriggeringFeatureID = 6, StepID = 5, IsSelected = false},
             }).AsQueryable());
             mockTesting.Setup(m => m.TestJobs).Returns((new TestJob[]{
                 testJob
+            }).AsQueryable());
+            mockTesting.Setup(m => m.TestFeatures).Returns((new TestFeature[]
+            {
+                new TestFeature {TestFeatureID = 1, TestJobID = 1, Cartop = false, ShortFloor = false, CTL2 = false, Custom = false
+                , EMBrake = false , EMCO = false , Group = false , Local = false , MRL = false , Overlay = false , PC = false
+                , R6 = false , TrajetaCPI = false , BrakeCoilVoltageMoreThan10 = false }
             }).AsQueryable());
 
 
@@ -101,17 +131,14 @@ namespace ProdFloor.Tests
 
             TestJobViewModel viewModel = new TestJobViewModel()
             {
-
-
+                TestJob = testJob
             };
-            // Act - try to save the Job
-            IActionResult result = controller.NewTestFeatures(viewModel);
+            // Act 
+            Func<ViewResult, TestJobViewModel> GetModel = result => result?.ViewData?.Model as TestJobViewModel;
+            StepsForJob stepsForJob = GetModel(controller.NewTestFeatures(viewModel))?.StepsForJob;
 
             // Assert
-            Job[] prodArray = result.Jobs.ToArray();
-            Assert.True(prodArray.Length == 2);
-            Assert.Equal("P4", prodArray[0].Name);
-            Assert.Equal("P5", prodArray[1].Name);
+            
         }
 
         private T GetViewModel<T>(IActionResult result) where T : class

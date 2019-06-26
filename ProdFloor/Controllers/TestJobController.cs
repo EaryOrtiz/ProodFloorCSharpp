@@ -223,7 +223,7 @@ namespace ProdFloor.Controllers
         }
 
         [HttpPost]
-        public IActionResult NewTestFeatures(TestJobViewModel testJobView)
+        public ViewResult NewTestFeatures(TestJobViewModel testJobView)
         {
             List<StepsForJob> stepsForJobToDelete = testingRepo.StepsForJobs.Where(m => m.TestJobID == testJobView.TestJob.TestJobID).ToList();
             if (stepsForJobToDelete.Count > 0)
@@ -389,7 +389,7 @@ namespace ProdFloor.Controllers
                         }
                         else
                         {
-                            return NotFound();
+                            return View(NotFound());
                         }
                     }
                 }
@@ -405,7 +405,7 @@ namespace ProdFloor.Controllers
                 return View("StepsForJob", new TestJobViewModel { StepsForJob = stepsFor, Step = stepInfo, Job = job, TestJob = testjobinfo, StepList = AllStepsForJobInfo, StepsForJobList = AllStepsForJob });
             }
 
-            return NotFound();
+            return View(NotFound());
         }
 
         [HttpPost]
