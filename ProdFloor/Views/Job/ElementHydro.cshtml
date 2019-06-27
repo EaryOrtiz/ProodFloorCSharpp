@@ -24,7 +24,7 @@
         <div class="form-group row">
             <label asp-for="ElementHydro.FLA" class="col-sm-3 col-form-label"></label>
             <div>
-                <input asp-for="ElementHydro.FLA" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)"  class="form-control  col-9" />
+                <input asp-for="ElementHydro.FLA" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control  col-9" />
                 <span asp-validation-for="ElementHydro.FLA" class="text-danger"></span>
             </div>
         </div>

@@ -1,12 +1,12 @@
 ﻿@model ProdFloor.Models.ViewModels.Job.JobElementHydroViewModel
-@{
-    <script src="~/Scripts/CascadingStyleBrandDoorOperatorNew.js" type="text/javascript"></script>
-}
+<input type="hidden" asp-for="Element.JobID" />
+<input type="hidden" asp-for="Element.ElementID" />
 <input type="hidden" asp-for="CurrentJob.JobID" />
 <input type="hidden" asp-for="CurrentJob.Status" />
 <input type="hidden" asp-for="CurrentJob.EngID" />
-<input type="hidden" asp-for="Element.JobID" />
-<input type="hidden" asp-for="Element.ElementID" />
+@{
+    <script src="~/Scripts/CascadingStyleBrandDoorOperatorNew.js" type="text/javascript"></script>
+}
 <div class="form-row col-sm-12" style="padding-bottom:15px">
     <div class="col-md-4 form-line border-right">
         <h3>Additional Information</h3>
@@ -140,7 +140,7 @@
                             <div><span asp-validation-for="Element.HAPS" class="text-danger" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></span></div>
                             <label class="custom-control-label" asp-for="Element.HAPS" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></label>
                         </div>
-                    </div>   
+                    </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-group row">

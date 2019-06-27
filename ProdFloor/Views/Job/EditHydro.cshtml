@@ -15,6 +15,16 @@
     <li class="nav-item">
         <a class="nav-link @(Model.CurrentTab == "SpecialFeatures" ? "active" : " ")  @(Model.SpecialFeatureslist[0].JobID == 0 ? "disabled" : " ")" data-toggle="tab" href="#specialfeatures" role="tab">Special Features</a>
     </li>
+    <li class="nav-item dropdown table-hover">
+        <a class="nav-link  @(Model.CurrentJob.Status == "Incomplete" ? "disabled" : "")" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-ellipsis-v"></i>
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <a asp-action="CopyHydroJob" asp-controller="Job" asp-route-id="@Model.CurrentJob.JobID" class="dropdown-item">Copy Job </a>
+            <input class="btn dropdown-item" value="Copy Location " onclick="myFunction()" />
+            <input class="form-control form-control-sm col-sm-10 dropdown-item" style="margin-right:15px" type="text" id="copy" value="@Model.JobFolder" />
+        </div>
+    </li>
 </ul>
 <!-- Tab panes -->
 <form asp-action="EditHydro" method="post">
@@ -54,3 +64,17 @@
         </div>
     </div>
 </form>
+<script type="text/javascript">
+
+
+    function myFunction() {
+        /* Get the text field */
+        var copyText = document.getElementById("copy");
+
+        /* Select the text field */
+        copyText.select();
+
+        /* Copy the text inside the text field */
+        document.execCommand("copy");
+    }
+</script>
