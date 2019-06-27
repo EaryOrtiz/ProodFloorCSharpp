@@ -94,9 +94,60 @@
                 <div class="col-md-3">
                     <div class="form-group row">
                         <div class="custom-control custom-checkbox">
-                            <input type="checkbox" asp-for="Element.INCP" class="custom-control-input" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)">
-                            <div><span asp-validation-for="Element.INCP" class="text-danger" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></span></div>
-                            <label class="custom-control-label" asp-for="Element.INCP" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></label>
+                            <input type="checkbox" asp-for="Element.CSD" class="custom-control-input" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)">
+                            <div><span asp-validation-for="Element.CSD" class="text-danger" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></span></div>
+                            <label class="custom-control-label" asp-for="Element.CSD" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></label>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" asp-for="Element.CTF" class="custom-control-input" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)">
+                            <div><span asp-validation-for="Element.CTF" class="text-danger" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></span></div>
+                            <label class="custom-control-label" asp-for="Element.CTF" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></label>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" asp-for="Element.CTL" class="custom-control-input" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)">
+                            <div><span asp-validation-for="Element.CTL" class="text-danger" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></span></div>
+                            <label class="custom-control-label" asp-for="Element.CTL" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></label>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" asp-for="Element.CTINSPST" class="custom-control-input" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)">
+                            <div><span asp-validation-for="Element.CTINSPST" class="text-danger" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></span></div>
+                            <label class="custom-control-label" asp-for="Element.CTINSPST" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></label>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" asp-for="Element.DHLD" class="custom-control-input" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)">
+                            <div><span asp-validation-for="Element.DHLD" class="text-danger" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></span></div>
+                            <label class="custom-control-label" asp-for="Element.DHLD" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></label>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" asp-for="Element.EQ" class="custom-control-input" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)">
+                            <div><span asp-validation-for="Element.EQ" class="text-danger" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></span></div>
+                            <label class="custom-control-label" asp-for="Element.EQ" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></label>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" asp-for="Element.Egress" class="custom-control-input" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)">
+                            <div><span asp-validation-for="Element.Egress" class="text-danger" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></span></div>
+                            <label class="custom-control-label" asp-for="Element.Egress" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" asp-for="Element.EMT" class="custom-control-input" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)">
+                            <div><span asp-validation-for="Element.EMT" class="text-danger" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></span></div>
+                            <label class="custom-control-label" asp-for="Element.EMT" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></label>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -108,9 +159,53 @@
                     </div>
                     <div class="form-group row">
                         <div class="custom-control custom-checkbox">
-                            <input type="checkbox" asp-for="Element.EMT" class="custom-control-input" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)">
-                            <div><span asp-validation-for="Element.EMT" class="text-danger" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></span></div>
-                            <label class="custom-control-label" asp-for="Element.EMT" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></label>
+                            <input type="checkbox" asp-for="Element.FRON2" class="custom-control-input" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)">
+                            <div><span asp-validation-for="Element.FRON2" class="text-danger" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></span></div>
+                            <label class="custom-control-label" asp-for="Element.FRON2" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></label>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" asp-for="Element.HAPS" class="custom-control-input" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)">
+                            <div><span asp-validation-for="Element.HAPS" class="text-danger" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></span></div>
+                            <label class="custom-control-label" asp-for="Element.HAPS" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></label>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" asp-for="Element.INCP" class="custom-control-input" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)">
+                            <div><span asp-validation-for="Element.INCP" class="text-danger" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></span></div>
+                            <label class="custom-control-label" asp-for="Element.INCP" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></label>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" asp-for="Element.LJ" class="custom-control-input" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)">
+                            <div><span asp-validation-for="Element.LJ" class="text-danger" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></span></div>
+                            <label class="custom-control-label" asp-for="Element.LJ" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></label>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" asp-for="Element.LOS" class="custom-control-input" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)">
+                            <div><span asp-validation-for="Element.LOS" class="text-danger" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></span></div>
+                            <label class="custom-control-label" asp-for="Element.LOS" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="form-group row">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" asp-for="Element.PFGE" class="custom-control-input" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)">
+                            <div><span asp-validation-for="Element.PFGE" class="text-danger" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></span></div>
+                            <label class="custom-control-label" asp-for="Element.PFGE" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></label>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" asp-for="Element.PHECutOut" class="custom-control-input" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)">
+                            <div><span asp-validation-for="Element.PHECutOut" class="text-danger" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></span></div>
+                            <label class="custom-control-label" asp-for="Element.PHECutOut" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></label>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -129,50 +224,6 @@
                     </div>
                     <div class="form-group row">
                         <div class="custom-control custom-checkbox">
-                            <input type="checkbox" asp-for="Element.VCI" class="custom-control-input" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)">
-                            <div><span asp-validation-for="Element.VCI" class="text-danger" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></span></div>
-                            <label class="custom-control-label" asp-for="Element.VCI" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></label>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" asp-for="Element.HAPS" class="custom-control-input" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)">
-                            <div><span asp-validation-for="Element.HAPS" class="text-danger" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></span></div>
-                            <label class="custom-control-label" asp-for="Element.HAPS" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></label>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group row">
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" asp-for="Element.DHLD" class="custom-control-input" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)">
-                            <div><span asp-validation-for="Element.DHLD" class="text-danger" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></span></div>
-                            <label class="custom-control-label" asp-for="Element.DHLD" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></label>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" asp-for="Element.Egress" class="custom-control-input" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)">
-                            <div><span asp-validation-for="Element.Egress" class="text-danger" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></span></div>
-                            <label class="custom-control-label" asp-for="Element.Egress" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></label>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" asp-for="Element.PHECutOut" class="custom-control-input" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)">
-                            <div><span asp-validation-for="Element.PHECutOut" class="text-danger" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></span></div>
-                            <label class="custom-control-label" asp-for="Element.PHECutOut" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></label>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" asp-for="Element.CTINSPST" class="custom-control-input" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)">
-                            <div><span asp-validation-for="Element.CTINSPST" class="text-danger" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></span></div>
-                            <label class="custom-control-label" asp-for="Element.CTINSPST" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></label>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <div class="custom-control custom-checkbox">
                             <input type="checkbox" asp-for="Element.Traveler" class="custom-control-input" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)">
                             <div><span asp-validation-for="Element.Traveler" class="text-danger" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></span></div>
                             <label class="custom-control-label" asp-for="Element.Traveler" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></label>
@@ -180,63 +231,11 @@
                     </div>
                     <div class="form-group row">
                         <div class="custom-control custom-checkbox">
-                            <input type="checkbox" asp-for="Element.PFGE" class="custom-control-input" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)">
-                            <div><span asp-validation-for="Element.PFGE" class="text-danger" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></span></div>
-                            <label class="custom-control-label" asp-for="Element.PFGE" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></label>
+                            <input type="checkbox" asp-for="Element.VCI" class="custom-control-input" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)">
+                            <div><span asp-validation-for="Element.VCI" class="text-danger" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></span></div>
+                            <label class="custom-control-label" asp-for="Element.VCI" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></label>
                         </div>
                     </div>
-                    <div class="form-group row">
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" asp-for="Element.EQ" class="custom-control-input" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)">
-                            <div><span asp-validation-for="Element.EQ" class="text-danger" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></span></div>
-                            <label class="custom-control-label" asp-for="Element.EQ" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></label>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-5">
-                    <div class="form-group row">
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" asp-for="Element.FRON2" class="custom-control-input" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)">
-                            <div><span asp-validation-for="Element.FRON2" class="text-danger" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></span></div>
-                            <label class="custom-control-label" asp-for="Element.FRON2" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></label>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" asp-for="Element.CTL" class="custom-control-input" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)">
-                            <div><span asp-validation-for="Element.CTL" class="text-danger" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></span></div>
-                            <label class="custom-control-label" asp-for="Element.CTL" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></label>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" asp-for="Element.CTF" class="custom-control-input" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)">
-                            <div><span asp-validation-for="Element.CTF" class="text-danger" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></span></div>
-                            <label class="custom-control-label" asp-for="Element.CTF" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></label>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" asp-for="Element.CSD" class="custom-control-input" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)">
-                            <div><span asp-validation-for="Element.CSD" class="text-danger" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></span></div>
-                            <label class="custom-control-label" asp-for="Element.CSD" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></label>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" asp-for="Element.LJ" class="custom-control-input" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)">
-                            <div><span asp-validation-for="Element.LJ" class="text-danger" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></span></div>
-                            <label class="custom-control-label" asp-for="Element.LJ" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></label>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" asp-for="Element.LOS" class="custom-control-input" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)">
-                            <div><span asp-validation-for="Element.LOS" class="text-danger" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></span></div>
-                            <label class="custom-control-label" asp-for="Element.LOS" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></label>
-                        </div>
-                    </div>
-
                 </div>
             </div>
 
