@@ -68,17 +68,17 @@
         <div class="col-md-6 justify-content-md-center">
             <div class="container text-left" style="padding-left:30px;">
                 <div class="form-group row">
-                    <label asp-for="CurrentJob.ShipDate" class="col-sm-3 col-form-label"></label>
-                    <div>
-                        <input asp-for="CurrentJob.ShipDate" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" class="form-control col-sm-15" />
-                        <span asp-validation-for="CurrentJob.ShipDate" class="text-danger"></span>
-                    </div>
-                </div>
-                <div class="form-group row">
                     <label asp-for="CurrentJob.LatestFinishDate" class="col-sm-3 col-form-label"></label>
                     <div>
                         <input asp-for="CurrentJob.LatestFinishDate" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" class="form-control col-sm-15" />
                         <span asp-validation-for="CurrentJob.LatestFinishDate" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="CurrentJob.ShipDate" class="col-sm-3 col-form-label"></label>
+                    <div>
+                        <input asp-for="CurrentJob.ShipDate" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" class="form-control col-sm-15" />
+                        <span asp-validation-for="CurrentJob.ShipDate" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="form-group row">

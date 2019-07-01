@@ -1273,9 +1273,9 @@ namespace ProdFloor.Controllers
                             string FirstTwo = LastFive.Substring(0, 2);
                             nextViewModel.JobFolder = @"L:\" + FirstTwo + "000\\" + LastFive;
 
-                            if (nextViewModel.CurrentHydroSpecific != null && nextViewModel.CurrentHydroSpecific.JobID != 0)
+                            if (nextViewModel.CurrentGenericFeatures != null && nextViewModel.CurrentGenericFeatures.JobID != 0)
                             {
-                                if (nextViewModel.CurrentGenericFeatures != null && nextViewModel.CurrentGenericFeatures.JobID != 0)
+                                if (nextViewModel.CurrentHydroSpecific != null && nextViewModel.CurrentHydroSpecific.JobID != 0)
                                 {
                                     if (nextViewModel.CurrentIndicator != null && nextViewModel.CurrentIndicator.JobID != 0)
                                     {
@@ -1316,6 +1316,15 @@ namespace ProdFloor.Controllers
                                     }
                                     else
                                     {
+                                        if (nextViewModel.CurrentHydroSpecific.BatteryBrand == "Other" && !string.IsNullOrEmpty(nextViewModel.CurrentHydroSpecific.OtherBatteryBrand))
+                                        {
+                                            nextViewModel.CurrentHydroSpecific.BatteryBrand = nextViewModel.CurrentHydroSpecific.OtherBatteryBrand;
+                                        }
+
+                                        if (nextViewModel.CurrentHydroSpecific.ValveBrand == "Other" && !string.IsNullOrEmpty(nextViewModel.CurrentHydroSpecific.OtherValveBrand))
+                                        {
+                                            nextViewModel.CurrentHydroSpecific.ValveBrand = nextViewModel.CurrentHydroSpecific.OtherValveBrand;
+                                        }
                                         repository.SaveEngJobView(nextViewModel);
                                         if (nextViewModel.CurrentJobExtension.SCOP == true)
                                         {
@@ -1339,40 +1348,31 @@ namespace ProdFloor.Controllers
                                         nextViewModel.CurrentHoistWayData = new HoistWayData();
                                         nextViewModel.SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures() };
                                         nextViewModel.CurrentTab = "Indicator";
-                                        TempData["message"] = $"generic was saved";
+                                        TempData["message"] = $"hydro specific was saved";
                                         return View(nextViewModel);
                                     }
                                 }
                                 else
                                 {
-                                    if (nextViewModel.CurrentHydroSpecific.BatteryBrand == "Other" && !string.IsNullOrEmpty(nextViewModel.CurrentHydroSpecific.OtherBatteryBrand))
-                                    {
-                                        nextViewModel.CurrentHydroSpecific.BatteryBrand = nextViewModel.CurrentHydroSpecific.OtherBatteryBrand;
-                                    }
-
-                                    if (nextViewModel.CurrentHydroSpecific.ValveBrand == "Other" && !string.IsNullOrEmpty(nextViewModel.CurrentHydroSpecific.OtherValveBrand))
-                                    {
-                                        nextViewModel.CurrentHydroSpecific.ValveBrand = nextViewModel.CurrentHydroSpecific.OtherValveBrand;
-                                    }
                                     repository.SaveEngJobView(nextViewModel);
-                                    nextViewModel.CurrentGenericFeatures = new GenericFeatures { JobID = nextViewModel.CurrentJob.JobID };
+                                    nextViewModel.CurrentHydroSpecific = new HydroSpecific { JobID = nextViewModel.CurrentJob.JobID };
                                     nextViewModel.CurrentIndicator = new Indicator();
                                     nextViewModel.CurrentHoistWayData = new HoistWayData();
                                     nextViewModel.SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures() };
-                                    nextViewModel.CurrentTab = "GenericFeatures";
-                                    TempData["message"] = $"hydro specific was saved";
+                                    nextViewModel.CurrentTab = "HydroSpecifics";
+                                    TempData["message"] = $"generic was saved";
                                     return View(nextViewModel);
                                 }
                             }
                             else
                             {
                                 repository.SaveEngJobView(nextViewModel);
-                                nextViewModel.CurrentHydroSpecific = new HydroSpecific { JobID = nextViewModel.CurrentJob.JobID };
-                                nextViewModel.CurrentGenericFeatures = new GenericFeatures();
+                                nextViewModel.CurrentGenericFeatures = new GenericFeatures { JobID = nextViewModel.CurrentJob.JobID };
+                                nextViewModel.CurrentHydroSpecific = new HydroSpecific();
                                 nextViewModel.CurrentIndicator = new Indicator();
                                 nextViewModel.CurrentHoistWayData = new HoistWayData();
                                 nextViewModel.SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures() };
-                                nextViewModel.CurrentTab = "HydroSpecifics";
+                                nextViewModel.CurrentTab = "GenericFeatures";
                                 TempData["message"] = $"jobextension was saved";
                                 return View(nextViewModel);
                             }

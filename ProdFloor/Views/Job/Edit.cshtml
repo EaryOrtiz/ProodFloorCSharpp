@@ -10,10 +10,10 @@
         <a class="nav-link @(Model.CurrentTab == "Extension" ? "active" : " ")  @(Model.CurrentJobExtension.JobID == 0 ? "disabled" : " ")" data-toggle="tab" href="#jobextension" role="tab">Add. Job Info</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link @(Model.CurrentTab == "HydroSpecifics" ? "active" : " ")  @(Model.CurrentHydroSpecific.JobID == 0 ? "disabled" : " ")" data-toggle="tab" href="#hydrospecifics" role="tab">Hydro Specifics</a>
+        <a class="nav-link @(Model.CurrentTab == "GenericFeatures" ? "active" : " ")  @(Model.CurrentGenericFeatures.JobID == 0 ? "disabled" : " ")" data-toggle="tab" href="#genericfeatures" role="tab">Generic Features</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link @(Model.CurrentTab == "GenericFeatures" ? "active" : " ")  @(Model.CurrentGenericFeatures.JobID == 0 ? "disabled" : " ")" data-toggle="tab" href="#genericfeatures" role="tab">Generic Features</a>
+        <a class="nav-link @(Model.CurrentTab == "HydroSpecifics" ? "active" : " ")  @(Model.CurrentHydroSpecific.JobID == 0 ? "disabled" : " ")" data-toggle="tab" href="#hydrospecifics" role="tab">Hydro Specifics</a>
     </li>
     <li class="nav-item">
         <a class="nav-link @(Model.CurrentTab == "Indicator" ? "active" : " ")  @(Model.CurrentIndicator.JobID == 0 ? "disabled" : " ")" data-toggle="tab" href="#indicators" role="tab">Indicators</a>
@@ -36,8 +36,8 @@
             <form asp-action="SearchAux" asp-controller="Item" method="get">
                 <button asp-action="SearchAux" asp-controller="Item" type="submit" value="@Model.CurrentJob.JobNum" name="JobNum" class="btn dropdown-item">WorkSheet</button>
             </form>
-                <input class="btn dropdown-item" value="Copy Location " onclick="myFunction()" />
-                <input class="form-control form-control-sm col-sm-10 dropdown-item" style="margin-right:15px" type="text" id="copy" value="@Model.JobFolder" />
+            <input class="btn dropdown-item" value="Copy Location " onclick="myFunction()" />
+            <input class="form-control form-control-sm col-sm-10 dropdown-item" style="margin-right:15px" type="text" id="copy" value="@Model.JobFolder" />
         </div>
     </li>
 </ul>
@@ -53,16 +53,16 @@
                 @Html.Partial("JobExtensionForm", Model)
             }
         </div>
-        <div class="tab-pane @(Model.CurrentTab == "HydroSpecifics" ? "active" : " ")" id="hydrospecifics" role="tabpanel">
-            @if (Model.CurrentHydroSpecific.JobID != 0)
-            {
-                @Html.Partial("HydroSpecificForm", Model)
-            }
-        </div>
         <div class="tab-pane @(Model.CurrentTab == "GenericFeatures" ? "active" : " ")" id="genericfeatures" role="tabpanel">
             @if (Model.CurrentGenericFeatures.JobID != 0)
             {
                 @Html.Partial("GenericInfoForm", Model)
+            }
+        </div>
+        <div class="tab-pane @(Model.CurrentTab == "HydroSpecifics" ? "active" : " ")" id="hydrospecifics" role="tabpanel">
+            @if (Model.CurrentHydroSpecific.JobID != 0)
+            {
+                @Html.Partial("HydroSpecificForm", Model)
             }
         </div>
         <div class="tab-pane @(Model.CurrentTab == "Indicator" ? "active" : " ")" id="indicators" role="tabpanel">

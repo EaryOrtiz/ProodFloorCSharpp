@@ -1,0 +1,145 @@
+﻿@model DashboardIndexViewModel
+<h4>Ongoing Job(s)</h4>
+<table class="table table-sm">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">
+                Job# &nbsp;
+                <div class="btn-group">
+                    <form asp-controller="Home" asp-action="Index" method="get">
+                        <button class="btn-outline-dark btn btn-sm" title="Bigger to smaller" style="background-color:transparent;" type="submit" name="filtrado" value="1JobNumAsc"><i class="fa fa-sort-amount-down-alt"></i></button>
+                    </form>
+                    <form asp-controller="Home" asp-action="Index" method="get">
+                        <button class="btn btn-outline-dark btn-sm" style="background-color:transparent;" type="submit" name="filtrado" value="1JobNumDesc"><i class="fas fa-sort-amount-down"></i></button>
+                    </form>
+                </div>
+            </th>
+            <th scope="col">
+                Name &nbsp;
+                <div class="btn-group">
+                    <form asp-controller="Home" asp-action="Index" method="get">
+                        <button class="btn-outline-dark btn btn-sm" style="background-color:transparent;" type="submit" name="filtrado" value="1NameAsc"><i class="fa fa-sort-amount-down-alt"></i></button>
+                    </form>
+                    <form asp-controller="Home" asp-action="Index" method="get">
+                        <button class="btn btn-outline-dark btn-sm" style="background-color:transparent;" type="submit" name="filtrado" value="1NameDesc"><i class="fas fa-sort-amount-down"></i></button>
+                    </form>
+                </div>
+            </th>
+            <th scope="col">Options</th>
+            <th scope="col">
+                Latest Finish&nbsp;
+                <div class="btn-group">
+                    <form asp-controller="Home" asp-action="Index" method="get">
+                        <button class="btn-outline-dark btn btn-sm" style="background-color:transparent;" type="submit" name="filtrado" value="1DateAsc"><i class="fa fa-sort-amount-down-alt"></i></button>
+                    </form>
+                    <form asp-controller="Home" asp-action="Index" method="get">
+                        <button class="btn btn-outline-dark btn-sm" style="background-color:transparent;" type="submit" name="filtrado" value="1DateDesc"><i class="fas fa-sort-amount-down"></i></button>
+                    </form>
+                </div>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.MyJobs.Count() == 0)
+        {
+            <tr>
+                <td>No Jobs!</td>
+            </tr>
+        }
+        else
+        {
+            @foreach (var j in Model.MyJobs)
+            {
+                AppUser CurrentUser = UserManager.Users.FirstOrDefault(m => m.EngID == j.EngID);
+                AppUser CrosAppUser = UserManager.Users.FirstOrDefault(m => m.EngID == j.CrossAppEngID);
+                string JobTypeName = Model.JobTypes.FirstOrDefault(m => m.JobTypeID == j.JobTypeID).Name;
+                var POForJobLlist = Model.POs.Where(m => m.JobID == j.JobID).ToList();
+                string POsNumber = "";
+                foreach (PO po in POForJobLlist)
+                {
+                    POsNumber += po.PONumb.ToString() + ", ";
+                }
+                <tr>
+                    <th scope="row">
+                        @if (j.Status != "Incomplete")
+                        {
+                            <a asp-controller="Job" asp-action="Edit" asp-route-Id="@j.JobID">@j.JobNum</a>
+                        }
+                        else
+                        {
+                            <a asp-controller="Job" asp-action="Continue" asp-route-Id="@j.JobID">@j.JobNum</a>
+                        }
+                    </th>
+                    <td>@j.Name</td>
+                    <td>
+                        <!-- Button trigger to change status-->
+                        <button type="button" class="btn btn-light" data-toggle="modal" data-target="#exampleModalStatus @j.JobID" style="float:left;background-color:transparent">
+                            <i class="fas fa-bolt"></i>
+                        </button>
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModalStatus @j.JobID" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLongTitle"><i class="fas fa-skull-crossbones"></i>&nbsp;&nbsp;&nbsp;You are sending this job to completed&nbsp;&nbsp;&nbsp;<i class="fas fa-skull-crossbones"></i></h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Are you sure you want to change the status for the Job #@j.JobNum?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
+                                        <form asp-action="ChangeStatus" method="post">
+                                            <input type="hidden" name="JobCrossID" value="@j.JobID" />
+                                            <button type="submit" value="Completed" name="buttonAction" class="btn btn-danger btn-sm">
+                                                Finish it!
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Button trigger to change status-->
+                        <button type="button" class="btn btn-light" data-toggle="modal" data-target="#exampleModalreassign @j.JobID" style="float:left;background-color:transparent">
+                            <i class="fas fa-bolt"></i>
+                        </button>
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModalreassign @j.JobID" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLongTitle"><i class="fas fa-skull-crossbones"></i>&nbsp;&nbsp;&nbsp;You are sending this job to completed&nbsp;&nbsp;&nbsp;<i class="fas fa-skull-crossbones"></i></h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Are you sure you want to reassign the Job #@j.JobNum?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
+                                        <form asp-action="JobReassignment" method="post">
+                                            <input type="hidden" name="JobCrossID" value="@j.JobID" />
+                                            <button type="submit" value="Completed" name="buttonAction" class="btn btn-danger btn-sm">
+                                                Finish it!
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>@j.LatestFinishDate.ToShortDateString()</td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+<page-link-dash-board current-model="MyJobs" my-jobs-page-model="@Model.MyJobsPagingInfo" page-action="Index" page-classes-enabled="true"
+                      page-class="btn" page-class-normal="btn-secondary" on-cross-page-model="@Model.OnCrossJobsPagingInfo" pending-to-cross-page-model="@Model.PendingToCrossJobsPagingInfo"
+                      page-class-selected="btn-primary" my-jobs-url-value="MyJobsPage" on-cross-url-value="OnCrossJobPage"
+                      pending-to-cross-url-value="PendingToCrossJobPage" sort="Sort"
+                      class="btn-group pull-right m-1">
+</page-link-dash-board>
