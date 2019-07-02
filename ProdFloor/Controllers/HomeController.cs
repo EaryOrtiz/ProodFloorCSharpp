@@ -51,9 +51,7 @@ namespace ProdFloor.Controllers
             if (filtrado != null) Sort = filtrado;
             if (engineer)
             {
-
                 List<JobType> JobTyPeList = itemRepo.JobTypes.ToList();
-
                 List<PO> POsList = repository.POs.ToList();
 
                 List<Job> MyjobsList = repository.Jobs
@@ -127,7 +125,6 @@ namespace ProdFloor.Controllers
                         sort = Sort != "default" ? Sort : "deafult"
                     },
                 };
-
                 return View("EngineerDashBoard", dashboard);
             }
 
@@ -207,31 +204,31 @@ namespace ProdFloor.Controllers
 
                 DashboardIndexViewModel dashboard = new DashboardIndexViewModel()
                 {
-                    MyJobs = MyjobsList.Skip((MyJobsPage - 1) * PageSize).Take(PageSize),
+                    MyJobs = MyjobsList.Skip((MyJobsPage - 1) * 6).Take(6),
                     MyJobsPagingInfo = new PagingInfo
                     {
                         CurrentPage = MyJobsPage,
-                        ItemsPerPage = PageSize,
+                        ItemsPerPage = 6,
                         TotalItems = MyjobsList.Count(),
                         sort = Sort != "default" ? Sort : "deafult"
 
                     },
                     JobTypes = JobTyPeList,
                     POs = POsList,
-                    OnCrossJobs = OnCrossJobsList.Skip((OnCrossJobPage - 1) * PageSize).Take(PageSize),
+                    OnCrossJobs = OnCrossJobsList.Skip((OnCrossJobPage - 1) * 6).Take(6),
                     OnCrossJobsPagingInfo = new PagingInfo
                     {
                         CurrentPage = OnCrossJobPage,
-                        ItemsPerPage = PageSize,
+                        ItemsPerPage = 6,
                         TotalItems = OnCrossJobsList.Count(),
                         sort = Sort != "default" ? Sort : "deafult"
                     },
 
-                    PendingToCrossJobs = PendingToCrossJobList.Skip((PendingToCrossJobPage - 1) * PageSize).Take(PageSize),
+                    PendingToCrossJobs = PendingToCrossJobList.Skip((PendingToCrossJobPage - 1) * 6).Take(6),
                     PendingToCrossJobsPagingInfo = new PagingInfo
                     {
                         CurrentPage = PendingToCrossJobPage,
-                        ItemsPerPage = PageSize,
+                        ItemsPerPage = 6,
                         TotalItems = PendingToCrossJobList.Count(),
                         sort = Sort != "default" ? Sort : "deafult"
                     },
@@ -348,6 +345,61 @@ namespace ProdFloor.Controllers
                 TempData["message"] = $"There was an error with your request";
             }
             return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public IActionResult ChangeStatus(DashboardIndexViewModel viewModel)
+        {
+            Job job = repository.Jobs.FirstOrDefault(m => m.JobID == viewModel.JobID);
+            if(job.Status != viewModel.CurrentStatus)
+            {
+                job.Status = viewModel.CurrentStatus;
+                repository.SaveJob(job);
+
+                TempData["message"] = $"You have change the status of  the Job #{job.JobNum} to {viewModel.CurrentStatus}";
+                return RedirectToAction("EngineerAdminDashBoard");
+            }
+
+            TempData["alert"] = $"alert-danger";
+            TempData["message"] = $"There was an error with your request, the status is the same";
+            return RedirectToAction("EngineerAdminDashBoard"); 
+        }
+
+        public IActionResult JobReassignment(DashboardIndexViewModel viewModel)
+        {
+            Job job = repository.Jobs.FirstOrDefault(m => m.JobID == viewModel.JobID);
+            if( (job.EngID != viewModel.CurrentEngID) && (job.CrossAppEngID != 0 && job.CrossAppEngID != viewModel.CurrentCrosAppEngID))
+            {
+                job.EngID = viewModel.CurrentEngID;
+                job.CrossAppEngID = viewModel.CurrentCrosAppEngID;
+                repository.SaveJob(job);
+
+                TempData["message"] = $"You have reassing the Job #{job.JobNum} to E{viewModel.CurrentEngID} and You have reassing the CrossApprove to E{viewModel.CurrentEngID}";
+                return RedirectToAction("EngineerAdminDashBoard");
+
+            }else if(job.EngID != viewModel.CurrentEngID)
+            {
+                job.EngID = viewModel.CurrentEngID;
+                repository.SaveJob(job);
+
+                TempData["message"] = $"You have reassing the CrossApprove for the Job #{job.JobNum} to E{viewModel.CurrentEngID}";
+                return RedirectToAction("EngineerAdminDashBoard");
+
+            }else if (job.CrossAppEngID != 0 && job.CrossAppEngID != viewModel.CurrentCrosAppEngID)
+            {
+                job.CrossAppEngID = viewModel.CurrentCrosAppEngID;
+                repository.SaveJob(job);
+
+                TempData["message"] = $"You have reassing the Job #{job.JobNum} to E{viewModel.CurrentEngID}";
+                return RedirectToAction("EngineerAdminDashBoard");
+            }
+            else
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"There was an error with your request, the status is the same";
+                return RedirectToAction("EngineerAdminDashBoard");
+            }
+            
         }
 
         public string JobTypeName(int ID)

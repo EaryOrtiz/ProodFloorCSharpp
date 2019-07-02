@@ -92,6 +92,11 @@ namespace ProdFloor
 
                 routes.MapRoute(
                     name: null,
+                    template: "{EngineerAdminDashBoard}/{MyJobsPage:int}_{OnCrossJobPage:int}_{PendingToCrossJobPage:int}",
+                    defaults: new { controller = "Home", action = "EngineerAdminDashBoard" });
+
+                routes.MapRoute(
+                    name: null,
                     template: "CrossHub/{pendingJobPage:int}_{productionJobPage:int}_{onCrossJobPage:int}",
                     defaults: new { controller = "Home", action = "CrossHub" });
                 routes.MapRoute(

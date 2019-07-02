@@ -314,6 +314,7 @@ namespace ProdFloor.Controllers
                     else viewModel.POList = new List<PO> { new PO() };
                     viewModel.CurrentUserID = currentUser.EngID;
                     viewModel.CurrentTab = "Main";
+                    viewModel.JobTypeName = JobTypeName(viewModel.CurrentJob.JobTypeID);
                     return View(viewModel);
                 }
 
@@ -515,6 +516,7 @@ namespace ProdFloor.Controllers
                         CopyJobViewModel.CurrentHoistWayData = repository.HoistWayDatas.FirstOrDefault(j => j.JobID == multiEditViewModel.CurrentJob.JobID);
                         CopyJobViewModel.SpecialFeatureslist = SfList;
                         CopyJobViewModel.POList = PoList;
+                        CopyJobViewModel.JobTypeName = JobTypeName(CopyJobViewModel.CurrentJob.JobTypeID);
                         CopyJobViewModel.CurrentTab = "Main";
                         TempData["message"] = $"{CopyJobViewModel.CurrentJob.JobNum} ID has been saved...{CopyJobViewModel.CurrentJob.JobID}";
                         return RedirectToAction("Edit", new { id = multiEditViewModel.CurrentJob.JobID });
@@ -527,6 +529,7 @@ namespace ProdFloor.Controllers
                 }
 
                 multiEditViewModel.CurrentTab = "Main";
+                multiEditViewModel.JobTypeName = JobTypeName(multiEditViewModel.CurrentJob.JobTypeID);
                 TempData["message"] = $"{multiEditViewModel.CurrentJob.JobNum} ID has been saved...{multiEditViewModel.CurrentJob.JobID}";
                 return View(multiEditViewModel);
             }
@@ -2686,7 +2689,7 @@ namespace ProdFloor.Controllers
             if (buttonImportXML == "All")
             {
                 HtmlDocument doc = new HtmlDocument();
-                doc.Load(@"C:\Users\Administrator\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\Jobs.xml");
+                doc.Load(@"C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\Jobs.xml");
 
                 var XMLJobs = doc.DocumentNode.SelectSingleNode("//jobs");
                 var XMLJob = XMLJobs.SelectNodes(".//job");

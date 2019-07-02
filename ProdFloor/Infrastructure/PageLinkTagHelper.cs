@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace ProdFloor.Infrastructure
 {
@@ -454,6 +455,8 @@ namespace ProdFloor.Infrastructure
                     return new List<string> { "Siemens SS : 6/12", "Siemens SS : 3/9", "Sprecher SS : 6/12", "Sprecher SS : 3/9", "ATL", "YD" }.AsQueryable();
                 case "StarterForElements":
                     return new List<string> { "Siemens SS : 6/12", "Siemens SS : 3/9", "Sprecher SS : 6/12", "Sprecher SS : 3/9"}.AsQueryable();
+                case "Status":
+                    return new List<string> { "Working on it", "Cross Approval Pending", "On Cross Approval", "Cross Approval Complete" }.AsQueryable();
                 case "Valve Brand":
                     List<string> ValveInHydro = jobrepository.HydroSpecifics.Where(d => d.ValveBrand != null).Select(d => d.ValveBrand).Distinct().ToList();
                     List<string> ValveList = new List<string> { "Blain", "Bucher", "EECO", "Maxton", "TKE | Dover",  "Other" };
@@ -522,6 +525,7 @@ namespace ProdFloor.Infrastructure
             base.Process(context, output);
         }
     }
+
     public class IndicatorsTagHelper : TagHelper
     {
         private IItemRepository itemsrepository;
@@ -1824,6 +1828,69 @@ namespace ProdFloor.Infrastructure
                     tag.Attributes["selected"] = "selected";
                 }
                 tag.InnerHtml.Append(option.ToString());
+                result.InnerHtml.AppendHtml(tag);
+            }
+            output.Content.AppendHtml(result.InnerHtml);
+            if (IsDisabled)
+            {
+                var d = new TagHelperAttribute("disabled", "disabled");
+                output.Attributes.Add(d);
+            }
+            base.Process(context, output);
+        }
+    }
+
+    public class UserSelectTagHelper : TagHelper
+    {
+        private IItemRepository itemsrepository;
+
+        private IUrlHelperFactory urlHelperFactory;
+
+        public ModelExpression AspFor { get; set; }
+
+        private UserManager<AppUser> userManager;
+
+        public UserSelectTagHelper(IUrlHelperFactory helperFactory, IItemRepository itemsrepo, UserManager<AppUser> userMrg)
+        {
+            urlHelperFactory = helperFactory;
+            itemsrepository = itemsrepo;
+            userManager = userMrg;
+        }
+
+        [ViewContext]
+        [HtmlAttributeNotBound]
+        public ViewContext ViewContext { get; set; }
+
+        public int SelectedValue { get; set; }
+
+        [HtmlAttributeName("asp-is-disabled")]
+        public bool IsDisabled { set; get; }
+
+        public override void Process(TagHelperContext context, TagHelperOutput output)
+        {
+            IUrlHelper urlHelper = urlHelperFactory.GetUrlHelper(ViewContext);
+            output.TagName = "select";
+            TagBuilder result = new TagBuilder("select");
+            string name = this.AspFor.Name;
+            if (!String.IsNullOrEmpty(name))
+            {
+                output.Attributes.Add("id", name);
+                output.Attributes.Add("name", name);
+            }
+            TagBuilder m_tag = new TagBuilder("option");
+            m_tag.Attributes["value"] = "";
+            m_tag.InnerHtml.Append("Please select one");
+            result.InnerHtml.AppendHtml(m_tag);
+            IQueryable<AppUser> users = userManager.Users.AsQueryable();
+            foreach (AppUser user in users)
+            {
+                TagBuilder tag = new TagBuilder("option");
+                tag.Attributes["value"] = user.EngID.ToString();
+                if (user.EngID == SelectedValue)
+                {
+                    tag.Attributes["selected"] = "selected";
+                }
+                tag.InnerHtml.Append(user.FullName.ToString());
                 result.InnerHtml.AppendHtml(tag);
             }
             output.Content.AppendHtml(result.InnerHtml);
