@@ -74,11 +74,13 @@ namespace ProdFloor.Models
         public GenericFeatures _GenericFeatures { get; set; }
         public Indicator _Indicator { get; set; }
         public HoistWayData _HoistWayData { get; set; }
+        public JobAdditional _JobAdditional { get; set; }
         public List<SpecialFeatures> _SpecialFeatureslist { get; set; }
         public List<CustomFeature> _CustomFeatures { get; set; }
         public List<Element> _Elements { get; set; }
         public List<ElementHydro> _ElementHydros { get; set; }
-        public List<ElementTraction> _EementTractions { get; set; }
+        public List<ElementTraction> _EmentTractions { get; set; }
+
         public List<PO> _PO { get; set; }
         [Display(Name = "Job Type")]
         public int JobTypeID { get; set; }
@@ -805,5 +807,23 @@ namespace ProdFloor.Models
         [Required(ErrorMessage = "Please enter the Current")]
         public float Current { get; set; }
         
+    }
+
+    public class JobAdditional
+    {
+        public int JobAdditionalID { get; set; }
+        public int JobID { get; set; }
+
+        [Required(ErrorMessage = "Please enter a status")]
+        public string Status { get; set; }
+
+        [Display(Name = "Corrective Actions")]
+        public string Action { get; set; }
+
+        public int Priority { get; set; }
+
+        [Display(Name = "Expected Release Date")]
+        [Required(ErrorMessage = "Please enter an expected release date")]
+        public DateTime ERDate { get; set; }
     }
 }
