@@ -163,6 +163,15 @@ namespace ProdFloor.Controllers
                     newJob.CurrentJob.Status = "Incomplete";
                     repository.SaveJob(newJob.CurrentJob);
                     Job currentJob = repository.Jobs.FirstOrDefault(p => p.JobID == repository.Jobs.Max(x => x.JobID));
+                    JobAdditional jobAdditional = new JobAdditional
+                    {
+                        JobID = currentJob.JobID,
+                        Status = "",
+                        Action = "",
+                        Priority = 0,
+                        ERDate = currentJob.LatestFinishDate
+                    };
+                    repository.SaveJobAdditional(jobAdditional);
                     foreach (PO items in newJob.POList)
                     {
                         items.JobID = currentJob.JobID;
@@ -468,6 +477,15 @@ namespace ProdFloor.Controllers
                     multiEditViewModel.CurrentJob.Status = "Working on it";
                     repository.SaveJob(multiEditViewModel.CurrentJob);
                     multiEditViewModel.CurrentJob = repository.Jobs.LastOrDefault();
+                    JobAdditional jobAdditional = new JobAdditional
+                    {
+                        JobID = multiEditViewModel.CurrentJob.JobID,
+                        Status = "",
+                        Action = "",
+                        Priority = 0,
+                        ERDate = multiEditViewModel.CurrentJob.LatestFinishDate
+                    };
+                    repository.SaveJobAdditional(jobAdditional);
                     multiEditViewModel.CurrentJobExtension.JobID = multiEditViewModel.CurrentJob.JobID;
                     multiEditViewModel.CurrentHydroSpecific.JobID = multiEditViewModel.CurrentJob.JobID;
                     multiEditViewModel.CurrentGenericFeatures.JobID = multiEditViewModel.CurrentJob.JobID;
@@ -505,7 +523,6 @@ namespace ProdFloor.Controllers
                     JobViewModel CopyJobViewModel = new JobViewModel();
                     if (StatusAux == "Copied")
                     {
-
                         List<SpecialFeatures> SfList = repository.SpecialFeatures.Where(j => j.JobID == multiEditViewModel.CurrentJob.JobID).ToList();
                         List<PO> PoList = repository.POs.Where(j => j.JobID == multiEditViewModel.CurrentJob.JobID).ToList();
                         CopyJobViewModel.CurrentJob = multiEditViewModel.CurrentJob;
@@ -584,6 +601,15 @@ namespace ProdFloor.Controllers
                     multiEditViewModel.CurrentJob.Status = "Cross Approval Complete";
                     repository.SaveJob(multiEditViewModel.CurrentJob);
                     multiEditViewModel.CurrentJob = repository.Jobs.LastOrDefault();
+                    JobAdditional jobAdditional = new JobAdditional
+                    {
+                        JobID = multiEditViewModel.CurrentJob.JobID,
+                        Status = "",
+                        Action = "",
+                        Priority = 0,
+                        ERDate = multiEditViewModel.CurrentJob.LatestFinishDate
+                    };
+                    repository.SaveJobAdditional(jobAdditional);
                     multiEditViewModel.Element.JobID = multiEditViewModel.CurrentJob.JobID;
                     multiEditViewModel.ElementHydro.JobID = multiEditViewModel.CurrentJob.JobID;
                     multiEditViewModel.Element.ElementID = 0;
@@ -673,6 +699,15 @@ namespace ProdFloor.Controllers
                     multiEditViewModel.CurrentJob.Status = "Cross Approval Complete";
                     repository.SaveJob(multiEditViewModel.CurrentJob);
                     multiEditViewModel.CurrentJob = repository.Jobs.LastOrDefault();
+                    JobAdditional jobAdditional = new JobAdditional
+                    {
+                        JobID = multiEditViewModel.CurrentJob.JobID,
+                        Status = "",
+                        Action = "",
+                        Priority = 0,
+                        ERDate = multiEditViewModel.CurrentJob.LatestFinishDate
+                    };
+                    repository.SaveJobAdditional(jobAdditional);
                     multiEditViewModel.Element.JobID = multiEditViewModel.CurrentJob.JobID;
                     multiEditViewModel.ElementTraction.JobID = multiEditViewModel.CurrentJob.JobID;
                     multiEditViewModel.Element.ElementID = 0;
@@ -2192,6 +2227,8 @@ namespace ProdFloor.Controllers
                                 xw.WriteElementString("PassingFloor", aux);
                                 aux = indicator.PassingFloorEnable ? "True" : "False";
                                 xw.WriteElementString("PassingFloorEnable", aux);
+                                aux = indicator.HallPIAll ? "True" : "False";
+                                xw.WriteElementString("hallpiall", aux);
                                 xw.WriteEndElement();
                             }
                             HoistWayData hoist = repository.HoistWayDatas.FirstOrDefault(m => m.JobID == job.JobID);
@@ -2572,6 +2609,8 @@ namespace ProdFloor.Controllers
                             xw.WriteElementString("PassingFloor", aux);
                             aux = indicator.PassingFloorEnable ? "True" : "False";
                             xw.WriteElementString("PassingFloorEnable", aux);
+                            aux = indicator.HallPIAll ? "True" : "False";
+                            xw.WriteElementString("hallpiall", aux);
                             xw.WriteEndElement();
                         }
                         HoistWayData hoist = repository.HoistWayDatas.FirstOrDefault(m => m.JobID == job.JobID);
@@ -3008,6 +3047,7 @@ namespace ProdFloor.Controllers
                     var carlanternsstyle = XMLIndicator.SelectSingleNode(".//carlanternsstyle").InnerText;
                     var carlanternstype = XMLIndicator.SelectSingleNode(".//carlanternstype").InnerText;
                     var halllanterns = XMLIndicator.SelectSingleNode(".//halllanterns").InnerText;
+                    var hallpiAll = XMLIndicator.SelectSingleNode(".//hallpiall").InnerText;
                     var halllanternsstyle = XMLIndicator.SelectSingleNode(".//halllanternsstyle").InnerText;
                     var halllanternstype = XMLIndicator.SelectSingleNode(".//halllanternstype").InnerText;
                     var passingfloor = XMLIndicator.SelectSingleNode(".//passingfloor").InnerText;
@@ -3031,6 +3071,7 @@ namespace ProdFloor.Controllers
                         CarPIType = carpitype == "Nulo" ? null : carpitype,
                         CarPIDiscreteType = carpidiscretetype == "Nulo" ? null : carpidiscretetype,
                         HallPI = Boolean.Parse(hallpi),
+                        HallPIAll = Boolean.Parse(hallpiAll),
                         HallPIType = hallpitype == "Nulo" ? "" : hallpitype,
                         HallPIDiscreteType = hallpidiscretetype == "Nulo" ? null : hallpidiscretetype,
                         VoiceAnnunciationPI = Boolean.Parse(voiceannunciationpi),

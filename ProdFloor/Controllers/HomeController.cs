@@ -66,6 +66,8 @@ namespace ProdFloor.Controllers
                         .Where(j => j.EngID != currentUser.EngID)
                         .Where(j => j.Status == "Cross Approval Pending").OrderBy(m => m.LatestFinishDate).ToList();
 
+                List<JobAdditional> JobAdditionalList = repository.JobAdditionals.Where(m => MyjobsList.Any(n => n.JobID == m.JobID)).ToList();
+
                 switch (Sort)
                 {
                     case "1JobNumAsc": MyjobsList = MyjobsList.OrderBy(m => m.JobNum).ToList(); break;
@@ -97,6 +99,7 @@ namespace ProdFloor.Controllers
                 DashboardIndexViewModel dashboard = new DashboardIndexViewModel()
                 {
                     MyJobs = MyjobsList.Skip((MyJobsPage - 1) * PageSize).Take(PageSize),
+                    JobAdditionals = JobAdditionalList,
                     MyJobsPagingInfo = new PagingInfo
                     {
                         CurrentPage = MyJobsPage,
@@ -239,6 +242,98 @@ namespace ProdFloor.Controllers
 
             return NotFound();
         }
+
+        public ActionResult MorningDashBoard(string filtrado, string Sort = "default", int MyJobsPage = 1, int OnCrossJobPage = 1, int PendingToCrossJobPage = 1)
+        {
+            AppUser currentUser = GetCurrentUser().Result;
+            bool engineer = GetCurrentUserRole("Engineer").Result;
+            if (filtrado != null) Sort = filtrado;
+            if (engineer)
+            {
+                List<JobType> JobTyPeList = itemRepo.JobTypes.ToList();
+                List<PO> POsList = repository.POs.ToList();
+
+                List<Job> MyjobsList = repository.Jobs
+                    .Where(j => j.EngID == currentUser.EngID).ToList();
+
+                List<Job> OnCrossJobsList = repository.Jobs
+                        .Where(j => j.CrossAppEngID == currentUser.EngID)
+                        .Where(j => j.Status == "On Cross Approval").OrderBy(m => m.LatestFinishDate).ToList();
+
+                List<Job> PendingToCrossJobList = repository.Jobs
+                        .Where(j => j.EngID != currentUser.EngID)
+                        .Where(j => j.Status == "Cross Approval Pending").OrderBy(m => m.LatestFinishDate).ToList();
+
+                List<JobAdditional> JobAdditionalList = repository.JobAdditionals.Where(m => MyjobsList.Any(n => n.JobID == m.JobID)).ToList();
+
+                switch (Sort)
+                {
+                    case "1JobNumAsc": MyjobsList = MyjobsList.OrderBy(m => m.JobNum).ToList(); break;
+                    case "2JobNumAsc": OnCrossJobsList = OnCrossJobsList.OrderBy(m => m.JobNum).ToList(); break;
+                    case "3JobNumAsc": PendingToCrossJobList = PendingToCrossJobList.OrderBy(m => m.JobNum).ToList(); break;
+
+                    case "1JobNumDesc": MyjobsList = MyjobsList.OrderByDescending(m => m.JobNum).ToList(); break;
+                    case "2JobNumDesc": OnCrossJobsList = OnCrossJobsList.OrderByDescending(m => m.JobNum).ToList(); break;
+                    case "3JobNumDesc": PendingToCrossJobList = PendingToCrossJobList.OrderByDescending(m => m.JobNum).ToList(); break;
+
+                    case "1NameAsc": MyjobsList = MyjobsList.OrderBy(m => m.Name).ToList(); break;
+                    case "2NameAsc": OnCrossJobsList = OnCrossJobsList.OrderBy(m => m.Name).ToList(); break;
+                    case "3NameAsc": PendingToCrossJobList = PendingToCrossJobList.OrderBy(m => m.Name).ToList(); break;
+
+                    case "1NameDesc": MyjobsList = MyjobsList.OrderByDescending(m => m.Name).ToList(); break;
+                    case "2NameDesc": OnCrossJobsList = OnCrossJobsList.OrderByDescending(m => m.Name).ToList(); break;
+                    case "3NameDesc": PendingToCrossJobList = PendingToCrossJobList.OrderByDescending(m => m.Name).ToList(); break;
+
+                    case "1DateAsc": MyjobsList = MyjobsList.OrderBy(m => m.LatestFinishDate).ToList(); break;
+                    case "2DateAsc": OnCrossJobsList = OnCrossJobsList.OrderBy(m => m.LatestFinishDate).ToList(); break;
+                    case "3DateAsc": PendingToCrossJobList = PendingToCrossJobList.OrderBy(m => m.LatestFinishDate).ToList(); break;
+
+                    case "1DateDesc": MyjobsList = MyjobsList.OrderByDescending(m => m.LatestFinishDate).ToList(); break;
+                    case "2DateDesc": OnCrossJobsList = OnCrossJobsList.OrderByDescending(m => m.LatestFinishDate).ToList(); break;
+                    case "3DateDesc": PendingToCrossJobList = PendingToCrossJobList.OrderByDescending(m => m.LatestFinishDate).ToList(); break;
+                    default: break;
+                }
+
+                DashboardIndexViewModel dashboard = new DashboardIndexViewModel()
+                {
+                    MyJobs = MyjobsList.Skip((MyJobsPage - 1) * 12).Take(12),
+                    MyJobsPagingInfo = new PagingInfo
+                    {
+                        CurrentPage = MyJobsPage,
+                        ItemsPerPage = 12,
+                        TotalItems = MyjobsList.Count(),
+                        sort = Sort != "default" ? Sort : "deafult"
+
+                    },
+                    JobTypes = JobTyPeList,
+                    POs = POsList,
+                    JobAdditionals = JobAdditionalList,
+                    OnCrossJobs = OnCrossJobsList.Skip((OnCrossJobPage - 1) * PageSize).Take(PageSize),
+                    OnCrossJobsPagingInfo = new PagingInfo
+                    {
+                        CurrentPage = OnCrossJobPage,
+                        ItemsPerPage = PageSize,
+                        TotalItems = OnCrossJobsList.Count(),
+                        sort = Sort != "default" ? Sort : "deafult"
+                    },
+
+                    PendingToCrossJobs = PendingToCrossJobList.Skip((PendingToCrossJobPage - 1) * PageSize).Take(PageSize),
+                    PendingToCrossJobsPagingInfo = new PagingInfo
+                    {
+                        CurrentPage = PendingToCrossJobPage,
+                        ItemsPerPage = PageSize,
+                        TotalItems = PendingToCrossJobList.Count(),
+                        sort = Sort != "default" ? Sort : "deafult"
+                    },
+                };
+                return View("MorningDashBoard", dashboard);
+            }
+            else
+            {
+                return View(NotFound());
+            }
+        }
+
 
         public ActionResult CrossHub(int pendingJobPage = 1, int productionJobPage = 1)
         {
@@ -401,6 +496,36 @@ namespace ProdFloor.Controllers
             }
             
         }
+
+        [HttpPost]
+        public IActionResult MorningReport(DashboardIndexViewModel viewModel) 
+        {
+            if(viewModel.JobAdditionals != null && viewModel.JobAdditionals.Count > 0)
+            {
+                foreach (JobAdditional jobinfo in viewModel.JobAdditionals)
+                {
+                    JobAdditional CurrentJobAdd = repository.JobAdditionals.FirstOrDefault(m => m.JobAdditionalID == jobinfo.JobAdditionalID);
+                    CurrentJobAdd.Status = jobinfo.Status;
+                    CurrentJobAdd.Action = jobinfo.Action;
+                    CurrentJobAdd.ERDate = jobinfo.ERDate;
+
+                    repository.SaveJobAdditional(CurrentJobAdd);
+                }
+                TempData["message"] = $"The morning report was updated successfully";
+                return Redirect("MorningDashBoard");
+            }
+            TempData["alert"] = $"alert-danger";
+            TempData["message"] = $"There was an error with your request";
+            return View("MorningDashBoard");
+        }
+        /*
+
+        [HttpPost]
+        public IActionResult ChangePriority(int btnPriority)
+        {
+            sit
+
+        }*/
 
         public string JobTypeName(int ID)
         {

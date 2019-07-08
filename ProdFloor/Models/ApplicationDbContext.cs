@@ -24,6 +24,7 @@ namespace ProdFloor.Models
         public DbSet<LandingSystem> LandingSystems { get; set; }
         public DbSet<SpecialFeatures> SpecialFeatures { get; set; }
         public DbSet<PO> POs { get; set; }
+        public DbSet<JobAdditional> JobAdditionals { get; set; }
         public DbSet<CustomSoftware> CustomSoftwares { get; set; }
         public DbSet<TriggeringCustSoft> TriggeringCustSofts { get; set; }
         public DbSet<CustomFeature> CustomFeatures { get; set; }

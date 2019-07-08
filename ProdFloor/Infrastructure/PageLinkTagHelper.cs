@@ -457,6 +457,8 @@ namespace ProdFloor.Infrastructure
                     return new List<string> { "Siemens SS : 6/12", "Siemens SS : 3/9", "Sprecher SS : 6/12", "Sprecher SS : 3/9"}.AsQueryable();
                 case "Status":
                     return new List<string> { "Working on it", "Cross Approval Pending", "On Cross Approval", "Cross Approval Complete" }.AsQueryable();
+                case "MorningStatus":
+                    return new List<string> { "Not reviewed", "Working on it",  "Missing Data", "On Sales", "Cross Approval", "Released" }.AsQueryable();
                 case "Valve Brand":
                     List<string> ValveInHydro = jobrepository.HydroSpecifics.Where(d => d.ValveBrand != null).Select(d => d.ValveBrand).Distinct().ToList();
                     List<string> ValveList = new List<string> { "Blain", "Bucher", "EECO", "Maxton", "TKE | Dover",  "Other" };

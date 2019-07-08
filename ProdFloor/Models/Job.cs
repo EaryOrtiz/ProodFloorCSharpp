@@ -457,6 +457,8 @@ namespace ProdFloor.Models
         [StringLength(50, ErrorMessage = "The maximum length of the {0} field is {1}")]
         [Required(ErrorMessage = "Please enter the indicators voltage type")]
         public string IndicatorsVoltageType { get; set; } //AC, DC
+
+        public bool HallPIAll { get; set; }
     }
 
     public class HoistWayData
@@ -824,6 +826,8 @@ namespace ProdFloor.Models
 
         [Display(Name = "Expected Release Date")]
         [Required(ErrorMessage = "Please enter an expected release date")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}")]
         public DateTime ERDate { get; set; }
     }
 }

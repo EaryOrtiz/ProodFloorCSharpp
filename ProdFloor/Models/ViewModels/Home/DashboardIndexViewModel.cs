@@ -16,6 +16,7 @@ namespace ProdFloor.Models.ViewModels
         public string buttonAction { get; set; }
         public List<JobType> JobTypes { get; set; }
         public List<PO> POs { get; set; }
+        public List<JobAdditional> JobAdditionals { get; set; }
         public int CurrentEngID { get; set; }
         public int CurrentCrosAppEngID { get; set; }
         public string CurrentStatus { get; set; }

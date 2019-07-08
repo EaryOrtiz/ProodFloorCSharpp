@@ -30,6 +30,7 @@ namespace ProdFloor.Models
         public IQueryable<Element> Elements => context.Elements;
         public IQueryable<ElementHydro> ElementHydros => context.ElementHydros;
         public IQueryable<ElementTraction> ElementTractions => context.ElementTractions;
+        public IQueryable<JobAdditional> JobAdditionals => context.JobAdditionals;
 
         public void SaveJob(Job job)
         {
@@ -233,6 +234,28 @@ namespace ProdFloor.Models
                     dbEntry.IndicatorsVoltage = indicator.IndicatorsVoltage;
                     dbEntry.IndicatorsVoltageType = indicator.IndicatorsVoltageType;
                     dbEntry.JobID = indicator.JobID;
+                    dbEntry.HallPIAll = indicator.HallPIAll;
+                }
+            }
+            context.SaveChanges();
+        }
+        public void SaveJobAdditional(JobAdditional jobAdditional)
+        {
+            if (jobAdditional.JobAdditionalID == 0)
+            {
+                context.JobAdditionals.Add(jobAdditional);
+            }
+            else
+            {
+                JobAdditional dbEntry = context.JobAdditionals
+                .FirstOrDefault(p => p.JobAdditionalID == jobAdditional.JobAdditionalID);
+                if (dbEntry != null)
+                {
+                    dbEntry.JobID = jobAdditional.JobID;
+                    dbEntry.Priority = jobAdditional.Priority;
+                    dbEntry.Action = jobAdditional.Action;
+                    dbEntry.Status = jobAdditional.Status;
+                    dbEntry.ERDate = jobAdditional.ERDate;
                 }
             }
             context.SaveChanges();
@@ -291,6 +314,7 @@ namespace ProdFloor.Models
             }
             context.SaveChanges();
         }
+
         public void SaveSpecialFeatures(SpecialFeatures specialFeatures)
         {
             if (specialFeatures != null && specialFeatures.SpecialFeaturesID == 0)
@@ -549,6 +573,8 @@ namespace ProdFloor.Models
                 .FirstOrDefault(p => p.JobID == JobID);
             PO pos = context.POs
                 .FirstOrDefault(p => p.JobID == JobID);
+            JobAdditional additional = context.JobAdditionals
+                .FirstOrDefault(p => p.JobID == JobID);
 
             try
             {
@@ -581,6 +607,11 @@ namespace ProdFloor.Models
                 if (hoistWayData != null)
                 {
                     context.HoistWayDatas.Remove(hoistWayData);
+                    context.SaveChanges();
+                }
+                if (additional != null)
+                {
+                    context.JobAdditionals.Remove(additional);
                     context.SaveChanges();
                 }
                 if (specialFeatures != null)
@@ -642,6 +673,17 @@ namespace ProdFloor.Models
             if (dbEntry != null)
             {
                 context.Indicators.Remove(dbEntry);
+                context.SaveChanges();
+            }
+            return dbEntry;
+        }
+        public JobAdditional DeleteJobAdditional(int JobAdditionalID)
+        {
+            JobAdditional dbEntry = context.JobAdditionals
+                .FirstOrDefault(p => p.JobAdditionalID == JobAdditionalID);
+            if (dbEntry != null)
+            {
+                context.JobAdditionals.Remove(dbEntry);
                 context.SaveChanges();
             }
             return dbEntry;
@@ -839,6 +881,22 @@ namespace ProdFloor.Models
                     {
                         viewModelToSave.CurrentIndicator.IndicatorID = indicator.IndicatorID;
                         SaveIndicator(viewModelToSave.CurrentIndicator);
+                    }
+                }
+            }
+            if (viewModelToSave.CurrentJobAdditional != null)
+            {
+                if (viewModelToSave.CurrentJobAdditional.JobID != 0)
+                {
+                    JobAdditional jobAdditional = JobAdditionals.FirstOrDefault(j => j.JobID == viewModelToSave.CurrentJobAdditional.JobID);
+                    if (jobAdditional == null)
+                    {
+                        SaveJobAdditional(viewModelToSave.CurrentJobAdditional);
+                    }
+                    else
+                    {
+                        viewModelToSave.CurrentJobAdditional.JobAdditionalID = jobAdditional.JobAdditionalID;
+                        SaveJobAdditional(viewModelToSave.CurrentJobAdditional);
                     }
                 }
             }
