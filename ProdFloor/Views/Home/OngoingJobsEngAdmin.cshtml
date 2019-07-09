@@ -54,6 +54,7 @@
                 AppUser CrosAppUser = UserManager.Users.FirstOrDefault(m => m.EngID == j.CrossAppEngID);
                 string JobTypeName = Model.JobTypes.FirstOrDefault(m => m.JobTypeID == j.JobTypeID).Name;
                 var POForJobLlist = Model.POs.Where(m => m.JobID == j.JobID).ToList();
+                JobAdditional jobAdditional = Model.OnCrossJobAdditionals.FirstOrDefault(m => m.JobID == j.JobID);
                 string POsNumber = "";
                 foreach (PO po in POForJobLlist)
                 {
@@ -72,6 +73,12 @@
                     </th>
                     <td>@j.Name</td>
                     <td>
+                        @if (jobAdditional.Priority == 0)
+                        {<button type="button" title="Normal" class="btn btn-light" style="float:left;background-color:transparent"><i class="fas fa-flag text-success"></i></button>}
+                        @if (jobAdditional.Priority == 1)
+                        {<button type="button" title="High Priority" class="btn btn-light" style="float:left;background-color:transparent"><i class="fas fa-flag text-warning"></i></button>}
+                        @if (jobAdditional.Priority == 2)
+                        {<button type="button" title="Short Lead" class="btn btn-light" style="float:left;background-color:transparent"><i class="fas fa-flag text-danger"></i></button>}
                         <!-- Button trigger to change status-->
                         <button type="button" class="btn btn-light" data-toggle="modal" data-target="#exampleModalStatus @j.JobID" style="float:left;background-color:transparent">
                             <i class="fas fa-bolt"></i>
@@ -89,10 +96,10 @@
                                     <form asp-action="ChangeStatus" method="post">
                                         <div class="modal-body">
                                             <div class="form-group row" style="margin-bottom:0.5em;">
-                                                <label  class="col-sm-5 col-form-label font-weight-bold">Current Status:</label>
+                                                <label class="col-sm-5 col-form-label font-weight-bold">Current Status:</label>
                                                 <div>
                                                     <span asp-validation-for="@j.Status" class="text-danger"></span>
-                                                    <custom-select select-for="Status" selected-value="@j.Status"  class="form-control form-control-sm" asp-for="@Model.CurrentStatus"></custom-select>
+                                                    <custom-select select-for="Status" selected-value="@j.Status" class="form-control form-control-sm" asp-for="@Model.CurrentStatus"></custom-select>
                                                 </div>
                                             </div>
                                         </div>

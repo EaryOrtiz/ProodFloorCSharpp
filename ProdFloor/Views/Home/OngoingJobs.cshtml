@@ -55,7 +55,7 @@
                 string JobTypeName = Model.JobTypes.FirstOrDefault(m => m.JobTypeID == j.JobTypeID).Name;
                 var POForJobLlist = Model.POs.Where(m => m.JobID == j.JobID).ToList();
                 string POsNumber = "";
-                JobAdditional jobAdditional = Model.JobAdditionals.FirstOrDefault(m => m.JobID == j.JobID);
+                JobAdditional jobAdditional = Model.MyJobAdditionals.FirstOrDefault(m => m.JobID == j.JobID);
 
                 foreach (PO po in POForJobLlist)
                 {
@@ -83,15 +83,13 @@
                         }
                         else if (j.Status == "Working on it")
                         {
-
-
                             <!-- Button trigger modal to email template M2000-->
                             if (jobAdditional.Priority == 0)
-                            {<button type="button" class="btn btn-light" data-toggle="modal" data-target="#priority @j.JobID" style="float:left;background-color:transparent"><i class="fas fa-flag text-success"></i></button>}
+                            {<button type="button" title="Normal" class="btn btn-light" data-toggle="modal" data-target="#priority @j.JobID" style="float:left;background-color:transparent"><i class="fas fa-flag text-success"></i></button>}
                             if (jobAdditional.Priority == 1)
-                            {<button type="button" class="btn btn-light" data-toggle="modal" data-target="#priority @j.JobID" style="float:left;background-color:transparent"><i class="fas fa-flag text-warning"></i></button>}
+                            {<button type="button" title="High Priority" class="btn btn-light" data-toggle="modal" data-target="#priority @j.JobID" style="float:left;background-color:transparent"><i class="fas fa-flag text-warning"></i></button>}
                             if (jobAdditional.Priority == 2)
-                            {<button type="button" class="btn btn-light" data-toggle="modal" data-target="#priority @j.JobID" style="float:left;background-color:transparent"><i class="fas fa-flag text-danger"></i></button>}
+                            {<button type="button" title="Short Lead" class="btn btn-light" data-toggle="modal" data-target="#priority @j.JobID" style="float:left;background-color:transparent"><i class="fas fa-flag text-danger"></i></button>}
                             <!-- Modal -->
                             <div class="modal fade" id="priority @j.JobID" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered" role="document">
@@ -104,19 +102,20 @@
                                         </div>
                                         <div class="modal-body">
                                             <form asp-controller="Home" asp-action="ChangePriority">
-                                                <p>Please select a Priotity for the job: #@j.JobNum</p>
+                                                <input type="hidden" name="btnJobID" value="@j.JobID" />
+                                                <p>Please select a priority for the job: #@j.JobNum</p>
                                                 <div class="container-fluid" style="padding-left:160px">
                                                     <div class="form-group">
-                                                        <button type="button" class="btn btn-sm btn-light" name="btnPriority" value="0" style="background-color:transparent"><i class="fas fa-flag text-success"></i></button>
+                                                        <button type="submit" class="btn btn-sm btn-light" name="btnPriority" value="0" style="background-color:transparent"><i class="fas fa-flag text-success"></i></button>
                                                         <label>&nbsp;Normal</label>
                                                     </div>
                                                     <div class="form-group">
-                                                        <button type="button" class="btn btn-sm btn-light" name="btnPriority" value="1" style="background-color:transparent"><i class="fas fa-flag text-warning"></i></button>
+                                                        <button type="submit" class="btn btn-sm btn-light" name="btnPriority" value="1" style="background-color:transparent"><i class="fas fa-flag text-warning"></i></button>
                                                         <label>&nbsp;High Priority</label>
                                                     </div>
                                                     <div class="form-group">
-                                                        <button type="button" class="btn btn-sm btn-light" name="btnPriority" value="2" style="background-color:transparent"><i class="fas fa-flag text-danger"></i></button>
-                                                        <label>&nbsp;ShortLead</label>
+                                                        <button type="submit" class="btn btn-sm btn-light" name="btnPriority" value="2" style="background-color:transparent"><i class="fas fa-flag text-danger"></i></button>
+                                                        <label>&nbsp;Short Lead</label>
                                                     </div>
                                                 </div>
                                             </form>
@@ -154,14 +153,32 @@
                                             <div class="modal-body">
                                                 <b>Subject:</b>
                                                 <p>
-                                                    <textarea name="subject" class="form-control" rows="1" readonly>Cross Approval - #@j.JobNum</textarea>
+                                                    @if (jobAdditional.Priority == 2)
+                                                    {<textarea name="subject" class="form-control" rows="1" readonly>Short Lead - Cross Approval - #@j.JobNum</textarea> }
+                                                    else
+                                                    {
+                                                        <textarea name="subject" class="form-control" rows="1" readonly>Cross Approval - #@j.JobNum</textarea>
+                                                    }
+
                                                 </p>
                                                 <b>Body:</b>
                                                 <p>
-                                                    <textarea name="body" class="form-control" rows="7" readonly>El Job #@j.JobNum  está listo para cross approval. Documentos Adjuntos.
+                                                    @if (jobAdditional.Priority == 2)
+                                                    {
+                                                        <textarea name="body" class="form-control" rows="7" readonly>*Short Lead*
+El Job #@j.JobNum  está listo para cross approval. Documentos Adjuntos.
 
 Saludos.
 </textarea>
+                                                    }
+                                                    else
+                                                    {
+                                                        <textarea name="body" class="form-control" rows="7" readonly>El Job #@j.JobNum  está listo para cross approval. Documentos Adjuntos.
+
+Saludos.
+</textarea>
+                                                    }
+
                                                 </p>
                                             </div>
                                             <div class="modal-footer">
@@ -231,6 +248,12 @@ Saludos.
                         }
                         else if (j.Status == "Cross Approval Complete")
                         {
+                            if (jobAdditional.Priority == 0)
+                            {<button type="button" title="Normal" class="btn btn-light" style="float:left;background-color:transparent"><i class="fas fa-flag text-success"></i></button>}
+                            if (jobAdditional.Priority == 1)
+                            {<button type="button" title="High Priority" class="btn btn-light" style="float:left;background-color:transparent"><i class="fas fa-flag text-warning"></i></button>}
+                            if (jobAdditional.Priority == 2)
+                            {<button type="button" title="Short Lead" class="btn btn-light" style="float:left;background-color:transparent"><i class="fas fa-flag text-danger"></i></button>}
                             <form asp-action="SearchAux" asp-controller="Item" method="get">
                                 <button type="submit" value="@j.JobNum" name="JobNum" class="btn btn-light" style="float:left;background-color:transparent">
                                     <i class="fas fa-file-word"></i>
@@ -255,11 +278,22 @@ Saludos.
                                             <div class="modal-body">
                                                 <b>Subject:</b>
                                                 <p>
-                                                    <textarea name="subject" class="form-control" rows="1" readonly>@j.Name - MCE #@j.JobNum</textarea>
+                                                    @if (jobAdditional.Priority == 2)
+                                                    {
+                                                        <textarea name="subject" class="form-control" rows="1" readonly>Short Lead - @j.Name - MCE #@j.JobNum</textarea>
+                                                    }
+                                                    else
+                                                    {
+                                                        <textarea name="subject" class="form-control" rows="1" readonly>@j.Name - MCE #@j.JobNum</textarea>
+                                                    }
+
                                                 </p>
                                                 <b>Body:</b>
                                                 <p>
-                                                    <textarea name="body" class="form-control" rows="7" readonly>
+                                                    @if (jobAdditional.Priority == 2)
+                                                    {
+                                                        <textarea name="body" class="form-control" rows="7" readonly>
+*Short Lead*
 Job to production. Documents Attached.
 Job Name: @j.Name
 Job No: #@j.JobNum
@@ -268,6 +302,20 @@ Approved by: @CrosAppUser.FullName
 Thanks,
 @CurrentUser.FullName
 </textarea>
+                                                    }
+                                                    else
+                                                    {
+                                                        <textarea name="body" class="form-control" rows="7" readonly>
+Job to production. Documents Attached.
+Job Name: @j.Name
+Job No: #@j.JobNum
+Approved by: @CrosAppUser.FullName
+
+Thanks,
+@CurrentUser.FullName
+</textarea>
+                                                    }
+
                                                 </p>
                                             </div>
                                             <div class="modal-footer">

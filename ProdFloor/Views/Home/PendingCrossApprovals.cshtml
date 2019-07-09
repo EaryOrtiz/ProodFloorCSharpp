@@ -51,6 +51,7 @@
         {
             @foreach (var j in Model.PendingToCrossJobs)
             {
+                JobAdditional jobAdditional = Model.PendingJobAdditionals.FirstOrDefault(m => m.JobID == j.JobID);
                 <tr>
                     <th scope="row">@j.JobNum</th>
                     <td>@j.Name</td>
@@ -58,6 +59,12 @@
                     <td>
                         @if (j.Status == "Cross Approval Pending")
                         {
+                            if (jobAdditional.Priority == 0)
+                            {<button type="button" title="Normal" class="btn btn-light" style="float:left;background-color:transparent"><i class="fas fa-flag text-success"></i></button>}
+                            if (jobAdditional.Priority == 1)
+                            {<button type="button" title="High Priority" class="btn btn-light" style="float:left;background-color:transparent"><i class="fas fa-flag text-warning"></i></button>}
+                            if (jobAdditional.Priority == 2)
+                            {<button type="button" title="Short Lead" class="btn btn-light" style="float:left;background-color:transparent"><i class="fas fa-flag text-danger"></i></button>}
                             <form asp-action="SearchAux" asp-controller="Item" method="get">
                                 <button type="submit" value="@j.JobNum" name="JobNum" class="btn btn-light" style="float:left;background-color:transparent">
                                     <i class="fas fa-file-word"></i>

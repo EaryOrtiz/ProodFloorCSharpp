@@ -61,7 +61,35 @@ namespace ProdFloor.Controllers
                     ItemsPerPage = PageSize,
                     TotalItems = JobCount
                 },
-                CurrentJobType = jobType.ToString()
+                CurrentJobType = jobType.ToString(),
+                MyJobs = false
+            });
+        }
+
+        public ViewResult MyjobsList(int jobType, int jobPage = 1)
+        {
+            AppUser currentUser = GetCurrentUser().Result;
+            var JobCount = repository.Jobs
+                     .Where(s => s.Status != "Pending")
+                    .Where(n => n.EngID == currentUser.EngID).Count();
+
+
+            return View(new JobsListViewModel
+            {
+                Jobs = repository.Jobs
+                    .Where(s => s.Status != "Pending")
+                    .Where( n => n.EngID == currentUser.EngID)
+                    .OrderBy(p => p.JobID)
+                    .Skip((jobPage - 1) * PageSize)
+                    .Take(PageSize),
+                PagingInfo = new PagingInfo
+                {
+                    CurrentPage = jobPage,
+                    ItemsPerPage = PageSize,
+                    TotalItems = JobCount
+                },
+                CurrentJobType = jobType.ToString(),
+                MyJobs = true
             });
         }
 
@@ -360,6 +388,7 @@ namespace ProdFloor.Controllers
                 viewModel.POList = new List<PO> { new PO { JobID = viewModel.CurrentJob.JobID } };
                 viewModel.CurrentUserID = currentUser.EngID;
                 viewModel.CurrentJob.EngID = currentUser.EngID;
+                viewModel.JobTypeName = JobTypeName(jobToCopy.JobTypeID);
 
                 TempData["message"] = $"You have copied the job #{jobNumAux} succesfully, please change the name, Job number & PO";
                 return View("Edit", viewModel);
@@ -454,11 +483,8 @@ namespace ProdFloor.Controllers
                         {
                             if (multiEditViewModel.POList[0].PONumb != itemes.PONumb || multiEditViewModel.POList[0].POID == 0)
                             {
-                                if (itemes.JobID == 0)
-                                {
                                     PO poUniqueAUx = repository.POs.FirstOrDefault(m => m.PONumb == itemes.PONumb);
                                     PoAux.Add(poUniqueAUx);
-                                }
                             }
                         }
                         catch (Exception)
@@ -466,12 +492,28 @@ namespace ProdFloor.Controllers
                             continue;
                         }
                     }
-                    if (PoAux[0] != null || PoAux.Count > 1)
+                    if (PoAux[0] != null)
                     {
-                        TempData["message"] = $"That PO already exists. Please validate.";
-                        TempData["alert"] = $"alert-danger";
-                        multiEditViewModel.CurrentTab = "Main";
-                        return View(multiEditViewModel);
+                        if (PoAux.Count > 1)
+                        {
+                            if (PoAux[1] != null)
+                            {
+                                if (PoAux.Count > 2)
+                                {
+                                    if (PoAux[2] != null)
+                                    {
+                                        TempData["message"] = $"That PO already exists. Please validate.";
+                                        TempData["alert"] = $"alert-danger";
+                                        multiEditViewModel.CurrentTab = "Main";
+                                        return View(multiEditViewModel);
+                                    }
+                                }
+                                TempData["message"] = $"That PO already exists. Please validate.";
+                                TempData["alert"] = $"alert-danger";
+                                multiEditViewModel.CurrentTab = "Main";
+                                return View(multiEditViewModel);
+                            }
+                        }
                     }
                     multiEditViewModel.CurrentJob.JobID = 0;
                     multiEditViewModel.CurrentJob.Status = "Working on it";

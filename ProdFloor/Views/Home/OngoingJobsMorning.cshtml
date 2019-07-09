@@ -26,9 +26,9 @@
             else
             {
 
-                @for (int i = 0; i < Model.JobAdditionals.Count; i++)
+                @for (int i = 0; i < Model.MyJobAdditionals.Count; i++)
                 {
-                    Job j = Model.MyJobs.FirstOrDefault(m => m.JobID == Model.JobAdditionals[i].JobID);
+                    Job j = Model.MyJobs.FirstOrDefault(m => m.JobID == Model.MyJobAdditionals[i].JobID);
                     AppUser CurrentUser = UserManager.Users.FirstOrDefault(m => m.EngID == j.EngID);
                     AppUser CrosAppUser = UserManager.Users.FirstOrDefault(m => m.EngID == j.CrossAppEngID);
                     string JobTypeName = Model.JobTypes.FirstOrDefault(m => m.JobTypeID == j.JobTypeID).Name;
@@ -43,18 +43,18 @@
                         <td>@j.Name</td>
                         <td>@JobTypeName</td>
                         <td>
-                            <input type="hidden" asp-for="@Model.JobAdditionals[i].JobAdditionalID" value="@Model.JobAdditionals[i].JobAdditionalID" />
-                            <input type="hidden" asp-for="@Model.JobAdditionals[i].JobID" />
-                            <input asp-for="@Model.JobAdditionals[i].ERDate" class="form-control fom form-control-sm" />
-                            <span asp-validation-for="@Model.JobAdditionals[i].ERDate" class="text-danger"></span>
+                            <input type="hidden" asp-for="@Model.MyJobAdditionals[i].JobAdditionalID" value="@Model.MyJobAdditionals[i].JobAdditionalID" />
+                            <input type="hidden" asp-for="@Model.MyJobAdditionals[i].JobID" />
+                            <input asp-for="@Model.MyJobAdditionals[i].ERDate" class="form-control fom form-control-sm" />
+                            <span asp-validation-for="@Model.MyJobAdditionals[i].ERDate" class="text-danger"></span>
                         </td>
                         <td>
-                            <custom-select select-for="MorningStatus" selected-value="@Model.JobAdditionals[i].Status" class="form-control form-control-sm" asp-for="@Model.JobAdditionals[i].Status"></custom-select>
-                            <span asp-validation-for="@Model.JobAdditionals[i].Status" class="text-danger"></span>
+                            <custom-select select-for="MorningStatus" selected-value="@Model.MyJobAdditionals[i].Status" class="form-control form-control-sm" asp-for="@Model.MyJobAdditionals[i].Status"></custom-select>
+                            <span asp-validation-for="@Model.MyJobAdditionals[i].Status" class="text-danger"></span>
                         </td>
                         <td>
-                            <textarea asp-for="@Model.JobAdditionals[i].Action" class="form-control fom form-control-sm"  rows="2"></textarea>
-                            <span asp-validation-for="@Model.JobAdditionals[i].Action" class="text-danger"></span>
+                            <textarea asp-for="@Model.MyJobAdditionals[i].Action" class="form-control fom form-control-sm"  rows="2"></textarea>
+                            <span asp-validation-for="@Model.MyJobAdditionals[i].Action" class="text-danger"></span>
                         </td>
                     </tr>
                 }

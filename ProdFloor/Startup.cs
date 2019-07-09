@@ -74,11 +74,7 @@ namespace ProdFloor
             app.UseAuthentication();
             app.UseMvc(routes => {
 
-                routes.MapRoute(
-                    name: null,
-                    template: "{jobType}/Page{jobPage:int}",
-                    defaults: new { controller = "Job", action = "List" }
-                );
+                
 
                 routes.MapRoute(
                     name: null,
@@ -111,7 +107,18 @@ namespace ProdFloor
 
                 routes.MapRoute(
                     name: null,
-                    template: "Page{jobPage:int}",
+                    template: "MyjobsList/Page{jobPage:int}",
+                    defaults: new
+                    {
+                        controller = "Job",
+                        action = "MyjobsList",
+                        jobPage = 1
+                    }
+                );
+
+                routes.MapRoute(
+                    name: null,
+                    template: "List/Page{jobPage:int}",
                     defaults: new{ controller = "Job", action = "List",
                         jobPage = 1 }
                 );

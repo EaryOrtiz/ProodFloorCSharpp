@@ -603,6 +603,10 @@ namespace ProdFloor.Controllers
                         //Overload Table
                         if (ViewModel.OverloadTable != null && ViewModel.OverloadTable != "N/A")
                         {
+                            if(ViewModel.StarterType == "YD")
+                            {
+                                ViewModel.FLA = (float)(ViewModel.FLA * 0.58);
+                            }
                             var OverLoadReg = OverloadReferSearch.FirstOrDefault(m => m.OverTableNum == Int32.Parse(ViewModel.OverloadTable)
                             && m.AMPMin <= ViewModel.FLA && m.AMPMax >= ViewModel.FLA);
                             ViewModel.MCPartOver = OverLoadReg.MCPart;

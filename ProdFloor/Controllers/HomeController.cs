@@ -13,7 +13,7 @@ using System.Collections.Generic;
 
 namespace ProdFloor.Controllers
 {
-    [Authorize(Roles ="Admin,Engineer")]
+    [Authorize(Roles = "Admin,Engineer")]
     public class HomeController : Controller
     {
         private IJobRepository repository;
@@ -21,7 +21,7 @@ namespace ProdFloor.Controllers
         public int PageSize = 3;
         private UserManager<AppUser> userManager;
 
-        public HomeController(IJobRepository repo,IItemRepository itemRepository, UserManager<AppUser> userMrg)
+        public HomeController(IJobRepository repo, IItemRepository itemRepository, UserManager<AppUser> userMrg)
         {
             repository = repo;
             itemRepo = itemRepository;
@@ -54,19 +54,21 @@ namespace ProdFloor.Controllers
                 List<JobType> JobTyPeList = itemRepo.JobTypes.ToList();
                 List<PO> POsList = repository.POs.ToList();
 
-                List<Job> MyjobsList = repository.Jobs
+                List<Job> MyjobsList = repository.Jobs.Include(s => s._JobAdditional)
                     .Where(j => j.EngID == currentUser.EngID)
-                    .Where(j => j.Status == "Incomplete" || j.Status == "Not Reviewed" || j.Status == "Working on it" || j.Status == "Cross Approval Complete").OrderBy(m => m.LatestFinishDate).ToList();
+                    .Where(j => j.Status == "Incomplete" || j.Status == "Not Reviewed" || j.Status == "Working on it" || j.Status == "Cross Approval Complete").OrderByDescending(m => m._JobAdditional.Priority).ThenBy(n => n.LatestFinishDate).ToList();
 
-                List<Job> OnCrossJobsList = repository.Jobs
+                List<Job> OnCrossJobsList = repository.Jobs.Include(s => s._JobAdditional)
                         .Where(j => j.CrossAppEngID == currentUser.EngID)
-                        .Where(j => j.Status == "On Cross Approval").OrderBy(m => m.LatestFinishDate).ToList();
+                        .Where(j => j.Status == "On Cross Approval").OrderByDescending(m => m._JobAdditional.Priority).ThenBy(n => n.LatestFinishDate).ToList();
 
-                List<Job> PendingToCrossJobList = repository.Jobs
+                List<Job> PendingToCrossJobList = repository.Jobs.Include(s => s._JobAdditional)
                         .Where(j => j.EngID != currentUser.EngID)
-                        .Where(j => j.Status == "Cross Approval Pending").OrderBy(m => m.LatestFinishDate).ToList();
+                        .Where(j => j.Status == "Cross Approval Pending").OrderByDescending(m => m._JobAdditional.Priority).ThenBy(n => n.LatestFinishDate).ToList();
 
-                List<JobAdditional> JobAdditionalList = repository.JobAdditionals.Where(m => MyjobsList.Any(n => n.JobID == m.JobID)).ToList();
+                List<JobAdditional> MyJobAdditionalList = repository.JobAdditionals.Where(m => MyjobsList.Any(n => n.JobID == m.JobID)).ToList();
+                List<JobAdditional> OnCrossJobAdditionalList = repository.JobAdditionals.Where(m => OnCrossJobsList.Any(n => n.JobID == m.JobID)).ToList();
+                List<JobAdditional> PendingJobAdditionalList = repository.JobAdditionals.Where(m => PendingToCrossJobList.Any(n => n.JobID == m.JobID)).ToList();
 
                 switch (Sort)
                 {
@@ -99,7 +101,9 @@ namespace ProdFloor.Controllers
                 DashboardIndexViewModel dashboard = new DashboardIndexViewModel()
                 {
                     MyJobs = MyjobsList.Skip((MyJobsPage - 1) * PageSize).Take(PageSize),
-                    JobAdditionals = JobAdditionalList,
+                    MyJobAdditionals = MyJobAdditionalList,
+                    OnCrossJobAdditionals = OnCrossJobAdditionalList,
+                    PendingJobAdditionals = PendingJobAdditionalList,
                     MyJobsPagingInfo = new PagingInfo
                     {
                         CurrentPage = MyJobsPage,
@@ -177,6 +181,11 @@ namespace ProdFloor.Controllers
                 List<Job> PendingToCrossJobList = repository.Jobs
                         .Where(j => j.Status == "Cross Approval Pending").OrderBy(m => m.LatestFinishDate).ToList();
 
+                List<JobAdditional> MyJobAdditionalList = repository.JobAdditionals.Where(m => MyjobsList.Any(n => n.JobID == m.JobID)).ToList();
+                List<JobAdditional> OnCrossJobAdditionalList = repository.JobAdditionals.Where(m => OnCrossJobsList.Any(n => n.JobID == m.JobID)).ToList();
+                List<JobAdditional> PendingJobAdditionalList = repository.JobAdditionals.Where(m => PendingToCrossJobList.Any(n => n.JobID == m.JobID)).ToList();
+
+
                 switch (Sort)
                 {
                     case "1JobNumAsc": MyjobsList = MyjobsList.OrderBy(m => m.JobNum).ToList(); break;
@@ -208,6 +217,9 @@ namespace ProdFloor.Controllers
                 DashboardIndexViewModel dashboard = new DashboardIndexViewModel()
                 {
                     MyJobs = MyjobsList.Skip((MyJobsPage - 1) * 6).Take(6),
+                    MyJobAdditionals = MyJobAdditionalList,
+                    OnCrossJobAdditionals = OnCrossJobAdditionalList,
+                    PendingJobAdditionals = PendingJobAdditionalList,
                     MyJobsPagingInfo = new PagingInfo
                     {
                         CurrentPage = MyJobsPage,
@@ -254,7 +266,7 @@ namespace ProdFloor.Controllers
                 List<PO> POsList = repository.POs.ToList();
 
                 List<Job> MyjobsList = repository.Jobs
-                    .Where(j => j.EngID == currentUser.EngID).ToList();
+                    .Where(j => j.EngID == currentUser.EngID).Where(m => m.Status != "Cross Approval Complete" && m.Status != "Test" && m.Status != "Completed").ToList();
 
                 List<Job> OnCrossJobsList = repository.Jobs
                         .Where(j => j.CrossAppEngID == currentUser.EngID)
@@ -264,7 +276,9 @@ namespace ProdFloor.Controllers
                         .Where(j => j.EngID != currentUser.EngID)
                         .Where(j => j.Status == "Cross Approval Pending").OrderBy(m => m.LatestFinishDate).ToList();
 
-                List<JobAdditional> JobAdditionalList = repository.JobAdditionals.Where(m => MyjobsList.Any(n => n.JobID == m.JobID)).ToList();
+                List<JobAdditional> MyJobAdditionalList = repository.JobAdditionals.Where(m => MyjobsList.Any(n => n.JobID == m.JobID)).ToList();
+                List<JobAdditional> OnCrossJobAdditionalList = repository.JobAdditionals.Where(m => OnCrossJobsList.Any(n => n.JobID == m.JobID)).ToList();
+                List<JobAdditional> PendingJobAdditionalList = repository.JobAdditionals.Where(m => PendingToCrossJobList.Any(n => n.JobID == m.JobID)).ToList();
 
                 switch (Sort)
                 {
@@ -296,18 +310,20 @@ namespace ProdFloor.Controllers
 
                 DashboardIndexViewModel dashboard = new DashboardIndexViewModel()
                 {
-                    MyJobs = MyjobsList.Skip((MyJobsPage - 1) * 12).Take(12),
+                    MyJobs = MyjobsList.Skip((MyJobsPage - 1) * 15).Take(15),
                     MyJobsPagingInfo = new PagingInfo
                     {
                         CurrentPage = MyJobsPage,
-                        ItemsPerPage = 12,
+                        ItemsPerPage = 15,
                         TotalItems = MyjobsList.Count(),
                         sort = Sort != "default" ? Sort : "deafult"
 
                     },
                     JobTypes = JobTyPeList,
                     POs = POsList,
-                    JobAdditionals = JobAdditionalList,
+                    MyJobAdditionals = MyJobAdditionalList,
+                    OnCrossJobAdditionals = OnCrossJobAdditionalList,
+                    PendingJobAdditionals = PendingJobAdditionalList,
                     OnCrossJobs = OnCrossJobsList.Skip((OnCrossJobPage - 1) * PageSize).Take(PageSize),
                     OnCrossJobsPagingInfo = new PagingInfo
                     {
@@ -419,7 +435,7 @@ namespace ProdFloor.Controllers
                 TempData["message"] = $"There was an error with your request{JobCrossID}";
             }
 
-            
+
             return RedirectToAction("Index");
         }
 
@@ -446,7 +462,7 @@ namespace ProdFloor.Controllers
         public IActionResult ChangeStatus(DashboardIndexViewModel viewModel)
         {
             Job job = repository.Jobs.FirstOrDefault(m => m.JobID == viewModel.JobID);
-            if(job.Status != viewModel.CurrentStatus)
+            if (job.Status != viewModel.CurrentStatus)
             {
                 job.Status = viewModel.CurrentStatus;
                 repository.SaveJob(job);
@@ -457,13 +473,13 @@ namespace ProdFloor.Controllers
 
             TempData["alert"] = $"alert-danger";
             TempData["message"] = $"There was an error with your request, the status is the same";
-            return RedirectToAction("EngineerAdminDashBoard"); 
+            return RedirectToAction("EngineerAdminDashBoard");
         }
 
         public IActionResult JobReassignment(DashboardIndexViewModel viewModel)
         {
             Job job = repository.Jobs.FirstOrDefault(m => m.JobID == viewModel.JobID);
-            if( (job.EngID != viewModel.CurrentEngID) && (job.CrossAppEngID != 0 && job.CrossAppEngID != viewModel.CurrentCrosAppEngID))
+            if ((job.EngID != viewModel.CurrentEngID) && (job.CrossAppEngID != 0 && job.CrossAppEngID != viewModel.CurrentCrosAppEngID))
             {
                 job.EngID = viewModel.CurrentEngID;
                 job.CrossAppEngID = viewModel.CurrentCrosAppEngID;
@@ -472,7 +488,8 @@ namespace ProdFloor.Controllers
                 TempData["message"] = $"You have reassing the Job #{job.JobNum} to E{viewModel.CurrentEngID} and You have reassing the CrossApprove to E{viewModel.CurrentEngID}";
                 return RedirectToAction("EngineerAdminDashBoard");
 
-            }else if(job.EngID != viewModel.CurrentEngID)
+            }
+            else if (job.EngID != viewModel.CurrentEngID)
             {
                 job.EngID = viewModel.CurrentEngID;
                 repository.SaveJob(job);
@@ -480,7 +497,8 @@ namespace ProdFloor.Controllers
                 TempData["message"] = $"You have reassing the CrossApprove for the Job #{job.JobNum} to E{viewModel.CurrentEngID}";
                 return RedirectToAction("EngineerAdminDashBoard");
 
-            }else if (job.CrossAppEngID != 0 && job.CrossAppEngID != viewModel.CurrentCrosAppEngID)
+            }
+            else if (job.CrossAppEngID != 0 && job.CrossAppEngID != viewModel.CurrentCrosAppEngID)
             {
                 job.CrossAppEngID = viewModel.CurrentCrosAppEngID;
                 repository.SaveJob(job);
@@ -494,15 +512,15 @@ namespace ProdFloor.Controllers
                 TempData["message"] = $"There was an error with your request, the status is the same";
                 return RedirectToAction("EngineerAdminDashBoard");
             }
-            
+
         }
 
         [HttpPost]
-        public IActionResult MorningReport(DashboardIndexViewModel viewModel) 
+        public IActionResult MorningReport(DashboardIndexViewModel viewModel)
         {
-            if(viewModel.JobAdditionals != null && viewModel.JobAdditionals.Count > 0)
+            if (viewModel.MyJobAdditionals != null && viewModel.MyJobAdditionals.Count > 0)
             {
-                foreach (JobAdditional jobinfo in viewModel.JobAdditionals)
+                foreach (JobAdditional jobinfo in viewModel.MyJobAdditionals)
                 {
                     JobAdditional CurrentJobAdd = repository.JobAdditionals.FirstOrDefault(m => m.JobAdditionalID == jobinfo.JobAdditionalID);
                     CurrentJobAdd.Status = jobinfo.Status;
@@ -518,14 +536,25 @@ namespace ProdFloor.Controllers
             TempData["message"] = $"There was an error with your request";
             return View("MorningDashBoard");
         }
-        /*
 
         [HttpPost]
-        public IActionResult ChangePriority(int btnPriority)
+        public IActionResult ChangePriority(int btnPriority, int btnJobID)
         {
-            sit
+            if(btnPriority >= 0 && btnPriority < 4)
+            {
+                Job job = repository.Jobs.FirstOrDefault(m => m.JobID == btnJobID);
+                JobAdditional jobAdditional = repository.JobAdditionals.FirstOrDefault(m => m.JobID == btnJobID);
+                jobAdditional.Priority = btnPriority;
+                repository.SaveJobAdditional(jobAdditional);
+                TempData["message"] = $"You have changed the priority for the job #{job.JobNum} successfully";
+                return RedirectToAction(nameof(Index));
+            }
 
-        }*/
+            TempData["alert"] = $"alert-danger";
+            TempData["message"] = $"There was an error with your request";
+            return RedirectToAction(nameof(Index));
+
+        }
 
         public string JobTypeName(int ID)
         {

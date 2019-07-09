@@ -53,6 +53,7 @@
         {
             @foreach (var j in Model.OnCrossJobs)
             {
+                JobAdditional jobAdditional = Model.MyJobAdditionals.FirstOrDefault(m => m.JobID == j.JobID);
             <tr>
                 <th scope="row">@j.JobNum</th>
                 <td>@j.Name</td>

@@ -53,6 +53,8 @@
         {
             @foreach (var j in Model.PendingToCrossJobs)
             {
+                JobAdditional jobAdditional = Model.PendingJobAdditionals.FirstOrDefault(m => m.JobID == j.JobID);
+
             <tr>
                 <th scope="row">@j.JobNum</th>
                 <td>@j.Name</td>
@@ -60,6 +62,12 @@
                 <td>E@(j.CrossAppEngID)</td>
                 <td>@j.Status</td>
                 <td>
+                    @if (jobAdditional.Priority == 0)
+                    {<button type="button" title="Normal" class="btn btn-light" style="float:left;background-color:transparent"><i class="fas fa-flag text-success"></i></button>}
+                    @if (jobAdditional.Priority == 1)
+                    {<button type="button" title="High Priority" class="btn btn-light" style="float:left;background-color:transparent"><i class="fas fa-flag text-warning"></i></button>}
+                    @if (jobAdditional.Priority == 2)
+                    {<button type="button" title="Short Lead" class="btn btn-light" style="float:left;background-color:transparent"><i class="fas fa-flag text-danger"></i></button>}
                     <!-- Button trigger to change status-->
                     <button type="button" class="btn btn-light" data-toggle="modal" data-target="#exampleModalStatus @j.JobID" style="float:left;background-color:transparent">
                         <i class="fas fa-retweet"></i>
