@@ -3839,44 +3839,11 @@ namespace ProdFloor.Controllers
 
         }
 
-        public static void AddJobAdditional(IServiceProvider services, string buttonImportXML)
-        {
-            ApplicationDbContext context = services.GetRequiredService<ApplicationDbContext>();
-
-            if(context.Jobs.Any() && !context.JobAdditionals.Any())
-            {
-                List<Job> JobList = context.Jobs.ToList();
-                foreach(Job job in JobList)
-                {
-                    JobAdditional jobAdditional = context.JobAdditionals.FirstOrDefault(m => m.JobID == job.JobID);
-                    if(jobAdditional != null)
-                    {
-                        context.JobAdditionals.Add(new JobAdditional
-                        {
-                            JobID = job.JobID,
-                            Status = "",
-                            Action = "",
-                            Priority = 0,
-                            ERDate = job.LatestFinishDate
-
-                        });
-                        context.SaveChanges();
-                    }
-                    else
-                    {
-                        continue;
-                    }
-                }
-                
-            }
-                    
-        }
 
         [HttpPost]
         public IActionResult SeedXML(string buttonImportXML)
         {
             JobController.ImportXML(HttpContext.RequestServices, buttonImportXML);
-            JobController.AddJobAdditional(HttpContext.RequestServices, buttonImportXML);
             return RedirectToAction(nameof(List));
         }
 

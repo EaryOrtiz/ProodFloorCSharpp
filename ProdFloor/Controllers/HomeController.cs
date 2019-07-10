@@ -310,11 +310,11 @@ namespace ProdFloor.Controllers
 
                 DashboardIndexViewModel dashboard = new DashboardIndexViewModel()
                 {
-                    MyJobs = MyjobsList.Skip((MyJobsPage - 1) * 15).Take(15),
+                    MyJobs = MyjobsList.Skip((MyJobsPage - 1) * 20).Take(20),
                     MyJobsPagingInfo = new PagingInfo
                     {
                         CurrentPage = MyJobsPage,
-                        ItemsPerPage = 15,
+                        ItemsPerPage = 20,
                         TotalItems = MyjobsList.Count(),
                         sort = Sort != "default" ? Sort : "deafult"
 
