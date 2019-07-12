@@ -107,7 +107,7 @@ namespace ProdFloor
 
                 routes.MapRoute(
                     name: null,
-                    template: "MyjobsList/Page{jobPage:int}",
+                    template: "MyjobsList/Page{page:int}",
                     defaults: new
                     {
                         controller = "Job",
@@ -118,7 +118,7 @@ namespace ProdFloor
 
                 routes.MapRoute(
                     name: null,
-                    template: "List/Page{jobPage:int}",
+                    template: "Job/List/Page{page:int}",
                     defaults: new{ controller = "Job", action = "List",
                         jobPage = 1 }
                 );

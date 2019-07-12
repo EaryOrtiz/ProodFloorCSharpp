@@ -42,7 +42,7 @@ namespace ProdFloor.Controllers
 
         // Recibe jobType y jobPage y regresa un 
         //JobsListViewModel con los jobs filtrados por tipo y sorteados por JobID 
-        public ViewResult List(int jobType, int jobPage = 1)
+        public ViewResult List(int page = 1)
         {
             var JobCount = repository.Jobs
                      .Where(s => s.Status != "Pending").Count();
@@ -53,20 +53,19 @@ namespace ProdFloor.Controllers
                 Jobs = repository.Jobs
                     .Where(s => s.Status != "Pending")
                     .OrderBy(p => p.JobID)
-                    .Skip((jobPage - 1) * PageSize)
+                    .Skip((page - 1) * PageSize)
                     .Take(PageSize),
                 PagingInfo = new PagingInfo
                 {
-                    CurrentPage = jobPage,
+                    CurrentPage = page,
                     ItemsPerPage = PageSize,
                     TotalItems = JobCount
                 },
-                CurrentJobType = jobType.ToString(),
                 MyJobs = false
             });
         }
 
-        public ViewResult MyjobsList(int jobType, int jobPage = 1)
+        public ViewResult MyjobsList(int page = 1)
         {
             AppUser currentUser = GetCurrentUser().Result;
             var JobCount = repository.Jobs
@@ -80,15 +79,14 @@ namespace ProdFloor.Controllers
                     .Where(s => s.Status != "Pending")
                     .Where( n => n.EngID == currentUser.EngID)
                     .OrderBy(p => p.JobID)
-                    .Skip((jobPage - 1) * PageSize)
+                    .Skip((page - 1) * PageSize)
                     .Take(PageSize),
                 PagingInfo = new PagingInfo
                 {
-                    CurrentPage = jobPage,
+                    CurrentPage = page,
                     ItemsPerPage = PageSize,
                     TotalItems = JobCount
                 },
-                CurrentJobType = jobType.ToString(),
                 MyJobs = true
             });
         }
