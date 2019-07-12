@@ -11,10 +11,6 @@
 </head>
 <body style="background-image: url('https://www.ascensoresvalverde.com/theme/slide2.jpg');">
     <header>
-        @if (TempData["message"] != null)
-        {
-            <div class="alert alert-success">@TempData["message"]</div>
-        }
     </header>
     <div class="container-fluid">
         @RenderBody()

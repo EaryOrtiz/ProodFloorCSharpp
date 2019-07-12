@@ -4,7 +4,13 @@
     Layout = "_Layout";
 }
 <br /><br /><br /><br /><br /><br /><br />
-<div class="container rounded position-static" style="background-color:#263B49;box-shadow: 0 17px 17px 0 rgba(0,0,0,0.15),0 27px 55px 0 rgba(0,0,0,0.3);width:320px;height:400px">
+<div class="container rounded position-static" style="background-color:#263B49;box-shadow: 0 17px 17px 0 rgba(0,0,0,0.15),0 27px 55px 0 rgba(0,0,0,0.3);width:320px;height:480px">
+    <div style="margin-top:10px;padding-top:10px;">
+        @if (TempData["message"] != null)
+        {
+            <div class="alert alert-success">@TempData["message"]</div>
+        }
+    </div>
     <br />
     <div class="align-content-center">
         <img src="~/Images/nidec.png" class="img-fluid" style="width:120px;height:40px;margin-left:85px;margin-right:70px;" alt="Responsive image">

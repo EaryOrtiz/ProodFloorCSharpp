@@ -310,18 +310,18 @@ namespace ProdFloor.Controllers
 
                 DashboardIndexViewModel dashboard = new DashboardIndexViewModel()
                 {
-                    MyJobs = MyjobsList.Skip((MyJobsPage - 1) * 20).Take(20),
+                    MyJobAdditionals = MyJobAdditionalList.Skip((MyJobsPage - 1) * 12).Take(12).ToList(),
+                    MyJobs = MyjobsList.Skip((MyJobsPage - 1) * 12).Take(12),
                     MyJobsPagingInfo = new PagingInfo
                     {
                         CurrentPage = MyJobsPage,
-                        ItemsPerPage = 20,
-                        TotalItems = MyjobsList.Count(),
+                        ItemsPerPage = 12,
+                        TotalItems = MyJobAdditionalList.Count(),
                         sort = Sort != "default" ? Sort : "deafult"
 
                     },
                     JobTypes = JobTyPeList,
                     POs = POsList,
-                    MyJobAdditionals = MyJobAdditionalList,
                     OnCrossJobAdditionals = OnCrossJobAdditionalList,
                     PendingJobAdditionals = PendingJobAdditionalList,
                     OnCrossJobs = OnCrossJobsList.Skip((OnCrossJobPage - 1) * PageSize).Take(PageSize),
