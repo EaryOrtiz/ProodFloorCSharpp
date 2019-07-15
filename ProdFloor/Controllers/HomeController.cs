@@ -173,13 +173,14 @@ namespace ProdFloor.Controllers
                 List<PO> POsList = repository.POs.ToList();
 
                 List<Job> MyjobsList = repository.Jobs
-                    .Where(j => j.Status == "Incomplete" || j.Status == "Not Reviewed" || j.Status == "Working on it" || j.Status == "Cross Approval Complete").OrderBy(m => m.LatestFinishDate).ToList();
+                    .Where(j => j.Status == "Cross Approval Complete")
+                    .OrderByDescending(m => m._JobAdditional.Priority).ThenBy(n => n.LatestFinishDate).ToList();
 
                 List<Job> OnCrossJobsList = repository.Jobs
-                        .Where(j => j.Status == "On Cross Approval").OrderBy(m => m.LatestFinishDate).ToList();
+                        .Where(j => j.Status == "On Cross Approval").OrderByDescending(m => m._JobAdditional.Priority).ThenBy(n => n.LatestFinishDate).ToList();
 
                 List<Job> PendingToCrossJobList = repository.Jobs
-                        .Where(j => j.Status == "Cross Approval Pending").OrderBy(m => m.LatestFinishDate).ToList();
+                        .Where(j => j.Status == "Cross Approval Pending").OrderByDescending(m => m._JobAdditional.Priority).ThenBy(n => n.LatestFinishDate).ToList();
 
                 List<JobAdditional> MyJobAdditionalList = repository.JobAdditionals.Where(m => MyjobsList.Any(n => n.JobID == m.JobID)).ToList();
                 List<JobAdditional> OnCrossJobAdditionalList = repository.JobAdditionals.Where(m => OnCrossJobsList.Any(n => n.JobID == m.JobID)).ToList();
@@ -266,15 +267,16 @@ namespace ProdFloor.Controllers
                 List<PO> POsList = repository.POs.ToList();
 
                 List<Job> MyjobsList = repository.Jobs
-                    .Where(j => j.EngID == currentUser.EngID).Where(m => m.Status != "Cross Approval Complete" && m.Status != "Test" && m.Status != "Completed").ToList();
+                    .Where(j => j.EngID == currentUser.EngID).Where(m => m.Status != "Cross Approval Complete" && m.Status != "Test" && m.Status != "Completed")
+                    .OrderByDescending(m => m._JobAdditional.Priority).ThenBy(n => n.LatestFinishDate).ToList();
 
                 List<Job> OnCrossJobsList = repository.Jobs
                         .Where(j => j.CrossAppEngID == currentUser.EngID)
-                        .Where(j => j.Status == "On Cross Approval").OrderBy(m => m.LatestFinishDate).ToList();
+                        .Where(j => j.Status == "On Cross Approval").OrderByDescending(m => m._JobAdditional.Priority).ThenBy(n => n.LatestFinishDate).ToList();
 
                 List<Job> PendingToCrossJobList = repository.Jobs
                         .Where(j => j.EngID != currentUser.EngID)
-                        .Where(j => j.Status == "Cross Approval Pending").OrderBy(m => m.LatestFinishDate).ToList();
+                        .Where(j => j.Status == "Cross Approval Pending").OrderByDescending(m => m._JobAdditional.Priority).ThenBy(n => n.LatestFinishDate).ToList();
 
                 List<JobAdditional> MyJobAdditionalList = repository.JobAdditionals.Where(m => MyjobsList.Any(n => n.JobID == m.JobID)).ToList();
                 List<JobAdditional> OnCrossJobAdditionalList = repository.JobAdditionals.Where(m => OnCrossJobsList.Any(n => n.JobID == m.JobID)).ToList();
@@ -350,7 +352,6 @@ namespace ProdFloor.Controllers
             }
         }
 
-
         public ActionResult CrossHub(int pendingJobPage = 1, int productionJobPage = 1)
         {
             AppUser currentUser = GetCurrentUser().Result;
@@ -397,24 +398,47 @@ namespace ProdFloor.Controllers
             {
                 if (viewModel.buttonAction == "ToCross" && currentUser.EngID == UpdateStatus.EngID)
                 {
-                    UpdateStatus.Status = "Cross Approval Pending";
-                    repository.SaveJob(UpdateStatus);
+                    if(UpdateStatus.Status == "Working on it")
+                    {
+                        UpdateStatus.Status = "Cross Approval Pending";
+                        repository.SaveJob(UpdateStatus);
 
-                    TempData["message"] = $"You have released the Job #{UpdateStatus.JobNum} to Cross Approval";
+                        TempData["message"] = $"You have released the Job #{UpdateStatus.JobNum} to Cross Approval";
+                    }
+                    else
+                    {
+                        TempData["alert"] = $"alert-danger";
+                        TempData["message"] = $"There was an error with your request{JobCrossID}";
+                    }
+                    
                 }
                 else if (viewModel.buttonAction == "CrossApproved" && currentUser.EngID == UpdateStatus.CrossAppEngID)
                 {
-                    UpdateStatus.Status = "Cross Approval Complete";
-                    repository.SaveJob(UpdateStatus);
-
-                    TempData["message"] = $"You have approved the Job #{UpdateStatus.JobNum}";
+                    if (UpdateStatus.Status == "On Cross Approval")
+                    {
+                        UpdateStatus.Status = "Cross Approval Complete";
+                        repository.SaveJob(UpdateStatus);
+                        TempData["message"] = $"You have approved the Job #{UpdateStatus.JobNum}";
+                    }
+                    else
+                    {
+                        TempData["alert"] = $"alert-danger";
+                        TempData["message"] = $"There was an error with your request{JobCrossID}";
+                    }
                 }
                 else if (viewModel.buttonAction == "ToProduction" && currentUser.EngID == UpdateStatus.EngID)
                 {
-                    UpdateStatus.Status = "Test";
-                    repository.SaveJob(UpdateStatus);
-
-                    TempData["message"] = $"You have sent to production the Job #{UpdateStatus.JobNum}";
+                    if (UpdateStatus.Status == "Cross Approval Complete")
+                    {
+                        UpdateStatus.Status = "Test";
+                        repository.SaveJob(UpdateStatus);
+                        TempData["message"] = $"You have sent to production the Job #{UpdateStatus.JobNum}";
+                    }
+                    else
+                    {
+                        TempData["alert"] = $"alert-danger";
+                        TempData["message"] = $"There was an error with your request{JobCrossID}";
+                    }
                 }
                 else if (viewModel.buttonAction == "Completed" && currentUser.EngID == UpdateStatus.EngID)
                 {
@@ -479,19 +503,28 @@ namespace ProdFloor.Controllers
         public IActionResult JobReassignment(DashboardIndexViewModel viewModel)
         {
             Job job = repository.Jobs.FirstOrDefault(m => m.JobID == viewModel.JobID);
+            int CurrentEngID = job.EngID;
             if ((job.EngID != viewModel.CurrentEngID) && (job.CrossAppEngID != 0 && job.CrossAppEngID != viewModel.CurrentCrosAppEngID))
             {
-                job.EngID = viewModel.CurrentEngID;
-                job.CrossAppEngID = viewModel.CurrentCrosAppEngID;
-                repository.SaveJob(job);
+                if (viewModel.CurrentEngID != viewModel.CurrentCrosAppEngID)
+                {
+                    job.EngID = viewModel.CurrentEngID;
+                    job.CrossAppEngID = viewModel.CurrentCrosAppEngID;
+                    repository.SaveJob(job);
 
-                TempData["message"] = $"You have reassing the Job #{job.JobNum} to E{viewModel.CurrentEngID} and You have reassing the CrossApprove to E{viewModel.CurrentEngID}";
+                    TempData["message"] = $"You have reassing the Job #{job.JobNum} to E{viewModel.CurrentEngID} and You have reassing the CrossApprove to E{viewModel.CurrentEngID}";
+                    return RedirectToAction("EngineerAdminDashBoard");
+                }
+
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"You cannot reassing the CrossApprover because is the same Engineer who owns the Job";
                 return RedirectToAction("EngineerAdminDashBoard");
 
             }
             else if (job.EngID != viewModel.CurrentEngID)
             {
                 job.EngID = viewModel.CurrentEngID;
+                job.CrossAppEngID = 0;
                 repository.SaveJob(job);
 
                 TempData["message"] = $"You have reassing the CrossApprove for the Job #{job.JobNum} to E{viewModel.CurrentEngID}";
@@ -500,10 +533,17 @@ namespace ProdFloor.Controllers
             }
             else if (job.CrossAppEngID != 0 && job.CrossAppEngID != viewModel.CurrentCrosAppEngID)
             {
-                job.CrossAppEngID = viewModel.CurrentCrosAppEngID;
-                repository.SaveJob(job);
+                if (CurrentEngID != viewModel.CurrentCrosAppEngID)
+                {
+                    job.CrossAppEngID = viewModel.CurrentCrosAppEngID;
+                    repository.SaveJob(job);
 
-                TempData["message"] = $"You have reassing the Job #{job.JobNum} to E{viewModel.CurrentEngID}";
+                    TempData["message"] = $"You have reassing the Job #{job.JobNum} to E{viewModel.CurrentEngID}";
+                    return RedirectToAction("EngineerAdminDashBoard");
+                }
+
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"You cannot reassing the CrossApprover because is the same Engineer who owns the Job";
                 return RedirectToAction("EngineerAdminDashBoard");
             }
             else
@@ -523,8 +563,8 @@ namespace ProdFloor.Controllers
                 foreach (JobAdditional jobinfo in viewModel.MyJobAdditionals)
                 {
                     JobAdditional CurrentJobAdd = repository.JobAdditionals.FirstOrDefault(m => m.JobAdditionalID == jobinfo.JobAdditionalID);
-                    CurrentJobAdd.Status = jobinfo.Status;
-                    CurrentJobAdd.Action = jobinfo.Action;
+                    CurrentJobAdd.Status = jobinfo.Status == null ? "" : jobinfo.Status;
+                    CurrentJobAdd.Action = jobinfo.Action == null ? "" : jobinfo.Action;
                     CurrentJobAdd.ERDate = jobinfo.ERDate;
 
                     repository.SaveJobAdditional(CurrentJobAdd);
@@ -540,7 +580,7 @@ namespace ProdFloor.Controllers
         [HttpPost]
         public IActionResult ChangePriority(int btnPriority, int btnJobID)
         {
-            if(btnPriority >= 0 && btnPriority < 4)
+            if (btnPriority >= 0 && btnPriority < 4)
             {
                 Job job = repository.Jobs.FirstOrDefault(m => m.JobID == btnJobID);
                 JobAdditional jobAdditional = repository.JobAdditionals.FirstOrDefault(m => m.JobID == btnJobID);

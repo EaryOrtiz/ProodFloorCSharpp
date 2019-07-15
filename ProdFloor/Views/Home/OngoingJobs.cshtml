@@ -1,7 +1,7 @@
 ﻿@model DashboardIndexViewModel
 <h4>Ongoing Job(s)</h4>
 <table class="table table-sm">
-    <thead class="thead-dark">
+    <thead style="background-color:#1B2831;color:#fff">
         <tr>
             <th scope="col">
                 Job# &nbsp;
@@ -83,49 +83,63 @@
                         }
                         else if (j.Status == "Working on it")
                         {
-                            <!-- Button trigger modal to email template M2000-->
-                            if (jobAdditional.Priority == 0)
-                            {<button type="button" title="Normal" class="btn btn-light" data-toggle="modal" data-target="#priority @j.JobID" style="float:left;background-color:transparent"><i class="fas fa-flag text-success"></i></button>}
-                            if (jobAdditional.Priority == 1)
-                            {<button type="button" title="High Priority" class="btn btn-light" data-toggle="modal" data-target="#priority @j.JobID" style="float:left;background-color:transparent"><i class="fas fa-flag text-warning"></i></button>}
-                            if (jobAdditional.Priority == 2)
-                            {<button type="button" title="Short Lead" class="btn btn-light" data-toggle="modal" data-target="#priority @j.JobID" style="float:left;background-color:transparent"><i class="fas fa-flag text-danger"></i></button>}
-                            <!-- Modal -->
-                            <div class="modal fade" id="priority @j.JobID" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLongTitle">Priority</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <form asp-controller="Home" asp-action="ChangePriority">
-                                                <input type="hidden" name="btnJobID" value="@j.JobID" />
-                                                <p>Please select a priority for the job: #@j.JobNum</p>
-                                                <div class="container-fluid" style="padding-left:160px">
-                                                    <div class="form-group">
-                                                        <button type="submit" class="btn btn-sm btn-light" name="btnPriority" value="0" style="background-color:transparent"><i class="fas fa-flag text-success"></i></button>
-                                                        <label>&nbsp;Normal</label>
+                            @if (JobTypeName == "M2000")
+                            {
+
+                                <!-- Button trigger modal to email template M2000-->
+                                if (jobAdditional.Priority == 0)
+                                {<button type="button" title="Normal" class="btn btn-light" data-toggle="modal" data-target="#priority @j.JobID" style="float:left;background-color:transparent"><i class="fas fa-flag text-success"></i></button>}
+                                if (jobAdditional.Priority == 1)
+                                {<button type="button" title="High Priority" class="btn btn-light" data-toggle="modal" data-target="#priority @j.JobID" style="float:left;background-color:transparent"><i class="fas fa-flag text-warning"></i></button>}
+                                if (jobAdditional.Priority == 2)
+                                {<button type="button" title="Short Lead" class="btn btn-light" data-toggle="modal" data-target="#priority @j.JobID" style="float:left;background-color:transparent"><i class="fas fa-flag text-danger"></i></button>}
+                                <!-- Modal -->
+                                <div class="modal fade" id="priority @j.JobID" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLongTitle">Priority</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form asp-controller="Home" asp-action="ChangePriority">
+                                                    <input type="hidden" name="btnJobID" value="@j.JobID" />
+                                                    <p>Please select a priority for the job: #@j.JobNum</p>
+                                                    <div class="container-fluid" style="padding-left:160px">
+                                                        <div class="form-group">
+                                                            <button type="submit" class="btn btn-sm btn-light" name="btnPriority" value="0" style="background-color:transparent"><i class="fas fa-flag text-success"></i></button>
+                                                            <label>&nbsp;Normal</label>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <button type="submit" class="btn btn-sm btn-light" name="btnPriority" value="1" style="background-color:transparent"><i class="fas fa-flag text-warning"></i></button>
+                                                            <label>&nbsp;High Priority</label>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <button type="submit" class="btn btn-sm btn-light" name="btnPriority" value="2" style="background-color:transparent"><i class="fas fa-flag text-danger"></i></button>
+                                                            <label>&nbsp;Short Lead</label>
+                                                        </div>
                                                     </div>
-                                                    <div class="form-group">
-                                                        <button type="submit" class="btn btn-sm btn-light" name="btnPriority" value="1" style="background-color:transparent"><i class="fas fa-flag text-warning"></i></button>
-                                                        <label>&nbsp;High Priority</label>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <button type="submit" class="btn btn-sm btn-light" name="btnPriority" value="2" style="background-color:transparent"><i class="fas fa-flag text-danger"></i></button>
-                                                        <label>&nbsp;Short Lead</label>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Back</button>
+                                                </form>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Back</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            }
+                            else
+                            {
+                                if (jobAdditional.Priority == 0)
+                                {<button type="button" title="Normal" class="btn btn-light" style="float:left;background-color:transparent"><i class="fas fa-flag text-success"></i></button>}
+                                if (jobAdditional.Priority == 1)
+                                {<button type="button" title="High Priority" class="btn btn-light"style="float:left;background-color:transparent"><i class="fas fa-flag text-warning"></i></button>}
+                                if (jobAdditional.Priority == 2)
+                                {<button type="button" title="Short Lead" class="btn btn-light" style="float:left;background-color:transparent"><i class="fas fa-flag text-danger"></i></button>}
+                            }
+
 
                             <form asp-action="SearchAux" asp-controller="Item" method="get">
                                 <button type="submit" value="@j.JobNum" name="JobNum" class="btn btn-light"

@@ -185,7 +185,7 @@ namespace ProdFloor.Controllers
                 {
                     //y esta esta tambien y poner denuevo el {currenuser.engId} en Los TempDatas cuando terminen los test 
                     newJob.CurrentJob.EngID = currentUser.EngID;
-                    newJob.CurrentJob.CrossAppEngID = 117;
+                    newJob.CurrentJob.CrossAppEngID = 0;
                     newJob.CurrentJob.Status = "Incomplete";
                     repository.SaveJob(newJob.CurrentJob);
                     Job currentJob = repository.Jobs.FirstOrDefault(p => p.JobID == repository.Jobs.Max(x => x.JobID));
@@ -469,12 +469,12 @@ namespace ProdFloor.Controllers
             multiEditViewModel.CurrentUserID = currentUser.EngID;
             string StatusAux = "Working on it";
             if (multiEditViewModel.CurrentJob.Status == "Copied") StatusAux = "Copied";
+            List<PO> PoAux = new List<PO>();
             if (ModelState.IsValid)
             {
                 if (multiEditViewModel.CurrentJob.Status == "Copied")
                 {
                     multiEditViewModel.CurrentJob.EngID = currentUser.EngID;
-                    List<PO> PoAux = new List<PO>();
                     foreach (PO itemes in multiEditViewModel.POList)
                     {
                         try
@@ -490,27 +490,18 @@ namespace ProdFloor.Controllers
                             continue;
                         }
                     }
-                    if (PoAux[0] != null)
+                    foreach(PO po in PoAux)
                     {
-                        if (PoAux.Count > 1)
+                        if(po != null)
                         {
-                            if (PoAux[1] != null)
-                            {
-                                if (PoAux.Count > 2)
-                                {
-                                    if (PoAux[2] != null)
-                                    {
-                                        TempData["message"] = $"That PO already exists. Please validate.";
-                                        TempData["alert"] = $"alert-danger";
-                                        multiEditViewModel.CurrentTab = "Main";
-                                        return View(multiEditViewModel);
-                                    }
-                                }
-                                TempData["message"] = $"That PO already exists. Please validate.";
-                                TempData["alert"] = $"alert-danger";
-                                multiEditViewModel.CurrentTab = "Main";
-                                return View(multiEditViewModel);
-                            }
+                            TempData["message"] = $"That PO already exists. Please validate.";
+                            TempData["alert"] = $"alert-danger";
+                            multiEditViewModel.CurrentTab = "Main";
+                            return View(multiEditViewModel);
+                        }
+                        else
+                        {
+                            continue;
                         }
                     }
                     multiEditViewModel.CurrentJob.JobID = 0;
@@ -559,6 +550,35 @@ namespace ProdFloor.Controllers
                 }
                 try
                 {
+                    foreach (PO itemes in multiEditViewModel.POList.Where(m => m.POID == 0))
+                    {
+                        try
+                        {
+                            if (multiEditViewModel.POList[0].PONumb != itemes.PONumb || multiEditViewModel.POList[0].POID == 0)
+                            {
+                                PO poUniqueAUx = repository.POs.FirstOrDefault(m => m.PONumb == itemes.PONumb);
+                                PoAux.Add(poUniqueAUx);
+                            }
+                        }
+                        catch (Exception)
+                        {
+                            continue;
+                        }
+                    }
+                    foreach (PO po in PoAux)
+                    {
+                        if (po != null)
+                        {
+                            TempData["message"] = $"That PO already exists. Please validate.";
+                            TempData["alert"] = $"alert-danger";
+                            multiEditViewModel.CurrentTab = "Main";
+                            return View(multiEditViewModel);
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                    }
                     repository.SaveEngJobView(multiEditViewModel);
                     JobViewModel CopyJobViewModel = new JobViewModel();
                     if (StatusAux == "Copied")
@@ -1283,6 +1303,7 @@ namespace ProdFloor.Controllers
                     continueJobViewModel.CurrentHoistWayData = (repository.HoistWayDatas.FirstOrDefault(j => j.JobID == ID) ?? new HoistWayData());
                     if (SfList.Count > 1) continueJobViewModel.SpecialFeatureslist = SfList;
                     else continueJobViewModel.SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures() };
+                    continueJobViewModel.JobTypeName = JobTypeName(Job.JobTypeID);
 
                     return View("NextForm", continueJobViewModel);
                 }
@@ -1337,8 +1358,21 @@ namespace ProdFloor.Controllers
                 if (nextViewModel.CurrentJob.JobID == 0 && nextViewModel.CurrentJob.Status == "Incomplete") nextViewModel.CurrentJob.JobID = nextViewModel.CurrentJobExtension.JobID;
                 if (nextViewModel.buttonAction == "AddSF")
                 {
-                    nextViewModel.SpecialFeatureslist.Add(new SpecialFeatures { JobID = nextViewModel.CurrentJob.JobID, SpecialFeaturesID = 0 });
-                    nextViewModel.CurrentTab = "SpecialFeatures";
+                    if(nextViewModel.SpecialFeatureslist != null)
+                    {
+                        if (!string.IsNullOrWhiteSpace(nextViewModel.SpecialFeatureslist.Last().Description))
+                        {
+                            nextViewModel.SpecialFeatureslist.Add(new SpecialFeatures { JobID = nextViewModel.CurrentJob.JobID, SpecialFeaturesID = 0 });
+                            nextViewModel.CurrentTab = "SpecialFeatures";
+                        }
+                        else
+                        {
+                            nextViewModel.CurrentTab = "SpecialFeatures";
+                            TempData["alert"] = $"alert-danger";
+                            TempData["message"] = $"Fill the previus field on Special Features";
+                            return View(nextViewModel);
+                        }
+                    }
                 }
                 else
                 {
@@ -1534,8 +1568,18 @@ namespace ProdFloor.Controllers
                 if (nextViewModel.CurrentJob.JobID == 0 && nextViewModel.CurrentJob.Status == "Incomplete") nextViewModel.CurrentJob.JobID = nextViewModel.Element.JobID;
                 if (nextViewModel.buttonAction == "AddSF")
                 {
-                    nextViewModel.SpecialFeatureslist.Add(new SpecialFeatures { JobID = nextViewModel.CurrentJob.JobID, SpecialFeaturesID = 0 });
-                    nextViewModel.CurrentTab = "SpecialFeatures";
+                    if (!string.IsNullOrWhiteSpace(nextViewModel.SpecialFeatureslist.Last().Description))
+                    {
+                        nextViewModel.SpecialFeatureslist.Add(new SpecialFeatures { JobID = nextViewModel.CurrentJob.JobID, SpecialFeaturesID = 0 });
+                        nextViewModel.CurrentTab = "SpecialFeatures";
+                    }
+                    else
+                    {
+                        nextViewModel.CurrentTab = "SpecialFeatures";
+                        TempData["alert"] = $"alert-danger";
+                        TempData["message"] = $"Fill the previus field on Special Features";
+                        return View(nextViewModel);
+                    }
                 }
                 else
                 {
@@ -1645,8 +1689,18 @@ namespace ProdFloor.Controllers
                 if (nextViewModel.CurrentJob.JobID == 0 && nextViewModel.CurrentJob.Status == "Incomplete") nextViewModel.CurrentJob.JobID = nextViewModel.Element.JobID;
                 if (nextViewModel.buttonAction == "AddSF")
                 {
-                    nextViewModel.SpecialFeatureslist.Add(new SpecialFeatures { JobID = nextViewModel.CurrentJob.JobID, SpecialFeaturesID = 0 });
-                    nextViewModel.CurrentTab = "SpecialFeatures";
+                    if (!string.IsNullOrWhiteSpace(nextViewModel.SpecialFeatureslist.Last().Description))
+                    {
+                        nextViewModel.SpecialFeatureslist.Add(new SpecialFeatures { JobID = nextViewModel.CurrentJob.JobID, SpecialFeaturesID = 0 });
+                        nextViewModel.CurrentTab = "SpecialFeatures";
+                    }
+                    else
+                    {
+                        nextViewModel.CurrentTab = "SpecialFeatures";
+                        TempData["alert"] = $"alert-danger";
+                        TempData["message"] = $"Fill the previus field on Special Features";
+                        return View(nextViewModel);
+                    }
                 }
                 else
                 {

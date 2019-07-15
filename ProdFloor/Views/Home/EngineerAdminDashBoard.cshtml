@@ -5,11 +5,16 @@
 
 }
 <h2 class="col-sm-10">
-   Admin Dashboard
+    Admin Dashboard
 </h2>
 <br />
 @if (User.IsInRole("EngAdmin"))
 {
+    @if (Model.OnCrossJobs != null)
+    {
+        @Html.Partial("OngoingJobsEngAdmin", Model)
+    }
+    <br />
     @if (Model.OnCrossJobs != null)
     {
         @Html.Partial("OngoingCrossApprovalsEngAdmin", Model)

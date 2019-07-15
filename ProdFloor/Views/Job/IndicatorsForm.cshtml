@@ -66,6 +66,13 @@
         <indicators select-for="PIDriver" selected-value="@Model.CurrentIndicator.HallPIType" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" asp-for="CurrentIndicator.HallPIType" class="form-control col-sm-3"></indicators>
         <div><span asp-validation-for="CurrentIndicator.HallPIDiscreteType" class="text-danger"></span></div>
         <indicators select-for="CarPIDiscreteType" selected-value="@Model.CurrentIndicator.HallPIDiscreteType" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" asp-for="CurrentIndicator.HallPIDiscreteType" class="form-control col-sm-3"></indicators>
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="">HallPI All</span>
+        </div>
+        <div><span asp-validation-for="CurrentIndicator.HallPIAll" class="text-danger"></span></div>
+        <div class="input-group-text">
+            <input asp-for="CurrentIndicator.HallPIAll" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" />
+        </div>
     </div>
     <div class="input-group col-5 text-center">
         <div class="input-group-prepend">
@@ -108,13 +115,6 @@
         <indicators select-for="PIDriver" selected-value="@Model.CurrentIndicator.HallLanternsStyle" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" asp-for="CurrentIndicator.HallLanternsStyle" class="form-control col-sm-3"></indicators>
         <div><span asp-validation-for="CurrentIndicator.HallLanternsType" class="text-danger"></span></div>
         <indicators select-for="PIType" selected-value="@Model.CurrentIndicator.HallLanternsType" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" asp-for="CurrentIndicator.HallLanternsType" class="form-control col-sm-3"></indicators>
-        <div class="input-group-prepend">
-            <span class="input-group-text" id="">HallPI All</span>
-        </div>
-        <div><span asp-validation-for="CurrentIndicator.HallPIAll" class="text-danger"></span></div>
-        <div class="input-group-text">
-            <input asp-for="CurrentIndicator.HallPIAll" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" />
-        </div>
     </div>
     <div class="input-group col-10 text-left" style="padding-bottom:5px">
         <div class="input-group-prepend">

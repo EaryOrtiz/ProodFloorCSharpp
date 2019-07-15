@@ -952,7 +952,7 @@ namespace ProdFloor.Infrastructure
                 case "SPH":
                     return new List<string> { "80", "120" }.AsQueryable();
                 case "INA":
-                    return new List<string> { "Top & Bottom", "Top","bottom"}.AsQueryable();
+                    return new List<string> { "Top & Bottom", "Top","bottom", "None"}.AsQueryable();
                 case "LoadWeigher":
                     return new List<string> {"Discrete", "EMCO" }.AsQueryable();
                 case "MachineLocation":
