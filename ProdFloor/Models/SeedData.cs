@@ -1864,6 +1864,6 @@ namespace ProdFloor.Models
                     }
                 }
             }
-            }
         }
+    }
 }
