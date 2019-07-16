@@ -488,7 +488,9 @@ namespace ProdFloor.Controllers
             Job job = repository.Jobs.FirstOrDefault(m => m.JobID == viewModel.JobID);
             if (job.Status != viewModel.CurrentStatus)
             {
+
                 job.Status = viewModel.CurrentStatus;
+                if (viewModel.CurrentStatus == "Cross Approval Pending" || viewModel.CurrentStatus == "Working on it") job.CrossAppEngID = 0;
                 repository.SaveJob(job);
 
                 TempData["message"] = $"You have change the status of  the Job #{job.JobNum} to {viewModel.CurrentStatus}";
@@ -524,7 +526,6 @@ namespace ProdFloor.Controllers
             else if (job.EngID != viewModel.CurrentEngID)
             {
                 job.EngID = viewModel.CurrentEngID;
-                job.CrossAppEngID = 0;
                 repository.SaveJob(job);
 
                 TempData["message"] = $"You have reassing the CrossApprove for the Job #{job.JobNum} to E{viewModel.CurrentEngID}";
