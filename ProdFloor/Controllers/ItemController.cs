@@ -1199,7 +1199,8 @@ namespace ProdFloor.Controllers
                 };
                 return Json(new SelectList(Element, "Text", "Value"));
             }
-            
+        }
+        
         public string JobTypeName(int ID)
         {
             return repository.JobTypes.FirstOrDefault(m => m.JobTypeID == ID).Name;

@@ -12,9 +12,12 @@
     {
         @Html.Partial("OngoingJobsMorning", Model)
 
-        <div class="justify-content-xl-center text-center">
-            <button class="btn btn-info" value="Save" type="submit">Update</button>
-        </div>
+        @if (Model.MyJobAdditionals.Count() > 0)
+        {
+            <div class="justify-content-xl-center text-center">
+                <button class="btn btn-info" value="Save" type="submit">Update</button>
+            </div>
+        }
     }
 
 </form>

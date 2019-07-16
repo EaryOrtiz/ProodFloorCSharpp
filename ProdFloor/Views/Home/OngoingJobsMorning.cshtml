@@ -62,7 +62,7 @@
         </tbody>
     </table>
 </div>
-@if (Model.MyJobs.Count() > 0)
+@if (Model.MyJobAdditionals.Count() > 0)
 {
     <cool-pagination-dash-board current-model="MyJobs" my-jobs-page-model="@Model.MyJobsPagingInfo" page-action="MorningDashBoard" page-classes-enabled="true"
                                 page-class="btn" page-class-normal="btn-secondary" on-cross-page-model="@Model.OnCrossJobsPagingInfo" pending-to-cross-page-model="@Model.PendingToCrossJobsPagingInfo"

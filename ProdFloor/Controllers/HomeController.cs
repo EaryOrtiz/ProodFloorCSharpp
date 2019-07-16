@@ -581,7 +581,7 @@ namespace ProdFloor.Controllers
             else
             {
                 TempData["alert"] = $"alert-danger";
-                TempData["message"] = $"There was an error with your request, the status is the same";
+                TempData["message"] = $"You cannot reassing the CrossApprover because is the same Engineer who owns the Job";
                 return RedirectToAction("EngineerAdminDashBoard");
             }
 
