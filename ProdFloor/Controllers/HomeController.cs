@@ -514,7 +514,7 @@ namespace ProdFloor.Controllers
                     job.CrossAppEngID = viewModel.CurrentCrosAppEngID;
                     repository.SaveJob(job);
 
-                    TempData["message"] = $"You have reassing the Job #{job.JobNum} to E{viewModel.CurrentEngID} and You have reassing the CrossApprove to E{viewModel.CurrentEngID}";
+                    TempData["message"] = $"You have reassinged the the Engineer for the Job #{job.JobNum} to E{job.EngID} and the CrossApprover E{job.EngID}";
                     return RedirectToAction("EngineerAdminDashBoard");
                 }
 
@@ -528,7 +528,7 @@ namespace ProdFloor.Controllers
                 job.EngID = viewModel.CurrentEngID;
                 repository.SaveJob(job);
 
-                TempData["message"] = $"You have reassing the CrossApprove for the Job #{job.JobNum} to E{viewModel.CurrentEngID}";
+                TempData["message"] = $"You have reassinged the Engineer for the Job #{job.JobNum} to E{job.EngID}";
                 return RedirectToAction("EngineerAdminDashBoard");
 
             }
@@ -539,7 +539,7 @@ namespace ProdFloor.Controllers
                     job.CrossAppEngID = viewModel.CurrentCrosAppEngID;
                     repository.SaveJob(job);
 
-                    TempData["message"] = $"You have reassing the Job #{job.JobNum} to E{viewModel.CurrentEngID}";
+                    TempData["message"] = $"You have reassinged the CrossApprover for the Job #{job.JobNum} to E{job.EngID}";
                     return RedirectToAction("EngineerAdminDashBoard");
                 }
 
