@@ -1,0 +1,48 @@
+﻿@model ProdFloor.Models.ViewModels.Job.JobElementHydroViewModel
+<input type="hidden" asp-for="ElementHydro.JobID" />
+<input type="hidden" asp-for="ElementHydro.ElementHydroID" />
+<input type="hidden" asp-for="CurrentJob.JobID" />
+<input type="hidden" asp-for="CurrentJob.Status" />
+<input type="hidden" asp-for="CurrentJob.EngID" />
+<div class="form-row col-sm-12" style="padding-bottom:15px">
+    <div class="col-5 form-line justify-content-md-center">
+        <div class="form-group row" style="margin-bottom:0.5em;">
+            <label asp-for="ElementHydro.Starter" class="col-sm-3 col-form-label"></label>
+            <div>
+                <custom-select selected-value="@Model.ElementHydro.Starter" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)"
+                               class="form-control-sm form-control" asp-for="ElementHydro.Starter" select-for="StarterForElements"></custom-select>
+                <span asp-validation-for="ElementHydro.Starter" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="ElementHydro.HP" class="col-sm-3 col-form-label"></label>
+            <div>
+                <input asp-for="ElementHydro.HP" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control  col-9" />
+                <span asp-validation-for="ElementHydro.HP" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="ElementHydro.FLA" class="col-sm-3 col-form-label"></label>
+            <div>
+                <input asp-for="ElementHydro.FLA" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control  col-9" />
+                <span asp-validation-for="ElementHydro.FLA" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row" style="margin-bottom:0.5em;">
+            <label asp-for="ElementHydro.SPH" class="col-sm-3 col-form-label"></label>
+            <div>
+                <custom-select selected-value="@Model.ElementHydro.SPH" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)"
+                               class="form-control-sm form-control" asp-for="ElementHydro.SPH" select-for="SPH"></custom-select>
+                <span asp-validation-for="ElementHydro.SPH" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row" style="margin-bottom:0.5em;">
+            <label asp-for="ElementHydro.ValveBrand" class="col-sm-3 col-form-label"></label>
+            <div>
+                <custom-select selected-value="@Model.ElementHydro.ValveBrand" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)"
+                               class="form-control-sm form-control" asp-for="ElementHydro.ValveBrand" select-for="Valve Brand"></custom-select>
+                <span asp-validation-for="ElementHydro.ValveBrand" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+</div>

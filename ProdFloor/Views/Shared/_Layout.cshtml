@@ -9,61 +9,10 @@
     <link href="~/css/DashBoard.css" rel="stylesheet" />
     <title>ProdFloor</title>
 </head>
-<body>
+<body style="background-image: url('https://www.ascensoresvalverde.com/theme/slide2.jpg');">
     <header>
-        <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-            <a class="navbar-brand" href="\">ProdFloor</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="\">Home <span class="sr-only">(current)</span></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="\Page1\">All Jobs</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="\Page1\">My Jobs</a>
-                    </li>
-                    @*<li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Dropdown link
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                <a class="dropdown-item" href="#">Action</a>
-                                <a class="dropdown-item" href="#">Another action</a>
-                                <a class="dropdown-item" href="#">Something else here</a>
-                            </div>
-                        </li>*@
-                </ul>
-            </div>
-            <div class="nav navbar-nav navbar-right">
-                <ul class="navbar-nav">
-                    @if (!User.Identity.IsAuthenticated)
-                    {
-
-                        <li class="nav-item">
-                            <a href="\Account\LogIn">
-                                Login <i class="fa fa-sign-in"></i>
-                            </a>
-                        </li>
-                    }
-                    else
-                    {
-                        <li class="nav-item"><a class="nav-link">Hello, @User.Identity.Name</a></li>
-                        <li class="nav-item"><a class="nav-link" href="\Account\LogOut"> Log out <span class="fa fa-sign-out"></span></a></li>
-                    }
-                </ul>
-            </div>
-        </nav>
     </header>
     <div class="container-fluid">
-        @if (TempData["message"] != null)
-        {
-        <div class="alert alert-success">@TempData["message"]</div>
-        }
         @RenderBody()
     </div>
     <script src="~/lib/jquery/dist/jquery.slim.js"></script>

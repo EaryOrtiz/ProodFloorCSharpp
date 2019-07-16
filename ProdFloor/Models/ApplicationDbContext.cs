@@ -31,6 +31,7 @@ namespace ProdFloor.Models
         //Enginner Refernces Tables
 
         public DbSet<PO> POs { get; set; }
+        public DbSet<JobAdditional> JobAdditionals { get; set; }
         public DbSet<CustomSoftware> CustomSoftwares { get; set; }
         public DbSet<TriggeringCustSoft> TriggeringCustSofts { get; set; }
         public DbSet<CustomFeature> CustomFeatures { get; set; }
@@ -38,6 +39,7 @@ namespace ProdFloor.Models
         public DbSet<WireTypesSize> WireTypesSizes { get; set; }
         public DbSet<Starter> Starters { get; set; }
         public DbSet<Overload> Overloads { get; set; }
+
 
         //Testing
         public DbSet<TestJob> TestJobs { get; set; }
@@ -51,6 +53,13 @@ namespace ProdFloor.Models
         public DbSet<Reason4> Reasons4 { get; set; }
         public DbSet<Reason5> Reasons5 { get; set; }
         public DbSet<Stop> Stops { get; set; }
+
+        //Nuevos Modelos
+        public DbSet<Element> Elements { get; set; }
+        public DbSet<ElementHydro> ElementHydros { get; set; }
+        public DbSet<ElementTraction> ElementTractions { get; set; }
+
+
         //ItemHistory
         public DbSet<Country_audit> Country_Audits { get; set; }
         public DbSet<State_audit> State_Audits { get; set; }

@@ -9,10 +9,11 @@ namespace ProdFloor.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            /*
             migrationBuilder.DropIndex(
                 name: "IX_Jobs_PO",
                 table: "Jobs");
-
+                */
             migrationBuilder.DropColumn(
                 name: "PO",
                 table: "Jobs");

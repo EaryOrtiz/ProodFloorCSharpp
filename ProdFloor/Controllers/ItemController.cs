@@ -368,7 +368,12 @@ namespace ProdFloor.Controllers
             if (ViewModel.NumJobSearch != 0)
             {
                 var JobSearch = jobSearch.FirstOrDefault(m => m.JobNum == ViewModel.NumJobSearch);
-
+                if (JobTypeName(JobSearch.JobTypeID) != "M2000")
+                {
+                    TempData["alert"] = $"alert-danger";
+                    TempData["message"] = $"Worksheet not available for the jobtype: {JobTypeName(JobSearch.JobTypeID)}";
+                    return RedirectToAction("Index", "Home");
+                }
 
                 if (JobSearch != null)
                 {
@@ -607,6 +612,10 @@ namespace ProdFloor.Controllers
                         //Overload Table
                         if (ViewModel.OverloadTable != null && ViewModel.OverloadTable != "N/A")
                         {
+                            if(ViewModel.StarterType == "YD")
+                            {
+                                ViewModel.FLA = (float)(ViewModel.FLA * 0.58);
+                            }
                             var OverLoadReg = OverloadReferSearch.FirstOrDefault(m => m.OverTableNum == Int32.Parse(ViewModel.OverloadTable)
                             && m.AMPMin <= ViewModel.FLA && m.AMPMax >= ViewModel.FLA);
                             ViewModel.MCPartOver = OverLoadReg.MCPart;
@@ -755,7 +764,8 @@ namespace ProdFloor.Controllers
                 case "Wire":
 
                     HtmlDocument doc = new HtmlDocument();
-                    doc.Load(@"C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\WireTypesSizes.xml");
+
+                    doc.Load(@"C:\Users\\Administrator\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\WireTypesSizes.xml");
 
                     var XMLobs = doc.DocumentNode.SelectNodes("//wiretypessize");
 
@@ -783,8 +793,8 @@ namespace ProdFloor.Controllers
 
                 case "Slowdown":
                     HtmlDocument doc3 = new HtmlDocument();
-                    doc3.Load(@"C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\Slowdowns.xml");
 
+                    doc3.Load(@"C:\Users\\Administrator\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\Slowdowns.xml");
                     var XMLobs3 = doc3.DocumentNode.SelectNodes("//slowdown");
 
                     foreach (var XMLob in XMLobs3)
@@ -865,7 +875,8 @@ namespace ProdFloor.Controllers
 
                 case "Overload":
                     HtmlDocument doc5 = new HtmlDocument();
-                    doc5.Load(@"C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\Overloads.xml");
+
+                    doc5.Load(@"C:\Users\\Administrator\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\Overloads.xml");
 
                     var XMLobs5 = doc5.DocumentNode.SelectNodes("//overload");
 
@@ -935,8 +946,8 @@ namespace ProdFloor.Controllers
 
                 case "State":
                     HtmlDocument doc2 = new HtmlDocument();
-                    doc2.Load(@"C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\States.xml");
 
+                    doc2.Load(@"C:\Users\\Administrator\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\States.xml");
                     var XMLobs2 = doc2.DocumentNode.SelectNodes("//state");
 
                     if (context.Countries.Any())
@@ -965,7 +976,8 @@ namespace ProdFloor.Controllers
 
                 case "City":
                     HtmlDocument doc7 = new HtmlDocument();
-                    doc7.Load(@"C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\Cities.xml");
+
+                    doc7.Load(@"C:\Users\\Administrator\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\Cities.xml");
 
                     var XMLobs7 = doc7.DocumentNode.SelectNodes("//city");
 
@@ -1135,6 +1147,7 @@ namespace ProdFloor.Controllers
 
         }
 
+
         public JsonResult GetLandingSystem(int JobTypeID)
         {
             string JobTypeName = repository.JobTypes.FirstOrDefault(m => m.JobTypeID == JobTypeID).Name;
@@ -1186,6 +1199,10 @@ namespace ProdFloor.Controllers
                 };
                 return Json(new SelectList(Element, "Text", "Value"));
             }
+            
+        public string JobTypeName(int ID)
+        {
+            return repository.JobTypes.FirstOrDefault(m => m.JobTypeID == ID).Name;
         }
     }
 }

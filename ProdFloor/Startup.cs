@@ -76,11 +76,7 @@ namespace ProdFloor
             app.UseAuthentication();
             app.UseMvc(routes => {
 
-                routes.MapRoute(
-                    name: null,
-                    template: "{jobType}/Page{jobPage:int}",
-                    defaults: new { controller = "Job", action = "List" }
-                );
+                
 
                 routes.MapRoute(
                     name: null,
@@ -99,6 +95,11 @@ namespace ProdFloor
 
                 routes.MapRoute(
                     name: null,
+                    template: "{EngineerAdminDashBoard}/{MyJobsPage:int}_{OnCrossJobPage:int}_{PendingToCrossJobPage:int}",
+                    defaults: new { controller = "Home", action = "EngineerAdminDashBoard" });
+
+                routes.MapRoute(
+                    name: null,
                     template: "CrossHub/{pendingJobPage:int}_{productionJobPage:int}_{onCrossJobPage:int}",
                     defaults: new { controller = "Home", action = "CrossHub" });
                 routes.MapRoute(
@@ -113,7 +114,18 @@ namespace ProdFloor
 
                 routes.MapRoute(
                     name: null,
-                    template: "Page{jobPage:int}",
+                    template: "MyjobsList/Page{page:int}",
+                    defaults: new
+                    {
+                        controller = "Job",
+                        action = "MyjobsList",
+                        jobPage = 1
+                    }
+                );
+
+                routes.MapRoute(
+                    name: null,
+                    template: "Job/List/Page{page:int}",
                     defaults: new{ controller = "Job", action = "List",
                         jobPage = 1 }
                 );

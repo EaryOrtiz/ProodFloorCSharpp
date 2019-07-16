@@ -162,6 +162,168 @@ namespace ProdFloor.Migrations
                     b.ToTable("DoorOperator_Audits");
                 });
 
+            modelBuilder.Entity("ProdFloor.Models.Element", b =>
+                {
+                    b.Property<int>("ElementID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<bool>("CRO");
+
+                    b.Property<bool>("CReg");
+
+                    b.Property<bool>("CSD");
+
+                    b.Property<bool>("CTF");
+
+                    b.Property<bool>("CTINSPST");
+
+                    b.Property<bool>("CTL");
+
+                    b.Property<bool>("CallEnable");
+
+                    b.Property<int>("Capacity");
+
+                    b.Property<bool>("CarCardReader");
+
+                    b.Property<bool>("CarKey");
+
+                    b.Property<bool>("DHLD");
+
+                    b.Property<string>("DoorGate")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.Property<int>("DoorOperatorID");
+
+                    b.Property<bool>("EMT");
+
+                    b.Property<bool>("EP");
+
+                    b.Property<bool>("EQ");
+
+                    b.Property<bool>("Egress");
+
+                    b.Property<bool>("FRON2");
+
+                    b.Property<int>("Frequency");
+
+                    b.Property<bool>("HAPS");
+
+                    b.Property<bool>("HCRO");
+
+                    b.Property<bool>("HallCardReader");
+
+                    b.Property<bool>("HallKey");
+
+                    b.Property<string>("INA")
+                        .IsRequired();
+
+                    b.Property<bool>("INCP");
+
+                    b.Property<int>("JobID");
+
+                    b.Property<bool>("LJ");
+
+                    b.Property<bool>("LOS");
+
+                    b.Property<string>("LoadWeigher")
+                        .IsRequired();
+
+                    b.Property<bool>("PFGE");
+
+                    b.Property<bool>("PHECutOut");
+
+                    b.Property<bool>("PSS");
+
+                    b.Property<bool>("PTFLD");
+
+                    b.Property<int>("Phase");
+
+                    b.Property<int>("Speed");
+
+                    b.Property<bool>("Traveler");
+
+                    b.Property<bool>("VCI");
+
+                    b.Property<int>("Voltage");
+
+                    b.HasKey("ElementID");
+
+                    b.HasIndex("DoorOperatorID");
+
+                    b.HasIndex("JobID");
+
+                    b.ToTable("Elements");
+                });
+
+            modelBuilder.Entity("ProdFloor.Models.ElementHydro", b =>
+                {
+                    b.Property<int>("ElementHydroID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<float>("FLA");
+
+                    b.Property<float>("HP");
+
+                    b.Property<int>("JobID");
+
+                    b.Property<int>("SPH");
+
+                    b.Property<string>("Starter")
+                        .IsRequired();
+
+                    b.Property<string>("ValveBrand")
+                        .IsRequired();
+
+                    b.HasKey("ElementHydroID");
+
+                    b.HasIndex("JobID");
+
+                    b.ToTable("ElementHydros");
+                });
+
+            modelBuilder.Entity("ProdFloor.Models.ElementTraction", b =>
+                {
+                    b.Property<int>("ElementTractionID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Contact")
+                        .IsRequired();
+
+                    b.Property<float>("Current");
+
+                    b.Property<bool>("Encoder");
+
+                    b.Property<float>("FLA");
+
+                    b.Property<float>("HP");
+
+                    b.Property<int>("HoldVoltage");
+
+                    b.Property<bool>("ISO");
+
+                    b.Property<int>("JobID");
+
+                    b.Property<string>("MachineLocation")
+                        .IsRequired();
+
+                    b.Property<string>("MotorBrand")
+                        .IsRequired();
+
+                    b.Property<int>("PickVoltage");
+
+                    b.Property<int>("Resistance");
+
+                    b.Property<string>("VVVF")
+                        .IsRequired();
+
+                    b.HasKey("ElementTractionID");
+
+                    b.HasIndex("JobID");
+
+                    b.ToTable("ElementTractions");
+                });
+
             modelBuilder.Entity("ProdFloor.Models.FireCode", b =>
                 {
                     b.Property<int>("FireCodeID")
@@ -499,6 +661,8 @@ namespace ProdFloor.Migrations
 
                     b.Property<bool>("HallPI");
 
+                    b.Property<bool>("HallPIAll");
+
                     b.Property<string>("HallPIDiscreteType")
                         .HasMaxLength(25);
 
@@ -584,6 +748,30 @@ namespace ProdFloor.Migrations
                     b.HasIndex("JobTypeID");
 
                     b.ToTable("Jobs");
+                });
+
+            modelBuilder.Entity("ProdFloor.Models.JobAdditional", b =>
+                {
+                    b.Property<int>("JobAdditionalID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Action");
+
+                    b.Property<DateTime>("ERDate");
+
+                    b.Property<int>("JobID");
+
+                    b.Property<int>("Priority");
+
+                    b.Property<string>("Status")
+                        .IsRequired();
+
+                    b.HasKey("JobAdditionalID");
+
+                    b.HasIndex("JobID")
+                        .IsUnique();
+
+                    b.ToTable("JobAdditionals");
                 });
 
             modelBuilder.Entity("ProdFloor.Models.JobExtension", b =>
@@ -1247,6 +1435,35 @@ namespace ProdFloor.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("ProdFloor.Models.Element", b =>
+                {
+                    b.HasOne("ProdFloor.Models.DoorOperator")
+                        .WithMany("_Elements")
+                        .HasForeignKey("DoorOperatorID")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("ProdFloor.Models.Job")
+                        .WithMany("_Elements")
+                        .HasForeignKey("JobID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("ProdFloor.Models.ElementHydro", b =>
+                {
+                    b.HasOne("ProdFloor.Models.Job")
+                        .WithMany("_ElementHydros")
+                        .HasForeignKey("JobID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("ProdFloor.Models.ElementTraction", b =>
+                {
+                    b.HasOne("ProdFloor.Models.Job")
+                        .WithMany("_EmentTractions")
+                        .HasForeignKey("JobID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("ProdFloor.Models.GenericFeatures", b =>
                 {
                     b.HasOne("ProdFloor.Models.Job")
@@ -1299,6 +1516,14 @@ namespace ProdFloor.Migrations
                     b.HasOne("ProdFloor.Models.JobType")
                         .WithMany("_Jobs")
                         .HasForeignKey("JobTypeID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("ProdFloor.Models.JobAdditional", b =>
+                {
+                    b.HasOne("ProdFloor.Models.Job")
+                        .WithOne("_JobAdditional")
+                        .HasForeignKey("ProdFloor.Models.JobAdditional", "JobID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

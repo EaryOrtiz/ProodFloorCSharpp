@@ -1,0 +1,53 @@
+﻿@model JobsListViewModel
+@{
+    ViewBag.Title = "Jobs";
+    Layout = "_AdminLayoutWO";
+}
+<div class="row" style="padding-left:20px">
+    <h2 class="col-sm-10">
+        Jobs List
+    </h2>
+</div>
+<br />
+<div class="btn-group" style="padding-right:50px;">
+    <a class="btn btn-info col-sm-" asp-action="JobSearchList" asp-controller="Job" style="padding-top:10px;min-width:100px">
+        <i class="fa fa-search" aria-hidden="true"></i>
+        Job Search List
+    </a>
+    <div class="text-center">
+        <div class="btn-group text-center">
+            <form asp-action="NewJob" asp-controller="Job" method="get">
+                <button type="button" class="btn btn-success dropdown-toggle" style="padding-top:10px;min-width:100px" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fa fa-plus"></i>Add New Job
+                </button>
+                <div class="dropdown-menu">
+                    <button type="submit" name="JobType" value="M2000" class="dropdown-item" style="margin-right:40px">M2000</button>
+                    <button type="submit" name="JobType" value="ElmHydro" class="dropdown-item" style="margin-right:40px">Element Hydro</button>
+                    <button type="submit" name="JobType" value="ElmTract" class="dropdown-item">Element Traction</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<br /><br />
+@foreach (var j in Model.Jobs)
+{
+    @Html.Partial("JobSummary", j)
+}
+
+@if (Model.Jobs.Count() > 0)
+{
+      <coool-pagination-all page-model="@Model.PagingInfo" page-action="MyjobsList" page-classes-enabled="true"
+                            page-class="btn" page-class-normal="btn-secondary"
+                            page-class-selected="btn-primary"
+                            class="btn-group pull-right m-1">
+      </coool-pagination-all>
+
+    <div>
+        <form asp-controller="Job" asp-action="ExportJobToXML" method="post">
+            <button class="btn btn-sm" name="buttonXML" value="All" style="background-color:#DF0174;color:white">Export All Jobs to an XML File</button>
+        </form>
+    </div>
+}

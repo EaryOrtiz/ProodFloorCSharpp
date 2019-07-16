@@ -44,7 +44,7 @@ namespace ProdFloor.Tests
 
             // Act
             JobsListViewModel result =
-            controller.List(1, 2).ViewData.Model as JobsListViewModel;
+            controller.List(2).ViewData.Model as JobsListViewModel;
 
             // Assert
             Job[] prodArray = result.Jobs.ToArray();
@@ -79,7 +79,7 @@ namespace ProdFloor.Tests
 
             // Act
             JobsListViewModel result =
-            controller.List(1,2).ViewData.Model as JobsListViewModel;
+            controller.List(2).ViewData.Model as JobsListViewModel;
 
             // Assert
             PagingInfo pageInfo = result.PagingInfo;
@@ -116,7 +116,7 @@ namespace ProdFloor.Tests
 
             // Action
             Job[] result =
-            (controller.List(2, 1).ViewData.Model as JobsListViewModel)
+            (controller.List(1).ViewData.Model as JobsListViewModel)
             .Jobs.ToArray();
 
             // Assert
@@ -152,10 +152,10 @@ namespace ProdFloor.Tests
             result?.ViewData?.Model as JobsListViewModel;
 
             // Action
-            int? res1 = GetModel(target.List(1,1))?.PagingInfo.TotalItems;
-            int? res2 = GetModel(target.List(2,2))?.PagingInfo.TotalItems;
-            int? res3 = GetModel(target.List(3,3))?.PagingInfo.TotalItems;
-            int? resAll = GetModel(target.List(5,5))?.PagingInfo.TotalItems;
+            int? res1 = GetModel(target.List(1))?.PagingInfo.TotalItems;
+            int? res2 = GetModel(target.List(2))?.PagingInfo.TotalItems;
+            int? res3 = GetModel(target.List(3))?.PagingInfo.TotalItems;
+            int? resAll = GetModel(target.List(5))?.PagingInfo.TotalItems;
 
             // Assert
             Assert.NotEqual(2, res1);

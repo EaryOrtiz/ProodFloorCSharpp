@@ -1,0 +1,73 @@
+﻿@model DashboardIndexViewModel
+<h4>Ongoing Job(s)</h4>
+<div class="container-fluid">
+    <table class="table table-sm align-content-center text-center">
+        <thead style="background-color:#1B2831;color:#fff">
+            <tr>
+                <th scope="col">
+                    Job#
+                </th>
+                <th scope="col">
+                    Name
+                </th>
+                <th scope="col">JobType</th>
+                <th scope="col">Expected Release Date </th>
+                <th scope="col">Status</th>
+                <th scope="col">Corrective Actions</th>
+            </tr>
+        </thead>
+        <tbody class="align-content-center text-center">
+            @if (Model.MyJobAdditionals.Count() == 0)
+            {
+                <tr>
+                    <td>No Jobs!</td>
+                </tr>
+            }
+            else
+            {
+
+                @for (int i = 0; i < Model.MyJobAdditionals.Count; i++)
+                {
+                    Job j = Model.MyJobs.FirstOrDefault(m => m.JobID == Model.MyJobAdditionals[i].JobID);
+                    AppUser CurrentUser = UserManager.Users.FirstOrDefault(m => m.EngID == j.EngID);
+                    AppUser CrosAppUser = UserManager.Users.FirstOrDefault(m => m.EngID == j.CrossAppEngID);
+                    string JobTypeName = Model.JobTypes.FirstOrDefault(m => m.JobTypeID == j.JobTypeID).Name;
+                    var POForJobLlist = Model.POs.Where(m => m.JobID == j.JobID).ToList();
+                    string POsNumber = "";
+                    foreach (PO po in POForJobLlist)
+                    {
+                        POsNumber += po.PONumb.ToString() + ", ";
+                    }
+                    <tr>
+                        <th scope="row">@j.JobNum</th>
+                        <td>@j.Name</td>
+                        <td>@JobTypeName</td>
+                        <td>
+                            <input type="hidden" asp-for="@Model.MyJobAdditionals[i].JobAdditionalID" value="@Model.MyJobAdditionals[i].JobAdditionalID" />
+                            <input type="hidden" asp-for="@Model.MyJobAdditionals[i].JobID" />
+                            <input asp-for="@Model.MyJobAdditionals[i].ERDate" class="form-control fom form-control-sm" />
+                            <span asp-validation-for="@Model.MyJobAdditionals[i].ERDate" class="text-danger"></span>
+                        </td>
+                        <td>
+                            <custom-select select-for="MorningStatus" selected-value="@Model.MyJobAdditionals[i].Status" class="form-control form-control-sm" asp-for="@Model.MyJobAdditionals[i].Status"></custom-select>
+                            <span asp-validation-for="@Model.MyJobAdditionals[i].Status" class="text-danger"></span>
+                        </td>
+                        <td>
+                            <textarea asp-for="@Model.MyJobAdditionals[i].Action" class="form-control fom form-control-sm" rows="2"></textarea>
+                            <span asp-validation-for="@Model.MyJobAdditionals[i].Action" class="text-danger"></span>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+@if (Model.MyJobs.Count() > 0)
+{
+    <cool-pagination-dash-board current-model="MyJobs" my-jobs-page-model="@Model.MyJobsPagingInfo" page-action="MorningDashBoard" page-classes-enabled="true"
+                                page-class="btn" page-class-normal="btn-secondary" on-cross-page-model="@Model.OnCrossJobsPagingInfo" pending-to-cross-page-model="@Model.PendingToCrossJobsPagingInfo"
+                                page-class-selected="btn-primary" my-jobs-url-value="MyJobsPage" on-cross-url-value="OnCrossJobPage"
+                                pending-to-cross-url-value="PendingToCrossJobPage" sort="Sort"
+                                class="btn-group pull-right m-1">
+    </cool-pagination-dash-board>
+}

@@ -8,24 +8,53 @@
     <li class="nav-item">
         <a class="nav-link  active" data-toggle="tab" href="#home" role="tab">Job</a>
     </li>
-    <li class="nav-item">
-        <a class="nav-link disabled" )" data-toggle="tab" href="#jobextension" role="tab">Add. Job Info</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link disabled" data-toggle="tab" href="#hydrospecifics" role="tab">Hydro Specifics</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link disabled" data-toggle="tab" href="#genericfeatures" role="tab">Generic Features</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link disabled" data-toggle="tab" href="#indicators" role="tab">Indicators</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link disabled" data-toggle="tab" href="#hoistwaydata" role="tab">Hoistway Data</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link disabled" data-toggle="tab" href="#specialfeatures" role="tab">Special Features</a>
-    </li>
+    @if (Model.JobTypeName == "ElmHydro")
+    {
+        <li class="nav-item">
+            <a class="nav-link disabled" )" data-toggle="tab" href="#Element" role="tab">Element Info</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link disabled" data-toggle="tab" href="#ElementHydro" role="tab">Element Hydro</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link disabled" data-toggle="tab" href="#specialfeatures" role="tab">Special Features</a>
+        </li>
+    }
+    else if (Model.JobTypeName == "ElmTract")
+    {
+        <li class="nav-item">
+            <a class="nav-link disabled" )" data-toggle="tab" href="#Element" role="tab">Element Info</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link disabled" data-toggle="tab" href="#ElementTraction" role="tab">Element Traction</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link disabled" data-toggle="tab" href="#specialfeatures" role="tab">Special Features</a>
+        </li>
+    }
+    else
+    {
+        <li class="nav-item">
+            <a class="nav-link disabled" )" data-toggle="tab" href="#jobextension" role="tab">Add. Job Info</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link disabled" data-toggle="tab" href="#hydrospecifics" role="tab">Hydro Specifics</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link disabled" data-toggle="tab" href="#genericfeatures" role="tab">Generic Features</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link disabled" data-toggle="tab" href="#indicators" role="tab">Indicators</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link disabled" data-toggle="tab" href="#hoistwaydata" role="tab">Hoistway Data</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link disabled" data-toggle="tab" href="#specialfeatures" role="tab">Special Features</a>
+        </li>
+    }
+
+
 </ul>
 <!-- Tab panes -->
 <form asp-action="NewJob" method="post">

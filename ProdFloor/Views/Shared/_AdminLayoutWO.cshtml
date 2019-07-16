@@ -14,32 +14,35 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+        <nav class="navbar navbar-expand-md navbar-dark fixed-top" style="background-color:#1B2831">
+            <a class="navbar-brand" href="\">
+                <img src="~/Images/nidec.png" class="img-fluid" style="width:120px;height:30px;margin-left:36px;margin-right:27px;" alt="Responsive image">
+            </a>
             <a class="navbar-brand" href="\">@(ViewBag.Brand == null ? "ProdFloor" : ViewBag.Brand)</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <div class="collapse navbar-collapse border-left" id="navbarNavDropdown">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item active">
                         <a class="nav-link" href="\">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="\Page1\">All Jobs</a>
+                        <a class="nav-link" asp-controller="Job" asp-action="List">All Jobs</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="\Page1\">My Jobs</a>
+                        <a class="nav-link" asp-controller="Job" asp-action="MyjobsList">My Jobs</a>
                     </li>
                     @*<li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Dropdown link
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                <a class="dropdown-item" href="#">Action</a>
-                                <a class="dropdown-item" href="#">Another action</a>
-                                <a class="dropdown-item" href="#">Something else here</a>
-                            </div>
-                        </li>*@
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Dropdown link
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" href="#">Action</a>
+                        <a class="dropdown-item" href="#">Another action</a>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                    </div>
+                </li>*@
                 </ul>
             </div>
             <div class="nav navbar-nav navbar-right">
@@ -64,7 +67,7 @@
     </header>
     <div class="container-fluid">
         <div class="row">
-            <nav class="col-sm-2 col-md-2 d-none d-sm-block bg-light sidebar">
+            <nav class="col-sm-2 col-md-2 d-none d-sm-block sidebar" style="background-color:#263B49">
                 @if (User.IsInRole("Admin"))
                 {
                     @await Component.InvokeAsync("AdminMenu")

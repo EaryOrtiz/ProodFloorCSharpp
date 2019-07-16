@@ -23,6 +23,7 @@ namespace ProdFloor.Models
         public string Name { get; set; }
 
         public List<JobExtension> _JobExtensions { get; set; }
+        public List<Element> _Elements { get; set; }
 
     }
 }

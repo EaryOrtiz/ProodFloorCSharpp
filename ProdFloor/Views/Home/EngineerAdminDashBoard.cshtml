@@ -1,0 +1,27 @@
+﻿@model DashboardIndexViewModel
+@{
+    ViewBag.Title = "ProdFloor";
+    Layout = "_AdminLayoutWO";
+
+}
+<h2 class="col-sm-10">
+    Admin Dashboard
+</h2>
+<br />
+@if (User.IsInRole("EngAdmin"))
+{
+    @if (Model.OnCrossJobs != null)
+    {
+        @Html.Partial("OngoingJobsEngAdmin", Model)
+    }
+    <br />
+    @if (Model.OnCrossJobs != null)
+    {
+        @Html.Partial("OngoingCrossApprovalsEngAdmin", Model)
+    }
+    <br />
+    @if (Model.OnCrossJobs != null)
+    {
+        @Html.Partial("PendingCrossApprovalsEngAdmin", Model)
+    }
+}

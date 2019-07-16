@@ -14,7 +14,7 @@
 </div>
 <br />
 <table class="table">
-    <thead class="thead-dark">
+    <thead style="background-color:#1B2831;color:#fff">
         <tr>
             <th scope="col">Name</th>
             <th scope="col">Email</th>
@@ -48,7 +48,8 @@
         }
     </tbody>
 </table>
-<page-all page-model="@Model.PagingInfo" page-action="Index" page-classes-enabled="true"
-          page-class="btn" page-class-normal="btn-secondary"
-          page-class-selected="btn-primary" class="btn-group pull-right m-1">
-</page-all>
+<coool-pagination-all page-model="@Model.PagingInfo" page-action="Index" page-classes-enabled="true"
+                      page-class="btn" page-class-normal="btn-secondary"
+                      page-class-selected="btn-primary"
+                      class="btn-group pull-right m-1">
+</coool-pagination-all>

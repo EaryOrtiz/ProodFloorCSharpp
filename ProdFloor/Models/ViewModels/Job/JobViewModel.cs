@@ -16,13 +16,16 @@ namespace ProdFloor.Models.ViewModels
         public GenericFeatures CurrentGenericFeatures { get; set; }
         public Indicator CurrentIndicator { get; set; }
         public HoistWayData CurrentHoistWayData { get; set; }
+        public JobAdditional CurrentJobAdditional { get; set; }
         //public SpecialFeatures CurrentSpecialFeatures { get; set; }
+        public List <JobAdditional> JobAdditionalsList { get; set; }
         public List<SpecialFeatures> SpecialFeatureslist { get; set; }
         public List<PO> POList { get; set; }
         public string CurrentTab { get; set; }
         public string buttonAction { get; set; }
         public int CurrentUserID { get; set; }
         public int fieldID { get; set; }
+        public string JobTypeName { get; set; }
         public string JobFolder { get; set; }
     }
 }

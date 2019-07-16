@@ -1838,6 +1838,32 @@ namespace ProdFloor.Models
                         context.Database.CloseConnection();
                     }
                 }
+
+            if (context.Jobs.Any() && !context.JobAdditionals.Any())
+            {
+                List<Job> JobList = context.Jobs.ToList();
+                foreach (Job job in JobList)
+                {
+                    JobAdditional jobAdditional = context.JobAdditionals.FirstOrDefault(m => m.JobID == job.JobID);
+                    if (jobAdditional == null)
+                    {
+                        context.JobAdditionals.Add(new JobAdditional
+                        {
+                            JobID = job.JobID,
+                            Status = "",
+                            Action = "",
+                            Priority = 0,
+                            ERDate = job.LatestFinishDate
+
+                        });
+                        context.SaveChanges();
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
+            }
         }
     }
 }

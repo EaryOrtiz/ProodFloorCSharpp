@@ -2,9 +2,18 @@
 <h5>@ViewBag.SelectedNavigation</h5>
 <ul class="nav nav-pills flex-column" id="accordion" role="tablist">
     <li class="nav-item">
-        <a class="nav-link" href="\">Dashboard<span class="sr-only">(current)</span></a>
+        <a class="nav-link text-light" href="\"><i class="far fa-chart-bar"></i>&nbsp; Engineer Dashboard<span class="sr-only">(current)</span></a>
+    </li>
+    @if (User.IsInRole("EngAdmin"))
+    {
+        <li class="nav-item nav">
+            <a class="nav-link  text-light" asp-controller="Home" asp-action="EngineerAdminDashBoard"><i class="fas fa-chart-line"></i>&nbsp; Admin Dashboard</a>
+        </li>
+    }
+    <li class="nav-item nav">
+        <a class="nav-link  text-light" asp-controller="Home" asp-action="MorningDashBoard"><i class="fas fa-coffee"></i>&nbsp; Morning</a>
     </li>
     <li class="nav-item nav">
-        <a class="nav-link" asp-controller="Job" asp-action="List" >Jobs</a>
+        <a class="nav-link  text-light" asp-controller="Job" asp-action="List"><i class="fas fa-briefcase"></i>&nbsp; Jobs</a>
     </li>
 </ul>

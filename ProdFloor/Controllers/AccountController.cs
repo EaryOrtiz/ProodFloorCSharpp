@@ -14,7 +14,7 @@ namespace ProdFloor.Controllers
 
         private UserManager<AppUser> userManager;
         private SignInManager<AppUser> signInManager;
-        public int PageSize = 4;
+        public int PageSize = 7;
 
         private IUserValidator<AppUser> userValidator;
 
@@ -79,7 +79,9 @@ namespace ProdFloor.Controllers
 
         public ViewResult Index(int page = 1) => View(new UsersListViewModel
         {
-            Users = userManager.Users,
+            Users = userManager.Users.OrderBy(p => p.UserName)
+                    .Skip((page - 1) * PageSize)
+                    .Take(PageSize),
             PagingInfo = new PagingInfo
             {
                 CurrentPage = page,

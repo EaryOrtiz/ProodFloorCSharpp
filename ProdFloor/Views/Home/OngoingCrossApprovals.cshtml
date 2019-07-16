@@ -1,7 +1,7 @@
 ﻿@model DashboardIndexViewModel
 <h4>Ongoing Cross Approval(s)</h4>
 <table class="table table-sm">
-    <thead class="thead-dark">
+    <thead style="background-color:#1B2831;color:#fff">
         <tr>
             <th scope="col">
                 Job# &nbsp;
@@ -52,6 +52,7 @@
         {
             @foreach (var j in Model.OnCrossJobs)
             {
+                JobAdditional jobAdditional = Model.OnCrossJobAdditionals.FirstOrDefault(m => m.JobID == j.JobID);
                 <tr>
                     <th scope="row">@j.JobNum</th>
                     <td>@j.Name</td>
@@ -59,6 +60,12 @@
                     <td>
                         @if (j.Status == "On Cross Approval")
                         {
+                            if (jobAdditional.Priority == 0)
+                            {<button type="button" title="Normal" class="btn btn-light" style="float:left;background-color:transparent"><i class="fas fa-flag text-success"></i></button>}
+                            if (jobAdditional.Priority == 1)
+                            {<button type="button" title="High Priority" class="btn btn-light"  style="float:left;background-color:transparent"><i class="fas fa-flag text-warning"></i></button>}
+                            if (jobAdditional.Priority == 2)
+                            {<button type="button" title="Short Lead" class="btn btn-light" style="float:left;background-color:transparent"><i class="fas fa-flag text-danger"></i></button>}
                             <form asp-action="SearchAux" asp-controller="Item" method="get">
                                 <button type="submit" value="@j.JobNum" name="JobNum" class="btn btn-light" style="float:left;background-color:transparent">
                                     <i class="fas fa-file-word"></i>
@@ -103,10 +110,10 @@
 </table>
 @if (Model.OnCrossJobs.Count() > 0)
 {
-    <page-link-dash-board current-model="OncrossJobs" my-jobs-page-model="@Model.MyJobsPagingInfo" page-action="Index" page-classes-enabled="true"
+    <cool-pagination-dash-board current-model="OncrossJobs" my-jobs-page-model="@Model.MyJobsPagingInfo" page-action="Index" page-classes-enabled="true"
                           page-class="btn" page-class-normal="btn-secondary" on-cross-page-model="@Model.OnCrossJobsPagingInfo" pending-to-cross-page-model="@Model.PendingToCrossJobsPagingInfo"
                           page-class-selected="btn-primary" my-jobs-url-value="MyJobsPage" on-cross-url-value="OnCrossJobPage"
                           pending-to-cross-url-value="PendingToCrossJobPage" sort="Sort"
                           class="btn-group pull-right m-1">
-    </page-link-dash-board>
+    </cool-pagination-dash-board>
 }

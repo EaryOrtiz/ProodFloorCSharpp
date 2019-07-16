@@ -1,0 +1,79 @@
+﻿@model ProdFloor.Models.ViewModels.Job.JobElementTractionViewModel
+@{
+    Layout = "_AdminLayoutWO";
+}
+<ul class="nav nav-tabs col-sm-10" role="tablist">
+    <li class="nav-item">
+        <a class="nav-link @(Model.CurrentTab == "Main" || Model.CurrentTab == "" || Model.CurrentTab == null ? "active" : " ")" data-toggle="tab" href="#home" role="tab">Job</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link @(Model.CurrentTab == "Element" ? "active" : " ")  @(Model.Element.JobID == 0 ? "disabled" : " ")" data-toggle="tab" href="#element" role="tab">Element Info</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link @(Model.CurrentTab == "ElementTraction" ? "active" : " ")  @(Model.ElementTraction.JobID == 0 ? "disabled" : " ")" data-toggle="tab" href="#elementTraction" role="tab">Element Traction</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link @(Model.CurrentTab == "SpecialFeatures" ? "active" : " ")  @(Model.SpecialFeatureslist[0].JobID == 0 ? "disabled" : " ")" data-toggle="tab" href="#specialfeatures" role="tab">Special Features</a>
+    </li>
+    <li class="nav-item dropdown table-hover">
+        <a class="nav-link  @(Model.CurrentJob.Status == "Incomplete" ? "disabled" : "")" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-ellipsis-v"></i>
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <a asp-action="CopyTractionJob" asp-controller="Job" asp-route-id="@Model.CurrentJob.JobID" class="dropdown-item">Copy Job </a>
+            <input class="btn dropdown-item" value="Copy Location " onclick="myFunction()" />
+            <input class="form-control form-control-sm col-sm-10 dropdown-item" style="margin-right:15px" type="text" id="copy" value="@Model.JobFolder" />
+        </div>
+    </li>
+</ul>
+<!-- Tab panes -->
+<form asp-action="EditTraction" method="post">
+    <div class="tab-content" style="padding:20px">
+        <div class="tab-pane @(Model.CurrentTab == "Main" || Model.CurrentTab == "" || Model.CurrentTab == null ? "active" : " ")" id="home" role="tabpanel">
+            @Html.Partial("JobFormTraction", Model)
+        </div>
+        <div class="tab-pane @(Model.CurrentTab == "Element" ? "active" : " ")" id="element" role="tabpanel">
+            @if (Model.Element.JobID != 0)
+            {
+                @Html.Partial("ElementInfoTractionForm", Model)
+            }
+        </div>
+        <div class="tab-pane @(Model.CurrentTab == "ElementTraction" ? "active" : " ")" id="elementTraction" role="tabpanel">
+            @if (Model.ElementTraction.JobID != 0)
+            {
+                @Html.Partial("ElementTraction", Model)
+            }
+        </div>
+        <div class="tab-pane @(Model.CurrentTab == "SpecialFeatures" ? "active" : " ")" id="specialfeatures" role="tabpanel">
+            @if (Model.SpecialFeatureslist[0].JobID != 0)
+            {
+                @Html.Partial("SpecialFeaturesTractionForm", Model)
+            }
+        </div>
+        <div class="text-center">
+            @if (Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin"))
+            {
+                <button class="btn btn-primary" value="Save" type="submit">Save</button>
+                <a asp-action="List" class="btn btn-secondary">Cancel</a>
+            }
+            else
+            {
+                <a asp-action="List" class="btn btn-success" style="float:left">Back</a>
+            }
+        </div>
+    </div>
+</form>
+<script type="text/javascript">
+
+
+    function myFunction() {
+        /* Get the text field */
+        var copyText = document.getElementById("copy");
+
+        /* Select the text field */
+        copyText.select();
+
+        /* Copy the text inside the text field */
+        document.execCommand("copy");
+    }
+</script>

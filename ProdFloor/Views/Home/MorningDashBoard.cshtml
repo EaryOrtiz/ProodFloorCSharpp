@@ -1,0 +1,20 @@
+﻿@model DashboardIndexViewModel
+@{
+    ViewBag.Title = "ProdFloor";
+    Layout = "_AdminLayoutWO";
+}
+<h2 class="col-sm-10">
+    Morning Dashboard
+</h2>
+<br />
+<form asp-action="MorningReport" method="post">
+    @if (Model.MyJobs != null)
+    {
+        @Html.Partial("OngoingJobsMorning", Model)
+
+        <div class="justify-content-xl-center text-center">
+            <button class="btn btn-info" value="Save" type="submit">Update</button>
+        </div>
+    }
+
+</form>

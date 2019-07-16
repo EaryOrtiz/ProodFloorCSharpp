@@ -27,6 +27,10 @@ namespace ProdFloor.Models
         public IQueryable<CustomSoftware> CustomSoftwares => context.CustomSoftwares;
         public IQueryable<TriggeringCustSoft> TriggeringCustSofts => context.TriggeringCustSofts;
         public IQueryable<CustomFeature> CustomFeatures => context.CustomFeatures;
+        public IQueryable<Element> Elements => context.Elements;
+        public IQueryable<ElementHydro> ElementHydros => context.ElementHydros;
+        public IQueryable<ElementTraction> ElementTractions => context.ElementTractions;
+        public IQueryable<JobAdditional> JobAdditionals => context.JobAdditionals;
 
         public void SaveJob(Job job)
         {
@@ -230,6 +234,28 @@ namespace ProdFloor.Models
                     dbEntry.IndicatorsVoltage = indicator.IndicatorsVoltage;
                     dbEntry.IndicatorsVoltageType = indicator.IndicatorsVoltageType;
                     dbEntry.JobID = indicator.JobID;
+                    dbEntry.HallPIAll = indicator.HallPIAll;
+                }
+            }
+            context.SaveChanges();
+        }
+        public void SaveJobAdditional(JobAdditional jobAdditional)
+        {
+            if (jobAdditional.JobAdditionalID == 0)
+            {
+                context.JobAdditionals.Add(jobAdditional);
+            }
+            else
+            {
+                JobAdditional dbEntry = context.JobAdditionals
+                .FirstOrDefault(p => p.JobAdditionalID == jobAdditional.JobAdditionalID);
+                if (dbEntry != null)
+                {
+                    dbEntry.JobID = jobAdditional.JobID;
+                    dbEntry.Priority = jobAdditional.Priority;
+                    dbEntry.Action = jobAdditional.Action;
+                    dbEntry.Status = jobAdditional.Status;
+                    dbEntry.ERDate = jobAdditional.ERDate;
                 }
             }
             context.SaveChanges();
@@ -288,6 +314,7 @@ namespace ProdFloor.Models
             }
             context.SaveChanges();
         }
+
         public void SaveSpecialFeatures(SpecialFeatures specialFeatures)
         {
             if (specialFeatures != null && specialFeatures.SpecialFeaturesID == 0)
@@ -405,6 +432,117 @@ namespace ProdFloor.Models
             context.SaveChanges();
 
         }
+        public void SaveElement(Element element)
+        {
+            if (element.ElementID == 0)
+            {
+                context.Elements.Add(element);
+            }
+            else
+            {
+                Element dbEntry = context.Elements
+                .FirstOrDefault(p => p.ElementID == element.ElementID);
+                if (dbEntry != null)
+                {
+                    dbEntry.JobID = element.JobID;
+                    dbEntry.DoorGate = element.DoorGate;
+                    dbEntry.DoorOperatorID = element.DoorOperatorID;
+
+                    dbEntry.INA = element.INA;
+                    dbEntry.INCP = element.INCP;
+                    dbEntry.CarKey = element.CarKey;
+                    dbEntry.CarCardReader = element.CarCardReader;
+                    dbEntry.CRO = element.CRO;
+                    dbEntry.HallKey = element.HallKey;
+                    dbEntry.HallCardReader = element.HallCardReader;
+                    dbEntry.HCRO = element.HCRO;
+
+                    dbEntry.HAPS = element.HAPS;
+                    dbEntry.LoadWeigher = element.LoadWeigher;
+                    dbEntry.EP = element.EP;
+                    dbEntry.EMT = element.EMT;
+                    dbEntry.PSS = element.PSS;
+                    dbEntry.PTFLD = element.PTFLD;
+                    dbEntry.VCI = element.VCI;
+                    dbEntry.DHLD = element.DHLD;
+                    dbEntry.CReg = element.CReg;
+                    dbEntry.Egress = element.Egress;
+                    dbEntry.PHECutOut = element.PHECutOut;
+                    dbEntry.CTINSPST = element.CTINSPST;
+                    dbEntry.Traveler = element.Traveler;
+                    dbEntry.Capacity = element.Capacity;
+                    dbEntry.Speed = element.Speed;
+                    dbEntry.Voltage = element.Voltage;
+                    dbEntry.Phase = element.Phase;
+                    dbEntry.Frequency = element.Frequency;
+                    dbEntry.CallEnable = element.CallEnable;
+                    dbEntry.CTL = element.CTL;
+                    dbEntry.CTF = element.CTF;
+                    dbEntry.CSD = element.CSD;
+                    dbEntry.EQ = element.EQ;
+                    dbEntry.LJ = element.LJ;
+                    dbEntry.LOS = element.LOS;
+                    dbEntry.PFGE = element.PFGE;
+                    dbEntry.FRON2 = element.FRON2;
+
+                }
+            }
+            context.SaveChanges();
+        }
+        public void SaveElementHydro(ElementHydro element)
+        {
+            if (element.ElementHydroID == 0)
+            {
+                context.ElementHydros.Add(element);
+            }
+            else
+            {
+                ElementHydro dbEntry = context.ElementHydros
+                .FirstOrDefault(p => p.ElementHydroID == element.ElementHydroID);
+                if (dbEntry != null)
+                {
+                    dbEntry.JobID = element.JobID;
+
+                    dbEntry.Starter = element.Starter;
+                    dbEntry.HP = element.HP;
+                    dbEntry.FLA = element.FLA;
+                    dbEntry.SPH = element.SPH;
+                    dbEntry.ValveBrand = element.ValveBrand;
+                }
+            }
+            context.SaveChanges();
+        }
+        public void SaveElementTraction(ElementTraction element)
+        {
+            if (element.ElementTractionID == 0)
+            {
+                context.ElementTractions.Add(element);
+            }
+            else
+            {
+                ElementTraction dbEntry = context.ElementTractions
+                .FirstOrDefault(p => p.ElementTractionID == element.ElementTractionID);
+                if (dbEntry != null)
+                {
+                    dbEntry.JobID = element.JobID;
+
+                    dbEntry.MachineLocation = element.MachineLocation;
+                    dbEntry.VVVF = element.VVVF;
+                    dbEntry.MotorBrand = element.MotorBrand;
+                    dbEntry.HP = element.HP;
+                    dbEntry.FLA = element.FLA;
+                    dbEntry.Encoder = element.Encoder;
+                    dbEntry.ISO = element.ISO;
+                    dbEntry.PickVoltage = element.PickVoltage;
+                    dbEntry.HoldVoltage = element.HoldVoltage;
+                    dbEntry.Resistance = element.Resistance;
+                    dbEntry.Current = element.Current;
+                    dbEntry.Contact = element.Contact;
+
+                }
+            }
+            context.SaveChanges();
+        }
 
         public Job DeleteJob(int JobID)
         {
@@ -434,6 +572,8 @@ namespace ProdFloor.Models
             SpecialFeatures specialFeatures = context.SpecialFeatures
                 .FirstOrDefault(p => p.JobID == JobID);
             PO pos = context.POs
+                .FirstOrDefault(p => p.JobID == JobID);
+            JobAdditional additional = context.JobAdditionals
                 .FirstOrDefault(p => p.JobID == JobID);
 
             try
@@ -467,6 +607,11 @@ namespace ProdFloor.Models
                 if (hoistWayData != null)
                 {
                     context.HoistWayDatas.Remove(hoistWayData);
+                    context.SaveChanges();
+                }
+                if (additional != null)
+                {
+                    context.JobAdditionals.Remove(additional);
                     context.SaveChanges();
                 }
                 if (specialFeatures != null)
@@ -532,6 +677,17 @@ namespace ProdFloor.Models
             }
             return dbEntry;
         }
+        public JobAdditional DeleteJobAdditional(int JobAdditionalID)
+        {
+            JobAdditional dbEntry = context.JobAdditionals
+                .FirstOrDefault(p => p.JobAdditionalID == JobAdditionalID);
+            if (dbEntry != null)
+            {
+                context.JobAdditionals.Remove(dbEntry);
+                context.SaveChanges();
+            }
+            return dbEntry;
+        }
         public HoistWayData DeleteHoistWayData(int hoistWayDataID)
         {
             HoistWayData dbEntry = context.HoistWayDatas
@@ -543,6 +699,43 @@ namespace ProdFloor.Models
             }
             return dbEntry;
         }
+
+        public Element DeleteElement(int ElementID)
+        {
+            Element dbEntry = context.Elements
+                .FirstOrDefault(p => p.ElementID == ElementID);
+            if (dbEntry != null)
+            {
+                context.Elements.Remove(dbEntry);
+                context.SaveChanges();
+            }
+            return dbEntry;
+        }
+        public ElementHydro DeleteElementHydro(int ElementHydroID)
+        {
+            ElementHydro dbEntry = context.ElementHydros
+                .FirstOrDefault(p => p.ElementHydroID == ElementHydroID);
+            if (dbEntry != null)
+            {
+                context.ElementHydros.Remove(dbEntry);
+                context.SaveChanges();
+            }
+            return dbEntry;
+        }
+        public ElementTraction DeleteElementTraction(int ElementTractionID)
+        {
+            ElementTraction dbEntry = context.ElementTractions
+                .FirstOrDefault(p => p.ElementTractionID == ElementTractionID);
+            if (dbEntry != null)
+            {
+                context.ElementTractions.Remove(dbEntry);
+                context.SaveChanges();
+            }
+            return dbEntry;
+        }
+
+
+
         public SpecialFeatures DeleteSpecialFeatures(int specialFeaturesID)
         {
             SpecialFeatures dbEntry = context.SpecialFeatures
@@ -693,6 +886,22 @@ namespace ProdFloor.Models
                     }
                 }
             }
+            if (viewModelToSave.CurrentJobAdditional != null)
+            {
+                if (viewModelToSave.CurrentJobAdditional.JobID != 0)
+                {
+                    JobAdditional jobAdditional = JobAdditionals.FirstOrDefault(j => j.JobID == viewModelToSave.CurrentJobAdditional.JobID);
+                    if (jobAdditional == null)
+                    {
+                        SaveJobAdditional(viewModelToSave.CurrentJobAdditional);
+                    }
+                    else
+                    {
+                        viewModelToSave.CurrentJobAdditional.JobAdditionalID = jobAdditional.JobAdditionalID;
+                        SaveJobAdditional(viewModelToSave.CurrentJobAdditional);
+                    }
+                }
+            }
             if (viewModelToSave.CurrentHoistWayData != null)
             {
                 if (viewModelToSave.CurrentHoistWayData.JobID != 0)
@@ -768,6 +977,257 @@ namespace ProdFloor.Models
                     }
                 }
             }
+        }
+
+        public void SaveEngElementHydroJobView(JobElementHydroViewModel viewModelToSave)
+        {
+            SaveJob(viewModelToSave.CurrentJob);
+            if (viewModelToSave.Element != null)
+            {
+                if (viewModelToSave.Element.JobID != 0)
+                {
+                    Element element = Elements.FirstOrDefault(j => j.JobID == viewModelToSave.Element.ElementID);
+                    if (element == null)
+                    {
+                        SaveElement(viewModelToSave.Element);
+                    }
+                    else
+                    {
+                        viewModelToSave.Element.ElementID = element.ElementID;
+                        SaveElement(viewModelToSave.Element);
+                    }
+                }
+            }
+            if (viewModelToSave.ElementHydro != null)
+            {
+                if (viewModelToSave.ElementHydro.JobID != 0)
+                {
+                    ElementHydro hydro = ElementHydros.FirstOrDefault(j => j.JobID == viewModelToSave.ElementHydro.JobID);
+                    if (hydro == null)
+                    {
+                        SaveElementHydro(viewModelToSave.ElementHydro);
+                    }
+                    else
+                    {
+                        viewModelToSave.ElementHydro.ElementHydroID = hydro.ElementHydroID;
+                        SaveElementHydro(viewModelToSave.ElementHydro);
+                    }
+                }
+            }
+
+            if (viewModelToSave.SpecialFeatureslist != null)
+            {
+                for (int i = 0; i < viewModelToSave.SpecialFeatureslist.Count; i++)
+                {
+                    if (viewModelToSave.SpecialFeatureslist[i].JobID != 0)
+                    {
+                        if (viewModelToSave.SpecialFeatureslist == null)
+                        {
+                            SaveSpecialFeatures(viewModelToSave.SpecialFeatureslist[i]);
+                        }
+                        else
+                        {
+                            viewModelToSave.SpecialFeatureslist[i].SpecialFeaturesID = viewModelToSave.SpecialFeatureslist[i].SpecialFeaturesID;
+                            SaveSpecialFeatures(viewModelToSave.SpecialFeatureslist[i]);
+                        }
+                    }
+                }
+            }
+            if (viewModelToSave.POList != null)
+            {
+                for (int i = 0; i < viewModelToSave.POList.Count; i++)
+                {
+                    if (viewModelToSave.POList[i].JobID != 0)
+                    {
+                        if (viewModelToSave.POList == null)
+                        {
+                            SavePO(viewModelToSave.POList[i]);
+                        }
+                        else
+                        {
+                            viewModelToSave.POList[i].POID = viewModelToSave.POList[i].POID;
+                            SavePO(viewModelToSave.POList[i]);
+                        }
+                    }
+                }
+            }
+        }
+        public void SaveEngElementTractionJobView(JobElementTractionViewModel viewModelToSave)
+        {
+            SaveJob(viewModelToSave.CurrentJob);
+            if (viewModelToSave.Element != null)
+            {
+                if (viewModelToSave.Element.JobID != 0)
+                {
+                    Element element = Elements.FirstOrDefault(j => j.JobID == viewModelToSave.Element.ElementID);
+                    if (element == null)
+                    {
+                        SaveElement(viewModelToSave.Element);
+                    }
+                    else
+                    {
+                        viewModelToSave.Element.ElementID = element.ElementID;
+                        SaveElement(viewModelToSave.Element);
+                    }
+                }
+            }
+            if (viewModelToSave.ElementTraction != null)
+            {
+                if (viewModelToSave.ElementTraction.JobID != 0)
+                {
+                    ElementTraction hydro = ElementTractions.FirstOrDefault(j => j.JobID == viewModelToSave.ElementTraction.JobID);
+                    if (hydro == null)
+                    {
+                        SaveElementTraction(viewModelToSave.ElementTraction);
+                    }
+                    else
+                    {
+                        viewModelToSave.ElementTraction.ElementTractionID = hydro.ElementTractionID;
+                        SaveElementTraction(viewModelToSave.ElementTraction);
+                    }
+                }
+            }
+
+            if (viewModelToSave.SpecialFeatureslist != null)
+            {
+                for (int i = 0; i < viewModelToSave.SpecialFeatureslist.Count; i++)
+                {
+                    if (viewModelToSave.SpecialFeatureslist[i].JobID != 0)
+                    {
+                        if (viewModelToSave.SpecialFeatureslist == null)
+                        {
+                            SaveSpecialFeatures(viewModelToSave.SpecialFeatureslist[i]);
+                        }
+                        else
+                        {
+                            viewModelToSave.SpecialFeatureslist[i].SpecialFeaturesID = viewModelToSave.SpecialFeatureslist[i].SpecialFeaturesID;
+                            SaveSpecialFeatures(viewModelToSave.SpecialFeatureslist[i]);
+                        }
+                    }
+                }
+            }
+
+            if (viewModelToSave.POList != null)
+            {
+                for (int i = 0; i < viewModelToSave.POList.Count; i++)
+                {
+                    if (viewModelToSave.POList[i].JobID != 0)
+                    {
+                        if (viewModelToSave.POList == null)
+                        {
+                            SavePO(viewModelToSave.POList[i]);
+                        }
+                        else
+                        {
+                            viewModelToSave.POList[i].POID = viewModelToSave.POList[i].POID;
+                            SavePO(viewModelToSave.POList[i]);
+                        }
+                    }
+                }
+            }
+
+        }
+
+
+        public Job DeleteEngElementHydroJob(int JobID)
+        {
+            Job dbEntry = context.Jobs
+                .FirstOrDefault(p => p.JobID == JobID);
+            Element element = context.Elements
+                .FirstOrDefault(p => p.JobID == JobID);
+            ElementHydro hydro= context.ElementHydros
+                .FirstOrDefault(p => p.JobID == JobID);
+            SpecialFeatures specialFeatures = context.SpecialFeatures
+                .FirstOrDefault(p => p.JobID == JobID);
+            PO pos = context.POs
+                .FirstOrDefault(p => p.JobID == JobID);
+
+            try
+            {
+
+                if (dbEntry != null)
+                {
+                    context.Jobs.Remove(dbEntry);
+                    context.SaveChanges();
+                }
+                if (element != null)
+                {
+                    context.Elements.Remove(element);
+                    context.SaveChanges();
+                }
+                if (hydro != null)
+                {
+                    context.ElementHydros.Remove(hydro);
+                    context.SaveChanges();
+                }
+                if (specialFeatures != null)
+                {
+                    context.SpecialFeatures.Remove(specialFeatures);
+                    context.SaveChanges();
+                }
+
+                if (pos != null)
+                {
+                    context.POs.Remove(pos);
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+
+            }
+
+            return dbEntry;
+        }
+        public Job DeleteEngElementTractionJob(int JobID)
+        {
+            Job dbEntry = context.Jobs
+                .FirstOrDefault(p => p.JobID == JobID);
+            Element element = context.Elements
+                .FirstOrDefault(p => p.JobID == JobID);
+            ElementTraction traction = context.ElementTractions
+                .FirstOrDefault(p => p.JobID == JobID);
+            SpecialFeatures specialFeatures = context.SpecialFeatures
+                .FirstOrDefault(p => p.JobID == JobID);
+            PO pos = context.POs
+                .FirstOrDefault(p => p.JobID == JobID);
+
+            try
+            {
+
+                if (dbEntry != null)
+                {
+                    context.Jobs.Remove(dbEntry);
+                    context.SaveChanges();
+                }
+                if (element != null)
+                {
+                    context.Elements.Remove(element);
+                    context.SaveChanges();
+                }
+                if (traction != null)
+                {
+                    context.ElementTractions.Remove(traction);
+                    context.SaveChanges();
+                }
+                if (specialFeatures != null)
+                {
+                    context.SpecialFeatures.Remove(specialFeatures);
+                    context.SaveChanges();
+                }
+                if (pos != null)
+                {
+                    context.POs.Remove(pos);
+                    context.SaveChanges();
+                }
+
+            }
+            catch (Exception e)
+            {
+
+            }
+
+            return dbEntry;
         }
     }
 }
