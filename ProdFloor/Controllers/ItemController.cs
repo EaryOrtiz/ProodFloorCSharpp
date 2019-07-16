@@ -365,7 +365,12 @@ namespace ProdFloor.Controllers
             if (ViewModel.NumJobSearch != 0)
             {
                 var JobSearch = jobSearch.FirstOrDefault(m => m.JobNum == ViewModel.NumJobSearch);
-
+                if (JobTypeName(JobSearch.JobTypeID) != "M2000")
+                {
+                    TempData["alert"] = $"alert-danger";
+                    TempData["message"] = $"Worksheet not available for the jobtype: {JobTypeName(JobSearch.JobTypeID)}";
+                    return RedirectToAction("Index", "Home");
+                }
 
                 if (JobSearch != null)
                 {
@@ -1132,6 +1137,11 @@ namespace ProdFloor.Controllers
             }
 
 
+        }
+
+        public string JobTypeName(int ID)
+        {
+            return repository.JobTypes.FirstOrDefault(m => m.JobTypeID == ID).Name;
         }
     }
 }
