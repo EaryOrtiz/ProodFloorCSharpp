@@ -19,5 +19,6 @@ namespace ProdFloor.Models
         public string Name { get; set; }
 
         public List<HoistWayData> _HoistWayDatas { get; set; }
+        public List<Element> _Elements { get; set; }
     }
 }

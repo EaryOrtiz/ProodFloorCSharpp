@@ -761,6 +761,10 @@ namespace ProdFloor.Models
         [Required(ErrorMessage = "Please enter the LoadWeigher")]
         public string LoadWeigher { get; set; }
 
+        [Required(ErrorMessage = "Please enter the landing system")]
+        [Display(Name = "Landing System")]
+        public int LandingSystemID { get; set; }
+
     }
 
     public class ElementHydro

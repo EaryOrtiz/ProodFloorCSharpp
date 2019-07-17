@@ -484,6 +484,7 @@ namespace ProdFloor.Models
                     dbEntry.LOS = element.LOS;
                     dbEntry.PFGE = element.PFGE;
                     dbEntry.FRON2 = element.FRON2;
+                    dbEntry.LandingSystemID = element.LandingSystemID;
 
                 }
             }
