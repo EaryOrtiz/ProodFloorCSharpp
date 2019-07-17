@@ -1103,6 +1103,529 @@ namespace ProdFloor.Infrastructure
         }
     }
 
+    public class CoolPaginationSteps : TagHelper
+    {
+        private IUrlHelperFactory urlHelperFactory;
+
+        public CoolPaginationSteps(IUrlHelperFactory helperFactory)
+        {
+            urlHelperFactory = helperFactory;
+        }
+
+        [ViewContext]
+        [HtmlAttributeNotBound]
+        public ViewContext ViewContext { get; set; }
+
+
+
+        public string PageAction { get; set; }
+
+        [HtmlAttributeName(DictionaryAttributePrefix = "page-url-")]
+        public Dictionary<string, object> PageUrlValues { get; set; }
+            = new Dictionary<string, object>();
+
+        public bool PageClassesEnabled { get; set; } = false;
+        public string PageClass { get; set; }
+        public string PageClassNormal { get; set; }
+        public string PageClassSelected { get; set; }
+
+        public PagingInfo ElmHydroPagingInfo { get; set; }
+        public PagingInfo ElmTractionPagingInfo { get; set; }
+        public PagingInfo M2000PagingInfo { get; set; }
+        public PagingInfo M4000PagingInfo { get; set; }
+        public string ElmHydroUrlValue { get; set; }
+        public string ElmTractionUrlValue { get; set; }
+        public string M2000UrlValue { get; set; }
+        public string M4000UrlValue { get; set; }
+        public string JobTypeSelected { get; set; }
+        public string CurrentModel { get; set; }
+
+        public override void Process(TagHelperContext context,
+        TagHelperOutput output)
+        {
+            if (!string.IsNullOrEmpty(CurrentModel))
+            {
+                switch (CurrentModel)
+                {
+                    case "Hydro":
+                        IUrlHelper urlHelper = urlHelperFactory.GetUrlHelper(ViewContext);
+                        TagBuilder result = new TagBuilder("div");
+                        TagBuilder tag = new TagBuilder("a");
+                        TagBuilder tag1 = new TagBuilder("a");
+                        TagBuilder tag4 = new TagBuilder("a");
+                        TagBuilder tag5 = new TagBuilder("a");
+                        /*************************************************************************/
+                        PageUrlValues[ElmHydroUrlValue] = 1;
+                        PageUrlValues[ElmTractionUrlValue] = ElmTractionPagingInfo.CurrentPage;
+                        PageUrlValues[M2000UrlValue] = M2000PagingInfo.CurrentPage;
+                        PageUrlValues[M4000UrlValue] = M4000PagingInfo.CurrentPage;
+                        PageUrlValues[JobTypeSelected] = ElmHydroPagingInfo.JobTypeName;
+                        tag.Attributes["href"] = urlHelper.Action(PageAction, PageUrlValues);
+                        if (PageClassesEnabled)
+                        {
+                            tag.AddCssClass(PageClass);
+                            tag.AddCssClass(PageClassSelected);
+                        }
+                        tag.InnerHtml.Append("<<");
+                        result.InnerHtml.AppendHtml(tag);
+                        output.Content.AppendHtml(result.InnerHtml);
+                        /*************************************************************************/
+                        PageUrlValues[ElmHydroUrlValue] = (ElmHydroPagingInfo.CurrentPage - 1) != 0 ? (ElmHydroPagingInfo.CurrentPage - 1) : 1;
+                        PageUrlValues[ElmTractionUrlValue] = ElmTractionPagingInfo.CurrentPage;
+                        PageUrlValues[M2000UrlValue] = M2000PagingInfo.CurrentPage;
+                        PageUrlValues[M4000UrlValue] = M4000PagingInfo.CurrentPage;
+                        PageUrlValues[JobTypeSelected] = ElmHydroPagingInfo.JobTypeName;
+                        tag1.Attributes["href"] = urlHelper.Action(PageAction, PageUrlValues);
+                        if (PageClassesEnabled)
+                        {
+                            tag1.AddCssClass(PageClass);
+                            tag1.AddCssClass(PageClassSelected);
+                        }
+                        tag1.InnerHtml.Append("<");
+                        result.InnerHtml.AppendHtml(tag1);
+                        output.Content.AppendHtml(result.InnerHtml);
+                        /*************************************************************************/
+                        List<int> Pages = new List<int>();
+                        int countPages = ElmHydroPagingInfo.CurrentPage;
+                        while ((countPages >= ElmHydroPagingInfo.CurrentPage - 3 && countPages != 0))
+                        {
+                            Pages.Add(countPages);
+                            countPages--;
+                        }
+                        Pages.Reverse();
+                        int pagesRest = 4 - Pages.Count;
+                        for (int i = Pages[0]; i <= Pages.Last(); i++)
+                        {
+                            TagBuilder tag2 = new TagBuilder("a");
+                            PageUrlValues[ElmHydroUrlValue] = i;
+                            PageUrlValues[ElmTractionUrlValue] = ElmTractionPagingInfo.CurrentPage;
+                            PageUrlValues[M2000UrlValue] = M2000PagingInfo.CurrentPage;
+                            PageUrlValues[M4000UrlValue] = M4000PagingInfo.CurrentPage;
+                            PageUrlValues[JobTypeSelected] = ElmHydroPagingInfo.JobTypeName;
+                            tag2.Attributes["href"] = urlHelper.Action(PageAction, PageUrlValues);
+                            if (PageClassesEnabled)
+                            {
+                                tag2.AddCssClass(PageClass);
+                                tag2.AddCssClass(i == ElmHydroPagingInfo.CurrentPage
+                                ? "btn-info" : PageClassNormal);
+                            }
+                            tag2.InnerHtml.Append(i.ToString());
+                            result.InnerHtml.AppendHtml(tag2);
+                        }
+                        output.Content.AppendHtml(result.InnerHtml);
+                        /*************************************************************************/
+                        for (int i = ElmHydroPagingInfo.CurrentPage + 1; (i <= ElmHydroPagingInfo.CurrentPage + 3 + pagesRest && i <= ElmHydroPagingInfo.TotalPages); i++)
+                        {
+                            TagBuilder tag3 = new TagBuilder("a");
+                            PageUrlValues[ElmHydroUrlValue] = i;
+                            PageUrlValues[ElmTractionUrlValue] = ElmTractionPagingInfo.CurrentPage;
+                            PageUrlValues[M2000UrlValue] = M2000PagingInfo.CurrentPage;
+                            PageUrlValues[M4000UrlValue] = M4000PagingInfo.CurrentPage;
+                            PageUrlValues[JobTypeSelected] = ElmHydroPagingInfo.JobTypeName;
+                            tag3.Attributes["href"] = urlHelper.Action(PageAction, PageUrlValues);
+                            if (PageClassesEnabled)
+                            {
+                                tag3.AddCssClass(PageClass);
+                                tag3.AddCssClass(i == ElmHydroPagingInfo.CurrentPage
+                                ? "btn-info" : PageClassNormal);
+                            }
+                            tag3.InnerHtml.Append(i.ToString());
+                            result.InnerHtml.AppendHtml(tag3);
+                        }
+                        output.Content.AppendHtml(result.InnerHtml);
+                        /*************************************************************************/
+                        PageUrlValues[ElmHydroUrlValue] = (ElmHydroPagingInfo.CurrentPage + 1) <= ElmHydroPagingInfo.TotalPages ? (ElmHydroPagingInfo.CurrentPage + 1) : ElmHydroPagingInfo.TotalPages;
+                        PageUrlValues[ElmTractionUrlValue] = ElmTractionPagingInfo.CurrentPage;
+                        PageUrlValues[M2000UrlValue] = M2000PagingInfo.CurrentPage;
+                        PageUrlValues[M4000UrlValue] = M4000PagingInfo.CurrentPage;
+                        PageUrlValues[JobTypeSelected] = ElmHydroPagingInfo.JobTypeName;
+                        tag4.Attributes["href"] = urlHelper.Action(PageAction, PageUrlValues);
+                        if (PageClassesEnabled)
+                        {
+                            tag4.AddCssClass(PageClass);
+                            tag4.AddCssClass(PageClassSelected);
+                        }
+                        tag4.InnerHtml.Append(">");
+                        result.InnerHtml.AppendHtml(tag4);
+                        output.Content.AppendHtml(result.InnerHtml);
+                        /*************************************************************************/
+                        PageUrlValues[ElmHydroUrlValue] = ElmHydroPagingInfo.TotalPages;
+                        PageUrlValues[ElmTractionUrlValue] = ElmTractionPagingInfo.CurrentPage;
+                        PageUrlValues[M2000UrlValue] = M2000PagingInfo.CurrentPage;
+                        PageUrlValues[M4000UrlValue] = M4000PagingInfo.CurrentPage;
+                        PageUrlValues[JobTypeSelected] = ElmHydroPagingInfo.JobTypeName;
+                        tag5.Attributes["href"] = urlHelper.Action(PageAction, PageUrlValues);
+                        if (PageClassesEnabled)
+                        {
+                            tag5.AddCssClass(PageClass);
+                            tag5.AddCssClass(PageClassSelected);
+                        }
+                        tag5.InnerHtml.Append(">>");
+                        result.InnerHtml.AppendHtml(tag5);
+                        output.Content.AppendHtml(result.InnerHtml);
+                        break;
+
+                    case "Traction":
+                        IUrlHelper urlHelper2 = urlHelperFactory.GetUrlHelper(ViewContext);
+                        TagBuilder result2 = new TagBuilder("div");
+                        TagBuilder tag6 = new TagBuilder("a");
+                        TagBuilder tag7 = new TagBuilder("a");
+                        TagBuilder tag8 = new TagBuilder("a");
+                        TagBuilder tag9 = new TagBuilder("a");
+                        /*************************************************************************/
+                        PageUrlValues[ElmHydroUrlValue] = ElmHydroPagingInfo.CurrentPage;
+                        PageUrlValues[ElmTractionUrlValue] = 1;
+                        PageUrlValues[M2000UrlValue] = M2000PagingInfo.CurrentPage;
+                        PageUrlValues[M4000UrlValue] = M4000PagingInfo.CurrentPage;
+                        PageUrlValues[JobTypeSelected] = ElmTractionPagingInfo.JobTypeName;
+                        tag6.Attributes["href"] = urlHelper2.Action(PageAction, PageUrlValues);
+                        if (PageClassesEnabled)
+                        {
+                            tag6.AddCssClass(PageClass);
+                            tag6.AddCssClass(PageClassSelected);
+                        }
+                        tag6.InnerHtml.Append("<<");
+                        result2.InnerHtml.AppendHtml(tag6);
+                        output.Content.AppendHtml(result2.InnerHtml);
+                        /*************************************************************************/
+                        PageUrlValues[ElmHydroUrlValue] = ElmHydroPagingInfo.CurrentPage;
+                        PageUrlValues[ElmTractionUrlValue] = (ElmTractionPagingInfo.CurrentPage - 1) != 0 ? (ElmTractionPagingInfo.CurrentPage - 1) : 1;
+                        PageUrlValues[M2000UrlValue] = M2000PagingInfo.CurrentPage;
+                        PageUrlValues[M4000UrlValue] = M4000PagingInfo.CurrentPage;
+                        PageUrlValues[JobTypeSelected] = ElmTractionPagingInfo.JobTypeName;
+                        tag7.Attributes["href"] = urlHelper2.Action(PageAction, PageUrlValues);
+                        if (PageClassesEnabled)
+                        {
+                            tag7.AddCssClass(PageClass);
+                            tag7.AddCssClass(PageClassSelected);
+                        }
+                        tag7.InnerHtml.Append("<");
+                        result2.InnerHtml.AppendHtml(tag7);
+                        output.Content.AppendHtml(result2.InnerHtml);
+                        /*************************************************************************/
+                        List<int> Pages2 = new List<int>();
+                        int countPages2 = ElmTractionPagingInfo.CurrentPage;
+                        while ((countPages2 >= ElmTractionPagingInfo.CurrentPage - 3 && countPages2 != 0))
+                        {
+                            Pages2.Add(countPages2);
+                            countPages2--;
+                        }
+                        Pages2.Reverse();
+                        int pagesRest2 = 4 - Pages2.Count;
+                        for (int i = Pages2[0]; i <= Pages2.Last(); i++)
+                        {
+                            TagBuilder tag2 = new TagBuilder("a");
+                            PageUrlValues[ElmHydroUrlValue] = ElmHydroPagingInfo.CurrentPage;
+                            PageUrlValues[ElmTractionUrlValue] = i;
+                            PageUrlValues[M2000UrlValue] = M2000PagingInfo.CurrentPage;
+                            PageUrlValues[M4000UrlValue] = M4000PagingInfo.CurrentPage;
+                            PageUrlValues[JobTypeSelected] = ElmTractionPagingInfo.JobTypeName;
+                            tag2.Attributes["href"] = urlHelper2.Action(PageAction, PageUrlValues);
+                            if (PageClassesEnabled)
+                            {
+                                tag2.AddCssClass(PageClass);
+                                tag2.AddCssClass(i == ElmTractionPagingInfo.CurrentPage
+                                ? "btn-info" : PageClassNormal);
+                            }
+                            tag2.InnerHtml.Append(i.ToString());
+                            result2.InnerHtml.AppendHtml(tag2);
+                        }
+                        output.Content.AppendHtml(result2.InnerHtml);
+                        /*************************************************************************/
+                        for (int i = ElmTractionPagingInfo.CurrentPage + 1; (i <= ElmTractionPagingInfo.CurrentPage + 3 + pagesRest2 && i <= ElmTractionPagingInfo.TotalPages); i++)
+                        {
+                            TagBuilder tag3 = new TagBuilder("a");
+                            PageUrlValues[ElmHydroUrlValue] = ElmHydroPagingInfo.CurrentPage;
+                            PageUrlValues[ElmTractionUrlValue] = i;
+                            PageUrlValues[M2000UrlValue] = M2000PagingInfo.CurrentPage;
+                            PageUrlValues[M4000UrlValue] = M4000PagingInfo.CurrentPage;
+                            PageUrlValues[JobTypeSelected] = ElmTractionPagingInfo.JobTypeName;
+                            tag3.Attributes["href"] = urlHelper2.Action(PageAction, PageUrlValues);
+                            if (PageClassesEnabled)
+                            {
+                                tag3.AddCssClass(PageClass);
+                                tag3.AddCssClass(i == ElmTractionPagingInfo.CurrentPage
+                                ? "btn-info" : PageClassNormal);
+                            }
+                            tag3.InnerHtml.Append(i.ToString());
+                            result2.InnerHtml.AppendHtml(tag3);
+                        }
+                        output.Content.AppendHtml(result2.InnerHtml);
+                        /*************************************************************************/
+                        PageUrlValues[ElmHydroUrlValue] = ElmHydroPagingInfo.CurrentPage;
+                        PageUrlValues[ElmTractionUrlValue] = (ElmTractionPagingInfo.CurrentPage + 1) <= ElmTractionPagingInfo.TotalPages ? (ElmTractionPagingInfo.CurrentPage + 1) : ElmTractionPagingInfo.TotalPages;
+                        PageUrlValues[M2000UrlValue] = M2000PagingInfo.CurrentPage;
+                        PageUrlValues[M4000UrlValue] = M4000PagingInfo.CurrentPage;
+                        PageUrlValues[JobTypeSelected] = ElmTractionPagingInfo.JobTypeName;
+                        tag8.Attributes["href"] = urlHelper2.Action(PageAction, PageUrlValues);
+                        if (PageClassesEnabled)
+                        {
+                            tag8.AddCssClass(PageClass);
+                            tag8.AddCssClass(PageClassSelected);
+                        }
+                        tag8.InnerHtml.Append(">");
+                        result2.InnerHtml.AppendHtml(tag8);
+                        output.Content.AppendHtml(result2.InnerHtml);
+                        /*************************************************************************/
+                        PageUrlValues[ElmHydroUrlValue] = ElmHydroPagingInfo.CurrentPage;
+                        PageUrlValues[ElmTractionUrlValue] = ElmTractionPagingInfo.TotalPages;
+                        PageUrlValues[M2000UrlValue] = M2000PagingInfo.CurrentPage;
+                        PageUrlValues[M4000UrlValue] = M4000PagingInfo.CurrentPage;
+                        PageUrlValues[JobTypeSelected] = ElmTractionPagingInfo.JobTypeName;
+                        tag9.Attributes["href"] = urlHelper2.Action(PageAction, PageUrlValues);
+                        if (PageClassesEnabled)
+                        {
+                            tag9.AddCssClass(PageClass);
+                            tag9.AddCssClass(PageClassSelected);
+                        }
+                        tag9.InnerHtml.Append(">>");
+                        result2.InnerHtml.AppendHtml(tag9);
+                        output.Content.AppendHtml(result2.InnerHtml);
+                        break;
+
+                    case "M2000":
+
+                        IUrlHelper urlHelper3 = urlHelperFactory.GetUrlHelper(ViewContext);
+                        TagBuilder result3 = new TagBuilder("div");
+                        TagBuilder tag10 = new TagBuilder("a");
+                        TagBuilder tag11 = new TagBuilder("a");
+                        TagBuilder tag12 = new TagBuilder("a");
+                        TagBuilder tag13 = new TagBuilder("a");
+                        /*************************************************************************/
+                        PageUrlValues[ElmHydroUrlValue] = ElmHydroPagingInfo.CurrentPage;
+                        PageUrlValues[ElmTractionUrlValue] = ElmTractionPagingInfo.CurrentPage;
+                        PageUrlValues[M2000UrlValue] = 1;
+                        PageUrlValues[M4000UrlValue] = M4000PagingInfo.CurrentPage;
+                        PageUrlValues[JobTypeSelected] = M2000PagingInfo.JobTypeName;
+                        tag10.Attributes["href"] = urlHelper3.Action(PageAction, PageUrlValues);
+                        if (PageClassesEnabled)
+                        {
+                            tag10.AddCssClass(PageClass);
+                            tag10.AddCssClass(PageClassSelected);
+                        }
+                        tag10.InnerHtml.Append("<<");
+                        result3.InnerHtml.AppendHtml(tag10);
+                        output.Content.AppendHtml(result3.InnerHtml);
+                        /*************************************************************************/
+                        PageUrlValues[ElmHydroUrlValue] = ElmHydroPagingInfo.CurrentPage;
+                        PageUrlValues[ElmTractionUrlValue] = ElmTractionPagingInfo.CurrentPage;
+                        PageUrlValues[M2000UrlValue] = (M2000PagingInfo.CurrentPage - 1) != 0 ? (M2000PagingInfo.CurrentPage - 1) : 1;
+                        PageUrlValues[M4000UrlValue] = M4000PagingInfo.CurrentPage;
+                        PageUrlValues[JobTypeSelected] = M2000PagingInfo.JobTypeName;
+                        tag11.Attributes["href"] = urlHelper3.Action(PageAction, PageUrlValues);
+                        if (PageClassesEnabled)
+                        {
+                            tag11.AddCssClass(PageClass);
+                            tag11.AddCssClass(PageClassSelected);
+                        }
+                        tag11.InnerHtml.Append("<");
+                        result3.InnerHtml.AppendHtml(tag11);
+                        output.Content.AppendHtml(result3.InnerHtml);
+                        /*************************************************************************/
+                        List<int> Pages3 = new List<int>();
+                        int countPages3 = M2000PagingInfo.CurrentPage;
+                        while ((countPages3 >= M2000PagingInfo.CurrentPage - 3 && countPages3 != 0))
+                        {
+                            Pages3.Add(countPages3);
+                            countPages3--;
+                        }
+                        Pages3.Reverse();
+                        int pagesRest3 = 4 - Pages3.Count;
+                        for (int i = Pages3[0]; i <= Pages3.Last(); i++)
+                        {
+                            TagBuilder tag2 = new TagBuilder("a");
+                            PageUrlValues[ElmHydroUrlValue] = ElmHydroPagingInfo.CurrentPage;
+                            PageUrlValues[ElmTractionUrlValue] = ElmTractionPagingInfo.CurrentPage;
+                            PageUrlValues[M2000UrlValue] = i;
+                            PageUrlValues[M4000UrlValue] = M4000PagingInfo.CurrentPage;
+                            PageUrlValues[JobTypeSelected] = M2000PagingInfo.JobTypeName;
+                            tag2.Attributes["href"] = urlHelper3.Action(PageAction, PageUrlValues);
+                            if (PageClassesEnabled)
+                            {
+                                tag2.AddCssClass(PageClass);
+                                tag2.AddCssClass(i == M2000PagingInfo.CurrentPage
+                                ? "btn-info" : PageClassNormal);
+                            }
+                            tag2.InnerHtml.Append(i.ToString());
+                            result3.InnerHtml.AppendHtml(tag2);
+                        }
+                        output.Content.AppendHtml(result3.InnerHtml);
+                        /*************************************************************************/
+                        for (int i = M2000PagingInfo.CurrentPage + 1; (i <= M2000PagingInfo.CurrentPage + 3 + pagesRest3 && i <= M2000PagingInfo.TotalPages); i++)
+                        {
+                            TagBuilder tag3 = new TagBuilder("a");
+                            PageUrlValues[ElmHydroUrlValue] = ElmHydroPagingInfo.CurrentPage;
+                            PageUrlValues[ElmTractionUrlValue] = ElmTractionPagingInfo.CurrentPage;
+                            PageUrlValues[M2000UrlValue] = i;
+                            PageUrlValues[M4000UrlValue] = M4000PagingInfo.CurrentPage;
+                            PageUrlValues[JobTypeSelected] = M2000PagingInfo.JobTypeName;
+                            tag3.Attributes["href"] = urlHelper3.Action(PageAction, PageUrlValues);
+                            if (PageClassesEnabled)
+                            {
+                                tag3.AddCssClass(PageClass);
+                                tag3.AddCssClass(i == M2000PagingInfo.CurrentPage
+                                ? "btn-info" : PageClassNormal);
+                            }
+                            tag3.InnerHtml.Append(i.ToString());
+                            result3.InnerHtml.AppendHtml(tag3);
+                        }
+                        output.Content.AppendHtml(result3.InnerHtml);
+                        /*************************************************************************/
+                        PageUrlValues[ElmHydroUrlValue] = ElmHydroPagingInfo.CurrentPage;
+                        PageUrlValues[ElmTractionUrlValue] = ElmTractionPagingInfo.CurrentPage;
+                        PageUrlValues[M2000UrlValue] = (M2000PagingInfo.CurrentPage + 1) <= M2000PagingInfo.TotalPages ? (M2000PagingInfo.CurrentPage + 1) : M2000PagingInfo.TotalPages;
+                        PageUrlValues[M4000UrlValue] = M4000PagingInfo.CurrentPage;
+                        PageUrlValues[JobTypeSelected] = M2000PagingInfo.JobTypeName;
+                        tag12.Attributes["href"] = urlHelper3.Action(PageAction, PageUrlValues);
+                        if (PageClassesEnabled)
+                        {
+                            tag12.AddCssClass(PageClass);
+                            tag12.AddCssClass(PageClassSelected);
+                        }
+                        tag12.InnerHtml.Append(">");
+                        result3.InnerHtml.AppendHtml(tag12);
+                        output.Content.AppendHtml(result3.InnerHtml);
+                        /*************************************************************************/
+                        PageUrlValues[ElmHydroUrlValue] = ElmHydroPagingInfo.CurrentPage;
+                        PageUrlValues[ElmTractionUrlValue] = ElmTractionPagingInfo.CurrentPage;
+                        PageUrlValues[M2000UrlValue] = M2000PagingInfo.TotalPages;
+                        PageUrlValues[M4000UrlValue] = M4000PagingInfo.CurrentPage;
+                        PageUrlValues[JobTypeSelected] = M2000PagingInfo.JobTypeName;
+                        tag13.Attributes["href"] = urlHelper3.Action(PageAction, PageUrlValues);
+                        if (PageClassesEnabled)
+                        {
+                            tag13.AddCssClass(PageClass);
+                            tag13.AddCssClass(PageClassSelected);
+                        }
+                        tag13.InnerHtml.Append(">>");
+                        result3.InnerHtml.AppendHtml(tag13);
+                        output.Content.AppendHtml(result3.InnerHtml);
+                        break;
+
+                    case "M4000":
+
+                        IUrlHelper urlHelper4 = urlHelperFactory.GetUrlHelper(ViewContext);
+                        TagBuilder result4 = new TagBuilder("div");
+                        TagBuilder tag14 = new TagBuilder("a");
+                        TagBuilder tag15 = new TagBuilder("a");
+                        TagBuilder tag16 = new TagBuilder("a");
+                        TagBuilder tag17 = new TagBuilder("a");
+                        /*************************************************************************/
+                        PageUrlValues[ElmHydroUrlValue] = ElmHydroPagingInfo.CurrentPage;
+                        PageUrlValues[ElmTractionUrlValue] = ElmTractionPagingInfo.CurrentPage;
+                        PageUrlValues[M2000UrlValue] = M2000PagingInfo.CurrentPage;
+                        PageUrlValues[M4000UrlValue] = 1;
+                        PageUrlValues[JobTypeSelected] = M4000PagingInfo.JobTypeName;
+                        tag14.Attributes["href"] = urlHelper4.Action(PageAction, PageUrlValues);
+                        if (PageClassesEnabled)
+                        {
+                            tag14.AddCssClass(PageClass);
+                            tag14.AddCssClass(PageClassSelected);
+                        }
+                        tag14.InnerHtml.Append("<<");
+                        result4.InnerHtml.AppendHtml(tag14);
+                        output.Content.AppendHtml(result4.InnerHtml);
+                        /*************************************************************************/
+                        PageUrlValues[ElmHydroUrlValue] = ElmHydroPagingInfo.CurrentPage;
+                        PageUrlValues[ElmTractionUrlValue] = ElmTractionPagingInfo.CurrentPage;
+                        PageUrlValues[M2000UrlValue] = M2000PagingInfo.CurrentPage;
+                        PageUrlValues[M4000UrlValue] = (M4000PagingInfo.CurrentPage - 1) != 0 ? (M4000PagingInfo.CurrentPage - 1) : 1;
+                        PageUrlValues[JobTypeSelected] = M4000PagingInfo.JobTypeName;
+                        tag15.Attributes["href"] = urlHelper4.Action(PageAction, PageUrlValues);
+                        if (PageClassesEnabled)
+                        {
+                            tag15.AddCssClass(PageClass);
+                            tag15.AddCssClass(PageClassSelected);
+                        }
+                        tag15.InnerHtml.Append("<");
+                        result4.InnerHtml.AppendHtml(tag15);
+                        output.Content.AppendHtml(result4.InnerHtml);
+                        /*************************************************************************/
+                        List<int> Pages4 = new List<int>();
+                        int countPages4 = M4000PagingInfo.CurrentPage;
+                        while ((countPages4 >= M4000PagingInfo.CurrentPage - 3 && countPages4 != 0))
+                        {
+                            Pages4.Add(countPages4);
+                            countPages4--;
+                        }
+                        Pages4.Reverse();
+                        int pagesRest4 = 4 - Pages4.Count;
+                        for (int i = Pages4[0]; i <= Pages4.Last(); i++)
+                        {
+                            TagBuilder tag2 = new TagBuilder("a");
+                            PageUrlValues[ElmHydroUrlValue] = ElmHydroPagingInfo.CurrentPage;
+                            PageUrlValues[ElmTractionUrlValue] = ElmTractionPagingInfo.CurrentPage;
+                            PageUrlValues[M2000UrlValue] =  M2000PagingInfo.CurrentPage;
+                            PageUrlValues[M4000UrlValue] = i;
+                            PageUrlValues[JobTypeSelected] = M4000PagingInfo.JobTypeName;
+                            tag2.Attributes["href"] = urlHelper4.Action(PageAction, PageUrlValues);
+                            if (PageClassesEnabled)
+                            {
+                                tag2.AddCssClass(PageClass);
+                                tag2.AddCssClass(i == M4000PagingInfo.CurrentPage
+                                ? "btn-info" : PageClassNormal);
+                            }
+                            tag2.InnerHtml.Append(i.ToString());
+                            result4.InnerHtml.AppendHtml(tag2);
+                        }
+                        output.Content.AppendHtml(result4.InnerHtml);
+                        /*************************************************************************/
+                        for (int i = M4000PagingInfo.CurrentPage + 1; (i <= M4000PagingInfo.CurrentPage + 3 + pagesRest4 && i <= M4000PagingInfo.TotalPages); i++)
+                        {
+                            TagBuilder tag3 = new TagBuilder("a");
+                            PageUrlValues[ElmHydroUrlValue] = ElmHydroPagingInfo.CurrentPage;
+                            PageUrlValues[ElmTractionUrlValue] = ElmTractionPagingInfo.CurrentPage;
+                            PageUrlValues[M2000UrlValue] = M2000PagingInfo.CurrentPage;
+                            PageUrlValues[M4000UrlValue] = i;
+                            PageUrlValues[JobTypeSelected] = M4000PagingInfo.JobTypeName;
+                            tag3.Attributes["href"] = urlHelper4.Action(PageAction, PageUrlValues);
+                            if (PageClassesEnabled)
+                            {
+                                tag3.AddCssClass(PageClass);
+                                tag3.AddCssClass(i == M4000PagingInfo.CurrentPage
+                                ? "btn-info" : PageClassNormal);
+                            }
+                            tag3.InnerHtml.Append(i.ToString());
+                            result4.InnerHtml.AppendHtml(tag3);
+                        }
+                        output.Content.AppendHtml(result4.InnerHtml);
+                        /*************************************************************************/
+                        PageUrlValues[ElmHydroUrlValue] = ElmHydroPagingInfo.CurrentPage;
+                        PageUrlValues[ElmTractionUrlValue] = ElmTractionPagingInfo.CurrentPage;
+                        PageUrlValues[M2000UrlValue] = M2000PagingInfo.CurrentPage;
+                        PageUrlValues[M4000UrlValue] = (M4000PagingInfo.CurrentPage + 1) <= M4000PagingInfo.TotalPages ? (M4000PagingInfo.CurrentPage + 1) : M4000PagingInfo.TotalPages;
+                        PageUrlValues[JobTypeSelected] = M4000PagingInfo.JobTypeName;
+                        tag16.Attributes["href"] = urlHelper4.Action(PageAction, PageUrlValues);
+                        if (PageClassesEnabled)
+                        {
+                            tag16.AddCssClass(PageClass);
+                            tag16.AddCssClass(PageClassSelected);
+                        }
+                        tag16.InnerHtml.Append(">");
+                        result4.InnerHtml.AppendHtml(tag16);
+                        output.Content.AppendHtml(result4.InnerHtml);
+                        /*************************************************************************/
+                        PageUrlValues[ElmHydroUrlValue] = ElmHydroPagingInfo.CurrentPage;
+                        PageUrlValues[ElmTractionUrlValue] = ElmTractionPagingInfo.CurrentPage;
+                        PageUrlValues[M2000UrlValue] =  M2000PagingInfo.CurrentPage;
+                        PageUrlValues[M4000UrlValue] = M4000PagingInfo.TotalPages;
+                        PageUrlValues[JobTypeSelected] = M4000PagingInfo.JobTypeName;
+                        tag17.Attributes["href"] = urlHelper4.Action(PageAction, PageUrlValues);
+                        if (PageClassesEnabled)
+                        {
+                            tag17.AddCssClass(PageClass);
+                            tag17.AddCssClass(PageClassSelected);
+                        }
+                        tag17.InnerHtml.Append(">>");
+                        result4.InnerHtml.AppendHtml(tag17);
+                        output.Content.AppendHtml(result4.InnerHtml);
+                        break;
+                }
+
+            }
+        }
+    }
+
     public class MySelectTagHelper : TagHelper
     {
         private IItemRepository itemsrepository;
@@ -2154,6 +2677,7 @@ namespace ProdFloor.Infrastructure
             base.Process(context, output);
         }
     }
+
     public class JobTypeInJobSelectTagHelper : TagHelper
     {
         private IItemRepository itemsrepository;

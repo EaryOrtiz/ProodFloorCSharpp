@@ -109,11 +109,11 @@
     </table>
 </div>
 <br />
-<page-link-steps elm-hydro-paging-info="@Model.ElmHydroPagingInfo" elm-traction-paging-info="@Model.ElmTractionPagingInfo" m2000-paging-info="@Model.M2000PagingInfo" m4000-paging-info="Model.M4000PagingInfo"
+<cool-pagination-steps elm-hydro-paging-info="@Model.ElmHydroPagingInfo" elm-traction-paging-info="@Model.ElmTractionPagingInfo" m2000-paging-info="@Model.M2000PagingInfo" m4000-paging-info="Model.M4000PagingInfo"
                  page-action="List"  job-type-selected="JobTypeName" page-class="btn" page-class-normal="btn-secondary" page-classes-enabled="true" current-model="@Model.JobTypeSelected"
                  page-class-selected="btn-primary"  elm-hydro-url-value="ElmHydroPage" elm-traction-url-value="ElmTractionPage" m2000-url-value="M2000Page"  m4000-url-value="M4000Page"
                  class="btn-group pull-right m-1">
-</page-link-steps>
+</cool-pagination-steps>
 <div>
     <form asp-controller="Step" asp-action="ExportToXML" method="post">
         <button class="btn btn-sm " name="buttonXML" style="background-color:#DF0174;color:white">Export Table to an XML File</button>

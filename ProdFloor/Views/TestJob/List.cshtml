@@ -20,8 +20,16 @@
 {
     @Html.Partial("TestJobSummary", j)
 }
-<div page-model="@Model.PagingInfo" page-action="List" page-classes-enabled="true"
-     page-class="btn" page-class-normal="btn-secondary"
-     page-class-selected="btn-primary" 
-     class="btn-group pull-right m-1">
-</div>
+@if (Model.TestJobList.Count > 0)
+{
+    <coool-pagination-all page-model="@Model.PagingInfo" page-action="List" page-classes-enabled="true"
+                          page-class="btn" page-class-normal="btn-secondary"
+                          page-class-selected="btn-primary"
+                          class="btn-group pull-right m-1">
+    </coool-pagination-all>
+}
+else
+{
+    <p>No test jobs availables</p>
+}
+

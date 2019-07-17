@@ -149,6 +149,12 @@ namespace ProdFloor.Controllers
                   .Skip((pendingJobPage - 1) * PageSize)
                   .Take(PageSize);
 
+                List<Job> DummyOnCrossJobsList = repository.Jobs
+                        .Where(j => j.Status == "On Cross Approval").ToList();
+
+                List<Job> DummyPendingToCrossJobList = repository.Jobs
+                        .Where(j => j.Status == "On Cross Approval").ToList();
+
                 return View("TechnicianDashBoard", new DashboardIndexViewModel
                 {
                     PendingTestJobs = CurrentTestJobs,
@@ -162,7 +168,24 @@ namespace ProdFloor.Controllers
                         .Count()
                     },
                     PendingJobs = repository.Jobs.Where(m => CurrentTestJobs.Any(s => s.JobID == m.JobID)),
-                    JobTypesList = itemRepo.JobTypes.ToList()
+                    JobTypesList = itemRepo.JobTypes.ToList(),
+                    OnCrossJobs = DummyOnCrossJobsList.Skip((OnCrossJobPage - 1) * PageSize).Take(PageSize),
+                    OnCrossJobsPagingInfo = new PagingInfo
+                    {
+                        CurrentPage = OnCrossJobPage,
+                        ItemsPerPage = PageSize,
+                        TotalItems = DummyOnCrossJobsList.Count(),
+                        sort = Sort != "default" ? Sort : "deafult"
+                    },
+
+                    PendingToCrossJobs = DummyPendingToCrossJobList.Skip((PendingToCrossJobPage - 1) * PageSize).Take(PageSize),
+                    PendingToCrossJobsPagingInfo = new PagingInfo
+                    {
+                        CurrentPage = PendingToCrossJobPage,
+                        ItemsPerPage = PageSize,
+                        TotalItems = DummyPendingToCrossJobList.Count(),
+                        sort = Sort != "default" ? Sort : "deafult"
+                    },
                 });
             }
 
