@@ -354,14 +354,8 @@
     <FireCodeID>11</FireCodeID>
   </City>
   <City>
-    <ID>60</ID>
-    <Name>Other before 2008</Name>
-    <StateID>5</StateID>
-    <FireCodeID>17</FireCodeID>
-  </City>
-  <City>
     <ID>61</ID>
-    <Name>Other after 2008</Name>
+    <Name>Other</Name>
     <StateID>5</StateID>
     <FireCodeID>9</FireCodeID>
   </City>
@@ -379,7 +373,7 @@
   </City>
   <City>
     <ID>64</ID>
-    <Name>All Others</Name>
+    <Name>Others (not MRL)</Name>
     <StateID>24</StateID>
     <FireCodeID>10</FireCodeID>
   </City>
@@ -391,13 +385,13 @@
   </City>
   <City>
     <ID>66</ID>
-    <Name>All Others</Name>
+    <Name>Others (not MRL)</Name>
     <StateID>19</StateID>
     <FireCodeID>8</FireCodeID>
   </City>
   <City>
     <ID>67</ID>
-    <Name>Other after 2013</Name>
+    <Name>Other</Name>
     <StateID>19</StateID>
     <FireCodeID>20</FireCodeID>
   </City>
@@ -426,14 +420,8 @@
     <FireCodeID>16</FireCodeID>
   </City>
   <City>
-    <ID>72</ID>
-    <Name>Los angeles-before 2008</Name>
-    <StateID>5</StateID>
-    <FireCodeID>17</FireCodeID>
-  </City>
-  <City>
     <ID>73</ID>
-    <Name>Los angeles-after 2008</Name>
+    <Name>Los angeles</Name>
     <StateID>5</StateID>
     <FireCodeID>9</FireCodeID>
   </City>
@@ -458,12 +446,6 @@
   <City>
     <ID>77</ID>
     <Name>Denver-Suburbs</Name>
-    <StateID>6</StateID>
-    <FireCodeID>15</FireCodeID>
-  </City>
-  <City>
-    <ID>78</ID>
-    <Name>NWCCOG</Name>
     <StateID>6</StateID>
     <FireCodeID>15</FireCodeID>
   </City>
@@ -552,14 +534,8 @@
     <FireCodeID>15</FireCodeID>
   </City>
   <City>
-    <ID>93</ID>
-    <Name>Detroit - 1993</Name>
-    <StateID>20</StateID>
-    <FireCodeID>1</FireCodeID>
-  </City>
-  <City>
     <ID>94</ID>
-    <Name>Detroit - 2000</Name>
+    <Name>Detroit</Name>
     <StateID>20</StateID>
     <FireCodeID>4</FireCodeID>
   </City>
@@ -595,15 +571,15 @@
   </City>
   <City>
     <ID>100</ID>
-    <Name>NYC - New York - MRL</Name>
+    <Name>NYC (MRL)</Name>
     <StateID>32</StateID>
     <FireCodeID>22</FireCodeID>
   </City>
   <City>
     <ID>101</ID>
-    <Name>NYC - New York - All others</Name>
+    <Name>NYC (Not MRL)</Name>
     <StateID>32</StateID>
-    <FireCodeID>23</FireCodeID>
+    <FireCodeID>6</FireCodeID>
   </City>
   <City>
     <ID>102</ID>
@@ -663,6 +639,12 @@
     <ID>111</ID>
     <Name>Cheyenne</Name>
     <StateID>49</StateID>
+    <FireCodeID>15</FireCodeID>
+  </City>
+  <City>
+    <ID>112</ID>
+    <Name>Other</Name>
+    <StateID>29</StateID>
     <FireCodeID>15</FireCodeID>
   </City>
 </Cities>

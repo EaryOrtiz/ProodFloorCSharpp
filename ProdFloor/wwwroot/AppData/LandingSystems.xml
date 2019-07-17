@@ -16,12 +16,12 @@
   </LandingSystem>
   <LandingSystem>
     <ID>4</ID>
-    <UsedIn>ElemHydro</UsedIn>
+    <UsedIn>ElmHydro</UsedIn>
     <Name>LS-QUTE</Name>
   </LandingSystem>
   <LandingSystem>
     <ID>5</ID>
-    <UsedIn>ElemHydro</UsedIn>
+    <UsedIn>ElmHydro</UsedIn>
     <Name>LS-EDGE</Name>
   </LandingSystem>
   <LandingSystem>
@@ -36,12 +36,12 @@
   </LandingSystem>
   <LandingSystem>
     <ID>8</ID>
-    <UsedIn>ElemTraction</UsedIn>
+    <UsedIn>ElmHydro</UsedIn>
     <Name>LS-Rail</Name>
   </LandingSystem>
   <LandingSystem>
     <ID>9</ID>
-    <UsedIn>ElemTraction</UsedIn>
+    <UsedIn>ElmTract</UsedIn>
     <Name>LS-EDGE</Name>
   </LandingSystem>
 </LandingSystems>

@@ -87,8 +87,4 @@
     <ID>22</ID>
     <Name>ASME A17.1S-2005 w/NYC Appendix K4</Name>
   </FireCode>
-  <FireCode>
-    <ID>23</ID>
-    <Name>ASME A17.1b-2005 w/NYC Appendix K</Name>
-  </FireCode>
 </FireCodes>

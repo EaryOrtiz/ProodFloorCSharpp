@@ -786,7 +786,7 @@
     <Volts>208</Volts>
     <HP>40</HP>
     <MCEPart>50-05-0010</MCEPart>
-    <NewManufacturerPart>72RG34AFP</NewManufacturerPart>
+    <NewManufacturerPart>72RG32AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
   <Starter>
@@ -796,7 +796,7 @@
     <Volts>240</Volts>
     <HP>50</HP>
     <MCEPart>50-05-0010</MCEPart>
-    <NewManufacturerPart>72RG34AFP</NewManufacturerPart>
+    <NewManufacturerPart>72RG32AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
   <Starter>
@@ -856,7 +856,7 @@
     <Volts>208</Volts>
     <HP>75</HP>
     <MCEPart>50-05-0010</MCEPart>
-    <NewManufacturerPart>72RG34AFP</NewManufacturerPart>
+    <NewManufacturerPart>72RG32AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
   <Starter>
@@ -866,7 +866,7 @@
     <Volts>240</Volts>
     <HP>100</HP>
     <MCEPart>50-05-0010</MCEPart>
-    <NewManufacturerPart>72RG34AFP</NewManufacturerPart>
+    <NewManufacturerPart>72RG32AFP</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
   <Starter>

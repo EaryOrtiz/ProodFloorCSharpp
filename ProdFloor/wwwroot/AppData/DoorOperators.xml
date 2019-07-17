@@ -21,13 +21,13 @@
     <ID>4</ID>
     <Style>Automatic</Style>
     <Branch>GAL</Branch>
-    <Name>MOVFR I</Name>
+    <Name>MOVFR I (220V)</Name>
   </DoorOperator>
   <DoorOperator>
     <ID>5</ID>
     <Style>Automatic</Style>
     <Branch>GAL</Branch>
-    <Name>MOVFR II</Name>
+    <Name>MOVFR II (220V)</Name>
   </DoorOperator>
   <DoorOperator>
     <ID>6</ID>
@@ -238,5 +238,23 @@
     <Style>Freight</Style>
     <Branch>EMS</Branch>
     <Name>EMS</Name>
+  </DoorOperator>
+  <DoorOperator>
+    <ID>41</ID>
+    <Style>Automatic</Style>
+    <Branch>Wittur</Branch>
+    <Name>Supra</Name>
+  </DoorOperator>
+  <DoorOperator>
+    <ID>42</ID>
+    <Style>Automatic</Style>
+    <Branch>GAL</Branch>
+    <Name>MOVFR I (110V)</Name>
+  </DoorOperator>
+  <DoorOperator>
+    <ID>43</ID>
+    <Style>Automatic</Style>
+    <Branch>GAL</Branch>
+    <Name>MOVFR II (110V)</Name>
   </DoorOperator>
 </DoorOperators>
