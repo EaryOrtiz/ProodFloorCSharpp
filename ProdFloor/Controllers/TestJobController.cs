@@ -144,41 +144,124 @@ namespace ProdFloor.Controllers
                 jobRepo.SaveJob(Job);
                 Job currentJob = jobRepo.Jobs.FirstOrDefault(p => p.JobID == jobRepo.Jobs.Max(x => x.JobID));
 
-                //Save the dummy Job Extension
-                JobExtension currentExtension = viewModel.JobExtension; currentExtension.JobID = currentJob.JobID; currentExtension.InputFrecuency = 60; currentExtension.InputPhase = 3; currentExtension.DoorGate = "Fake";
-                currentExtension.InputVoltage = 1; currentExtension.NumOfStops = 2; currentExtension.SHCRisers = 1; currentExtension.DoorHoist = "Fake"; currentExtension.JobTypeAdd = "Fake";
-                if (viewModel.MOD == true) currentExtension.DoorOperatorID = 7;
-                else currentExtension.DoorOperatorID = 1;
-                if (viewModel.Manual == true) currentExtension.DoorOperatorID = 2;
-                else currentExtension.DoorOperatorID = 1;
-                jobRepo.SaveJobExtension(currentExtension);
+                int jobtypeID = jobRepo.Jobs.First(m => m.JobID == currentJob.JobID).JobTypeID;
+                switch (JobTypeName(jobtypeID))
+                {
+                    case "M2000":
 
-                //Save the dummy Job HydroSpecific
-                HydroSpecific currenHydroSpecific = viewModel.HydroSpecific; currenHydroSpecific.JobID = currentJob.JobID; currenHydroSpecific.FLA = 1; currenHydroSpecific.HP = 1;
-                currenHydroSpecific.SPH = 1; currenHydroSpecific.Starter = "Fake"; currenHydroSpecific.ValveCoils = 1; currenHydroSpecific.ValveBrand = "Fake";
-                if (viewModel.TwosStarters == true) currenHydroSpecific.MotorsNum = 3;
-                else currentExtension.DoorOperatorID = 1;
-                jobRepo.SaveHydroSpecific(currenHydroSpecific);
+                        //Save the dummy Job Extension
+                        JobExtension currentExtension = viewModel.JobExtension; currentExtension.JobID = currentJob.JobID; currentExtension.InputFrecuency = 60; currentExtension.InputPhase = 3; currentExtension.DoorGate = "Fake";
+                        currentExtension.InputVoltage = 1; currentExtension.NumOfStops = 2; currentExtension.SHCRisers = 1; currentExtension.DoorHoist = "Fake"; currentExtension.JobTypeAdd = "Fake";
+                        if (viewModel.MOD == true) currentExtension.DoorOperatorID = 7;
+                        else currentExtension.DoorOperatorID = 1;
+                        if (viewModel.Manual == true) currentExtension.DoorOperatorID = 2;
+                        else currentExtension.DoorOperatorID = 1;
+                        jobRepo.SaveJobExtension(currentExtension);
 
-                //Save the dummy job Indicators
-                Indicator currentIndicator = viewModel.Indicator; currentIndicator.CarCallsVoltage = "Fake"; currentIndicator.CarCallsVoltageType = "Fake"; currentIndicator.CarCallsType = "Fake";
-                currentIndicator.HallCallsVoltage = "Fake"; currentIndicator.HallCallsVoltageType = "Fake"; currentIndicator.HallCallsType = "Fake"; currentIndicator.IndicatorsVoltageType = "Fake";
-                currentIndicator.IndicatorsVoltage = 1; currentIndicator.JobID = currentJob.JobID;
-                jobRepo.SaveIndicator(currentIndicator);
+                        //Save the dummy Job HydroSpecific
+                        HydroSpecific currenHydroSpecific = viewModel.HydroSpecific; currenHydroSpecific.JobID = currentJob.JobID; currenHydroSpecific.FLA = 1; currenHydroSpecific.HP = 1;
+                        currenHydroSpecific.SPH = 1; currenHydroSpecific.Starter = "Fake"; currenHydroSpecific.ValveCoils = 1; currenHydroSpecific.ValveBrand = "Fake";
+                        if (viewModel.TwosStarters == true) currenHydroSpecific.MotorsNum = 3;
+                        else currenHydroSpecific.MotorsNum = 1;
+                        jobRepo.SaveHydroSpecific(currenHydroSpecific);
 
-                //Save the dummy Job HoistWayData
-                HoistWayData currentHoistWayData = viewModel.HoistWayData; currentHoistWayData.JobID = currentJob.JobID; currentHoistWayData.Capacity = 1; currentHoistWayData.DownSpeed = 1;
-                currentHoistWayData.TotalTravel = 1; currentHoistWayData.UpSpeed = 1; currentHoistWayData.HoistWaysNumber = 1; currentHoistWayData.MachineRooms = 1;
-                jobRepo.SaveHoistWayData(currentHoistWayData);
+                        //Save the dummy job Indicators
+                        Indicator currentIndicator = viewModel.Indicator; currentIndicator.CarCallsVoltage = "Fake"; currentIndicator.CarCallsVoltageType = "Fake"; currentIndicator.CarCallsType = "Fake";
+                        currentIndicator.HallCallsVoltage = "Fake"; currentIndicator.HallCallsVoltageType = "Fake"; currentIndicator.HallCallsType = "Fake"; currentIndicator.IndicatorsVoltageType = "Fake";
+                        currentIndicator.IndicatorsVoltage = 1; currentIndicator.JobID = currentJob.JobID;
+                        jobRepo.SaveIndicator(currentIndicator);
 
-                //Save the dummy Job HoistWayData
-                GenericFeatures currentGenericFeatures = viewModel.GenericFeatures; currentGenericFeatures.JobID = currentJob.JobID;
-                if (viewModel.IMonitor == true) currentGenericFeatures.Monitoring = "IMonitor Interface";
-                else currentGenericFeatures.Monitoring = "Fake";
-                jobRepo.SaveGenericFeatures(currentGenericFeatures);
-                if (viewModel.MView == true) currentGenericFeatures.Monitoring = "MView Interface";
-                else currentGenericFeatures.Monitoring = "Fake";
-                jobRepo.SaveGenericFeatures(currentGenericFeatures);
+                        //Save the dummy Job HoistWayData
+                        HoistWayData currentHoistWayData = viewModel.HoistWayData; currentHoistWayData.JobID = currentJob.JobID; currentHoistWayData.Capacity = 1; currentHoistWayData.DownSpeed = 1;
+                        currentHoistWayData.TotalTravel = 1; currentHoistWayData.UpSpeed = 1; currentHoistWayData.HoistWaysNumber = 1; currentHoistWayData.MachineRooms = 1;
+                        jobRepo.SaveHoistWayData(currentHoistWayData);
+
+                        //Save the dummy Job HoistWayData
+                        GenericFeatures currentGenericFeatures = viewModel.GenericFeatures; currentGenericFeatures.JobID = currentJob.JobID;
+                        if (viewModel.IMonitor == true) currentGenericFeatures.Monitoring = "IMonitor Interface";
+                        else currentGenericFeatures.Monitoring = "Fake";
+                        jobRepo.SaveGenericFeatures(currentGenericFeatures);
+                        if (viewModel.MView == true) currentGenericFeatures.Monitoring = "MView Interface";
+                        else currentGenericFeatures.Monitoring = "Fake";
+                        jobRepo.SaveGenericFeatures(currentGenericFeatures);
+
+                        break;
+                    case "ElmHydro":
+                        Element element = new Element
+                        {
+                            JobID = currentJob.JobID,
+                            LandingSystemID = viewModel.HoistWayData.LandingSystemID,
+                            DoorGate = "Fake",
+                            HAPS = viewModel.HydroSpecific.BatteryBrand == "HAPS" ? true : false,
+                            INA = "fake",
+                            Capacity = 1,
+                            Frequency = 1,
+                            LoadWeigher = "fake",
+                            Phase = 1,
+                            Speed = 1,
+                            Voltage = 1,
+                            DoorBrand =  "fake",
+                        };
+                        if (viewModel.MOD == true) element.DoorOperatorID = 7;
+                        else element.DoorOperatorID = 1;
+                        if (viewModel.Manual == true) element.DoorOperatorID = 2;
+                        else element.DoorOperatorID = 1;
+
+                        jobRepo.SaveElement(element);
+                        ElementHydro elementHydro = new ElementHydro {
+                            JobID = currentJob.JobID,
+                            FLA = 20,
+                            HP = 20,
+                            SPH = 14,
+                            Starter = "fake",
+                            ValveBrand = "fake",
+                        };
+                        jobRepo.SaveElementHydro(elementHydro);
+                        break;
+                    case "ElmTract":
+
+                        Element element2 = new Element
+                        {
+                            JobID = currentJob.JobID,
+                            LandingSystemID = viewModel.HoistWayData.LandingSystemID,
+                            DoorGate = "Fake",
+                            HAPS = viewModel.HydroSpecific.BatteryBrand == "HAPS" ? true : false,
+                            INA = "fake",
+                            Capacity = 1,
+                            Frequency = 1,
+                            LoadWeigher = "fake",
+                            Phase = 1,
+                            Speed = 1,
+                            Voltage = 1,
+                            DoorBrand = "fake",
+                        };
+                        if (viewModel.MOD == true) element2.DoorOperatorID = 7;
+                        else element2.DoorOperatorID = 1;
+                        if (viewModel.Manual == true) element2.DoorOperatorID = 2;
+                        else element2.DoorOperatorID = 1;
+
+                        jobRepo.SaveElement(element2);
+                        ElementTraction elementTraction = new ElementTraction
+                        {
+                            JobID = currentJob.JobID,
+                            Contact = "fake",
+                            Current = 10,
+                            FLA = 10,
+                            HoldVoltage = 10,
+                            HP = 10,
+                            MachineLocation = "fake",
+                            MotorBrand =  "fake",
+                            PickVoltage = 10,
+                            Resistance = 10,
+                            VVVF = "fake"
+
+                        };
+                        jobRepo.SaveElementTraction(elementTraction);
+                        break;
+                }
+                       
+
+
                 SpecialFeatures featureFake = viewModel.SpecialFeature; featureFake.JobID = currentJob.JobID; featureFake.Description = null;
                 jobRepo.SaveSpecialFeatures(featureFake);
 
@@ -246,132 +329,30 @@ namespace ProdFloor.Controllers
                 List<TriggeringFeature> TriggersWithNameNull = testingRepo.TriggeringFeatures.Where(m => m.Name == null).ToList();
                 List<TriggeringFeature> TriggersWithOutNameNull = testingRepo.TriggeringFeatures.Where(m => m.Name != null).ToList();
                 var FeaturesFromTestJob = testingRepo.TestFeatures.First(m => m.TestJobID == testJobView.TestFeature.TestJobID);
-                Job FeaturesFromJob = jobRepo.Jobs.Include(m => m._jobExtension).Include(m => m._HydroSpecific).Include(m => m._HoistWayData).Include(m => m._GenericFeatures)
-                    .First(m => m.JobID == testJobView.TestJob.JobID);
-                List<Step> Steps = testingRepo.Steps.OrderBy(m => m.Order).Where(m => m.JobTypeID == FeaturesFromJob.JobTypeID).ToList();
-                //Checa si la lista de steps no esta vacia
-                if (Steps.Count > 0)
+
+
+                int jobtypeID = jobRepo.Jobs.First(m => m.JobID == testJobView.TestJob.JobID).JobTypeID;
+                switch (JobTypeName(jobtypeID))
                 {
-                    //inicia el contador del consecutivo
-                    int consecutivo = 1;
+                    case "M2000":
 
-                    //Checa cada step de la lista
-                    foreach (Step step in Steps)
-                    {
-                        //Obtiene el primer trigger del step actual step
-                        TriggeringFeature TriggerInStep = step._TriggeringFeatures.FirstOrDefault();
-
-                        //si su name es nulo significa que es un step por default, debido a esto lo agrega a step for Job
-                        if (TriggerInStep.Name == null)
+                        Job FeaturesFromJob = jobRepo.Jobs.Include(m => m._jobExtension).Include(m => m._HydroSpecific).Include(m => m._HoistWayData).Include(m => m._GenericFeatures)
+                    .First(m => m.JobID == testJobView.TestJob.JobID);
+                        List<Step> Steps = testingRepo.Steps.OrderBy(m => m.Order).Where(m => m.JobTypeID == FeaturesFromJob.JobTypeID).ToList();
+                        //Checa si la lista de steps no esta vacia
+                        if (Steps.Count > 0)
                         {
-                            StepsForJob stepForJob = new StepsForJob
-                            {
-                                StepID = step.StepID,
-                                TestJobID = FeaturesFromTestJob.TestJobID,
-                                Start = DateTime.Now,
-                                Stop = DateTime.Now,
-                                Elapsed = new DateTime(1, 1, 1, 0, 0, 0),
-                                Consecutivo = consecutivo
-                            };
+                            //inicia el contador del consecutivo
+                            int consecutivo = 1;
 
-                            testingRepo.SaveStepsForJob(stepForJob);
-                            consecutivo++;
-                        }
-                        /*si su name no es nulo significa que es un trigger optativo, debido a esto se comparara sus features con los del job
-                        y si concuerdan se anadira a steps for job*/
-                        else if (TriggerInStep.Name != null)
-                        {
-                            //Crea una lista con todos los triggers del step actual
-                            var triggers = testingRepo.TriggeringFeatures.Where(m => m.StepID == step.StepID).ToList();
-                            //checa que la lista de triggers no este vacia
-                            if (triggers.Count > 0)
+                            //Checa cada step de la lista
+                            foreach (Step step in Steps)
                             {
-                                int count = triggers.Count;
-                                int countAux = 0;
-                                //Checa que cada feature de la lista concuerde con los features del testjob
-                                foreach (TriggeringFeature trigger in triggers)
-                                {
-                                    LandingSystem landing = itemRepository.LandingSystems.FirstOrDefault(m => m.LandingSystemID == FeaturesFromJob._HoistWayData.LandingSystemID);
-                                    City UniqueCity = itemRepository.Cities.FirstOrDefault(m => m.CityID == FeaturesFromJob.CityID);
-                                    State StateFromCity = itemRepository.States.FirstOrDefault(m => m.StateID == UniqueCity.StateID);
-                                    switch (trigger.Name)
-                                    {
-                                        case "Overlay": if (trigger.IsSelected == FeaturesFromTestJob.Overlay) { countAux++; } break;
-                                        case "Group": if (trigger.IsSelected == FeaturesFromTestJob.Group) { countAux++; } break;
-                                        case "PC de Cliente": if (trigger.IsSelected == FeaturesFromTestJob.PC) { countAux++; } break;
-                                        case "Brake Coil Voltage > 10": if (trigger.IsSelected == FeaturesFromTestJob.BrakeCoilVoltageMoreThan10) { countAux++; } break;
-                                        case "EMBrake Module": if (trigger.IsSelected == FeaturesFromTestJob.EMBrake) { countAux++; } break;
-                                        case "EMCO Board": if (trigger.IsSelected == FeaturesFromTestJob.EMCO) { countAux++; } break;
-                                        case "R6 Regen Unit": if (trigger.IsSelected == FeaturesFromTestJob.R6) { countAux++; } break;
-                                        case "Local": if (trigger.IsSelected == FeaturesFromTestJob.Local) { countAux++; } break;
-                                        case "Short Floor": if (trigger.IsSelected == FeaturesFromTestJob.ShortFloor) { countAux++; } break;
-                                        case "Custom": if (trigger.IsSelected == FeaturesFromTestJob.Custom) { countAux++; } break;
-                                        case "MRL": if (trigger.IsSelected == FeaturesFromTestJob.MRL) { countAux++; } break;
-                                        case "CTL2": if (trigger.IsSelected == FeaturesFromTestJob.CTL2) { countAux++; } break;
-                                        case "Tarjeta CPI Incluida": if (trigger.IsSelected == FeaturesFromTestJob.TrajetaCPI) { countAux++; } break;
-                                        case "Door Control en Cartop": if (trigger.IsSelected == FeaturesFromTestJob.Cartop) { countAux++; } break;
-                                        case "Canada":
-                                            if (trigger.IsSelected == true && StateFromCity.CountryID == 2) countAux++;
-                                            else if (trigger.IsSelected == false && StateFromCity.CountryID != 2) countAux++;
-                                            break;
-                                        case "Ontario":
-                                            if (trigger.IsSelected == true && FeaturesFromJob.CityID == 11) countAux++;
-                                            else if (trigger.IsSelected == false && FeaturesFromJob.CityID != 11) countAux++;
-                                            break;
-                                        case "Manual Doors":
-                                            if (trigger.IsSelected == true && FeaturesFromJob._jobExtension.DoorOperatorID == 2) countAux++;
-                                            else if (trigger.IsSelected == false && FeaturesFromJob._jobExtension.DoorOperatorID != 2) countAux++;
-                                            break;
-                                        case "Duplex":
-                                            if (trigger.IsSelected == true && FeaturesFromJob._jobExtension.JobTypeMain == "Duplex") countAux++;
-                                            else if (trigger.IsSelected == false && FeaturesFromJob._jobExtension.JobTypeMain != "Duplex") countAux++;
-                                            break;
-                                        case "Serial Halls Calls": if (trigger.IsSelected == FeaturesFromJob._jobExtension.SHC) { countAux++; } break;
-                                        case "Edge-LS":
-                                            if (trigger.IsSelected == true && landing.Name == "LS-EDGE") countAux++;
-                                            else if (trigger.IsSelected == false && landing.Name != "LS-EDGE") countAux++;
-                                            break;
-                                        case "Rail-LS":
-                                            if (trigger.IsSelected == true && landing.Name == "LS-Rail") countAux++;
-                                            else if (trigger.IsSelected == false && landing.Name != "LS-Rail") countAux++;
-                                            break;
-                                        case "mView":
-                                            if(FeaturesFromJob._GenericFeatures.Monitoring != null)
-                                            {
-                                                if (trigger.IsSelected == true && (FeaturesFromJob._GenericFeatures.Monitoring.Contains("MView"))) countAux++;
-                                                else if (trigger.IsSelected == false && !(FeaturesFromJob._GenericFeatures.Monitoring.Contains("MView"))) countAux++;
-                                                break;
-                                            }
-                                            break;
-                                        case "iMonitor":
-                                            if (FeaturesFromJob._GenericFeatures.Monitoring != null)
-                                            {
-                                                if (trigger.IsSelected == true && (FeaturesFromJob._GenericFeatures.Monitoring.Contains("IMonitor"))) countAux++;
-                                                else if (trigger.IsSelected == false && !(FeaturesFromJob._GenericFeatures.Monitoring.Contains("IMonitor"))) countAux++;
-                                                break;
-                                            }
-                                            break;
-                                        case "HAPS Battery":
-                                            if (FeaturesFromJob._HydroSpecific.Battery == true)
-                                            {
-                                                if (trigger.IsSelected == true && FeaturesFromJob._HydroSpecific.BatteryBrand == "HAPS") countAux++;
-                                                else if (trigger.IsSelected == false && FeaturesFromJob._HydroSpecific.BatteryBrand != "HAPS") countAux++;
-                                                break;
-                                            }
-                                            else break;
-                                        case "2+ Starters":
-                                            if (trigger.IsSelected == true && FeaturesFromJob._HydroSpecific.MotorsNum >= 2) countAux++;
-                                            else if (trigger.IsSelected == false && FeaturesFromJob._HydroSpecific.MotorsNum < 2) countAux++;
-                                            break;
-                                        case "MOD Door Operator":
-                                            if (trigger.IsSelected == true && (FeaturesFromJob._jobExtension.DoorOperatorID == 7 || FeaturesFromJob._jobExtension.DoorOperatorID == 8)) countAux++;
-                                            else if (trigger.IsSelected == false && (FeaturesFromJob._jobExtension.DoorOperatorID != 7 || FeaturesFromJob._jobExtension.DoorOperatorID != 8)) countAux++;
-                                            break;
-                                        default: break;
-                                    }
-                                }
-                                //Si se vuelve valido agrega el step a la lista de steps for job
-                                if (count == countAux)
+                                //Obtiene el primer trigger del step actual step
+                                TriggeringFeature TriggerInStep = step._TriggeringFeatures.FirstOrDefault();
+
+                                //si su name es nulo significa que es un step por default, debido a esto lo agrega a step for Job
+                                if (TriggerInStep.Name == null)
                                 {
                                     StepsForJob stepForJob = new StepsForJob
                                     {
@@ -382,17 +363,247 @@ namespace ProdFloor.Controllers
                                         Elapsed = new DateTime(1, 1, 1, 0, 0, 0),
                                         Consecutivo = consecutivo
                                     };
+
                                     testingRepo.SaveStepsForJob(stepForJob);
                                     consecutivo++;
                                 }
+                                /*si su name no es nulo significa que es un trigger optativo, debido a esto se comparara sus features con los del job
+                                y si concuerdan se anadira a steps for job*/
+                                else if (TriggerInStep.Name != null)
+                                {
+                                    //Crea una lista con todos los triggers del step actual
+                                    var triggers = testingRepo.TriggeringFeatures.Where(m => m.StepID == step.StepID).ToList();
+                                    //checa que la lista de triggers no este vacia
+                                    if (triggers.Count > 0)
+                                    {
+                                        int count = triggers.Count;
+                                        int countAux = 0;
+                                        //Checa que cada feature de la lista concuerde con los features del testjob
+                                        foreach (TriggeringFeature trigger in triggers)
+                                        {
+                                            LandingSystem landing = itemRepository.LandingSystems.FirstOrDefault(m => m.LandingSystemID == FeaturesFromJob._HoistWayData.LandingSystemID);
+                                            City UniqueCity = itemRepository.Cities.FirstOrDefault(m => m.CityID == FeaturesFromJob.CityID);
+                                            State StateFromCity = itemRepository.States.FirstOrDefault(m => m.StateID == UniqueCity.StateID);
+                                            switch (trigger.Name)
+                                            {
+                                                case "Overlay": if (trigger.IsSelected == FeaturesFromTestJob.Overlay) { countAux++; } break;
+                                                case "Group": if (trigger.IsSelected == FeaturesFromTestJob.Group) { countAux++; } break;
+                                                case "PC de Cliente": if (trigger.IsSelected == FeaturesFromTestJob.PC) { countAux++; } break;
+                                                case "Brake Coil Voltage > 10": if (trigger.IsSelected == FeaturesFromTestJob.BrakeCoilVoltageMoreThan10) { countAux++; } break;
+                                                case "EMBrake Module": if (trigger.IsSelected == FeaturesFromTestJob.EMBrake) { countAux++; } break;
+                                                case "EMCO Board": if (trigger.IsSelected == FeaturesFromTestJob.EMCO) { countAux++; } break;
+                                                case "R6 Regen Unit": if (trigger.IsSelected == FeaturesFromTestJob.R6) { countAux++; } break;
+                                                case "Local": if (trigger.IsSelected == FeaturesFromTestJob.Local) { countAux++; } break;
+                                                case "Short Floor": if (trigger.IsSelected == FeaturesFromTestJob.ShortFloor) { countAux++; } break;
+                                                case "Custom": if (trigger.IsSelected == FeaturesFromTestJob.Custom) { countAux++; } break;
+                                                case "MRL": if (trigger.IsSelected == FeaturesFromTestJob.MRL) { countAux++; } break;
+                                                case "CTL2": if (trigger.IsSelected == FeaturesFromTestJob.CTL2) { countAux++; } break;
+                                                case "Tarjeta CPI Incluida": if (trigger.IsSelected == FeaturesFromTestJob.TrajetaCPI) { countAux++; } break;
+                                                case "Door Control en Cartop": if (trigger.IsSelected == FeaturesFromTestJob.Cartop) { countAux++; } break;
+                                                case "Canada":
+                                                    if (trigger.IsSelected == true && StateFromCity.CountryID == 2) countAux++;
+                                                    else if (trigger.IsSelected == false && StateFromCity.CountryID != 2) countAux++;
+                                                    break;
+                                                case "Ontario":
+                                                    if (trigger.IsSelected == true && FeaturesFromJob.CityID == 11) countAux++;
+                                                    else if (trigger.IsSelected == false && FeaturesFromJob.CityID != 11) countAux++;
+                                                    break;
+                                                case "Manual Doors":
+                                                    if (trigger.IsSelected == true && FeaturesFromJob._jobExtension.DoorOperatorID == 2) countAux++;
+                                                    else if (trigger.IsSelected == false && FeaturesFromJob._jobExtension.DoorOperatorID != 2) countAux++;
+                                                    break;
+                                                case "Duplex":
+                                                    if (trigger.IsSelected == true && FeaturesFromJob._jobExtension.JobTypeMain == "Duplex") countAux++;
+                                                    else if (trigger.IsSelected == false && FeaturesFromJob._jobExtension.JobTypeMain != "Duplex") countAux++;
+                                                    break;
+                                                case "Serial Halls Calls": if (trigger.IsSelected == FeaturesFromJob._jobExtension.SHC) { countAux++; } break;
+                                                case "Edge-LS":
+                                                    if (trigger.IsSelected == true && landing.Name == "LS-EDGE") countAux++;
+                                                    else if (trigger.IsSelected == false && landing.Name != "LS-EDGE") countAux++;
+                                                    break;
+                                                case "Rail-LS":
+                                                    if (trigger.IsSelected == true && landing.Name == "LS-Rail") countAux++;
+                                                    else if (trigger.IsSelected == false && landing.Name != "LS-Rail") countAux++;
+                                                    break;
+                                                case "mView":
+                                                    if (FeaturesFromJob._GenericFeatures.Monitoring != null)
+                                                    {
+                                                        if (trigger.IsSelected == true && (FeaturesFromJob._GenericFeatures.Monitoring.Contains("MView"))) countAux++;
+                                                        else if (trigger.IsSelected == false && !(FeaturesFromJob._GenericFeatures.Monitoring.Contains("MView"))) countAux++;
+                                                        break;
+                                                    }
+                                                    break;
+                                                case "iMonitor":
+                                                    if (FeaturesFromJob._GenericFeatures.Monitoring != null)
+                                                    {
+                                                        if (trigger.IsSelected == true && (FeaturesFromJob._GenericFeatures.Monitoring.Contains("IMonitor"))) countAux++;
+                                                        else if (trigger.IsSelected == false && !(FeaturesFromJob._GenericFeatures.Monitoring.Contains("IMonitor"))) countAux++;
+                                                        break;
+                                                    }
+                                                    break;
+                                                case "HAPS Battery":
+                                                    if (FeaturesFromJob._HydroSpecific.Battery == true)
+                                                    {
+                                                        if (trigger.IsSelected == true && FeaturesFromJob._HydroSpecific.BatteryBrand == "HAPS") countAux++;
+                                                        else if (trigger.IsSelected == false && FeaturesFromJob._HydroSpecific.BatteryBrand != "HAPS") countAux++;
+                                                        break;
+                                                    }
+                                                    else break;
+                                                case "2+ Starters":
+                                                    if (trigger.IsSelected == true && FeaturesFromJob._HydroSpecific.MotorsNum >= 2) countAux++;
+                                                    else if (trigger.IsSelected == false && FeaturesFromJob._HydroSpecific.MotorsNum < 2) countAux++;
+                                                    break;
+                                                case "MOD Door Operator":
+                                                    if (trigger.IsSelected == true && (FeaturesFromJob._jobExtension.DoorOperatorID == 7 || FeaturesFromJob._jobExtension.DoorOperatorID == 8)) countAux++;
+                                                    else if (trigger.IsSelected == false && (FeaturesFromJob._jobExtension.DoorOperatorID != 7 || FeaturesFromJob._jobExtension.DoorOperatorID != 8)) countAux++;
+                                                    break;
+                                                default: break;
+                                            }
+                                        }
+                                        //Si se vuelve valido agrega el step a la lista de steps for job
+                                        if (count == countAux)
+                                        {
+                                            StepsForJob stepForJob = new StepsForJob
+                                            {
+                                                StepID = step.StepID,
+                                                TestJobID = FeaturesFromTestJob.TestJobID,
+                                                Start = DateTime.Now,
+                                                Stop = DateTime.Now,
+                                                Elapsed = new DateTime(1, 1, 1, 0, 0, 0),
+                                                Consecutivo = consecutivo
+                                            };
+                                            testingRepo.SaveStepsForJob(stepForJob);
+                                            consecutivo++;
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    return View(NotFound());
+                                }
                             }
                         }
-                        else
+
+                        break;
+                    case "ElmHydro":
+                    case "ElmTract" :
+
+                        Job FeaturesFromJob2 = jobRepo.Jobs.First(m => m.JobID == testJobView.TestJob.JobID);
+                        Element element = jobRepo.Elements.FirstOrDefault(j => j.JobID == FeaturesFromJob2.JobID);
+                        ElementHydro elementHydro = jobRepo.ElementHydros.FirstOrDefault(j => j.JobID == FeaturesFromJob2.JobID);
+                        List<Step> Steps2 = testingRepo.Steps.OrderBy(m => m.Order).Where(m => m.JobTypeID == FeaturesFromJob2.JobTypeID).ToList();
+                        //Checa si la lista de steps no esta vacia
+                        if (Steps2.Count > 0)
                         {
-                            return View(NotFound());
+                            //inicia el contador del consecutivo
+                            int consecutivo = 1;
+
+                            //Checa cada step de la lista
+                            foreach (Step step in Steps2)
+                            {
+                                //Obtiene el primer trigger del step actual step
+                                TriggeringFeature TriggerInStep = step._TriggeringFeatures.FirstOrDefault();
+
+                                //si su name es nulo significa que es un step por default, debido a esto lo agrega a step for Job
+                                if (TriggerInStep.Name == null)
+                                {
+                                    StepsForJob stepForJob = new StepsForJob
+                                    {
+                                        StepID = step.StepID,
+                                        TestJobID = FeaturesFromTestJob.TestJobID,
+                                        Start = DateTime.Now,
+                                        Stop = DateTime.Now,
+                                        Elapsed = new DateTime(1, 1, 1, 0, 0, 0),
+                                        Consecutivo = consecutivo
+                                    };
+
+                                    testingRepo.SaveStepsForJob(stepForJob);
+                                    consecutivo++;
+                                }
+                                /*si su name no es nulo significa que es un trigger optativo, debido a esto se comparara sus features con los del job
+                                y si concuerdan se anadira a steps for job*/
+                                else if (TriggerInStep.Name != null)
+                                {
+                                    //Crea una lista con todos los triggers del step actual
+                                    var triggers = testingRepo.TriggeringFeatures.Where(m => m.StepID == step.StepID).ToList();
+                                    //checa que la lista de triggers no este vacia
+                                    if (triggers.Count > 0)
+                                    {
+                                        int count = triggers.Count;
+                                        int countAux = 0;
+                                        //Checa que cada feature de la lista concuerde con los features del testjob
+                                        foreach (TriggeringFeature trigger in triggers)
+                                        {
+                                            LandingSystem landing = itemRepository.LandingSystems.FirstOrDefault(m => m.LandingSystemID == element.LandingSystemID);
+                                            City UniqueCity = itemRepository.Cities.FirstOrDefault(m => m.CityID == FeaturesFromJob2.CityID);
+                                            State StateFromCity = itemRepository.States.FirstOrDefault(m => m.StateID == UniqueCity.StateID);
+                                            switch (trigger.Name)
+                                            {
+                                                case "Overlay": if (trigger.IsSelected == FeaturesFromTestJob.Overlay) { countAux++; } break;
+                                                case "Group": if (trigger.IsSelected == FeaturesFromTestJob.Group) { countAux++; } break;
+                                                case "PC de Cliente": if (trigger.IsSelected == FeaturesFromTestJob.PC) { countAux++; } break;
+                                                case "Brake Coil Voltage > 10": if (trigger.IsSelected == FeaturesFromTestJob.BrakeCoilVoltageMoreThan10) { countAux++; } break;
+                                                case "EMBrake Module": if (trigger.IsSelected == FeaturesFromTestJob.EMBrake) { countAux++; } break;
+                                                case "EMCO Board": if (trigger.IsSelected == FeaturesFromTestJob.EMCO) { countAux++; } break;
+                                                case "R6 Regen Unit": if (trigger.IsSelected == FeaturesFromTestJob.R6) { countAux++; } break;
+                                                case "Local": if (trigger.IsSelected == FeaturesFromTestJob.Local) { countAux++; } break;
+                                                case "Short Floor": if (trigger.IsSelected == FeaturesFromTestJob.ShortFloor) { countAux++; } break;
+                                                case "Custom": if (trigger.IsSelected == FeaturesFromTestJob.Custom) { countAux++; } break;
+                                                case "MRL": if (trigger.IsSelected == FeaturesFromTestJob.MRL) { countAux++; } break;
+                                                case "CTL2": if (trigger.IsSelected == FeaturesFromTestJob.CTL2) { countAux++; } break;
+                                                case "Tarjeta CPI Incluida": if (trigger.IsSelected == FeaturesFromTestJob.TrajetaCPI) { countAux++; } break;
+                                                case "Door Control en Cartop": if (trigger.IsSelected == FeaturesFromTestJob.Cartop) { countAux++; } break;
+                                                case "Canada":
+                                                    if (trigger.IsSelected == true && StateFromCity.CountryID == 2) countAux++;
+                                                    else if (trigger.IsSelected == false && StateFromCity.CountryID != 2) countAux++;
+                                                    break;
+                                                case "Ontario":
+                                                    if (trigger.IsSelected == true && FeaturesFromJob2.CityID == 11) countAux++;
+                                                    else if (trigger.IsSelected == false && FeaturesFromJob2.CityID != 11) countAux++;
+                                                    break;
+                                                case "Manual Doors":
+                                                    if (trigger.IsSelected == true && element.DoorOperatorID == 2) countAux++;
+                                                    else if (trigger.IsSelected == false && element.DoorOperatorID != 2) countAux++;
+                                                    break;
+                                                case "Edge-LS":
+                                                    if (trigger.IsSelected == true && landing.Name == "LS-EDGE") countAux++;
+                                                    else if (trigger.IsSelected == false && landing.Name != "LS-EDGE") countAux++;
+                                                    break;
+                                                case "HAPS Battery": if (trigger.IsSelected == element.HAPS) { countAux++; } break;
+                                                case "MOD Door Operator":
+                                                    if (trigger.IsSelected == true && (element.DoorOperatorID == 7 || element.DoorOperatorID == 8)) countAux++;
+                                                    else if (trigger.IsSelected == false && (element.DoorOperatorID != 7 || element.DoorOperatorID != 8)) countAux++;
+                                                    break;
+                                                default: break;
+                                            }
+                                        }
+                                        //Si se vuelve valido agrega el step a la lista de steps for job
+                                        if (count == countAux)
+                                        {
+                                            StepsForJob stepForJob = new StepsForJob
+                                            {
+                                                StepID = step.StepID,
+                                                TestJobID = FeaturesFromTestJob.TestJobID,
+                                                Start = DateTime.Now,
+                                                Stop = DateTime.Now,
+                                                Elapsed = new DateTime(1, 1, 1, 0, 0, 0),
+                                                Consecutivo = consecutivo
+                                            };
+                                            testingRepo.SaveStepsForJob(stepForJob);
+                                            consecutivo++;
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    return View(NotFound());
+                                }
+                            }
                         }
-                    }
+
+                        break;
                 }
+
                 //Despues de terminar de hacer la lista de steps para job se manda el primero a la siguiente vista
                 var stepsForAUX = testingRepo.StepsForJobs.FirstOrDefault(m => m.TestJobID == testJobView.TestFeature.TestJobID && m.Consecutivo == 1); stepsForAUX.Start = DateTime.Now;
                 testingRepo.SaveStepsForJob(stepsForAUX);
@@ -533,6 +744,11 @@ namespace ProdFloor.Controllers
             bool isInRole = await userManager.IsInRoleAsync(user, role);
 
             return isInRole;
+        }
+
+        public string JobTypeName(int ID)
+        {
+            return itemRepository.JobTypes.FirstOrDefault(m => m.JobTypeID == ID).Name;
         }
     }
 }

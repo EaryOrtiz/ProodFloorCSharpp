@@ -44,7 +44,9 @@
             <button id="btnAllSteps" class="btn btn-light" type="button" data-toggle="collapse" data-target="#collapseStepsForJob" aria-expanded="false" aria-controls="collapseSteps" style="float:right">
                 <i class="fas fa-grip-lines"></i>
             </button>
-            <div class="collapse" id="collapseStepsForJob"> 
+            
+            <div class="collapse" id="collapseStepsForJob">
+                <div style="overflow-y:scroll;height:70vh;">
                     <div class="card card-body">
                         @foreach (StepsForJob step in Model.StepsForJobList)
                         {
@@ -129,9 +131,11 @@
                         }
                     </div>
                     <br />
-                
+
+                </div>
+
             </div>
-        </div>
+         </div>
     </div>
 </div>
 @{ 
