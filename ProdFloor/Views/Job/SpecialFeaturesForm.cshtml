@@ -2,7 +2,13 @@
 <input type="hidden" asp-for="CurrentJob.JobID" />
 <input type="hidden" asp-for="CurrentJob.Status" />
 <input type="hidden" asp-for="CurrentJob.EngID" />
-
+<script>
+    $(document).ready(function () {
+        $('#productName').autocomplete({
+            source: '/Job/Search'
+        });
+    });
+</script>
 <div class="container-fluid">
     <div class="row">
         <div class="col justify-content-md-center">
@@ -29,7 +35,7 @@
                                 <td>
                                     <input type="hidden" asp-for="SpecialFeatureslist[i].SpecialFeaturesID" value="@Model.SpecialFeatureslist[i].SpecialFeaturesID" />
                                     <input type="hidden" asp-for="SpecialFeatureslist[i].JobID" />
-                                    @Html.TextBoxFor(m => m.SpecialFeatureslist[i].Description, new { Class = "form-control col-sm-2;", Style = "text-align:center;" })
+                                    @Html.TextBoxFor(m => m.SpecialFeatureslist[i].Description, new { Class = "form-control col-sm-2;", Style = "text-align:center;" , id = "productName" })
                                 </td>
                                 <td style="text-align:center;">
                                     @if (Model.CurrentJob.Status != "Incomplete")
