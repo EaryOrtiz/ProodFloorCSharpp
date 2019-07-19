@@ -20,7 +20,7 @@ namespace ProdFloor.Controllers
         private ITestingRepository testingRepo;
         private IItemRepository itemRepository;
         private UserManager<AppUser> userManager;
-        public int PageSize = 10;
+        public int PageSize = 7;
 
         public TestJobController(ITestingRepository repo, IJobRepository repo2, IItemRepository repo3, UserManager<AppUser> userMgr)
         {
