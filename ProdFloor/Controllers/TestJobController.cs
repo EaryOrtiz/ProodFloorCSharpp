@@ -613,7 +613,16 @@ namespace ProdFloor.Controllers
                 var job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == testjobinfo.JobID);
                 var AllStepsForJob = testingRepo.StepsForJobs.Where(m => m.TestJobID == testJobView.TestFeature.TestJobID).ToList();
                 var AllStepsForJobInfo = testingRepo.Steps.Where(m => AllStepsForJob.Any(s => s.StepID == m.StepID)).ToList();
-                return View("StepsForJob", new TestJobViewModel { StepsForJob = stepsFor, Step = stepInfo, Job = job, TestJob = testjobinfo, StepList = AllStepsForJobInfo, StepsForJobList = AllStepsForJob });
+
+                var auxtStepsPerStageInfo = AllStepsForJobInfo.Where(m => m.Stage == stepInfo.Stage).ToList();
+                int StepsPerStage = auxtStepsPerStageInfo.Count();
+                int auxtStepsPerStage = AllStepsForJob.Where(m => auxtStepsPerStageInfo.Any(s => s.StepID == m.StepID)).Where(m => m.Complete == true).Count() +1;
+
+
+                return View("StepsForJob", new TestJobViewModel {
+                    StepsForJob = stepsFor, Step = stepInfo, Job = job,
+                    TestJob = testjobinfo, StepList = AllStepsForJobInfo,
+                    StepsForJobList = AllStepsForJob, CurrentStep = auxtStepsPerStage, TotalStepsPerStage = StepsPerStage });
             }
 
             return View(NotFound());
@@ -664,7 +673,16 @@ namespace ProdFloor.Controllers
                 var stepInfo = testingRepo.Steps.FirstOrDefault(m => m.StepID == nextStepFor.StepID);
                 var testjobinfo = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == viewModel.TestJob.TestJobID);
                 var job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == testjobinfo.JobID);
-                return View("StepsForJob", new TestJobViewModel { StepsForJob = nextStepFor, Step = stepInfo, Job = job, TestJob = testjobinfo, StepList = AllStepsForJobInfo, StepsForJobList = StepsForJobList });
+
+                var auxtStepsPerStageInfo = AllStepsForJobInfo.Where(m => m.Stage == stepInfo.Stage).ToList();
+                int StepsPerStage = auxtStepsPerStageInfo.Count();
+                int auxtStepsPerStage = StepsForJobList.Where(m => auxtStepsPerStageInfo.Any(s => s.StepID == m.StepID)).Where(m => m.Complete == true).Count() + 1;
+
+                return View("StepsForJob", new TestJobViewModel { StepsForJob = nextStepFor, Step = stepInfo, Job = job, TestJob = testjobinfo, StepList = AllStepsForJobInfo,
+                    StepsForJobList = StepsForJobList,
+                    CurrentStep = auxtStepsPerStage,
+                    TotalStepsPerStage = StepsPerStage
+                });
 
             }//For Previous Step
             else if (viewModel.StepsForJob.Consecutivo == (next + 1))
@@ -677,7 +695,15 @@ namespace ProdFloor.Controllers
                 var stepInfo = testingRepo.Steps.FirstOrDefault(m => m.StepID == previusStepFor.StepID);
                 var testjobinfo = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == viewModel.TestJob.TestJobID);
                 var job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == testjobinfo.JobID);
-                return View("StepsForJob", new TestJobViewModel { StepsForJob = previusStepFor, Step = stepInfo, Job = job, TestJob = testjobinfo, StepList = AllStepsForJobInfo, StepsForJobList = StepsForJobList });
+
+                var auxtStepsPerStageInfo = AllStepsForJobInfo.Where(m => m.Stage == stepInfo.Stage).ToList();
+                int StepsPerStage = auxtStepsPerStageInfo.Count();
+                int auxtStepsPerStage = StepsForJobList.Where(m => auxtStepsPerStageInfo.Any(s => s.StepID == m.StepID)).Where(m => m.Complete == true).Count() + 1;
+
+                return View("StepsForJob", new TestJobViewModel { StepsForJob = previusStepFor, Step = stepInfo, Job = job, TestJob = testjobinfo, StepList = AllStepsForJobInfo, StepsForJobList = StepsForJobList,
+                    CurrentStep = auxtStepsPerStage,
+                    TotalStepsPerStage = StepsPerStage
+                });
             }
 
 
@@ -702,7 +728,15 @@ namespace ProdFloor.Controllers
             var stepInfo = testingRepo.Steps.FirstOrDefault(m => m.StepID == nextStepFor.StepID);
             var testjobinfo = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == viewModel.TestJob.TestJobID);
             var job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == testjobinfo.JobID);
-            return View("StepsForJob", new TestJobViewModel { StepsForJob = nextStepFor, Step = stepInfo, Job = job, TestJob = testjobinfo, StepList = AllStepsForJobInfo, StepsForJobList = StepsForJobList });
+
+            var auxtStepsPerStageInfo = AllStepsForJobInfo.Where(m => m.Stage == stepInfo.Stage).ToList();
+            int StepsPerStage = auxtStepsPerStageInfo.Count();
+            int auxtStepsPerStage = StepsForJobList.Where(m => auxtStepsPerStageInfo.Any(s => s.StepID == m.StepID)).Where(m => m.Complete == true).Count() + 1;
+
+            return View("StepsForJob", new TestJobViewModel { StepsForJob = nextStepFor, Step = stepInfo, Job = job, TestJob = testjobinfo, StepList = AllStepsForJobInfo, StepsForJobList = StepsForJobList,
+                CurrentStep = auxtStepsPerStage,
+                TotalStepsPerStage = StepsPerStage
+            });
         }
 
         public IActionResult ContinueStep(int ID)
@@ -715,7 +749,15 @@ namespace ProdFloor.Controllers
             var stepInfo = testingRepo.Steps.FirstOrDefault(m => m.StepID == CurrentStep.StepID);
             var testjobinfo = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == CurrentStep.TestJobID);
             var job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == testjobinfo.JobID);
-            return View("StepsForJob", new TestJobViewModel { StepsForJob = CurrentStep, Step = stepInfo, Job = job, TestJob = testjobinfo, StepList = AllStepsForJobInfo, StepsForJobList = StepsForJobList });
+
+            var auxtStepsPerStageInfo = AllStepsForJobInfo.Where(m => m.Stage == stepInfo.Stage).ToList();
+            int StepsPerStage = auxtStepsPerStageInfo.Count();
+            int auxtStepsPerStage = StepsForJobList.Where(m => auxtStepsPerStageInfo.Any(s => s.StepID == m.StepID)).Where(m => m.Complete == true).Count() + 1;
+
+            return View("StepsForJob", new TestJobViewModel { StepsForJob = CurrentStep, Step = stepInfo, Job = job, TestJob = testjobinfo, StepList = AllStepsForJobInfo, StepsForJobList = StepsForJobList,
+                CurrentStep = auxtStepsPerStage,
+                TotalStepsPerStage = StepsPerStage
+            });
         }
 
         [HttpPost]

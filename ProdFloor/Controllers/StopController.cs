@@ -150,7 +150,15 @@ namespace ProdFloor.Controllers
             var stepInfo = testingRepo.Steps.FirstOrDefault(m => m.StepID == CurrentStep.StepID);
             var testjobinfo = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == CurrentStep.TestJobID);
             var job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == testjobinfo.JobID);
-            return View("StepsForJob", new TestJobViewModel { StepsForJob = CurrentStep, Step = stepInfo, Job = job, TestJob = testjobinfo, StepList = AllStepsForJobInfo, StepsForJobList = StepsForJobList });
+
+            var auxtStepsPerStageInfo = AllStepsForJobInfo.Where(m => m.Stage == stepInfo.Stage).ToList();
+            int StepsPerStage = auxtStepsPerStageInfo.Count();
+            int auxtStepsPerStage = StepsForJobList.Where(m => auxtStepsPerStageInfo.Any(s => s.StepID == m.StepID)).Where(m => m.Complete == true).Count() + 1;
+
+            return View("StepsForJob", new TestJobViewModel { StepsForJob = CurrentStep, Step = stepInfo, Job = job, TestJob = testjobinfo, StepList = AllStepsForJobInfo, StepsForJobList = StepsForJobList,
+                CurrentStep = auxtStepsPerStage,
+                TotalStepsPerStage = StepsPerStage
+            });
         }
 
         public ViewResult Edit(int ID)

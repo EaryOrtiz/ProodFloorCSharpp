@@ -41,6 +41,8 @@ namespace ProdFloor.Models.ViewModels.TestJob
         public List<Reason4> Reasons4List { get; set; }
         public List<Reason5> Reasons5List { get; set; }
         public string Reason1Name { get; set; }
+        public int CurrentStep { get; set; }
+        public int TotalStepsPerStage { get; set; }
 
 
         //Dummy fields
@@ -52,5 +54,7 @@ namespace ProdFloor.Models.ViewModels.TestJob
         public bool MView { get; set; }
         [Display(Name = "+2 Starters")]
         public bool TwosStarters { get; set; }
+        
+
     }
 }
