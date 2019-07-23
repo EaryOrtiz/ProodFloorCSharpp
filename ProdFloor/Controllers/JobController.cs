@@ -2059,7 +2059,7 @@ namespace ProdFloor.Controllers
             xws.OmitXmlDeclaration = true;
             xws.Indent = true;
 
-            List<Job> jobs = repository.Jobs.ToList();
+            List<Job> jobs = repository.Jobs.Where(m => m.Contractor != "Fake").ToList();
 
             using (XmlWriter xw = XmlWriter.Create(ms, xws))
             {
@@ -2516,7 +2516,7 @@ namespace ProdFloor.Controllers
                                     if (traction != null)
                                     {
                                         string aux;
-                                        xw.WriteStartElement("ElementHydro");
+                                        xw.WriteStartElement("ElementTraction");
                                         xw.WriteElementString("ID", traction.ElementTractionID.ToString());
                                         xw.WriteElementString("JobID", traction.JobID.ToString());
                                         xw.WriteElementString("HP", traction.HP.ToString());
@@ -3481,8 +3481,8 @@ namespace ProdFloor.Controllers
                         var pfge = xmlElement.SelectSingleNode(".//pfge").InnerText;
                         var fron2 = xmlElement.SelectSingleNode(".//fron2").InnerText;
                         var ctl = xmlElement.SelectSingleNode(".//ctl").InnerText;
-                        var jobtypeadd = xmlElement.SelectSingleNode(".//csd").InnerText;
-                        var csd = xmlElement.SelectSingleNode(".//ctf").InnerText;
+                        var csd = xmlElement.SelectSingleNode(".//csd").InnerText;
+                        var ctf = xmlElement.SelectSingleNode(".//ctf").InnerText;
                         var eq = xmlElement.SelectSingleNode(".//eq").InnerText;
                         var lj = xmlElement.SelectSingleNode(".//lj").InnerText;
                         var dhld = xmlElement.SelectSingleNode(".//dhld").InnerText;
@@ -3497,19 +3497,137 @@ namespace ProdFloor.Controllers
                             Voltage = Int32.Parse(voltage),
                             Phase = Int32.Parse(phase),
                             Frequency = Int32.Parse(frequency),
-                        
+
+                            DoorGate = doorgate,
+                            INA = ina,
+                            LoadWeigher = loadweigher,
+
+                            INCP = Boolean.Parse(incp),
+                            CarKey = Boolean.Parse(carkey),
+                            CarCardReader = Boolean.Parse(carcardreader),
+                            CRO = Boolean.Parse(cro),
+                            HallKey = Boolean.Parse(hallkey),
+                            HallCardReader = Boolean.Parse(hallcardreader),
+                            HCRO = Boolean.Parse(hcro),
+                            CallEnable = Boolean.Parse(callenable),
+                            HAPS = Boolean.Parse(haps),
+                            EP = Boolean.Parse(ep),
+                            EMT = Boolean.Parse(emt),
+                            PSS = Boolean.Parse(pss),
+                            PTFLD = Boolean.Parse(ptfld),
+                            VCI = Boolean.Parse(vci),
+                            CReg = Boolean.Parse(creg),
+                            Egress = Boolean.Parse(egress),
+                            PHECutOut = Boolean.Parse(phecutout),
+                            CTINSPST = Boolean.Parse(ctinspst),
+                            Traveler = Boolean.Parse(traveler),
+                            LOS = Boolean.Parse(los),
+                            PFGE = Boolean.Parse(pfge),
+                            FRON2 = Boolean.Parse(fron2),
+                            CTL = Boolean.Parse(ctl),
+                            CSD = Boolean.Parse(csd),
+                            CTF = Boolean.Parse(ctf),
+                            EQ = Boolean.Parse(eq),
+                            LJ = Boolean.Parse(lj),
+                            DHLD = Boolean.Parse(dhld),
 
                         });
                         context.Database.OpenConnection();
                         try
                         {
-                            context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.JobsExtensions ON");
+                            context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.Elements ON");
                             context.SaveChanges();
-                            context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.JobsExtensions OFF");
+                            context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.Elements OFF");
                         }
                         finally
                         {
                             context.Database.CloseConnection();
+                        }
+
+                        if (int.Parse(jobtypeid) == 1)
+                        {
+                            var xmlElementHydro = node.SelectSingleNode(".//elementhydro");
+                            var idElmh = xmlElementHydro.SelectSingleNode(".//id").InnerText;
+
+                            var starter = xmlElementHydro.SelectSingleNode(".//starter").InnerText;
+                            var hp = xmlElementHydro.SelectSingleNode(".//hp").InnerText;
+                            var fla = xmlElementHydro.SelectSingleNode(".//fla").InnerText;
+                            var sph = xmlElementHydro.SelectSingleNode(".//sph").InnerText;
+                            var valvebrand = xmlElementHydro.SelectSingleNode(".//valvebrand").InnerText;
+                            context.ElementHydros.Add(new ElementHydro
+                            {
+                                ElementHydroID = Int32.Parse(idElmh),
+                                JobID = Int32.Parse(jobid),
+
+                                Starter = starter,
+                                HP = float.Parse(hp),
+                                FLA = float.Parse(fla),
+                                SPH = Int32.Parse(voltage),
+                                ValveBrand = valvebrand,
+
+                            });
+                            context.Database.OpenConnection();
+                            try
+                            {
+                                context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.ElementHydros ON");
+                                context.SaveChanges();
+                                context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.ElementHydros OFF");
+                            }
+                            finally
+                            {
+                                context.Database.CloseConnection();
+                            }
+                        }
+                        else
+                        {
+                            var xmlElementTraction = node.SelectSingleNode(".//elementtraction");
+                            var idElmt = xmlElementTraction.SelectSingleNode(".//id").InnerText;
+
+                            var machinelocation = xmlElementTraction.SelectSingleNode(".//machinelocation").InnerText;
+                            var vvvf = xmlElementTraction.SelectSingleNode(".//vvvf").InnerText;
+                            var motorbrand = xmlElementTraction.SelectSingleNode(".//motorbrand").InnerText;
+                            var contact = xmlElementTraction.SelectSingleNode(".//contact").InnerText;
+                            var encoder = xmlElementTraction.SelectSingleNode(".//encoder").InnerText;
+                            var iso = xmlElementTraction.SelectSingleNode(".//iso").InnerText;
+                            var hp = xmlElementTraction.SelectSingleNode(".//hp").InnerText;
+                            var fla = xmlElementTraction.SelectSingleNode(".//fla").InnerText;
+                            var pickvoltage = xmlElementTraction.SelectSingleNode(".//pickvoltage").InnerText;
+                            var holdvoltage = xmlElementTraction.SelectSingleNode(".//holdvoltage").InnerText;
+                            var resistance = xmlElementTraction.SelectSingleNode("./resistance").InnerText;
+                            var current = xmlElementTraction.SelectSingleNode(".//current").InnerText;
+
+                            context.ElementTractions.Add(new ElementTraction
+                            {
+                                ElementTractionID = Int32.Parse(idElmt),
+                                JobID = Int32.Parse(jobid),
+
+                                MachineLocation = machinelocation,
+                                VVVF = vvvf,
+                                MotorBrand = motorbrand,
+                                Contact = contact,
+                                HP = float.Parse(hp),
+                                FLA = float.Parse(fla),
+                                PickVoltage = Int32.Parse(pickvoltage),
+                                HoldVoltage = Int32.Parse(holdvoltage),
+                                Resistance = Int32.Parse(resistance),
+                                Current = Int32.Parse(current),
+
+
+                                Encoder = Boolean.Parse(encoder),
+                                ISO = Boolean.Parse(iso),
+
+                            });
+                            context.Database.OpenConnection();
+                            try
+                            {
+                                context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.ElementTractions ON");
+                                context.SaveChanges();
+                                context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.ElementTractions OFF");
+                            }
+                            finally
+                            {
+                                context.Database.CloseConnection();
+                            }
                         }
                     }
 
