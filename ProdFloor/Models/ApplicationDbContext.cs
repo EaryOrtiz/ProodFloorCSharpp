@@ -53,6 +53,7 @@ namespace ProdFloor.Models
         public DbSet<Reason4> Reasons4 { get; set; }
         public DbSet<Reason5> Reasons5 { get; set; }
         public DbSet<Stop> Stops { get; set; }
+        public DbSet<Station> Stations { get; set; }
 
         //Nuevos Modelos
         public DbSet<Element> Elements { get; set; }

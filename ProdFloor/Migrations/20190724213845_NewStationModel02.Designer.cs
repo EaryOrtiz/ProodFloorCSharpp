@@ -11,9 +11,10 @@ using System;
 namespace ProdFloor.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190724213845_NewStationModel02")]
+    partial class NewStationModel02
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1370,6 +1371,8 @@ namespace ProdFloor.Migrations
 
                     b.HasIndex("JobID");
 
+                    b.HasIndex("StationID");
+
                     b.ToTable("TestJobs");
                 });
 
@@ -1692,6 +1695,11 @@ namespace ProdFloor.Migrations
                     b.HasOne("ProdFloor.Models.Job")
                         .WithMany("_TestJobs")
                         .HasForeignKey("JobID")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("ProdFloor.Models.Station")
+                        .WithMany("_Jobs")
+                        .HasForeignKey("StationID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

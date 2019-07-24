@@ -19,6 +19,7 @@ namespace ProdFloor.Models
         IQueryable<Reason4> Reasons4 { get; }
         IQueryable<Reason5> Reasons5 { get; }
         IQueryable<Stop> Stops { get; }
+        IQueryable<Station> Stations { get; }
 
         void SaveTestJob(TestJob testJob);
         void SaveTestFeature(TestFeature testFeature);
@@ -31,6 +32,7 @@ namespace ProdFloor.Models
         void SaveReason4(Reason4 reason4);
         void SaveReason5(Reason5 reason5);
         void SaveStop(Stop stop);
+        void SaveStation(Station station);
         void SaveTestStep(StepViewModel viewModelToSave);
 
         TestJob DeleteTestJob(int TestJobID);
@@ -45,5 +47,6 @@ namespace ProdFloor.Models
         Reason4 DeleteReason4(int Reason4ID);
         Reason5 DeleteReason5(int Reason5ID);
         Stop DeleteStop(int StopID);
+        Station DeleteStation(int StationID);
     }
 }

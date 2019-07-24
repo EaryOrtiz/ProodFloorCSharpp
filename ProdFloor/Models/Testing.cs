@@ -20,12 +20,21 @@ namespace ProdFloor.Models
         public int SinglePO { get; set; }
         [Display(Name = "Job Label")]
         public string JobLabel { get; set; }
-        [Display(Name = "Estacion")]
-        public string Station { get; set; }
+
+        //Total time
+        public DateTime StartDate { get; set; }
+        public DateTime CompletedDate { get; set; }
+
+        //New field for station
+        [Display(Name = "Station")]
+        public int StationID { get; set; }
 
         public List<Stop> _Stops { get; set; }
         public List<StepsForJob> _StepsForJobs { get; set; }
         public TestFeature _TestFeature { get; set; }
+
+        
+        
     }
 
     public class TestFeature
@@ -102,6 +111,15 @@ namespace ProdFloor.Models
         public bool Complete { get; set; }
         [Required(ErrorMessage = "Please enter a {0}")]
         public int Consecutivo { get; set; }
+
+
+        //New boolean that is activated when a duplicate steps exists
+        public bool Obsolete { get; set; }
+
+        //Auxiliaries fields
+        public int AuxTechnicianID { get; set; }
+        public int AuxStationID { get; set; }
+
     }
 
     public class Reason1
@@ -205,6 +223,21 @@ namespace ProdFloor.Models
         public DateTime StopDate { get; set; }
         public DateTime Elapsed { get; set; }
         public string Description { get; set; }
+
+        //New Boooelan to critical stops
+        public bool Critical { get; set; }
+
+        //Auxiliaries fields
+        public int AuxTechnicianID { get; set; }
+        public int AuxStationID { get; set; }
+    }
+
+    public class Station
+    {
+        public int StationID { get; set; }
+        public string Label { get; set; }
+        [Display(Name = "Job Type")]
+        public int JobTypeID { get; set; }
     }
 
 }

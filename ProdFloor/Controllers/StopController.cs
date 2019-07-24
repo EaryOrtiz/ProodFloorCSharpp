@@ -81,7 +81,7 @@ namespace ProdFloor.Controllers
                 StartDate = DateTime.Now,
                 StopDate = DateTime.Now,
                 Elapsed = new DateTime(1, 1, 1, 0, 0, 0)
-        };
+            };
 
             testingRepo.SaveStop(NewtStop);
             Stop CurrentStop = testingRepo.Stops.FirstOrDefault(p => p.StopID == testingRepo.Stops.Max(x => x.StopID));

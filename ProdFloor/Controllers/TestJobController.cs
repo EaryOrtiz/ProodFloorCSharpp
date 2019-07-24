@@ -321,7 +321,7 @@ namespace ProdFloor.Controllers
             {
                 //guarda la lista de features
                 TestJob testJobModify = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == testJobView.TestJob.TestJobID);
-                testJobModify.Station = testJobView.TestJob.Station; testJobModify.JobLabel = testJobView.TestJob.JobLabel;
+                //testJobModify.Station = testJobView.TestJob.Station; testJobModify.JobLabel = testJobView.TestJob.JobLabel;
                 testingRepo.SaveTestJob(testJobModify);
                 testingRepo.SaveTestFeature(testJobView.TestFeature);
 

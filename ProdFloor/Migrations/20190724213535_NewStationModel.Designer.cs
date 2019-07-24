@@ -11,9 +11,10 @@ using System;
 namespace ProdFloor.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190724213535_NewStationModel")]
+    partial class NewStationModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -740,6 +741,8 @@ namespace ProdFloor.Migrations
 
                     b.Property<DateTime>("ShipDate");
 
+                    b.Property<int?>("StationID");
+
                     b.Property<string>("Status")
                         .HasMaxLength(26);
 
@@ -750,6 +753,8 @@ namespace ProdFloor.Migrations
                     b.HasIndex("FireCodeID");
 
                     b.HasIndex("JobTypeID");
+
+                    b.HasIndex("StationID");
 
                     b.ToTable("Jobs");
                 });
@@ -1558,6 +1563,10 @@ namespace ProdFloor.Migrations
                         .WithMany("_Jobs")
                         .HasForeignKey("JobTypeID")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("ProdFloor.Models.Station")
+                        .WithMany("_Jobs")
+                        .HasForeignKey("StationID");
                 });
 
             modelBuilder.Entity("ProdFloor.Models.JobAdditional", b =>

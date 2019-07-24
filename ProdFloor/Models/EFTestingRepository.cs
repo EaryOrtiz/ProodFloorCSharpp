@@ -26,6 +26,7 @@ namespace ProdFloor.Models
         public IQueryable<Reason4> Reasons4 => context.Reasons4;
         public IQueryable<Reason5> Reasons5 => context.Reasons5;
         public IQueryable<Stop> Stops => context.Stops;
+        public IQueryable<Station> Stations => context.Stations;
 
         public void SaveTestJob(TestJob testJob)
         {
@@ -43,8 +44,10 @@ namespace ProdFloor.Models
                     dbEntry.TechnicianID = testJob.TechnicianID;
                     dbEntry.Status = testJob.Status;
                     dbEntry.SinglePO = testJob.SinglePO;
-                    dbEntry.Station = testJob.Station;
+                    dbEntry.StationID = testJob.StationID;
                     dbEntry.JobLabel = testJob.JobLabel;
+                    dbEntry.StartDate = testJob.StartDate;
+                    dbEntry.CompletedDate = testJob.CompletedDate;
                 }
             }
             context.SaveChanges();
@@ -148,6 +151,9 @@ namespace ProdFloor.Models
                     dbEntry.Elapsed = stepsForJob.Elapsed;
                     dbEntry.Complete = stepsForJob.Complete;
                     dbEntry.Consecutivo = stepsForJob.Consecutivo;
+                    dbEntry.AuxTechnicianID = stepsForJob.AuxTechnicianID;
+                    dbEntry.AuxStationID = stepsForJob.AuxStationID;
+                    dbEntry.Obsolete = stepsForJob.Obsolete;
                 }
             }
             context.SaveChanges();
@@ -266,6 +272,28 @@ namespace ProdFloor.Models
                     dbEntry.StopDate = stop.StopDate;
                     dbEntry.Elapsed = stop.Elapsed;
                     dbEntry.Description = stop.Description;
+                    dbEntry.AuxTechnicianID = stop.AuxTechnicianID;
+                    dbEntry.AuxStationID = stop.AuxStationID;
+                    dbEntry.Critical = stop.Critical;
+                }
+            }
+            context.SaveChanges();
+
+        }
+        public void SaveStation(Station station)
+        {
+            if (station.StationID == 0)
+            {
+                context.Stations.Add(station);
+            }
+            else
+            {
+                Station dbEntry = context.Stations
+                .FirstOrDefault(p => p.StationID == station.StationID);
+                if (dbEntry != null)
+                {
+                    dbEntry.Label = station.Label;
+                    dbEntry.JobTypeID = station.JobTypeID;
                 }
             }
             context.SaveChanges();
@@ -416,6 +444,17 @@ namespace ProdFloor.Models
             if (dbEntry != null)
             {
                 context.Stops.Remove(dbEntry);
+                context.SaveChanges();
+            }
+            return dbEntry;
+        }
+        public Station DeleteStation(int StationID)
+        {
+            Station dbEntry = context.Stations
+                .FirstOrDefault(p => p.StationID == StationID);
+            if (dbEntry != null)
+            {
+                context.Stations.Remove(dbEntry);
                 context.SaveChanges();
             }
             return dbEntry;
