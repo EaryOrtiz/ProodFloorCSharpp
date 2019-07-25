@@ -21,16 +21,10 @@
             @Html.Partial("TestJobAndFeatures", Model)
         </div>
         <div class="tab-pane" id="steps" role="tabpanel">
-            @if (Model.CurrentJobExtension.JobID != 0)
-            {
                 @Html.Partial("AllStepsFromJob", Model)
-            }
         </div>
         <div class="tab-pane" id="stops" role="tabpanel">
-            @if (Model.CurrentGenericFeatures.JobID != 0)
-            {
                 @Html.Partial("AllStops", Model)
-            }
         </div>
         <div class="text-center">  
             <button class="btn btn-primary" value="Save" type="submit">Save</button>
