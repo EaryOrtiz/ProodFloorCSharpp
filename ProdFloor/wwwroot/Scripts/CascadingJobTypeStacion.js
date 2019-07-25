@@ -1,8 +1,8 @@
 $(function () {
-    $("#JobTypeID").ready(function () {
+    $("#JobTypeID").change(function () {
                 var JobTypeID = $("#JobTypeID").val();
-                var Stacion = $('#Stacion');
-                Stacion.empty();
+                var Station = $('#Station');
+                Station.empty();
                 if (JobTypeID != null && JobTypeID != '') {
                     $.ajax({
                         type: 'GET',
@@ -12,9 +12,9 @@ $(function () {
                             JobTypeID: JobTypeID
                         },
                         success: function (data) {
-                            $("#Stacion").prop("disabled", false);
+                            $("#Station").prop("disabled", false);
                             $.each(data, function (idx, item) {
-                                Stacion.append('<option value="' + item.text + '">' + item.value + '</option>');
+                                Station.append('<option value="' + item.text + '">' + item.value + '</option>');
                             });
                         },
                         error: function (exc) {
@@ -22,5 +22,5 @@ $(function () {
                         }
                     });
                 }
-            });
-        });
+    });
+});

@@ -3598,4 +3598,70 @@ namespace ProdFloor.Infrastructure
         }
     }
 
+    public class StationSelectTagHelper : TagHelper
+    {
+        private IItemRepository itemsrepository;
+        private ITestingRepository testingRepository;
+
+
+        private IUrlHelperFactory urlHelperFactory;
+
+        public ModelExpression AspFor { get; set; }
+
+        public StationSelectTagHelper(IUrlHelperFactory helperFactory, IItemRepository itemsrepo, ITestingRepository testRepo)
+        {
+            urlHelperFactory = helperFactory;
+            itemsrepository = itemsrepo;
+            testingRepository = testRepo;
+        }
+
+        [ViewContext]
+        [HtmlAttributeNotBound]
+        public ViewContext ViewContext { get; set; }
+
+        public int SelectedValue { get; set; }
+        public int SelectFor { get; set; }
+
+
+        [HtmlAttributeName("asp-is-disabled")]
+        public bool IsDisabled { set; get; }
+
+        public override void Process(TagHelperContext context, TagHelperOutput output)
+        {
+            IUrlHelper urlHelper = urlHelperFactory.GetUrlHelper(ViewContext);
+            output.TagName = "select";
+            TagBuilder result = new TagBuilder("select");
+            string name = this.AspFor.Name;
+            if (!String.IsNullOrEmpty(name))
+            {
+                output.Attributes.Add("id", name);
+                output.Attributes.Add("name", name);
+            }
+            TagBuilder m_tag = new TagBuilder("option");
+            m_tag.Attributes["value"] = "";
+            m_tag.InnerHtml.Append("Please select one");
+            result.InnerHtml.AppendHtml(m_tag);
+            IQueryable<Station> stations = testingRepository.Stations.OrderBy(s => s.Label).AsQueryable();
+            if (SelectFor != 0) stations = testingRepository.Stations.OrderBy(s => s.Label).Where(m => m.JobTypeID == SelectFor).AsQueryable();
+            foreach (Station station in stations)
+            {
+                TagBuilder tag = new TagBuilder("option");
+                tag.Attributes["value"] = station.StationID.ToString();
+                if (station.StationID == SelectedValue)
+                {
+                    tag.Attributes["selected"] = "selected";
+                }
+                tag.InnerHtml.Append(station.Label.ToString());
+                result.InnerHtml.AppendHtml(tag);
+            }
+            output.Content.AppendHtml(result.InnerHtml);
+            if (IsDisabled)
+            {
+                var d = new TagHelperAttribute("disabled", "disabled");
+                output.Attributes.Add(d);
+            }
+            base.Process(context, output);
+        }
+    }
+
 }

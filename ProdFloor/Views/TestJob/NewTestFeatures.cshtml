@@ -18,10 +18,10 @@
                 </div>
             </div>
             <div class="form-group row">
-                <label asp-for="TestJob.Station" class="col-sm-2 col-form-label"></label>
+                <label asp-for="TestJob.StationID" class="col-sm-2 col-form-label"></label>
                 <div>
-                    <custom-select selected-value="@Model.TestJob.Station" class="form-control-sm form-control" id="Stacion" asp-for="TestJob.Station" select-for="Station"></custom-select>
-                    <span asp-validation-for="TestJob.Station" class="text-danger"></span>
+                    <station-select select-for="@Model.Job.JobTypeID" selected-value="@Model.TestJob.StationID"  class="form-control form-control-sm" asp-for="TestJob.StationID"></station-select>
+                    <span asp-validation-for="TestJob.StationID" class="text-danger"></span>
                 </div>
             </div>
         </div>

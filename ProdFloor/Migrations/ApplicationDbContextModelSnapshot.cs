@@ -1353,8 +1353,6 @@ namespace ProdFloor.Migrations
 
                     b.Property<int>("JobID");
 
-                    b.Property<string>("JobLabel");
-
                     b.Property<int>("SinglePO");
 
                     b.Property<DateTime>("StartDate");

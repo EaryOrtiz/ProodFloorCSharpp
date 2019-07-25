@@ -42,10 +42,10 @@ namespace ProdFloor.Models
                 {
                     dbEntry.JobID = testJob.JobID;
                     dbEntry.TechnicianID = testJob.TechnicianID;
+                    dbEntry.JobLabel = testJob.JobLabel;
                     dbEntry.Status = testJob.Status;
                     dbEntry.SinglePO = testJob.SinglePO;
                     dbEntry.StationID = testJob.StationID;
-                    dbEntry.JobLabel = testJob.JobLabel;
                     dbEntry.StartDate = testJob.StartDate;
                     dbEntry.CompletedDate = testJob.CompletedDate;
                 }

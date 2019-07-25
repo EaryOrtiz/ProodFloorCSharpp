@@ -56,6 +56,56 @@ namespace ProdFloor.Controllers
             return View(new TestJobViewModel());
         }
 
+        public ViewResult SearchTestJob()
+        {
+            List<TestJob> testJobsList = new List<TestJob>();
+            TestJobViewModel testJobView = new TestJobViewModel
+            {
+                TestJobList = testJobsList
+               .OrderBy(p => p.TechnicianID)
+               .Skip((1 - 1) * PageSize)
+               .Take(PageSize).ToList(),
+                PagingInfo = new PagingInfo
+                {
+                    CurrentPage = 1,
+                    ItemsPerPage = PageSize,
+                    TotalItems = testJobsList.Count()
+                }
+            };
+            return View(testJobView);
+        }
+
+        [HttpPost]
+        public IActionResult SearchTestJob(TestJobViewModel viewModel, int page = 1)
+        {
+            List<TestJob> testJobsList = new List<TestJob>();
+            List<Job> jobList = jobRepo.Jobs.Where(m => m.JobNum == viewModel.Job.JobNum).ToList();
+            foreach (Job job in jobList)
+            {
+                TestJob TestjobAux = testingRepo.TestJobs.FirstOrDefault(m => m.JobID == job.JobID);
+                if (TestjobAux != null) testJobsList.Add(TestjobAux);
+            }
+
+            TestJobViewModel testJobView = new TestJobViewModel
+            {
+                TestJobList = testJobsList
+               .OrderBy(p => p.TechnicianID)
+               .Skip((page - 1) * 10)
+               .Take(10).ToList(),
+                PagingInfo = new PagingInfo
+                {
+                    CurrentPage = page,
+                    ItemsPerPage = 10,
+                    TotalItems = testJobsList.Count()
+                }
+            };
+
+            if (testJobsList.Count > 0 && testJobsList[0] != null) return View(testJobView);
+            TempData["message"] = $"Does not exist any job with the JobNum #{viewModel.Job.JobNum}, please try again.";
+            TempData["alert"] = $"alert-danger";
+            return View(testJobView);
+        }
+
         [HttpPost]
         public IActionResult SearchJob(TestJobViewModel viewModel)
         {
@@ -76,7 +126,10 @@ namespace ProdFloor.Controllers
                         if (_jobSearch != null && _jobSearch.Status != "Incomplete")
                         {
 
-                            TestJob testJob = new TestJob { JobID = _jobSearch.JobID, TechnicianID = currentUser.EngID, SinglePO = viewModel.POJobSearch, Status = "Working on it" };
+                            TestJob testJob = new TestJob { JobID = _jobSearch.JobID, TechnicianID = currentUser.EngID,
+                                SinglePO = viewModel.POJobSearch, Status = "Working on it", StartDate = DateTime.Now,
+                                CompletedDate = DateTime.Now, StationID = 0
+                            };
                             testingRepo.SaveTestJob(testJob);
 
                             var currentTestJob = testingRepo.TestJobs
@@ -269,7 +322,11 @@ namespace ProdFloor.Controllers
                 jobRepo.SavePO(POFake);
 
                 //Create the new TestJob
-                TestJob testJob = new TestJob { JobID = currentJob.JobID, TechnicianID = currentUser.EngID, SinglePO = POFake.PONumb, Status = "Working on it" };
+                TestJob testJob = new TestJob { JobID = currentJob.JobID, TechnicianID = currentUser.EngID, SinglePO = POFake.PONumb, Status = "Working on it",
+                    StartDate = DateTime.Now,
+                    CompletedDate = DateTime.Now,
+                    StationID = 0
+                };
                 testingRepo.SaveTestJob(testJob);
 
                 var currentTestJob = testingRepo.TestJobs.FirstOrDefault(p => p.TestJobID == testingRepo.TestJobs.Max(x => x.TestJobID));
@@ -760,6 +817,20 @@ namespace ProdFloor.Controllers
             });
         }
 
+
+        public ViewResult EditTestJob(int ID)
+        {
+            TestJobViewModel testJobView = new TestJobViewModel
+            {
+                TestJob = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == ID),
+                TestFeature = testingRepo.TestFeatures.FirstOrDefault(m => m.TestJobID == ID),
+                StepsForJobList = testingRepo.StepsForJobs.Where(m => m.TestJobID == ID).OrderBy(n => n.Consecutivo).ToList(),
+                StopList = testingRepo.Stops.Where(m => m.TestJobID == ID).ToList(),
+            };
+
+            return View(testJobView);
+        }
+
         [HttpPost]
         public IActionResult Delete(int ID)
         {
@@ -791,6 +862,25 @@ namespace ProdFloor.Controllers
         public string JobTypeName(int ID)
         {
             return itemRepository.JobTypes.FirstOrDefault(m => m.JobTypeID == ID).Name;
+        }
+
+        public IActionResult SearchJobNum()
+        {
+            try
+            {
+                string term = HttpContext.Request.Query["term"].ToString();
+                var names = jobRepo.Jobs.Where(p => p.JobNum.ToString().Contains(term)).Select(p => p.JobNum).Distinct().ToList();
+                List<string> numbers = new List<string>();
+                foreach(int number in names)
+                {
+                    numbers.Add(number.ToString());
+                }
+                return Ok(numbers);
+            }
+            catch
+            {
+                return BadRequest();
+            }
         }
     }
 }

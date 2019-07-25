@@ -69,7 +69,7 @@
                     @Html.DisplayFor(m => item.StopDate)
                 </td>
                 <td>
-                    Dias: @((item.Elapsed.Day - 1).ToString())&nbsp;Horas: @(item.Elapsed.Hour.ToString())&nbsp;Minutos: @(item.Elapsed.Minute.ToString())&nbsp;
+                    @((item.Elapsed.Day - 1).ToString()):@(item.Elapsed.Hour.ToString()):@(item.Elapsed.Minute.ToString()):@(item.Elapsed.Second.ToString())
                 </td>
                 <td>
                     @Html.DisplayFor(m => Model.Reasons1List.FirstOrDefault(n => n.Reason1ID == item.Reason1).Description)

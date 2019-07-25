@@ -1,0 +1,28 @@
+﻿@model Station
+@{
+    ViewBag.Title = "Edit Station";
+    Layout = "_AdminLayoutWO";
+
+    <script src="~/Scripts/CascadingJobTypeStacion.js" type="text/javascript" ></script>
+}
+<div class="bg-dark m-1 p-1"><h4 style="color:white">Edit Station: @Model.Label</h4></div>
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="StationID" />
+    <div class="form-group">
+        <label asp-for="JobTypeID" class="col-2 col-form-label"></label>
+        <job-type-select selected-value="@Model.JobTypeID" class="form-control col-4" id="JobTypeID" asp-for="JobTypeID"></job-type-select>
+        <span asp-validation-for="JobTypeID" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Label" class="col-2 col-form-label"></label>
+        <div>
+            <custom-select selected-value="@Model.Label" class="form-control col-4" asp-for="Label" id="Station" select-for="Station"></custom-select>
+            <span asp-validation-for="Label" class="text-danger"></span>
+        </div>
+    </div>
+    <br />
+    <div>
+        <button class="btn btn-primary" type="submit">Save</button>
+        <a asp-action="List" class="btn btn-secondary">Cancel</a>
+    </div>
+</form>

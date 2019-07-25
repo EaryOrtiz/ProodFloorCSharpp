@@ -13,36 +13,47 @@
     </div>
     <div class="card-text p-1">
         <form asp-action="Delete" method="post" asp-route-Id="@Model.TestJobID">
-            @if (Model.Status == "Stoped")
+            @if (User.IsInRole("Admin"))
             {
-                <a asp-action="WaitingForRestar" asp-controller="Stop"
-                   asp-route-id="@Model.TestJobID" class="btn btn-warning btn-sm">
-                    Continue
-                </a>
-            }
-            else if (Model.Status == "Working on it")
-            {
-                <a asp-action="ContinueStep" asp-controller="TestJob"
-                   asp-route-id="@Model.TestJobID" class="btn btn-info btn-sm">
-                    Continue
-                </a>
-                <a asp-action="EditTestFeatures" class="btn btn-sm btn-warning"
+                <a asp-action="EditTestJob" class="btn btn-sm btn-warning"
                    asp-route-Id="@Model.TestJobID">
                     Edit
                 </a>
-
+                <input type="hidden" name="ID" value="@Model.TestJobID" />
+                <button type="submit" class="btn btn-danger btn-sm">
+                    Delete
+                </button>
             }
-            <input type="hidden" name="ID" value="@Model.TestJobID" />
-            <button type="submit" class="btn btn-danger btn-sm">
-                Delete
-            </button>
-            @if (User.IsInRole("Admin") && Model.Status == "Working on it")
+            else
             {
-            <a asp-action="NewStop" asp-controller="Stop" class="btn btn-sm btn-dark"
-               asp-route-Id="@Model.TestJobID">
-                New Stop
-            </a>
+                @if (Model.Status == "Stoped")
+                {
+                    <a asp-action="WaitingForRestar" asp-controller="Stop"
+                       asp-route-id="@Model.TestJobID" class="btn btn-warning btn-sm">
+                        Continue
+                    </a>
+                }
+                else if (Model.Status == "Working on it")
+                {
+                    <a asp-action="ContinueStep" asp-controller="TestJob"
+                       asp-route-id="@Model.TestJobID" class="btn btn-info btn-sm">
+                        Continue
+                    </a>
+                    <a asp-action="EditTestFeatures" class="btn btn-sm btn-warning"
+                       asp-route-Id="@Model.TestJobID">
+                        Edit
+                    </a>
+
+                }
+                @if (User.IsInRole("Admin") && Model.Status == "Working on it")
+                {
+                    <a asp-action="NewStop" asp-controller="Stop" class="btn btn-sm btn-dark"
+                       asp-route-Id="@Model.TestJobID">
+                        New Stop
+                    </a>
+                }
             }
+
         </form>
     </div>
 </div>

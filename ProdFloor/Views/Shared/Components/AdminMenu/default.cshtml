@@ -67,14 +67,19 @@
         <ul id="collapseSteps" class="collapse" role="tabpanel" aria-labelledby="collapseSteps" data-parent="#accordion">
             <li class="nav-link"
                 style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue">
-                <a style="color:white" asp-action="List"
-                   asp-controller="TestJob"
-                   asp-route-Page="1">Test Job</a>
+                <a style="color:white" asp-action="SearchTestJob"
+                   asp-controller="TestJob">Test Job</a>
             </li>
             <li class="nav-link"
                 style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue">
                 <a style="color:white" asp-action="List" asp-route-ElmHydroPage="1" asp-route-M2000Page="1" asp-route-ElmTractionPage="1" asp-route-M4000Page="1"
                    asp-controller="Step" asp-route-JobTypeName="Traction">Steps</a>
+            </li>
+            <li class="nav-link"
+                style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue">
+                <a style="color:white" asp-action="List"
+                   asp-controller="Station"
+                   asp-route-Page="1">Stations</a>
             </li>
             <li class="nav-link"
                 style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue">
