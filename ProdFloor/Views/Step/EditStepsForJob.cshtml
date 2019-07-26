@@ -1,0 +1,44 @@
+﻿@model ProdFloor.Models.ViewModels.TestJob.TestJobViewModel
+@{
+    ViewBag.Title = "Edit Steps For Job";
+    Layout = "_AdminLayoutWO";
+}
+<div class="bg-dark m-1 p-1"><h4 style="color:white">Edit Step</h4></div>
+<form asp-action="EditStepsForJob" method="post">
+    <input type="hidden" asp-for="StepsForJob.StepsForJobID" />
+    <input type="hidden" asp-for="StepsForJob.StepID" />
+    <input type="hidden" asp-for="StepsForJob.TestJobID" />
+    <div class="form-group row">
+        <label asp-for="StepsForJob.Consecutivo" class="col-sm-1 col-form-label"></label>
+        <div>
+            <input asp-for="StepsForJob.Consecutivo" class="form-control col-10" />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label asp-for="Step.Description" class="col-sm-1 col-form-label"></label>
+        <div>
+            <input asp-for="Step.Description" class="form-control col-10" disabled/>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label asp-for="StepsForJob.Start" class="col-sm-1 col-form-label"></label>
+        <div>
+            <input asp-for="StepsForJob.Start" class="form-control col-10" />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label asp-for="StepsForJob.Stop" class="col-sm-1 col-form-label"></label>
+        <div>
+            <input asp-for="StepsForJob.Stop" class="form-control col-10" />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label asp-for="StepsForJob.Complete" class="col-sm-1 col-form-label"></label>
+        <div>
+            <input  asp-for="StepsForJob.Complete" class="form-check-input form-control col-2" />
+        </div>
+    </div>
+    <div class="text-center">
+        <button class="btn btn-primary" type="submit">Save</button>
+    </div>
+</form>

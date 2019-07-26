@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using ProdFloor.Models;
 using ProdFloor.Models.ViewModels;
 using ProdFloor.Models.ViewModels.Testing;
+using ProdFloor.Models.ViewModels.TestJob;
 
 namespace ProdFloor.Controllers
 {
@@ -230,6 +231,31 @@ namespace ProdFloor.Controllers
                 TempData["message"] = $"There was an error with your request{fieldID}";
             }
             return Redirect(returnUrl);
+        }
+
+        public ViewResult EditStepsForJob(int ID)
+        {
+            StepsForJob stepsForJob = testingrepo.StepsForJobs.FirstOrDefault(m => m.StepsForJobID == ID);
+            if (stepsForJob == null)
+            {
+                return View(NotFound());
+            }
+            TestJobViewModel viewModel = new TestJobViewModel
+            {
+                StepsForJob = stepsForJob,
+                TestJob = testingrepo.TestJobs.FirstOrDefault(m => m.TestJobID == stepsForJob.TestJobID),
+                Step = testingrepo.Steps.FirstOrDefault(m => m.StepID == stepsForJob.StepID)
+            };
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public IActionResult EditStepsForJob(TestJobViewModel viewModel)
+        {
+                testingrepo.SaveStepsForJob(viewModel.StepsForJob);
+                TempData["message"] = $"{viewModel.StepsForJob.StepsForJobID} has been saved...";
+                return RedirectToAction("List");
         }
 
         [HttpPost]

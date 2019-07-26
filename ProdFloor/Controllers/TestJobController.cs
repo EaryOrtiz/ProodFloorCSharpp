@@ -818,19 +818,6 @@ namespace ProdFloor.Controllers
         }
 
 
-        public ViewResult EditTestJob(int ID)
-        {
-            TestJobViewModel testJobView = new TestJobViewModel
-            {
-                TestJob = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == ID),
-                TestFeature = testingRepo.TestFeatures.FirstOrDefault(m => m.TestJobID == ID),
-                StepsForJobList = testingRepo.StepsForJobs.Where(m => m.TestJobID == ID).OrderBy(n => n.Consecutivo).ToList(),
-                StopList = testingRepo.Stops.Where(m => m.TestJobID == ID).ToList(),
-            };
-
-            return View(testJobView);
-        }
-
         [HttpPost]
         public IActionResult Delete(int ID)
         {
@@ -841,6 +828,60 @@ namespace ProdFloor.Controllers
                 TempData["message"] = $"{deletedItem.TestJobID} was deleted";
             }
             return RedirectToAction("List");
+        }
+
+        public ViewResult StopsFromTestJob(int ID, int page = 1)
+        {
+            TestJob testJob = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == ID);
+           TestJobViewModel testJobView =  new TestJobViewModel
+            {
+                StopList = testingRepo.Stops
+                .Where(m => m.TestJobID == ID)
+                .OrderBy(p => p.StopID)
+                .Skip((page - 1) * PageSize)
+                .Take(PageSize).ToList(),
+                Job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == testJob.JobID),
+                TestJob = testJob,
+                Reasons1List = testingRepo.Reasons1.ToList(),
+                Reasons2List = testingRepo.Reasons2.ToList(),
+                Reasons3List = testingRepo.Reasons3.ToList(),
+                Reasons4List = testingRepo.Reasons4.ToList(),
+                Reasons5List = testingRepo.Reasons5.ToList(),
+                PagingInfo = new PagingInfo
+                {
+                    CurrentPage = page,
+                    ItemsPerPage = PageSize,
+                    TotalItems = testingRepo.Stops.Where(m => m.TestJobID == ID).Count()
+                }
+            };
+
+            return View(testJobView);
+        }
+
+        public ViewResult AllStepsForJob(int ID, int page = 1)
+        {
+            TestJob testJob = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == ID);
+            Job job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == testJob.JobID);
+            TestJobViewModel testJobView = new TestJobViewModel
+            {
+                StepsForJobList = testingRepo.StepsForJobs
+                 .Where(m => m.TestJobID == ID)
+                 .OrderBy(p => p.Consecutivo)
+                 .Skip((page - 1) * PageSize)
+                 .Take(PageSize).ToList(),
+                Job = job,
+                TestJob = testJob,
+                StepList = testingRepo.Steps.Where(m =>m.JobTypeID ==job.JobTypeID).ToList(),
+                PagingInfo = new PagingInfo
+                {
+                    CurrentPage = page,
+                    ItemsPerPage = PageSize,
+                    TotalItems = testingRepo.StepsForJobs
+                     .Where(m => m.TestJobID == ID).ToList().Count()
+                }
+            };
+
+            return View(testJobView);
         }
 
         private async Task<AppUser> GetCurrentUser()
