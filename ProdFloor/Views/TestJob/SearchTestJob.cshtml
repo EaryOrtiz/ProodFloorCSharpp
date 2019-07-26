@@ -12,7 +12,7 @@
 }
 
 <div class="row" style="padding-right:20px">
-    <h2 class="col-sm-10">Jobs to Test</h2>
+    <h2 class="col-sm-10">Admin Dashboard</h2>
 </div>
 <br />
 <form asp-controller="TestJob" asp-action="SearchTestJob" method="post">
@@ -20,7 +20,7 @@
         <input type="text" class="form-control form-control-sm col-5" asp-for="Job.JobNum" id="JobNum" placeholder=" Please enter a Job Number">
         <div class="input-group-append">
             <button class="btn btn-dark" type="submit" value="Search">
-                <i class="fa fa-plus" aria-hidden="true"></i>
+                <i class="fa fa-search" aria-hidden="true"></i>
             </button>
         </div>
     </div>
@@ -28,20 +28,8 @@
     <div>
         <span asp-validation-for="Job.JobNum" class="text-danger"></span><br />
     </div>
-    <br /><br />
-    @foreach (var j in Model.TestJobList)
-    {
-        @Html.Partial("TestJobSummary", j)
-    }
-    @if (Model.TestJobList.Count > 0)
-    {
-        <coool-pagination-all page-model="@Model.PagingInfo" page-action="SearchTestJob" page-classes-enabled="true"
-                              page-class="btn" page-class-normal="btn-secondary"
-                              page-class-selected="btn-primary"
-                              class="btn-group pull-right m-1">
-        </coool-pagination-all>
-    }
-</form>
 
+    @Html.Partial("TechAdminDashBoard", Model)
+</form>
 
 

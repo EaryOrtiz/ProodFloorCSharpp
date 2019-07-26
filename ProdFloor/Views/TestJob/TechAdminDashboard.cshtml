@@ -1,0 +1,102 @@
+﻿@model ProdFloor.Models.ViewModels.TestJob.TestJobViewModel
+    <h4>Ongoing TestJob(s)</h4>
+    <table class="table table-sm">
+        <thead style="background-color:#1B2831;color:#fff">
+            <tr>
+                <th scope="col">
+                    Job#
+                </th>
+                <th scope="col">
+                    PO#
+                </th>
+                <th scope="col">
+                    Status
+                </th>
+                <th scope="col">
+                    Station
+                </th>
+                <th scope="col">
+                    Options
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.TestJobList.Count() == 0)
+            {
+                <tr>
+                    <td>No Test Jobs!</td>
+                </tr>
+            }
+            else
+            {
+                @foreach (var j in Model.TestJobList)
+                {
+                    AppUser CurrentUser = UserManager.Users.FirstOrDefault(m => m.EngID == j.TechnicianID);
+                <tr>
+                    <th scope="row">
+                        @if (j.Status != "Incomplete")
+                        {
+                            <a asp-action="EditTestFeatures"
+                               asp-route-Id="@j.TestJobID">
+                                @Model.JobList.FirstOrDefault(m => m.JobID == j.JobID).JobNum
+                            </a>
+                        }
+                        else
+                        {
+                            @Model.JobList.FirstOrDefault(m => m.JobID == j.JobID).JobNum
+                        }
+                    </th>
+                    <td>@j.SinglePO</td>
+                    <td>
+                        @j.Status
+                    </td>
+                    <td>
+                        @Model.StationsList.FirstOrDefault(m => m.StationID == j.StationID).Label
+                    </td>
+                    <td>
+
+                        <form asp-action="EditTestFeatures" asp-controller="TestJob" method="get">
+                            <button type="submit" value="@j.TestJobID" name="ID" class="btn btn-light"
+                                    style="float:left;background-color:transparent">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                        </form>
+                        <form asp-action="AllStepsForJob" asp-controller="TestJob" method="get">
+                            <button type="submit" value="@j.TestJobID" name="ID" class="btn btn-light"
+                                    style="float:left;background-color:transparent">
+                                <i class="fas fa-shoe-prints"></i>
+                            </button>
+                        </form>
+                        <form asp-action="StopsFromTestJob" asp-controller="TestJob" method="get">
+                            <button type="submit" value="@j.TestJobID" name="ID" class="btn btn-light"
+                                    style="float:left;background-color:transparent">
+                                <i class="fas fa-hourglass-half"></i>
+                            </button>
+                        </form>
+                        <form asp-action="JobReasigment" asp-controller="TestJob" method="get">
+                            <button type="submit" value="@j.TestJobID" name="ID" class="btn btn-light"
+                                    style="float:left;background-color:transparent">
+                                <i class="fas fa-user-edit"></i>
+                            </button>
+                        </form>
+                        <form asp-action="StatusChange" asp-controller="TestJob" method="get">
+                            <button type="submit" value="@j.TestJobID" name="ID" class="btn btn-light"
+                                    style="float:left;background-color:transparent">
+                                <i class="fas fa-retweet"></i>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                }
+            }
+        </tbody>
+    </table>
+    @if (Model.TestJobList.Count() > 0)
+    {
+        <cool-pagination-dash-board current-model="MyJobs" my-jobs-page-model="@Model.PagingInfo" page-action="Index" page-classes-enabled="true"
+                                    page-class="btn" page-class-normal="btn-secondary" on-cross-page-model="@Model.PagingInfo" pending-to-cross-page-model="@Model.PagingInfo"
+                                    page-class-selected="btn-primary" my-jobs-url-value="MyJobsPage" on-cross-url-value="OnCrossJobPage"
+                                    pending-to-cross-url-value="PendingToCrossJobPage" sort="Sort"
+                                    class="btn-group pull-right m-1">
+        </cool-pagination-dash-board>
+    }

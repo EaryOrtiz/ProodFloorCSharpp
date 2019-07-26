@@ -246,14 +246,15 @@ namespace ProdFloor.Controllers
                 TestJob = testingrepo.TestJobs.FirstOrDefault(m => m.TestJobID == stepsForJob.TestJobID),
                 Step = testingrepo.Steps.FirstOrDefault(m => m.StepID == stepsForJob.StepID)
             };
-
             return View(viewModel);
         }
 
         [HttpPost]
         public IActionResult EditStepsForJob(TestJobViewModel viewModel)
         {
-                testingrepo.SaveStepsForJob(viewModel.StepsForJob);
+            TimeSpan elapsed = viewModel.StepsForJob.Stop - viewModel.StepsForJob.Start;
+            viewModel.StepsForJob.Elapsed += elapsed;
+            testingrepo.SaveStepsForJob(viewModel.StepsForJob);
                 TempData["message"] = $"{viewModel.StepsForJob.StepsForJobID} has been saved...";
                 return RedirectToAction("List");
         }

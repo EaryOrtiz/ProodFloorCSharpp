@@ -58,18 +58,19 @@ namespace ProdFloor.Controllers
 
         public ViewResult SearchTestJob()
         {
-            List<TestJob> testJobsList = new List<TestJob>();
             TestJobViewModel testJobView = new TestJobViewModel
             {
-                TestJobList = testJobsList
+                TestJobList = testingRepo.TestJobs
                .OrderBy(p => p.TechnicianID)
-               .Skip((1 - 1) * PageSize)
-               .Take(PageSize).ToList(),
+               .Skip((1 - 1) * 10)
+               .Take(10).ToList(),
+                JobList = jobRepo.Jobs.ToList(),
+                StationsList = testingRepo.Stations.ToList(),
                 PagingInfo = new PagingInfo
                 {
                     CurrentPage = 1,
-                    ItemsPerPage = PageSize,
-                    TotalItems = testJobsList.Count()
+                    ItemsPerPage = 10,
+                    TotalItems = testingRepo.TestJobs.Count()
                 }
             };
             return View(testJobView);
@@ -90,11 +91,13 @@ namespace ProdFloor.Controllers
             {
                 TestJobList = testJobsList
                .OrderBy(p => p.TechnicianID)
-               .Skip((page - 1) * 10)
+               .Skip((1 - 1) * 10)
                .Take(10).ToList(),
+                JobList = jobRepo.Jobs.ToList(),
+                StationsList = testingRepo.Stations.ToList(),
                 PagingInfo = new PagingInfo
                 {
-                    CurrentPage = page,
+                    CurrentPage = 1,
                     ItemsPerPage = 10,
                     TotalItems = testJobsList.Count()
                 }

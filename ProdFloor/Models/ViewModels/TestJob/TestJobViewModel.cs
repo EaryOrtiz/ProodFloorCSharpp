@@ -33,6 +33,7 @@ namespace ProdFloor.Models.ViewModels.TestJob
         public List<TestFeature> TestFeatureList { get; set; }
         public List<Step> StepList { get; set; }
         public List<StepsForJob> StepsForJobList { get; set; }
+        public List<Station> StationsList { get; set; }
         public List<PO> POList { get; set; }
         public List<Stop> StopList { get; set; }
         public List<Reason1> Reasons1List { get; set; }
