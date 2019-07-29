@@ -18,7 +18,7 @@ namespace ProdFloor.Models.ViewModels.TestJob
         public Models.Job Job { get; set; }
         public JobExtension JobExtension { get; set; }
         public HydroSpecific HydroSpecific { get; set; }
-        public HoistWayData HoistWayData {get;set;}
+        public HoistWayData HoistWayData { get; set; }
         public GenericFeatures GenericFeatures { get; set; }
         public Indicator Indicator { get; set; }
         public SpecialFeatures SpecialFeature { get; set; }
@@ -55,6 +55,7 @@ namespace ProdFloor.Models.ViewModels.TestJob
         public bool MView { get; set; }
         [Display(Name = "+2 Starters")]
         public bool TwosStarters { get; set; }
+        public bool StopNC { get; set; }
         
 
     }

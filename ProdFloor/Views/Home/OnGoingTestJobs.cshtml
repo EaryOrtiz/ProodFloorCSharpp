@@ -14,7 +14,7 @@
         </tr>
     </thead>
     <tbody>
-        @if (Model.PendingJobs.Count() == 0)
+        @if (Model.PendingTestJobs.Count() == 0)
         {
             <tr>
                 <td>No Test Jobs!</td>
@@ -45,7 +45,7 @@
                     <td>@t.SinglePO</td>
                     <td>@j.Name</td>
                     <td>@JobtypeName</td>
-                    <td>@j.ShipDate</td>
+                    <td>@j.LatestFinishDate</td>
                     <td>
                         @if (t.Status == "Stoped")
                         {
@@ -68,9 +68,9 @@
         }
     </tbody>
 </table>
-@if (Model.PendingJobs.Count() > 0)
+@if (Model.PendingTestJobs.Count() > 0)
 {
-    <cool-pagination-dash-board current-model="MyJobs" my-jobs-page-model="@Model.PendingJobsPagingInfo" page-action="Index" page-classes-enabled="true"
+    <cool-pagination-dash-board current-model="MyJobs" my-jobs-page-model="@Model.MyJobsPagingInfo" page-action="Index" page-classes-enabled="true"
                                 page-class="btn" page-class-normal="btn-secondary" on-cross-page-model="@Model.OnCrossJobsPagingInfo" pending-to-cross-page-model="@Model.PendingToCrossJobsPagingInfo"
                                 page-class-selected="btn-primary" my-jobs-url-value="MyTestJobs" on-cross-url-value="OnCrossJobPage"
                                 pending-to-cross-url-value="PendingToCrossJobPage" sort="Sort"

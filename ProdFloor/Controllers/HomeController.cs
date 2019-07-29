@@ -145,9 +145,8 @@ namespace ProdFloor.Controllers
                 var CurrentTestJobs = testingRepo.TestJobs
                     .Where(j => j.TechnicianID == currentUser.EngID)
                     .Where(j => j.Status == "Stoped" || j.Status == "Working on it")
-                  .OrderBy(p => p.TestJobID)
-                  .Skip((pendingJobPage - 1) * PageSize)
-                  .Take(PageSize);
+                  .OrderBy(p => p.TestJobID).ToList();
+                  
 
                 List<Job> DummyOnCrossJobsList = repository.Jobs
                         .Where(j => j.Status == "On Cross Approval").ToList();
@@ -157,16 +156,15 @@ namespace ProdFloor.Controllers
 
                 return View("TechnicianDashBoard", new DashboardIndexViewModel
                 {
-                    PendingTestJobs = CurrentTestJobs,
-                    PendingJobsPagingInfo = new PagingInfo
+                    PendingTestJobs = CurrentTestJobs.Skip((MyJobsPage - 1) * 5).Take(5),
+                    MyJobsPagingInfo = new PagingInfo
                     {
-                        CurrentPage = pendingJobPage,
-                        ItemsPerPage = PageSize,
-                        TotalItems = testingRepo.TestJobs
-                        .Where(j => j.TechnicianID == currentUser.EngID)
-                        .Where(j => j.Status == "Stoped" || j.Status == "Working on it")
-                        .Count()
+                        CurrentPage = MyJobsPage,
+                        ItemsPerPage = 5,
+                        TotalItems = CurrentTestJobs.Count(),
                     },
+
+
                     PendingJobs = repository.Jobs.Where(m => CurrentTestJobs.Any(s => s.JobID == m.JobID)),
                     JobTypesList = itemRepo.JobTypes.ToList(),
                     OnCrossJobs = DummyOnCrossJobsList.Skip((OnCrossJobPage - 1) * PageSize).Take(PageSize),

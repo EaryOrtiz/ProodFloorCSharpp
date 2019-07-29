@@ -15,5 +15,6 @@
 <div class="justify-content-md-center text-center">
     <div class="btn-group row " style="position:center" role="group" aria-label="Basic example">
         <a class="btn btn-danger btn-lg" asp-controller="Stop" asp-action="RestarTestJob" asp-route-id="@Model.Stop.StopID">Restart</a>
+        <a class="btn btn-warning btn-lg" asp-controller="Stop" asp-action="RestarTestJob" asp-route-Critical="@false" asp-route-id="@Model.Stop.StopID">Continue without ended the stop</a>
     </div>
 </div>

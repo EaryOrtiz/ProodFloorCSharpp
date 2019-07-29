@@ -69,6 +69,7 @@ namespace ProdFloor.Controllers
         public ViewResult NewStop(Stop Stop)
         {
             bool admin = GetCurrentUserRole("Admin").Result;
+            TestJob testJob = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == Stop.TestJobID);
             Stop NewtStop = new Stop
             {
                 TestJobID = Stop.TestJobID,
@@ -78,15 +79,17 @@ namespace ProdFloor.Controllers
                 Reason4 = 0,
                 Reason5ID = 0,
                 Description = null,
+                Critical = true,
                 StartDate = DateTime.Now,
                 StopDate = DateTime.Now,
-                Elapsed = new DateTime(1, 1, 1, 0, 0, 0)
+                Elapsed = new DateTime(1, 1, 1, 0, 0, 0),
+                AuxStationID = testJob.StationID,
+                AuxTechnicianID = testJob.TechnicianID,
             };
 
             testingRepo.SaveStop(NewtStop);
             Stop CurrentStop = testingRepo.Stops.FirstOrDefault(p => p.StopID == testingRepo.Stops.Max(x => x.StopID));
             string Reason1Name = testingRepo.Reasons1.FirstOrDefault(m => m.Reason1ID == CurrentStop.Reason1).Description;
-            TestJob testJob = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == CurrentStop.TestJobID);
             testJob.Status = "Stoped";
             testingRepo.SaveTestJob(testJob);
             Job job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == testJob.JobID);
@@ -111,12 +114,49 @@ namespace ProdFloor.Controllers
             return View(new TestJobViewModel { Job = job, Stop = CurrentStop, Reason1Name = Reason1Name });
         }
 
-        public ViewResult RestarTestJob(int ID)
+        public ViewResult RestarTestJob(int ID, bool Critical = true)
         {
             Stop CurrentStop = testingRepo.Stops.FirstOrDefault(p => p.StopID == ID);
-            TestJob testJob = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == CurrentStop.TestJobID);
-            Job job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == testJob.JobID);
-            return View(new TestJobViewModel { Job = job, Stop = CurrentStop, TestJob = testJob});
+            if (Critical == true)
+            {
+                CurrentStop.Critical = true;
+                testingRepo.SaveStop(CurrentStop);
+                TestJob testJob = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == CurrentStop.TestJobID);
+                Job job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == testJob.JobID);
+                return View(new TestJobViewModel { Job = job, Stop = CurrentStop, TestJob = testJob });
+            }
+            else
+            {
+                CurrentStop.Critical = false;
+                testingRepo.SaveStop(CurrentStop);
+                TestJob testJob = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == CurrentStop.TestJobID);
+                testJob.Status = "Working on it";
+                testingRepo.SaveTestJob(testJob);
+                var AllStepsForJob = testingRepo.StepsForJobs.Where(m => m.TestJobID == testJob.TestJobID && m.Obsolete == false).OrderBy(m => m.Consecutivo).ToList();
+                var AllStepsForJobInfo = testingRepo.Steps.Where(m => AllStepsForJob.Any(s => s.StepID == m.StepID)).ToList();
+                StepsForJob CurrentStep = AllStepsForJob.FirstOrDefault(m => m.Complete == false); CurrentStep.Start = DateTime.Now;
+                testingRepo.SaveStepsForJob(CurrentStep);
+                var stepInfo = testingRepo.Steps.FirstOrDefault(m => m.StepID == CurrentStep.StepID);
+                var testjobinfo = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == CurrentStep.TestJobID);
+                var job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == testjobinfo.JobID);
+
+                var auxtStepsPerStageInfo = AllStepsForJobInfo.Where(m => m.Stage == stepInfo.Stage).ToList();
+                int StepsPerStage = auxtStepsPerStageInfo.Count();
+                int auxtStepsPerStage = AllStepsForJob.Where(m => auxtStepsPerStageInfo.Any(s => s.StepID == m.StepID)).Where(m => m.Complete == true).Count() + 1;
+
+                return View("StepsForJob", new TestJobViewModel
+                {
+                    StepsForJob = CurrentStep,
+                    Step = stepInfo,
+                    Job = job,
+                    TestJob = testjobinfo,
+                    StepList = AllStepsForJobInfo,
+                    StepsForJobList = AllStepsForJob,
+                    CurrentStep = auxtStepsPerStage,
+                    TotalStepsPerStage = StepsPerStage
+                });
+            }
+            
         }
 
         [HttpPost]
@@ -124,28 +164,21 @@ namespace ProdFloor.Controllers
         {
             TimeSpan auxTime = (DateTime.Now - viewModel.Stop.StartDate);
             viewModel.Stop.Elapsed += auxTime;
-            Stop UpdatedStop = new Stop
-            {
-                StopID = viewModel.Stop.StopID,
-                TestJobID = viewModel.Stop.TestJobID,
-                Reason1 = viewModel.Stop.Reason1,
-                Reason2 = viewModel.Stop.Reason2,
-                Reason3 = viewModel.Stop.Reason3,
-                Reason4 = viewModel.Stop.Reason4,
-                Reason5ID = viewModel.Stop.Reason5ID,
-                Description = viewModel.Stop.Description,
-                StartDate = viewModel.Stop.StartDate,
-                StopDate = DateTime.Now,
-                Elapsed = viewModel.Stop.Elapsed
-            };
+            Stop UpdatedStop = testingRepo.Stops.FirstOrDefault(m => m.StopID == viewModel.Stop.StopID);
+            UpdatedStop.Reason1 = viewModel.Stop.Reason1;
+            UpdatedStop.Reason2 = viewModel.Stop.Reason2;
+            UpdatedStop.Reason3 = viewModel.Stop.Reason3;
+            UpdatedStop.Reason4 = viewModel.Stop.Reason4;
+            UpdatedStop.Reason5ID = viewModel.Stop.Reason5ID;
+            UpdatedStop.Description = viewModel.Stop.Description;
+            UpdatedStop.StopDate = DateTime.Now;
             testingRepo.SaveStop(UpdatedStop);
             TestJob testJob = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == UpdatedStop.TestJobID);
             testJob.Status = "Working on it";
             testingRepo.SaveTestJob(testJob);
-            List<StepsForJob> StepsForJobList = testingRepo.StepsForJobs.FromSql("select * from dbo.StepsForJobs where dbo.StepsForJobs.StepsForJobID " +
-               "IN( select  Max(dbo.StepsForJobs.StepsForJobID ) from dbo.StepsForJobs where dbo.StepsForJobs.TestJobID = {0} group by dbo.StepsForJobs.Consecutivo)", testJob.TestJobID).ToList();
-            var AllStepsForJobInfo = testingRepo.Steps.Where(m => StepsForJobList.Any(s => s.StepID == m.StepID)).ToList();
-            StepsForJob CurrentStep = StepsForJobList.FirstOrDefault(m => m.Complete == false); CurrentStep.Start = DateTime.Now;
+            var AllStepsForJob = testingRepo.StepsForJobs.Where(m => m.TestJobID == testJob.TestJobID && m.Obsolete == false).OrderBy(m => m.Consecutivo).ToList();
+            var AllStepsForJobInfo = testingRepo.Steps.Where(m => AllStepsForJob.Any(s => s.StepID == m.StepID)).ToList();
+            StepsForJob CurrentStep = AllStepsForJob.FirstOrDefault(m => m.Complete == false); CurrentStep.Start = DateTime.Now;
             testingRepo.SaveStepsForJob(CurrentStep);
             var stepInfo = testingRepo.Steps.FirstOrDefault(m => m.StepID == CurrentStep.StepID);
             var testjobinfo = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == CurrentStep.TestJobID);
@@ -153,9 +186,9 @@ namespace ProdFloor.Controllers
 
             var auxtStepsPerStageInfo = AllStepsForJobInfo.Where(m => m.Stage == stepInfo.Stage).ToList();
             int StepsPerStage = auxtStepsPerStageInfo.Count();
-            int auxtStepsPerStage = StepsForJobList.Where(m => auxtStepsPerStageInfo.Any(s => s.StepID == m.StepID)).Where(m => m.Complete == true).Count() + 1;
+            int auxtStepsPerStage = AllStepsForJob.Where(m => auxtStepsPerStageInfo.Any(s => s.StepID == m.StepID)).Where(m => m.Complete == true).Count() + 1;
 
-            return View("StepsForJob", new TestJobViewModel { StepsForJob = CurrentStep, Step = stepInfo, Job = job, TestJob = testjobinfo, StepList = AllStepsForJobInfo, StepsForJobList = StepsForJobList,
+            return View("StepsForJob", new TestJobViewModel { StepsForJob = CurrentStep, Step = stepInfo, Job = job, TestJob = testjobinfo, StepList = AllStepsForJobInfo, StepsForJobList = AllStepsForJob,
                 CurrentStep = auxtStepsPerStage,
                 TotalStepsPerStage = StepsPerStage
             });
