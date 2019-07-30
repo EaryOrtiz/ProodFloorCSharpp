@@ -68,12 +68,11 @@
         }
     </tbody>
 </table>
-@if (Model.PendingTestJobs.Count() > 0)
+@if (Model.PendingTestJobs.Count() > 3)
 {
-    <cool-pagination-dash-board current-model="MyJobs" my-jobs-page-model="@Model.MyJobsPagingInfo" page-action="Index" page-classes-enabled="true"
-                                page-class="btn" page-class-normal="btn-secondary" on-cross-page-model="@Model.OnCrossJobsPagingInfo" pending-to-cross-page-model="@Model.PendingToCrossJobsPagingInfo"
-                                page-class-selected="btn-primary" my-jobs-url-value="MyTestJobs" on-cross-url-value="OnCrossJobPage"
-                                pending-to-cross-url-value="PendingToCrossJobPage" sort="Sort"
-                                class="btn-group pull-right m-1">
-    </cool-pagination-dash-board>
+<coool-pagination-all page-model="@Model.MyJobsPagingInfo" page-action="Index" page-classes-enabled="true"
+                      page-class="btn" page-class-normal="btn-secondary"
+                      page-class-selected="btn-primary"
+                      class="btn-group pull-right m-1">
+</coool-pagination-all>
 }

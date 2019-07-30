@@ -392,80 +392,91 @@ namespace ProdFloor.Controllers
         public ViewResult NewTestFeatures(TestJobViewModel testJobView)
         {
             TestJob testJobToUpdate = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == testJobView.TestJob.TestJobID);
-            testJobToUpdate.StationID = testJobView.TestJob.StationID;
-            testJobToUpdate.JobLabel = testJobView.TestJob.JobLabel;
-            testingRepo.SaveTestJob(testJobToUpdate);
-            //Checa que la lista de features no este vacia o nula
-            if (testJobView.TestFeature != null)
+            TestJob StationAuxTestJob = testingRepo.TestJobs.FirstOrDefault(m => m.StationID == testJobView.TestJob.StationID && m.Status == "Working on it");
+            if (StationAuxTestJob != null)
             {
-
-                List<StepsForJob> OldStepsForJob = testingRepo.StepsForJobs.Where(m => m.TestJobID == testJobView.TestJob.TestJobID).ToList();
-                if (OldStepsForJob.Count > 0)
-                {
-                    List<StepsForJob> NewStepsForJob = StepsForJobList(testJobView);
-
-                    foreach (StepsForJob OldStep in OldStepsForJob)
-                    {
-                        if (!(NewStepsForJob.Any(s => s.StepID == OldStep.StepID)))
-                        {
-                            OldStep.Obsolete = true;
-                            testingRepo.SaveStepsForJob(OldStep);
-                        }
-                    }
-
-                    foreach (StepsForJob Newstep in NewStepsForJob)
-                    {
-                        if (!(OldStepsForJob.Any(s => s.StepID == Newstep.StepID)))
-                        {
-                            testingRepo.SaveStepsForJob(Newstep);
-                        }
-                    }
-
-                }
-                else
-                {
-                    foreach (StepsForJob step in StepsForJobList(testJobView))
-                    {
-                        if (step != null) testingRepo.SaveStepsForJob(step);
-                    }
-                }
-
-
-                //Despues de terminar de hacer la lista de steps para job se manda el primero a la siguiente vista
-                var stepsForAUX = testingRepo.StepsForJobs.FirstOrDefault(m => m.TestJobID == testJobView.TestFeature.TestJobID && m.Consecutivo == 1); stepsForAUX.Start = DateTime.Now;
-                testingRepo.SaveStepsForJob(stepsForAUX);
-
-                var AllStepsForJob = testingRepo.StepsForJobs.Where(m => m.TestJobID == testJobView.TestFeature.TestJobID && m.Obsolete == false).OrderBy(m => m.Consecutivo).ToList();
-                var stepsFor = AllStepsForJob.FirstOrDefault(m => (m.TestJobID == testJobView.TestFeature.TestJobID && m.Consecutivo == 1 && m.Complete == false) || (m.Complete == false));
-
-                var AllStepsForJobInfo = testingRepo.Steps.Where(m => AllStepsForJob.Any(s => s.StepID == m.StepID)).ToList();
-                var stepInfo = AllStepsForJobInfo.FirstOrDefault(m => m.StepID == stepsFor.StepID);
-
-                var testjobinfo = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == testJobView.TestJob.TestJobID);
-                var job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == testjobinfo.JobID);
-
-                List<Stop> StopsFromTestJob = testingRepo.Stops.Where(m => m.TestJobID == testJobView.TestJob.TestJobID && m.Critical == false).ToList(); bool StopNC = false;
-                if (StopsFromTestJob.Count > 0 && StopsFromTestJob[0] != null) StopNC = true;
-
-                var auxtStepsPerStageInfo = AllStepsForJobInfo.Where(m => m.Stage == stepInfo.Stage).ToList();
-                int StepsPerStage = auxtStepsPerStageInfo.Count();
-                int auxtStepsPerStage = AllStepsForJob.Where(m => auxtStepsPerStageInfo.Any(s => s.StepID == m.StepID)).Where(m => m.Complete == true).Count() + 1;
-
-
-                return View("StepsForJob", new TestJobViewModel
-                {
-                    StepsForJob = stepsFor,
-                    Step = stepInfo,
-                    Job = job,
-                    TestJob = testjobinfo,
-                    StepList = AllStepsForJobInfo,
-                    StepsForJobList = AllStepsForJob,
-                    CurrentStep = auxtStepsPerStage,
-                    TotalStepsPerStage = StepsPerStage,
-                    StopNC = StopNC,
-                    StopList = StopsFromTestJob
-                });
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"Error, la estacion esta ocupada, seleccione otra e intente de nuevo o contacte al Admin";
+                return View("NewTestFeatures", testJobView);
             }
+            else
+            {
+                testJobToUpdate.StationID = testJobView.TestJob.StationID;
+                testJobToUpdate.JobLabel = testJobView.TestJob.JobLabel;
+                testingRepo.SaveTestJob(testJobToUpdate);
+                //Checa que la lista de features no este vacia o nula
+                if (testJobView.TestFeature != null)
+                {
+
+                    List<StepsForJob> OldStepsForJob = testingRepo.StepsForJobs.Where(m => m.TestJobID == testJobView.TestJob.TestJobID).ToList();
+                    if (OldStepsForJob.Count > 0)
+                    {
+                        List<StepsForJob> NewStepsForJob = StepsForJobList(testJobView);
+
+                        foreach (StepsForJob OldStep in OldStepsForJob)
+                        {
+                            if (!(NewStepsForJob.Any(s => s.StepID == OldStep.StepID)))
+                            {
+                                OldStep.Obsolete = true;
+                                testingRepo.SaveStepsForJob(OldStep);
+                            }
+                        }
+
+                        foreach (StepsForJob Newstep in NewStepsForJob)
+                        {
+                            if (!(OldStepsForJob.Any(s => s.StepID == Newstep.StepID)))
+                            {
+                                testingRepo.SaveStepsForJob(Newstep);
+                            }
+                        }
+
+                    }
+                    else
+                    {
+                        foreach (StepsForJob step in StepsForJobList(testJobView))
+                        {
+                            if (step != null) testingRepo.SaveStepsForJob(step);
+                        }
+                    }
+
+
+                    //Despues de terminar de hacer la lista de steps para job se manda el primero a la siguiente vista
+                    var stepsForAUX = testingRepo.StepsForJobs.FirstOrDefault(m => m.TestJobID == testJobView.TestFeature.TestJobID && m.Consecutivo == 1); stepsForAUX.Start = DateTime.Now;
+                    testingRepo.SaveStepsForJob(stepsForAUX);
+
+                    var AllStepsForJob = testingRepo.StepsForJobs.Where(m => m.TestJobID == testJobView.TestFeature.TestJobID && m.Obsolete == false).OrderBy(m => m.Consecutivo).ToList();
+                    var stepsFor = AllStepsForJob.FirstOrDefault(m => (m.TestJobID == testJobView.TestFeature.TestJobID && m.Consecutivo == 1 && m.Complete == false) || (m.Complete == false));
+
+                    var AllStepsForJobInfo = testingRepo.Steps.Where(m => AllStepsForJob.Any(s => s.StepID == m.StepID)).ToList();
+                    var stepInfo = AllStepsForJobInfo.FirstOrDefault(m => m.StepID == stepsFor.StepID);
+
+                    var testjobinfo = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == testJobView.TestJob.TestJobID);
+                    var job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == testjobinfo.JobID);
+
+                    List<Stop> StopsFromTestJob = testingRepo.Stops.Where(m => m.TestJobID == testJobView.TestJob.TestJobID && m.Critical == false).ToList(); bool StopNC = false;
+                    if (StopsFromTestJob.Count > 0 && StopsFromTestJob[0] != null) StopNC = true;
+
+                    var auxtStepsPerStageInfo = AllStepsForJobInfo.Where(m => m.Stage == stepInfo.Stage).ToList();
+                    int StepsPerStage = auxtStepsPerStageInfo.Count();
+                    int auxtStepsPerStage = AllStepsForJob.Where(m => auxtStepsPerStageInfo.Any(s => s.StepID == m.StepID)).Where(m => m.Complete == true).Count() + 1;
+
+
+                    return View("StepsForJob", new TestJobViewModel
+                    {
+                        StepsForJob = stepsFor,
+                        Step = stepInfo,
+                        Job = job,
+                        TestJob = testjobinfo,
+                        StepList = AllStepsForJobInfo,
+                        StepsForJobList = AllStepsForJob,
+                        CurrentStep = auxtStepsPerStage,
+                        TotalStepsPerStage = StepsPerStage,
+                        StopNC = StopNC,
+                        StopList = StopsFromTestJob
+                    });
+                }
+            }
+            
 
 
             return View(NotFound());
@@ -486,17 +497,28 @@ namespace ProdFloor.Controllers
             }//When all steps are completed
             else if (next > testingRepo.StepsForJobs.Where(m => m.TestJobID == viewModel.TestJob.TestJobID).Distinct().Count())
             {
-                var currentStepForJob = AllStepsForJob.FirstOrDefault(m => m.Consecutivo == viewModel.StepsForJob.Consecutivo); currentStepForJob.Stop = DateTime.Now;
-                currentStepForJob.Complete = true;
-                TimeSpan elapsed = currentStepForJob.Stop - currentStepForJob.Start;
-                currentStepForJob.Elapsed += elapsed;
-                testingRepo.SaveStepsForJob(currentStepForJob);
-                var testjobinfo = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == viewModel.TestJob.TestJobID); testjobinfo.Status = "Completed";
-                testingRepo.SaveTestJob(testjobinfo);
 
-                TempData["message"] = $"El Test Job {testjobinfo.TestJobID} se ha completado con exito!";
-                TempData["alert"] = $"alert-success";
-                return RedirectToAction("Index", "Home", 1);
+                if (StopsFromTestJob.Count > 0 && StopsFromTestJob[0] != null)
+                {
+                    TempData["alert"] = $"alert-danger";
+                    TempData["message"] = $"Error, tiene una parada pendiente por terminar, terminelo e intente de nuevo o contacte al Admin";
+                    return (ContinueStep(viewModel.TestJob.TestJobID));
+                }
+                else
+                {
+                    var currentStepForJob = AllStepsForJob.FirstOrDefault(m => m.Consecutivo == viewModel.StepsForJob.Consecutivo); currentStepForJob.Stop = DateTime.Now;
+                    currentStepForJob.Complete = true;
+                    TimeSpan elapsed = currentStepForJob.Stop - currentStepForJob.Start;
+                    currentStepForJob.Elapsed += elapsed;
+                    testingRepo.SaveStepsForJob(currentStepForJob);
+                    var testjobinfo = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == viewModel.TestJob.TestJobID); testjobinfo.Status = "Completed";
+                    testingRepo.SaveTestJob(testjobinfo);
+
+                    TempData["message"] = $"El Test Job {testjobinfo.TestJobID} se ha completado con exito!";
+                    TempData["alert"] = $"alert-success";
+                    return RedirectToAction("Index", "Home", 1);
+                }
+                    
             }
             else if (next == 777)
             {
@@ -608,7 +630,7 @@ namespace ProdFloor.Controllers
             });
         }
 
-        public IActionResult ContinueStep(int ID)
+        public ViewResult ContinueStep(int ID)
         {
             var AllStepsForJob = testingRepo.StepsForJobs.Where(m => m.TestJobID == ID && m.Obsolete == false).OrderBy(m => m.Consecutivo).ToList();
             var AllStepsForJobInfo = testingRepo.Steps.Where(m => AllStepsForJob.Any(s => s.StepID == m.StepID)).ToList();
@@ -754,7 +776,9 @@ namespace ProdFloor.Controllers
                                     Start = DateTime.Now,
                                     Stop = DateTime.Now,
                                     Elapsed = new DateTime(1, 1, 1, 0, 0, 0),
-                                    Consecutivo = consecutivo
+                                    Consecutivo = consecutivo,
+                                    AuxStationID = testJobModify.StationID,
+                                    AuxTechnicianID = testJobModify.TechnicianID
                                 };
 
                                 steps.Add(stepForJob);
@@ -864,6 +888,8 @@ namespace ProdFloor.Controllers
                                             Stop = DateTime.Now,
                                             Elapsed = new DateTime(1, 1, 1, 0, 0, 0),
                                             Consecutivo = consecutivo
+                                            AuxStationID = testJobModify.StationID,
+                                            AuxTechnicianID = testJobModify.TechnicianID
                                         };
                                         steps.Add(stepForJob);
                                         consecutivo++;

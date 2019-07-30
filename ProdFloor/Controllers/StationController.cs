@@ -15,7 +15,7 @@ namespace ProdFloor.Controllers
     {
         private IItemRepository itemprepo;
         private ITestingRepository testingrepo;
-        public int PageSize = 10;
+        public int PageSize = 7;
 
         public StationController(ITestingRepository repo, IItemRepository repo2)
         {

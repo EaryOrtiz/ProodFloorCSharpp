@@ -109,6 +109,16 @@ namespace ProdFloor
 
                 routes.MapRoute(
                     name: null,
+                    template: "AllStepsForJob/{ID:int}/{Page:int}",
+                    defaults: new { controller = "TestJob", action = "AllStepsForJob" });
+
+                routes.MapRoute(
+                    name: null,
+                    template: "StopsFromTestJob/{ID:int}/{Page:int}",
+                    defaults: new { controller = "TestJob", action = "StopsFromTestJob" });
+
+                routes.MapRoute(
+                    name: null,
                     template: "CrossHub/{pendingJobPage:int}_{productionJobPage:int}",
                     defaults: new { controller = "Home", action = "CrossHub" });
 

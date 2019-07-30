@@ -211,7 +211,7 @@ namespace ProdFloor.Controllers
                 stop.Elapsed += auxTime;
                 testingRepo.SaveStop(stop);
                 TempData["message"] = $"{stop.Description} has been saved..";
-                return RedirectToAction("List");
+                return RedirectToAction("SearchTestJob", "TestJob");
             }
             else
             {
@@ -229,7 +229,7 @@ namespace ProdFloor.Controllers
             {
                 TempData["message"] = $"{deletedStop.StopID} was deleted";
             }
-            return RedirectToAction("List");
+            return RedirectToAction("SearchTestJob", "TestJob");
         }
 
         private async Task<bool> GetCurrentUserRole(string role)

@@ -252,11 +252,28 @@ namespace ProdFloor.Controllers
         [HttpPost]
         public IActionResult EditStepsForJob(TestJobViewModel viewModel)
         {
-            TimeSpan elapsed = viewModel.StepsForJob.Stop - viewModel.StepsForJob.Start;
-            viewModel.StepsForJob.Elapsed += elapsed;
-            testingrepo.SaveStepsForJob(viewModel.StepsForJob);
+            try
+            {
+                TimeSpan elapsed = viewModel.StepsForJob.Stop - viewModel.StepsForJob.Start;
+                viewModel.StepsForJob.Elapsed += elapsed;
+                testingrepo.SaveStepsForJob(viewModel.StepsForJob);
                 TempData["message"] = $"{viewModel.StepsForJob.StepsForJobID} has been saved...";
-                return RedirectToAction("List");
+                return RedirectToAction("SearchTestJob", "TestJob");
+            }
+            catch(Exception e)
+            {
+                StepsForJob stepsForJob = testingrepo.StepsForJobs.FirstOrDefault(m => m.StepsForJobID == viewModel.StepsForJob.StepsForJobID);
+                TestJobViewModel testJobView = new TestJobViewModel
+                {
+                    StepsForJob = stepsForJob,
+                    TestJob = testingrepo.TestJobs.FirstOrDefault(m => m.TestJobID == stepsForJob.TestJobID),
+                    Step = testingrepo.Steps.FirstOrDefault(m => m.StepID == stepsForJob.StepID)
+                };
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"There was an error with your times";
+                return View(testJobView);
+            }
+            
         }
 
         [HttpPost]

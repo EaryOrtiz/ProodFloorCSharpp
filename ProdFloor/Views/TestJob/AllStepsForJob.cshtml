@@ -82,11 +82,11 @@
 </div>
 @if (Model.StepsForJobList.Count > 0)
 {
-    <coool-pagination-all page-model="@Model.PagingInfo" page-action="AllStepsForJob" page-classes-enabled="true"
-                          page-class="btn" page-class-normal="btn-secondary"
+    <coool-pagination-test page-model="@Model.PagingInfo" page-action="AllStepsForJob" page-classes-enabled="true"
+                          page-class="btn" page-class-normal="btn-secondary" page-id="@Model.StepsForJobList[0].TestJobID"
                           page-class-selected="btn-primary"
                           class="btn-group pull-right m-1">
-    </coool-pagination-all>
+    </coool-pagination-test>
 }
 else
 {

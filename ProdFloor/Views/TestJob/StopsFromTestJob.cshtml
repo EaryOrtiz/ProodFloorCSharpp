@@ -85,7 +85,7 @@
                 @if (User.IsInRole("Admin"))
                 {
                     <td style="width:100px">
-                        <form asp-action="Delete" asp-route-id="@item.StopID" method="post">
+                        <form asp-action="Delete" asp-controller="Stop" asp-route-id="@item.StopID" method="post">
                             <button type="submit" class="btn btn-danger btn-sm">
                                 <i class="far fa-trash-alt"></i>
                             </button>
@@ -103,11 +103,11 @@
 </div>
 @if (Model.StopList.Count > 0)
 {
-    <coool-pagination-all page-model="@Model.PagingInfo" page-action="List" page-classes-enabled="true"
-                          page-class="btn" page-class-normal="btn-secondary"
-                          page-class-selected="btn-primary"
-                          class="btn-group pull-right m-1">
-    </coool-pagination-all>
+<coool-pagination-test page-model="@Model.PagingInfo" page-action="StopsFromTestJob" page-classes-enabled="true"
+                       page-class="btn" page-class-normal="btn-secondary" page-id="@Model.StopList[0].TestJobID"
+                       page-class-selected="btn-primary"
+                       class="btn-group pull-right m-1">
+</coool-pagination-test>
 }
 else
 {
