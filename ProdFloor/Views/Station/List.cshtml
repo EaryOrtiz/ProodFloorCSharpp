@@ -12,11 +12,11 @@
         New Station
     </a>
 </div>
-@if (Model.Stations.Count() == 0)
+@if (Model.Stations.Count() >0)
 {
     <div class="text-right m-2">
-        <form asp-action="SeedXML" method="post">
-            <button type="submit" name="buttonImportXML" value="Station" class="btn btn-danger">Import data from XML <i class="fas fa-file-alt"></i></button>
+        <form asp-controller="Item" asp-action="SeedXML" method="post">
+            <button type="submit" name="buttonImportXML" value="Stations" class="btn btn-danger">Import data from XML <i class="fas fa-file-alt"></i></button>
         </form>
     </div>
 }

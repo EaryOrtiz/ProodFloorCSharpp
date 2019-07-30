@@ -887,7 +887,7 @@ namespace ProdFloor.Controllers
                                             Start = DateTime.Now,
                                             Stop = DateTime.Now,
                                             Elapsed = new DateTime(1, 1, 1, 0, 0, 0),
-                                            Consecutivo = consecutivo
+                                            Consecutivo = consecutivo,
                                             AuxStationID = testJobModify.StationID,
                                             AuxTechnicianID = testJobModify.TechnicianID
                                         };
@@ -929,7 +929,9 @@ namespace ProdFloor.Controllers
                                     Start = DateTime.Now,
                                     Stop = DateTime.Now,
                                     Elapsed = new DateTime(1, 1, 1, 0, 0, 0),
-                                    Consecutivo = consecutivo
+                                    Consecutivo = consecutivo,
+                                    AuxStationID = testJobModify.StationID,
+                                    AuxTechnicianID = testJobModify.TechnicianID
                                 };
 
                                 steps.Add(stepForJob);
@@ -1002,7 +1004,9 @@ namespace ProdFloor.Controllers
                                             Start = DateTime.Now,
                                             Stop = DateTime.Now,
                                             Elapsed = new DateTime(1, 1, 1, 0, 0, 0),
-                                            Consecutivo = consecutivo
+                                            Consecutivo = consecutivo,
+                                            AuxStationID = testJobModify.StationID,
+                                            AuxTechnicianID = testJobModify.TechnicianID
                                         };
                                         steps.Add(stepForJob);
                                         consecutivo++;

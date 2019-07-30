@@ -22,13 +22,15 @@ namespace ProdFloor.Controllers
     {
         private IItemRepository repository;
         private IJobRepository jobrepo;
+        private ITestingRepository testRepo;
 
         public int PageSize = 4;
 
-        public ItemController(IItemRepository repo, IJobRepository jobRepository)
+        public ItemController(IItemRepository repo, IJobRepository jobRepository, ITestingRepository testingRepo)
         {
             repository = repo;
             jobrepo = jobRepository;
+            testRepo = testingRepo;
         }
 
         public ViewResult Index() => View();
@@ -341,6 +343,32 @@ namespace ProdFloor.Controllers
                     }
                     ms.Position = 0;
                     return File(ms, "text/xml", "Overloads.xml");
+
+                case "Stations":
+                    List<Station> stations = new List<Station>();
+                    stations = testRepo.Stations.ToList();
+
+
+                    using (XmlWriter xw = XmlWriter.Create(ms, xws))
+                    {
+                        xw.WriteStartDocument();
+                        xw.WriteStartElement("Stations");
+
+                        foreach (Station station in stations)
+                        {
+                            xw.WriteStartElement("Station");
+
+                            xw.WriteElementString("ID", station.StationID.ToString());
+                            xw.WriteElementString("Label", station.Label);
+                            xw.WriteElementString("JobTypeID", station.JobTypeID.ToString());
+                            xw.WriteEndElement();
+                        }
+
+                        xw.WriteEndElement();
+                        xw.WriteEndDocument();
+                    }
+                    ms.Position = 0;
+                    return File(ms, "text/xml", "Stations.xml");
             }
 
             return File(ms, "text/xml", "Error.xml");
@@ -1141,6 +1169,43 @@ namespace ProdFloor.Controllers
                             context.Database.CloseConnection();
                         }
                     }
+                    break;
+
+                case "Stations":
+                    HtmlDocument doc12 = new HtmlDocument();
+                    doc12.Load(@"C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\Stations.xml");
+
+                    var XMLobs12 = doc12.DocumentNode.SelectNodes("//station");
+
+                    if (context.JobTypes.Any())
+                    {
+                        foreach (var XMLob in XMLobs12)
+                        {
+                            var ID = XMLob.SelectSingleNode(".//id").InnerText;
+                            var label = XMLob.SelectSingleNode(".//label").InnerText;
+                            var jobtypeid = XMLob.SelectSingleNode(".//jobtypeid").InnerText;
+
+                            context.Stations.Add(new Station
+                            {
+                                StationID = Int32.Parse(ID),
+                                JobTypeID = Int32.Parse(jobtypeid),
+                                Label = label
+                            });
+
+                            context.Database.OpenConnection();
+                            try
+                            {
+                                context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.Stations ON");
+                                context.SaveChanges();
+                                context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.Stations OFF");
+                            }
+                            finally
+                            {
+                                context.Database.CloseConnection();
+                            }
+                        }
+                    }
+                    
                     break;
             }
 
