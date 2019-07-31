@@ -15,7 +15,7 @@
 @if (Model.Stations.Count() >0)
 {
     <div class="text-right m-2">
-        <form asp-controller="Item" asp-action="SeedXML" method="post">
+        <form asp-controller="Station" asp-action="SeedXML" method="post">
             <button type="submit" name="buttonImportXML" value="Stations" class="btn btn-danger">Import data from XML <i class="fas fa-file-alt"></i></button>
         </form>
     </div>

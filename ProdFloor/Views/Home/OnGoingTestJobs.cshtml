@@ -47,7 +47,7 @@
                     <td>@JobtypeName</td>
                     <td>@j.LatestFinishDate</td>
                     <td>
-                        @if (t.Status == "Stoped")
+                        @if (t.Status == "Stopped")
                         {
                             <a asp-action="WaitingForRestar" asp-controller="Stop"
                                asp-route-id="@t.TestJobID" class="btn btn-warning btn-sm">

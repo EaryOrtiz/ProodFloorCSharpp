@@ -3687,6 +3687,7 @@ namespace ProdFloor.Infrastructure
         public ViewContext ViewContext { get; set; }
 
         public int SelectedValue { get; set; }
+        public string Roles { get; set; }
 
         [HtmlAttributeName("asp-is-disabled")]
         public bool IsDisabled { set; get; }
@@ -3707,6 +3708,27 @@ namespace ProdFloor.Infrastructure
             m_tag.InnerHtml.Append("Please select one");
             result.InnerHtml.AppendHtml(m_tag);
             IQueryable<AppUser> users = userManager.Users.AsQueryable();
+            if (!string.IsNullOrEmpty(Roles))
+            {
+                switch (Roles)
+                {
+                    case "SU":
+                        users = userManager.Users.Where(m => m.EngID == 0).AsQueryable();
+                        break;
+                    case "E":
+                        users = userManager.Users.Where(m => m.EngID > 0 && m.EngID <= 99).AsQueryable();
+                        break;
+                    case "T":
+                        users = userManager.Users.Where(m => m.EngID >= 100 && m.EngID <= 299).AsQueryable();
+                        break;
+                    case "W":
+                        users = userManager.Users.Where(m => m.EngID > 300 && m.EngID <= 599).AsQueryable();
+                        break;
+                    case "A":
+                        users = userManager.Users.Where(m => m.EngID > 800 && m.EngID <= 999).AsQueryable();
+                        break;
+                }
+            }
             foreach (AppUser user in users)
             {
                 TagBuilder tag = new TagBuilder("option");

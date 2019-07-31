@@ -1022,6 +1022,117 @@ namespace ProdFloor.Controllers
             return steps;
         }
 
+        public IActionResult Reassignment(TestJobViewModel testJobView)
+        {
+            TestJob testJob = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == testJobView.TestJob.TestJobID);
+            string StationName = testingRepo.Stations.FirstOrDefault(m => m.StationID == testJobView.NewStationID).Label;
+
+            if (testJob.TechnicianID == testJobView.NewTechnicianID && testJob.StationID == testJobView.NewStationID)
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"You cannot reassing the CrossApprover and the station because are the same";
+                return RedirectToAction("SearchTestJob");
+            }
+            else if (testJob.TestJobID != testJobView.NewTechnicianID && testJob.StationID != testJobView.NewStationID)
+            {
+                testJob.TechnicianID = testJobView.NewTechnicianID;
+                testJob.StationID = testJobView.NewStationID;
+                if (testJob.Status != "Stopped")  testJob.Status = "Stopped";
+                testingRepo.SaveTestJob(testJob);
+                Stop NewtStop = new Stop
+                {
+                    TestJobID = testJob.TestJobID,
+                    Reason1 = 980,
+                    Reason2 = 980,
+                    Reason3 = 980,
+                    Reason4 = 980,
+                    Reason5ID = 980,
+                    Description = "Job was reassigned",
+                    Critical = true,
+                    StartDate = DateTime.Now,
+                    StopDate = DateTime.Now,
+                    Elapsed = new DateTime(1, 1, 1, 0, 0, 0),
+                    AuxStationID = testJob.StationID,
+                    AuxTechnicianID = testJob.TechnicianID,
+                };
+                testingRepo.SaveStop(NewtStop);
+                TempData["message"] = $"You have reassinged the technician for the TestJob PO# {testJob.SinglePO} to T{testJobView.NewTechnicianID} and the station to {StationName}";
+                return RedirectToAction("SearchTestJob");
+
+            }
+            else if(testJob.TestJobID != testJobView.NewTechnicianID)
+            {
+                testJob.TechnicianID = testJobView.NewTechnicianID;
+                if (testJob.Status != "Stopped") testJob.Status = "Stopped";
+                testingRepo.SaveTestJob(testJob);
+                Stop NewtStop = new Stop
+                {
+                    TestJobID = testJob.TestJobID,
+                    Reason1 = 980,
+                    Reason2 = 980,
+                    Reason3 = 980,
+                    Reason4 = 980,
+                    Reason5ID = 980,
+                    Description = "Job was reassigned",
+                    Critical = true,
+                    StartDate = DateTime.Now,
+                    StopDate = DateTime.Now,
+                    Elapsed = new DateTime(1, 1, 1, 0, 0, 0),
+                    AuxStationID = testJob.StationID,
+                    AuxTechnicianID = testJob.TechnicianID,
+                };
+                testingRepo.SaveStop(NewtStop);
+                TempData["message"] = $"You have reassinged the technician for the TestJob PO# {testJob.SinglePO} to T{testJobView.NewTechnicianID}";
+                return RedirectToAction("SearchTestJob");
+
+            }
+            else if (testJob.StationID != testJobView.NewStationID)
+            {
+                testJob.StationID = testJobView.NewStationID;
+                if (testJob.Status != "Stopped") testJob.Status = "Stopped";
+                testingRepo.SaveTestJob(testJob);
+                Stop NewtStop = new Stop
+                {
+                    TestJobID = testJob.TestJobID,
+                    Reason1 = 980,
+                    Reason2 = 980,
+                    Reason3 = 980,
+                    Reason4 = 980,
+                    Reason5ID = 980,
+                    Description = "Job was reassigned",
+                    Critical = true,
+                    StartDate = DateTime.Now,
+                    StopDate = DateTime.Now,
+                    Elapsed = new DateTime(1, 1, 1, 0, 0, 0),
+                    AuxStationID = testJob.StationID,
+                    AuxTechnicianID = testJob.TechnicianID,
+                };
+                testingRepo.SaveStop(NewtStop);
+                TempData["message"] = $"You have reassinged the Station for the TestJob PO# {testJob.SinglePO} to {StationName}";
+                return RedirectToAction("SearchTestJob");
+
+            }
+            else
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"You know nothing John Snow";
+                return RedirectToAction("SearchTestJob");
+            }
+            
+        }
+
+        public IActionResult ReturnFromComplete(TestJobViewModel testJobView)
+        {
+            TestJob testJob = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == testJobView.TestJob.TestJobID);
+            StepsForJob stepsForJob = testingRepo.StepsForJobs.FirstOrDefault(p => p.TestJobID == testJob.TestJobID && p.StepsForJobID == testingRepo.StepsForJobs.Max(x => x.StepsForJobID));
+            testJob.Status = "Working on it";
+            stepsForJob.Complete = false;
+            testingRepo.SaveTestJob(testJob);
+            testingRepo.SaveStepsForJob(stepsForJob);
+            TempData["message"] = $"You have retuned the TestJob PO# {testJob.SinglePO} to Working on it";
+            return RedirectToAction("SearchTestJob");
+        }
+
         private async Task<AppUser> GetCurrentUser()
         {
             AppUser user = await userManager.GetUserAsync(HttpContext.User);

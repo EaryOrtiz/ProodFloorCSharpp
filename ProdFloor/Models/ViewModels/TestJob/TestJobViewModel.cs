@@ -56,7 +56,9 @@ namespace ProdFloor.Models.ViewModels.TestJob
         [Display(Name = "+2 Starters")]
         public bool TwosStarters { get; set; }
         public bool StopNC { get; set; }
-        
+        public int NewTechnicianID { get; set; }
+        public int NewStationID { get; set; }
+
 
     }
 }
