@@ -488,6 +488,7 @@ namespace ProdFloor.Controllers
             var AllStepsForJob = testingRepo.StepsForJobs.Where(m => m.TestJobID == viewModel.TestJob.TestJobID && m.Obsolete == false).OrderBy(m => m.Consecutivo).ToList();
             var AllStepsForJobInfo = testingRepo.Steps.Where(m => AllStepsForJob.Any(s => s.StepID == m.StepID)).ToList();
             List<Stop> StopsFromTestJob = testingRepo.Stops.Where(m => m.TestJobID == viewModel.TestJob.TestJobID && m.Critical == false).ToList(); bool StopNC = false;
+            List <Reason1> reason1s = testingRepo.Reasons1.ToList();
             if (StopsFromTestJob.Count > 0 && StopsFromTestJob[0] != null) StopNC = true;
             
             if (next == 0)
@@ -556,7 +557,8 @@ namespace ProdFloor.Controllers
                     CurrentStep = auxtStepsPerStage,
                     TotalStepsPerStage = StepsPerStage,
                     StopNC = StopNC,
-                    StopList = StopsFromTestJob
+                    StopList = StopsFromTestJob,
+                    Reasons1List = reason1s,
                 });
 
             }//For Previous Step
@@ -586,7 +588,8 @@ namespace ProdFloor.Controllers
                     CurrentStep = auxtStepsPerStage,
                     TotalStepsPerStage = StepsPerStage,
                     StopNC = StopNC,
-                    StopList = StopsFromTestJob
+                    StopList = StopsFromTestJob,
+                    Reasons1List = reason1s,
                 });
             }
 
@@ -633,6 +636,7 @@ namespace ProdFloor.Controllers
         public ViewResult ContinueStep(int ID)
         {
             var AllStepsForJob = testingRepo.StepsForJobs.Where(m => m.TestJobID == ID && m.Obsolete == false).OrderBy(m => m.Consecutivo).ToList();
+            List<Reason1> reason1s = testingRepo.Reasons1.ToList();
             var AllStepsForJobInfo = testingRepo.Steps.Where(m => AllStepsForJob.Any(s => s.StepID == m.StepID)).ToList();
 
             List<Stop> StopsFromTestJob = testingRepo.Stops.Where(m => m.TestJobID == ID && m.Critical == false).ToList(); bool StopNC = false;
@@ -659,7 +663,8 @@ namespace ProdFloor.Controllers
                 CurrentStep = auxtStepsPerStage,
                 TotalStepsPerStage = StepsPerStage,
                 StopNC = StopNC,
-                StopList = StopsFromTestJob
+                StopList = StopsFromTestJob,
+                Reasons1List = reason1s,
             });
         }
 
@@ -1033,11 +1038,31 @@ namespace ProdFloor.Controllers
                 TempData["message"] = $"You cannot reassing the CrossApprover and the station because are the same";
                 return RedirectToAction("SearchTestJob");
             }
-            else if (testJob.TestJobID != testJobView.NewTechnicianID && testJob.StationID != testJobView.NewStationID)
+            else if (testJob.TestJobID != testJobView.NewTechnicianID || testJob.StationID != testJobView.NewStationID)
             {
+                if (testJob.Status == "Stopped")
+                {
+                    Stop CurrentStop = testingRepo.Stops.FirstOrDefault(p => p.StopID == testingRepo.Stops.Max(x => x.StopID) && p.Critical == true && p.Reason2 == 0);
+                    Stop CopyStop = CurrentStop;
+
+                    TimeSpan auxTime = (DateTime.Now - CurrentStop.StartDate);
+                    CurrentStop.Elapsed += auxTime;
+                    CurrentStop.StopDate = DateTime.Now;
+                    CurrentStop.Description = "Job was reassigned";
+                    testingRepo.SaveStop(CurrentStop);
+
+
+                    CopyStop.StopID = 0;
+                    CopyStop.StartDate = DateTime.Now;
+                    CopyStop.StopDate = DateTime.Now;
+                    CopyStop.Elapsed = new DateTime(1, 1, 1, 0, 0, 0);
+                    CopyStop.AuxStationID = testJobView.NewStationID;
+                    CopyStop.AuxTechnicianID = testJobView.NewTechnicianID;
+                    testingRepo.SaveStop(CopyStop);
+                }
                 testJob.TechnicianID = testJobView.NewTechnicianID;
                 testJob.StationID = testJobView.NewStationID;
-                if (testJob.Status != "Stopped")  testJob.Status = "Stopped";
+                testJob.Status = "Reassignment";
                 testingRepo.SaveTestJob(testJob);
                 Stop NewtStop = new Stop
                 {
@@ -1058,59 +1083,6 @@ namespace ProdFloor.Controllers
                 testingRepo.SaveStop(NewtStop);
                 TempData["message"] = $"You have reassinged the technician for the TestJob PO# {testJob.SinglePO} to T{testJobView.NewTechnicianID} and the station to {StationName}";
                 return RedirectToAction("SearchTestJob");
-
-            }
-            else if(testJob.TestJobID != testJobView.NewTechnicianID)
-            {
-                testJob.TechnicianID = testJobView.NewTechnicianID;
-                if (testJob.Status != "Stopped") testJob.Status = "Stopped";
-                testingRepo.SaveTestJob(testJob);
-                Stop NewtStop = new Stop
-                {
-                    TestJobID = testJob.TestJobID,
-                    Reason1 = 980,
-                    Reason2 = 980,
-                    Reason3 = 980,
-                    Reason4 = 980,
-                    Reason5ID = 980,
-                    Description = "Job was reassigned",
-                    Critical = true,
-                    StartDate = DateTime.Now,
-                    StopDate = DateTime.Now,
-                    Elapsed = new DateTime(1, 1, 1, 0, 0, 0),
-                    AuxStationID = testJob.StationID,
-                    AuxTechnicianID = testJob.TechnicianID,
-                };
-                testingRepo.SaveStop(NewtStop);
-                TempData["message"] = $"You have reassinged the technician for the TestJob PO# {testJob.SinglePO} to T{testJobView.NewTechnicianID}";
-                return RedirectToAction("SearchTestJob");
-
-            }
-            else if (testJob.StationID != testJobView.NewStationID)
-            {
-                testJob.StationID = testJobView.NewStationID;
-                if (testJob.Status != "Stopped") testJob.Status = "Stopped";
-                testingRepo.SaveTestJob(testJob);
-                Stop NewtStop = new Stop
-                {
-                    TestJobID = testJob.TestJobID,
-                    Reason1 = 980,
-                    Reason2 = 980,
-                    Reason3 = 980,
-                    Reason4 = 980,
-                    Reason5ID = 980,
-                    Description = "Job was reassigned",
-                    Critical = true,
-                    StartDate = DateTime.Now,
-                    StopDate = DateTime.Now,
-                    Elapsed = new DateTime(1, 1, 1, 0, 0, 0),
-                    AuxStationID = testJob.StationID,
-                    AuxTechnicianID = testJob.TechnicianID,
-                };
-                testingRepo.SaveStop(NewtStop);
-                TempData["message"] = $"You have reassinged the Station for the TestJob PO# {testJob.SinglePO} to {StationName}";
-                return RedirectToAction("SearchTestJob");
-
             }
             else
             {
@@ -1131,6 +1103,117 @@ namespace ProdFloor.Controllers
             testingRepo.SaveStepsForJob(stepsForJob);
             TempData["message"] = $"You have retuned the TestJob PO# {testJob.SinglePO} to Working on it";
             return RedirectToAction("SearchTestJob");
+        }
+
+        public void ShiftEnd(int TechnicianID)
+        {
+            List<TestJob> testJobList = testingRepo.TestJobs.Where(m => m.TechnicianID == TechnicianID && (m.Status != "Completed" && m.Status != "Incomplete")).ToList();
+            if (testJobList.Count > 0)
+            {
+                foreach (TestJob testjob in testJobList)
+                {
+                    if (testjob.Status != "Stopped")
+                    {
+                        testjob.Status = "Shift End";
+                        testingRepo.SaveTestJob(testjob);
+
+                        Stop NewtStop = new Stop
+                        {
+                            TestJobID = testjob.TestJobID,
+                            Reason1 = 981,
+                            Reason2 = 981,
+                            Reason3 = 981,
+                            Reason4 = 981,
+                            Reason5ID = 981,
+                            Description = "Automatic Shift End",
+                            Critical = true,
+                            StartDate = DateTime.Now,
+                            StopDate = DateTime.Now,
+                            Elapsed = new DateTime(1, 1, 1, 0, 0, 0),
+                            AuxStationID = testjob.StationID,
+                            AuxTechnicianID = testjob.TechnicianID,
+                        };
+                        testingRepo.SaveStop(NewtStop);
+
+                    } 
+                    else
+                    {
+
+                        Stop CurrentStop = testingRepo.Stops.FirstOrDefault(p => p.StopID == testingRepo.Stops.Max(x => x.StopID) && p.Critical == true && p.Reason1 != 980);
+                        TimeSpan auxTime = (DateTime.Now - CurrentStop.StartDate);
+                        CurrentStop.Elapsed += auxTime;
+                        CurrentStop.StopDate = DateTime.Now;
+                        testingRepo.SaveStop(CurrentStop);
+
+                        testjob.Status = "Shift End";
+                        testingRepo.SaveTestJob(testjob);
+
+                        Stop NewtStop = new Stop
+                        {
+                            TestJobID = testjob.TestJobID,
+                            Reason1 = 981,
+                            Reason2 = 981,
+                            Reason3 = 981,
+                            Reason4 = 981,
+                            Reason5ID = 981,
+                            Description = "Automatic Shift End",
+                            Critical = true,
+                            StartDate = DateTime.Now,
+                            StopDate = DateTime.Now,
+                            Elapsed = new DateTime(1, 1, 1, 0, 0, 0),
+                            AuxStationID = testjob.StationID,
+                            AuxTechnicianID = testjob.TechnicianID,
+                        };
+                        testingRepo.SaveStop(NewtStop);
+                    }
+                }
+            }
+            
+        }
+
+        public void RestartShiftEnd(int TechnicianID)
+        {
+            List<TestJob> testJobList = testingRepo.TestJobs.Where(m => m.TechnicianID == TechnicianID && m.Status == "Shift End").ToList();
+            if (testJobList.Count > 0)
+            {
+                foreach (TestJob testJob in testJobList)
+                {
+                    Stop ShiftEndStop = testingRepo.Stops.FirstOrDefault(p => p.TestJobID == testJob.TestJobID && p.StopID == testingRepo.Stops.Max(x => x.StopID) && p.Reason1 == 981);
+                    Stop ReassignmentStop = testingRepo.Stops.FirstOrDefault(p => p.TestJobID == testJob.TestJobID && p.StopID == testingRepo.Stops.Max(x => x.StopID) && p.Reason1 == 980);
+                    Stop PreviusStop = testingRepo.Stops.FirstOrDefault(p => p.TestJobID == testJob.TestJobID && p.StopID == testingRepo.Stops.Max(x => x.StopID) && p.Reason2 == 0 && p.Critical == true);
+                    if (ReassignmentStop != null)
+                    {
+                        TimeSpan auxTime = (DateTime.Now - ShiftEndStop.StartDate);
+                        ShiftEndStop.Elapsed += auxTime;
+                        ShiftEndStop.StopDate = DateTime.Now;
+                        testingRepo.SaveStop(ShiftEndStop);
+
+                        testJob.Status = "Reassignment";
+                        testingRepo.SaveTestJob(testJob);
+                    }
+                    else if (PreviusStop != null)
+                    {
+                        TimeSpan auxTime = (DateTime.Now - ShiftEndStop.StartDate);
+                        ShiftEndStop.Elapsed += auxTime;
+                        ShiftEndStop.StopDate = DateTime.Now;
+                        testingRepo.SaveStop(ShiftEndStop);
+
+                        testJob.Status = "Stopped";
+                        testingRepo.SaveTestJob(testJob);
+                    }
+                    else 
+                    {
+                        TimeSpan auxTime = (DateTime.Now - ShiftEndStop.StartDate);
+                        ShiftEndStop.Elapsed += auxTime;
+                        ShiftEndStop.StopDate = DateTime.Now;
+                        testingRepo.SaveStop(ShiftEndStop);
+
+                        testJob.Status = "Working on it";
+                        testingRepo.SaveTestJob(testJob);
+                    }
+                }
+            }
+
         }
 
         private async Task<AppUser> GetCurrentUser()

@@ -54,6 +54,13 @@
                                 Restar Job
                             </a>
                         }
+                        else if (t.Status == "Reassignment")
+                        {
+                            <a asp-action="RestartReassignment" asp-controller="Stop"
+                               asp-route-id="@t.TestJobID" class="btn btn-warning btn-sm">
+                                Take Job
+                            </a>
+                        }
                         else
                         {
                             <a asp-action="ContinueStep" asp-controller="TestJob"

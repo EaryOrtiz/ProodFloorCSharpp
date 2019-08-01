@@ -31,7 +31,45 @@
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <h3>@Model.CurrentStep of @Model.TotalStepsPerStage</h3>&nbsp;&nbsp;
                         @if (Model.StopNC)
                         {
-                            <a class="btn btn-light" style="background-color:transparent" asp-controller="Stop" title="Tiene un paro pendiendiente" asp-action="RestarTestJob" asp-route-id="@Model.StopList.First(m => m.TestJobID == Model.TestJob.TestJobID).StopID"><i class="fas fa-exclamation-triangle"></i></a>
+                            <!-- Button trigger no critical stops-->
+                            <button type="button" class="btn btn-light" data-toggle="modal" title="Tiene Un Paro Pendiente" data-target="#exampleModalreassign @Model.TestJob.JobID" style="float:left;background-color:transparent">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </button>
+                            <!-- Modal -->
+                            <div class="modal fade" id="exampleModalreassign @Model.TestJob.JobID" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLongTitle">Paradas Pendientes</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <table class="table text-center align-content-center">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Razon</th>
+                                                        <th>Accion</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach (Stop Stop in Model.StopList)
+                                                    {
+                                                        <tr>
+                                                            <td>@Model.Reasons1List.FirstOrDefault(m => m.Reason1ID == Stop.Reason1).Description</td>
+                                                            <td><a class="btn btn-danger" style="background-color:transparent" asp-controller="Stop" title="Tiene un paro pendiendiente" asp-action="RestarTestJob" asp-route-id="@Model.StopList.First(m => m.TestJobID == Model.TestJob.TestJobID).StopID">Terminar Paro</a></td>
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         }
                     </div>
                     <br />

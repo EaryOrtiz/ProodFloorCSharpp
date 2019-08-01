@@ -106,23 +106,44 @@ namespace ProdFloor.Controllers
         public ViewResult WaitingForRestar(int ID)
         {
             TestJob testJob = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == ID);
-            Stop CurrentStop = testingRepo.Stops.FirstOrDefault(p => p.TestJobID == testJob.TestJobID && p.StopID == testingRepo.Stops.Max(x => x.StopID));
-            if(CurrentStop.Reason1 == 980)
+            Stop CurrentStop = testingRepo.Stops.FirstOrDefault(p => p.TestJobID == testJob.TestJobID && p.Reason2 == 0 && p.Critical == true);
+            string Reason1Name = testingRepo.Reasons1.FirstOrDefault(m => m.Reason1ID == CurrentStop.Reason1).Description;
+            Job job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == testJob.JobID);
+            return View("WaitingForRestar", new TestJobViewModel { Job = job, Stop = CurrentStop, Reason1Name = Reason1Name });
+        }
+
+        public IActionResult RestartReassignment(int ID)
+        {
+            TestJob testJob = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == ID);
+            Stop ReassignmentStop = testingRepo.Stops.FirstOrDefault(p => p.TestJobID == testJob.TestJobID && p.StopID == testingRepo.Stops.Max(x => x.StopID) && p.Reason1 == 980);
+            Stop PreviusStop = testingRepo.Stops.FirstOrDefault(p => p.TestJobID == testJob.TestJobID && p.Reason2 == 0 && p.Critical == true);
+            if (PreviusStop != null)
             {
-                TimeSpan auxTime = (DateTime.Now - CurrentStop.StartDate);
-                CurrentStop.Elapsed += auxTime;
-                CurrentStop.StopDate = DateTime.Now;
-                testingRepo.SaveStop(CurrentStop);
+                TimeSpan auxTime = (DateTime.Now - ReassignmentStop.StartDate);
+                ReassignmentStop.Elapsed += auxTime;
+                ReassignmentStop.StopDate = DateTime.Now;
+                testingRepo.SaveStop(ReassignmentStop);
+                
+
+                PreviusStop.StartDate = DateTime.Now;
+                PreviusStop.StopDate = DateTime.Now;
+                testingRepo.SaveStop(PreviusStop);
+
+                testJob.Status = "Stopped";
+                testingRepo.SaveTestJob(testJob);
+                return WaitingForRestar(testJob.TestJobID);
+            }
+            else
+            {
+                TimeSpan auxTime = (DateTime.Now - ReassignmentStop.StartDate);
+                ReassignmentStop.Elapsed += auxTime;
+                ReassignmentStop.StopDate = DateTime.Now;
+                testingRepo.SaveStop(ReassignmentStop);
+
                 testJob.Status = "Working on it";
                 testingRepo.SaveTestJob(testJob);
-
                 return ContinueStep(testJob.TestJobID);
             }
-            testJob.Status = "Stopped";
-            string Reason1Name = testingRepo.Reasons1.FirstOrDefault(m => m.Reason1ID == CurrentStop.Reason1).Description;
-            testingRepo.SaveTestJob(testJob);
-            Job job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == testJob.JobID);
-            return View(new TestJobViewModel { Job = job, Stop = CurrentStop, Reason1Name = Reason1Name });
         }
 
         public ViewResult RestarTestJob(int ID, bool Critical = true)

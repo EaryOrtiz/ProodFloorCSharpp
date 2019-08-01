@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using ProdFloor.Models.ViewModels;
 using ProdFloor.Models;
+using System.Collections.Generic;
+using System;
 
 namespace ProdFloor.Controllers
 {
@@ -14,6 +16,7 @@ namespace ProdFloor.Controllers
 
         private UserManager<AppUser> userManager;
         private SignInManager<AppUser> signInManager;
+        private ITestingRepository testingRepo;
         public int PageSize = 7;
 
         private IUserValidator<AppUser> userValidator;
@@ -22,16 +25,19 @@ namespace ProdFloor.Controllers
 
         private IPasswordHasher<AppUser> passwordHasher;
 
+
         public AccountController(UserManager<AppUser> usrMgr,
         IUserValidator<AppUser> userValid,
         IPasswordValidator<AppUser> passValid,
         IPasswordHasher<AppUser> passwordHash,
-        SignInManager<AppUser> signInMgr)
+        SignInManager<AppUser> signInMgr,
+        ITestingRepository repo)
         {
             userManager = usrMgr;
             userValidator = userValid;
             passwordValidator = passValid;
             passwordHasher = passwordHash;
+            testingRepo = repo;
 
             signInManager = signInMgr;
         }
@@ -50,6 +56,7 @@ namespace ProdFloor.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginModel loginModel)
         {
+
             if (ModelState.IsValid)
             {
                 AppUser user =
@@ -60,7 +67,9 @@ namespace ProdFloor.Controllers
                     if ((await signInManager.PasswordSignInAsync(user,
                     loginModel.Password, false, false)).Succeeded)
                     {
-                        TempData["message"] = $"Welcome {user.UserName}!!";
+                        if (user.EngID >= 100 && user.EngID < 300) RestartShiftEnd(user.EngID);
+
+                        TempData["message"] = $"Welcome {user.FullName}!!";
                         return Redirect("/Home/Index");
                     }
                 }
@@ -72,6 +81,11 @@ namespace ProdFloor.Controllers
         [AllowAnonymous]
         public async Task<RedirectResult> Logout(string returnUrl = "/")
         {
+            AppUser user = await userManager.GetUserAsync(HttpContext.User);
+            bool tech = GetCurrentUserRole("Technician").Result;
+            if (tech) ShiftEnd(user.EngID);
+
+
             await signInManager.SignOutAsync();
             TempData["message"] = $"You properly logged out.";
             return Redirect("/Account/Login");
@@ -217,6 +231,117 @@ namespace ProdFloor.Controllers
                 ModelState.AddModelError("", "User Not Found");
             }
             return View(user);
+        }
+
+        public void ShiftEnd(int TechnicianID)
+        {
+            List<TestJob> testJobList = testingRepo.TestJobs.Where(m => m.TechnicianID == TechnicianID && (m.Status != "Completed" && m.Status != "Incomplete")).ToList();
+            if (testJobList.Count > 0)
+            {
+                foreach (TestJob testjob in testJobList)
+                {
+                    if (testjob.Status != "Stopped")
+                    {
+                        testjob.Status = "Shift End";
+                        testingRepo.SaveTestJob(testjob);
+
+                        Stop NewtStop = new Stop
+                        {
+                            TestJobID = testjob.TestJobID,
+                            Reason1 = 981,
+                            Reason2 = 981,
+                            Reason3 = 981,
+                            Reason4 = 981,
+                            Reason5ID = 981,
+                            Description = "Automatic Shift End",
+                            Critical = true,
+                            StartDate = DateTime.Now,
+                            StopDate = DateTime.Now,
+                            Elapsed = new DateTime(1, 1, 1, 0, 0, 0),
+                            AuxStationID = testjob.StationID,
+                            AuxTechnicianID = testjob.TechnicianID,
+                        };
+                        testingRepo.SaveStop(NewtStop);
+
+                    }
+                    else
+                    {
+
+                        Stop CurrentStop = testingRepo.Stops.FirstOrDefault(p => p.StopID == testingRepo.Stops.Max(x => x.StopID) && p.Critical == true && p.Reason1 != 980);
+                        TimeSpan auxTime = (DateTime.Now - CurrentStop.StartDate);
+                        CurrentStop.Elapsed += auxTime;
+                        CurrentStop.StopDate = DateTime.Now;
+                        testingRepo.SaveStop(CurrentStop);
+
+                        testjob.Status = "Shift End";
+                        testingRepo.SaveTestJob(testjob);
+
+                        Stop NewtStop = new Stop
+                        {
+                            TestJobID = testjob.TestJobID,
+                            Reason1 = 981,
+                            Reason2 = 981,
+                            Reason3 = 981,
+                            Reason4 = 981,
+                            Reason5ID = 981,
+                            Description = "Automatic Shift End",
+                            Critical = true,
+                            StartDate = DateTime.Now,
+                            StopDate = DateTime.Now,
+                            Elapsed = new DateTime(1, 1, 1, 0, 0, 0),
+                            AuxStationID = testjob.StationID,
+                            AuxTechnicianID = testjob.TechnicianID,
+                        };
+                        testingRepo.SaveStop(NewtStop);
+                    }
+                }
+            }
+
+        }
+
+        public void RestartShiftEnd(int TechnicianID)
+        {
+            List<TestJob> testJobList = testingRepo.TestJobs.Where(m => m.TechnicianID == TechnicianID && m.Status == "Shift End").ToList();
+            if (testJobList.Count > 0)
+            {
+                foreach (TestJob testJob in testJobList)
+                {
+                    Stop ShiftEndStop = testingRepo.Stops.FirstOrDefault(p => p.TestJobID == testJob.TestJobID && p.StopID == testingRepo.Stops.Max(x => x.StopID) && p.Reason1 == 981);
+                    Stop ReassignmentStop = testingRepo.Stops.FirstOrDefault(p => p.TestJobID == testJob.TestJobID && p.Reason1 == 980 && p.StopID == testingRepo.Stops.Max(x => x.StopID));
+                    Stop PreviusStop = testingRepo.Stops.FirstOrDefault(p => p.TestJobID == testJob.TestJobID && p.Reason2 == 0 && p.Critical == true);
+                    if (ReassignmentStop != null)
+                    {
+                        TimeSpan auxTime = (DateTime.Now - ShiftEndStop.StartDate);
+                        ShiftEndStop.Elapsed += auxTime;
+                        ShiftEndStop.StopDate = DateTime.Now;
+                        testingRepo.SaveStop(ShiftEndStop);
+
+                        testJob.Status = "Reassignment";
+                        testingRepo.SaveTestJob(testJob);
+                    }
+                    else if (PreviusStop != null)
+                    {
+                        TimeSpan auxTime = (DateTime.Now - ShiftEndStop.StartDate);
+                        ShiftEndStop.Elapsed += auxTime;
+                        ShiftEndStop.StopDate = DateTime.Now;
+                        testingRepo.SaveStop(ShiftEndStop);
+
+                        testJob.Status = "Stopped";
+                        testingRepo.SaveTestJob(testJob);
+                    }
+                    else
+                    {
+                        TimeSpan auxTime = (DateTime.Now - ShiftEndStop.StartDate);
+                        ShiftEndStop.Elapsed += auxTime;
+                        ShiftEndStop.StopDate = DateTime.Now;
+                        testingRepo.SaveStop(ShiftEndStop);
+
+                        testJob.Status = "Working on it";
+                        testingRepo.SaveTestJob(testJob);
+                    }
+                }
+            }
+
         }
 
         private async Task<bool> GetCurrentUserRole(string role)
