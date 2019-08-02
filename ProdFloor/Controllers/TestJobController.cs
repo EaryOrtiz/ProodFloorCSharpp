@@ -66,6 +66,7 @@ namespace ProdFloor.Controllers
                .Take(10).ToList(),
                 JobList = jobRepo.Jobs.ToList(),
                 StationsList = testingRepo.Stations.ToList(),
+                StopList = testingRepo.Stops.Where(m => m.StopID != 980 & m.StopID != 981 && m.Reason2 == 0).ToList(),
                 PagingInfo = new PagingInfo
                 {
                     CurrentPage = 1,
@@ -95,6 +96,7 @@ namespace ProdFloor.Controllers
                .Take(10).ToList(),
                 JobList = jobRepo.Jobs.ToList(),
                 StationsList = testingRepo.Stations.ToList(),
+                StopList = testingRepo.Stops.Where(m => m.StopID != 980 & m.StopID != 981 && m.Reason2 == 0).ToList(),
                 PagingInfo = new PagingInfo
                 {
                     CurrentPage = 1,
@@ -184,7 +186,7 @@ namespace ProdFloor.Controllers
             {
                 TempData["alert"] = $"alert-danger";
                 TempData["message"] = $"Error, tiene un job pendiente por terminar, terminelo e intente de nuevo o contacte al Admin";
-                return View("NewTestJob",testJobSearchAux);
+                return View("NewTestJob", testJobSearchAux);
 
             }
 
@@ -476,7 +478,7 @@ namespace ProdFloor.Controllers
                     });
                 }
             }
-            
+
 
 
             return View(NotFound());
@@ -488,9 +490,9 @@ namespace ProdFloor.Controllers
             var AllStepsForJob = testingRepo.StepsForJobs.Where(m => m.TestJobID == viewModel.TestJob.TestJobID && m.Obsolete == false).OrderBy(m => m.Consecutivo).ToList();
             var AllStepsForJobInfo = testingRepo.Steps.Where(m => AllStepsForJob.Any(s => s.StepID == m.StepID)).ToList();
             List<Stop> StopsFromTestJob = testingRepo.Stops.Where(m => m.TestJobID == viewModel.TestJob.TestJobID && m.Critical == false).ToList(); bool StopNC = false;
-            List <Reason1> reason1s = testingRepo.Reasons1.ToList();
+            List<Reason1> reason1s = testingRepo.Reasons1.ToList();
             if (StopsFromTestJob.Count > 0 && StopsFromTestJob[0] != null) StopNC = true;
-            
+
             if (next == 0)
             {
                 return View("StepsForJob", viewModel);
@@ -519,7 +521,7 @@ namespace ProdFloor.Controllers
                     TempData["alert"] = $"alert-success";
                     return RedirectToAction("Index", "Home", 1);
                 }
-                    
+
             }
             else if (next == 777)
             {
@@ -1090,7 +1092,7 @@ namespace ProdFloor.Controllers
                 TempData["message"] = $"You know nothing John Snow";
                 return RedirectToAction("SearchTestJob");
             }
-            
+
         }
 
         public IActionResult ReturnFromComplete(TestJobViewModel testJobView)
@@ -1135,7 +1137,7 @@ namespace ProdFloor.Controllers
                         };
                         testingRepo.SaveStop(NewtStop);
 
-                    } 
+                    }
                     else
                     {
 
@@ -1168,7 +1170,7 @@ namespace ProdFloor.Controllers
                     }
                 }
             }
-            
+
         }
 
         public void RestartShiftEnd(int TechnicianID)
@@ -1201,7 +1203,7 @@ namespace ProdFloor.Controllers
                         testJob.Status = "Stopped";
                         testingRepo.SaveTestJob(testJob);
                     }
-                    else 
+                    else
                     {
                         TimeSpan auxTime = (DateTime.Now - ShiftEndStop.StartDate);
                         ShiftEndStop.Elapsed += auxTime;
@@ -1213,6 +1215,49 @@ namespace ProdFloor.Controllers
                     }
                 }
             }
+
+        }
+
+        public ViewResult JobCompletion(int TestJobID)
+        {
+
+            JobCompletionViewModel jobCompletion = new JobCompletionViewModel()
+            {
+                TestJob = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == TestJobID),
+            };
+            return View(jobCompletion);
+
+        }
+
+        public IActionResult JobCompletion(JobCompletionViewModel jobCompletion)
+        {
+            TestJob testJob = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == jobCompletion.TestJob.TestJobID);
+            List<StepsForJob> IncompleteStepsForJob = testingRepo.StepsForJobs.Where(m => m.TestJobID == testJob.TestJobID && m.Obsolete == false && m.Complete == false).OrderBy(m => m.Consecutivo).ToList();
+            List<Step> IncompleteStepsForJobInfo = testingRepo.Steps.Where(m => IncompleteStepsForJob.Any(s => s.StepID == m.StepID)).ToList();
+            double ExpectecTimeSUM = 0;
+            double ElapseHoursFromView = jobCompletion.ElapsedTimeHours + (jobCompletion.ElapsedTimeHours / 60);
+
+            foreach (Step step in IncompleteStepsForJobInfo)
+            {
+                double StepExpectTime = ToHours(step.ExpectedTime);
+                ExpectecTimeSUM += StepExpectTime;
+            }
+
+            foreach (StepsForJob step in IncompleteStepsForJob)
+            {
+                double ExpectedTimeForStep = ToHours(IncompleteStepsForJobInfo.First(m => m.StepID == step.StepID).ExpectedTime);
+                double TimePercentage = ExpectedTimeForStep / ExpectecTimeSUM;
+                double TotalTime = ElapseHoursFromView * TimePercentage;
+
+                step.Elapsed = ToDateTime(TotalTime);
+                step.Complete = true;
+                testingRepo.SaveStepsForJob(step);
+            }
+
+            testJob.CompletedDate = jobCompletion.FinishDate;
+            testJob.Status = "Completed";
+            TempData["message"] = $"You have completed the TestJob PO# {testJob.SinglePO} to Working on it";
+            return RedirectToAction("SearchTestJob");
 
         }
 
@@ -1254,6 +1299,25 @@ namespace ProdFloor.Controllers
             {
                 return BadRequest();
             }
+        }
+
+        public double ToHours(DateTime date)
+        {
+            double totalTime = 0;
+            totalTime += date.Hour;
+            totalTime += (date.Minute / 60);
+            return totalTime;
+        }
+
+        public DateTime ToDateTime(Double TotalHours)
+        {
+            DateTime Date = new DateTime(0, 0, 0, 0, 0, 0);
+            double AuxTotalHours = Math.Truncate(TotalHours);
+            double AuxTotalMinutes = TotalHours - AuxTotalHours;
+            int Hours = (int)AuxTotalHours;
+            int Minutes = (int)AuxTotalMinutes;
+
+            return new DateTime(1, 1, 1, Hours, Minutes, 0);
         }
     }
 }

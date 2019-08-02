@@ -1,37 +1,37 @@
 ﻿@model ProdFloor.Models.ViewModels.TestJob.TestJobViewModel
-    <h4>Ongoing TestJob(s)</h4>
-    <table class="table table-sm">
-        <thead style="background-color:#1B2831;color:#fff">
+<h4>Ongoing TestJob(s)</h4>
+<table class="table table-sm">
+    <thead style="background-color:#1B2831;color:#fff">
+        <tr>
+            <th scope="col">
+                Job#
+            </th>
+            <th scope="col">
+                PO#
+            </th>
+            <th scope="col">
+                Status
+            </th>
+            <th scope="col">
+                Station
+            </th>
+            <th scope="col">
+                Options
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.TestJobList.Count() == 0)
+        {
             <tr>
-                <th scope="col">
-                    Job#
-                </th>
-                <th scope="col">
-                    PO#
-                </th>
-                <th scope="col">
-                    Status
-                </th>
-                <th scope="col">
-                    Station
-                </th>
-                <th scope="col">
-                    Options
-                </th>
+                <td>No Test Jobs!</td>
             </tr>
-        </thead>
-        <tbody>
-            @if (Model.TestJobList.Count() == 0)
+        }
+        else
+        {
+            @foreach (var j in Model.TestJobList)
             {
-                <tr>
-                    <td>No Test Jobs!</td>
-                </tr>
-            }
-            else
-            {
-                @foreach (var j in Model.TestJobList)
-                {
-                    AppUser CurrentUser = UserManager.Users.FirstOrDefault(m => m.EngID == j.TechnicianID);
+                AppUser CurrentUser = UserManager.Users.FirstOrDefault(m => m.EngID == j.TechnicianID);
                 <tr>
                     <th scope="row">
                         @if (j.Status != "Incomplete")
@@ -121,6 +121,55 @@
                             </div>
                         }
 
+                        @if (j.Status != "Completed" && j.Status != "Incomplete")
+                        {
+                            <!-- Button trigger to  return to working on it-->
+                            <button type="button" class="btn btn-light" data-toggle="modal" data-target="#exampleModalReturn @j.TestJobID" style="float:left;background-color:transparent">
+                                <i class="fas fa-forward"></i>
+                            </button>
+                            <!-- Modal -->
+                            <div class="modal fade" id="exampleModalReturn @j.TestJobID" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLongTitle">Are you sure you want to complete the Test Job with PO #@j.SinglePO?</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        @if (Model.StopList.Where(m => m.TestJobID == j.TestJobID).Count() > 0)
+                                        {
+                                        <div class="modal-body text-center">
+                                            <h5><i class="fas fa-exclamation-triangle"></i>&nbsp; This TestJob have pending stops &nbsp;<i class="fas fa-exclamation-triangle"></i></h5>
+                                        </div>
+                                            <form asp-action="FinishPendingStops" asp-controller="Stop" method="get">
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
+                                                    <input type="hidden" id="TestJobID" name="TestJobID" asp-for="@Model.TestJob.TestJobID" value="@j.TestJobID" />
+                                                    <button type="submit" value="Completed" name="buttonAction" class="btn btn-danger btn-sm">
+                                                        Finish the stops first!
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        }
+                                        else
+                                        {
+                                            <form asp-action="JobCompletion" asp-controller="TestJob" method="get">
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
+                                                    <input type="hidden" id="TestJobID" name="TestJobID" asp-for="@Model.TestJob.TestJobID" value="@j.TestJobID" />
+                                                    <button type="submit" value="Completed" name="buttonAction" class="btn btn-danger btn-sm">
+                                                        To complete!
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        }
+
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
                         @if (j.Status == "Completed")
                         {
                             <!-- Button trigger to  return to working on it-->
@@ -152,17 +201,19 @@
                         }
 
 
+
+
                     </td>
                 </tr>
-                }
             }
-        </tbody>
-    </table>
-    @if (Model.TestJobList.Count() > 0)
-    {
+        }
+    </tbody>
+</table>
+@if (Model.TestJobList.Count() > 0)
+{
     <coool-pagination-all page-model="@Model.PagingInfo" page-action="SearchTestJob" page-classes-enabled="true"
                           page-class="btn" page-class-normal="btn-secondary"
                           page-class-selected="btn-primary"
                           class="btn-group pull-right m-1">
     </coool-pagination-all>
-    }
+}

@@ -62,7 +62,7 @@ namespace ProdFloor.Controllers
 
         public ViewResult NewStop(int ID)
         {
-            return View(new Stop { TestJobID = ID});
+            return View(new Stop { TestJobID = ID });
         }
 
         [HttpPost]
@@ -100,7 +100,7 @@ namespace ProdFloor.Controllers
                 Job job2 = jobRepo.Jobs.FirstOrDefault(m => m.JobID == testJob.JobID);
                 return View("Edit", new TestJobViewModel { Job = job2, Stop = CurrentStop2, TestJob = testJob2 });
             }
-            return View("WaitingForRestar", new TestJobViewModel {  Job = job, Stop = CurrentStop, TestJob = testJob, Reason1Name = Reason1Name});
+            return View("WaitingForRestar", new TestJobViewModel { Job = job, Stop = CurrentStop, TestJob = testJob, Reason1Name = Reason1Name });
         }
 
         public ViewResult WaitingForRestar(int ID)
@@ -123,7 +123,7 @@ namespace ProdFloor.Controllers
                 ReassignmentStop.Elapsed += auxTime;
                 ReassignmentStop.StopDate = DateTime.Now;
                 testingRepo.SaveStop(ReassignmentStop);
-                
+
 
                 PreviusStop.StartDate = DateTime.Now;
                 PreviusStop.StopDate = DateTime.Now;
@@ -166,7 +166,7 @@ namespace ProdFloor.Controllers
                 testingRepo.SaveTestJob(testJob);
                 return ContinueStep(testJob.TestJobID);
             }
-            
+
         }
 
         [HttpPost]
@@ -226,6 +226,34 @@ namespace ProdFloor.Controllers
                 TempData["message"] = $"{deletedStop.StopID} was deleted";
             }
             return RedirectToAction("SearchTestJob", "TestJob");
+        }
+
+
+        public ViewResult FinishPendingStops(int TestJobID)
+        {
+            TestJob testJob = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == TestJobID);
+            Stop CurrentStop = testingRepo.Stops.FirstOrDefault(p => p.TestJobID == testJob.TestJobID);
+
+            Job job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == testJob.JobID);
+            return View(new TestJobViewModel { Job = job, Stop = CurrentStop, TestJob = testJob });
+        }
+
+        [HttpPost]
+        public IActionResult FinishPendingStops(TestJobViewModel testJobView)
+        {
+            TimeSpan auxTime = (DateTime.Now - testJobView.Stop.StartDate);
+            testJobView.Stop.Elapsed += auxTime;
+            testingRepo.SaveStop(testJobView.Stop);
+            TempData["message"] = $"{testJobView.Stop.Description} has been saved..";
+
+            Stop stop = testingRepo.Stops.FirstOrDefault(m => m.StopID != 980 & m.StopID != 981 && m.Reason2 == 0 && m.TestJobID == testJobView.Stop.TestJobID);
+            if (stop != null)
+            {
+                return FinishPendingStops(testJobView.TestJob.TestJobID);
+            }
+
+            return RedirectToAction("JobCompletion", "TestJob", new { TestJobID = testJobView.TestJob.TestJobID });
+            
         }
 
         private async Task<bool> GetCurrentUserRole(string role)
@@ -350,6 +378,7 @@ namespace ProdFloor.Controllers
 
             List<Stop> StopsFromTestJob = testingRepo.Stops.Where(m => m.TestJobID == ID && m.Critical == false).ToList(); bool StopNC = false;
             if (StopsFromTestJob.Count > 0 && StopsFromTestJob[0] != null) StopNC = true;
+            List<Reason1> reason1s = testingRepo.Reasons1.ToList();
 
             StepsForJob CurrentStep = AllStepsForJob.FirstOrDefault(m => m.Complete == false); CurrentStep.Start = DateTime.Now;
             testingRepo.SaveStepsForJob(CurrentStep);
@@ -372,7 +401,8 @@ namespace ProdFloor.Controllers
                 CurrentStep = auxtStepsPerStage,
                 TotalStepsPerStage = StepsPerStage,
                 StopNC = StopNC,
-                StopList = StopsFromTestJob
+                StopList = StopsFromTestJob,
+                Reasons1List = reason1s,
             });
         }
     }
