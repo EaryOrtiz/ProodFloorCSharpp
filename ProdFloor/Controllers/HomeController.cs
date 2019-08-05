@@ -14,7 +14,7 @@ using System.Collections.Generic;
 namespace ProdFloor.Controllers
 {
 
-    [Authorize(Roles = "Admin,Engineer,Technician")]
+    [Authorize(Roles = "Admin,TechAdmin,Engineer,Technician")]
     public class HomeController : Controller
     {
         private IJobRepository repository;

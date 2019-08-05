@@ -4,18 +4,14 @@
     Layout = "_AdminLayoutWO";
 }
 <div class="row" style="padding-right:20px">
-    <h2 class="col-sm-10">
-        Steps For Job Table
-    </h2>
+    <br /><br />
+    <h4 class="col-sm-10">
+        Steps for Job #@Model.Job.JobNum and PO #@Model.TestJob.SinglePO
+    </h4>
 </div>
 <br />
 <div>
     <table class="table table-striped border table-sm" style="text-align:center">
-        <tr class="table-info">
-            <th colspan="8">
-                Steps for Job# @Model.Job.JobNum and PO# @Model.TestJob.SinglePO
-            </th>
-        </tr>
         <tr class="table-info">
             <th>
                 <label>Consecutivo</label>
@@ -45,7 +41,7 @@
 
         @foreach (var item in Model.StepsForJobList)
         {
-            
+
             <tr>
                 <td>
                     @Html.DisplayFor(m => item.Consecutivo)
@@ -83,9 +79,9 @@
 @if (Model.StepsForJobList.Count > 0)
 {
     <coool-pagination-test page-model="@Model.PagingInfo" page-action="AllStepsForJob" page-classes-enabled="true"
-                          page-class="btn" page-class-normal="btn-secondary" page-id="@Model.StepsForJobList[0].TestJobID"
-                          page-class-selected="btn-primary"
-                          class="btn-group pull-right m-1">
+                           page-class="btn" page-class-normal="btn-secondary" page-id="@Model.StepsForJobList[0].TestJobID"
+                           page-class-selected="btn-primary"
+                           class="btn-group pull-right m-1">
     </coool-pagination-test>
 }
 else

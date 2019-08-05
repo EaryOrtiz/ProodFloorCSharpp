@@ -32,8 +32,6 @@ namespace ProdFloor.Models
         public List<Stop> _Stops { get; set; }
         public List<StepsForJob> _StepsForJobs { get; set; }
         public TestFeature _TestFeature { get; set; }
-
-        
         
     }
 
@@ -75,7 +73,11 @@ namespace ProdFloor.Models
         [Required(ErrorMessage = "Please enter a {0}")]
         public string Stage { get; set; }
         [Required(ErrorMessage = "Please enter a {0}")]
+
+        [DataType(DataType.Time)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:HH:mm:ss}")]
         public DateTime ExpectedTime { get; set; }
+
         [Required(ErrorMessage = "Please enter a {0}")]
         public string Description { get; set; }
         [Required(ErrorMessage = "Please enter a {0}")]

@@ -1,0 +1,60 @@
+﻿@model AdminNavMenuViewModel
+<ul class="nav nav-pills flex-column" id="accordion" role="tablist">
+    <li class="nav-item" role="tab" id="Steps">
+        <a data-toggle="collapse" href="#collapseSteps" role="button" aria-expanded="false" aria-controls="collapseSteps"
+           class="nav-link text-light"><i class="fas fa-charging-station"></i>&nbsp; Testing</a>
+        <ul id="collapseSteps" class="collapse" role="tabpanel" aria-labelledby="collapseSteps" data-parent="#accordion">
+            <li class="nav-link"
+                style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue">
+                <a style="color:white" asp-action="SearchTestJob"
+                   asp-controller="TestJob">Test Job</a>
+            </li>
+            <li class="nav-link"
+                style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue">
+                <a style="color:white" asp-action="List" asp-route-ElmHydroPage="1" asp-route-M2000Page="1" asp-route-ElmTractionPage="1" asp-route-M4000Page="1"
+                   asp-controller="Step" asp-route-JobTypeName="Traction">Steps</a>
+            </li>
+            <li class="nav-link"
+                style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue">
+                <a style="color:white" asp-action="List"
+                   asp-controller="Station"
+                   asp-route-Page="1">Stations</a>
+            </li>
+            <li class="nav-link"
+                style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue">
+                <a style="color:white"
+                   asp-controller="Stop"
+                   asp-route-stop=""
+                   asp-route-Page="1" asp-action="List">Stops</a>
+            </li>
+        </ul>
+    </li>
+    <li class="nav-item" role="tab" id="Reasons">
+        <a data-toggle="collapse" href="#collapseReasons" role="button" aria-expanded="false" aria-controls="collapseReasons"
+           class="nav-link text-light"><i class="fas fa-clipboard-list"></i>&nbsp; Reasons</a>
+        <form asp-controller="Reasons" asp-action="List" asp-route-Page="1" method="get">
+            <ul id="collapseReasons" class="collapse" role="tabpanel" aria-labelledby="collapseReasons" data-parent="#accordion">
+                <li class="nav-link"
+                    style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue">
+                    <button class="btn btn-sm btn-link" style="color:white" asp-action="List" asp-controller="Reasons" asp-route-Page="1" asp-route-ReasonNumber="1">Reasons 1</button>
+                </li>
+                <li class="nav-link"
+                    style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue">
+                    <button class="btn btn-sm btn-link" style="color:white" asp-action="List" asp-controller="Reasons" asp-route-Page="1" asp-route-ReasonNumber="2">Reasons 2</button>
+                </li>
+                <li class="nav-link"
+                    style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue">
+                    <button class="btn btn-sm btn-link" style="color:white" asp-action="List" asp-controller="Reasons" asp-route-Page="1" asp-route-ReasonNumber="3">Reasons 3</button>
+                </li>
+                <li class="nav-link"
+                    style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue">
+                    <button class="btn btn-sm btn-link" style="color:white" asp-action="List" asp-controller="Reasons" asp-route-Page="1" asp-route-ReasonNumber="4">Reasons 4</button>
+                </li>
+                <li class="nav-link"
+                    style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue">
+                    <button class="btn btn-sm btn-link" style="color:white" asp-action="List" asp-controller="Reasons" asp-route-Page="1" asp-route-ReasonNumber="5">Reasons 5</button>
+                </li>
+            </ul>
+        </form>
+    </li>
+</ul>

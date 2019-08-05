@@ -145,7 +145,7 @@
                                             <form asp-action="FinishPendingStops" asp-controller="Stop" method="get">
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
-                                                    <input type="hidden" id="TestJobID" name="TestJobID" asp-for="@Model.TestJob.TestJobID" value="@j.TestJobID" />
+                                                    <input type="hidden" id="TestJobID" name="TestJobID" value="@j.TestJobID" />
                                                     <button type="submit" value="Completed" name="buttonAction" class="btn btn-danger btn-sm">
                                                         Finish the stops first!
                                                     </button>
@@ -181,7 +181,7 @@
                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLongTitle">"Are you sure you want to return Job# @Model.JobList.FirstOrDefault(m => m.JobID == j.JobID).JobNum with PO @j.SinglePO to "Working on it" Status?"</h5>
+                                            <h5 class="modal-title" id="exampleModalLongTitle">Are you sure you want to return Job #@Model.JobList.FirstOrDefault(m => m.JobID == j.JobID).JobNum with PO #@j.SinglePO to "Working on it" Status?</h5>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>

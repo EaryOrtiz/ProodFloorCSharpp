@@ -78,6 +78,10 @@
                 {
                     @await Component.InvokeAsync("AdminMenu")
                 }
+                else if (User.IsInRole("TechAdmin"))
+                {
+                    @await Component.InvokeAsync("AdminTechMenu")
+                }
                 else if (User.IsInRole("Engineer"))
                 {
                     @await Component.InvokeAsync("EngineerMenu")

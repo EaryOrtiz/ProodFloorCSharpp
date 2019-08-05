@@ -16,7 +16,7 @@ using ProdFloor.Models.ViewModels.TestJob;
 
 namespace ProdFloor.Controllers
 {
-    [Authorize(Roles = "Admin,Technician,Enginner")]
+    [Authorize(Roles = "Admin,TechAdmin,Technician,Enginner")]
     public class StopController : Controller
     {
         private IJobRepository jobRepo;
@@ -247,11 +247,14 @@ namespace ProdFloor.Controllers
             TempData["message"] = $"{testJobView.Stop.Description} has been saved..";
 
             Stop stop = testingRepo.Stops.FirstOrDefault(m => m.StopID != 980 & m.StopID != 981 && m.Reason2 == 0 && m.TestJobID == testJobView.Stop.TestJobID);
+
             if (stop != null)
             {
+                testJobView.TestJob = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == stop.TestJobID); ;
+                testJobView.Job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == testJobView.TestJob.JobID);
+                testJobView.Stop = stop;
                 return FinishPendingStops(testJobView.TestJob.TestJobID);
             }
-
             return RedirectToAction("JobCompletion", "TestJob", new { TestJobID = testJobView.TestJob.TestJobID });
             
         }

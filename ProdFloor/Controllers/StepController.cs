@@ -16,7 +16,7 @@ using ProdFloor.Models.ViewModels.TestJob;
 
 namespace ProdFloor.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin,TechAdmin")]
     public class StepController : Controller
     {
         private IItemRepository itemprepo;

@@ -1,0 +1,35 @@
+﻿@model ProdFloor.Models.ViewModels.TestJob.JobCompletionViewModel
+@{
+    ViewBag.Title = "End Steps";
+    Layout = "_AdminLayoutWO";
+}
+<div class="bg-dark m-1 p-1"><h4 style="color:white">Job Completion</h4></div>
+<form asp-action="JobCompletion" method="post">
+    <div class="container-fluid" style="margin-top:35px;">
+        <input type="hidden" asp-for="TestJob.TestJobID" />
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Pending Steps</label>
+            <div>
+                <input name="PendingSteps" value="@Model.StepsForJobList.Count()" class="form-control col-10" disabled />
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="ElapsedTimeHours" class="col-sm-2 col-form-label"></label>
+            <div>
+                <input asp-for="ElapsedTimeHours" class="form-control col-10" />
+                <span asp-validation-for="ElapsedTimeHours" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="ElapsedTimeMinutes" class="col-sm-2 col-form-label"></label>
+            <div>
+                <input asp-for="ElapsedTimeMinutes" class="form-control col-10" />
+                <span asp-validation-for="ElapsedTimeMinutes" class="text-danger"></span>
+            </div>
+        </div>
+        <div>
+            <button class="btn btn-primary" type="submit">Save</button>
+            <a asp-action="SearchTestJob" asp-controller="TestJob" class="btn btn-secondary">Cancel</a>
+        </div>
+    </div>
+</form>

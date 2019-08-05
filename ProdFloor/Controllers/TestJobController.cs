@@ -13,7 +13,7 @@ using ProdFloor.Models.ViewModels.TestJob;
 
 namespace ProdFloor.Controllers
 {
-    [Authorize(Roles = "Admin,Technician")]
+    [Authorize(Roles = "Admin,TechAdmin,Technician")]
     public class TestJobController : Controller
     {
         private IJobRepository jobRepo;
@@ -1224,13 +1224,16 @@ namespace ProdFloor.Controllers
             JobCompletionViewModel jobCompletion = new JobCompletionViewModel()
             {
                 TestJob = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == TestJobID),
+                StepsForJobList = testingRepo.StepsForJobs.Where(m => m.TestJobID == TestJobID && m.Obsolete == false && m.Complete == false).OrderBy(m => m.Consecutivo).ToList(),
             };
             return View(jobCompletion);
 
         }
 
+        [HttpPost]
         public IActionResult JobCompletion(JobCompletionViewModel jobCompletion)
         {
+
             TestJob testJob = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == jobCompletion.TestJob.TestJobID);
             List<StepsForJob> IncompleteStepsForJob = testingRepo.StepsForJobs.Where(m => m.TestJobID == testJob.TestJobID && m.Obsolete == false && m.Complete == false).OrderBy(m => m.Consecutivo).ToList();
             List<Step> IncompleteStepsForJobInfo = testingRepo.Steps.Where(m => IncompleteStepsForJob.Any(s => s.StepID == m.StepID)).ToList();
@@ -1247,6 +1250,7 @@ namespace ProdFloor.Controllers
             {
                 double ExpectedTimeForStep = ToHours(IncompleteStepsForJobInfo.First(m => m.StepID == step.StepID).ExpectedTime);
                 double TimePercentage = ExpectedTimeForStep / ExpectecTimeSUM;
+                if (TimePercentage == 0) TimePercentage = 1;
                 double TotalTime = ElapseHoursFromView * TimePercentage;
 
                 step.Elapsed = ToDateTime(TotalTime);
@@ -1256,6 +1260,7 @@ namespace ProdFloor.Controllers
 
             testJob.CompletedDate = jobCompletion.FinishDate;
             testJob.Status = "Completed";
+            testingRepo.SaveTestJob(testJob);
             TempData["message"] = $"You have completed the TestJob PO# {testJob.SinglePO} to Working on it";
             return RedirectToAction("SearchTestJob");
 
@@ -1309,15 +1314,24 @@ namespace ProdFloor.Controllers
             return totalTime;
         }
 
-        public DateTime ToDateTime(Double TotalHours)
+        public DateTime ToDateTime(double TotalHours)
         {
-            DateTime Date = new DateTime(0, 0, 0, 0, 0, 0);
-            double AuxTotalHours = Math.Truncate(TotalHours);
+            DateTime Date = new DateTime(1, 1, 1, 0, 0, 0);
+            double AuxTotalHours = Math.Round(TotalHours);
             double AuxTotalMinutes = TotalHours - AuxTotalHours;
+            double AuxDays = 0;
+            while (AuxTotalHours > 24)
+            {
+                AuxTotalHours -= 24;
+                AuxDays++;
+            };
             int Hours = (int)AuxTotalHours;
-            int Minutes = (int)AuxTotalMinutes;
+            int Minutes = (int)(Math.Round(AuxTotalMinutes * 100));
+            int Days = 0;
+            if (AuxDays > 1) Days = (int)AuxDays - 1;
+            else  Days = 1;
 
-            return new DateTime(1, 1, 1, Hours, Minutes, 0);
+            return new DateTime(1, 1, Days, Hours, Minutes, 0);
         }
     }
 }

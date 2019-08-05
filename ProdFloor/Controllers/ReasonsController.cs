@@ -16,7 +16,7 @@ using ProdFloor.Models.ViewModels.Reasons;
 
 namespace ProdFloor.Controllers
 {
-    [Authorize(Roles = "Admin,Technician")]
+    [Authorize(Roles = "Admin,TechAdmin,Technician")]
     public class ReasonsController : Controller
     {
         private ITestingRepository repository;
