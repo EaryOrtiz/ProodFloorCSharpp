@@ -11,222 +11,315 @@
 </div>
 <br />
 
-<p>
-    <div class="btn-group">
-        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-            Job Information
-        </button>
-        <button class="btn btn-danger" type="button" data-toggle="collapse" data-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
-            JobExtension
-        </button>
-        <button class="btn btn-info" type="button" data-toggle="collapse" data-target="#collapse3" aria-expanded="false" aria-controls="collapse3">
-            HydroSpecifics
-        </button>
-        <button class="btn btn-warning" type="button" data-toggle="collapse" data-target="#collapse4" aria-expanded="false" aria-controls="collapse4">
-            Generic Features
-        </button>
-        <button class="btn btn-success" type="button" data-toggle="collapse" data-target="#collapse5" aria-expanded="false" aria-controls="collapse5">
-            Indicators
-        </button>
-        <button class="btn btn-dark" type="button" data-toggle="collapse" data-target="#collapse6" aria-expanded="false" aria-controls="collapse6">
-            HoistWayData
-        </button>
-        <button class="btn btn-light" type="button" data-toggle="collapse" data-target="#collapse7" aria-expanded="false" aria-controls="collapse7">
-            Special Features
-        </button>
-    </div>
-</p>
-<form asp-controller="Job" asp-action="JobSearchList" method="get">
-    <div class="collapse" id="collapseExample">
-        <div class="card card-body">
-
-            <div class="row">
-                <div class="col-sm">
-                    Job Name: <input type="text" class="form-control form-control-sm col-sm-10" asp-for="NameJobSearch">
-                    Job Name #2: <input type="text" class="form-control form-control-sm col-sm-10" asp-for="Name2">
-                    Job Number: <input type="text" class="form-control form-control-sm col-sm-10" asp-for="NumJobSearch">
-                    Job PO Number: <input type="text" class="form-control form-control-sm col-sm-10" asp-for="POJobSearch">
-                    Job Cust Number: <input type="text" class="form-control form-control-sm col-sm-10" asp-for="CustJobSearch">
-                    <br />
-                </div>
-                <div class="col-sm">
-                    Contractor Name: <input type="text" class="form-control form-control-sm col-sm-10" asp-for="ContractorJobSearch">
-                    Enginner Number: <input type="text" class="form-control form-control-sm col-sm-10" asp-for="EngID">
-                    Cross Approval Engineer Number: <input type="text" class="form-control form-control-sm col-sm-10" asp-for="CrossAppEngID">
-                    <br />
-                    <select asp-for="StatusJobSearch" class="form-control form-control-sm col-sm-10" asp-items="Model.Status"><option value="">Select a Status</option></select>
-                </div>
-                <div class="col-sm">
-                    <br />
-                    <country-select id="CountryID" asp-for="@Model.CountryID" class="form-control form-control-sm col-sm-10"></country-select>
-                    <br /><br />
-                    <state-select id="StateID" asp-for="@Model.StateID" class="form-control form-control-sm col-sm-10"></state-select>
-                    <br /><br />
-                    <city-select selected-value="@Model.CityID" class="form-control form-control-sm col-sm-10" asp-for="CityID"></city-select>
-                </div>
-                <div class="col-sm">
-                    <br />
-                    <fire-code-in-jobs-select selected-value="@Model.FireCodeID" class="form-control form-control-sm col-sm-10" asp-for="FireCodeID"></fire-code-in-jobs-select>
-                    <br />
-                    <job-type-in-job-select selected-value="@Model.JobTypeID" class="form-control form-control-sm col-sm-10" asp-for="JobTypeID"></job-type-in-job-select>
-                </div>
-            </div>
+<div id="accordionSearch">
+    <div class="card">
+        <!--Header 1-->
+        <div class="card-header bg-dark text-center" id="headingJobInfo">
+            <button class="btn btn-dark" style="background-color:transparent;border-color:transparent" data-toggle="collapse" data-target="#collapseJobInfo" aria-expanded="true" aria-controls="collapseJobInfo">
+                <h6 class="mb-0 text-center"> Job Information</h6>
+            </button>
         </div>
-    </div>
-    <div class="collapse" id="collapse2">
-        <div class="card card-body">
-            <div class="row">
-                <div class="col-sm">
-                    Input Frequency: <input type="text" class="form-control form-control-sm col-sm-10" asp-for="InputFrecuency">
-                    Input Phase: <input type="text" class="form-control form-control-sm col-sm-10" asp-for="InputPhase">
-                    Input Voltage: <input type="text" class="form-control form-control-sm col-sm-10" asp-for="InputVoltage">
-                    Number Of Stops: <input type="text" class="form-control form-control-sm col-sm-10" asp-for="NumOfStops">
-                    <br />
-                    <select asp-for="AuxCop" class="form-control form-control-sm col-sm-5">
-                        <option value="">Select a AuxCop</option>
-                        <option value="Si">-------- Si ---------</option>
-                        <option value="No">-------- No --------</option>
-                    </select>
-                </div>
-                <div class="col-sm">
-                    <br />
-                    <job-type-add-in-job-select selected-value="@Model.JobTypeAdd" class="form-control form-control-sm col-sm-10" asp-for="JobTypeAdd"></job-type-add-in-job-select>
-                    <br />
-                    <job-type-maini-in-job-select selected-value="@Model.JobTypeMain" class="form-control form-control-sm col-sm-10" asp-for="JobTypeMain"></job-type-maini-in-job-select>
-                    <br />
-                    <select asp-for="MechSafEdge" class="form-control form-control-sm col-sm-6">
-                        <option value="">Select a MechSafEdge</option>
-                        <option value="Si">------------ Si -----------</option>
-                        <option value="No">------------ No ----------</option>
-                    </select>
-                    <br />
-                    <select asp-for="Scop" class="form-control form-control-sm col-sm-6">
-                        <option value="">Select a SCOP</option>
-                        <option value="Si">------------ Si -----------</option>
-                        <option value="No">------------ No ----------</option>
-                    </select>
-                    <br />
-                    <select asp-for="Shc" class="form-control form-control-sm col-sm-6">
-                        <option value="">Select a SHC</option>
-                        <option value="Si">------------ Si -----------</option>
-                        <option value="No">------------ No ----------</option>
-                    </select>
-                    <br />
-                </div>
-                <div class="col-sm">
-                    <br />
-                    <select asp-for="CartopDoorButtons" class="form-control form-control-sm col-sm-8">
-                        <option value="">Select a CartopDoorButtons</option>
-                        <option value="Si">------------------ Si ----------------</option>
-                        <option value="No">------------------ No ---------------</option>
-                    </select>
-                    <br />
-                    <select asp-for="DoorHold" class="form-control form-control-sm col-sm-6">
-                        <option value="">Select a DoorHold</option>
-                        <option value="Si">------------ Si -----------</option>
-                        <option value="No">------------ No ----------</option>
-                    </select>
-                    <br />
-                    <select asp-for="HeavyDoors" class="form-control form-control-sm col-sm-6">
-                        <option value="">Select a HeavyDoors</option>
-                        <option value="Si">------------ Si -----------</option>
-                        <option value="No">------------ No ----------</option>
-                    </select>
-                    <br />
-                    <select asp-for="InfDetector" class="form-control form-control-sm col-sm-6">
-                        <option value="">Select a InfDetector</option>
-                        <option value="Si">------------ Si -----------</option>
-                        <option value="No">------------ No ----------</option>
-                    </select>
-                </div>
-                <div class="col-sm">
-                    <br />
-                    <door-operator-style-select id="Style" asp-for="@Model.DoorGate" class="form-control form-control-sm col-sm-7">
-                    </door-operator-style-select>
-                    <br />
-                    <door-operator-brand-select id="Brand" asp-for="@Model.DoorBrand" class="form-control form-control-sm col-sm-7">
-                    </door-operator-brand-select>
-                    <br />
-                    <door-operator-select id="DoorOperatorID" asp-for="@Model.DoorOperatorID" class="form-control form-control-sm col-sm-7">
-                    </door-operator-select>
-                    <br />
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="collapse" id="collapse3">
-        <div class="card card-body">
-            <div class="row">
-                <div class="col-sm">
-                    FLA: <input type="text" class="form-control form-control-sm col-sm-10" asp-for="FLA">
-                    HP: <input type="text" class="form-control form-control-sm col-sm-10" asp-for="HP">
-                    Numer of Motors: <input type="text" class="form-control form-control-sm col-sm-10" asp-for="MotorsNum">
-                    SPH: <input type="text" class="form-control form-control-sm col-sm-10" asp-for="SPH">
-                </div>
-                <div class="col-sm">
-                    Starter: <input type="text" class="form-control form-control-sm col-sm-10" asp-for="Starter">
-                    <br />
-                    <valve-brandni-in-job-select selected-value="@Model.ValveBrand" class="form-control form-control-sm col-sm-10" asp-for="ValveBrand"></valve-brandni-in-job-select>
-                    <br />
-                    <select id="BatterySelect" asp-for="Battery" class="form-control form-control-sm col-sm-5">
-                        <option value="">Select a Battery</option>
-                        <option id="BatterySi" value="Si">-------- Si ---------</option>
-                        <option value="No">-------- No --------</option>
-                    </select>
-                    <br />
-                    <div id="BatteryBrand">
-                        Battery Brand: <input type="text" class="form-control form-control-sm col-sm-10" asp-for="BatteryBrand">
+        <!--Body 1-->
+        <div id="collapseJobInfo" class="collapse show" aria-labelledby="headingJobInfo" data-parent="#accordionSearch">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-3" style="padding-right:0px;margin-right:0px;padding-left:0px;margin-left:0px">
+                        <div class="form-group form-inline" style="margin-bottom:0px;">
+                            <label asp-for="NameJobSearch" class="col-sm-4 col-form-label"></label>
+                            <input type="text" class="form-control form-control-sm col-sm-8" asp-for="NameJobSearch">
+                        </div>
+                        <div class="form-group form-inline" style="margin-bottom:0px;">
+                            <label asp-for="Name2" class="col-sm-4 col-form-label"></label>
+                            <input type="text" class="form-control form-control-sm col-sm-8" asp-for="Name2">
+                        </div>
+                        <div class="form-group form-inline" style="margin-bottom:0px;">
+                            <label asp-for="ContractorJobSearch" class="col-sm-4 col-form-label"></label>
+                            <input type="text" class="form-control form-control-sm col-sm-8" asp-for="ContractorJobSearch">
+                        </div>
+                    </div>
+                    <div class="col-2" style="padding-right:0px;margin-right:0px;padding-left:0px;margin-left:0px">
+                        <div class="form-group form-inline" style="margin-bottom:0px;">
+                            <label asp-for="CountryID" class="col-sm-4 col-form-label"></label>
+                            <country-select id="CountryID" asp-for="CountryID" class="form-control form-control-sm col-8"></country-select>
+                        </div>
+                        <div class="form-group form-inline" style="margin-bottom:0px;">
+                            <label asp-for="StateID" class="col-sm-4 col-form-label"></label>
+                            <state-select id="StateID" asp-for="StateID" class="form-control form-control-sm col-8 "></state-select>
+                        </div>
+                        <div class="form-group form-inline" style="margin-bottom:0px;">
+                            <label asp-for="CityID" class="col-sm-4 col-form-label"></label>
+                            <city-select selected-value="@Model.CityID" class="form-control form-control-sm col-8" asp-for="CityID"></city-select>
+                        </div>
+                    </div>
+                    <div class="col-3" style="padding-right:0px;margin-right:0px;padding-left:0px;margin-left:0px">
+                        <div class="form-group form-inline" style="margin-bottom:0px;">
+                            <label asp-for="StatusJobSearch" class="col-sm-4 col-form-label"></label>
+                            <select asp-for="StatusJobSearch" class="form-control form-control-sm col-6" asp-items="Model.Status"><option value="">Select a Status</option></select>
+                        </div>
+                        <div class="form-group form-inline" style="margin-bottom:0px;">
+                            <label asp-for="JobTypeID" class="col-sm-4 col-form-label"></label>
+                            <job-type-in-job-select selected-value="@Model.JobTypeID" class="form-control form-control-sm col-6" asp-for="JobTypeID"></job-type-in-job-select>
+                        </div>
+                        <div class="form-group form-inline" style="margin-bottom:0px;">
+                            <label asp-for="FireCodeID" class="col-sm-4 col-form-label"></label>
+                            <fire-code-in-jobs-select selected-value="@Model.FireCodeID" class="form-control form-control-sm col-6" asp-for="FireCodeID"></fire-code-in-jobs-select>
+                        </div>
+                    </div>
+                    <div class="col-2" style="padding-right:0px;margin-right:0px;padding-left:0px;margin-left:0px">
+                        <div class="form-group form-inline" style="margin-bottom:0px;">
+                            <label asp-for="NumJobSearch" class="col-sm-6 col-form-label"></label>
+                            <input type="text" class="form-control form-control-sm col-sm-6" asp-for="NumJobSearch">
+                        </div>
+                        <div class="form-group form-inline" style="margin-bottom:0px;">
+                            <label asp-for="POJobSearch" class="col-sm-6 col-form-label"></label>
+                            <input type="text" class="form-control form-control-sm col-sm-6" asp-for="POJobSearch">
+                        </div>
+                        <div class="form-group form-inline" style="margin-bottom:0px;">
+                            <label asp-for="CustJobSearch" class="col-sm-6 col-form-label"></label>
+                            <input type="text" class="form-control form-control-sm col-sm-6" asp-for="CustJobSearch">
+                        </div>
+                    </div>
+                    <div class="col-2" style="padding-right:0px;margin-right:0px;padding-left:0px;margin-left:0px">
+                        <div class="form-group form-inline" style="margin-bottom:0px;">
+                            <label asp-for="EngID" class="col-sm-6 col-form-label"></label>
+                            <input type="text" class="form-control form-control-sm col-sm-4" asp-for="EngID">
+                        </div>
+                        <div class="form-group form-inline" style="margin-bottom:0px;">
+                            <label asp-for="CrossAppEngID" class="col-sm-6 col-form-label"></label>
+                            <input type="text" class="form-control form-control-sm col-sm-4" asp-for="CrossAppEngID">
+                        </div>
                     </div>
                 </div>
-                <div class="col-sm">
-                    <br />
-                    <select asp-for="LOS" class="form-control form-control-sm col-sm-8">
-                        <option value="">Select a LOS</option>
-                        <option value="Si">------------------ Si ----------------</option>
-                        <option value="No">------------------ No ---------------</option>
-                    </select>
-                    <br />
-                    <select asp-for="LifeJacket" class="form-control form-control-sm col-sm-6">
-                        <option value="">Select a LifeJacket</option>
-                        <option value="Si">------------ Si -----------</option>
-                        <option value="No">------------ No ----------</option>
-                    </select>
-                    <br />
-                    <select asp-for="OilCool" class="form-control form-control-sm col-sm-6">
-                        <option value="">Select a OilCool</option>
-                        <option value="Si">------------ Si -----------</option>
-                        <option value="No">------------ No ----------</option>
-                    </select>
-                    <br />
-                    <select asp-for="OilTank" class="form-control form-control-sm col-sm-6">
-                        <option value="">Select a OilTank</option>
-                        <option value="Si">------------ Si -----------</option>
-                        <option value="No">------------ No ----------</option>
-                    </select>
-                </div>
-                <div class="col-sm">
-                    <br />
-                    <select asp-for="PSS" class="form-control form-control-sm col-sm-6">
-                        <option value="">Select a PSS</option>
-                        <option value="Si">------------ Si -----------</option>
-                        <option value="No">------------ No ----------</option>
-                    </select>
-                    <br />
-                    <select asp-for="Resync" class="form-control form-control-sm col-sm-6">
-                        <option value="">Select a Resync</option>
-                        <option value="Si">------------ Si -----------</option>
-                        <option value="No">------------ No ----------</option>
-                    </select>
-                    <br />
-                    <select asp-for="VCI" class="form-control form-control-sm col-sm-6">
-                        <option value="">Select a VCI</option>
-                        <option value="Si">------------ Si -----------</option>
-                        <option value="No">------------ No ----------</option>
-                    </select>
-                </div>
             </div>
         </div>
+
+        <!--Header 2-->
+        <div class="card-header bg-dark text-center" id="headingJobExt">
+            <button class="btn btn-dark" style="background-color:transparent;border-color:transparent" data-toggle="collapse" data-target="#collapseJobExt" aria-expanded="true" aria-controls="collapseJobExt">
+                <h6 class="mb-0 text-center"> Job Extension</h6>
+            </button>
+        </div>
+        <!--Body 2-->
+        <div id="collapseJobExt" class="collapse show" aria-labelledby="headingJobExt" data-parent="#accordionSearch">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-2" style="padding-right:0px;margin-right:0px;padding-left:5px;margin-left:5px">
+                        <div class="form-group form-inline" style="margin-bottom:0px;">
+                            <label asp-for="InputFrecuency" class="col-sm-7 col-form-label"></label>
+                            <input type="text" class="form-control form-control-sm col-sm-4" asp-for="InputFrecuency">
+                        </div>
+                        <div class="form-group form-inline" style="margin-bottom:0px;">
+                            <label asp-for="InputPhase" class="col-sm-7 col-form-label"></label>
+                            <input type="text" class="form-control form-control-sm col-sm-4" asp-for="InputPhase">
+                        </div>
+                        <div class="form-group form-inline" style="margin-bottom:0px;">
+                            <label asp-for="InputVoltage" class="col-sm-7 col-form-label"></label>
+                            <input type="text" class="form-control form-control-sm col-sm-4" asp-for="InputVoltage">
+                        </div>
+                    </div>
+                    <div class="col-3" style="padding-right:0px;margin-right:0px;padding-left:0px;margin-left:0px">
+                        <div class="form-group form-inline" style="margin-bottom:0px;">
+                            <label asp-for="NumOfStops" class="col-sm-4 col-form-label"></label>
+                            <input type="text" class="form-control form-control-sm col-sm-4" asp-for="NumOfStops">
+                        </div>
+                        <div class="form-group form-inline" style="margin-bottom:0px;">
+                            <label asp-for="JobTypeAdd" class="col-sm-4 col-form-label"></label>
+                            <job-type-add-in-job-select selected-value="@Model.JobTypeAdd" class="form-control form-control-sm col-sm-6" asp-for="JobTypeAdd"></job-type-add-in-job-select>
+                        </div>
+                        <div class="form-group form-inline" style="margin-bottom:0px;">
+                            <label asp-for="JobTypeMain" class="col-sm-4 col-form-label"></label>
+                            <job-type-maini-in-job-select selected-value="@Model.JobTypeMain" class="form-control form-control-sm col-sm-6" asp-for="JobTypeMain"></job-type-maini-in-job-select>
+                        </div>
+                    </div>
+                    <div class="col-3" style="padding-right:0px;margin-right:0px;padding-left:0px;margin-left:0px">
+                        <div class="form-group form-inline" style="margin-bottom:0px;">
+                            <label asp-for="DoorGate" class="col-sm-4 col-form-label"></label>
+                            <door-operator-style-select id="Style" asp-for="@Model.DoorGate" class="form-control form-control-sm col-sm-6">
+                            </door-operator-style-select>
+                        </div>
+                        <div class="form-group form-inline" style="margin-bottom:0px;">
+                            <label asp-for="DoorBrand" class="col-sm-4 col-form-label"></label>
+
+                            <door-operator-brand-select id="Brand" asp-for="@Model.DoorBrand" class="form-control form-control-sm col-sm-6">
+                            </door-operator-brand-select>
+                            <br />
+                        </div>
+                        <div class="form-group form-inline" style="margin-bottom:0px;">
+                            <label asp-for="DoorOperatorID" class="col-sm-4 col-form-label"></label>
+                            <door-operator-select id="DoorOperatorID" asp-for="@Model.DoorOperatorID" class="form-control form-control-sm col-sm-6">
+                            </door-operator-select>
+                            <br />
+                        </div>
+                    </div>
+                    <div class="col-1" style="padding-right:0px;margin-right:0px;padding-left:5px;margin-left:5px">
+                        <div class="form-group form-inline" style="margin-bottom:5px;">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" asp-for="AuxCop" class="custom-control-input">
+                                <label class="custom-control-label" asp-for="AuxCop"></label>
+                            </div>
+                        </div>
+                        <div class="form-group form-inline" style="margin-bottom:5px;">
+                            <div class="custom-control custom-checkbox">
+
+                                <input type="checkbox" asp-for="MechSafEdge" class="custom-control-input">
+                                <label class="custom-control-label" asp-for="MechSafEdge"></label>
+                            </div>
+                        </div>
+                        <div class="form-group form-inline" style="margin-bottom:5px;">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" asp-for="Scop" class="custom-control-input">
+                                <label class="custom-control-label" asp-for="Scop"></label>
+
+                            </div>
+                        </div>
+                        <div class="form-group form-inline" style="margin-bottom:5px;">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" asp-for="Shc" class="custom-control-input">
+                                <label class="custom-control-label" asp-for="Shc"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-1" style="padding-right:0px;margin-right:0px;padding-left:5px;margin-left:5px">
+                        <div class="form-group form-inline" style="margin-bottom:5px;">
+                            <div class="custom-control custom-checkbox">
+
+                                <input type="checkbox" asp-for="CartopDoorButtons" class="custom-control-input">
+                                <label class="custom-control-label" asp-for="CartopDoorButtons"></label>
+                            </div>
+                        </div>
+                        <div class=" form-group form-inline" style="margin-bottom:5px;">
+                            <div class="custom-control custom-checkbox">
+
+                                <input type="checkbox" asp-for="HeavyDoors" class="custom-control-input">
+                                <label class="custom-control-label" asp-for="HeavyDoors"></label>
+                            </div>
+                        </div>
+                        <div class="form-group form-inline" style="margin-bottom:5px;">
+                            <div class="custom-control custom-checkbox">
+
+                                <input type="checkbox" asp-for="DoorHold" class="custom-control-input">
+                                <label class="custom-control-label" asp-for="DoorHold"></label>
+                            </div>
+                        </div>
+                        <div class="form-inline" style="margin-bottom:5px;">
+                            <div class="custom-control custom-checkbox">
+
+                                <input type="checkbox" asp-for="InfDetector" class="custom-control-input">
+                                <label class="custom-control-label" asp-for="InfDetector"></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!--Header 3-->
+        <div class="card-header bg-dark text-center" id="headingHydro">
+            <button class="btn btn-dark" style="background-color:transparent;border-color:transparent" data-toggle="collapse" data-target="#collapseHydro" aria-expanded="true" aria-controls="collapseHydro">
+                <h6 class="mb-0 text-center"> HydroSpecific</h6>
+            </button>
+        </div>
+        <!--Body 3-->
+        <div id="collapseHydro" class="collapse show" aria-labelledby="headingHydro" data-parent="#accordionSearch">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-2" style="padding-right:0px;margin-right:0px;padding-left:5px;margin-left:5px">
+                        <div class="form-group form-inline" style="margin-bottom:0px;">
+                            <label asp-for="FLA" class="col-sm-7 col-form-label"></label>
+                            <input type="text" class="form-control form-control-sm col-sm-4" asp-for="FLA">
+                        </div>
+                        <div class="form-group form-inline" style="margin-bottom:0px;">
+                            <label asp-for="HP" class="col-sm-7 col-form-label"></label>
+                            <input type="text" class="form-control form-control-sm col-sm-4" asp-for="HP">
+                        </div>
+                        <div class="form-group form-inline" style="margin-bottom:0px;">
+                            <label asp-for="MotorsNum" class="col-sm-7 col-form-label"></label>
+                            <input type="text" class="form-control form-control-sm col-sm-4" asp-for="MotorsNum">
+                        </div>
+                    </div>
+                    <div class="col-3" style="padding-right:0px;margin-right:0px;padding-left:0px;margin-left:0px">
+                        <div class="form-group form-inline" style="margin-bottom:0px;">
+                            <label asp-for="SPH" class="col-sm-4 col-form-label"></label>
+                            <input type="text" class="form-control form-control-sm col-sm-4" asp-for="NumOfStops">
+                        </div>
+                        <div class="form-group form-inline" style="margin-bottom:0px;">
+                            <label asp-for="Starter" class="col-sm-4 col-form-label"></label>
+                            <custom-select selected-value="@Model.Starter" class="form-control form-control-sm col-sm-6" asp-for="Starter" select-for="Starter"></custom-select>
+                        </div>
+                        <div class="form-group form-inline" style="margin-bottom:0px;">
+                            <label asp-for="ValveBrand" class="col-sm-4 col-form-label"></label>
+                            <valve-brandni-in-job-select selected-value="@Model.ValveBrand" class="form-control form-control-sm col-sm-6" asp-for="ValveBrand"></valve-brandni-in-job-select>
+                        </div>
+                    </div>
+                    <div class="col-1" style="padding-right:0px;margin-right:0px;padding-left:5px;margin-left:5px">
+                        <div class="form-group form-inline" style="margin-bottom:5px;">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" asp-for="LOS" class="custom-control-input">
+                                <label class="custom-control-label" asp-for="LOS"></label>
+                            </div>
+                        </div>
+                        <div class="form-group form-inline" style="margin-bottom:5px;">
+                            <div class="custom-control custom-checkbox">
+
+                                <input type="checkbox" asp-for="LifeJacket" class="custom-control-input">
+                                <label class="custom-control-label" asp-for="LifeJacket"></label>
+                            </div>
+                        </div>
+                        <div class="form-group form-inline" style="margin-bottom:5px;">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" asp-for="OilCool" class="custom-control-input">
+                                <label class="custom-control-label" asp-for="OilCool"></label>
+
+                            </div>
+                        </div>
+                        <div class="form-group form-inline" style="margin-bottom:5px;">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" asp-for="OilTank" class="custom-control-input">
+                                <label class="custom-control-label" asp-for="OilTank"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-1" style="padding-right:0px;margin-right:0px;padding-left:5px;margin-left:5px">
+                        <div class="form-group form-inline" style="margin-bottom:5px;">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" asp-for="PSS" class="custom-control-input">
+                                <label class="custom-control-label" asp-for="PSS"></label>
+                            </div>
+                        </div>
+                        <div class=" form-group form-inline" style="margin-bottom:5px;">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" asp-for="Resync" class="custom-control-input">
+                                <label class="custom-control-label" asp-for="Resync"></label>
+                            </div>
+                        </div>
+                        <div class="form-group form-inline" style="margin-bottom:5px;">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" asp-for="VCI" class="custom-control-input">
+                                <label class="custom-control-label" asp-for="VCI"></label>
+                            </div>
+                        </div>
+                        <div class="form-inline" style="margin-bottom:5px;">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" asp-for="Battery" class="custom-control-input">
+                                <label class="custom-control-label" asp-for="Battery"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-3" id="BatteryBrand" style="padding-right:0px;margin-right:0px;padding-left:5px;margin-left:5px">
+                        <div class="form-group form-inline" style="margin-bottom:0px;">
+                            <label asp-for="BatteryBrand" class="col-sm-4 col-form-label"></label>
+                            <custom-select id="OtherBatteryBrandSelected" selected-value="@Model.BatteryBrand" class="form-control form-control-sm col-sm-6" asp-for="BatteryBrand" select-for="Battery Brand"></custom-select>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
     </div>
+</div>
+<form asp-controller="Job" asp-action="JobSearchList" method="get">
     <div class="collapse" id="collapse4">
         <div class="card card-body">
             <div class="row">
@@ -552,23 +645,13 @@
      page-class-selected="btn-primary" page-url-jobType="@Model.JobTypeID"
      class="btn-group pull-right m-1">
 </div>
-@{
-    <script type="text/javascript">
-        $("#BatterySelect").ready(function () {
-            $("#BatteryBrand").hide();
-        });
 
-        $(document).ready(function () {
-            $("#BatterySelect").change(function () {
-                $("select option:selected").each(function () {
-                    if ($(this).attr("value") == "No" || ("value") == "") {
-                        $("#BatteryBrand").hide();
-                    }
-                    if ($(this).attr("value") == "Si") {
-                        $("#BatteryBrand").show();
-                    }
-                });
-            }).change();
-        });
-    </script>
-}
+<script type="text/javascript">
+    $("#Battery").ready(function () {
+        $("#BatteryBrand").hide();
+    });
+
+    $("#Battery").click(function () {
+        $("#BatteryBrand")[this.checked ? "show" : "hide"]();
+    });
+</script>

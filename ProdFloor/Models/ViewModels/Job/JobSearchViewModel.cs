@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -19,20 +20,34 @@ namespace ProdFloor.Models.ViewModels.Job
         public bool CleanFields { get; set; }
 
         //Atributos de Job
+        [Display(Name ="Job Name")]
         public string NameJobSearch { get; set; }
+        [Display(Name = "Job Number")]
         public int NumJobSearch { get; set; }
+        [Display(Name = "PO Name")]
         public int POJobSearch { get; set; }
+        [Display(Name = "Cust Number")]
         public string CustJobSearch { get; set; }
+        [Display(Name = "Contractor")]
         public string ContractorJobSearch { get; set; }
+
         public int EngID { get; set; }
         public int CrossAppEngID { get; set; }
+
+        [Display(Name = "Country")]
         public int CountryID { get; set; }
+        [Display(Name = "State")]
         public int StateID { get; set; }
+        [Display(Name = "City")]
         public int CityID { get; set; }
+        [Display(Name = "FireCode")]
         public int FireCodeID { get; set; }
+        [Display(Name = "JobType")]
         public int JobTypeID { get; set; }
         public SelectList Status;
+        [Display(Name = "Status")]
         public string StatusJobSearch { get; set; }
+        [Display(Name = "Job Name #2")]
         public string Name2 { get; set; }
 
         //Atributos de JobExtensions
@@ -55,7 +70,7 @@ namespace ProdFloor.Models.ViewModels.Job
         public string DoorBrand { get; set; }
 
         //Atributos de HydroSpecifics
-        public string Battery { get; set; }
+        public bool Battery { get; set; }
         public string BatteryBrand { get; set; }
         public string LOS { get; set; }
         public string LifeJacket { get; set; }
