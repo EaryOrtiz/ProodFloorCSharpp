@@ -25,13 +25,14 @@
     @Html.Partial("LandingSystemsSummary", j)
 }
 <br />
-<div>
-    <form asp-controller="Item" asp-action="ExportToXML" method="post">
-        <button class="btn btn-sm " name="buttonXML" value="LandingSys" style="background-color:#DF0174;color:white">Export List to an XML File</button>
-    </form>
-</div>
+
 <coool-pagination-all page-model="@Model.PagingInfo" page-action="List" page-classes-enabled="true"
                       page-class="btn" page-class-normal="btn-secondary"
                       page-class-selected="btn-dark"
                       class="btn-group pull-right m-1">
 </coool-pagination-all>
+<div>
+    <form asp-controller="Item" asp-action="ExportToXML" method="post">
+        <button class="btn btn-sm " name="buttonXML" value="LandingSys" style="background-color:steelblue;color:white">Export List to an XML File</button>
+    </form>
+</div>
