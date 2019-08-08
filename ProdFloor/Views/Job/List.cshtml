@@ -10,7 +10,7 @@
 </div>
 <br />
 <div class="btn-group" style="padding-right:50px;">
-    <a class="btn btn-info col-sm-" asp-action="JobSearchList" asp-controller="Job" style="padding-top:10px;min-width:100px">
+    <a class="btn btn-dark col-sm-" asp-action="JobSearchList" asp-controller="Job" style="padding-top:10px;min-width:100px">
         <i class="fa fa-search" aria-hidden="true"></i>
         Job Search List
     </a>
@@ -44,10 +44,9 @@
 {
     @Html.Partial("JobSummary", j)
 }
-
       <coool-pagination-all page-model="@Model.PagingInfo" page-action="List" page-classes-enabled="true"
                             page-class="btn" page-class-normal="btn-secondary"
-                            page-class-selected="btn-primary"
+                            page-class-selected="btn-dark"
                             class="btn-group pull-right m-1">
       </coool-pagination-all>
 @if (Model.Jobs.Count() > 0)
