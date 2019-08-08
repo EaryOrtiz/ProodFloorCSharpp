@@ -166,62 +166,42 @@
                             <br />
                         </div>
                     </div>
-                    <div class="col-2" style="padding-right:0px;margin-right:0px;padding-left:5px;margin-left:5px">
-                        <div class="form-group form-inline" style="margin-bottom:5px;">
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" asp-for="AuxCop" class="custom-control-input">
-                                <label class="custom-control-label" asp-for="AuxCop"></label>
-                            </div>
+                    <div class="col-2">
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="AuxCop" class="col-sm-9 col-form-label"></label>
+                            <custom-select selected-value="@Model.AuxCop" class="form-control-sm form-control col-sm-3" asp-for="AuxCop" select-for="boolSearch"></custom-select>
                         </div>
-                        <div class="form-group form-inline" style="margin-bottom:5px;">
-                            <div class="custom-control custom-checkbox">
 
-                                <input type="checkbox" asp-for="MechSafEdge" class="custom-control-input">
-                                <label class="custom-control-label" asp-for="MechSafEdge"></label>
-                            </div>
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="MechSafEdge" class="col-sm-9 col-form-label"></label>
+                            <custom-select selected-value="@Model.MechSafEdge" class="form-control-sm form-control col-sm-3" asp-for="MechSafEdge" select-for="boolSearch"></custom-select>
                         </div>
-                        <div class="form-group form-inline" style="margin-bottom:5px;">
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" asp-for="Scop" class="custom-control-input">
-                                <label class="custom-control-label" asp-for="Scop"></label>
-
-                            </div>
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="Scop" class="col-sm-9 col-form-label"></label>
+                            <custom-select selected-value="@Model.Scop" class="form-control-sm form-control col-sm-3" asp-for="Scop" select-for="boolSearch"></custom-select>
                         </div>
-                        <div class="form-group form-inline" style="margin-bottom:5px;">
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" asp-for="Shc" class="custom-control-input">
-                                <label class="custom-control-label" asp-for="Shc"></label>
-                            </div>
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="Shc" class="col-sm-9 col-form-label"></label>
+                            <custom-select selected-value="@Model.Shc" class="form-control-sm form-control col-sm-3" asp-for="Shc" select-for="boolSearch"></custom-select>
                         </div>
                     </div>
-                    <div class="col-2" style="padding-right:0px;margin-right:0px;padding-left:5px;margin-left:5px">
-                        <div class="form-group form-inline" style="margin-bottom:5px;">
-                            <div class="custom-control custom-checkbox">
+                    <div class="col-2">
 
-                                <input type="checkbox" asp-for="CartopDoorButtons" class="custom-control-input">
-                                <label class="custom-control-label" asp-for="CartopDoorButtons"></label>
-                            </div>
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="CartopDoorButtons" class="col-sm-9 col-form-label"></label>
+                            <custom-select selected-value="@Model.CartopDoorButtons" class="form-control-sm form-control col-sm-3" asp-for="CartopDoorButtons" select-for="boolSearch"></custom-select>
                         </div>
-                        <div class=" form-group form-inline" style="margin-bottom:5px;">
-                            <div class="custom-control custom-checkbox">
-
-                                <input type="checkbox" asp-for="HeavyDoors" class="custom-control-input">
-                                <label class="custom-control-label" asp-for="HeavyDoors"></label>
-                            </div>
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="HeavyDoors" class="col-sm-9 col-form-label"></label>
+                            <custom-select selected-value="@Model.HeavyDoors" class="form-control-sm form-control col-sm-3" asp-for="HeavyDoors" select-for="boolSearch"></custom-select>
                         </div>
-                        <div class="form-group form-inline" style="margin-bottom:5px;">
-                            <div class="custom-control custom-checkbox">
-
-                                <input type="checkbox" asp-for="DoorHold" class="custom-control-input">
-                                <label class="custom-control-label" asp-for="DoorHold"></label>
-                            </div>
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="DoorHold" class="col-sm-9 col-form-label"></label>
+                            <custom-select selected-value="@Model.DoorHold" class="form-control-sm form-control col-sm-3" asp-for="DoorHold" select-for="boolSearch"></custom-select>
                         </div>
-                        <div class="form-inline" style="margin-bottom:5px;">
-                            <div class="custom-control custom-checkbox">
-
-                                <input type="checkbox" asp-for="InfDetector" class="custom-control-input">
-                                <label class="custom-control-label" asp-for="InfDetector"></label>
-                            </div>
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="InfDetector" class="col-sm-9 col-form-label"></label>
+                            <custom-select selected-value="@Model.InfDetector" class="form-control-sm form-control col-sm-3" asp-for="InfDetector" select-for="boolSearch"></custom-select>
                         </div>
                     </div>
                 </div>
@@ -236,16 +216,20 @@
                 <div class="row">
                     <div class="col-2" style="padding-right:0px;margin-right:0px;padding-left:5px;margin-left:5px">
                         <div class="form-group form-inline" style="margin-bottom:0px;">
-                            <label asp-for="FLA" class="col-sm-7 col-form-label"></label>
+                            <label asp-for="FLA" class="col-sm-8 col-form-label"></label>
                             <input type="text" class="form-control form-control-sm col-sm-4" asp-for="FLA">
                         </div>
                         <div class="form-group form-inline" style="margin-bottom:0px;">
-                            <label asp-for="HP" class="col-sm-7 col-form-label"></label>
+                            <label asp-for="HP" class="col-sm-8 col-form-label"></label>
                             <input type="text" class="form-control form-control-sm col-sm-4" asp-for="HP">
                         </div>
                         <div class="form-group form-inline" style="margin-bottom:0px;">
-                            <label asp-for="MotorsNum" class="col-sm-7 col-form-label"></label>
+                            <label asp-for="MotorsNum" class="col-sm-8 col-form-label"></label>
                             <input type="text" class="form-control form-control-sm col-sm-4" asp-for="MotorsNum">
+                        </div>
+                        <div class="form-group form-inline" style="margin-bottom:0px;">
+                            <label asp-for="LifeJacket" class="col-sm-8 col-form-label"></label>
+                            <custom-select selected-value="@Model.LifeJacket" class="form-control-sm form-control col-sm-4" asp-for="LifeJacket" select-for="boolSearch"></custom-select>
                         </div>
                     </div>
                     <div class="col-3" style="padding-right:0px;margin-right:0px;padding-left:0px;margin-left:0px">
@@ -261,60 +245,40 @@
                             <label asp-for="ValveBrand" class="col-sm-4 col-form-label"></label>
                             <valve-brandni-in-job-select selected-value="@Model.ValveBrand" class="form-control form-control-sm col-sm-6" asp-for="ValveBrand"></valve-brandni-in-job-select>
                         </div>
-                    </div>
-                    <div class="col-1" style="padding-right:0px;margin-right:0px;padding-left:5px;margin-left:5px">
-                        <div class="form-group form-inline" style="margin-bottom:5px;">
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" asp-for="LOS" class="custom-control-input">
-                                <label class="custom-control-label" asp-for="LOS"></label>
-                            </div>
-                        </div>
-                        <div class="form-group form-inline" style="margin-bottom:5px;">
-                            <div class="custom-control custom-checkbox">
-
-                                <input type="checkbox" asp-for="LifeJacket" class="custom-control-input">
-                                <label class="custom-control-label" asp-for="LifeJacket"></label>
-                            </div>
-                        </div>
-                        <div class="form-group form-inline" style="margin-bottom:5px;">
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" asp-for="OilCool" class="custom-control-input">
-                                <label class="custom-control-label" asp-for="OilCool"></label>
-
-                            </div>
-                        </div>
-                        <div class="form-group form-inline" style="margin-bottom:5px;">
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" asp-for="OilTank" class="custom-control-input">
-                                <label class="custom-control-label" asp-for="OilTank"></label>
-                            </div>
+                        <div class="form-group form-inline" style="margin-bottom:0px;">
+                            <label asp-for="Battery" class="col-sm-4 col-form-label"></label>
+                            <custom-select selected-value="@Model.Battery" class="form-control-sm form-control col-sm-3" asp-for="Battery" select-for="boolSearch"></custom-select>
                         </div>
                     </div>
-                    <div class="col-2" style="padding-right:0px;margin-right:0px;padding-left:5px;margin-left:5px">
-                        <div class="form-group form-inline" style="margin-bottom:5px;">
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" asp-for="PSS" class="custom-control-input">
-                                <label class="custom-control-label" asp-for="PSS"></label>
-                            </div>
+                    <div class="col-2" >
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="LOS" class="col-sm-7 col-form-label"></label>
+                            <custom-select selected-value="@Model.LOS" class="form-control-sm form-control col-sm-3" asp-for="LOS" select-for="boolSearch"></custom-select>
                         </div>
-                        <div class=" form-group form-inline" style="margin-bottom:5px;">
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" asp-for="Resync" class="custom-control-input">
-                                <label class="custom-control-label" asp-for="Resync"></label>
-                            </div>
+                        
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="OilCool" class="col-sm-7 col-form-label"></label>
+                            <custom-select selected-value="@Model.OilCool" class="form-control-sm form-control col-sm-3" asp-for="OilCool" select-for="boolSearch"></custom-select>
                         </div>
-                        <div class="form-group form-inline" style="margin-bottom:5px;">
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" asp-for="VCI" class="custom-control-input">
-                                <label class="custom-control-label" asp-for="VCI"></label>
-                            </div>
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="OilTank" class="col-sm-7 col-form-label"></label>
+                            <custom-select selected-value="@Model.OilTank" class="form-control-sm form-control col-sm-3" asp-for="OilTank" select-for="boolSearch"></custom-select>
                         </div>
-                        <div class="form-inline" style="margin-bottom:5px;">
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" asp-for="Battery" class="custom-control-input">
-                                <label class="custom-control-label" asp-for="Battery"></label>
-                            </div>
+                    </div>
+                    <div class="col-2" >
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="PSS" class="col-sm-9 col-form-label"></label>
+                            <custom-select selected-value="@Model.PSS" class="form-control-sm form-control col-sm-3" asp-for="PSS" select-for="boolSearch"></custom-select>
                         </div>
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="Resync" class="col-sm-9 col-form-label"></label>
+                            <custom-select selected-value="@Model.Resync" class="form-control-sm form-control col-sm-3" asp-for="Resync" select-for="boolSearch"></custom-select>
+                        </div>
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="VCI" class="col-sm-9 col-form-label"></label>
+                            <custom-select selected-value="@Model.VCI" class="form-control-sm form-control col-sm-3" asp-for="VCI" select-for="boolSearch"></custom-select>
+                        </div>
+                        
                     </div>
                     <div class="col-3" id="BatteryBrand" style="padding-right:0px;margin-right:0px;padding-left:5px;margin-left:5px">
                         <div class="form-group form-inline" style="margin-bottom:0px;">
@@ -371,187 +335,117 @@
                 <hr />
                 <div class="row">
                     <div class="col-2" style="padding-right:0px;margin-right:0px;padding-left:5px;margin-left:5px">
-                        <div class="form-group form-inline" style="margin-bottom:5px;">
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" asp-for="CarKey" class="custom-control-input">
-                                <label class="custom-control-label" asp-for="CarKey"></label>
-                            </div>
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="CarKey" class="col-sm-9 col-form-label"></label>
+                            <custom-select selected-value="@Model.CarKey" class="form-control-sm form-control col-sm-3" asp-for="CarKey" select-for="boolSearch"></custom-select>
                         </div>
-                        <div class="form-group form-inline" style="margin-bottom:5px;">
-                            <div class="custom-control custom-checkbox">
-
-                                <input type="checkbox" asp-for="HCRO" class="custom-control-input">
-                                <label class="custom-control-label" asp-for="HCRO"></label>
-                            </div>
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="HCRO" class="col-sm-9 col-form-label"></label>
+                            <custom-select selected-value="@Model.HCRO" class="form-control-sm form-control col-sm-3" asp-for="HCRO" select-for="boolSearch"></custom-select>
                         </div>
-                        <div class="form-group form-inline" style="margin-bottom:5px;">
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" asp-for="HallCallRead" class="custom-control-input">
-                                <label class="custom-control-label" asp-for="HallCallRead"></label>
-
-                            </div>
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="HallCallRead" class="col-sm-9 col-form-label"></label>
+                            <custom-select selected-value="@Model.HallCallRead" class="form-control-sm form-control col-sm-3" asp-for="HallCallRead" select-for="boolSearch"></custom-select>
                         </div>
-                        <div class="form-group form-inline" style="margin-bottom:5px;">
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" asp-for="HallKey" class="custom-control-input">
-                                <label class="custom-control-label" asp-for="HallKey"></label>
-                            </div>
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="HallKey" class="col-sm-9 col-form-label"></label>
+                            <custom-select selected-value="@Model.HallKey" class="form-control-sm form-control col-sm-3" asp-for="HallKey" select-for="boolSearch"></custom-select>
                         </div>
-                        <div class="form-group form-inline" style="margin-bottom:5px;">
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" asp-for="BottomAccess" class="custom-control-input">
-                                <label class="custom-control-label" asp-for="BottomAccess"></label>
-                            </div>
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="BottomAccess" class="col-sm-9 col-form-label"></label>
+                            <custom-select selected-value="@Model.BottomAccess" class="form-control-sm form-control col-sm-3" asp-for="BottomAccess" select-for="boolSearch"></custom-select>
                         </div>
                     </div>
                     <div class="col-2" style="padding-right:0px;margin-right:0px;padding-left:5px;margin-left:5px">
                         <div class="form-group form-inline" style="margin-bottom:5px;">
-                            <div class="custom-control custom-checkbox">
-
-                                <input type="checkbox" asp-for="CTINSPST" class="custom-control-input">
-                                <label class="custom-control-label" asp-for="CTINSPST"></label>
+                            <div class="form-group row" style="margin-bottom:0px;">
+                                <label asp-for="CTINSPST" class="col-sm-9 col-form-label"></label>
+                                <custom-select selected-value="@Model.CTINSPST" class="form-control-sm form-control col-sm-3" asp-for="CTINSPST" select-for="boolSearch"></custom-select>
                             </div>
-                        </div>
-                        <div class=" form-group form-inline" style="margin-bottom:5px;">
-                            <div class="custom-control custom-checkbox">
-
-                                <input type="checkbox" asp-for="EPSelect" class="custom-control-input">
-                                <label class="custom-control-label" asp-for="EPSelect"></label>
+                            <div class="form-group row" style="margin-bottom:0px;">
+                                <label asp-for="EPSelect" class="col-sm-9 col-form-label"></label>
+                                <custom-select selected-value="@Model.EPSelect" class="form-control-sm form-control col-sm-3" asp-for="EPSelect" select-for="boolSearch"></custom-select>
                             </div>
-                        </div>
-                        <div class="form-group form-inline" style="margin-bottom:5px;">
-                            <div class="custom-control custom-checkbox">
-
-                                <input type="checkbox" asp-for="Attendant" class="custom-control-input">
-                                <label class="custom-control-label" asp-for="Attendant"></label>
+                            <div class="form-group row" style="margin-bottom:0px;">
+                                <label asp-for="Attendant" class="col-sm-9 col-form-label"></label>
+                                <custom-select selected-value="@Model.Attendant" class="form-control-sm form-control col-sm-3" asp-for="Attendant" select-for="boolSearch"></custom-select>
                             </div>
-                        </div>
-                        <div class="form-inline" style="margin-bottom:5px;">
-                            <div class="custom-control custom-checkbox">
-
-                                <input type="checkbox" asp-for="PTI" class="custom-control-input">
-                                <label class="custom-control-label" asp-for="PTI"></label>
+                            <div class="form-group row" style="margin-bottom:0px;">
+                                <label asp-for="PTI" class="col-sm-9 col-form-label"></label>
+                                <custom-select selected-value="@Model.PTI" class="form-control-sm form-control col-sm-3" asp-for="PTI" select-for="boolSearch"></custom-select>
                             </div>
-                        </div>
-                        <div class="form-inline" style="margin-bottom:5px;">
-                            <div class="custom-control custom-checkbox">
-
-                                <input type="checkbox" asp-for="CallEnable" class="custom-control-input">
-                                <label class="custom-control-label" asp-for="CallEnable"></label>
+                            <div class="form-group row" style="margin-bottom:0px;">
+                                <label asp-for="CallEnable" class="col-sm-9 col-form-label"></label>
+                                <custom-select selected-value="@Model.CallEnable" class="form-control-sm form-control col-sm-3" asp-for="CallEnable" select-for="boolSearch"></custom-select>
                             </div>
-                        </div>
                     </div>
-                    <div class="col-2" style="padding-right:0px;margin-right:0px;padding-left:5px;margin-left:5px">
-                        <div class="form-group form-inline" style="margin-bottom:5px;">
-                            <div class="custom-control custom-checkbox">
-
-                                <input type="checkbox" asp-for="CarToLobby" class="custom-control-input">
-                                <label class="custom-control-label" asp-for="CarToLobby"></label>
+                        <div class="col-2" style="padding-right:0px;margin-right:0px;padding-left:5px;margin-left:5px">
+                            <div class="form-group row" style="margin-bottom:0px;">
+                                <label asp-for="CarToLobby" class="col-sm-9 col-form-label"></label>
+                                <custom-select selected-value="@Model.CarToLobby" class="form-control-sm form-control col-sm-3" asp-for="CarToLobby" select-for="boolSearch"></custom-select>
+                            </div>
+                            <div class="form-group row" style="margin-bottom:0px;">
+                                <label asp-for="EMT" class="col-sm-9 col-form-label"></label>
+                                <custom-select selected-value="@Model.EMT" class="form-control-sm form-control col-sm-3" asp-for="EMT" select-for="boolSearch"></custom-select>
+                            </div>
+                            <div class="form-group row" style="margin-bottom:0px;">
+                                <label asp-for="EP" class="col-sm-9 col-form-label"></label>
+                                <custom-select selected-value="@Model.EP" class="form-control-sm form-control col-sm-3" asp-for="EP" select-for="boolSearch"></custom-select>
+                            </div>
+                            <div class="form-group row" style="margin-bottom:0px;">
+                                <label asp-for="EQ" class="col-sm-9 col-form-label"></label>
+                                <custom-select selected-value="@Model.EQ" class="form-control-sm form-control col-sm-3" asp-for="EQ" select-for="boolSearch"></custom-select>
+                            </div>
+                            <div class="form-group row" style="margin-bottom:0px;">
+                                <label asp-for="FLO" class="col-sm-9 col-form-label"></label>
+                                <custom-select selected-value="@Model.FLO" class="form-control-sm form-control col-sm-3" asp-for="FLO" select-for="boolSearch"></custom-select>
                             </div>
                         </div>
-                        <div class=" form-group form-inline" style="margin-bottom:5px;">
-                            <div class="custom-control custom-checkbox">
-
-                                <input type="checkbox" asp-for="EMT" class="custom-control-input">
-                                <label class="custom-control-label" asp-for="EMT"></label>
+                        <div class="col-2" style="padding-right:0px;margin-right:0px;padding-left:5px;margin-left:5px">
+                            <div class="form-group row" style="margin-bottom:0px;">
+                                <label asp-for="FRON2" class="col-sm-9 col-form-label"></label>
+                                <custom-select selected-value="@Model.FRON2" class="form-control-sm form-control col-sm-3" asp-for="FRON2" select-for="boolSearch"></custom-select>
+                            </div>
+                            <div class="form-group row" style="margin-bottom:0px;">
+                                <label asp-for="Hosp" class="col-sm-9 col-form-label"></label>
+                                <custom-select selected-value="@Model.Hosp" class="form-control-sm form-control col-sm-3" asp-for="Hosp" select-for="boolSearch"></custom-select>
+                            </div>
+                            <div class="form-group row" style="margin-bottom:0px;">
+                                <label asp-for="EPVoltage" class="col-sm-9 col-form-label"></label>
+                                <custom-select selected-value="@Model.EPVoltage" class="form-control-sm form-control col-sm-3" asp-for="EPVoltage" select-for="boolSearch"></custom-select>
+                            </div>
+                            <div class="form-group row" style="margin-bottom:0px;">
+                                <label asp-for="INA" class="col-sm-9 col-form-label"></label>
+                                <custom-select selected-value="@Model.INA" class="form-control-sm form-control col-sm-3" asp-for="INA" select-for="boolSearch"></custom-select>
+                            </div>
+                            <div class="form-group row" style="margin-bottom:0px;">
+                                <label asp-for="INCP" class="col-sm-9 col-form-label"></label>
+                                <custom-select selected-value="@Model.INCP" class="form-control-sm form-control col-sm-3" asp-for="INCP" select-for="boolSearch"></custom-select>
                             </div>
                         </div>
-                        <div class="form-group form-inline" style="margin-bottom:5px;">
-                            <div class="custom-control custom-checkbox">
-
-                                <input type="checkbox" asp-for="EP" class="custom-control-input">
-                                <label class="custom-control-label" asp-for="EP"></label>
+                        <div class="col-2" style="padding-right:0px;margin-right:0px;padding-left:5px;margin-left:5px">
+                            <div class="form-group row" style="margin-bottom:0px;">
+                                <label asp-for="Ind" class="col-sm-9 col-form-label"></label>
+                                <custom-select selected-value="@Model.Ind" class="form-control-sm form-control col-sm-3" asp-for="Ind" select-for="boolSearch"></custom-select>
                             </div>
-                        </div>
-                        <div class="form-inline" style="margin-bottom:5px;">
-                            <div class="custom-control custom-checkbox">
-
-                                <input type="checkbox" asp-for="EQ" class="custom-control-input">
-                                <label class="custom-control-label" asp-for="EQ"></label>
+                            <div class="form-group row" style="margin-bottom:0px;">
+                                <label asp-for="LoadWeigher" class="col-sm-9 col-form-label"></label>
+                                <custom-select selected-value="@Model.LoadWeigher" class="form-control-sm form-control col-sm-3" asp-for="LoadWeigher" select-for="boolSearch"></custom-select>
                             </div>
-                        </div>
-                        <div class="form-inline" style="margin-bottom:5px;">
-                            <div class="custom-control custom-checkbox">
-
-                                <input type="checkbox" asp-for="FLO" class="custom-control-input">
-                                <label class="custom-control-label" asp-for="FLO"></label>
+                            <div class="form-group row" style="margin-bottom:0px;">
+                                <label asp-for="TopAccess" class="col-sm-9 col-form-label"></label>
+                                <custom-select selected-value="@Model.TopAccess" class="form-control-sm form-control col-sm-3" asp-for="TopAccess" select-for="boolSearch"></custom-select>
                             </div>
-                        </div>
-                    </div>
-                    <div class="col-2" style="padding-right:0px;margin-right:0px;padding-left:5px;margin-left:5px">
-                        <div class="form-group form-inline" style="margin-bottom:5px;">
-                            <div class="custom-control custom-checkbox">
-
-                                <input type="checkbox" asp-for="FRON2" class="custom-control-input">
-                                <label class="custom-control-label" asp-for="FRON2"></label>
+                            <div class="form-group row" style="margin-bottom:0px;">
+                                <label asp-for="CRO" class="col-sm-9 col-form-label"></label>
+                                <custom-select selected-value="@Model.CRO" class="form-control-sm form-control col-sm-3" asp-for="CRO" select-for="boolSearch"></custom-select>
                             </div>
-                        </div>
-                        <div class=" form-group form-inline" style="margin-bottom:5px;">
-                            <div class="custom-control custom-checkbox">
-
-                                <input type="checkbox" asp-for="Hosp" class="custom-control-input">
-                                <label class="custom-control-label" asp-for="Hosp"></label>
+                            <div class="form-group row" style="margin-bottom:0px;">
+                                <label asp-for="CarCallRead" class="col-sm-9 col-form-label"></label>
+                                <custom-select selected-value="@Model.CarCallRead" class="form-control-sm form-control col-sm-3" asp-for="CarCallRead" select-for="boolSearch"></custom-select>
                             </div>
-                        </div>
-                        <div class="form-group form-inline" style="margin-bottom:5px;">
-                            <div class="custom-control custom-checkbox">
 
-                                <input type="checkbox" asp-for="EPVoltage" class="custom-control-input">
-                                <label class="custom-control-label" asp-for="EPVoltage"></label>
-                            </div>
                         </div>
-                        <div class="form-inline" style="margin-bottom:5px;">
-                            <div class="custom-control custom-checkbox">
-
-                                <input type="checkbox" asp-for="INA" class="custom-control-input">
-                                <label class="custom-control-label" asp-for="INA"></label>
-                            </div>
-                        </div>
-                        <div class="form-inline" style="margin-bottom:5px;">
-                            <div class="custom-control custom-checkbox">
-
-                                <input type="checkbox" asp-for="INCP" class="custom-control-input">
-                                <label class="custom-control-label" asp-for="INCP"></label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-2" style="padding-right:0px;margin-right:0px;padding-left:5px;margin-left:5px">
-                        <div class="form-group form-inline" style="margin-bottom:5px;">
-                            <div class="custom-control custom-checkbox">
-
-                                <input type="checkbox" asp-for="Ind" class="custom-control-input">
-                                <label class="custom-control-label" asp-for="Ind"></label>
-                            </div>
-                        </div>
-                        <div class=" form-group form-inline" style="margin-bottom:5px;">
-                            <div class="custom-control custom-checkbox">
-
-                                <input type="checkbox" asp-for="LoadWeigher" class="custom-control-input">
-                                <label class="custom-control-label" asp-for="LoadWeigher"></label>
-                            </div>
-                        </div>
-                        <div class="form-group form-inline" style="margin-bottom:5px;">
-                            <div class="custom-control custom-checkbox">
-
-                                <input type="checkbox" asp-for="TopAccess" class="custom-control-input">
-                                <label class="custom-control-label" asp-for="TopAccess"></label>
-                            </div>
-                        </div>
-                        <div class="form-inline" style="margin-bottom:5px;">
-                            <div class="custom-control custom-checkbox">
-
-                                <input type="checkbox" asp-for="CRO" class="custom-control-input">
-                                <label class="custom-control-label" asp-for="CRO"></label>
-                            </div>
-                        </div>
-                        <div class="form-inline" style="margin-bottom:5px;">
-                            <div class="custom-control custom-checkbox">
-
-                                <input type="checkbox" asp-for="CarCallRead" class="custom-control-input">
-                                <label class="custom-control-label" asp-for="CarCallRead"></label>
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
 
@@ -578,12 +472,12 @@
                         </div>
                     </div>
                     <div class="col-3" style="padding-right:0px;margin-right:0px;padding-left:5px;margin-left:5px">
+
                         <div class="form-group row" style="margin-bottom:0px;">
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" asp-for="CarLanterns" class="custom-control-input">
-                                <label class="custom-control-label" asp-for="CarLanterns"></label>
-                            </div>
+                            <label asp-for="CarLanterns" class="col-sm-9 col-form-label"></label>
+                            <custom-select selected-value="@Model.CarLanterns" class="form-control-sm form-control col-sm-3" asp-for="CarLanterns" select-for="boolSearch"></custom-select>
                         </div>
+
                         <div class="form-group row" style="margin-bottom:0px;">
                             <label asp-for="CarCallsVoltage" class="col-sm-6 col-form-label"></label>
                             <indicators select-for="Volts_Value" selected-value="@Model.CarCallsVoltage" asp-for="CarCallsVoltage" class="form-control form-control-sm col-sm-3"></indicators>
@@ -596,13 +490,11 @@
                     </div>
 
                     <div class="col-3" style="padding-right:0px;margin-right:0px;padding-left:5px;margin-left:5px">
-                        <div class="form-group row" style="margin-bottom:5px;">
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" asp-for="VoiceAnnunciationPI" class="custom-control-input">
-                                <label class="custom-control-label" asp-for="VoiceAnnunciationPI"></label>
-
-                            </div>
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="VoiceAnnunciationPI" class="col-sm-9 col-form-label"></label>
+                            <custom-select selected-value="@Model.VoiceAnnunciationPI" class="form-control-sm form-control col-sm-3" asp-for="VoiceAnnunciationPI" select-for="boolSearch"></custom-select>
                         </div>
+
                         <div class="form-group row" style="margin-bottom:0px;">
                             <label asp-for="IndicatorsVoltage" class="col-sm-6 col-form-label"></label>
                             <volts select-for="Volts_Value" selected-value="@Model.IndicatorsVoltage" asp-for="IndicatorsVoltage" class="form-control form-control-sm col-sm-3"></volts>
@@ -614,26 +506,18 @@
 
                     </div>
                     <div class="col-2" style="padding-right:0px;margin-right:0px;padding-left:5px;margin-left:5px">
-                        <div class="form-group row" style="margin-bottom:5px;">
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" asp-for="HallLanterns" class="custom-control-input">
-                                <label class="custom-control-label" asp-for="HallLanterns"></label>
 
-                            </div>
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="HallLanterns" class="col-sm-9 col-form-label"></label>
+                            <custom-select selected-value="@Model.HallLanterns" class="form-control-sm form-control col-sm-3" asp-for="HallLanterns" select-for="boolSearch"></custom-select>
                         </div>
-                        <div class="form-group row" style="margin-bottom:5px;">
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" asp-for="HallPI" class="custom-control-input">
-                                <label class="custom-control-label" asp-for="HallPI"></label>
-
-                            </div>
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="HallPI" class="col-sm-9 col-form-label"></label>
+                            <custom-select selected-value="@Model.HallPI" class="form-control-sm form-control col-sm-3" asp-for="HallPI" select-for="boolSearch"></custom-select>
                         </div>
-                        <div class="form-group row" style="margin-bottom:5px;">
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" asp-for="PassingFloor" class="custom-control-input">
-                                <label class="custom-control-label" asp-for="PassingFloor"></label>
-
-                            </div>
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="PassingFloor" class="col-sm-9 col-form-label"></label>
+                            <custom-select selected-value="@Model.PassingFloor" class="form-control-sm form-control col-sm-3" asp-for="PassingFloor" select-for="boolSearch"></custom-select>
                         </div>
                     </div>
                 </div>
@@ -689,18 +573,15 @@
                         </div>
                     </div>
                     <div class="col-1" style="padding-right:0px;margin-right:0px;padding-left:5px;margin-left:5px">
-                        <div class="form-group form-inline" style="margin-bottom:5px;">
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" asp-for="AnyRear" class="custom-control-input">
-                                <label class="custom-control-label" asp-for="AnyRear"></label>
-                            </div>
-                        </div>
-                        <div class="form-group form-inline" style="margin-bottom:5px;">
-                            <div class="custom-control custom-checkbox">
 
-                                <input type="checkbox" asp-for="IndependentRearOpenings" class="custom-control-input">
-                                <label class="custom-control-label" asp-for="IndependentRearOpenings"></label>
-                            </div>
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="AnyRear" class="col-sm-9 col-form-label"></label>
+                            <custom-select selected-value="@Model.AnyRear" class="form-control-sm form-control col-sm-3" asp-for="AnyRear" select-for="boolSearch"></custom-select>
+                        </div>
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="IndependentRearOpenings" class="col-sm-9 col-form-label"></label>
+                            <custom-select selected-value="@Model.IndependentRearOpenings" class="form-control-sm form-control col-sm-3" asp-for="IndependentRearOpenings" select-for="boolSearch"></custom-select>
+                        </div>
                         </div>
                     </div>
                 </div>

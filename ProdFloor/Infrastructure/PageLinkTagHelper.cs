@@ -961,6 +961,8 @@ namespace ProdFloor.Infrastructure
                     return new List<string> { "HPV900", "KEB","Yaskawa" }.AsQueryable();
                 case "Contact":
                     return new List<string> { "N/C", "N/O" }.AsQueryable();
+                case "boolSearch":
+                    return new List<string> { "Si", "No" }.AsQueryable();
                 case "Starter":
                     return new List<string> { "Siemens SS : 6/12", "Siemens SS : 3/9", "Sprecher SS : 6/12", "Sprecher SS : 3/9", "ATL", "YD" }.AsQueryable();
                 case "StarterForElements":
@@ -1007,7 +1009,12 @@ namespace ProdFloor.Infrastructure
             {
                 m_tag.Attributes["value"] = "N/A";
                 m_tag.InnerHtml.Append("N/A");
-            }else
+            }else if(SelectFor == "boolSearch")
+             {
+                m_tag.Attributes["value"] = "";
+                m_tag.InnerHtml.Append("N/A");
+            }
+            else
             {
                 m_tag.Attributes["value"] = "";
                 m_tag.InnerHtml.Append("Please select one");

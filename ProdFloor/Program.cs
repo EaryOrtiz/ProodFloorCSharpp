@@ -14,14 +14,11 @@ namespace ProdFloor
     {
         public static void Main(string[] args)
         {
-            BuildWebHost(args).Run();
+            CreateWebHostBuilder(args).Build().Run();
         }
 
-        public static IWebHost BuildWebHost(string[] args) =>
+        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-            .UseStartup<Startup>()
-            .UseDefaultServiceProvider(options =>
-            options.ValidateScopes = false)
-            .Build();
+                .UseStartup<Startup>();
     }
 }

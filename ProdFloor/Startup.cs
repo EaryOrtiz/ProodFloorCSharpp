@@ -31,6 +31,14 @@ namespace ProdFloor
             options.UseSqlServer(
                 Configuration["Data:ProdFloorIdentity:ConnectionString"]));
 
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
+                options.CheckConsentNeeded = context => true;
+                options.MinimumSameSitePolicy = SameSiteMode.None;
+            });
+
+
             services.AddIdentity<AppUser, IdentityRole>(opts => {
                 opts.Password.RequiredLength = 6;
                 opts.Password.RequireNonAlphanumeric = true;
@@ -42,7 +50,8 @@ namespace ProdFloor
 
             services.AddTransient<IJobRepository, EFJobRepository>();
             services.AddTransient<IItemRepository, EFItemRepository>();
-            services.AddMvc();
+            services.AddMvc()
+                .SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_2_1);
             services.AddMemoryCache();
             services.AddSession();
             services.Configure<IISOptions>(options =>
@@ -62,7 +71,12 @@ namespace ProdFloor
             else
             {
                 app.UseExceptionHandler("/error");
+                app.UseHsts();
             }
+
+
+            app.UseHttpsRedirection();
+            app.UseCookiePolicy();
 
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
