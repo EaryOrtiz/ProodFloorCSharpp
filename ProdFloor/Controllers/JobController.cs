@@ -3693,5 +3693,19 @@ namespace ProdFloor.Controllers
             return itemsrepository.JobTypes.FirstOrDefault(m => m.JobTypeID == ID).Name;
         }
 
+        public IActionResult Search()
+        {
+            try
+            {
+                string term = HttpContext.Request.Query["term"].ToString();
+                var names = repository.SpecialFeatures.Where(p => p.Description.Contains(term)).Select(p => p.Description).Distinct().ToList();
+                return Ok(names);
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
+
     }
 }

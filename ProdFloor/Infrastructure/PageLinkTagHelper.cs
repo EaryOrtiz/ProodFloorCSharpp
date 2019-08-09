@@ -999,7 +999,7 @@ namespace ProdFloor.Infrastructure
             output.TagName = "select";
             TagBuilder result = new TagBuilder("select");
             string name = this.AspFor.Name;
-            if (!String.IsNullOrEmpty(name))
+            if (!string.IsNullOrEmpty(name))
             {
                 output.Attributes.Add("id", name);
                 output.Attributes.Add("name", name);
