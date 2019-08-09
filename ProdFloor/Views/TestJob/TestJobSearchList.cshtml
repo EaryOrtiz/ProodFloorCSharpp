@@ -1,0 +1,33 @@
+﻿@model ProdFloor.Models.ViewModels.TestJob.TestJobSearchViewModel
+@{
+    ViewBag.Title = "TestJobsSearchList";
+    Layout = "_AdminLayoutWO";
+
+    <script src="~/Scripts/CascadingCountryStateCity.js" type="text/javascript"></script>
+    <script src="~/Scripts/CascadingStyleBrandDoorOperator.js" type="text/javascript"></script>
+}
+<div class="row" style="padding-right:20px">
+    <h2 class="col-sm-10"> Job Search List</h2>
+</div>
+<br />
+<form asp-controller="TestJob" asp-action="TestJobSearchList" method="get">
+
+    @Html.Partial("TestJobSearchForm", Model)
+
+</form>
+<br />
+<br />
+@if (Model.JobsSearchList.Count > 0)
+{
+    <div class="row" style="padding-right:20px">
+        <h4 class="col-sm-10 text-dark">List Of Jobs Found</h4>
+    </div>
+
+     @Html.Partial("SearchTestJobSummary", Model)
+
+    <coool-pagination-all page-model="@Model.PagingInfo" page-action="TestJobSearchList" page-classes-enabled="true"
+                          page-class="btn" page-class-normal="btn-secondary"
+                          page-class-selected="btn-dark"
+                          class="btn-group pull-right m-1">
+    </coool-pagination-all>
+}

@@ -1333,5 +1333,25 @@ namespace ProdFloor.Controllers
 
             return new DateTime(1, 1, Days, Hours, Minutes, 0);
         }
+
+        public async Task<IActionResult> TestJobSearchList(TestJobSearchViewModel searchViewModel, int jobPage = 1)
+        {
+            if (searchViewModel.CleanFields) return RedirectToAction("TestJobSearchList");
+
+            List<TestJob> testJobSearchList = testingRepo.TestJobs.Include(m => m._Stops).Include(m => m._TestFeature).ToList();
+
+            TestJobSearchViewModel TestJobSearch = new TestJobSearchViewModel
+            {
+                TestJobsSearchList = testJobSearchList.OrderBy(p => p.TechnicianID).Skip((jobPage - 1) * 10).Take(10).ToList(),
+                PagingInfo = new PagingInfo
+                {
+                    CurrentPage = jobPage,
+                    ItemsPerPage = 10,
+                    TotalItems = testJobSearchList.Count()
+                },
+            };
+
+            return View(TestJobSearch);
+        }
     }
 }
