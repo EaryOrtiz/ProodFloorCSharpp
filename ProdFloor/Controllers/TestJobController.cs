@@ -1338,7 +1338,238 @@ namespace ProdFloor.Controllers
         {
             if (searchViewModel.CleanFields) return RedirectToAction("TestJobSearchList");
 
-            List<TestJob> testJobSearchList = testingRepo.TestJobs.Include(m => m._Stops).Include(m => m._TestFeature).ToList();
+            IQueryable<TestJob> testJobSearchList = testingRepo.TestJobs.Include(m => m._Stops).Include(m => m._TestFeature);
+            IQueryable<Stop> stops = testingRepo.Stops.Where(m => testJobSearchList.Any(s => s.TestJobID == m.TestJobID));
+            IQueryable<Job> jobSearchRepo = jobRepo.Jobs.Where(m => testJobSearchList.Any(s => s.JobID == m.JobID)).Include(j => j._jobExtension).Include(hy => hy._HydroSpecific).Include(g => g._GenericFeatures)
+                .Include(i => i._Indicator).Include(ho => ho._HoistWayData);
+            IQueryable<State> statesInCanada = itemRepository.States.Where(m => m.CountryID == 2);
+            IQueryable<City> citiesInCanada = itemRepository.Cities.Where(m => statesInCanada.Any(s => s.StateID == m.StateID));
+            IQueryable<LandingSystem> landingSystemsEdge = itemRepository.LandingSystems.Where(m => m.Name == "LS-EDGE");
+            IQueryable<LandingSystem> landingSystemsRails = itemRepository.LandingSystems.Where(m => m.Name == "LS-Rail");
+            bool anyFeatureFromJob = false;
+
+
+            #region TestJobInfo
+            if (searchViewModel.TestJob.TechnicianID > 100 && searchViewModel.TestJob.TechnicianID < 299) testJobSearchList = testJobSearchList.Where(s => s.TechnicianID == searchViewModel.TestJob.TechnicianID);
+            if (searchViewModel.TestJob.SinglePO > 3000000 && searchViewModel.TestJob.SinglePO < 4900000) testJobSearchList = testJobSearchList.Where(s => s.SinglePO == searchViewModel.TestJob.SinglePO);
+            if (searchViewModel.TestJob.StationID > 0) testJobSearchList = testJobSearchList.Where(s => s.StationID == searchViewModel.TestJob.StationID);
+
+            if (!string.IsNullOrEmpty(searchViewModel.TestJob.Status)) testJobSearchList = testJobSearchList.Where(s => s.Status.Contains(searchViewModel.TestJob.Status));
+            if (!string.IsNullOrEmpty(searchViewModel.TestJob.JobLabel)) testJobSearchList = testJobSearchList.Where(s => s.JobLabel.Contains(searchViewModel.TestJob.JobLabel));
+            #endregion
+
+            #region StopsInfo
+            if (searchViewModel.Stop.Reason1 > 0)
+            {
+                testJobSearchList = testJobSearchList.Where(m => m._Stops.Any(s => s.Reason1 == searchViewModel.Stop.Reason1));
+                if (searchViewModel.Stop.Reason2 > 0)
+                {
+                    testJobSearchList = testJobSearchList.Where(m => m._Stops.Any(s => s.Reason2 == searchViewModel.Stop.Reason2));
+                    if (searchViewModel.Stop.Reason3 > 0)
+                    {
+                        testJobSearchList = testJobSearchList.Where(m => m._Stops.Any(s => s.Reason3 == searchViewModel.Stop.Reason3));
+                        if (searchViewModel.Stop.Reason4 > 0)
+                        {
+                            testJobSearchList = testJobSearchList.Where(m => m._Stops.Any(s => s.Reason4 == searchViewModel.Stop.Reason2));
+                            if (searchViewModel.Stop.Reason5ID > 0)
+                            {
+                                testJobSearchList = testJobSearchList.Where(m => m._Stops.Any(s => s.Reason5ID == searchViewModel.Stop.Reason5ID));
+                            }
+                        }
+                    }
+                }
+            }
+            
+            if (!string.IsNullOrEmpty(searchViewModel.Stop.Description)) testJobSearchList = testJobSearchList.Where(m => m._Stops.Any(s => s.Description.Contains(searchViewModel.Stop.Description)));
+            if (!string.IsNullOrEmpty(searchViewModel.Critical)) testJobSearchList = testJobSearchList.Where(m => m._Stops.Any(s => searchViewModel.Critical == "Si" ? s.Critical == true : s.Critical == false));
+            #endregion
+
+            #region TestFeaturesInfo
+            if (!string.IsNullOrEmpty(searchViewModel.Overlay)) testJobSearchList = testJobSearchList.Where(s => searchViewModel.Overlay == "Si" ? s._TestFeature.Overlay == true : s._TestFeature.Overlay == false);
+            if (!string.IsNullOrEmpty(searchViewModel.Group)) testJobSearchList = testJobSearchList.Where(s => searchViewModel.Group == "Si" ? s._TestFeature.Group == true : s._TestFeature.Group == false);
+            if (!string.IsNullOrEmpty(searchViewModel.PC)) testJobSearchList = testJobSearchList.Where(s => searchViewModel.PC == "Si" ? s._TestFeature.PC == true : s._TestFeature.PC == false);
+            if (!string.IsNullOrEmpty(searchViewModel.BrakeCoilVoltageMoreThan10)) testJobSearchList = testJobSearchList.Where(s => searchViewModel.BrakeCoilVoltageMoreThan10 == "Si" ? s._TestFeature.BrakeCoilVoltageMoreThan10 == true : s._TestFeature.BrakeCoilVoltageMoreThan10 == false);
+            if (!string.IsNullOrEmpty(searchViewModel.EMBrake)) testJobSearchList = testJobSearchList.Where(s => searchViewModel.EMBrake == "Si" ? s._TestFeature.EMBrake == true : s._TestFeature.EMBrake == false);
+            if (!string.IsNullOrEmpty(searchViewModel.EMCO)) testJobSearchList = testJobSearchList.Where(s => searchViewModel.EMCO == "Si" ? s._TestFeature.EMCO == true : s._TestFeature.EMCO == false);
+            if (!string.IsNullOrEmpty(searchViewModel.R6)) testJobSearchList = testJobSearchList.Where(s => searchViewModel.R6 == "Si" ? s._TestFeature.R6 == true : s._TestFeature.R6 == false);
+            if (!string.IsNullOrEmpty(searchViewModel.Local)) testJobSearchList = testJobSearchList.Where(s => searchViewModel.Local == "Si" ? s._TestFeature.Local == true : s._TestFeature.Local == false);
+            if (!string.IsNullOrEmpty(searchViewModel.ShortFloor)) testJobSearchList = testJobSearchList.Where(s => searchViewModel.ShortFloor == "Si" ? s._TestFeature.ShortFloor == true : s._TestFeature.ShortFloor == false);
+            if (!string.IsNullOrEmpty(searchViewModel.Custom)) testJobSearchList = testJobSearchList.Where(s => searchViewModel.Custom == "Si" ? s._TestFeature.Custom == true : s._TestFeature.Custom == false);
+            if (!string.IsNullOrEmpty(searchViewModel.MRL)) testJobSearchList = testJobSearchList.Where(s => searchViewModel.MRL == "Si" ? s._TestFeature.MRL == true : s._TestFeature.MRL == false);
+            if (!string.IsNullOrEmpty(searchViewModel.CTL2)) testJobSearchList = testJobSearchList.Where(s => searchViewModel.CTL2 == "Si" ? s._TestFeature.CTL2 == true : s._TestFeature.CTL2 == false);
+            if (!string.IsNullOrEmpty(searchViewModel.TrajetaCPI)) testJobSearchList = testJobSearchList.Where(s => searchViewModel.TrajetaCPI == "Si" ? s._TestFeature.TrajetaCPI == true : s._TestFeature.TrajetaCPI == false);
+            if (!string.IsNullOrEmpty(searchViewModel.Cartop)) testJobSearchList = testJobSearchList.Where(s => searchViewModel.Cartop == "Si" ? s._TestFeature.Cartop == true : s._TestFeature.Cartop == false);
+            #endregion
+
+            #region JobFromTestJobInfo
+            if (searchViewModel.Job.JobNum >= 2015000000 && searchViewModel.Job.JobNum <= 2021000000)
+            {
+                jobSearchRepo = jobSearchRepo.Where(s => s.JobNum == searchViewModel.Job.JobNum); anyFeatureFromJob = true;
+            }
+
+            if (!string.IsNullOrEmpty(searchViewModel.Job.Name))
+            {
+                jobSearchRepo = jobSearchRepo.Where(s => s.Name.Contains(searchViewModel.Job.Name)); anyFeatureFromJob = true;
+            } 
+            if (!string.IsNullOrEmpty(searchViewModel.JobExtension.JobTypeMain))
+            {
+                jobSearchRepo = jobSearchRepo.Where(s => s._jobExtension.JobTypeMain.Equals(searchViewModel.JobExtension.JobTypeMain)); anyFeatureFromJob = true;
+            }
+            if (searchViewModel.HoistWayData.LandingSystemID > 0)
+            {
+                jobSearchRepo = jobSearchRepo.Where(s => s._HoistWayData.LandingSystemID == searchViewModel.HoistWayData.LandingSystemID); anyFeatureFromJob = true;
+            }
+
+            //special fields for JobInTestjob
+            if (!string.IsNullOrEmpty(searchViewModel.Canada))
+            {
+                if(searchViewModel.Canada == "Si")
+                {
+                    jobSearchRepo = jobSearchRepo.Where(m => citiesInCanada.Any(s => s.CityID == m.CityID)); anyFeatureFromJob = true;
+                }
+                else
+                {
+                    jobSearchRepo = jobSearchRepo.Where(m => citiesInCanada.Any(s => s.CityID != m.CityID)); anyFeatureFromJob = true;
+                }
+                
+            }
+            if (!string.IsNullOrEmpty(searchViewModel.Ontario))
+            {
+                if (searchViewModel.Ontario == "Si")
+                {
+                    jobSearchRepo = jobSearchRepo.Where(s => s.CityID == 11); anyFeatureFromJob = true;
+                }
+                else
+                {
+                    jobSearchRepo = jobSearchRepo.Where(s => s.CityID != 11); anyFeatureFromJob = true;
+                }
+                    
+            }
+            if (!string.IsNullOrEmpty(searchViewModel.MOD))
+            {
+                if (searchViewModel.MOD == "Si")
+                {
+                    jobSearchRepo = jobSearchRepo.Where(s => s._jobExtension.DoorOperatorID == 7 || s._jobExtension.DoorOperatorID == 8); anyFeatureFromJob = true;
+                }
+                else
+                {
+                    jobSearchRepo = jobSearchRepo.Where(s => s._jobExtension.DoorOperatorID != 7 && s._jobExtension.DoorOperatorID != 8); anyFeatureFromJob = true;
+                }
+                    
+            }
+            if (!string.IsNullOrEmpty(searchViewModel.Manual))
+            {
+                if(searchViewModel.Manual == "Si")
+                {
+                    jobSearchRepo = jobSearchRepo.Where(s => s._jobExtension.DoorOperatorID == 2); anyFeatureFromJob = true;
+                }
+                else
+                {
+                    jobSearchRepo = jobSearchRepo.Where(s => s._jobExtension.DoorOperatorID != 2); anyFeatureFromJob = true;
+                }
+            }
+            if (!string.IsNullOrEmpty(searchViewModel.Duplex))
+            {
+                if (searchViewModel.Duplex == "Si")
+                {
+                    jobSearchRepo = jobSearchRepo.Where(s => s._jobExtension.JobTypeMain == "Duplex"); anyFeatureFromJob = true;
+                }
+                else
+                {
+                    jobSearchRepo = jobSearchRepo.Where(s => s._jobExtension.JobTypeMain != "Duplex"); anyFeatureFromJob = true;
+                }
+                    
+            }
+            if (!string.IsNullOrEmpty(searchViewModel.SHC))
+            {
+                if (searchViewModel.SHC == "Si")
+                {
+                    jobSearchRepo = jobSearchRepo.Where(s => s._jobExtension.SHC == true); anyFeatureFromJob = true;
+                }
+                else
+                {
+                    jobSearchRepo = jobSearchRepo.Where(s => s._jobExtension.SHC == false); anyFeatureFromJob = true;
+                }
+                    
+            }
+            if (!string.IsNullOrEmpty(searchViewModel.EDGELS))
+            {
+                if (searchViewModel.EDGELS == "Si")
+                {
+                    jobSearchRepo = jobSearchRepo.Where(s => landingSystemsEdge.Any(m => m.LandingSystemID == s._HoistWayData.LandingSystemID)); anyFeatureFromJob = true;
+                }
+                else
+                {
+                    jobSearchRepo = jobSearchRepo.Where(s => landingSystemsEdge.Any(m => m.LandingSystemID != s._HoistWayData.LandingSystemID)); anyFeatureFromJob = true;
+                }
+                    
+            }
+            if (!string.IsNullOrEmpty(searchViewModel.RailLS))
+            {
+                if (searchViewModel.RailLS == "Si")
+                {
+                    jobSearchRepo = jobSearchRepo.Where(s => landingSystemsRails.Any(m => m.LandingSystemID == s._HoistWayData.LandingSystemID)); anyFeatureFromJob = true;
+                }
+                else
+                {
+                    jobSearchRepo = jobSearchRepo.Where(s => landingSystemsRails.Any(m => m.LandingSystemID != s._HoistWayData.LandingSystemID)); anyFeatureFromJob = true;
+                }
+                    
+            }
+            if (!string.IsNullOrEmpty(searchViewModel.MView))
+            {
+                if (searchViewModel.MView == "Si")
+                {
+                    jobSearchRepo = jobSearchRepo.Where(s => s._GenericFeatures.Monitoring.Contains("MView")); anyFeatureFromJob = true;
+                }
+                else
+                {
+                    jobSearchRepo = jobSearchRepo.Where(s => s._GenericFeatures.Monitoring != "MView"); anyFeatureFromJob = true;
+                }
+                    
+            }
+            if (!string.IsNullOrEmpty(searchViewModel.IMonitor))
+            {
+                if (searchViewModel.IMonitor == "Si")
+                {
+                    jobSearchRepo = jobSearchRepo.Where(s => s._GenericFeatures.Monitoring.Contains("IMonitor")); anyFeatureFromJob = true;
+                }
+                else
+                {
+                    jobSearchRepo = jobSearchRepo.Where(s => s._GenericFeatures.Monitoring != "IMonitor"); anyFeatureFromJob = true;
+                }
+                    
+            }
+            if (!string.IsNullOrEmpty(searchViewModel.HAPS))
+            {
+                if (searchViewModel.HAPS == "Si")
+                {
+                    jobSearchRepo = jobSearchRepo.Where(s => s._HydroSpecific.BatteryBrand == "HAPS"); anyFeatureFromJob = true;
+                }
+                else
+                {
+                    jobSearchRepo = jobSearchRepo.Where(s => s._HydroSpecific.BatteryBrand != "HAPS"); anyFeatureFromJob = true;
+                }
+                    
+            }
+            if (!string.IsNullOrEmpty(searchViewModel.TwosStarters))
+            {
+                if (searchViewModel.HAPS == "Si")
+                {
+                    jobSearchRepo = jobSearchRepo.Where(s => s._HydroSpecific.MotorsNum >= 2); anyFeatureFromJob = true;
+                }
+                else
+                {
+                    jobSearchRepo = jobSearchRepo.Where(s => s._HydroSpecific.MotorsNum < 2); anyFeatureFromJob = true;
+                }
+                    
+            }
+
+
+            if (anyFeatureFromJob) testJobSearchList = testJobSearchList.Where(m => jobSearchRepo.Any(s => s.JobID == m.JobID));
+                #endregion
+
+            if(anyFeatureFromJob) testJobSearchList = testJobSearchList.Where(m => jobSearchRepo.Any(s => s.JobID == m.JobID));
 
             TestJobSearchViewModel TestJobSearch = new TestJobSearchViewModel
             {

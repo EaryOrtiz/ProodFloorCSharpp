@@ -10,47 +10,33 @@ namespace ProdFloor.Models.ViewModels.TestJob
     {
         public List<Models.Job> JobsSearchList { get; set; }
         public List<Models.TestJob> TestJobsSearchList { get; set; }
+        public Models.Job Job { get; set; }
+        public JobExtension JobExtension { get; set; }
+        public HydroSpecific HydroSpecific { get; set; }
+        public HoistWayData HoistWayData { get; set; }
+        public GenericFeatures GenericFeatures { get; set; }
+
+        public Models.TestJob TestJob { get; set; }
+        public Stop Stop { get; set; }
+
         public PagingInfo PagingInfo { get; set; }
         public bool CleanFields { get; set; }
 
-        //Atributos de Job
-        [Display(Name = "Job Name")]
-        public string NameJobSearch { get; set; }
-        [Display(Name = "Job Number")]
-        public int NumJobSearch { get; set; }
-        [Display(Name = "PO Name")]
-        public int POJobSearch { get; set; }
-        [Display(Name = "Cust Number")]
-        public string CustJobSearch { get; set; }
-        [Display(Name = "Contractor")]
-        public string ContractorJobSearch { get; set; }
-        public int EngID { get; set; }
-        public int CrossAppEngID { get; set; }
-        [Display(Name = "Country")]
-        public int CountryID { get; set; }
-        [Display(Name = "State")]
-        public int StateID { get; set; }
-        [Display(Name = "City")]
-        public int CityID { get; set; }
-        [Display(Name = "FireCode")]
-        public int FireCodeID { get; set; }
-        [Display(Name = "JobType")]
-        public int JobTypeID { get; set; }
-        [Display(Name = "Status")]
-        public string StatusJobSearch { get; set; }
-        [Display(Name = "Job Name #2")]
-        public string Name2 { get; set; }
-
-
-        //Atributos de TestJob
-        public int JobID { get; set; }
-        public int TechnicianID { get; set; }
-        public string Status { get; set; }
-        public int SinglePO { get; set; }
-        [Display(Name = "Job Label")]
-        public string JobLabel { get; set; }
-        [Display(Name = "Station")]
-        public int StationID { get; set; }
+        //Dummy fields
+        public string Canada { get; set; }
+        public string Ontario { get; set; }
+        public string MOD { get; set; }
+        public string Manual { get; set; }
+        public string IMonitor { get; set; }
+        public string HAPS { get; set; }
+        public string Duplex { get; set; }
+        public string SHC { get; set; }
+        public string EDGELS { get; set; }
+        public string RailLS { get; set; }
+        public string MView { get; set; }
+        [Display(Name = "+2 Starters")]
+        public string TwosStarters { get; set; }
+        public string Critical { get; set; }
 
         //Atributos de Features
         public string Overlay { get; set; }
@@ -76,17 +62,5 @@ namespace ProdFloor.Models.ViewModels.TestJob
         [Display(Name = "Door Control en Cartop")]
         public string Cartop { get; set; }
 
-        //Stop
-        [Display(Name = "Reason 1")]
-        public int Reason1 { get; set; }
-        [Display(Name = "Reason 2")]
-        public int Reason2 { get; set; }
-        [Display(Name = "Reason 3")]
-        public int Reason3 { get; set; }
-        [Display(Name = "Reason 4")]
-        public int Reason4 { get; set; }
-        [Display(Name = "Reason 5")]
-        public int Reason5ID { get; set; }
-        public string Description { get; set; }
     }
 }

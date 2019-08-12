@@ -9,10 +9,16 @@
     </h2>
     @if (!(User.IsInRole("Technician")))
     {
-        <a class="btn btn-success  col-sm-2" asp-action="NewTestJob" asp-controller="TestJob" style="padding-top:10px;min-width:100px">
-            <i class="fa fa-plus"></i>
-            New Test Job
-        </a>
+        <div class="btn-group" style="padding-right:50px;">
+            <a class="btn btn-dark col-sm-" asp-action="TestJobSearchList" asp-controller="TestJob" style="padding-top:10px;min-width:100px">
+                <i class="fa fa-search" aria-hidden="true"></i>
+                TestJob Search List
+            </a>
+            <a class="btn btn-success  col-sm-2" asp-action="NewTestJob" asp-controller="TestJob" style="padding-top:10px;min-width:100px">
+                <i class="fa fa-plus"></i>
+                New Test Job
+            </a>
+        </div>
     }
 </div>
 <br /><br />

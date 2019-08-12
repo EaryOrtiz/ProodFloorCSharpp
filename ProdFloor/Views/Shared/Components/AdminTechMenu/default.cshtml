@@ -11,6 +11,12 @@
             </li>
             <li class="nav-link"
                 style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue">
+                <a style="color:white" asp-action="TestJobSearchList" asp-controller="TestJob" asp-route-page="1">
+                    Search
+                </a>
+            </li>
+            <li class="nav-link"
+                style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue">
                 <a style="color:white" asp-action="List" asp-route-ElmHydroPage="1" asp-route-M2000Page="1" asp-route-ElmTractionPage="1" asp-route-M4000Page="1"
                    asp-controller="Step" asp-route-JobTypeName="Traction">Steps</a>
             </li>
@@ -26,7 +32,8 @@
                    asp-controller="Stop"
                    asp-route-stop=""
                    asp-route-Page="1" asp-action="List">Stops</a>
-            </li>
+
+
         </ul>
     </li>
     <li class="nav-item" role="tab" id="Reasons">
