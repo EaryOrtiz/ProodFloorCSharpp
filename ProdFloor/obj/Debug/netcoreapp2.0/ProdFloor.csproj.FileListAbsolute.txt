@@ -13,7 +13,6 @@ C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\bin\Debug\netco
 C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\bin\Debug\netcoreapp2.0\ProdFloor.runtimeconfig.dev.json
 C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\bin\Debug\netcoreapp2.0\ProdFloor.dll
 C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\bin\Debug\netcoreapp2.0\ProdFloor.pdb
-C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\obj\Debug\netcoreapp2.0\ProdFloor.csprojAssemblyReference.cache
 C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\obj\Debug\netcoreapp2.0\ProdFloor.csproj.CoreCompileInputs.cache
 C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\obj\Debug\netcoreapp2.0\ProdFloor.AssemblyInfoInputs.cache
 C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\obj\Debug\netcoreapp2.0\ProdFloor.AssemblyInfo.cs

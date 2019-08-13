@@ -1358,7 +1358,7 @@ namespace ProdFloor.Controllers
 
             IQueryable<TestJob> testJobSearchList = testingRepo.TestJobs.Include(m => m._Stops).Include(m => m._TestFeature);
             IQueryable<Stop> stops = testingRepo.Stops.Where(m => testJobSearchList.Any(s => s.TestJobID == m.TestJobID));
-            IQueryable<Job> jobSearchRepo = jobRepo.Jobs.Where(m => testJobSearchList.Any(s => s.JobID == m.JobID)).Include(j => j._jobExtension).Include(hy => hy._HydroSpecific).Include(g => g._GenericFeatures)
+            IQueryable<Job> jobSearchRepo = jobRepo.Jobs.Include(j => j._jobExtension).Include(hy => hy._HydroSpecific).Include(g => g._GenericFeatures)
                 .Include(i => i._Indicator).Include(ho => ho._HoistWayData);
             IQueryable<State> statesInCanada = itemRepository.States.Where(m => m.CountryID == 2);
             IQueryable<City> citiesInCanada = itemRepository.Cities.Where(m => statesInCanada.Any(s => s.StateID == m.StateID));
@@ -1554,11 +1554,12 @@ namespace ProdFloor.Controllers
                     
             }
 
-
-            if (anyFeatureFromJob) testJobSearchList = testJobSearchList.Where(m => jobSearchRepo.Any(s => s.JobID == m.JobID));
+            
                 #endregion
 
             if(anyFeatureFromJob) testJobSearchList = testJobSearchList.Where(m => jobSearchRepo.Any(s => s.JobID == m.JobID));
+            if(testJobSearchList.Count() == 0) return RedirectToAction("TestJobSearchList");
+
 
             TestJobSearchViewModel TestJobSearch = new TestJobSearchViewModel
             {
