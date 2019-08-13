@@ -1334,6 +1334,24 @@ namespace ProdFloor.Controllers
             return new DateTime(1, 1, Days, Hours, Minutes, 0);
         }
 
+
+        public ViewResult TestJobSearchList()
+        {
+            TestJobSearchViewModel testJob = new TestJobSearchViewModel()
+            {
+                Job = new Job(),
+                TestJob = new TestJob(),
+                Stop = new Stop(),
+                HoistWayData = new HoistWayData(),
+                JobExtension = new JobExtension (),
+                TestJobsSearchList = new List<TestJob>(),
+                JobsSearchList = new List<Job>(),
+            };
+
+            return View(testJob);
+        }
+
+        [HttpPost]
         public async Task<IActionResult> TestJobSearchList(TestJobSearchViewModel searchViewModel, int jobPage = 1)
         {
             if (searchViewModel.CleanFields) return RedirectToAction("TestJobSearchList");
@@ -1357,32 +1375,7 @@ namespace ProdFloor.Controllers
             if (!string.IsNullOrEmpty(searchViewModel.TestJob.Status)) testJobSearchList = testJobSearchList.Where(s => s.Status.Contains(searchViewModel.TestJob.Status));
             if (!string.IsNullOrEmpty(searchViewModel.TestJob.JobLabel)) testJobSearchList = testJobSearchList.Where(s => s.JobLabel.Contains(searchViewModel.TestJob.JobLabel));
             #endregion
-
-            #region StopsInfo
-            if (searchViewModel.Stop.Reason1 > 0)
-            {
-                testJobSearchList = testJobSearchList.Where(m => m._Stops.Any(s => s.Reason1 == searchViewModel.Stop.Reason1));
-                if (searchViewModel.Stop.Reason2 > 0)
-                {
-                    testJobSearchList = testJobSearchList.Where(m => m._Stops.Any(s => s.Reason2 == searchViewModel.Stop.Reason2));
-                    if (searchViewModel.Stop.Reason3 > 0)
-                    {
-                        testJobSearchList = testJobSearchList.Where(m => m._Stops.Any(s => s.Reason3 == searchViewModel.Stop.Reason3));
-                        if (searchViewModel.Stop.Reason4 > 0)
-                        {
-                            testJobSearchList = testJobSearchList.Where(m => m._Stops.Any(s => s.Reason4 == searchViewModel.Stop.Reason2));
-                            if (searchViewModel.Stop.Reason5ID > 0)
-                            {
-                                testJobSearchList = testJobSearchList.Where(m => m._Stops.Any(s => s.Reason5ID == searchViewModel.Stop.Reason5ID));
-                            }
-                        }
-                    }
-                }
-            }
             
-            if (!string.IsNullOrEmpty(searchViewModel.Stop.Description)) testJobSearchList = testJobSearchList.Where(m => m._Stops.Any(s => s.Description.Contains(searchViewModel.Stop.Description)));
-            if (!string.IsNullOrEmpty(searchViewModel.Critical)) testJobSearchList = testJobSearchList.Where(m => m._Stops.Any(s => searchViewModel.Critical == "Si" ? s.Critical == true : s.Critical == false));
-            #endregion
 
             #region TestFeaturesInfo
             if (!string.IsNullOrEmpty(searchViewModel.Overlay)) testJobSearchList = testJobSearchList.Where(s => searchViewModel.Overlay == "Si" ? s._TestFeature.Overlay == true : s._TestFeature.Overlay == false);
@@ -1402,19 +1395,15 @@ namespace ProdFloor.Controllers
             #endregion
 
             #region JobFromTestJobInfo
-            if (searchViewModel.Job.JobNum >= 2015000000 && searchViewModel.Job.JobNum <= 2021000000)
+            if (searchViewModel.JobNum >= 2015000000 && searchViewModel.JobNum <= 2021000000)
             {
-                jobSearchRepo = jobSearchRepo.Where(s => s.JobNum == searchViewModel.Job.JobNum); anyFeatureFromJob = true;
+                jobSearchRepo = jobSearchRepo.Where(s => s.JobNum == searchViewModel.JobNum); anyFeatureFromJob = true;
             }
 
-            if (!string.IsNullOrEmpty(searchViewModel.Job.Name))
+            if (!string.IsNullOrEmpty(searchViewModel.JobName))
             {
-                jobSearchRepo = jobSearchRepo.Where(s => s.Name.Contains(searchViewModel.Job.Name)); anyFeatureFromJob = true;
+                jobSearchRepo = jobSearchRepo.Where(s => s.Name.Contains(searchViewModel.JobName)); anyFeatureFromJob = true;
             } 
-            if (!string.IsNullOrEmpty(searchViewModel.JobExtension.JobTypeMain))
-            {
-                jobSearchRepo = jobSearchRepo.Where(s => s._jobExtension.JobTypeMain.Equals(searchViewModel.JobExtension.JobTypeMain)); anyFeatureFromJob = true;
-            }
             if (searchViewModel.HoistWayData.LandingSystemID > 0)
             {
                 jobSearchRepo = jobSearchRepo.Where(s => s._HoistWayData.LandingSystemID == searchViewModel.HoistWayData.LandingSystemID); anyFeatureFromJob = true;

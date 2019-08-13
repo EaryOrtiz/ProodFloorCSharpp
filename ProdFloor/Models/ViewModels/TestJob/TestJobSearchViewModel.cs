@@ -10,6 +10,7 @@ namespace ProdFloor.Models.ViewModels.TestJob
     {
         public List<Models.Job> JobsSearchList { get; set; }
         public List<Models.TestJob> TestJobsSearchList { get; set; }
+        public List<Stop> StopList { get; set; }
         public Models.Job Job { get; set; }
         public JobExtension JobExtension { get; set; }
         public HydroSpecific HydroSpecific { get; set; }
@@ -23,6 +24,8 @@ namespace ProdFloor.Models.ViewModels.TestJob
         public bool CleanFields { get; set; }
 
         //Dummy fields
+        public string JobName { get; set; }
+        public int JobNum { get; set; }
         public string Canada { get; set; }
         public string Ontario { get; set; }
         public string MOD { get; set; }

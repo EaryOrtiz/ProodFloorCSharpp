@@ -1,0 +1,27 @@
+﻿@model ProdFloor.Models.ViewModels.TestJob.TestJobSearchViewModel
+@foreach (var j in Model.StopList)
+{
+    <div class="card card-outline-primary m-1 p-1">
+        <div class="bg-faded p-1">
+            <h4>
+                @j.Description
+                <span class="badge badge-pill badge-secondary" style="float:right">
+                    <small>@j.AuxTechnicianID</small>
+                </span>
+                <span class="badge badge-pill badge-secondary" style="float:right">
+                    <small>@j.TestJobID</small>
+                </span>
+            </h4>
+        </div>
+        <div class="card-text p-1">
+            <form asp-action="Delete" method="post" asp-route-Id="@j.StopID">
+                    <a asp-action="Edit" class="btn btn-sm btn-info"
+                       asp-route-Id="@j.StopID">
+                        Details
+                    </a>
+                <input type="hidden" name="ID" value="@j.StopID" />
+            </form>
+        </div>
+    </div>
+
+}

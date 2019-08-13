@@ -3,11 +3,14 @@
     ViewBag.Title = "Stops";
     Layout = "_AdminLayoutWO";
 }
-<div class="row" style="padding-right:20px">
+<div class="row" >
     <h2 class="col-sm-10">
-        Stops Table
+        Stops Table<a class="btn  btn-light" asp-action="StopSearchList" asp-controller="Stop">
+    <i class="fa fa-search" aria-hidden="true" style="float:left"></i>
+</a>
     </h2>
 </div>
+
 <br />
 <div>
     <table class="table table-striped border table-sm" style="text-align:center">

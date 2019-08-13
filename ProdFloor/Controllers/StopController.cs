@@ -408,5 +408,63 @@ namespace ProdFloor.Controllers
                 Reasons1List = reason1s,
             });
         }
+
+        public ViewResult StopSearchList()
+        {
+            TestJobSearchViewModel testJob = new TestJobSearchViewModel()
+            {
+                Stop = new Stop(),
+                StopList = new List<Stop>(),
+            };
+
+            return View(testJob);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> StopSearchList(TestJobSearchViewModel searchViewModel, int jobPage = 1)
+        {
+            if (searchViewModel.CleanFields) return RedirectToAction("StopSearchList");
+
+            IQueryable<Stop> StopSearchList = testingRepo.Stops;
+
+            #region StopsInfo
+            if (searchViewModel.Stop.Reason1 > 0)
+            {
+                StopSearchList = StopSearchList.Where(m => m.Reason1 == searchViewModel.Stop.Reason1);
+                if (searchViewModel.Stop.Reason2 > 0)
+                {
+                    StopSearchList = StopSearchList.Where(m => m.Reason2 == searchViewModel.Stop.Reason2);
+                    if (searchViewModel.Stop.Reason3 > 0)
+                    {
+                        StopSearchList = StopSearchList.Where(m => m.Reason3 == searchViewModel.Stop.Reason3);
+                        if (searchViewModel.Stop.Reason4 > 0)
+                        {
+                            StopSearchList = StopSearchList.Where(m => m.Reason4 == searchViewModel.Stop.Reason2);
+                            if (searchViewModel.Stop.Reason5ID > 0)
+                            {
+                                StopSearchList = StopSearchList.Where(m => m.Reason5ID == searchViewModel.Stop.Reason5ID);
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (!string.IsNullOrEmpty(searchViewModel.Stop.Description)) StopSearchList = StopSearchList.Where(m => m.Description.Contains(searchViewModel.Stop.Description));
+            if (!string.IsNullOrEmpty(searchViewModel.Critical)) StopSearchList = StopSearchList.Where(m =>  searchViewModel.Critical == "Si" ? m.Critical == true : m.Critical == false);
+            #endregion
+
+            TestJobSearchViewModel TestJobSearch = new TestJobSearchViewModel
+            {
+                StopList = StopSearchList.OrderBy(p => p.StopID).Skip((jobPage - 1) * 10).Take(10).ToList(),
+                PagingInfo = new PagingInfo
+                {
+                    CurrentPage = jobPage,
+                    ItemsPerPage = 10,
+                    TotalItems = StopSearchList.Count()
+                },
+            };
+
+            return View(TestJobSearch);
+        }
     }
 }
