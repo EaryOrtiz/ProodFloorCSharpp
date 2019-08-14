@@ -168,6 +168,7 @@ namespace ProdFloor.Controllers
                     PendingJobs = repository.Jobs.Where(m => CurrentTestJobs.Any(s => s.JobID == m.JobID)),
                     JobTypesList = itemRepo.JobTypes.ToList(),
                     OnCrossJobs = DummyOnCrossJobsList.Skip((OnCrossJobPage - 1) * PageSize).Take(PageSize),
+                    StationList = testingRepo.Stations.ToList(),
                     OnCrossJobsPagingInfo = new PagingInfo
                     {
                         CurrentPage = OnCrossJobPage,

@@ -59,6 +59,13 @@ namespace ProdFloor.Models.ViewModels.TestJob
         public int NewTechnicianID { get; set; }
         public int NewStationID { get; set; }
 
+        //Dos dashboard
+        public PagingInfo PagingInfoIncompleted { get; set; }
+        public PagingInfo PagingInfoCompleted { get; set; }
+
+        public List<Models.TestJob> TestJobIncompletedList { get; set; }
+        public List<Models.TestJob> TestJobCompletedList { get; set; }
+
 
     }
 }

@@ -1,0 +1,97 @@
+﻿@model ProdFloor.Models.ViewModels.TestJob.TestJobViewModel
+<h4>Completed TestJob(s)</h4>
+<table class="table table-sm">
+    <thead style="background-color:#1B2831;color:#fff">
+        <tr>
+            <th scope="col">
+                Job#
+            </th>
+            <th scope="col">
+                PO#
+            </th>
+            <th scope="col">
+                Status
+            </th>
+            <th scope="col">
+                Station
+            </th>
+            <th scope="col">
+                Options
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.TestJobCompletedList.Count() == 0)
+        {
+            <tr>
+                <td>No Test Jobs!</td>
+            </tr>
+        }
+        else
+        {
+            @foreach (var j in Model.TestJobCompletedList.Where(m => m.Status == "Completed"))
+            {
+                AppUser CurrentUser = UserManager.Users.FirstOrDefault(m => m.EngID == j.TechnicianID);
+
+                <tr>
+                    <th scope="row">
+                        @Model.JobList.FirstOrDefault(m => m.JobID == j.JobID).JobNum
+                    </th>
+                    <td>@j.SinglePO</td>
+                    <td>
+                        @if (j.Status == "Working on it")
+                        {
+                            StepsForJob stepIncomplete = Model.StepsForJobList.FirstOrDefault(m => m.TestJobID == j.TestJobID && m.Complete == false);
+                            string StageName = Model.StepList.FirstOrDefault(m => m.StepID == stepIncomplete.StepID).Stage;
+                            @j.Status <span>| Stage: @StageName</span>
+                        }
+                        else
+                        {
+                            @j.Status
+                        }
+                    </td>
+                    <td>
+                        @Model.StationsList.FirstOrDefault(m => m.StationID == j.StationID).Label
+                    </td>
+                    <td>
+                        <!-- Button trigger to  return to working on it-->
+                        <button type="button" class="btn btn-light" data-toggle="modal" data-target="#exampleModalReturn @j.TestJobID" style="float:left;background-color:transparent">
+                            <i class="fas fa-undo"></i>
+                        </button>
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModalReturn @j.TestJobID" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLongTitle">Are you sure you want to return Job #@Model.JobList.FirstOrDefault(m => m.JobID == j.JobID).JobNum with PO #@j.SinglePO to "Working on it" Status?</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <form asp-action="ReturnFromComplete" asp-controller="TestJob" method="get">
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
+                                            <input type="hidden" asp-for="@Model.TestJob.TestJobID" value="@j.TestJobID" />
+                                            <button type="submit" value="Completed" name="buttonAction" class="btn btn-danger btn-sm">
+                                                Return it!
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+@if (Model.TestJobCompletedList.Count() > 0)
+{
+    <cool-pagination-dash-board current-model="PendingJobs" my-jobs-page-model="@Model.PagingInfoIncompleted" page-action="SearchTestJob" page-classes-enabled="true"
+                                page-class="btn" page-class-normal="btn-secondary" on-cross-page-model="@Model.PagingInfoCompleted" pending-to-cross-page-model="@Model.PagingInfo"
+                                page-class-selected="btn-primary" my-jobs-url-value="MyJobsPage" on-cross-url-value="OnCrossJobPage"
+                                pending-to-cross-url-value="PendingToCrossJobPage" sort="Sort"
+                                class="btn-group pull-right m-1">
+    </cool-pagination-dash-board>
+}

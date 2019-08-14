@@ -90,7 +90,7 @@ namespace ProdFloor.Controllers
             testingRepo.SaveStop(NewtStop);
             Stop CurrentStop = testingRepo.Stops.FirstOrDefault(p => p.StopID == testingRepo.Stops.Max(x => x.StopID));
             string Reason1Name = testingRepo.Reasons1.FirstOrDefault(m => m.Reason1ID == CurrentStop.Reason1).Description;
-            testJob.Status = "Stoped";
+            testJob.Status = "Stopped";
             testingRepo.SaveTestJob(testJob);
             Job job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == testJob.JobID);
             if (admin)
@@ -103,9 +103,28 @@ namespace ProdFloor.Controllers
             return View("WaitingForRestar", new TestJobViewModel { Job = job, Stop = CurrentStop, TestJob = testJob, Reason1Name = Reason1Name });
         }
 
-        public ViewResult WaitingForRestar(int ID)
+        public IActionResult WaitingForRestar(int ID)
         {
             TestJob testJob = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == ID);
+            TestJob OnGoingtestJob = testingRepo.TestJobs.FirstOrDefault(m => m.TechnicianID == testJob.TechnicianID && m.Status == "Working on it");
+            Stop ReturnedFromCompleteStop = testingRepo.Stops.Where(p => p.TestJobID == testJob.TestJobID).Last();
+            if (OnGoingtestJob != null)
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"Error, Tiene un trabajo activo, intente de nuevo o contacte al admin";
+                return RedirectToAction("Index", "Home");
+            }
+            else if (ReturnedFromCompleteStop.Reason1 == 982)
+            {
+                TimeSpan auxTime = (DateTime.Now - ReturnedFromCompleteStop.StartDate);
+                ReturnedFromCompleteStop.Elapsed += auxTime;
+                ReturnedFromCompleteStop.StopDate = DateTime.Now;
+                testingRepo.SaveStop(ReturnedFromCompleteStop);
+
+                testJob.Status = "Working on it";
+                testingRepo.SaveTestJob(testJob);
+                return ContinueStep(testJob.TestJobID);
+            }
             Stop CurrentStop = testingRepo.Stops.FirstOrDefault(p => p.TestJobID == testJob.TestJobID && p.Reason2 == 0 && p.Critical == true);
             string Reason1Name = testingRepo.Reasons1.FirstOrDefault(m => m.Reason1ID == CurrentStop.Reason1).Description;
             Job job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == testJob.JobID);
@@ -115,9 +134,17 @@ namespace ProdFloor.Controllers
         public IActionResult RestartReassignment(int ID)
         {
             TestJob testJob = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == ID);
+            TestJob OnGoingtestJob = testingRepo.TestJobs.FirstOrDefault(m => m.TechnicianID == testJob.TechnicianID && m.Status == "Working on it");
             Stop ReassignmentStop = testingRepo.Stops.FirstOrDefault(p => p.TestJobID == testJob.TestJobID && p.StopID == testingRepo.Stops.Max(x => x.StopID) && p.Reason1 == 980);
             Stop PreviusStop = testingRepo.Stops.FirstOrDefault(p => p.TestJobID == testJob.TestJobID && p.Reason2 == 0 && p.Critical == true);
-            if (PreviusStop != null)
+
+            if (OnGoingtestJob != null)
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"Error, Tiene un trabajo activo, intente de nuevo o contacte al admin";
+                return RedirectToAction("Index","Home");
+            }
+            else if (PreviusStop != null)
             {
                 TimeSpan auxTime = (DateTime.Now - ReassignmentStop.StartDate);
                 ReassignmentStop.Elapsed += auxTime;

@@ -30,5 +30,7 @@ namespace ProdFloor.Models.ViewModels
         public int CurrentCrosAppEngID { get; set; }
         public string CurrentStatus { get; set; }
         public int JobID { get; set; }
+
+        public List<Station> StationList { get; set; }
     }
 }

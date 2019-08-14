@@ -65,6 +65,18 @@ namespace ProdFloor.Controllers
                .Skip((1 - 1) * 10)
                .Take(10).ToList(),
                 JobList = jobRepo.Jobs.ToList(),
+                StepList = testingRepo.Steps.ToList(),
+                StepsForJobList = testingRepo.StepsForJobs.ToList(),
+                TestJobCompletedList = testingRepo.TestJobs
+                .Where(m => m.Status == "Completed")
+               .OrderBy(p => p.TechnicianID)
+               .Skip((1 - 1) * 10)
+               .Take(10).ToList(),
+                TestJobIncompletedList = testingRepo.TestJobs
+                .Where(m => m.Status != "Completed")
+               .OrderBy(p => p.TechnicianID)
+               .Skip((1 - 1) * 10)
+               .Take(10).ToList(),
                 StationsList = testingRepo.Stations.ToList(),
                 StopList = testingRepo.Stops.Where(m => m.StopID != 980 & m.StopID != 981 && m.Reason2 == 0).ToList(),
                 PagingInfo = new PagingInfo
@@ -72,7 +84,19 @@ namespace ProdFloor.Controllers
                     CurrentPage = 1,
                     ItemsPerPage = 10,
                     TotalItems = testingRepo.TestJobs.Count()
-                }
+                },
+                PagingInfoCompleted = new PagingInfo
+                {
+                    CurrentPage = 1,
+                    ItemsPerPage = 10,
+                    TotalItems = testingRepo.TestJobs.Where(m => m.Status == "Completed").Count()
+                },
+                PagingInfoIncompleted = new PagingInfo
+                {
+                    CurrentPage = 1,
+                    ItemsPerPage = 10,
+                    TotalItems = testingRepo.TestJobs.Where(m => m.Status != "Completed").Count()
+                },
             };
             return View(testJobView);
         }
@@ -92,18 +116,43 @@ namespace ProdFloor.Controllers
             {
                 TestJobList = testJobsList
                .OrderBy(p => p.TechnicianID)
-               .Skip((1 - 1) * 10)
+               .Skip((page - 1) * 10)
+               .Take(10).ToList(),
+                TestJobCompletedList = testingRepo.TestJobs
+                .Where(m => m.Status == "Completed")
+               .OrderBy(p => p.TechnicianID)
+               .Skip((page - 1) * 10)
+               .Take(10).ToList(),
+                TestJobIncompletedList = testingRepo.TestJobs
+                .Where(m => m.Status != "Completed")
+               .OrderBy(p => p.TechnicianID)
+               .Skip((page - 1) * 10)
                .Take(10).ToList(),
                 JobList = jobRepo.Jobs.ToList(),
                 StationsList = testingRepo.Stations.ToList(),
+                StepList = testingRepo.Steps.ToList(),
+                StepsForJobList =testingRepo.StepsForJobs.ToList(),
                 StopList = testingRepo.Stops.Where(m => m.StopID != 980 & m.StopID != 981 && m.Reason2 == 0).ToList(),
                 PagingInfo = new PagingInfo
                 {
-                    CurrentPage = 1,
+                    CurrentPage = page,
                     ItemsPerPage = 10,
                     TotalItems = testJobsList.Count()
-                }
-            };
+                },
+                PagingInfoCompleted = new PagingInfo
+                {
+                    CurrentPage = page,
+                    ItemsPerPage = 10,
+                    TotalItems = testingRepo.TestJobs.Where(m => m.Status == "Completed").Count()
+                },
+                PagingInfoIncompleted = new PagingInfo
+                {
+                    CurrentPage = page,
+                    ItemsPerPage = 10,
+                    TotalItems = testingRepo.TestJobs.Where(m => m.Status != "Completed").Count()
+                },
+            
+             };
 
             if (testJobsList.Count > 0 && testJobsList[0] != null) return View(testJobView);
             TempData["message"] = $"Does not exist any job with the JobNum #{viewModel.Job.JobNum}, please try again.";
@@ -635,8 +684,9 @@ namespace ProdFloor.Controllers
             });
         }
 
-        public ViewResult ContinueStep(int ID)
+        public IActionResult ContinueStep(int ID)
         {
+
             var AllStepsForJob = testingRepo.StepsForJobs.Where(m => m.TestJobID == ID && m.Obsolete == false).OrderBy(m => m.Consecutivo).ToList();
             List<Reason1> reason1s = testingRepo.Reasons1.ToList();
             var AllStepsForJobInfo = testingRepo.Steps.Where(m => AllStepsForJob.Any(s => s.StepID == m.StepID)).ToList();
@@ -1098,12 +1148,37 @@ namespace ProdFloor.Controllers
         public IActionResult ReturnFromComplete(TestJobViewModel testJobView)
         {
             TestJob testJob = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == testJobView.TestJob.TestJobID);
-            StepsForJob stepsForJob = testingRepo.StepsForJobs.FirstOrDefault(p => p.TestJobID == testJob.TestJobID && p.StepsForJobID == testingRepo.StepsForJobs.Max(x => x.StepsForJobID));
-            testJob.Status = "Working on it";
+            TestJob OnGoingtestJob = testingRepo.TestJobs.FirstOrDefault(m => m.TechnicianID == testJob.TechnicianID && m.Status == "Working on it");
+            StepsForJob stepsForJob = testingRepo.StepsForJobs.Where(p => p.TestJobID == testJob.TestJobID).Last();
             stepsForJob.Complete = false;
-            testingRepo.SaveTestJob(testJob);
             testingRepo.SaveStepsForJob(stepsForJob);
-            TempData["message"] = $"You have retuned the TestJob PO# {testJob.SinglePO} to Working on it";
+            if (OnGoingtestJob != null)
+            {
+                testJob.Status = "Stopped";
+                testingRepo.SaveTestJob(testJob);
+                Stop NewtStop = new Stop
+                {
+                    TestJobID = testJob.TestJobID,
+                    Reason1 = 982,
+                    Reason2 = 982,
+                    Reason3 = 982,
+                    Reason4 = 982,
+                    Reason5ID = 982,
+                    Description = "The admin was returned the job to working on it",
+                    Critical = true,
+                    StartDate = DateTime.Now,
+                    StopDate = DateTime.Now,
+                    Elapsed = new DateTime(1, 1, 1, 0, 0, 0),
+                    AuxStationID = testJob.StationID,
+                    AuxTechnicianID = testJob.TechnicianID,
+                };
+                testingRepo.SaveStop(NewtStop);
+                TempData["message"] = $"You have returned the TestJob PO# {testJob.SinglePO} to stopped";
+                return RedirectToAction("SearchTestJob");
+            }
+            testJob.Status = "Working on it";
+            testingRepo.SaveTestJob(testJob);
+            TempData["message"] = $"You have returned the TestJob PO# {testJob.SinglePO} to Working on it";
             return RedirectToAction("SearchTestJob");
         }
 
