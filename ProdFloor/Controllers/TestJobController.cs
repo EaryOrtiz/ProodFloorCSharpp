@@ -663,8 +663,11 @@ namespace ProdFloor.Controllers
 
             var AllStepsForJobInfo = testingRepo.Steps.Where(m => StepsForJobList.Any(s => s.StepID == m.StepID)).ToList();
 
-            var currentStepForJob = StepsForJobList.FirstOrDefault(m => m.Consecutivo == viewModel.StepsForJob.Consecutivo); currentStepForJob.Stop = DateTime.Now;
-            currentStepForJob.Complete = false; TimeSpan elapsed = currentStepForJob.Stop - currentStepForJob.Start; currentStepForJob.Elapsed += elapsed;
+            var currentStepForJob = StepsForJobList.FirstOrDefault(m => m.Consecutivo == viewModel.StepsForJob.Consecutivo);
+            currentStepForJob.Stop = DateTime.Now;
+            currentStepForJob.Complete = false;
+            TimeSpan elapsed = currentStepForJob.Stop - currentStepForJob.Start;
+            currentStepForJob.Elapsed = new DateTime(1, 1, 1, elapsed.Hours, elapsed.Minutes, elapsed.Seconds);
             testingRepo.SaveStepsForJob(currentStepForJob);
 
             //NextStep
