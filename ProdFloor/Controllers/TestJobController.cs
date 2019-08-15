@@ -588,7 +588,7 @@ namespace ProdFloor.Controllers
                 var currentStepForJob = AllStepsForJob.FirstOrDefault(m => m.Consecutivo == viewModel.StepsForJob.Consecutivo); currentStepForJob.Stop = DateTime.Now;
                 currentStepForJob.Complete = true;
                 TimeSpan elapsed = currentStepForJob.Stop - currentStepForJob.Start;
-                currentStepForJob.Elapsed += elapsed;
+                currentStepForJob.Elapsed = new DateTime(1, 1, 1, elapsed.Hours, elapsed.Minutes, elapsed.Seconds);
                 testingRepo.SaveStepsForJob(currentStepForJob);
 
                 //NextStep

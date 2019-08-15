@@ -199,16 +199,18 @@ namespace ProdFloor.Controllers
         [HttpPost]
         public IActionResult RestarTestJob(TestJobViewModel viewModel)
         {
-            TimeSpan auxTime = (DateTime.Now - viewModel.Stop.StartDate);
-            viewModel.Stop.Elapsed += auxTime;
+            
             Stop UpdatedStop = testingRepo.Stops.FirstOrDefault(m => m.StopID == viewModel.Stop.StopID);
+            TimeSpan auxTime = (DateTime.Now - UpdatedStop.StartDate);
+            UpdatedStop.Elapsed += auxTime;
+            UpdatedStop.StopDate = DateTime.Now;
             UpdatedStop.Reason1 = viewModel.Stop.Reason1;
             UpdatedStop.Reason2 = viewModel.Stop.Reason2;
             UpdatedStop.Reason3 = viewModel.Stop.Reason3;
             UpdatedStop.Reason4 = viewModel.Stop.Reason4;
             UpdatedStop.Reason5ID = viewModel.Stop.Reason5ID;
             UpdatedStop.Description = viewModel.Stop.Description;
-            UpdatedStop.StopDate = DateTime.Now;
+            
             testingRepo.SaveStop(UpdatedStop);
             TestJob testJob = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == UpdatedStop.TestJobID);
             testJob.Status = "Working on it";
