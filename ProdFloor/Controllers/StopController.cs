@@ -410,7 +410,7 @@ namespace ProdFloor.Controllers
             if (StopsFromTestJob.Count > 0 && StopsFromTestJob[0] != null) StopNC = true;
             List<Reason1> reason1s = testingRepo.Reasons1.ToList();
 
-            StepsForJob CurrentStep = AllStepsForJob.FirstOrDefault(m => m.Complete == false); CurrentStep.Start = DateTime.Now;
+            StepsForJob CurrentStep = AllStepsForJob.FirstOrDefault(m => m.Complete == false); 
             testingRepo.SaveStepsForJob(CurrentStep);
             var stepInfo = testingRepo.Steps.FirstOrDefault(m => m.StepID == CurrentStep.StepID);
             var testjobinfo = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == CurrentStep.TestJobID);

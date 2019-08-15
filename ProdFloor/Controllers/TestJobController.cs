@@ -1,4 +1,4 @@
-﻿using System;
+﻿  using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -502,6 +502,9 @@ namespace ProdFloor.Controllers
                     var stepInfo = AllStepsForJobInfo.FirstOrDefault(m => m.StepID == stepsFor.StepID);
 
                     var testjobinfo = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == testJobView.TestJob.TestJobID);
+                    testjobinfo.StartDate = DateTime.Now;
+                    testingRepo.SaveTestJob(testjobinfo);
+
                     var job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == testjobinfo.JobID);
 
                     List<Stop> StopsFromTestJob = testingRepo.Stops.Where(m => m.TestJobID == testJobView.TestJob.TestJobID && m.Critical == false).ToList(); bool StopNC = false;
@@ -563,7 +566,10 @@ namespace ProdFloor.Controllers
                     TimeSpan elapsed = currentStepForJob.Stop - currentStepForJob.Start;
                     currentStepForJob.Elapsed += elapsed;
                     testingRepo.SaveStepsForJob(currentStepForJob);
+
+
                     var testjobinfo = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == viewModel.TestJob.TestJobID); testjobinfo.Status = "Completed";
+                    testjobinfo.CompletedDate = DateTime.Now;
                     testingRepo.SaveTestJob(testjobinfo);
 
                     TempData["message"] = $"El Test Job {testjobinfo.TestJobID} se ha completado con exito!";
@@ -617,8 +623,10 @@ namespace ProdFloor.Controllers
             {
                 //Previus step
                 var previusStepForAUX = AllStepsForJob.OrderByDescending(m => m.Consecutivo).FirstOrDefault(m => m.Complete == true);
-                previusStepForAUX.Start = DateTime.Now; previusStepForAUX.Complete = false;
+                previusStepForAUX.Complete = false;
                 testingRepo.SaveStepsForJob(previusStepForAUX);
+
+
                 var previusStepFor = AllStepsForJob.FirstOrDefault(m => m.StepsForJobID == previusStepForAUX.StepsForJobID);
                 var stepInfo = testingRepo.Steps.FirstOrDefault(m => m.StepID == previusStepFor.StepID);
                 var testjobinfo = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == viewModel.TestJob.TestJobID);
@@ -694,7 +702,7 @@ namespace ProdFloor.Controllers
             List<Stop> StopsFromTestJob = testingRepo.Stops.Where(m => m.TestJobID == ID && m.Critical == false).ToList(); bool StopNC = false;
             if (StopsFromTestJob.Count > 0 && StopsFromTestJob[0] != null) StopNC = true;
 
-            StepsForJob CurrentStep = AllStepsForJob.FirstOrDefault(m => m.Complete == false); CurrentStep.Start = DateTime.Now;
+            StepsForJob CurrentStep = AllStepsForJob.FirstOrDefault(m => m.Complete == false);
             testingRepo.SaveStepsForJob(CurrentStep);
             var stepInfo = testingRepo.Steps.FirstOrDefault(m => m.StepID == CurrentStep.StepID);
             var testjobinfo = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == CurrentStep.TestJobID);
