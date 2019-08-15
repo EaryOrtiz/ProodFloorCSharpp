@@ -299,6 +299,34 @@
                 <div class="row ">
                     <div class="col-4">
                         <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="INA" class="col-sm-9 col-form-label"></label>
+                            <custom-select selected-value="@Model.INA" class="form-control-sm form-control col-sm-3" asp-for="INA" select-for="boolSearch"></custom-select>
+                        </div>
+                        <div id="hoist">
+                            <div class="form-group row" style="margin-bottom:0px;">
+                                <label asp-for="TopAccess" class="col-sm-9 col-form-label"></label>
+                                <custom-select selected-value="@Model.TopAccess" class="form-control-sm form-control col-sm-3" asp-for="TopAccess" select-for="boolSearch"></custom-select>
+                            </div>
+                            <div class="form-group row" style="margin-bottom:0px;">
+                                <label asp-for="TopAccessLocation" class="col-sm-6 col-form-label"></label>
+                                <indicators select-for="AccessSWLocation" selected-value="@Model.TopAccessLocation" class="form-control form-control-sm col-sm-5" asp-for="TopAccessLocation"></indicators>
+                            </div>
+                            <div class="form-group row" style="margin-bottom:0px;">
+                                <label asp-for="BottomAccess" class="col-sm-9 col-form-label"></label>
+                                <custom-select selected-value="@Model.BottomAccess" class="form-control-sm form-control col-sm-3" asp-for="BottomAccess" select-for="boolSearch"></custom-select>
+                            </div>
+                            <div class="form-group row" style="margin-bottom:0px;">
+                                <label asp-for="BottomAccessLocation" class="col-sm-6 col-form-label"></label>
+                                <indicators select-for="AccessSWLocation" selected-value="@Model.BottomAccessLocation" class="form-control form-control-sm col-sm-5" asp-for="BottomAccessLocation"></indicators>
+                            </div>
+                        </div>
+
+                        
+                        
+                    </div>
+                    <div class="col-4">
+
+                        <div class="form-group row" style="margin-bottom:0px;">
                             <label asp-for="GovModel" class="col-sm-6 col-form-label"></label>
                             <input type="text" class="form-control form-control-sm col-sm-5" asp-for="GovModel">
                         </div>
@@ -306,16 +334,6 @@
                             <label asp-for="Monitoring" class="col-sm-6 col-form-label"></label>
                             <indicators select-for="Monitoring" selected-value="@Model.Monitoring" class="form-control form-control-sm col-sm-5" asp-for="Monitoring"></indicators>
                         </div>
-                        <div class="form-group row" style="margin-bottom:0px;">
-                            <label asp-for="TopAccessLocation" class="col-sm-6 col-form-label"></label>
-                            <indicators select-for="AccessSWLocation" selected-value="@Model.TopAccessLocation" class="form-control form-control-sm col-sm-5" asp-for="TopAccessLocation"></indicators>
-                        </div>
-                        <div class="form-group row" style="margin-bottom:0px;">
-                            <label asp-for="BottomAccessLocation" class="col-sm-6 col-form-label"></label>
-                            <indicators select-for="AccessSWLocation" selected-value="@Model.BottomAccessLocation" class="form-control form-control-sm col-sm-5" asp-for="BottomAccessLocation"></indicators>
-                        </div>
-                    </div>
-                    <div class="col-4">
                         <div class="form-group row" style="margin-bottom:0px;">
                             <label asp-for="SwitchStyle" class="col-sm-8 col-form-label"></label>
                             <custom-select select-for="SwitchStyle" selected-value="@Model.SwitchStyle" class="form-control form-control-sm col-sm-4" asp-for="SwitchStyle"></custom-select>
@@ -376,10 +394,7 @@
                             <label asp-for="CallEnable" class="col-sm-9 col-form-label"></label>
                             <custom-select selected-value="@Model.CallEnable" class="form-control-sm form-control col-sm-3" asp-for="CallEnable" select-for="boolSearch"></custom-select>
                         </div>
-                        <div class="form-group row" style="margin-bottom:0px;">
-                            <label asp-for="BottomAccess" class="col-sm-9 col-form-label"></label>
-                            <custom-select selected-value="@Model.BottomAccess" class="form-control-sm form-control col-sm-3" asp-for="BottomAccess" select-for="boolSearch"></custom-select>
-                        </div>
+                        
                     </div>
                     <div class="col-3">
                         <div class="form-group row" style="margin-bottom:0px;">
@@ -416,10 +431,7 @@
                             <label asp-for="EPVoltage" class="col-sm-9 col-form-label"></label>
                             <custom-select selected-value="@Model.EPVoltage" class="form-control-sm form-control col-sm-3" asp-for="EPVoltage" select-for="boolSearch"></custom-select>
                         </div>
-                        <div class="form-group row" style="margin-bottom:0px;">
-                            <label asp-for="INA" class="col-sm-9 col-form-label"></label>
-                            <custom-select selected-value="@Model.INA" class="form-control-sm form-control col-sm-3" asp-for="INA" select-for="boolSearch"></custom-select>
-                        </div>
+                        
                         <div class="form-group row" style="margin-bottom:0px;">
                             <label asp-for="INCP" class="col-sm-9 col-form-label"></label>
                             <custom-select selected-value="@Model.INCP" class="form-control-sm form-control col-sm-3" asp-for="INCP" select-for="boolSearch"></custom-select>
@@ -433,10 +445,6 @@
                         <div class="form-group row" style="margin-bottom:0px;">
                             <label asp-for="LoadWeigher" class="col-sm-9 col-form-label"></label>
                             <custom-select selected-value="@Model.LoadWeigher" class="form-control-sm form-control col-sm-3" asp-for="LoadWeigher" select-for="boolSearch"></custom-select>
-                        </div>
-                        <div class="form-group row" style="margin-bottom:0px;">
-                            <label asp-for="TopAccess" class="col-sm-9 col-form-label"></label>
-                            <custom-select selected-value="@Model.TopAccess" class="form-control-sm form-control col-sm-3" asp-for="TopAccess" select-for="boolSearch"></custom-select>
                         </div>
                         <div class="form-group row" style="margin-bottom:0px;">
                             <label asp-for="CRO" class="col-sm-9 col-form-label"></label>
@@ -607,3 +615,42 @@
     </div>
 
 </div>
+<script type="text/javascript">
+    $("#INA").ready(function () {
+            $("#hoist").hide();
+        });
+
+    $('#INA').change(function () {
+            if ($(this).val() == 'Si') {
+                $('#hoist').show();
+            } else {
+                $('#hoist').hide();
+            }
+    });
+     //-------------------------------------------------------------
+    $("#TopAccess").ready(function () {
+        $("#TopAccessLocation").hide();
+    });
+   
+    $('#TopAccess').change(function () {
+        if ($(this).val() == 'Si') {
+            $('#TopAccessLocation').show();
+        } else {
+            $('#TopAccessLocation').hide();
+        }
+    });
+
+
+     //-------------------------------------------------------------
+    $("#BottomAccess").ready(function () {
+        $("#BottomAccessLocation").hide();
+    });
+
+    $('#BottomAccess').change(function () {
+        if ($(this).val() == 'Si') {
+            $('#BottomAccessLocation').show();
+        } else {
+            $('#BottomAccessLocation').hide();
+        }
+    });
+</script>
