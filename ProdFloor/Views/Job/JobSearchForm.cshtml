@@ -296,7 +296,7 @@
         <!--Body 4-->
         <div id="collapseGeneric" class="collapse " aria-labelledby="headingGeneric" data-parent="#accordionSearch">
             <div class="card-body">
-                <div class="row ">
+                <div class="row">
                     <div class="col-4">
                         <div class="form-group row" style="margin-bottom:0px;">
                             <label asp-for="INA" class="col-sm-9 col-form-label"></label>
@@ -321,23 +321,27 @@
                             </div>
                         </div>
 
-                        
-                        
                     </div>
                     <div class="col-4">
-
                         <div class="form-group row" style="margin-bottom:0px;">
-                            <label asp-for="GovModel" class="col-sm-6 col-form-label"></label>
-                            <input type="text" class="form-control form-control-sm col-sm-5" asp-for="GovModel">
+                            <label asp-for="INCP" class="col-sm-9 col-form-label"></label>
+                            <custom-select selected-value="@Model.INCP" class="form-control-sm form-control col-sm-3" asp-for="INCP" select-for="boolSearch"></custom-select>
                         </div>
-                        <div class="form-group row" style="margin-bottom:0px;">
-                            <label asp-for="Monitoring" class="col-sm-6 col-form-label"></label>
-                            <indicators select-for="Monitoring" selected-value="@Model.Monitoring" class="form-control form-control-sm col-sm-5" asp-for="Monitoring"></indicators>
+                        <div id="INCPButtons" class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="INCPButtons" class="col-sm-8 col-form-label"></label>
+                            <indicators select-for="INCPButtons" selected-value="@Model.INCPButtons" class="form-control form-control-sm col-sm-4" asp-for="INCPButtons"></indicators>
                         </div>
                         <div class="form-group row" style="margin-bottom:0px;">
                             <label asp-for="SwitchStyle" class="col-sm-8 col-form-label"></label>
                             <custom-select select-for="SwitchStyle" selected-value="@Model.SwitchStyle" class="form-control form-control-sm col-sm-4" asp-for="SwitchStyle"></custom-select>
                         </div>
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="EP" class="col-sm-9 col-form-label"></label>
+                            <custom-select selected-value="@Model.EP" class="form-control-sm form-control col-sm-3" asp-for="EP" select-for="boolSearch"></custom-select>
+                        </div>
+
+                    </div>
+                    <div id="Emergency" class="col-2">
                         <div class="form-group row" style="margin-bottom:0px;">
                             <label asp-for="EPContact" class="col-sm-8 col-form-label"></label>
                             <indicators select-for="EPContact" selected-value="@Model.EPContact" class="form-control form-control-sm col-sm-4" asp-for="EPContact"></indicators>
@@ -347,26 +351,27 @@
                             <indicators select-for="EPCars" selected-value="@Model.EPCarsNumber" class="form-control form-control-sm col-sm-4" asp-for="EPCarsNumber"></indicators>
                         </div>
                         <div class="form-group row" style="margin-bottom:0px;">
-                            <label asp-for="INCPButtons" class="col-sm-8 col-form-label"></label>
-                            <indicators select-for="INCPButtons" selected-value="@Model.INCPButtons" class="form-control form-control-sm col-sm-4" asp-for="INCPButtons"></indicators>
+                            <label asp-for="EPSelect" class="col-sm-9 col-form-label"></label>
+                            <custom-select selected-value="@Model.EPSelect" class="form-control-sm form-control col-sm-3" asp-for="EPSelect" select-for="boolSearch"></custom-select>
+                        </div>
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="PTI" class="col-sm-9 col-form-label"></label>
+                            <custom-select selected-value="@Model.PTI" class="form-control-sm form-control col-sm-3" asp-for="PTI" select-for="boolSearch"></custom-select>
+                        </div>
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="EPVoltage" class="col-sm-9 col-form-label"></label>
+                            <custom-select selected-value="@Model.EPVoltage" class="form-control-sm form-control col-sm-3" asp-for="EPVoltage" select-for="boolSearch"></custom-select>
                         </div>
                     </div>
-                    <div class="col-2">
+                    <div class="col-3">
+
                         <div class="form-group row" style="margin-bottom:0px;">
-                            <label asp-for="CarKey" class="col-sm-9 col-form-label"></label>
-                            <custom-select selected-value="@Model.CarKey" class="form-control-sm form-control col-sm-3" asp-for="CarKey" select-for="boolSearch"></custom-select>
+                            <label asp-for="GovModel" class="col-sm-6 col-form-label"></label>
+                            <input type="text" class="form-control form-control-sm col-sm-5" asp-for="GovModel">
                         </div>
                         <div class="form-group row" style="margin-bottom:0px;">
-                            <label asp-for="HCRO" class="col-sm-9 col-form-label"></label>
-                            <custom-select selected-value="@Model.HCRO" class="form-control-sm form-control col-sm-3" asp-for="HCRO" select-for="boolSearch"></custom-select>
-                        </div>
-                        <div class="form-group row" style="margin-bottom:0px;">
-                            <label asp-for="HallCallRead" class="col-sm-9 col-form-label"></label>
-                            <custom-select selected-value="@Model.HallCallRead" class="form-control-sm form-control col-sm-3" asp-for="HallCallRead" select-for="boolSearch"></custom-select>
-                        </div>
-                        <div class="form-group row" style="margin-bottom:0px;">
-                            <label asp-for="HallKey" class="col-sm-9 col-form-label"></label>
-                            <custom-select selected-value="@Model.HallKey" class="form-control-sm form-control col-sm-3" asp-for="HallKey" select-for="boolSearch"></custom-select>
+                            <label asp-for="Monitoring" class="col-sm-6 col-form-label"></label>
+                            <indicators select-for="Monitoring" selected-value="@Model.Monitoring" class="form-control form-control-sm col-sm-5" asp-for="Monitoring"></indicators>
                         </div>
                     </div>
                 </div>
@@ -374,70 +379,83 @@
                 <div class="row">
 
                     <div class="col-3">
-                        <div class="form-group row" style="margin-bottom:0px;">
-                            <label asp-for="CTINSPST" class="col-sm-9 col-form-label"></label>
-                            <custom-select selected-value="@Model.CTINSPST" class="form-control-sm form-control col-sm-3" asp-for="CTINSPST" select-for="boolSearch"></custom-select>
-                        </div>
-                        <div class="form-group row" style="margin-bottom:0px;">
-                            <label asp-for="EPSelect" class="col-sm-9 col-form-label"></label>
-                            <custom-select selected-value="@Model.EPSelect" class="form-control-sm form-control col-sm-3" asp-for="EPSelect" select-for="boolSearch"></custom-select>
-                        </div>
-                        <div class="form-group row" style="margin-bottom:0px;">
-                            <label asp-for="Attendant" class="col-sm-9 col-form-label"></label>
-                            <custom-select selected-value="@Model.Attendant" class="form-control-sm form-control col-sm-3" asp-for="Attendant" select-for="boolSearch"></custom-select>
-                        </div>
-                        <div class="form-group row" style="margin-bottom:0px;">
-                            <label asp-for="PTI" class="col-sm-9 col-form-label"></label>
-                            <custom-select selected-value="@Model.PTI" class="form-control-sm form-control col-sm-3" asp-for="PTI" select-for="boolSearch"></custom-select>
-                        </div>
+
                         <div class="form-group row" style="margin-bottom:0px;">
                             <label asp-for="CallEnable" class="col-sm-9 col-form-label"></label>
                             <custom-select selected-value="@Model.CallEnable" class="form-control-sm form-control col-sm-3" asp-for="CallEnable" select-for="boolSearch"></custom-select>
                         </div>
-                        
+
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="CarKey" class="col-sm-9 col-form-label"></label>
+                            <custom-select selected-value="@Model.CarKey" class="form-control-sm form-control col-sm-3" asp-for="CarKey" select-for="boolSearch"></custom-select>
+                        </div>
+
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="CarCallRead" class="col-sm-9 col-form-label"></label>
+                            <custom-select selected-value="@Model.CarCallRead" class="form-control-sm form-control col-sm-3" asp-for="CarCallRead" select-for="boolSearch"></custom-select>
+                        </div>
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="CRO" class="col-sm-9 col-form-label"></label>
+                            <custom-select selected-value="@Model.CRO" class="form-control-sm form-control col-sm-3" asp-for="CRO" select-for="boolSearch"></custom-select>
+                        </div>
+
+
                     </div>
-                    <div class="col-3">
+
+                    <div id="Security" class="col-3">
                         <div class="form-group row" style="margin-bottom:0px;">
-                            <label asp-for="CarToLobby" class="col-sm-9 col-form-label"></label>
-                            <custom-select selected-value="@Model.CarToLobby" class="form-control-sm form-control col-sm-3" asp-for="CarToLobby" select-for="boolSearch"></custom-select>
+                            <label asp-for="HallKey" class="col-sm-9 col-form-label"></label>
+                            <custom-select selected-value="@Model.HallKey" class="form-control-sm form-control col-sm-3" asp-for="HallKey" select-for="boolSearch"></custom-select>
                         </div>
                         <div class="form-group row" style="margin-bottom:0px;">
-                            <label asp-for="EMT" class="col-sm-9 col-form-label"></label>
-                            <custom-select selected-value="@Model.EMT" class="form-control-sm form-control col-sm-3" asp-for="EMT" select-for="boolSearch"></custom-select>
+                            <label asp-for="HallCallRead" class="col-sm-9 col-form-label"></label>
+                            <custom-select selected-value="@Model.HallCallRead" class="form-control-sm form-control col-sm-3" asp-for="HallCallRead" select-for="boolSearch"></custom-select>
                         </div>
                         <div class="form-group row" style="margin-bottom:0px;">
-                            <label asp-for="EP" class="col-sm-9 col-form-label"></label>
-                            <custom-select selected-value="@Model.EP" class="form-control-sm form-control col-sm-3" asp-for="EP" select-for="boolSearch"></custom-select>
+                            <label asp-for="HCRO" class="col-sm-9 col-form-label"></label>
+                            <custom-select selected-value="@Model.HCRO" class="form-control-sm form-control col-sm-3" asp-for="HCRO" select-for="boolSearch"></custom-select>
                         </div>
-                        <div class="form-group row" style="margin-bottom:0px;">
-                            <label asp-for="EQ" class="col-sm-9 col-form-label"></label>
-                            <custom-select selected-value="@Model.EQ" class="form-control-sm form-control col-sm-3" asp-for="EQ" select-for="boolSearch"></custom-select>
-                        </div>
-                        <div class="form-group row" style="margin-bottom:0px;">
-                            <label asp-for="FLO" class="col-sm-9 col-form-label"></label>
-                            <custom-select selected-value="@Model.FLO" class="form-control-sm form-control col-sm-3" asp-for="FLO" select-for="boolSearch"></custom-select>
-                        </div>
+
                     </div>
+
                     <div class="col-3">
                         <div class="form-group row" style="margin-bottom:0px;">
                             <label asp-for="FRON2" class="col-sm-9 col-form-label"></label>
                             <custom-select selected-value="@Model.FRON2" class="form-control-sm form-control col-sm-3" asp-for="FRON2" select-for="boolSearch"></custom-select>
                         </div>
                         <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="Attendant" class="col-sm-9 col-form-label"></label>
+                            <custom-select selected-value="@Model.Attendant" class="form-control-sm form-control col-sm-3" asp-for="Attendant" select-for="boolSearch"></custom-select>
+                        </div>
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="CTINSPST" class="col-sm-9 col-form-label"></label>
+                            <custom-select selected-value="@Model.CTINSPST" class="form-control-sm form-control col-sm-3" asp-for="CTINSPST" select-for="boolSearch"></custom-select>
+                        </div>
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="CarToLobby" class="col-sm-9 col-form-label"></label>
+                            <custom-select selected-value="@Model.CarToLobby" class="form-control-sm form-control col-sm-3" asp-for="CarToLobby" select-for="boolSearch"></custom-select>
+                        </div>
+
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="EQ" class="col-sm-9 col-form-label"></label>
+                            <custom-select selected-value="@Model.EQ" class="form-control-sm form-control col-sm-3" asp-for="EQ" select-for="boolSearch"></custom-select>
+                        </div>
+                        
+                    </div>
+                    <div class="col-3">
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="EMT" class="col-sm-9 col-form-label"></label>
+                            <custom-select selected-value="@Model.EMT" class="form-control-sm form-control col-sm-3" asp-for="EMT" select-for="boolSearch"></custom-select>
+                        </div>
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="FLO" class="col-sm-9 col-form-label"></label>
+                            <custom-select selected-value="@Model.FLO" class="form-control-sm form-control col-sm-3" asp-for="FLO" select-for="boolSearch"></custom-select>
+                        </div>
+
+                        <div class="form-group row" style="margin-bottom:0px;">
                             <label asp-for="Hosp" class="col-sm-9 col-form-label"></label>
                             <custom-select selected-value="@Model.Hosp" class="form-control-sm form-control col-sm-3" asp-for="Hosp" select-for="boolSearch"></custom-select>
                         </div>
-                        <div class="form-group row" style="margin-bottom:0px;">
-                            <label asp-for="EPVoltage" class="col-sm-9 col-form-label"></label>
-                            <custom-select selected-value="@Model.EPVoltage" class="form-control-sm form-control col-sm-3" asp-for="EPVoltage" select-for="boolSearch"></custom-select>
-                        </div>
-                        
-                        <div class="form-group row" style="margin-bottom:0px;">
-                            <label asp-for="INCP" class="col-sm-9 col-form-label"></label>
-                            <custom-select selected-value="@Model.INCP" class="form-control-sm form-control col-sm-3" asp-for="INCP" select-for="boolSearch"></custom-select>
-                        </div>
-                    </div>
-                    <div class="col-3">
                         <div class="form-group row" style="margin-bottom:0px;">
                             <label asp-for="Ind" class="col-sm-9 col-form-label"></label>
                             <custom-select selected-value="@Model.Ind" class="form-control-sm form-control col-sm-3" asp-for="Ind" select-for="boolSearch"></custom-select>
@@ -446,15 +464,6 @@
                             <label asp-for="LoadWeigher" class="col-sm-9 col-form-label"></label>
                             <custom-select selected-value="@Model.LoadWeigher" class="form-control-sm form-control col-sm-3" asp-for="LoadWeigher" select-for="boolSearch"></custom-select>
                         </div>
-                        <div class="form-group row" style="margin-bottom:0px;">
-                            <label asp-for="CRO" class="col-sm-9 col-form-label"></label>
-                            <custom-select selected-value="@Model.CRO" class="form-control-sm form-control col-sm-3" asp-for="CRO" select-for="boolSearch"></custom-select>
-                        </div>
-                        <div class="form-group row" style="margin-bottom:0px;">
-                            <label asp-for="CarCallRead" class="col-sm-9 col-form-label"></label>
-                            <custom-select selected-value="@Model.CarCallRead" class="form-control-sm form-control col-sm-3" asp-for="CarCallRead" select-for="boolSearch"></custom-select>
-                        </div>
-
                     </div>
                 </div>
 
@@ -653,4 +662,44 @@
             $('#BottomAccessLocation').hide();
         }
     });
+
+    //-------------------------------------------------------------
+    $("#INCP").ready(function () {
+        $("#INCPButtons").hide();
+    });
+
+    $('#INCP').change(function () {
+        if ($(this).val() == 'Si') {
+            $('#INCPButtons').show();
+        } else {
+            $('#INCPButtons').hide();
+        }
+    });
+
+    //-------------------------------------------------------------
+    $("#EP").ready(function () {
+        $("#Emergency").hide();
+    });
+
+    $('#EP').change(function () {
+        if ($(this).val() == 'Si') {
+            $('#Emergency').show();
+        } else {
+            $('#Emergency').hide();
+        }
+    });
+
+    //-------------------------------------------------------------
+    $("#CallEnable").ready(function () {
+        $("#Security").hide();
+    });
+
+    $('#CallEnable').change(function () {
+        if ($(this).val() == 'Si') {
+            $('#Security').show();
+        } else {
+            $('#Security').hide();
+        }
+    });
+
 </script>
