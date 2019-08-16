@@ -2051,8 +2051,6 @@ namespace ProdFloor.Controllers
 
         }
 
-        
-
         [HttpPost]
         public FileStreamResult ExportUniqueJobToXML(int ID)
         {
@@ -3679,14 +3677,12 @@ namespace ProdFloor.Controllers
 
         }
 
-
         [HttpPost]
         public IActionResult SeedXML(string buttonImportXML)
         {
             JobController.ImportXML(HttpContext.RequestServices, buttonImportXML);
             return RedirectToAction(nameof(List));
         }
-
 
         public string JobTypeName(int ID)
         {
