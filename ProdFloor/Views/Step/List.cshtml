@@ -7,7 +7,7 @@
     <h2 class="col-sm-10">
         Step Table
     </h2>
-    <a class="btn btn-success  col-sm-2" asp-action="NewStep" asp-controller="Step" style="padding-top:10px;min-width:100px">
+    <a class="btn btn-success  col-sm-2" asp-action="NewStep" asp-controller="Step" style="padding-top:10px;background-color:dodgerblue;min-width:100px">
         <i class="fa fa-plus"></i>
         New Step
     </a>
@@ -21,10 +21,10 @@
 </form>
 <form asp-controller="Step" asp-action="List" method="get">
     <div class="btn-group" role="group">
-        <button class="btn btn-primary" type="submit" name="filtrado" value="Traction">Element Traction</button>
-        <button class="btn btn-info" type="submit" name="filtrado" value="Hydro">Element Hydro</button>
-        <button class="btn btn-warning" type="submit" name="filtrado" value="M2000">M2000</button>
-        <button class="btn btn-danger" type="submit" name="filtrado" value="M4000">M4000</button>
+        <button class="btn btn-dark" type="submit" name="filtrado" value="Traction">Element Traction</button>
+        <button class="btn btn-dark" type="submit" name="filtrado" value="Hydro">Element Hydro</button>
+        <button class="btn btn-dark" type="submit" name="filtrado" value="M2000">M2000</button>
+        <button class="btn btn-dark" type="submit" name="filtrado" value="M4000">M4000</button>
     </div>
 </form>
 <br />
@@ -105,11 +105,11 @@
 <br />
 <cool-pagination-steps elm-hydro-paging-info="@Model.ElmHydroPagingInfo" elm-traction-paging-info="@Model.ElmTractionPagingInfo" m2000-paging-info="@Model.M2000PagingInfo" m4000-paging-info="Model.M4000PagingInfo"
                  page-action="List"  job-type-selected="JobTypeName" page-class="btn" page-class-normal="btn-secondary" page-classes-enabled="true" current-model="@Model.JobTypeSelected"
-                 page-class-selected="btn-primary"  elm-hydro-url-value="ElmHydroPage" elm-traction-url-value="ElmTractionPage" m2000-url-value="M2000Page"  m4000-url-value="M4000Page"
+                 page-class-selected="btn-dark"  elm-hydro-url-value="ElmHydroPage" elm-traction-url-value="ElmTractionPage" m2000-url-value="M2000Page"  m4000-url-value="M4000Page"
                  class="btn-group pull-right m-1">
 </cool-pagination-steps>
 <div>
     <form asp-controller="Step" asp-action="ExportToXML" method="post">
-        <button class="btn btn-sm " name="buttonXML" style="background-color:#DF0174;color:white">Export Table to an XML File</button>
+        <button class="btn btn-sm " name="buttonXML" style="background-color:steelblue;color:white">Export Table to an XML File</button>
     </form>
 </div>

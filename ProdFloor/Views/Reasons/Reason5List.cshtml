@@ -8,7 +8,7 @@
         Reasons 5 List
     </h2>
     <form asp-action="Add" asp-controller="Reasons" method="get">
-        <button class="btn btn-success" name="AddR" value="R5" style="padding-top:10px;min-width:150px">
+        <button class="btn btn-success" name="AddR" value="R5" style="background-color:dodgerblue;padding-top:10px;min-width:150px">
             <i class="fa fa-plus"></i>
             New Reason 5
         </button>
@@ -24,13 +24,13 @@
 {
     <coool-pagination-all page-model="@Model.PagingInfo" page-action="List" page-classes-enabled="true"
                           page-class="btn" page-class-normal="btn-secondary"
-                          page-class-selected="btn-primary"
+                          page-class-selected="btn-dark"
                           class="btn-group pull-right m-1">
     </coool-pagination-all>
     <br />
     <div>
         <form asp-controller="Reasons" asp-action="ExportToXML" method="post">
-            <button class="btn btn-sm " name="buttonXML" style="background-color:#DF0174;color:white">Export Reasons to an XML File</button>
+            <button class="btn btn-sm " name="buttonXML" style="background-color:steelblue;color:white">Export Reasons to an XML File</button>
         </form>
     </div>
 }

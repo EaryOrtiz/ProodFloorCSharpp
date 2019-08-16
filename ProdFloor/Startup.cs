@@ -51,6 +51,7 @@ namespace ProdFloor
 
             services.AddTransient<IJobRepository, EFJobRepository>();
             services.AddTransient<IItemRepository, EFItemRepository>();
+            services.AddTransient<ITestingRepository, EFTestingRepository>();
             services.AddMvc()
                 .SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_2_1);
             services.AddMemoryCache();

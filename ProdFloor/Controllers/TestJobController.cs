@@ -1440,7 +1440,6 @@ namespace ProdFloor.Controllers
         [HttpPost]
         public async Task<IActionResult> TestJobSearchList(TestJobSearchViewModel searchViewModel, int jobPage = 1)
         {
-            if (searchViewModel.CleanFields) return RedirectToAction("TestJobSearchList");
 
             IQueryable<TestJob> testJobSearchList = testingRepo.TestJobs.Include(m => m._Stops).Include(m => m._TestFeature);
             IQueryable<Stop> stops = testingRepo.Stops.Where(m => testJobSearchList.Any(s => s.TestJobID == m.TestJobID));
@@ -1646,19 +1645,15 @@ namespace ProdFloor.Controllers
             if(anyFeatureFromJob) testJobSearchList = testJobSearchList.Where(m => jobSearchRepo.Any(s => s.JobID == m.JobID));
             if(testJobSearchList.Count() == 0) return RedirectToAction("TestJobSearchList");
 
-
-            TestJobSearchViewModel TestJobSearch = new TestJobSearchViewModel
+            searchViewModel.TestJobsSearchList = testJobSearchList.OrderBy(p => p.TechnicianID).Skip((jobPage - 1) * 10).Take(10).ToList();
+            searchViewModel.PagingInfo = new PagingInfo
             {
-                TestJobsSearchList = testJobSearchList.OrderBy(p => p.TechnicianID).Skip((jobPage - 1) * 10).Take(10).ToList(),
-                PagingInfo = new PagingInfo
-                {
-                    CurrentPage = jobPage,
-                    ItemsPerPage = 10,
-                    TotalItems = testJobSearchList.Count()
-                },
+                CurrentPage = jobPage,
+                ItemsPerPage = 10,
+                TotalItems = testJobSearchList.Count()
             };
 
-            return View(TestJobSearch);
+            return View(searchViewModel);
         }
     }
 }

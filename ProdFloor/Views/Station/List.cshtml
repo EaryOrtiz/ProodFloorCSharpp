@@ -7,12 +7,12 @@
     <h2 class="col-sm-10">
         Station List
     </h2>
-    <a class="btn btn-success btn-sm col-sm-2" asp-action="Add" asp-controller="Station" style="padding-top:10px;min-width:100px">
+    <a class="btn btn-success btn-sm col-sm-2" asp-action="Add" asp-controller="Station" style="background-color:dodgerblue;padding-top:10px;min-width:100px">
         <i class="fa fa-plus"></i>
         New Station
     </a>
 </div>
-@if (Model.Stations.Count() >0)
+@if (Model.Stations.Count() < 0)
 {
     <div class="text-right m-2">
         <form asp-controller="Station" asp-action="SeedXML" method="post">
@@ -24,18 +24,18 @@
 {
     @Html.Partial("StationsSummary", j)
 }
-<br />
 @if (Model.Stations.Count() > 0)
 {
-    <div>
-        <form asp-controller="Item" asp-action="ExportToXML" method="post">
-            <button class="btn btn-sm " name="buttonXML" value="Stations" style="background-color:#DF0174;color:white">Export List to an XML File</button>
-        </form>
-    </div>
+
     <coool-pagination-all page-model="@Model.PagingInfo" page-action="List" page-classes-enabled="true"
                           page-class="btn" page-class-normal="btn-secondary"
-                          page-class-selected="btn-primary"
+                          page-class-selected="btn-dark"
                           class="btn-group pull-right m-1">
     </coool-pagination-all>
+    <div>
+        <form asp-controller="Item" asp-action="ExportToXML" method="post">
+            <button class="btn btn-sm " name="buttonXML" value="Stations" style="background-color:steelblue;color:white">Export List to an XML File</button>
+        </form>
+    </div>
 }
 

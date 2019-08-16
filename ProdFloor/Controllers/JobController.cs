@@ -3041,7 +3041,7 @@ namespace ProdFloor.Controllers
                             }
                         }
                     }
-                    
+
                     if (int.Parse(jobtypeid) == 2)
                     {
 
@@ -3097,11 +3097,10 @@ namespace ProdFloor.Controllers
                             BackUpDisp = Boolean.Parse(backupdisp),
                             SHCRisers = Int32.Parse(shcrisers),
                             DoorOperatorID = Int32.Parse(dooroperatorid)
-
+                        });
+                    }
                     if (int.Parse(jobtypeid) == 2)
                     {
-
-
                         var XMLJobExtension = node.SelectSingleNode(".//jobextension");
                         var idEx = XMLJobExtension.SelectSingleNode(".//id").InnerText;
                         var jobid = XMLJobExtension.SelectSingleNode(".//jobid").InnerText;
