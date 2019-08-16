@@ -1,0 +1,617 @@
+﻿@model ProdFloor.Models.ViewModels.Job.JobSearchViewModel
+<div id="accordionSearch">
+    <div class="card">
+        <div class="card-header bg-dark text-center">
+            <div class="btn-group" style="float:left">
+                <!--Search and Clean-->
+                <button class="btn btn-dark" style="border-color:transparent" type="submit" value="Search"><i class="fa fa-search" aria-hidden="true"></i></button>
+                <button class="btn btn-dark" style="border-color:transparent" name="CleanFields" type="submit" value="true"><i class="fas fa-undo"></i></button>
+            </div>
+            <div class="btn-group">
+                <!--Header 1-->
+                <button type="button" id="headingJobInfo" class="btn btn-dark" style="border-color:transparent" data-toggle="collapse" data-target="#collapseJobInfo" aria-expanded="true" aria-controls="collapseJobInfo">
+                    <h6 class="mb-0 text-center"> Job Information</h6>
+                </button>
+                <!--Header 2-->
+                <button type="button" id="headingJobExt" class="btn btn-dark" style="border-color:transparent" data-toggle="collapse" data-target="#collapseJobExt" aria-expanded="true" aria-controls="collapseJobExt">
+                    <h6 class="mb-0 text-center"> Job Extension</h6>
+                </button>
+                <!--Header 3-->
+                <button type="button" id="headingHydro" class="btn btn-dark" style="border-color:transparent" data-toggle="collapse" data-target="#collapseHydro" aria-expanded="true" aria-controls="collapseHydro">
+                    <h6 class="mb-0 text-center"> HydroSpecific</h6>
+                </button>
+                <!--Header 4-->
+                <button type="button" id="headingGeneric" class="btn btn-dark" style="border-color:transparent" data-toggle="collapse" data-target="#collapseGeneric" aria-expanded="true" aria-controls="collapseGeneric">
+                    <h6 class="mb-0 text-center"> Generic Features</h6>
+                </button>
+                <!--Header 5-->
+                <button type="button" id="headingIndicators" class="btn btn-dark" style="border-color:transparent" data-toggle="collapse" data-target="#collapseIndicators" aria-expanded="true" aria-controls="collapseIndicators">
+                    <h6 class="mb-0 text-center">Indicators</h6>
+                </button>
+                <!--Header 6-->
+                <button type="button" id="headingHoist" class="btn btn-dark" style="border-color:transparent" data-toggle="collapse" data-target="#collapseHoist" aria-expanded="true" aria-controls="collapseHoist">
+                    <h6 class="mb-0 text-center">HoistWayData</h6>
+                </button>
+                <!--Header 7-->
+                <button type="button" id="headingSpecial" class="btn btn-dark" style="border-color:transparent" data-toggle="collapse" data-target="#collapseSpecial" aria-expanded="true" aria-controls="collapseSpecial">
+                    <h6 class="mb-0 text-center">Special Features</h6>
+                </button>
+            </div>
+
+        </div>
+
+        <!--Body 1-->
+        <div id="collapseJobInfo" class="collapse show" aria-labelledby="headingJobInfo" data-parent="#accordionSearch">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-3 border-right" style="padding-right:0px;margin-right:0px;padding-left:0px;margin-left:0px">
+                        <div class="form-group form-inline" style="margin-bottom:0px;">
+                            <label asp-for="NameJobSearch" class="col-sm-4 col-form-label"></label>
+                            <input type="text" class="form-control form-control-sm col-sm-7" asp-for="NameJobSearch">
+                        </div>
+                        <div class="form-group form-inline" style="margin-bottom:0px;">
+                            <label asp-for="Name2" class="col-sm-4 col-form-label"></label>
+                            <input type="text" class="form-control form-control-sm col-sm-7" asp-for="Name2">
+                        </div>
+                        <div class="form-group form-inline" style="margin-bottom:0px;">
+                            <label asp-for="ContractorJobSearch" class="col-sm-4 col-form-label"></label>
+                            <input type="text" class="form-control form-control-sm col-sm-7" asp-for="ContractorJobSearch">
+                        </div>
+                    </div>
+                    <div class="col-2 border-right" style="padding-right:0px;margin-right:0px;padding-left:0px;margin-left:0px">
+                        <div class="form-group form-inline" style="margin-bottom:0px;">
+                            <label asp-for="CountryID" class="col-sm-4 col-form-label"></label>
+                            <country-select id="CountryID" asp-for="CountryID" class="form-control form-control-sm col-7"></country-select>
+                        </div>
+                        <div class="form-group form-inline" style="margin-bottom:0px;">
+                            <label asp-for="StateID" class="col-sm-4 col-form-label"></label>
+                            <state-select id="StateID" asp-for="StateID" class="form-control form-control-sm col-7 "></state-select>
+                        </div>
+                        <div class="form-group form-inline" style="margin-bottom:0px;">
+                            <label asp-for="CityID" class="col-sm-4 col-form-label"></label>
+                            <city-select selected-value="@Model.CityID" class="form-control form-control-sm col-7" asp-for="CityID"></city-select>
+                        </div>
+                    </div>
+                    <div class="col-3 border-right" style="padding-right:0px;margin-right:0px;padding-left:0px;margin-left:0px">
+                        <div class="form-group form-inline" style="margin-bottom:0px;">
+                            <label asp-for="StatusJobSearch" class="col-sm-5 col-form-label"></label>
+                            <select asp-for="StatusJobSearch" class="form-control form-control-sm col-6" asp-items="Model.Status"><option value="">Select a Status</option></select>
+                        </div>
+                        <div class="form-group form-inline" style="margin-bottom:0px;">
+                            <label asp-for="JobTypeID" class="col-sm-5 col-form-label"></label>
+                            <job-type-in-job-select selected-value="@Model.JobTypeID" class="form-control form-control-sm col-6" asp-for="JobTypeID"></job-type-in-job-select>
+                        </div>
+                        <div class="form-group form-inline" style="margin-bottom:0px;">
+                            <label asp-for="FireCodeID" class="col-sm-5 col-form-label"></label>
+                            <fire-code-in-jobs-select selected-value="@Model.FireCodeID" class="form-control form-control-sm col-6" asp-for="FireCodeID"></fire-code-in-jobs-select>
+                        </div>
+                    </div>
+                    <div class="col-2 border-right" style="padding-right:0px;margin-right:0px;padding-left:0px;margin-left:0px">
+                        <div class="form-group form-inline" style="margin-bottom:0px;">
+                            <label asp-for="NumJobSearch" class="col-sm-6 col-form-label"></label>
+                            <input type="text" class="form-control form-control-sm col-sm-5" asp-for="NumJobSearch">
+                        </div>
+                        <div class="form-group form-inline" style="margin-bottom:0px;">
+                            <label asp-for="POJobSearch" class="col-sm-6 col-form-label"></label>
+                            <input type="text" class="form-control form-control-sm col-sm-5" asp-for="POJobSearch">
+                        </div>
+                        <div class="form-group form-inline" style="margin-bottom:0px;">
+                            <label asp-for="CustJobSearch" class="col-sm-6 col-form-label"></label>
+                            <input type="text" class="form-control form-control-sm col-sm-5" asp-for="CustJobSearch">
+                        </div>
+                    </div>
+                    <div class="col-2" style="padding-right:0px;margin-right:0px;padding-left:0px;margin-left:0px">
+                        <div class="form-group form-inline" style="margin-bottom:0px;">
+                            <label asp-for="EngID" class="col-sm-6 col-form-label"></label>
+                            <input type="text" class="form-control form-control-sm col-sm-4" asp-for="EngID">
+                        </div>
+                        <div class="form-group form-inline" style="margin-bottom:0px;">
+                            <label asp-for="CrossAppEngID" class="col-sm-6 col-form-label"></label>
+                            <input type="text" class="form-control form-control-sm col-sm-4" asp-for="CrossAppEngID">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!--Body 2-->
+        <div id="collapseJobExt" class="collapse " aria-labelledby="headingJobExt" data-parent="#accordionSearch">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-2 border-right">
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="InputFrecuency" class="col-sm-7 col-form-label"></label>
+                            <input type="text" class="form-control form-control-sm col-sm-4" asp-for="InputFrecuency">
+                        </div>
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="InputPhase" class="col-sm-7 col-form-label"></label>
+                            <input type="text" class="form-control form-control-sm col-sm-4" asp-for="InputPhase">
+                        </div>
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="InputVoltage" class="col-sm-7 col-form-label"></label>
+                            <input type="text" class="form-control form-control-sm col-sm-4" asp-for="InputVoltage">
+                        </div>
+                    </div>
+                    <div class="col-3 border-right">
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="NumOfStops" class="col-sm-8 col-form-label"></label>
+                            <input type="text" class="form-control form-control-sm col-sm-3" asp-for="NumOfStops">
+                        </div>
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="JobTypeAdd" class="col-sm-8 col-form-label"></label>
+                            <job-type-add-in-job-select selected-value="@Model.JobTypeAdd" class="form-control form-control-sm col-sm-3" asp-for="JobTypeAdd"></job-type-add-in-job-select>
+                        </div>
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="JobTypeMain" class="col-sm-8 col-form-label"></label>
+                            <job-type-maini-in-job-select selected-value="@Model.JobTypeMain" class="form-control form-control-sm col-sm-3" asp-for="JobTypeMain"></job-type-maini-in-job-select>
+                        </div>
+
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="Shc" class="col-sm-8 col-form-label"></label>
+                            <custom-select selected-value="@Model.Shc" class="form-control-sm form-control col-sm-3" asp-for="Shc" select-for="boolSearch"></custom-select>
+                        </div>
+                    </div>
+                    <div class="col-2 border-right">
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="AuxCop" class="col-sm-8 col-form-label"></label>
+                            <custom-select selected-value="@Model.AuxCop" class="form-control-sm form-control col-sm-3" asp-for="AuxCop" select-for="boolSearch"></custom-select>
+                        </div>
+
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="MechSafEdge" class="col-sm-8 col-form-label"></label>
+                            <custom-select selected-value="@Model.MechSafEdge" class="form-control-sm form-control col-sm-3" asp-for="MechSafEdge" select-for="boolSearch"></custom-select>
+                        </div>
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="Scop" class="col-sm-8 col-form-label"></label>
+                            <custom-select selected-value="@Model.Scop" class="form-control-sm form-control col-sm-3" asp-for="Scop" select-for="boolSearch"></custom-select>
+                        </div>
+                    </div>
+                    <div class="col-2 border-right">
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="CartopDoorButtons" class="col-sm-8 col-form-label"></label>
+                            <custom-select selected-value="@Model.CartopDoorButtons" class="form-control-sm form-control col-sm-3" asp-for="CartopDoorButtons" select-for="boolSearch"></custom-select>
+                        </div>
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="HeavyDoors" class="col-sm-8 col-form-label"></label>
+                            <custom-select selected-value="@Model.HeavyDoors" class="form-control-sm form-control col-sm-3" asp-for="HeavyDoors" select-for="boolSearch"></custom-select>
+                        </div>
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="DoorHold" class="col-sm-8 col-form-label"></label>
+                            <custom-select selected-value="@Model.DoorHold" class="form-control-sm form-control col-sm-3" asp-for="DoorHold" select-for="boolSearch"></custom-select>
+                        </div>
+                    </div>
+
+                    <div class="col-3 ">
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="DoorGate" class="col-sm-5 col-form-label"></label>
+                            <door-operator-style-select id="Style" asp-for="@Model.DoorGate" class="form-control form-control-sm col-sm-6">
+                            </door-operator-style-select>
+                        </div>
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="DoorBrand" class="col-sm-5 col-form-label"></label>
+
+                            <door-operator-brand-select id="Brand" asp-for="@Model.DoorBrand" class="form-control form-control-sm col-sm-6">
+                            </door-operator-brand-select>
+                            <br />
+                        </div>
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="DoorOperatorID" class="col-sm-5 col-form-label"></label>
+                            <door-operator-select id="DoorOperatorID" asp-for="@Model.DoorOperatorID" class="form-control form-control-sm col-sm-6">
+                            </door-operator-select>
+                            <br />
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+        <!--Body 3-->
+        <div id="collapseHydro" class="collapse" aria-labelledby="headingHydro" data-parent="#accordionSearch">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-2 border-right" >
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="FLA" class="col-sm-8 col-form-label"></label>
+                            <input type="text" class="form-control form-control-sm col-sm-3" asp-for="FLA">
+                        </div>
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="HP" class="col-sm-8 col-form-label"></label>
+                            <input type="text" class="form-control form-control-sm col-sm-3" asp-for="HP">
+                        </div>
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="MotorsNum" class="col-sm-8 col-form-label"></label>
+                            <input type="text" class="form-control form-control-sm col-sm-3" asp-for="MotorsNum">
+                        </div>
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="LifeJacket" class="col-sm-8 col-form-label"></label>
+                            <custom-select selected-value="@Model.LifeJacket" class="form-control-sm form-control col-sm-3" asp-for="LifeJacket" select-for="boolSearch"></custom-select>
+                        </div>
+                    </div>
+                    <div class="col-3 border-right" >
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="SPH" class="col-sm-7 col-form-label"></label>
+                            <input type="text" class="form-control form-control-sm col-sm-4" asp-for="NumOfStops">
+                        </div>
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="Starter" class="col-sm-7 col-form-label"></label>
+                            <custom-select selected-value="@Model.Starter" class="form-control form-control-sm col-sm-4" asp-for="Starter" select-for="Starter"></custom-select>
+                        </div>
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="ValveBrand" class="col-sm-7 col-form-label"></label>
+                            <valve-brandni-in-job-select selected-value="@Model.ValveBrand" class="form-control form-control-sm col-sm-4" asp-for="ValveBrand"></valve-brandni-in-job-select>
+                        </div>
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="Battery" class="col-sm-7 col-form-label"></label>
+                            <custom-select selected-value="@Model.Battery" class="form-control-sm form-control col-sm-4" asp-for="Battery" select-for="boolSearch"></custom-select>
+                        </div>
+                    </div>
+                    <div class="col-2 border-right">
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="LOS" class="col-sm-7 col-form-label"></label>
+                            <custom-select selected-value="@Model.LOS" class="form-control-sm form-control col-sm-3" asp-for="LOS" select-for="boolSearch"></custom-select>
+                        </div>
+
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="OilCool" class="col-sm-7 col-form-label"></label>
+                            <custom-select selected-value="@Model.OilCool" class="form-control-sm form-control col-sm-3" asp-for="OilCool" select-for="boolSearch"></custom-select>
+                        </div>
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="OilTank" class="col-sm-7 col-form-label"></label>
+                            <custom-select selected-value="@Model.OilTank" class="form-control-sm form-control col-sm-3" asp-for="OilTank" select-for="boolSearch"></custom-select>
+                        </div>
+                    </div>
+                    <div class="col-2 border-right">
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="PSS" class="col-sm-9 col-form-label"></label>
+                            <custom-select selected-value="@Model.PSS" class="form-control-sm form-control col-sm-3" asp-for="PSS" select-for="boolSearch"></custom-select>
+                        </div>
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="Resync" class="col-sm-9 col-form-label"></label>
+                            <custom-select selected-value="@Model.Resync" class="form-control-sm form-control col-sm-3" asp-for="Resync" select-for="boolSearch"></custom-select>
+                        </div>
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="VCI" class="col-sm-9 col-form-label"></label>
+                            <custom-select selected-value="@Model.VCI" class="form-control-sm form-control col-sm-3" asp-for="VCI" select-for="boolSearch"></custom-select>
+                        </div>
+
+                    </div>
+                    <div class="col-3" id="BatteryBrand" style="padding-right:0px;margin-right:0px;padding-left:5px;margin-left:5px">
+                        <div class="form-group form-inline" style="margin-bottom:0px;">
+                            <label asp-for="BatteryBrand" class="col-sm-4 col-form-label"></label>
+                            <custom-select id="OtherBatteryBrandSelected" selected-value="@Model.BatteryBrand" class="form-control form-control-sm col-sm-6" asp-for="BatteryBrand" select-for="Battery Brand"></custom-select>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!--Body 4-->
+        <div id="collapseGeneric" class="collapse " aria-labelledby="headingGeneric" data-parent="#accordionSearch">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-3 border-right">
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="INA" class="col-sm-8 col-form-label"></label>
+                            <custom-select selected-value="@Model.INA" class="form-control-sm form-control col-sm-3" asp-for="INA" select-for="boolSearch"></custom-select>
+                        </div>
+                        <div style="margin-left:10px;">
+                            <div class="form-group row" style="margin-bottom:0px;">
+                                <label asp-for="TopAccess" class="col-sm-8 col-form-label"></label>
+                                <custom-select selected-value="@Model.TopAccess" class="form-control-sm form-control col-sm-3" asp-for="TopAccess" select-for="boolSearch"></custom-select>
+                            </div>
+                            <div class="form-group row" style="margin-bottom:0px;margin-left:10px;">
+                                <label asp-for="TopAccessLocation" class="col-sm-8 col-form-label"></label>
+                                <indicators select-for="AccessSWLocation" selected-value="@Model.TopAccessLocation" class="form-control form-control-sm col-sm-3" asp-for="TopAccessLocation"></indicators>
+                            </div>
+                            <div class="form-group row" style="margin-bottom:0px;">
+                                <label asp-for="BottomAccess" class="col-sm-8 col-form-label"></label>
+                                <custom-select selected-value="@Model.BottomAccess" class="form-control-sm form-control col-sm-3" asp-for="BottomAccess" select-for="boolSearch"></custom-select>
+                            </div>
+                            <div class="form-group row" style="margin-bottom:0px;margin-left:10px;">
+                                <label asp-for="BottomAccessLocation" class="col-sm-8 col-form-label"></label>
+                                <indicators select-for="AccessSWLocation" selected-value="@Model.BottomAccessLocation" class="form-control form-control-sm col-sm-3" asp-for="BottomAccessLocation"></indicators>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-3 border-right">
+                        <div class="form-group row">
+                            <label asp-for="GovModel" class="col-sm-6 col-form-label"></label>
+                            <input type="text" class="form-control form-control-sm col-sm-5" asp-for="GovModel">
+                        </div>
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="Monitoring" class="col-sm-6 col-form-label"></label>
+                            <indicators select-for="Monitoring" selected-value="@Model.Monitoring" class="form-control form-control-sm col-sm-5" asp-for="Monitoring"></indicators>
+                        </div>
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="INCP" class="col-sm-8 col-form-label"></label>
+                            <custom-select selected-value="@Model.INCP" class="form-control-sm form-control col-sm-3" asp-for="INCP" select-for="boolSearch"></custom-select>
+                        </div>
+                        <div style="margin-left:15px;">
+                            <div id="INCPButtons" class="form-group row" style="margin-bottom:0px;">
+                                <label asp-for="INCPButtons" class="col-sm-8 col-form-label"></label>
+                                <indicators select-for="INCPButtons" selected-value="@Model.INCPButtons" class="form-control form-control-sm col-sm-3" asp-for="INCPButtons"></indicators>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-3 border-right">
+
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="SwitchStyle" class="col-sm-8 col-form-label"></label>
+                            <custom-select select-for="SwitchStyle" selected-value="@Model.SwitchStyle" class="form-control form-control-sm col-sm-3" asp-for="SwitchStyle"></custom-select>
+                        </div>
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="EP" class="col-sm-8 col-form-label"></label>
+                            <custom-select selected-value="@Model.EP" class="form-control-sm form-control col-sm-3" asp-for="EP" select-for="boolSearch"></custom-select>
+                        </div>
+                        <div style="margin-left:15px;">
+
+                            <div class="form-group row" style="margin-bottom:0px;">
+                                <label asp-for="EPContact" class="col-sm-8 col-form-label"></label>
+                                <indicators select-for="EPContact" selected-value="@Model.EPContact" class="form-control form-control-sm col-sm-3" asp-for="EPContact"></indicators>
+                            </div>
+                            <div class="form-group row" style="margin-bottom:0px;">
+                                <label asp-for="EPVoltage" class="col-sm-8 col-form-label"></label>
+                                <custom-select selected-value="@Model.EPVoltage" class="form-control-sm form-control col-sm-3" asp-for="EPVoltage" select-for="boolSearch"></custom-select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="EPCarsNumber" class="col-sm-8 col-form-label"></label>
+                            <indicators select-for="EPCars" selected-value="@Model.EPCarsNumber" class="form-control form-control-sm col-sm-3" asp-for="EPCarsNumber"></indicators>
+                        </div>
+
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="EPSelect" class="col-sm-8 col-form-label"></label>
+                            <custom-select selected-value="@Model.EPSelect" class="form-control-sm form-control col-sm-3" asp-for="EPSelect" select-for="boolSearch"></custom-select>
+                        </div>
+
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="PTI" class="col-sm-8 col-form-label"></label>
+                            <custom-select selected-value="@Model.PTI" class="form-control-sm form-control col-sm-3" asp-for="PTI" select-for="boolSearch"></custom-select>
+                        </div>
+                    </div>
+                </div>
+                <hr />
+                <div class="row">
+
+                    <div class="col-3">
+
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="CallEnable" class="col-sm-8 col-form-label"></label>
+                            <custom-select selected-value="@Model.CallEnable" class="form-control-sm form-control col-sm-3" asp-for="CallEnable" select-for="boolSearch"></custom-select>
+                        </div>
+                        <div style="margin-left:10px;">
+                            <div class="form-group row" style="margin-bottom:0px;">
+                                <label asp-for="CarKey" class="col-sm-8 col-form-label"></label>
+                                <custom-select selected-value="@Model.CarKey" class="form-control-sm form-control col-sm-3" asp-for="CarKey" select-for="boolSearch"></custom-select>
+                            </div>
+
+                            <div class="form-group row" style="margin-bottom:0px;">
+                                <label asp-for="CarCallRead" class="col-sm-8 col-form-label"></label>
+                                <custom-select selected-value="@Model.CarCallRead" class="form-control-sm form-control col-sm-3" asp-for="CarCallRead" select-for="boolSearch"></custom-select>
+                            </div>
+                            <div class="form-group row" style="margin-bottom:0px;">
+                                <label asp-for="CRO" class="col-sm-8 col-form-label"></label>
+                                <custom-select selected-value="@Model.CRO" class="form-control-sm form-control col-sm-3" asp-for="CRO" select-for="boolSearch"></custom-select>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="col-3 border-right">
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            &nbsp;
+                        </div>
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="HallKey" class="col-sm-8 col-form-label"></label>
+                            <custom-select selected-value="@Model.HallKey" class="form-control-sm form-control col-sm-3" asp-for="HallKey" select-for="boolSearch"></custom-select>
+                        </div>
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="HallCallRead" class="col-sm-8 col-form-label"></label>
+                            <custom-select selected-value="@Model.HallCallRead" class="form-control-sm form-control col-sm-3" asp-for="HallCallRead" select-for="boolSearch"></custom-select>
+                        </div>
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="HCRO" class="col-sm-8 col-form-label"></label>
+                            <custom-select selected-value="@Model.HCRO" class="form-control-sm form-control col-sm-3" asp-for="HCRO" select-for="boolSearch"></custom-select>
+                        </div>
+
+                    </div>
+
+                    <div class="col-3 border-right">
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="FRON2" class="col-sm-8 col-form-label"></label>
+                            <custom-select selected-value="@Model.FRON2" class="form-control-sm form-control col-sm-3" asp-for="FRON2" select-for="boolSearch"></custom-select>
+                        </div>
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="Attendant" class="col-sm-8 col-form-label"></label>
+                            <custom-select selected-value="@Model.Attendant" class="form-control-sm form-control col-sm-3" asp-for="Attendant" select-for="boolSearch"></custom-select>
+                        </div>
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="CTINSPST" class="col-sm-8 col-form-label"></label>
+                            <custom-select selected-value="@Model.CTINSPST" class="form-control-sm form-control col-sm-3" asp-for="CTINSPST" select-for="boolSearch"></custom-select>
+                        </div>
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="CarToLobby" class="col-sm-8 col-form-label"></label>
+                            <custom-select selected-value="@Model.CarToLobby" class="form-control-sm form-control col-sm-3" asp-for="CarToLobby" select-for="boolSearch"></custom-select>
+                        </div>
+
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="EQ" class="col-sm-8 col-form-label"></label>
+                            <custom-select selected-value="@Model.EQ" class="form-control-sm form-control col-sm-3" asp-for="EQ" select-for="boolSearch"></custom-select>
+                        </div>
+
+                    </div>
+                    <div class="col-3">
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="EMT" class="col-sm-8 col-form-label"></label>
+                            <custom-select selected-value="@Model.EMT" class="form-control-sm form-control col-sm-3" asp-for="EMT" select-for="boolSearch"></custom-select>
+                        </div>
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="FLO" class="col-sm-8 col-form-label"></label>
+                            <custom-select selected-value="@Model.FLO" class="form-control-sm form-control col-sm-3" asp-for="FLO" select-for="boolSearch"></custom-select>
+                        </div>
+
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="Hosp" class="col-sm-8 col-form-label"></label>
+                            <custom-select selected-value="@Model.Hosp" class="form-control-sm form-control col-sm-3" asp-for="Hosp" select-for="boolSearch"></custom-select>
+                        </div>
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="Ind" class="col-sm-8 col-form-label"></label>
+                            <custom-select selected-value="@Model.Ind" class="form-control-sm form-control col-sm-3" asp-for="Ind" select-for="boolSearch"></custom-select>
+                        </div>
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="LoadWeigher" class="col-sm-8 col-form-label"></label>
+                            <custom-select selected-value="@Model.LoadWeigher" class="form-control-sm form-control col-sm-3" asp-for="LoadWeigher" select-for="boolSearch"></custom-select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!--Body 5-->
+        <div id="collapseIndicators" class="collapse " aria-labelledby="headingIndicators" data-parent="#accordionSearch">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-3 border-right">
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="HallCallsVoltage" class="col-sm-8 col-form-label"></label>
+                            <indicators select-for="Volts_Value" selected-value="@Model.HallCallsVoltage" asp-for="HallCallsVoltage" class="form-control form-control-sm col-sm-3"></indicators>
+                        </div>
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="HallCallsVoltageType" class="col-sm-8 col-form-label"></label>
+                            <indicators select-for="Volts_Type" selected-value="@Model.HallCallsVoltageType" asp-for="HallCallsVoltageType" class="form-control form-control-sm col-sm-3"></indicators>
+                        </div>
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="HallCallsType" class="col-sm-8 col-form-label"></label>
+                            <indicators select-for="CallType" selected-value="@Model.HallCallsType" asp-for="HallCallsType" class="form-control form-control-sm col-sm-3"></indicators>
+                        </div>
+                    </div>
+                    <div class="col-3 border-right" >
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="CarLanterns" class="col-sm-8 col-form-label"></label>
+                            <custom-select selected-value="@Model.CarLanterns" class="form-control-sm form-control col-sm-3" asp-for="CarLanterns" select-for="boolSearch"></custom-select>
+                        </div>
+
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="CarCallsVoltage" class="col-sm-8 col-form-label"></label>
+                            <indicators select-for="Volts_Value" selected-value="@Model.CarCallsVoltage" asp-for="CarCallsVoltage" class="form-control form-control-sm col-sm-3"></indicators>
+                        </div>
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="CarCallsVoltageType" class="col-sm-8 col-form-label"></label>
+                            <indicators select-for="Volts_Type" selected-value="@Model.CarCallsVoltageType" asp-for="CarCallsVoltageType" class="form-control form-control-sm col-sm-3"></indicators>
+                        </div>
+                    </div>
+                    <div class="col-3 border-right">
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="VoiceAnnunciationPI" class="col-sm-8 col-form-label"></label>
+                            <custom-select selected-value="@Model.VoiceAnnunciationPI" class="form-control-sm form-control col-sm-3" asp-for="VoiceAnnunciationPI" select-for="boolSearch"></custom-select>
+                        </div>
+
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="IndicatorsVoltage" class="col-sm-8 col-form-label"></label>
+                            <volts select-for="Volts_Value" selected-value="@Model.IndicatorsVoltage" asp-for="IndicatorsVoltage" class="form-control form-control-sm col-sm-3"></volts>
+                        </div>
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="IndicatorsVoltageType" class="col-sm-8 col-form-label"></label>
+                            <indicators select-for="Volts_Type" selected-value="@Model.IndicatorsVoltageType" asp-for="IndicatorsVoltageType" class="form-control form-control-sm col-sm-3"></indicators>
+                        </div>
+                    </div>
+                    <div class="col-2 border-right">
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="HallLanterns" class="col-sm-8 col-form-label"></label>
+                            <custom-select selected-value="@Model.HallLanterns" class="form-control-sm form-control col-sm-3" asp-for="HallLanterns" select-for="boolSearch"></custom-select>
+                        </div>
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="HallPI" class="col-sm-8 col-form-label"></label>
+                            <custom-select selected-value="@Model.HallPI" class="form-control-sm form-control col-sm-3" asp-for="HallPI" select-for="boolSearch"></custom-select>
+                        </div>
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="PassingFloor" class="col-sm-8 col-form-label"></label>
+                            <custom-select selected-value="@Model.PassingFloor" class="form-control-sm form-control col-sm-3" asp-for="PassingFloor" select-for="boolSearch"></custom-select>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+        <!--Body 6-->
+        <div id="collapseHoist" class="collapse " aria-labelledby="headingHoist" data-parent="#accordionSearch">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-3 border-right" >
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="HoistWaysNumber" class="col-sm-7 col-form-label"></label>
+                            <input type="text" class="form-control form-control-sm col-sm-4" asp-for="HoistWaysNumber">
+                        </div>
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="MachineRooms" class="col-sm-7 col-form-label"></label>
+                            <input type="text" class="form-control form-control-sm col-sm-4" asp-for="MachineRooms">
+                        </div>
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="Capacity" class="col-sm-7 col-form-label"></label>
+                            <input type="text" class="form-control form-control-sm col-sm-4" asp-for="Capacity">
+                        </div>
+                    </div>
+                    <div class="col-3 border-right" >
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="UpSpeed" class="col-sm-6 col-form-label"></label>
+                            <input type="text" class="form-control form-control-sm col-sm-4" asp-for="UpSpeed">
+                        </div>
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="DownSpeed" class="col-sm-6 col-form-label"></label>
+                            <input type="text" class="form-control form-control-sm col-sm-4" asp-for="DownSpeed">
+                        </div>
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="LandingSystemID" class="col-sm-6 col-form-label"></label>
+                            <landing-sys-in-job-select selected-value="@Model.LandingSystemID" class="form-control form-control-sm col-sm-4" asp-for="LandingSystemID"></landing-sys-in-job-select>
+                        </div>
+                    </div>
+                    <div class="col-3 border-right" >
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="TopFloor" class="col-sm-7 col-form-label"></label>
+                            <input type="text" class="form-control form-control-sm col-sm-4" asp-for="TopFloor">
+                        </div>
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="FrontFloorOpenings" class="col-sm-7 col-form-label"></label>
+                            <input type="text" class="form-control form-control-sm col-sm-4" asp-for="FrontFloorOpenings">
+                        </div>
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="RearFloorOpenings" class="col-sm-7 col-form-label"></label>
+                            <input type="text" class="form-control form-control-sm col-sm-4" asp-for="RearFloorOpenings">
+                        </div>
+                    </div>
+                    <div class="col-2" >
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="AnyRear" class="col-sm-9 col-form-label"></label>
+                            <custom-select selected-value="@Model.AnyRear" class="form-control-sm form-control col-sm-3" asp-for="AnyRear" select-for="boolSearch"></custom-select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!--Body 7-->
+        <div id="collapseSpecial" class="collapse" aria-labelledby="headingSpecial" data-parent="#accordionSearch">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col" style="padding-right:0px;margin-right:0px;padding-left:0px;margin-left:0px">
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="Description" class="col-sm-1 col-form-label"></label>
+                            <input type="text" class="form-control form-control-sm col-sm-8" id="productName" asp-for="Description">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

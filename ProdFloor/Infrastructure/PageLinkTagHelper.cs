@@ -1248,7 +1248,9 @@ namespace ProdFloor.Infrastructure
 
 
 
+
         public string PageAction { get; set; }
+
 
         [HtmlAttributeName(DictionaryAttributePrefix = "page-url-")]
         public Dictionary<string, object> PageUrlValues { get; set; }
@@ -1274,6 +1276,7 @@ namespace ProdFloor.Infrastructure
         TagHelperOutput output)
         {
             if (!string.IsNullOrEmpty(CurrentModel))
+
             {
                 switch (CurrentModel)
                 {
@@ -2114,7 +2117,6 @@ namespace ProdFloor.Infrastructure
                 result.InnerHtml.AppendHtml(tag);
             }
             output.Content.AppendHtml(result.InnerHtml);
-            if (IsDisabled)
             {
                 var d = new TagHelperAttribute("disabled", "disabled");
                 output.Attributes.Add(d);

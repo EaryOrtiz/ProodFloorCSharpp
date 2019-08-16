@@ -793,7 +793,7 @@ namespace ProdFloor.Controllers
 
                     HtmlDocument doc = new HtmlDocument();
 
-                    doc.Load(@"C:\Users\\Administrator\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\WireTypesSizes.xml");
+                    doc.Load(@"C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\WireTypesSizes.xml");
 
                     var XMLobs = doc.DocumentNode.SelectNodes("//wiretypessize");
 
@@ -975,7 +975,7 @@ namespace ProdFloor.Controllers
                 case "State":
                     HtmlDocument doc2 = new HtmlDocument();
 
-                    doc2.Load(@"C:\Users\\Administrator\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\States.xml");
+                    doc2.Load(@"C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\States.xml");
                     var XMLobs2 = doc2.DocumentNode.SelectNodes("//state");
 
                     if (context.Countries.Any())

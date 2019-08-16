@@ -1866,7 +1866,7 @@ namespace ProdFloor.Controllers
             if (!string.IsNullOrEmpty(searchViewModel.Starter)) jobSearchRepo = jobSearchRepo.Where(s => s._HydroSpecific.Starter.Contains(searchViewModel.Starter));
             if (!string.IsNullOrEmpty(searchViewModel.ValveBrand)) jobSearchRepo = jobSearchRepo.Where(s => s._HydroSpecific.ValveBrand.Equals(searchViewModel.ValveBrand));
 
-            if (!string.IsNullOrEmpty(searchViewModel.Battery)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.Battery == "Si" ? s._HydroSpecific.Battery == true : s._HydroSpecific.Battery == false);
+            //if (!string.IsNullOrEmpty(searchViewModel.Battery)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.Battery == "Si" ? s._HydroSpecific.Battery == true : s._HydroSpecific.Battery == false);
             if (!string.IsNullOrEmpty(searchViewModel.LOS)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.LOS == "Si" ? s._HydroSpecific.LOS == true : s._HydroSpecific.LOS == false);
             if (!string.IsNullOrEmpty(searchViewModel.LifeJacket)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.LifeJacket == "Si" ? s._HydroSpecific.LifeJacket == true : s._HydroSpecific.LifeJacket == false);
             if (!string.IsNullOrEmpty(searchViewModel.OilCool)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.OilCool == "Si" ? s._HydroSpecific.OilCool == true : s._HydroSpecific.OilCool == false);
@@ -2050,7 +2050,7 @@ namespace ProdFloor.Controllers
             }
 
         }
-        
+
         [HttpPost]
         public FileStreamResult ExportUniqueJobToXML(int ID)
         {
@@ -3041,7 +3041,7 @@ namespace ProdFloor.Controllers
                             }
                         }
                     }
-
+                    
                     if (int.Parse(jobtypeid) == 2)
                     {
 
@@ -3098,6 +3098,61 @@ namespace ProdFloor.Controllers
                             SHCRisers = Int32.Parse(shcrisers),
                             DoorOperatorID = Int32.Parse(dooroperatorid)
 
+                    if (int.Parse(jobtypeid) == 2)
+                    {
+
+
+                        var XMLJobExtension = node.SelectSingleNode(".//jobextension");
+                        var idEx = XMLJobExtension.SelectSingleNode(".//id").InnerText;
+                        var jobid = XMLJobExtension.SelectSingleNode(".//jobid").InnerText;
+                        var numofstops = XMLJobExtension.SelectSingleNode(".//numofstops").InnerText;
+                        var jobtypemain = XMLJobExtension.SelectSingleNode(".//jobtypemain").InnerText;
+                        var jobtypeadd = XMLJobExtension.SelectSingleNode(".//jobtypeadd").InnerText;
+                        var inputvoltage = XMLJobExtension.SelectSingleNode(".//inputvoltage").InnerText;
+                        var inputphase = XMLJobExtension.SelectSingleNode(".//inputphase").InnerText;
+                        var inputfrecuency = XMLJobExtension.SelectSingleNode(".//inputfrecuency").InnerText;
+                        var doorgate = XMLJobExtension.SelectSingleNode(".//doorgate").InnerText;
+                        var doorhoist = XMLJobExtension.SelectSingleNode(".//doorhoist").InnerText;
+                        var infdetector = XMLJobExtension.SelectSingleNode(".//infdetector").InnerText;
+                        var mechsafedge = XMLJobExtension.SelectSingleNode(".//mechsafedge").InnerText;
+                        var heavydoors = XMLJobExtension.SelectSingleNode(".//heavydoors").InnerText;
+                        var cartopdoorbuttons = XMLJobExtension.SelectSingleNode(".//cartopdoorbuttons").InnerText;
+                        var doorhold = XMLJobExtension.SelectSingleNode(".//doorhold").InnerText;
+                        var nudging = XMLJobExtension.SelectSingleNode(".//nudging").InnerText;
+                        var scop = XMLJobExtension.SelectSingleNode(".//scop").InnerText;
+                        var shc = XMLJobExtension.SelectSingleNode(".//shc").InnerText;
+                        var shcrisers = XMLJobExtension.SelectSingleNode(".//shcrisers").InnerText;
+                        var auxcop = XMLJobExtension.SelectSingleNode(".//auxcop").InnerText;
+                        var dooroperatorid = XMLJobExtension.SelectSingleNode(".//dooroperatorid").InnerText;
+                        var swingop = XMLJobExtension.SelectSingleNode(".//swingop").InnerText;
+                        var backupdisp = XMLJobExtension.SelectSingleNode(".//backupdisp").InnerText;
+                        var altris = XMLJobExtension.SelectSingleNode(".//altris").InnerText;
+                        context.JobsExtensions.Add(new JobExtension
+                        {
+                            JobExtensionID = Int32.Parse(idEx),
+                            JobID = Int32.Parse(jobid),
+                            NumOfStops = Int32.Parse(numofstops),
+                            JobTypeMain = jobtypemain,
+                            JobTypeAdd = jobtypeadd,
+                            InputVoltage = Int32.Parse(inputvoltage),
+                            InputPhase = Int32.Parse(inputphase),
+                            InputFrecuency = Int32.Parse(inputfrecuency),
+                            DoorGate = doorgate,
+                            DoorHoist = doorhoist,
+                            InfDetector = Boolean.Parse(infdetector),
+                            MechSafEdge = Boolean.Parse(mechsafedge),
+                            HeavyDoors = Boolean.Parse(heavydoors),
+                            CartopDoorButtons = Boolean.Parse(cartopdoorbuttons),
+                            DoorHold = Boolean.Parse(doorhold),
+                            Nudging = Boolean.Parse(nudging),
+                            SCOP = Boolean.Parse(scop),
+                            SHC = Boolean.Parse(shc),
+                            AUXCOP = Boolean.Parse(auxcop),
+                            SwingOp = Boolean.Parse(swingop),
+                            AltRis = Boolean.Parse(altris),
+                            BackUpDisp = Boolean.Parse(backupdisp),
+                            SHCRisers = Int32.Parse(shcrisers),
+                            DoorOperatorID = Int32.Parse(dooroperatorid)
                         });
                         context.Database.OpenConnection();
                         try
@@ -3110,9 +3165,6 @@ namespace ProdFloor.Controllers
                         {
                             context.Database.CloseConnection();
                         }
-
-
-
 
                         var XMLHydro = node.SelectSingleNode(".//hydrospecific");
                         var idHidro = XMLHydro.SelectSingleNode(".//id").InnerText;
@@ -3341,7 +3393,6 @@ namespace ProdFloor.Controllers
                             context.Database.CloseConnection();
                         }
 
-
                         var XMLHoist = node.SelectSingleNode(".//hoistwaydata");
                         var idHoist = XMLHoist.SelectSingleNode(".//id").InnerText;
                         var hoistwaysnumber = XMLHoist.SelectSingleNode(".//hoistwaysnumber").InnerText;
@@ -3440,7 +3491,8 @@ namespace ProdFloor.Controllers
                             context.Database.CloseConnection();
                         }
                     }
-                    else if (int.Parse(jobtypeid) == 1 || int.Parse(jobtypeid) == 5)
+
+                    else if(int.Parse(jobtypeid) == 1 || int.Parse(jobtypeid) == 5)
                     {
                         var xmlElement = node.SelectSingleNode(".//element");
                         var idElm = xmlElement.SelectSingleNode(".//id").InnerText;
@@ -3489,7 +3541,8 @@ namespace ProdFloor.Controllers
                         var dhld = xmlElement.SelectSingleNode(".//dhld").InnerText;
                         context.Elements.Add(new Element
                         {
-                            ElementID = Int32.Parse(idElm),
+
+                            ElementID =  Int32.Parse(idElm),
                             JobID = Int32.Parse(jobid),
 
                             DoorOperatorID = Int32.Parse(dooroperatorid),
@@ -3678,15 +3731,12 @@ namespace ProdFloor.Controllers
         }
 
 
-
         [HttpPost]
         public IActionResult SeedXML(string buttonImportXML)
         {
             JobController.ImportXML(HttpContext.RequestServices, buttonImportXML);
             return RedirectToAction(nameof(List));
         }
-
-
 
         public string JobTypeName(int ID)
         {

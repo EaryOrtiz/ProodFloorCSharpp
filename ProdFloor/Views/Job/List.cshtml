@@ -10,14 +10,14 @@
 </div>
 <br />
 <div class="btn-group" style="padding-right:50px;">
-    <a class="btn btn-info col-sm-" asp-action="JobSearchList" asp-controller="Job" style="padding-top:10px;min-width:100px">
+    <a class="btn btn-dark col-sm-" asp-action="JobSearchList" asp-controller="Job" style="padding-top:10px;min-width:100px">
         <i class="fa fa-search" aria-hidden="true"></i>
         Job Search List
     </a>
     <div class="text-center">
         <div class="btn-group text-center">
             <form asp-action="NewJob" asp-controller="Job" method="get">
-                <button type="button" class="btn btn-success dropdown-toggle" style="padding-top:10px;min-width:100px" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <button type="button" class="btn dropdown-toggle" style="padding-top:10px;min-width:100px;background-color:dodgerblue;color:white" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="fa fa-plus"></i>Add New Job
                 </button>
                 <div class="dropdown-menu">
@@ -45,17 +45,16 @@
     @Html.Partial("JobSummary", j)
 }
 
-
       <coool-pagination-all page-model="@Model.PagingInfo" page-action="List" page-classes-enabled="true"
                             page-class="btn" page-class-normal="btn-secondary"
-                            page-class-selected="btn-primary"
+                            page-class-selected="btn-dark"
                             class="btn-group pull-right m-1">
       </coool-pagination-all>
 @if (Model.Jobs.Count() > 0)
 {
     <div>
         <form asp-controller="Job" asp-action="ExportJobToXML" method="post">
-            <button class="btn btn-sm" name="buttonXML" value="All" style="background-color:#DF0174;color:white">Export All Jobs to an XML File</button>
+            <button class="btn btn-sm" name="buttonXML" value="All" style="background-color:steelblue;color:white">Export All Jobs to an XML File</button>
         </form>
     </div>
 }
