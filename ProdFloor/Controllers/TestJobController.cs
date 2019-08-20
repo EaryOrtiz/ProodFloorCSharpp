@@ -462,7 +462,7 @@ namespace ProdFloor.Controllers
                     List<StepsForJob> OldStepsForJob = testingRepo.StepsForJobs.Where(m => m.TestJobID == testJobView.TestJob.TestJobID).ToList();
                     if (OldStepsForJob.Count > 0)
                     {
-                        List<StepsForJob> NewStepsForJob = StepsForJobList(testJobView);
+                        List<StepsForJob> NewStepsForJob = MakeStepsForJobList(testJobView);
 
                         foreach (StepsForJob OldStep in OldStepsForJob)
                         {
@@ -484,7 +484,7 @@ namespace ProdFloor.Controllers
                     }
                     else
                     {
-                        foreach (StepsForJob step in StepsForJobList(testJobView))
+                        foreach (StepsForJob step in MakeStepsForJobList(testJobView))
                         {
                             if (step != null) testingRepo.SaveStepsForJob(step);
                         }
@@ -799,7 +799,7 @@ namespace ProdFloor.Controllers
         }
 
 
-        public List<StepsForJob> StepsForJobList(TestJobViewModel testJobView)
+        public List<StepsForJob> MakeStepsForJobList(TestJobViewModel testJobView)
         {
             List<StepsForJob> steps = new List<StepsForJob>();
             //guarda la lista de features
