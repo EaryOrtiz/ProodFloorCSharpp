@@ -21,7 +21,7 @@ namespace ProdFloor
 
         public IConfiguration Configuration { get; }
 
-        public void ConfigureServices(IServiceCollection services)
+        public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(
@@ -60,6 +60,11 @@ namespace ProdFloor
             {
                 options.ForwardClientCertificate = false;
             });
+
+            // Build the intermediate service provider
+            var serviceProvider = services.BuildServiceProvider();
+            //return the provider
+            return serviceProvider;
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)

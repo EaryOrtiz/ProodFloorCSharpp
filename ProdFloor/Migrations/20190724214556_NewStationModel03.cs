@@ -8,13 +8,16 @@ namespace ProdFloor.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            /*
             migrationBuilder.DropForeignKey(
                 name: "FK_TestJobs_Stations_StationID",
                 table: "TestJobs");
-
+                */
+                /*
             migrationBuilder.DropIndex(
                 name: "IX_TestJobs_StationID",
                 table: "TestJobs");
+                */
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
