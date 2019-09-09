@@ -12640,7 +12640,7 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\KDMIIPFS\\.nuget\\packages\\": {},
+    "C:\\Users\\Eary.Ortiz\\.nuget\\packages\\": {},
     "C:\\Microsoft\\Xamarin\\NuGet\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
@@ -12650,7 +12650,7 @@
       "projectUniqueName": "C:\\Users\\Eary.Ortiz\\Documents\\GitHub\\ProodFloorCSharpp\\ProdFloor\\ProdFloor.csproj",
       "projectName": "ProdFloor",
       "projectPath": "C:\\Users\\Eary.Ortiz\\Documents\\GitHub\\ProodFloorCSharpp\\ProdFloor\\ProdFloor.csproj",
-      "packagesPath": "C:\\Users\\KDMIIPFS\\.nuget\\packages\\",
+      "packagesPath": "C:\\Users\\Eary.Ortiz\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\Eary.Ortiz\\Documents\\GitHub\\ProodFloorCSharpp\\ProdFloor\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
@@ -12658,7 +12658,7 @@
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\KDMIIPFS\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Eary.Ortiz\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
       ],

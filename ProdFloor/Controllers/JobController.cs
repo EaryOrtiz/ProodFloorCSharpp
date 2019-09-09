@@ -2961,7 +2961,7 @@ namespace ProdFloor.Controllers
             if (buttonImportXML == "All")
             {
                 HtmlDocument doc = new HtmlDocument();
-                doc.Load(@"C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\Jobs.xml");
+                doc.Load(@"C:\ProdFloorNew90\wwwroot\AppData\Jobs.xml");
 
                 var XMLJobs = doc.DocumentNode.SelectSingleNode("//jobs");
                 var XMLJob = XMLJobs.SelectNodes(".//job");
@@ -3097,61 +3097,7 @@ namespace ProdFloor.Controllers
                             BackUpDisp = Boolean.Parse(backupdisp),
                             SHCRisers = Int32.Parse(shcrisers),
                             DoorOperatorID = Int32.Parse(dooroperatorid)
-                        });
-                    }
-                    if (int.Parse(jobtypeid) == 2)
-                    {
-                        var XMLJobExtension = node.SelectSingleNode(".//jobextension");
-                        var idEx = XMLJobExtension.SelectSingleNode(".//id").InnerText;
-                        var jobid = XMLJobExtension.SelectSingleNode(".//jobid").InnerText;
-                        var numofstops = XMLJobExtension.SelectSingleNode(".//numofstops").InnerText;
-                        var jobtypemain = XMLJobExtension.SelectSingleNode(".//jobtypemain").InnerText;
-                        var jobtypeadd = XMLJobExtension.SelectSingleNode(".//jobtypeadd").InnerText;
-                        var inputvoltage = XMLJobExtension.SelectSingleNode(".//inputvoltage").InnerText;
-                        var inputphase = XMLJobExtension.SelectSingleNode(".//inputphase").InnerText;
-                        var inputfrecuency = XMLJobExtension.SelectSingleNode(".//inputfrecuency").InnerText;
-                        var doorgate = XMLJobExtension.SelectSingleNode(".//doorgate").InnerText;
-                        var doorhoist = XMLJobExtension.SelectSingleNode(".//doorhoist").InnerText;
-                        var infdetector = XMLJobExtension.SelectSingleNode(".//infdetector").InnerText;
-                        var mechsafedge = XMLJobExtension.SelectSingleNode(".//mechsafedge").InnerText;
-                        var heavydoors = XMLJobExtension.SelectSingleNode(".//heavydoors").InnerText;
-                        var cartopdoorbuttons = XMLJobExtension.SelectSingleNode(".//cartopdoorbuttons").InnerText;
-                        var doorhold = XMLJobExtension.SelectSingleNode(".//doorhold").InnerText;
-                        var nudging = XMLJobExtension.SelectSingleNode(".//nudging").InnerText;
-                        var scop = XMLJobExtension.SelectSingleNode(".//scop").InnerText;
-                        var shc = XMLJobExtension.SelectSingleNode(".//shc").InnerText;
-                        var shcrisers = XMLJobExtension.SelectSingleNode(".//shcrisers").InnerText;
-                        var auxcop = XMLJobExtension.SelectSingleNode(".//auxcop").InnerText;
-                        var dooroperatorid = XMLJobExtension.SelectSingleNode(".//dooroperatorid").InnerText;
-                        var swingop = XMLJobExtension.SelectSingleNode(".//swingop").InnerText;
-                        var backupdisp = XMLJobExtension.SelectSingleNode(".//backupdisp").InnerText;
-                        var altris = XMLJobExtension.SelectSingleNode(".//altris").InnerText;
-                        context.JobsExtensions.Add(new JobExtension
-                        {
-                            JobExtensionID = Int32.Parse(idEx),
-                            JobID = Int32.Parse(jobid),
-                            NumOfStops = Int32.Parse(numofstops),
-                            JobTypeMain = jobtypemain,
-                            JobTypeAdd = jobtypeadd,
-                            InputVoltage = Int32.Parse(inputvoltage),
-                            InputPhase = Int32.Parse(inputphase),
-                            InputFrecuency = Int32.Parse(inputfrecuency),
-                            DoorGate = doorgate,
-                            DoorHoist = doorhoist,
-                            InfDetector = Boolean.Parse(infdetector),
-                            MechSafEdge = Boolean.Parse(mechsafedge),
-                            HeavyDoors = Boolean.Parse(heavydoors),
-                            CartopDoorButtons = Boolean.Parse(cartopdoorbuttons),
-                            DoorHold = Boolean.Parse(doorhold),
-                            Nudging = Boolean.Parse(nudging),
-                            SCOP = Boolean.Parse(scop),
-                            SHC = Boolean.Parse(shc),
-                            AUXCOP = Boolean.Parse(auxcop),
-                            SwingOp = Boolean.Parse(swingop),
-                            AltRis = Boolean.Parse(altris),
-                            BackUpDisp = Boolean.Parse(backupdisp),
-                            SHCRisers = Int32.Parse(shcrisers),
-                            DoorOperatorID = Int32.Parse(dooroperatorid)
+
                         });
                         context.Database.OpenConnection();
                         try
@@ -3164,6 +3110,9 @@ namespace ProdFloor.Controllers
                         {
                             context.Database.CloseConnection();
                         }
+
+
+
 
                         var XMLHydro = node.SelectSingleNode(".//hydrospecific");
                         var idHidro = XMLHydro.SelectSingleNode(".//id").InnerText;
@@ -3392,6 +3341,7 @@ namespace ProdFloor.Controllers
                             context.Database.CloseConnection();
                         }
 
+
                         var XMLHoist = node.SelectSingleNode(".//hoistwaydata");
                         var idHoist = XMLHoist.SelectSingleNode(".//id").InnerText;
                         var hoistwaysnumber = XMLHoist.SelectSingleNode(".//hoistwaysnumber").InnerText;
@@ -3490,8 +3440,7 @@ namespace ProdFloor.Controllers
                             context.Database.CloseConnection();
                         }
                     }
-
-                    else if(int.Parse(jobtypeid) == 1 || int.Parse(jobtypeid) == 5)
+                    else if (int.Parse(jobtypeid) == 1 || int.Parse(jobtypeid) == 5)
                     {
                         var xmlElement = node.SelectSingleNode(".//element");
                         var idElm = xmlElement.SelectSingleNode(".//id").InnerText;
@@ -3540,8 +3489,7 @@ namespace ProdFloor.Controllers
                         var dhld = xmlElement.SelectSingleNode(".//dhld").InnerText;
                         context.Elements.Add(new Element
                         {
-
-                            ElementID =  Int32.Parse(idElm),
+                            ElementID = Int32.Parse(idElm),
                             JobID = Int32.Parse(jobid),
 
                             DoorOperatorID = Int32.Parse(dooroperatorid),
@@ -3583,6 +3531,7 @@ namespace ProdFloor.Controllers
                             EQ = Boolean.Parse(eq),
                             LJ = Boolean.Parse(lj),
                             DHLD = Boolean.Parse(dhld),
+                            LandingSystemID = 5,
 
                         });
                         context.Database.OpenConnection();
@@ -3611,7 +3560,7 @@ namespace ProdFloor.Controllers
                             {
                                 ElementHydroID = Int32.Parse(idElmh),
                                 JobID = Int32.Parse(jobid),
-
+                                
                                 Starter = starter,
                                 HP = float.Parse(hp),
                                 FLA = float.Parse(fla),
@@ -3728,6 +3677,7 @@ namespace ProdFloor.Controllers
             }
 
         }
+
 
 
         [HttpPost]
