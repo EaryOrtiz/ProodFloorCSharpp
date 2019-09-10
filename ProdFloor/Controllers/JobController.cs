@@ -1791,7 +1791,7 @@ namespace ProdFloor.Controllers
             return user;
         }
 
-        public async Task<IActionResult> JobSearchList(JobSearchViewModel searchViewModel, int jobPage = 1)
+        public async Task<IActionResult> JobSearchList(JobSearchViewModel searchViewModel, int page = 1)
         {
             if (searchViewModel.CleanFields) return RedirectToAction("JobSearchList");
 
@@ -1960,16 +1960,14 @@ namespace ProdFloor.Controllers
             #endregion
 
             int TotalItemsSearch = jobSearchRepo.Count() + 1;
-            JobSearchViewModel jobSearch = new JobSearchViewModel
+            JobSearchViewModel jobSearch = new JobSearchViewModel();
+            jobSearch.Status = new SelectList(statusQuery.Distinct().ToList());
+            jobSearch.JobsSearchList = jobSearchRepo.OrderBy(p => p.JobID).Skip((page - 1) * 17).Take(17).ToList();
+            jobSearch.PagingInfo = new PagingInfo
             {
-                Status = new SelectList(statusQuery.Distinct().ToList()),
-                JobsSearchList = jobSearchRepo.OrderBy(p => p.JobID).Skip((jobPage - 1) * 10).Take(TotalItemsSearch).ToList(),
-                PagingInfo = new PagingInfo
-                {
-                    CurrentPage = jobPage,
-                    ItemsPerPage = 10,
-                    TotalItems = TotalItemsSearch
-                },
+                CurrentPage = page,
+                ItemsPerPage = 17,
+                TotalItems = TotalItemsSearch
             };
 
             return View(jobSearch);
@@ -2961,7 +2959,7 @@ namespace ProdFloor.Controllers
             if (buttonImportXML == "All")
             {
                 HtmlDocument doc = new HtmlDocument();
-                doc.Load(@"C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\Jobs.xml");
+                doc.Load(@"C:\ProodFloorCSharppNew90\ProdFloor\wwwroot\AppData\Jobs.xml");
 
                 var XMLJobs = doc.DocumentNode.SelectSingleNode("//jobs");
                 var XMLJob = XMLJobs.SelectNodes(".//job");

@@ -333,7 +333,7 @@ namespace ProdFloor.Controllers
 
 
             HtmlDocument doc = new HtmlDocument();
-            doc.Load(@"C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\Steps.xml");
+            doc.Load(@"C:\ProdFloorBeta\ProdFloor\wwwroot\AppData\Steps.xml");
 
             var ALLSteps = doc.DocumentNode.SelectSingleNode("//allsteps");
 

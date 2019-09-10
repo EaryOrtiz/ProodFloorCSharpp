@@ -18,9 +18,7 @@
 </div>
 <br />
 <form asp-controller="Job" asp-action="JobSearchList" method="get">
-
     @Html.Partial("JobSearchForm", Model)
-
 </form>
 <br />
 <br />
@@ -33,12 +31,15 @@
     {
         @Html.Partial("SearchJobSummary", j)
     }
-    <coool-pagination-all page-model="@Model.PagingInfo" page-action="JobSearchList" page-classes-enabled="true"
-                          page-class="btn" page-class-normal="btn-secondary"
+    <!--
+        <coool-pagination-all page-model="@Model.PagingInfo" page-action="JobSearchList" page-classes-enabled="true"
+                          page-class="btn" page-class-normal="btn-secondary" job-search-view-model="@Model"
                           page-class-selected="btn-dark"
                           class="btn-group pull-right m-1">
     </coool-pagination-all>
+    -->
 }
+
 
 <script type="text/javascript">
     $("#Battery").ready(function () {
