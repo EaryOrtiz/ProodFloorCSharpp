@@ -296,3 +296,9 @@ __pycache__/
 /Obsolete/Views_Job_Obsolete
 ProdFloor/obj/Debug/netcoreapp2.0/ProdFloor.csproj.FileListAbsolute.txt
 ProdFloor/appsettings.json
+ProdFloor/obj/project.assets.json
+ProdFloor/obj/ProdFloor.csproj.nuget.cache
+ProdFloor/obj/project.assets.json
+ProdFloor/obj/ProdFloor.csproj.nuget.g.props
+ProdFloor/obj/ProdFloor.csproj.nuget.cache
+ProdFloor/obj/project.assets.json
