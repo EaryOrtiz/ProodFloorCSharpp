@@ -680,7 +680,7 @@ namespace ProdFloor.Controllers
 
             var auxtStepsPerStageInfo = AllStepsForJobInfo.Where(m => m.Stage == stepInfo.Stage).ToList();
             int StepsPerStage = auxtStepsPerStageInfo.Count();
-            int auxtStepsPerStage = StepsForJobList.Where(m => auxtStepsPerStageInfo.Any(s => s.StepID == m.StepID)).Where(m => m.Complete == true).Count() + 1;
+            int auxtStepsPerStage = auxtStepsPerStageInfo.IndexOf(stepInfo) +1;
 
             return View("StepsForJob", new TestJobViewModel
             {
