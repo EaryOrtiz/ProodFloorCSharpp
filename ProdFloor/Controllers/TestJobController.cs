@@ -102,32 +102,46 @@ namespace ProdFloor.Controllers
         }
 
         [HttpPost]
-        public IActionResult SearchTestJob(TestJobViewModel viewModel, int page = 1)
+        public IActionResult SearchTestJob(TestJobViewModel viewModel,string jobnumb, int page = 1)
         {
+            if (viewModel.Job.JobNum != 0) jobnumb = viewModel.Job.JobNum.ToString();
+
+            List<TestJob> testJobsInCompleted = new List<TestJob>();
+            List<TestJob> testJobsCompleted = new List<TestJob>();
             List<TestJob> testJobsList = new List<TestJob>();
             List<Job> jobList = jobRepo.Jobs.Where(m => m.JobNum == viewModel.Job.JobNum).ToList();
+
+
             foreach (Job job in jobList)
             {
                 TestJob TestjobAux = testingRepo.TestJobs.FirstOrDefault(m => m.JobID == job.JobID);
                 if (TestjobAux != null) testJobsList.Add(TestjobAux);
             }
 
+            if (testJobsList != null && testJobsList.Count > 0)
+            {
+                testJobsInCompleted = testJobsList
+                 .Where(m => m.Status != "Completed").ToList();
+
+                testJobsCompleted = testJobsList
+                    .Where(m => m.Status == "Completed").ToList();
+            }
+
+            if(testJobsInCompleted == null || viewModel.Clean == true || jobnumb == "0") testJobsInCompleted = testingRepo.TestJobs.Where(m => m.Status != "Completed").ToList();
+
+            if (testJobsCompleted == null || viewModel.Clean == true || jobnumb == "0") testJobsCompleted = testingRepo.TestJobs.Where(m => m.Status == "Completed").ToList();
+
+
             TestJobViewModel testJobView = new TestJobViewModel
             {
-                TestJobList = testJobsList
-               .OrderBy(p => p.TechnicianID)
-               .Skip((page - 1) * 10)
-               .Take(10).ToList(),
-                TestJobCompletedList = testingRepo.TestJobs
-                .Where(m => m.Status == "Completed")
-               .OrderBy(p => p.TechnicianID)
-               .Skip((page - 1) * 10)
-               .Take(10).ToList(),
-                TestJobIncompletedList = testingRepo.TestJobs
-                .Where(m => m.Status != "Completed")
-               .OrderBy(p => p.TechnicianID)
-               .Skip((page - 1) * 10)
-               .Take(10).ToList(),
+                TestJobCompletedList = testJobsCompleted
+                    .OrderBy(p => p.TechnicianID)
+                    .Skip((page - 1) * 10)
+                    .Take(10).ToList(),
+                TestJobIncompletedList = testJobsInCompleted
+                    .OrderBy(p => p.TechnicianID)
+                    .Skip((page - 1) * 10)
+                    .Take(10).ToList(),
                 JobList = jobRepo.Jobs.ToList(),
                 StationsList = testingRepo.Stations.ToList(),
                 StepList = testingRepo.Steps.ToList(),
@@ -136,6 +150,7 @@ namespace ProdFloor.Controllers
                 PagingInfo = new PagingInfo
                 {
                     CurrentPage = page,
+                    JobNumb = jobnumb,
                     ItemsPerPage = 10,
                     TotalItems = testJobsList.Count()
                 },
@@ -143,13 +158,15 @@ namespace ProdFloor.Controllers
                 {
                     CurrentPage = page,
                     ItemsPerPage = 10,
-                    TotalItems = testingRepo.TestJobs.Where(m => m.Status == "Completed").Count()
+                    JobNumb = jobnumb,
+                    TotalItems = testJobsCompleted.Count()
                 },
                 PagingInfoIncompleted = new PagingInfo
                 {
                     CurrentPage = page,
                     ItemsPerPage = 10,
-                    TotalItems = testingRepo.TestJobs.Where(m => m.Status != "Completed").Count()
+                    JobNumb = jobnumb,
+                    TotalItems = testJobsInCompleted.Count()
                 },
             
              };

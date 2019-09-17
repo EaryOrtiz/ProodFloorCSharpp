@@ -20,9 +20,14 @@
 
         <input type="text" class="form-control form-control-sm col-5" asp-for="Job.JobNum" id="JobNum" placeholder=" Please enter a Job Number">
         <div class="input-group-append">
-            <button class="btn btn-dark" type="submit" value="Search">
-                <i class="fa fa-search" aria-hidden="true"></i>
-            </button>
+            <div class="btn-group">
+                <button class="btn btn-dark" type="submit" value="Search">
+                    <i class="fa fa-search" aria-hidden="true"></i>
+                </button>
+                <button class="btn btn-dark" type="submit" name="Clean" value="True">
+                    <i class="fas fa-undo"aria-hidden="true"></i>
+                </button>
+            </div>
         </div>
 
     </div>
@@ -36,6 +41,9 @@
 <br />
 <!--Completed-->
 @Html.Partial("TechAdminDashBoard2", Model)
+<br />
+<br />
+<br />
 
 
 

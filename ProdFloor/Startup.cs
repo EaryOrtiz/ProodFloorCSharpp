@@ -95,13 +95,18 @@ namespace ProdFloor
             app.UseAuthentication();
             app.UseMvc(routes => {
 
-                
+
+                routes.MapRoute(
+                    name: null,
+                    template: "{MyJobsPage:int}_{OnCrossJobPage:int}_{PendingToCrossJobPage:int}_{JobNumb}",
+                    defaults: new { controller = "TestJob", action = "SearchTestJob" });
 
                 routes.MapRoute(
                     name: null,
                     template: "{MyJobsPage:int}_{OnCrossJobPage:int}_{PendingToCrossJobPage:int}_{Sort}",
                     defaults: new { controller = "Home", action = "Index" });
 
+               
                 routes.MapRoute(
                     name: null,
                     template: "{ElmHydroPage:int}_{ElmTractionPage:int}_{M2000Page:int}_{M4000Page:int}_{JobTypeName}",

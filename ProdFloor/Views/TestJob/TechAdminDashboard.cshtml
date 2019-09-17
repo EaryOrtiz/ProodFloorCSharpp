@@ -187,10 +187,10 @@
 </table>
 @if (Model.TestJobIncompletedList.Count() > 0)
 {
-    <cool-pagination-dash-board current-model="OncrossJobs" my-jobs-page-model="@Model.PagingInfoIncompleted" page-action="SearchTestJob" page-classes-enabled="true"
+    <cool-pagination-dash-board-job-num current-model="OncrossJobs" my-jobs-page-model="@Model.PagingInfoIncompleted" page-action="SearchTestJob" page-classes-enabled="true"
                                 page-class="btn" page-class-normal="btn-secondary" on-cross-page-model="@Model.PagingInfoCompleted" pending-to-cross-page-model="@Model.PagingInfo"
                                 page-class-selected="btn-dark" my-jobs-url-value="MyJobsPage" on-cross-url-value="OnCrossJobPage"
-                                pending-to-cross-url-value="PendingToCrossJobPage" sort="Sort"
+                                pending-to-cross-url-value="PendingToCrossJobPage" job-numb="JobNumb"
                                 class="btn-group pull-right m-1">
-    </cool-pagination-dash-board>
+    </cool-pagination-dash-board-job-num>
 }
