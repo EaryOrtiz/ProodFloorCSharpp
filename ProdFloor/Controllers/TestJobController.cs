@@ -87,6 +87,7 @@ namespace ProdFloor.Controllers
 
             if (testJobsCompleted == null || Clean  == "true" || jobnumb == "0") testJobsCompleted = testingRepo.TestJobs.Where(m => m.Status == "Completed").ToList();
 
+            var requestQuery = Request.Query;
 
             TestJobViewModel testJobView = new TestJobViewModel
             {
