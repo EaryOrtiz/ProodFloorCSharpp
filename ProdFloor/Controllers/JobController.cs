@@ -1962,11 +1962,11 @@ namespace ProdFloor.Controllers
             int TotalItemsSearch = jobSearchRepo.Count() + 1;
             JobSearchViewModel jobSearch = new JobSearchViewModel();
             jobSearch.Status = new SelectList(statusQuery.Distinct().ToList());
-            jobSearch.JobsSearchList = jobSearchRepo.OrderBy(p => p.JobID).Skip((page - 1) * 17).Take(17).ToList();
+            jobSearch.JobsSearchList = jobSearchRepo.OrderBy(p => p.JobID).Skip((page - 1) * 10).Take(10).ToList();
             jobSearch.PagingInfo = new PagingInfo
             {
                 CurrentPage = page,
-                ItemsPerPage = 17,
+                ItemsPerPage = 10,
                 TotalItems = TotalItemsSearch
             };
 

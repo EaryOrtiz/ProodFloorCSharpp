@@ -21,7 +21,6 @@
     @Html.Partial("JobSearchForm", Model)
 </form>
 <br />
-<br />
 @if (Model.JobsSearchList.Count > 0)
 {
     <div class="row" style="padding-right:20px">
@@ -33,7 +32,7 @@
     }
     
 <coool-pagination-search page-model="@Model.PagingInfo" page-action="JobSearchList" page-classes-enabled="true"
-                         page-class="btn" page-class-normal="btn-secondary" job-search-view-model="@Model"
+                         page-class="btn" page-class-normal="btn-secondary" 
                          page-class-selected="btn-dark"
                          class="btn-group pull-right m-1">
 </coool-pagination-search>

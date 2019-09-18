@@ -2633,6 +2633,7 @@ namespace ProdFloor.Infrastructure
                 result.InnerHtml.AppendHtml(tag);
             }
             output.Content.AppendHtml(result.InnerHtml);
+            if (IsDisabled)
             {
                 var d = new TagHelperAttribute("disabled", "disabled");
                 output.Attributes.Add(d);
