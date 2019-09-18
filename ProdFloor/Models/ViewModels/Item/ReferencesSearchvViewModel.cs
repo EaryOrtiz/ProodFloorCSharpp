@@ -22,6 +22,7 @@ namespace ProdFloor.Models.ViewModels.Item
         public int NumJobSearch { get; set; }
         public string status { get; set; }
 
+        public int JobID { get; set; }
         public int SPH { get; set; }
         public string JobName { get; set; }
         public string JobName2 { get; set; }

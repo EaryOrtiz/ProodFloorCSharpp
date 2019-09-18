@@ -393,9 +393,9 @@ namespace ProdFloor.Controllers
                 RefernceData = false,
             };
 
-            if (ViewModel.NumJobSearch != 0)
+            if (ViewModel.JobID != 0)
             {
-                var JobSearch = jobSearch.FirstOrDefault(m => m.JobNum == ViewModel.NumJobSearch);
+                var JobSearch = jobSearch.FirstOrDefault(m => m.JobID == ViewModel.JobID);
                 if (JobTypeName(JobSearch.JobTypeID) != "M2000")
                 {
                     TempData["alert"] = $"alert-danger";
@@ -412,6 +412,7 @@ namespace ProdFloor.Controllers
                         var FireCodeOne = FireCodeList.FirstOrDefault(m => m.FireCodeID == JobSearch.FireCodeID);
                         ViewModel.SPH = JobSearch._HydroSpecific.SPH;
                         ViewModel.FLA = JobSearch._HydroSpecific.FLA;
+                        ViewModel.NumJobSearch = JobSearch.JobNum;
                         ViewModel.JobName = JobSearch.Name;
                         ViewModel.JobName2 = JobSearch.Name2;
                         ViewModel.Cust = JobSearch.Cust;
@@ -773,11 +774,11 @@ namespace ProdFloor.Controllers
 
         }
 
-        public RedirectToActionResult SearchAux(int JobNum)
+        public RedirectToActionResult SearchAux(int JobID)
         {
             ReferencesSearchvViewModel viewModel = new ReferencesSearchvViewModel
             {
-                NumJobSearch = JobNum,
+                JobID = JobID,
                 RefernceData = false
             };
 

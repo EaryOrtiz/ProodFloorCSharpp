@@ -15,16 +15,16 @@
     <h2 class="col-sm-10">Admin Dashboard</h2>
 </div>
 <br />
-<form asp-controller="TestJob" asp-action="SearchTestJob" method="post">
+<form asp-controller="TestJob" asp-action="SearchTestJob" method="get">
     <div class="input-group">
 
-        <input type="text" class="form-control form-control-sm col-5" asp-for="Job.JobNum" id="JobNum" placeholder=" Please enter a Job Number">
+        <input type="text" class="form-control form-control-sm col-5" name="jobNumber" id="JobNum" value="0" placeholder=" Please enter a Job Number">
         <div class="input-group-append">
             <div class="btn-group">
                 <button class="btn btn-dark" type="submit" value="Search">
                     <i class="fa fa-search" aria-hidden="true"></i>
                 </button>
-                <button class="btn btn-dark" type="submit" name="Clean" value="True">
+                <button class="btn btn-dark" type="submit" name="Clean" value="true">
                     <i class="fas fa-undo"aria-hidden="true"></i>
                 </button>
             </div>

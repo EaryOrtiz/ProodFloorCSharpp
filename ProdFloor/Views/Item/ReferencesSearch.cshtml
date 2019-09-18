@@ -8,8 +8,8 @@
     <h2 class="col-sm-10">Worksheet for Job: @Model.NumJobSearch</h2>
 </div>
 <form asp-controller="Item" asp-action="ReferencesSearch" method="get">
-    <input type="hidden" class="form-control form-control-sm col-sm-2" asp-for="NumJobSearch">
-    <span asp-validation-for="NumJobSearch" class="text-danger"></span><br />
+    <input type="hidden" class="form-control form-control-sm col-sm-2" asp-for="JobID">
+    <span asp-validation-for="JobID" class="text-danger"></span><br />
 </form>
 @if (Model.RefernceData == true)
 {
