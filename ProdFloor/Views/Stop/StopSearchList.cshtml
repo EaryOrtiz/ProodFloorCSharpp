@@ -9,7 +9,7 @@
     <h2 class="col-sm-10"> Stop List</h2>
 </div>
 <br />
-<form asp-controller="Stop" asp-action="StopSearchList" method="post">
+<form asp-controller="Stop" asp-action="StopSearchList" method="get">
 
     @Html.Partial("StopSearchForm", Model)
 
@@ -24,9 +24,9 @@
 
     @Html.Partial("StopJobSummary", Model)
 
-    <coool-pagination-all page-model="@Model.PagingInfo" page-action="StopSearchList" page-classes-enabled="true"
+    <coool-pagination-search page-model="@Model.PagingInfo" page-action="StopSearchList" page-classes-enabled="true"
                           page-class="btn" page-class-normal="btn-secondary"
                           page-class-selected="btn-dark"
                           class="btn-group pull-right m-1">
-    </coool-pagination-all>
+    </coool-pagination-search>
 }

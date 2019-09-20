@@ -27,7 +27,7 @@
                         </div>
                         <div class="form-group row" style="margin-bottom:0px;">
                             <label asp-for="Stop.Critical" class="col-sm-4 col-form-label"></label>
-                            <custom-select class="form-control-sm form-control col-sm-7" asp-for="Critical" select-for="boolSearch"></custom-select>
+                            <custom-select class="form-control-sm form-control col-sm-7" selected-value="@Model.Stop.Critical" asp-for="Critical" select-for="boolSearch"></custom-select>
                         </div>
                         <div class="form-group row" style="margin-bottom:0px;">
                             <label asp-for="Stop.Reason1" class="col-sm-4 col-form-label"></label>

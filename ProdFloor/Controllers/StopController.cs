@@ -438,21 +438,10 @@ namespace ProdFloor.Controllers
             });
         }
 
-        public ViewResult StopSearchList()
-        {
-            TestJobSearchViewModel testJob = new TestJobSearchViewModel()
-            {
-                Stop = new Stop(),
-                StopList = new List<Stop>(),
-            };
-
-            return View(testJob);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> StopSearchList(TestJobSearchViewModel searchViewModel, int jobPage = 1)
+        public async Task<IActionResult> StopSearchList(TestJobSearchViewModel searchViewModel, int page = 1)
         {
             if (searchViewModel.CleanFields) return RedirectToAction("StopSearchList");
+            if (searchViewModel.Stop == null) searchViewModel.Stop = new Stop();
 
             IQueryable<Stop> StopSearchList = testingRepo.Stops;
 
@@ -482,18 +471,16 @@ namespace ProdFloor.Controllers
             if (!string.IsNullOrEmpty(searchViewModel.Critical)) StopSearchList = StopSearchList.Where(m =>  searchViewModel.Critical == "Si" ? m.Critical == true : m.Critical == false);
             #endregion
 
-            TestJobSearchViewModel TestJobSearch = new TestJobSearchViewModel
-            {
-                StopList = StopSearchList.OrderBy(p => p.StopID).Skip((jobPage - 1) * 10).Take(10).ToList(),
-                PagingInfo = new PagingInfo
+
+            searchViewModel.StopList = StopSearchList.OrderBy(p => p.StopID).Skip((page - 1) * 10).Take(10).ToList();
+                searchViewModel.PagingInfo = new PagingInfo
                 {
-                    CurrentPage = jobPage,
+                    CurrentPage = page,
                     ItemsPerPage = 10,
                     TotalItems = StopSearchList.Count()
-                },
-            };
+                }; 
 
-            return View(TestJobSearch);
+            return View(searchViewModel);
         }
     }
 }

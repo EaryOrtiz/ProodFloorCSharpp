@@ -9,7 +9,7 @@
     <h2 class="col-sm-10"> TestJob Search List</h2>
 </div>
 <br />
-<form asp-controller="TestJob" asp-action="TestJobSearchList" method="post">
+<form asp-controller="TestJob" asp-action="TestJobSearchList" method="get">
 
     @Html.Partial("TestJobSearchForm", Model)
 
@@ -24,9 +24,9 @@
 
      @Html.Partial("SearchTestJobSummary", Model)
 
-    <coool-pagination-all page-model="@Model.PagingInfo" page-action="TestJobSearchList" page-classes-enabled="true"
+    <coool-pagination-search page-model="@Model.PagingInfo" page-action="TestJobSearchList" page-classes-enabled="true"
                           page-class="btn" page-class-normal="btn-secondary"
                           page-class-selected="btn-dark"
                           class="btn-group pull-right m-1">
-    </coool-pagination-all>
+    </coool-pagination-search>
 }

@@ -1396,26 +1396,17 @@ namespace ProdFloor.Controllers
             return new DateTime(1, 1, Days, Hours, Minutes, 0);
         }
 
-
-        public ViewResult TestJobSearchList()
+       
+        public async Task<IActionResult> TestJobSearchList(TestJobSearchViewModel searchViewModel, int page = 1)
         {
-            TestJobSearchViewModel testJob = new TestJobSearchViewModel()
-            {
-                Job = new Job(),
-                TestJob = new TestJob(),
-                Stop = new Stop(),
-                HoistWayData = new HoistWayData(),
-                JobExtension = new JobExtension (),
-                TestJobsSearchList = new List<TestJob>(),
-                JobsSearchList = new List<Job>(),
-            };
-
-            return View(testJob);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> TestJobSearchList(TestJobSearchViewModel searchViewModel, int jobPage = 1)
-        {
+            if (searchViewModel.CleanFields) return RedirectToAction("TestJobSearchList");
+            if (searchViewModel.Job == null) searchViewModel.Job = new Job();
+            if (searchViewModel.TestJob == null) searchViewModel.TestJob = new TestJob();
+            if (searchViewModel.Stop == null) searchViewModel.Stop = new Stop();
+            if (searchViewModel.HoistWayData == null) searchViewModel.HoistWayData = new HoistWayData();
+            if (searchViewModel.JobExtension == null) searchViewModel.JobExtension = new JobExtension();
+            if (searchViewModel.TestJobsSearchList == null) searchViewModel.TestJobsSearchList = new List<TestJob>();
+            if (searchViewModel.JobsSearchList == null) searchViewModel.JobsSearchList = new List<Job>();
 
             IQueryable<TestJob> testJobSearchList = testingRepo.TestJobs.Include(m => m._Stops).Include(m => m._TestFeature);
             IQueryable<Stop> stops = testingRepo.Stops.Where(m => testJobSearchList.Any(s => s.TestJobID == m.TestJobID));
@@ -1619,12 +1610,11 @@ namespace ProdFloor.Controllers
                 #endregion
 
             if(anyFeatureFromJob) testJobSearchList = testJobSearchList.Where(m => jobSearchRepo.Any(s => s.JobID == m.JobID));
-            if(testJobSearchList.Count() == 0) return RedirectToAction("TestJobSearchList");
 
-            searchViewModel.TestJobsSearchList = testJobSearchList.OrderBy(p => p.TechnicianID).Skip((jobPage - 1) * 10).Take(10).ToList();
+            searchViewModel.TestJobsSearchList = testJobSearchList.OrderBy(p => p.TechnicianID).Skip((page - 1) * 10).Take(10).ToList();
             searchViewModel.PagingInfo = new PagingInfo
             {
-                CurrentPage = jobPage,
+                CurrentPage = page,
                 ItemsPerPage = 10,
                 TotalItems = testJobSearchList.Count()
             };
