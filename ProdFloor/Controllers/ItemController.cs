@@ -789,12 +789,6 @@ namespace ProdFloor.Controllers
             if (ViewModel.JobID != 0)
             {
                 Job job = jobSearch.FirstOrDefault(m => m.JobID == ViewModel.JobID);
-                if (JobTypeName(job.JobTypeID) != "M2000")
-                {
-                    TempData["alert"] = $"alert-danger";
-                    TempData["message"] = $"Worksheet not available for the jobtype: {JobTypeName(job.JobTypeID)}";
-                    return RedirectToAction("Index", "Home");
-                }
 
                 if (job != null)
                 {
@@ -926,7 +920,7 @@ namespace ProdFloor.Controllers
 
                             };
 
-                            return View("ReferencesSrchElement", referSearch);
+                            return View("ReferencesSrchTraction", referSearch);
 
                             #endregion
                         }
@@ -955,13 +949,27 @@ namespace ProdFloor.Controllers
 
         public RedirectToActionResult SearchAux(int JobID)
         {
-            ReferencesSearchvViewModel viewModel = new ReferencesSearchvViewModel
-            {
-                JobID = JobID,
-                RefernceData = false
-            };
 
-            return RedirectToAction("ReferencesSearch", viewModel);
+            Job job = jobrepo.Jobs.FirstOrDefault(m => m.JobID == JobID);
+
+            if(JobTypeName(job.JobTypeID) == "M2000")
+            {
+                ReferencesSearchvViewModel viewModel = new ReferencesSearchvViewModel
+                {
+                    JobID = JobID,
+                    RefernceData = false
+                };
+                return RedirectToAction("ReferencesSearch", viewModel);
+            }else 
+            {
+                ReferencesSrchElementViewModel viewModel = new ReferencesSrchElementViewModel
+                {
+                    JobID = JobID,
+                    RefernceData = false
+                };
+                return RedirectToAction("ReferencesSearchElement", viewModel);
+            }
+
         }
 
         public static void ImportXML(IServiceProvider services, string resp)

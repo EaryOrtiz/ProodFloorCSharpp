@@ -1,0 +1,85 @@
+﻿@model ProdFloor.Models.ViewModels.Item.ReferencesSrchElementViewModel
+@{
+    ViewBag.Title = "Element Worksheet";
+    Layout = "_AdminLayoutWO";
+}
+
+<div class="row" style="padding-right:20px">
+    <h2 class="col-sm-10">Worksheet for Job: @Model.NumJobSearch</h2>
+</div>
+<form asp-controller="Item" asp-action="ReferencesSearch" method="get">
+    <input type="hidden" class="form-control form-control-sm col-sm-2" asp-for="JobID">
+    <span asp-validation-for="JobID" class="text-danger"></span><br />
+</form>
+@if (Model.RefernceData == true)
+{
+    <ul class="nav nav-tabs " role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#General" role="tab">General</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link " data-toggle="tab" href="#starter" role="tab">Starter</a>
+        </li>
+    </ul>
+    <div class="tab-content" style="padding:20px">
+        <div class="tab-pane active" id="General" role="tabpanel">
+            <div class="form-row col-sm-12" style="padding-bottom:15px">
+                <div class="col-md-6">
+                    <h3 class="text-left">Element Info</h3>
+                    <br />
+                    <div class="form-group row" style="margin-bottom:0em;">
+                        <label class="col-4 col-form-label">Name:</label>
+                        <div class="col-5">
+                            <input type="text" value="@Model.NumJobSearch" class="form-control form-control-sm col-12" disabled asp-for="NumJobSearch">
+                        </div>
+                    </div>
+                    <div class="form-group row" style="margin-bottom:0em;">
+                        <label class="col-4 col-form-label">Name #2:</label>
+                        <div class="col-5">
+                            <input type="text" value="@Model.Voltage" class="form-control form-control-sm col-12" disabled asp-for="Voltage">
+                        </div>
+                    </div>
+                    <div class="form-group row" style="margin-bottom:0em;">
+                        <label class="col-4 col-form-label">Cust: &nbsp;</label>
+                        <div class="col-5">
+                            <input type="text" value="@Model.DoorOperator" class="form-control form-control-sm col-sm-12" disabled asp-for="DoorOperator">
+                        </div>
+                    </div>
+                    <div class="form-group row" style="margin-bottom:0em;">
+                        <label class="col-4 col-form-label">Contractor: &nbsp;</label>
+                        <div class="col-5">
+                            <input type="text" value="@Model.HAPS" class="form-control form-control-sm col-sm-12" disabled asp-for="HAPS">
+                        </div>
+                    </div>
+                    <h3 class="text-left">PO's List</h3>
+                    <br />
+                    @for (int i = 0; i < Model.POList.Count; i++)
+                    {
+                        <div class="form-group row">
+                            <div class="form-inline">
+                                <label class="col-sm-5 col-form-label">PO #@(i + 1):</label>
+                                <input asp-for="POList[i].PONumb" class="form-control col-sm-7" readonly />
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane " id="starter" role="tabpanel">
+            <div class="row">
+                <div class="col-6  border-right" style="text-align:center;">
+                    <h4 style="position:center">Starter Model</h4>
+                    <div class="form-inline justify-content-md-center" style="position:center">
+                        <div class="form-group row col-6">
+                            MCE Part #: <input type="text" value="@Model.MCPart" class="form-control form-control-sm col-sm-10" disabled asp-for="MCPart">
+                        </div>
+                        <div class="form-group row col-6">
+                            Manufacturer Part #: <input type="text" value="@Model.NewManufacturerPart" class="form-control form-control-sm col-sm-10" disabled asp-for="NewManufacturerPart">
+                        </div>
+                    </div>
+                    <br />
+                </div>
+            </div>
+        </div>
+    </div>
+}
