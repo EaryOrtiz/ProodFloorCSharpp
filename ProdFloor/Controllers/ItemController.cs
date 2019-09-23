@@ -774,6 +774,185 @@ namespace ProdFloor.Controllers
 
         }
 
+        public async Task<IActionResult> ReferencesSearchElement(ReferencesSrchElementViewModel ViewModel)
+        {
+            var jobSearch = jobrepo.Jobs.Include(j => j._Elements).Include(h => h._Elements).Include(ex => ex._EmentTractions).AsQueryable();
+            IQueryable<DoorOperator> DoorOperatorList = repository.DoorOperators.AsQueryable();
+            IQueryable<PO> POTotalList = jobrepo.POs.AsQueryable();
+            List<Starter> StarterRefer = repository.Starters.ToList();
+
+            ReferencesSearchvViewModel referSearchAux = new ReferencesSearchvViewModel
+            {
+                RefernceData = false,
+            };
+
+            if (ViewModel.JobID != 0)
+            {
+                Job job = jobSearch.FirstOrDefault(m => m.JobID == ViewModel.JobID);
+                if (JobTypeName(job.JobTypeID) != "M2000")
+                {
+                    TempData["alert"] = $"alert-danger";
+                    TempData["message"] = $"Worksheet not available for the jobtype: {JobTypeName(job.JobTypeID)}";
+                    return RedirectToAction("Index", "Home");
+                }
+
+                if (job != null)
+                {
+                    if (job.Status != "Incomplete")
+                    {
+                        Element element = jobrepo.Elements.FirstOrDefault(m => m.JobID == job.JobID);
+                        ElementHydro elementHydro = jobrepo.ElementHydros.FirstOrDefault(m => m.JobID == job.JobID);
+                        ElementTraction elementTraction = jobrepo.ElementTractions.FirstOrDefault(m => m.JobID == job.JobID);
+                        string jobTypeName = JobTypeName(job.JobTypeID);
+
+                        if (jobTypeName  == "ElmHydro")
+                        {
+                            #region Hydro
+                            ViewModel.NumJobSearch = job.JobNum;
+                            ViewModel.SPH = elementHydro.SPH;
+                            ViewModel.FLA = elementHydro.FLA;
+                            ViewModel.HP = elementHydro.HP;
+                            ViewModel.POList = POTotalList.Where(m => m.JobID == job.JobID).ToList();
+                            ViewModel.DoorOperator = DoorOperatorList.FirstOrDefault(m => m.DoorOperatorID == element.DoorOperatorID).Name;
+                            ViewModel.HAPS = element.HAPS;
+                            var volts = element.Voltage;
+                            ViewModel.Voltage = volts;
+                            if (volts >= 200 && volts <= 220 && (ViewModel.StarterType == "ATL" || ViewModel.StarterType == "YD" || ViewModel.StarterType == "Sprecher SS : 6/12" || ViewModel.StarterType == "Sprecher SS : 3/9" || ViewModel.StarterType == "Siemens SS : 6/12" || ViewModel.StarterType == "Siemens SS : 3/9")) ViewModel.Volts = "208";
+                            if (volts > 220 && volts <= 240 && (ViewModel.StarterType == "ATL" || ViewModel.StarterType == "YD" || ViewModel.StarterType == "Sprecher SS : 6/12" || ViewModel.StarterType == "Sprecher SS : 3/9" || ViewModel.StarterType == "Siemens SS : 6/12" || ViewModel.StarterType == "Siemens SS : 3/9")) ViewModel.Volts = "240";
+                            if (volts >= 380 && volts <= 480 && (ViewModel.StarterType == "ATL" || ViewModel.StarterType == "YD" || ViewModel.StarterType == "Sprecher SS : 6/12" || ViewModel.StarterType == "Sprecher SS : 3/9")) ViewModel.Volts = "480";
+                            if (volts > 480 && volts <= 600 && (ViewModel.StarterType == "ATL" || ViewModel.StarterType == "YD" || ViewModel.StarterType == "Sprecher SS : 6/12" || ViewModel.StarterType == "Sprecher SS : 3/9" || ViewModel.StarterType == "Siemens SS : 6/12" || ViewModel.StarterType == "Siemens SS : 3/9")) ViewModel.Volts = "575";
+                            if (volts > 380 && volts <= 480 && (ViewModel.StarterType == "Siemens SS : 6/12" || ViewModel.StarterType == "Siemens SS : 3/9")) ViewModel.Volts = "460";
+                            if (volts >= 300 && volts <= 380 && (ViewModel.StarterType == "Siemens SS : 6/12" || ViewModel.StarterType == "Siemens SS : 3/9")) ViewModel.Volts = "380/415";
+
+                            //Lista para strater and overload table
+
+                            List<Starter> StarterList = StarterRefer.Where(m => m.Volts == ViewModel.Volts && m.StarterType == elementHydro.Starter
+                            && m.FLA >= ViewModel.FLA && m.HP >= ViewModel.HP).OrderBy(o => o.FLA).Skip(0).Take(4).ToList();
+
+                            if (StarterList.Count > 0)
+                            {
+                                if (ViewModel.SPH == 80 && ViewModel.Voltage == 1 && ViewModel.StarterType == "ATL" && StarterList.Count > 2)
+                                {
+                                    ViewModel.MCPart = StarterList[2].MCPart;
+                                    ViewModel.NewManufacturerPart = StarterList[2].NewManufacturerPart;
+                                }
+                                else if (ViewModel.SPH == 120 && ViewModel.Voltage == 1 && ViewModel.StarterType == "ATL" && StarterList.Count > 3)
+                                {
+                                    ViewModel.MCPart = StarterList[3].MCPart;
+                                    ViewModel.NewManufacturerPart = StarterList[3].NewManufacturerPart;
+                                }
+                                else if (ViewModel.SPH == 80)
+                                {
+                                    ViewModel.MCPart = StarterList[0].MCPart;
+                                    ViewModel.NewManufacturerPart = StarterList[0].NewManufacturerPart;
+                                }
+                                else if (ViewModel.SPH == 120 && StarterList.Count > 1)
+                                {
+                                    ViewModel.MCPart = StarterList[1].MCPart;
+                                    ViewModel.NewManufacturerPart = StarterList[1].NewManufacturerPart;
+                                }
+                                else
+                                {
+                                    ViewModel.MCPart = "------Error------";
+                                    ViewModel.NewManufacturerPart = "------Error------";
+
+                                    TempData["alert"] = $"alert-danger";
+                                    TempData["message"] = $"Starter Model out of range, please validate their SPH, HP, FLA and try again";
+                                }
+                            }
+                            else
+                            {
+                                ViewModel.MCPart = "------Error------";
+                                ViewModel.NewManufacturerPart = "------Error------";
+
+                                TempData["alert"] = $"alert-danger";
+                                TempData["message"] = $"Starter Model out of range, please validate their SPH, HP, FLA and try again";
+                            }
+
+                            #endregion
+
+                            #region ReferSearchVM
+                            ReferencesSrchElementViewModel referSearch = new ReferencesSrchElementViewModel
+                            {
+                                RefernceData = true,
+
+                                //General
+                                NumJobSearch = ViewModel.NumJobSearch,
+                                Voltage = ViewModel.Voltage,
+                                DoorOperator = ViewModel.DoorOperator.ToUpper(),
+                                HAPS = ViewModel.HAPS,
+
+                                //Starter
+                                MCPart = ViewModel.MCPart,
+                                NewManufacturerPart = ViewModel.NewManufacturerPart,
+
+                                //POList
+                                POList = ViewModel.POList
+
+                            };
+
+                            return View("ReferencesSrchHydro", referSearch);
+
+                            #endregion
+                        }
+                        else
+                        {
+                            ViewModel.HP = elementTraction.HP;
+                            ViewModel.Speed = element.Speed;
+                            ViewModel.Capacity = element.Capacity;
+
+                            ViewModel.IdealVIn = (int)(((elementTraction.PickVoltage) * (1.1)) / (0.85));
+                            ViewModel.MinVIn = (int)( (elementTraction.PickVoltage) / (0.85));
+                            ViewModel.MaxVIn = (int)(((elementTraction.PickVoltage) * (1.25)) / (0.85));
+
+                            if (elementTraction.Resistance > 101) ViewModel.BrakeResistor = "1500R 100W";
+                            else ViewModel.BrakeResistor = "500R 225W";
+
+                            #region ReferSearchVM
+                            ReferencesSrchElementViewModel referSearch = new ReferencesSrchElementViewModel
+                            {
+                                RefernceData = true,
+
+                                //General
+                                Speed = ViewModel.Speed,
+                                HP = ViewModel.HP,
+                                Capacity = ViewModel.Capacity,
+
+                                //Brake
+                                IdealVIn = ViewModel.IdealVIn,
+                                MinVIn = ViewModel.MinVIn,
+                                MaxVIn = ViewModel.MaxVIn,
+                                BrakeResistor = ViewModel.BrakeResistor,
+
+                            };
+
+                            return View("ReferencesSrchElement", referSearch);
+
+                            #endregion
+                        }
+
+                    }
+
+                    TempData["alert"] = $"alert-danger";
+                    TempData["message"] = $"That job isn't completed, please finish it and try again";
+
+                    return RedirectToAction("ReferencesSearch", referSearchAux);
+                }
+
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"That job doesn't exist, please enter a new one";
+
+                return RedirectToAction("ReferencesSearch", referSearchAux);
+
+            }
+            else
+            {
+
+                return View(referSearchAux);
+            }
+
+        }
+
         public RedirectToActionResult SearchAux(int JobID)
         {
             ReferencesSearchvViewModel viewModel = new ReferencesSearchvViewModel
