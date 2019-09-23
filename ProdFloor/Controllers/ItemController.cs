@@ -804,6 +804,7 @@ namespace ProdFloor.Controllers
                             #region Hydro
                             ViewModel.NumJobSearch = job.JobNum;
                             ViewModel.SPH = elementHydro.SPH;
+                            ViewModel.StarterType = elementHydro.Starter;
                             ViewModel.FLA = elementHydro.FLA;
                             ViewModel.HP = elementHydro.HP;
                             ViewModel.POList = POTotalList.Where(m => m.JobID == job.JobID).ToList();
