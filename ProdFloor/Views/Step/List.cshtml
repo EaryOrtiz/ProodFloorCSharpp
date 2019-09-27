@@ -27,7 +27,6 @@
         <button class="btn btn-dark" type="submit" name="filtrado" value="M4000">M4000</button>
     </div>
 </form>
-<br />
 <div>
     <table class="table table-hover table-striped border table-sm" style="text-align:center">
         <tr class="table-info">
@@ -89,20 +88,20 @@
                 </td>
                 <td style="width:100px">
                     <form asp-action="Delete" asp-route-id="@item.StepID" method="post">
-                        <button type="submit" class="btn btn-danger btn-sm">
-                            <i class="far fa-trash-alt"></i>
-                        </button>
                         <a asp-action="Edit" class="btn btn-sm btn-warning"
                            asp-route-Id="@item.StepID">
                             <i class="fas fa-edit"></i>
                         </a>
+                        <button type="submit" class="btn btn-danger btn-sm">
+                            <i class="far fa-trash-alt"></i>
+                        </button>
+
                     </form>
                 </td>
             </tr>
         }
     </table>
 </div>
-<br />
 <cool-pagination-steps elm-hydro-paging-info="@Model.ElmHydroPagingInfo" elm-traction-paging-info="@Model.ElmTractionPagingInfo" m2000-paging-info="@Model.M2000PagingInfo" m4000-paging-info="Model.M4000PagingInfo"
                  page-action="List"  job-type-selected="JobTypeName" page-class="btn" page-class-normal="btn-secondary" page-classes-enabled="true" current-model="@Model.JobTypeSelected"
                  page-class-selected="btn-dark"  elm-hydro-url-value="ElmHydroPage" elm-traction-url-value="ElmTractionPage" m2000-url-value="M2000Page"  m4000-url-value="M4000Page"
@@ -113,3 +112,5 @@
         <button class="btn btn-sm " name="buttonXML" style="background-color:steelblue;color:white;margin-bottom:30px">Export Table to an XML File</button>
     </form>
 </div>
+<br />
+<br />
