@@ -12639,25 +12639,25 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\temp\\.nuget\\packages\\": {},
+    "C:\\Users\\Eary.Ortiz\\.nuget\\packages\\": {},
     "C:\\Microsoft\\Xamarin\\NuGet\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\eary.ortiz\\Documents\\GitHub\\ProodFloorCSharpp\\ProdFloor\\ProdFloor.csproj",
+      "projectUniqueName": "C:\\Users\\Eary.Ortiz\\Documents\\GitHub\\ProodFloorCSharpp\\ProdFloor\\ProdFloor.csproj",
       "projectName": "ProdFloor",
-      "projectPath": "C:\\Users\\eary.ortiz\\Documents\\GitHub\\ProodFloorCSharpp\\ProdFloor\\ProdFloor.csproj",
-      "packagesPath": "C:\\Users\\temp\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\eary.ortiz\\Documents\\GitHub\\ProodFloorCSharpp\\ProdFloor\\obj\\",
+      "projectPath": "C:\\Users\\Eary.Ortiz\\Documents\\GitHub\\ProodFloorCSharpp\\ProdFloor\\ProdFloor.csproj",
+      "packagesPath": "C:\\Users\\Eary.Ortiz\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Eary.Ortiz\\Documents\\GitHub\\ProodFloorCSharpp\\ProdFloor\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Microsoft\\Xamarin\\NuGet\\",
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\temp\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Eary.Ortiz\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
       ],
@@ -12693,7 +12693,6 @@
             "autoReferenced": true
           },
           "Microsoft.NETCore.App": {
-            "suppressParent": "All",
             "target": "Package",
             "version": "[2.1.0, )",
             "autoReferenced": true
