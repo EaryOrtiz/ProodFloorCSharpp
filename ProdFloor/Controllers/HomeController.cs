@@ -650,6 +650,25 @@ namespace ProdFloor.Controllers
 
         }
 
+        [HttpPost]
+        public IActionResult ChangePriorityAdmin(int btnPriority, int btnJobID)
+        {
+            if (btnPriority >= 0 && btnPriority < 4)
+            {
+                Job job = repository.Jobs.FirstOrDefault(m => m.JobID == btnJobID);
+                JobAdditional jobAdditional = repository.JobAdditionals.FirstOrDefault(m => m.JobID == btnJobID);
+                jobAdditional.Priority = btnPriority;
+                repository.SaveJobAdditional(jobAdditional);
+                TempData["message"] = $"You have changed the priority for the job #{job.JobNum} successfully";
+                return RedirectToAction(nameof(EngineerAdminDashBoard));
+            }
+
+            TempData["alert"] = $"alert-danger";
+            TempData["message"] = $"There was an error with your request";
+            return RedirectToAction(nameof(EngineerAdminDashBoard));
+
+        }
+
         public string JobTypeName(int ID)
         {
             return itemRepo.JobTypes.FirstOrDefault(m => m.JobTypeID == ID).Name;
