@@ -189,7 +189,7 @@ namespace ProdFloor.Controllers
                     }
                     catch (Exception e)
                     {
-                        return View("NewDummyJob", new TestJobViewModel
+                        TestJobViewModel testJobView = new TestJobViewModel()
                         {
                             Job = new Job(),
                             JobExtension = new JobExtension(),
@@ -199,7 +199,12 @@ namespace ProdFloor.Controllers
                             HoistWayData = new HoistWayData(),
                             SpecialFeature = new SpecialFeatures(),
                             PO = new PO { PONumb = viewModel.POJobSearch }
-                        });
+                        };
+
+                        testJobView.Job.ShipDate = DateTime.Now;
+
+                        return View("NewDummyJob", testJobView);
+                        
                     }
                 }
                 else
