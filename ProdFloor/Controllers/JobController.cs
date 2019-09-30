@@ -106,7 +106,23 @@ namespace ProdFloor.Controllers
                 TempData["alert"] = $"alert-danger";
                 TempData["message"] = $"There was an error with your request";
             }
-            return RedirectToAction("List");
+            return RedirectToAction("Index","Home");
+        }
+
+        [HttpPost]
+        public IActionResult DeleteAdmin(int ID)
+        {
+            Job deletedJob = repository.DeleteEngJob(ID);
+            if (deletedJob != null)
+            {
+                TempData["message"] = $"{deletedJob.Name} was deleted";
+            }
+            else
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"There was an error with your request";
+            }
+            return RedirectToAction("EngineerAdminDashBoard", "Home");
         }
 
         // Si recibe un get de Delete redirige a List con un mensaje de failure
