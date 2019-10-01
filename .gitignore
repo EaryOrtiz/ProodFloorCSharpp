@@ -303,3 +303,5 @@ ProdFloor/obj/ProdFloor.csproj.nuget.g.props
 ProdFloor/obj/ProdFloor.csproj.nuget.cache
 ProdFloor/obj/project.assets.json
 ProdFloor/appsettings.json
+ProdFloor/obj/project.assets.json
+ProdFloor/appsettings.json
