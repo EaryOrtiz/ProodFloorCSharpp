@@ -1315,14 +1315,18 @@ namespace ProdFloor.Controllers
 
             foreach (StepsForJob step in IncompleteStepsForJob)
             {
-                double ExpectedTimeForStep = ToHours(IncompleteStepsForJobInfo.First(m => m.StepID == step.StepID).ExpectedTime);
-                double TimePercentage = ExpectedTimeForStep / ExpectecTimeSUM;
-                if (TimePercentage == 0) TimePercentage = 1;
-                double TotalTime = ElapseHoursFromView * TimePercentage;
+                if(IncompleteStepsForJobInfo.First(m => m.StepID == step.StepID).ExpectedTime.Minute != 0)
+                {
+                    double ExpectedTimeForStep = ToHours(IncompleteStepsForJobInfo.First(m => m.StepID == step.StepID).ExpectedTime);
+                    double TimePercentage = ExpectedTimeForStep / ExpectecTimeSUM;
+                    if (TimePercentage == 0) TimePercentage = 1;
+                    double TotalTime = ElapseHoursFromView * TimePercentage;
 
-                step.Elapsed = ToDateTime(TotalTime);
-                step.Complete = true;
-                testingRepo.SaveStepsForJob(step);
+                    step.Elapsed = ToDateTime(TotalTime);
+                    step.Complete = true;
+                    testingRepo.SaveStepsForJob(step);
+                }
+                
             }
 
             testJob.CompletedDate = jobCompletion.FinishDate;
@@ -1377,7 +1381,7 @@ namespace ProdFloor.Controllers
         {
             double totalTime = 0;
             totalTime += date.Hour;
-            totalTime += (date.Minute / 60);
+            totalTime += (date.Minute * .01);
             return totalTime;
         }
 
