@@ -253,6 +253,7 @@ namespace ProdFloor.Controllers
                 switch (JobTypeName(jobtypeID))
                 {
                     case "M2000":
+                    case "M4000":
 
                         //Save the dummy Job Extension
                         JobExtension currentExtension = viewModel.JobExtension; currentExtension.JobID = currentJob.JobID; currentExtension.InputFrecuency = 60; currentExtension.InputPhase = 3; currentExtension.DoorGate = "Fake";
@@ -799,6 +800,7 @@ namespace ProdFloor.Controllers
             switch (JobTypeName(jobtypeID))
             {
                 case "M2000":
+                case "M4000":
 
                     Job FeaturesFromJob = jobRepo.Jobs.Include(m => m._jobExtension).Include(m => m._HydroSpecific).Include(m => m._HoistWayData).Include(m => m._GenericFeatures)
                 .First(m => m.JobID == testJobView.TestJob.JobID);
