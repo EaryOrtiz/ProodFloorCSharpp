@@ -1,19 +1,7 @@
-﻿@model IEnumerable<string>
+﻿<h5>@ViewBag.SelectedNavigation</h5>
 <a class="btn btn-block btn-secondary"
    asp-action="List"
    asp-controller="Job"
    asp-route-jobType="">
     All
 </a>
-
-@foreach (string jobType in Model)
-{
-<a class="btn btn-block
-    @(jobType == ViewBag.SelectedJobType ? "btn-primary": "btn-secondary")"
-    asp-action="List"
-    asp-controller="Job"
-    asp-route-jobType="@jobType"
-    asp-route-jobPage="1">
-    @jobType
-</a>
-}

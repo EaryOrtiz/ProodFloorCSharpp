@@ -17,11 +17,13 @@ namespace ProdFloor.Components
 
         public IViewComponentResult Invoke()
         {//checar con joins
-            ViewBag.SelectedJobType = RouteData?.Values["jobType"];
-            return View(repository.Jobs
-            .Select(x => x.JobTypeID)
-            .Distinct()
-            .OrderBy(x => x));
+         // ViewBag.SelectedJobType = RouteData?.Values["jobType"];
+         // return View(repository.Jobs
+         //.Select(x => x.JobTypeID)
+         //.Distinct()
+         //.OrderBy(x => x));
+
+           return View();
         }
     }
 }
