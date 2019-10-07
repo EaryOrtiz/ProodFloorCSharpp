@@ -1390,18 +1390,18 @@ namespace ProdFloor.Controllers
         public DateTime ToDateTime(double TotalHours)
         {
             DateTime Date = new DateTime(1, 1, 1, 0, 0, 0);
-            double AuxTotalHours = Math.Round(TotalHours);
+            double AuxTotalHours = Math.Truncate(TotalHours);
             double AuxTotalMinutes = TotalHours - AuxTotalHours;
-            double AuxDays = 0;
+            int AuxDays = 0;
             while (AuxTotalHours > 24)
             {
                 AuxTotalHours -= 24;
                 AuxDays++;
             };
             int Hours = (int)AuxTotalHours;
-            int Minutes = (int)(Math.Round(AuxTotalMinutes * 100));
+            int Minutes = (int)(Math.Round(AuxTotalMinutes * 60));
             int Days = 0;
-            if (AuxDays > 1) Days = (int)AuxDays - 1;
+            if (AuxDays > 1) Days = AuxDays - 1;
             else  Days = 1;
 
             return new DateTime(1, 1, Days, Hours, Minutes, 0);
