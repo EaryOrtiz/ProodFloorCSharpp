@@ -77,7 +77,7 @@ namespace ProdFloor
             }
             else
             {
-                app.UseExceptionHandler("/error");
+                app.UseExceptionHandler("/Error");
                 app.UseHsts();
             }
 
