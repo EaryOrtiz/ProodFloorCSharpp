@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using ProdFloor.Models;
 
 namespace ProdFloor.Models.ViewModels
@@ -30,6 +31,10 @@ namespace ProdFloor.Models.ViewModels
         public int CurrentCrosAppEngID { get; set; }
         public string CurrentStatus { get; set; }
         public int JobID { get; set; }
+
+        [Display(Name = "Job Number")]
+        [Range(2015000000, 3030000000, ErrorMessage = "Job number is out of range")]
+        public int jobnumber { get; set; }
 
         public List<Station> StationList { get; set; }
     }

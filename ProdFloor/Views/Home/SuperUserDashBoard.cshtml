@@ -1,0 +1,131 @@
+﻿@model DashboardIndexViewModel
+@{
+    ViewBag.Title = "Search Job";
+    Layout = "_AdminLayoutWO";
+    <script>
+        $(document).ready(function () {
+            $('#jobnumb').autocomplete({
+                source: '/TestJob/SearchJobNum'
+            });
+        });
+    </script>
+}
+
+<div class="row" style="padding-right:20px">
+    <h2 class="col-sm-10">Super User Dashboard</h2>
+</div>
+<br />
+<form asp-controller="Home" asp-action="SuperUserDashBoard" method="get">
+    <div class="input-group">
+
+        <input type="text" class="form-control form-control-sm col-5" name="jobNumber" id="jobnumb" value="0" placeholder=" Please enter a Job Number">
+        <div class="input-group-append">
+            <div class="btn-group">
+                <button class="btn btn-dark" type="submit" value="Search">
+                    <i class="fa fa-search" aria-hidden="true"></i>
+                </button>
+                <button class="btn btn-dark" type="submit" name="Clean" value="true">
+                    <i class="fas fa-undo" aria-hidden="true"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</form>
+<br />
+<br />
+<table class="table table-sm align-content-center text-center">
+    <thead style="background-color:#1B2831;color:#fff">
+        <tr>
+            <th scope="col">
+                Job# &nbsp;
+            </th>
+            <th scope="col">
+                Name &nbsp;
+            </th>
+            <th scope="col">Engineer</th>
+            <th scope="col">CrossApprover</th>
+            <th scope="col">Cross Approval Status</th>
+            <th scope="col">Options</th>
+            <th scope="col">
+                Latest Finish&nbsp;
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.MyJobs.Count() == 0)
+        {
+            <tr>
+                <td>No Jobs</td>
+            </tr>
+        }
+        else
+        {
+            @foreach (var j in Model.MyJobs)
+            {
+                JobAdditional jobAdditional = Model.MyJobAdditionals.FirstOrDefault(m => m.JobID == j.JobID);
+                string JobTypeName = Model.JobTypesList.FirstOrDefault(m => m.JobTypeID == j.JobTypeID).Name;
+
+                <tr>
+                    <th scope="row">@j.JobNum</th>
+                    <td>@j.Name</td>
+                    <td>E@(j.EngID)</td>
+                    <td>E@(j.CrossAppEngID)</td>
+                    <td>@j.Status</td>
+                    <td>
+                        @if (jobAdditional.Priority == 0)
+                        {<button type="button" title="Normal" class="btn btn-light" data-toggle="modal" data-target="#priority @j.JobID" style="float:left;background-color:transparent"><i class="fas fa-flag text-success"></i></button>}
+                        @if (jobAdditional.Priority == 1)
+                        {<button type="button" title="High Priority" class="btn btn-light" data-toggle="modal" data-target="#priority @j.JobID" style="float:left;background-color:transparent"><i class="fas fa-flag text-warning"></i></button>}
+                        @if (jobAdditional.Priority == 2)
+                        {<button type="button" title="Short Lead" class="btn btn-light" data-toggle="modal" data-target="#priority @j.JobID" style="float:left;background-color:transparent"><i class="fas fa-flag text-danger"></i></button>}
+                        <!-- Button trigger to change status-->
+                        <button type="button" class="btn btn-light" data-toggle="modal" data-target="#exampleModalStatus @j.JobID" style="float:left;background-color:transparent">
+                            <i class="fas fa-retweet"></i>
+                        </button>
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModalStatus @j.JobID" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLongTitle">Are you sure you want to change the status for the Job #@j.JobNum?</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <form asp-action="ChangeStatusAdmin" method="post">
+                                        <div class="modal-body">
+                                            <div class="form-group row" style="margin-bottom:0.5em;">
+                                                <label class="col-sm-5 col-form-label font-weight-bold">Current Status:</label>
+                                                <div>
+                                                    <span asp-validation-for="@j.Status" class="text-danger"></span>
+                                                    <custom-select select-for="StatusAdmin" selected-value="@j.Status" class="form-control form-control-sm" asp-for="@Model.CurrentStatus"></custom-select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
+                                            <input type="hidden" asp-for="@Model.JobID" value="@j.JobID" />
+                                            <button type="submit" value="Completed" name="buttonAction" class="btn btn-danger btn-sm">
+                                                Change it!
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>@j.LatestFinishDate.ToShortDateString()</td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+@if (Model.MyJobAdditionals.Count() > 0)
+{
+    <cool-pagination-dash-board-job-num current-model="MyJobs" my-jobs-page-model="@Model.MyJobsPagingInfo" page-action="SuperUserDashBoard" page-classes-enabled="true"
+                                        page-class="btn" page-class-normal="btn-secondary" on-cross-page-model="@Model.OnCrossJobsPagingInfo" pending-to-cross-page-model="@Model.PendingToCrossJobsPagingInfo"
+                                        page-class-selected="btn-dark" my-jobs-url-value="MyJobsPage" on-cross-url-value="OnCrossJobPage"
+                                        pending-to-cross-url-value="PendingToCrossJobPage" job-numb="JobNumb"
+                                        class="btn-group pull-right m-1">
+    </cool-pagination-dash-board-job-num>
+}

@@ -188,29 +188,7 @@ namespace ProdFloor.Controllers
                 });
             }
 
-            return View("AdminDashBoard", new DashboardIndexViewModel
-            {
-                MyJobs = repository.Jobs
-                  .OrderBy(p => p.JobID)
-                  .Skip((MyJobsPage - 1) * PageSize)
-                  .Take(PageSize),
-                MyJobsPagingInfo = new PagingInfo
-                {
-                    CurrentPage = MyJobsPage,
-                    ItemsPerPage = PageSize,
-                    TotalItems = repository.Jobs.Count()
-                },
-                OnCrossJobs = repository.Jobs
-                  .OrderBy(p => p.JobID)
-                  .Skip((OnCrossJobPage - 1) * PageSize)
-                  .Take(PageSize),
-                OnCrossJobsPagingInfo = new PagingInfo
-                {
-                    CurrentPage = PendingToCrossJobPage,
-                    ItemsPerPage = PageSize,
-                    TotalItems = repository.Jobs.Count()
-                }
-            });
+            return RedirectToAction("SuperUserDashBoard");
         }
 
         public ActionResult EngineerAdminDashBoard(string filtrado, string Sort = "default", int MyJobsPage = 1, int OnCrossJobPage = 1, int PendingToCrossJobPage = 1)
@@ -307,6 +285,72 @@ namespace ProdFloor.Controllers
             }
 
             return NotFound();
+        }
+
+        public IActionResult SuperUserDashBoard(string Clean, int jobNumber, string jobnumb = "0", int MyJobsPage = 1, int PendingToCrossJobPage = 1, int OnCrossJobPage = 1)
+        {
+            if (jobnumb != "0") jobNumber = int.Parse(jobnumb);
+            if (jobNumber != 0) jobnumb = jobNumber.ToString();
+
+            List<JobType> JobTyPeList = itemRepo.JobTypes.ToList();
+            List<PO> POsList = repository.POs.ToList();
+            List<JobAdditional> MyJobAdditionalList = repository.JobAdditionals.ToList();
+            List<Job> MyjobsList = new List<Job>();
+            List<Job> jobList = repository.Jobs.Where(m => m.JobNum == jobNumber).ToList();
+            List<Job> OnCrossJobsList = repository.Jobs
+                       .Where(j => j.Status == "On Cross Approval").OrderByDescending(m => m._JobAdditional.Priority).ThenBy(n => n.LatestFinishDate).ToList();
+            
+
+            List<Job> PendingToCrossJobList = repository.Jobs
+                    .Where(j => j.Status == "Cross Approval Pending").OrderByDescending(m => m._JobAdditional.Priority).ThenBy(n => n.LatestFinishDate).ToList();
+
+            if (jobList != null && jobList.Count > 0)
+            {
+                MyjobsList = jobList
+                    .OrderByDescending(m => m._JobAdditional.Priority).ThenBy(n => n.LatestFinishDate).ToList();
+            }
+
+            if (Clean == "true" || jobnumb == "0") MyjobsList = repository.Jobs
+                    .OrderByDescending(m => m._JobAdditional.Priority).ThenBy(n => n.LatestFinishDate).ToList();
+
+
+            DashboardIndexViewModel dashboard = new DashboardIndexViewModel()
+            {
+                MyJobs = MyjobsList.Skip((MyJobsPage - 1) * 6).Take(6),
+                MyJobAdditionals = MyJobAdditionalList,
+                MyJobsPagingInfo = new PagingInfo
+                {
+                    CurrentPage = MyJobsPage,
+                    ItemsPerPage = 6,
+                    TotalItems = MyjobsList.Count(),
+                    JobNumb = jobnumb,
+
+                },
+                POs = POsList,
+                OnCrossJobs = OnCrossJobsList.Skip((OnCrossJobPage - 1) * 6).Take(6),
+                OnCrossJobsPagingInfo = new PagingInfo
+                {
+                    CurrentPage = OnCrossJobPage,
+                    ItemsPerPage = 6,
+                    TotalItems = OnCrossJobsList.Count(),
+                },
+
+                PendingToCrossJobs = PendingToCrossJobList.Skip((PendingToCrossJobPage - 1) * 6).Take(6),
+                PendingToCrossJobsPagingInfo = new PagingInfo
+                {
+                    CurrentPage = PendingToCrossJobPage,
+                    ItemsPerPage = 6,
+                    TotalItems = PendingToCrossJobList.Count(),
+                },
+                JobTypesList = JobTyPeList,
+
+            };
+
+            if (jobNumber == 0) return View(dashboard);
+            if (MyjobsList.Count > 0 && MyjobsList[0] != null) return View(dashboard);
+            TempData["message"] = $"Does not exist any job with the JobNum #{jobNumber}, please try again.";
+            TempData["alert"] = $"alert-danger";
+            return View(dashboard);
         }
 
         public ActionResult MorningDashBoard(string filtrado, string Sort = "default", int MyJobsPage = 1, int OnCrossJobPage = 1, int PendingToCrossJobPage = 1)
@@ -553,6 +597,26 @@ namespace ProdFloor.Controllers
             TempData["alert"] = $"alert-danger";
             TempData["message"] = $"There was an error with your request, the status is the same";
             return RedirectToAction("EngineerAdminDashBoard");
+        }
+
+        [HttpPost]
+        public IActionResult ChangeStatusAdmin(DashboardIndexViewModel viewModel)
+        {
+            Job job = repository.Jobs.FirstOrDefault(m => m.JobID == viewModel.JobID);
+            if (job.Status != viewModel.CurrentStatus)
+            {
+
+                job.Status = viewModel.CurrentStatus;
+                if (viewModel.CurrentStatus == "Cross Approval Pending" || viewModel.CurrentStatus == "Working on it") job.CrossAppEngID = 0;
+                repository.SaveJob(job);
+
+                TempData["message"] = $"You have change the status of  the Job #{job.JobNum} to {viewModel.CurrentStatus}";
+                return RedirectToAction("SuperUserDashBoard");
+            }
+
+            TempData["alert"] = $"alert-danger";
+            TempData["message"] = $"There was an error with your request, the status is the same";
+            return RedirectToAction("SuperUserDashBoard");
         }
 
         public IActionResult JobReassignment(DashboardIndexViewModel viewModel)

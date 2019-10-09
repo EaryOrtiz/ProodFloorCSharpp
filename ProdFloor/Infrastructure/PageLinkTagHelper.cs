@@ -2392,6 +2392,8 @@ namespace ProdFloor.Infrastructure
                     return new List<string> { "Siemens SS : 6/12", "Siemens SS : 3/9", "Sprecher SS : 6/12", "Sprecher SS : 3/9"}.AsQueryable();
                 case "Status":
                     return new List<string> { "Working on it", "Cross Approval Pending", "On Cross Approval", "Cross Approval Complete" }.AsQueryable();
+                case "StatusAdmin":
+                    return new List<string> { "Working on it", "Cross Approval Pending", "On Cross Approval", "Cross Approval Complete" , "Test", "Completed" }.AsQueryable();
                 case "MorningStatus":
                     return new List<string> { "Not reviewed", "Working on it",  "Missing Data", "On Sales", "Cross Approval", "Released" }.AsQueryable();
                 case "TestJobStatus":
