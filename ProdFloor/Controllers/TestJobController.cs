@@ -1242,6 +1242,72 @@ namespace ProdFloor.Controllers
 
         }
 
+        public void AutomaticShiftEnd()
+        {
+            List<TestJob> testJobs = testingRepo.TestJobs.Where(m => m.Status == "Working on it" || m.Status == "Stopped").ToList();
+            if (testJobs.Count > 0)
+            {
+                foreach (TestJob testjob in testJobs)
+                {
+                    if (testjob.Status != "Stopped")
+                    {
+                        testjob.Status = "Shift End";
+                        testingRepo.SaveTestJob(testjob);
+
+                        Stop NewtStop = new Stop
+                        {
+                            TestJobID = testjob.TestJobID,
+                            Reason1 = 981,
+                            Reason2 = 981,
+                            Reason3 = 981,
+                            Reason4 = 981,
+                            Reason5ID = 981,
+                            Description = "Automatic Shift End",
+                            Critical = true,
+                            StartDate = DateTime.Now,
+                            StopDate = DateTime.Now,
+                            Elapsed = new DateTime(1, 1, 1, 0, 0, 0),
+                            AuxStationID = testjob.StationID,
+                            AuxTechnicianID = testjob.TechnicianID,
+                        };
+                        testingRepo.SaveStop(NewtStop);
+
+                    }
+                    else
+                    {
+
+                        Stop CurrentStop = testingRepo.Stops.FirstOrDefault(p => p.StopID == testingRepo.Stops.Max(x => x.StopID) && p.Critical == true && p.Reason1 != 980);
+                        TimeSpan auxTime = (DateTime.Now - CurrentStop.StartDate);
+                        CurrentStop.Elapsed += auxTime;
+                        CurrentStop.StopDate = DateTime.Now;
+                        testingRepo.SaveStop(CurrentStop);
+
+                        testjob.Status = "Shift End";
+                        testingRepo.SaveTestJob(testjob);
+
+                        Stop NewtStop = new Stop
+                        {
+                            TestJobID = testjob.TestJobID,
+                            Reason1 = 981,
+                            Reason2 = 981,
+                            Reason3 = 981,
+                            Reason4 = 981,
+                            Reason5ID = 981,
+                            Description = "Automatic Shift End",
+                            Critical = true,
+                            StartDate = DateTime.Now,
+                            StopDate = DateTime.Now,
+                            Elapsed = new DateTime(1, 1, 1, 0, 0, 0),
+                            AuxStationID = testjob.StationID,
+                            AuxTechnicianID = testjob.TechnicianID,
+                        };
+                        testingRepo.SaveStop(NewtStop);
+                    }
+                }
+            }
+           
+        }
+
         public void RestartShiftEnd(int TechnicianID)
         {
             List<TestJob> testJobList = testingRepo.TestJobs.Where(m => m.TechnicianID == TechnicianID && m.Status == "Shift End").ToList();

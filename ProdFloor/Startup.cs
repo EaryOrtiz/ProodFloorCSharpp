@@ -11,6 +11,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
+using ProdFloor.Controllers;
+using ProdFloor.Services;
 
 namespace ProdFloor
 {
@@ -52,6 +54,11 @@ namespace ProdFloor
             services.AddTransient<IJobRepository, EFJobRepository>();
             services.AddTransient<IItemRepository, EFItemRepository>();
             services.AddTransient<ITestingRepository, EFTestingRepository>();
+            services.AddTransient<ItemController>();
+            services.AddTransient<JobController>();
+            services.AddTransient<TestJobController>();
+            services.AddTransient<Microsoft.Extensions.Hosting.IHostedService, DailyJobsBackupHostedService>();
+            services.AddTransient<Microsoft.Extensions.Hosting.IHostedService, ShiftEndHostedService>();
             services.AddMvc()
                 .SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_2_1);
             services.AddMemoryCache();
