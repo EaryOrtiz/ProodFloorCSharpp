@@ -556,7 +556,6 @@ namespace ProdFloor.Controllers
                 TempData["message"] = $"There was an error with your request{JobCrossID}";
             }
 
-
             return RedirectToAction("Index");
         }
 

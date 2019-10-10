@@ -59,7 +59,7 @@ namespace ProdFloor.Components
             }
 
             foreach (string country in countries)
-            {//Se debe arreglar con jions!!!!!!!!
+            {
                 foreach (string state in repository.States
                     .Where(x => x.Name == country)
                     .Select(x => x.Name)
