@@ -57,8 +57,7 @@ namespace ProdFloor
             services.AddTransient<ItemController>();
             services.AddTransient<JobController>();
             services.AddTransient<TestJobController>();
-            services.AddTransient<Microsoft.Extensions.Hosting.IHostedService, DailyJobsBackupHostedService>();
-            services.AddTransient<Microsoft.Extensions.Hosting.IHostedService, ShiftEndHostedService>();
+            services.AddTransient<Microsoft.Extensions.Hosting.IHostedService, HostedServices>();
             services.AddMvc()
                 .SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_2_1);
             services.AddMemoryCache();

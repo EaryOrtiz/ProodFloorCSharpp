@@ -1242,7 +1242,7 @@ namespace ProdFloor.Controllers
 
         }
 
-        public void AutomaticShiftEnd()
+        public async void AutomaticShiftEnd()
         {
             List<TestJob> testJobs = testingRepo.TestJobs.Where(m => m.Status == "Working on it" || m.Status == "Stopped").ToList();
             if (testJobs.Count > 0)

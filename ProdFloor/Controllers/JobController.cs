@@ -2972,7 +2972,7 @@ namespace ProdFloor.Controllers
         }
 
 
-        public void ExportJobsToXML()
+        public async void ExportJobsToXML()
         {
             MemoryStream ms = new MemoryStream();
             XmlWriterSettings xws = new XmlWriterSettings();
