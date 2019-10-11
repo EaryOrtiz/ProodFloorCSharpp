@@ -1207,7 +1207,7 @@ namespace ProdFloor.Controllers
                         testingRepo.SaveStop(NewtStop);
 
                     }
-                    else
+                    else if(testjob.Status == "Stopped")
                     {
 
                         Stop CurrentStop = testingRepo.Stops.FirstOrDefault(p => p.StopID == testingRepo.Stops.Max(x => x.StopID) && p.Critical == true && p.Reason1 != 980);
@@ -1242,7 +1242,7 @@ namespace ProdFloor.Controllers
 
         }
 
-        public async void AutomaticShiftEnd()
+        public void AutomaticShiftEnd()
         {
             List<TestJob> testJobs = testingRepo.TestJobs.Where(m => m.Status == "Working on it" || m.Status == "Stopped").ToList();
             if (testJobs.Count > 0)

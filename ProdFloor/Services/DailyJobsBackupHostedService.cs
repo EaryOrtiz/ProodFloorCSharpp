@@ -22,13 +22,13 @@ namespace ProdFloor.Services
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            //timer = new Timer(DoWork, null, TimeSpan.Zero, TimeSpan.FromDays(1));
+            timer = new Timer(DoWork, null, TimeSpan.Zero, TimeSpan.FromDays(1));
             return Task.CompletedTask;
         }
 
         private void DoWork(object state)
         {
-           // jobController.ExportJobsToXML();
+           jobController.ExportJobsToXML();
             Console.WriteLine("Jobs Saved");
         }
 
