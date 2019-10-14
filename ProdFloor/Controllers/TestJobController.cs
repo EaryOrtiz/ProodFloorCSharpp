@@ -568,14 +568,43 @@ namespace ProdFloor.Controllers
             }//For Next Step
             else if (viewModel.StepsForJob.Consecutivo == (next - 1))
             {
-                var currentStepForJob = AllStepsForJob.FirstOrDefault(m => m.Consecutivo == viewModel.StepsForJob.Consecutivo); currentStepForJob.Stop = DateTime.Now;
+                var currentStepForJob = AllStepsForJob.FirstOrDefault(m => m.Consecutivo == viewModel.StepsForJob.Consecutivo); 
+                currentStepForJob.Stop = DateTime.Now;
                 currentStepForJob.Complete = true;
                 TimeSpan elapsed = currentStepForJob.Stop - currentStepForJob.Start;
-                currentStepForJob.Elapsed = new DateTime(1, 1, 1, elapsed.Hours, elapsed.Minutes, elapsed.Seconds);
+                if (currentStepForJob.Elapsed.Hour == 0 && currentStepForJob.Elapsed.Minute == 0 && currentStepForJob.Elapsed.Second == 0)
+                {
+                    
+                    currentStepForJob.Elapsed = new DateTime(1, 1, 1, elapsed.Hours, elapsed.Minutes, elapsed.Seconds);
+                }
+                else
+                {
+                    int newsecond =  0 , newhour = 0,newMinute = 0;
+
+                    newsecond = currentStepForJob.Elapsed.Second + elapsed.Seconds;
+                    newMinute = currentStepForJob.Elapsed.Minute + elapsed.Minutes;
+                    newhour = currentStepForJob.Elapsed.Hour + elapsed.Hours;
+                    if (newsecond >= 60)
+                    {
+                        newsecond -= 60;
+                        newMinute++;
+                    }
+                    newMinute += elapsed.Minutes;
+                    if (newMinute >= 60)
+                    {
+                        newMinute -= 60;
+                        newhour++;
+                    }
+                    
+
+                    currentStepForJob.Elapsed = new DateTime(1, 1, 1, newhour, newMinute, newsecond);
+                }
+                
                 testingRepo.SaveStepsForJob(currentStepForJob);
 
                 //NextStep
-                var stepsForAUX = AllStepsForJob.FirstOrDefault(m => m.Complete == false); stepsForAUX.Start = DateTime.Now;
+                var stepsForAUX = AllStepsForJob.FirstOrDefault(m => m.Complete == false); 
+                stepsForAUX.Start = DateTime.Now;
                 testingRepo.SaveStepsForJob(stepsForAUX);
                 var nextStepFor = AllStepsForJob.FirstOrDefault(m => m.StepsForJobID == stepsForAUX.StepsForJobID);
                 var stepInfo = testingRepo.Steps.FirstOrDefault(m => m.StepID == nextStepFor.StepID);
