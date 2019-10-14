@@ -424,9 +424,10 @@ namespace ProdFloor.Controllers
         [HttpPost]
         public ViewResult NewTestFeatures(TestJobViewModel testJobView)
         {
+            bool techAdmin = GetCurrentUserRole("TechAdmin").Result;
             TestJob testJobToUpdate = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == testJobView.TestJob.TestJobID);
             TestJob StationAuxTestJob = testingRepo.TestJobs.FirstOrDefault(m => m.StationID == testJobView.TestJob.StationID && m.Status == "Working on it");
-            if (StationAuxTestJob != null)
+            if (StationAuxTestJob != null && techAdmin == false)
             {
                 TempData["alert"] = $"alert-danger";
                 TempData["message"] = $"Error, la estacion esta ocupada, seleccione otra e intente de nuevo o contacte al Admin";

@@ -52,6 +52,8 @@ namespace ProdFloor.Controllers
             AppUser currentUser = GetCurrentUser().Result;
             bool engineer = GetCurrentUserRole("Engineer").Result;
             bool tech = GetCurrentUserRole("Technician").Result;
+            bool admin = GetCurrentUserRole("Admin").Result;
+            bool techAdmin = GetCurrentUserRole("TechAdmin").Result;
 
             if (filtrado != null) Sort = filtrado;
             if (engineer)
@@ -188,7 +190,11 @@ namespace ProdFloor.Controllers
                 });
             }
 
-            return RedirectToAction("SuperUserDashBoard");
+            if(admin) return RedirectToAction("SuperUserDashBoard");
+
+            if (techAdmin)  return RedirectToAction("SearchTestJob","TestJob");
+
+            return NotFound();
         }
 
         public ActionResult EngineerAdminDashBoard(string filtrado, string Sort = "default", int MyJobsPage = 1, int OnCrossJobPage = 1, int PendingToCrossJobPage = 1)
