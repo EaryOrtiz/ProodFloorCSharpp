@@ -636,6 +636,7 @@ namespace ProdFloor.Controllers
                 //Previus step
                 var previusStepForAUX = AllStepsForJob.OrderByDescending(m => m.Consecutivo).FirstOrDefault(m => m.Complete == true);
                 previusStepForAUX.Complete = false;
+                previusStepForAUX.Start = DateTime.Now;
                 testingRepo.SaveStepsForJob(previusStepForAUX);
 
 
