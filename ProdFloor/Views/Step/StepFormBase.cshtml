@@ -1,37 +1,37 @@
-﻿@model Step
-<input type="hidden" asp-for="StepID" />
+﻿@model ProdFloor.Models.ViewModels.Testing.StepViewModel
+<input type="hidden" asp-for="Step.StepID" />
 <div class="form-group row">
-    <label asp-for="JobTypeID" class="col-sm-2 col-form-label"></label>
+    <label asp-for="Step.JobTypeID" class="col-sm-2 col-form-label"></label>
     <div>
-        <job-type-select selected-value="@Model.JobTypeID" class="form-control-sm form-control" asp-for="JobTypeID"></job-type-select>
-        <span asp-validation-for="JobTypeID" class="text-danger"></span>
+        <job-type-select selected-value="@Model.Step.JobTypeID" class="form-control-sm form-control" asp-for="Step.JobTypeID"></job-type-select>
+        <span asp-validation-for="Step.JobTypeID" class="text-danger"></span>
     </div>
 </div>
 <div class="form-group row">
-    <label asp-for="Stage" class="col-sm-2 col-form-label"></label>
+    <label asp-for="Step.Stage" class="col-sm-2 col-form-label"></label>
     <div>
-        <custom-select selected-value="@Model.Stage" class="form-control-sm form-control" asp-for="Stage" select-for="Stage"></custom-select>
-        <span asp-validation-for="Stage" class="text-danger"></span>
+        <custom-select selected-value="@Model.Step.Stage" class="form-control-sm form-control" asp-for="Step.Stage" select-for="Stage"></custom-select>
+        <span asp-validation-for="Step.Stage" class="text-danger"></span>
     </div>
 </div>
 <div class="form-group row">
-    <label asp-for="ExpectedTime" class="col-sm-2 col-form-label"></label>
+    <label asp-for="Time" class="col-sm-2 col-form-label"></label>
     <div>
-        <input asp-for="ExpectedTime" class="form-control col-sm-11" />
-        <span asp-validation-for="ExpectedTime" class="text-danger"></span>
+        <input type="datetime" asp-for="Time" class="form-control col-sm-8" />
+        <span asp-validation-for="Time" class="text-danger"></span>
     </div>
 </div>
 <div class="form-group row">
-    <label asp-for="Description" class="col-sm-2 col-form-label"></label>
+    <label asp-for="Step.Description" class="col-sm-2 col-form-label"></label>
     <div>
-        <textarea asp-for="Description" class="form-control col-sm-15" rows="4"></textarea>
-        <span asp-validation-for="Description" class="text-danger"></span>
+        <textarea asp-for="Step.Description" class="form-control col-sm-15" rows="4"></textarea>
+        <span asp-validation-for="Step.Description" class="text-danger"></span>
     </div>
 </div>
 <div class="form-group row">
-    <label asp-for="Order" class="col-sm-2 col-form-label"></label>
+    <label asp-for="Step.Order" class="col-sm-2 col-form-label"></label>
     <div>
-        <input asp-for="Order" class="form-control col-sm-15" />
-        <span asp-validation-for="Order" class="text-danger"></span>
+        <input asp-for="Step.Order" class="form-control col-sm-15" />
+        <span asp-validation-for="Step.Order" class="text-danger"></span>
     </div>
 </div>

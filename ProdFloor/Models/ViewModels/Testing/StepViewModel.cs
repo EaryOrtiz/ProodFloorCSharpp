@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -20,6 +21,10 @@ namespace ProdFloor.Models.ViewModels.Testing
         public List<Step> StepsForElmTractionList { get; set; }
         public List<Step> StepsForM200List { get; set; }
         public List<Step> StepsForM4000List { get; set; }
+
+        //timessssssssssssss
+        public TimeSpan Time { get; set; }
+
 
         public PagingInfo ElmHydroPagingInfo { get; set; }
         public PagingInfo ElmTractionPagingInfo { get; set; }

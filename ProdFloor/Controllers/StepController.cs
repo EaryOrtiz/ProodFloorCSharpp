@@ -94,19 +94,23 @@ namespace ProdFloor.Controllers
 
         public ViewResult NewStep()
         {
-            return View(new Step());
+            return View(new StepViewModel() { Step = new Step(), Time = new TimeSpan() });
         }
 
         [HttpPost]
-        public IActionResult NewStep(Step newStep)
+        public IActionResult NewStep(StepViewModel newStep)
         {
-            if (ModelState.IsValid)
+               
+            if (newStep.Step.JobTypeID != 0 && newStep.Step.Order > 0 && !string.IsNullOrEmpty(newStep.Step.Stage))
             {
-                testingrepo.SaveStep(newStep);
+                DateTime ExpectedTime = new DateTime(1, 1, 1, newStep.Time.Hours, newStep.Time.Minutes, newStep.Time.Seconds);
+                newStep.Step.ExpectedTime = ExpectedTime;
+                testingrepo.SaveStep(newStep.Step);
                 StepViewModel newStepViewModel = new StepViewModel
                 {
-                    Step = newStep,
-                    TriggeringList = new List<TriggeringFeature> { new TriggeringFeature { StepID = newStep.StepID } },
+                    Step = newStep.Step,
+                    Time = newStep.Time,
+                    TriggeringList = new List<TriggeringFeature> { new TriggeringFeature { StepID = newStep.Step.StepID } },
                     CurrentTab = "Triggering"
                 };
                 TempData["message"] = $"Step# {newStepViewModel.Step.StepID} has been saved....";
@@ -126,15 +130,18 @@ namespace ProdFloor.Controllers
 
             if (nextViewModel.buttonAction == "AddSF")
             {
-                nextViewModel.TriggeringList.Add(new TriggeringFeature { StepID = nextViewModel.Step.StepID });
+                nextViewModel.TriggeringList.Add(new TriggeringFeature { StepID = nextViewModel.TriggeringList[0].StepID });
                 nextViewModel.CurrentTab = "Triggering";
             }
             else
             {
                 if (ModelState.IsValid)
                 {
+                    if (nextViewModel.Step.StepID == 0) nextViewModel.Step.StepID = nextViewModel.TriggeringList[0].StepID;
                     if (nextViewModel.TriggeringList != null)
                     {
+                        DateTime ExpectedTime = new DateTime(1, 1, 1, nextViewModel.Time.Hours, nextViewModel.Time.Minutes, nextViewModel.Time.Seconds);
+                        nextViewModel.Step.ExpectedTime = ExpectedTime;
                         testingrepo.SaveTestStep(nextViewModel);
                         nextViewModel.CurrentTab = "Main";
                         TempData["message"] = $"everything was saved";
@@ -143,7 +150,7 @@ namespace ProdFloor.Controllers
                     else
                     {
                         testingrepo.SaveTestStep(nextViewModel);
-                        nextViewModel.TriggeringList = new List<TriggeringFeature> { new TriggeringFeature { StepID = nextViewModel.Step.StepID } };
+                        nextViewModel.TriggeringList = new List<TriggeringFeature> { new TriggeringFeature { StepID = nextViewModel.TriggeringList[0].StepID } };
                         nextViewModel.CurrentTab = "Triggering";
                         TempData["message"] = $"Step was saved";
                         return View(nextViewModel);
@@ -174,6 +181,7 @@ namespace ProdFloor.Controllers
                 List<TriggeringFeature> SfList = testingrepo.TriggeringFeatures.Where(j => j.StepID == ID).ToList();
                 StepViewModel viewModel = new StepViewModel();
                 viewModel.Step = step;
+                viewModel.Time = new TimeSpan(step.ExpectedTime.Hour, step.ExpectedTime.Minute,step.ExpectedTime.Second);
                 if (SfList != null) viewModel.TriggeringList = SfList;
                 else viewModel.TriggeringList = new List<TriggeringFeature> { new TriggeringFeature() };
                 viewModel.CurrentTab = "Main";
@@ -187,6 +195,8 @@ namespace ProdFloor.Controllers
         {
             if (ModelState.IsValid)
             {
+                DateTime ExpectedTime = new DateTime(1, 1, 1, multiEditViewModel.Time.Hours, multiEditViewModel.Time.Minutes, multiEditViewModel.Time.Seconds);
+                multiEditViewModel.Step.ExpectedTime = ExpectedTime;
                 testingrepo.SaveTestStep(multiEditViewModel);
                 multiEditViewModel.CurrentTab = "Main";
                 TempData["message"] = $"{multiEditViewModel.Step.StepID} ID has been saved...";

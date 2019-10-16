@@ -3007,8 +3007,6 @@ namespace ProdFloor.Infrastructure
 
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
-
-
             IUrlHelper urlHelper = urlHelperFactory.GetUrlHelper(ViewContext);
             output.TagName = "select";
             TagBuilder result = new TagBuilder("select");
@@ -3022,11 +3020,11 @@ namespace ProdFloor.Infrastructure
             m_tag.Attributes["value"] = "";
             m_tag.InnerHtml.Append("Please select one");
             result.InnerHtml.AppendHtml(m_tag);
-            IQueryable<LandingSystem> landigSystems = itemsrepository.LandingSystems.OrderBy(s => s.Name).AsQueryable();
+            IQueryable<LandingSystem> landigSystems = itemsrepository.LandingSystems.OrderBy(s => s.Name).Distinct().AsQueryable();
             if (SelectFor != 0)
             {
                 var jobtypeName = itemsrepository.JobTypes.FirstOrDefault(m => m.JobTypeID == SelectFor).Name;
-                landigSystems = itemsrepository.LandingSystems.OrderBy(s => s.Name).Where(m => m.UsedIn == jobtypeName).AsQueryable();
+                landigSystems = itemsrepository.LandingSystems.OrderBy(s => s.Name).Where(m => m.UsedIn == jobtypeName).Distinct().AsQueryable();
             }
             foreach (LandingSystem landingSys in landigSystems)
             {
@@ -3036,7 +3034,8 @@ namespace ProdFloor.Infrastructure
                 {
                     tag.Attributes["selected"] = "selected";
                 }
-                tag.InnerHtml.Append(landingSys.Name.ToString());
+                if(SelectFor == 0) tag.InnerHtml.Append(landingSys.Name.ToString() + " - " + landingSys.UsedIn);
+                else tag.InnerHtml.Append(landingSys.Name.ToString());
                 result.InnerHtml.AppendHtml(tag);
             }
             output.Content.AppendHtml(result.InnerHtml);
@@ -4323,17 +4322,22 @@ namespace ProdFloor.Infrastructure
             m_tag.Attributes["value"] = "";
             m_tag.InnerHtml.Append("Please select one");
             result.InnerHtml.AppendHtml(m_tag);
+            string JobtypeName = "";
             IQueryable<Station> stations = testingRepository.Stations.Where(m => m.StationID != 0).OrderBy(s => s.Label).AsQueryable();
-            if (SelectFor != 0) stations = testingRepository.Stations.OrderBy(s => s.Label).Where(m => m.JobTypeID == SelectFor && m.StationID != 0).AsQueryable();
+            if (SelectFor != 0) { 
+                stations = testingRepository.Stations.OrderBy(s => s.Label).Where(m => m.JobTypeID == SelectFor && m.StationID != 0).AsQueryable(); 
+            }
             foreach (Station station in stations)
             {
+                JobtypeName = itemsrepository.JobTypes.FirstOrDefault(m => m.JobTypeID == station.JobTypeID).Name;
                 TagBuilder tag = new TagBuilder("option");
                 tag.Attributes["value"] = station.StationID.ToString();
                 if (station.StationID == SelectedValue)
                 {
                     tag.Attributes["selected"] = "selected";
                 }
-                tag.InnerHtml.Append(station.Label.ToString());
+                if(JobtypeName == "ElmHydro" || JobtypeName == "ElmTract") tag.InnerHtml.Append(station.Label.ToString() + " - " + JobtypeName);
+                else tag.InnerHtml.Append(station.Label.ToString());
                 result.InnerHtml.AppendHtml(tag);
             }
             output.Content.AppendHtml(result.InnerHtml);
