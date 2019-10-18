@@ -21,6 +21,80 @@
     </div>
 }
 <br />
+<form asp-action="List" method="get">
+    <div id="accordionSearch">
+        <div class="card">
+            <div class="card-header text-center" style="background-color:#bee5eb;">
+                <div class="btn-group" style="float:left">
+                    <!--Search and Clean-->
+                    <button class="btn btn-outline-info" style="border-color:transparent" type="submit" value="Search"><i class="fa fa-search" aria-hidden="true"></i></button>
+                    <button class="btn btn-outline-info" style="border-color:transparent" name="CleanFields" type="submit" value="true"><i class="fas fa-undo"></i></button>
+                </div>
+                <div class="btn-group">
+                    <!--Header Info-->
+                    <button type="button" id="headingJobInfo" class="btn btn-outline-info" style="border-color:transparent" data-toggle="collapse" data-target="#collapseJobInfo" aria-expanded="true" aria-controls="collapseJobInfo">
+                        <h6 class="mb-0 text-center">Starters Information</h6>
+                    </button>
+                </div>
+            </div>
+
+            <!--Body Job Info-->
+            <div id="collapseJobInfo" class="collapse" aria-labelledby="headingJobInfo" data-parent="#accordionSearch">
+                <div class="card-body">
+                    <div class="row" style="margin-bottom:10px">
+                        <div class="col-3 border-right">
+                            <div class="form-group row" style="margin-bottom:0px;">
+                                <label asp-for="StarterType" class="col-sm-6 col-form-label"></label>
+                                <custom-select class="form-control form-control-sm col-5" asp-for="StarterType" select-for="Starter" selected-value="@Model.StarterType"></custom-select>
+
+                            </div>
+                        </div>
+                        <div class="col-3 border-right">
+                            <div class="form-group row" style="margin-bottom:0px;">
+                                <label asp-for="FLA" class="col-sm-6 col-form-label"></label>
+                                <input class="form-control form-control-sm col-sm-5" asp-for="FLA">
+                            </div>
+                        </div>
+                        <div class="col-3 border-right">
+                            <div class="form-group row" style="margin-bottom:0px;">
+                                <label asp-for="Volts" class="col-sm-6 col-form-label"></label>
+                                <starter class="form-control form-control-sm col-5" asp-for="Volts" select-for="Volts" selected-value="@Model.Volts"></starter>
+                            </div>
+                        </div>
+                        <div class="col-3 border-right">
+                            <div class="form-group row" style="margin-bottom:0px;">
+                                <label asp-for="HP" class="col-sm-6 col-form-label"></label>
+                                <input class="form-control form-control-sm col-sm-5" asp-for="HP">
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-3 border-right">
+                            <div class="form-group row" style="margin-bottom:0px;">
+                                <label asp-for="MCPart" class="col-sm-6 col-form-label"></label>
+                                <input  class="form-control form-control-sm col-sm-5" asp-for="MCPart">
+                            </div>
+                        </div>
+                        <div class="col-3 border-right">
+                            <div class="form-group row" style="margin-bottom:0px;">
+                                <label asp-for="NewManufacturerPart" class="col-sm-6 col-form-label"></label>
+                                <input  class="form-control form-control-sm col-sm-5" asp-for="NewManufacturerPart">
+                            </div>
+                        </div>
+                        <div class="col-3 border-right">
+                            <div class="form-group row" style="margin-bottom:0px;">
+                                <label asp-for="OverloadTable" class="col-sm-6 col-form-label"></label>
+                                <starter class="form-control form-control-sm col-5" asp-for="OverloadTable" select-for="OverloadTable" selected-value="@Model.OverloadTable"></starter>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</form>
 <div>
     <table class="table table-striped border table-sm" style="text-align:center">
         <tr class="table-info">
@@ -88,11 +162,11 @@
         }
     </table>
 </div>
-<coool-pagination-all page-model="@Model.PagingInfo" page-action="List" page-classes-enabled="true"
-                      page-class="btn" page-class-normal="btn-secondary"
-                      page-class-selected="btn-dark"
-                      class="btn-group pull-right m-1">
-</coool-pagination-all>
+<coool-pagination-search page-model="@Model.PagingInfo" page-action="List" page-classes-enabled="true"
+                         page-class="btn" page-class-normal="btn-secondary"
+                         page-class-selected="btn-dark"
+                         class="btn-group pull-right m-1">
+</coool-pagination-search>
 <br />
 <div>
     <form asp-controller="Item" asp-action="ExportToXML" method="post">

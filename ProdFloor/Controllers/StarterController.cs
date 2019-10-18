@@ -21,20 +21,27 @@ namespace ProdFloor.Controllers
             repository = repo;
         }
 
-        public ViewResult List(int page = 1)
-            => View(new StarterListViewModel
+        public IActionResult List(StarterListViewModel viewModel, int page = 1)
+        {
+            if (viewModel.CleanFields) return RedirectToAction("List");
+            IQueryable<Starter> starters = repository.Starters.AsQueryable();
+
+            if (viewModel.FLA > 0) starters = starters.Where(m => m.FLA == viewModel.FLA);
+            if (viewModel.HP > 0) starters = starters.Where(m => m.HP == viewModel.HP);
+            if (!string.IsNullOrEmpty(viewModel.StarterType)) starters = starters.Where(m => m.StarterType == viewModel.StarterType);
+            if (!string.IsNullOrEmpty(viewModel.Volts)) starters = starters.Where(m => m.Volts.Contains(viewModel.Volts));
+            if (!string.IsNullOrEmpty(viewModel.MCPart)) starters = starters.Where(m => m.MCPart.Contains(viewModel.MCPart));
+            if (!string.IsNullOrEmpty(viewModel.NewManufacturerPart)) starters = starters.Where(m => m.NewManufacturerPart.Contains(viewModel.NewManufacturerPart));
+            if (!string.IsNullOrEmpty(viewModel.OverloadTable)) starters = starters.Where(m => m.OverloadTable == viewModel.OverloadTable);
+            viewModel.Starters = starters.OrderBy(p => p.FLA).Skip((page - 1) * 10).Take(10).ToList();
+            viewModel.PagingInfo = new PagingInfo
             {
-                Starters = repository.Starters
-                .OrderBy(p => p.StarterID)
-                .Skip((page - 1) * PageSize)
-                .Take(PageSize).ToList(),
-                PagingInfo = new PagingInfo
-                {
-                    CurrentPage = page,
-                    ItemsPerPage = PageSize,
-                    TotalItems = repository.Starters.Count()
-                }
-            });
+                CurrentPage = page,
+                ItemsPerPage = 10,
+                TotalItems = starters.Count()
+            };
+            return View(viewModel);
+        }
 
         public ViewResult Edit(int ID) =>
             View(repository.Starters

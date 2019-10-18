@@ -21,20 +21,26 @@ namespace ProdFloor.Controllers
             repository = repo;
         }
 
-        public ViewResult List(int page = 1)
-            => View(new OverloadListViewModel
+        public IActionResult List(OverloadListViewModel viewModel, int page = 1)
+        {
+            if (viewModel.CleanFields) return RedirectToAction("List");
+            IQueryable<Overload> overloads = repository.Ovearloads.AsQueryable();
+
+            if (viewModel.AMPMin > 0) overloads = overloads.Where(m => m.AMPMin == viewModel.AMPMin);
+            if (viewModel.AMPMax > 0) overloads = overloads.Where(m => m.AMPMax == viewModel.AMPMax);
+            if (viewModel.OverTableNum > 0) overloads = overloads.Where(m => m.OverTableNum == viewModel.OverTableNum);
+            if (!string.IsNullOrEmpty(viewModel.MCPart)) overloads = overloads.Where(m => m.MCPart.Contains(viewModel.MCPart));
+            if (!string.IsNullOrEmpty(viewModel.SiemensPart)) overloads = overloads.Where(m => m.SiemensPart.Contains(viewModel.SiemensPart));
+
+            viewModel.Overloads = overloads.OrderBy(p => p.AMPMin).Skip((page - 1) * 10).Take(10).ToList();
+            viewModel.PagingInfo = new PagingInfo
             {
-                Overloads = repository.Ovearloads
-                .OrderBy(p => p.OverloadID)
-                .Skip((page - 1) * PageSize)
-                .Take(PageSize).ToList(),
-                PagingInfo = new PagingInfo
-                {
-                    CurrentPage = page,
-                    ItemsPerPage = PageSize,
-                    TotalItems = repository.Ovearloads.Count()
-                }
-            });
+                CurrentPage = page,
+                ItemsPerPage = 10,
+                TotalItems = overloads.Count()
+            };
+            return View(viewModel);
+        }
 
         public ViewResult Edit(int ID) =>
             View(repository.Ovearloads
