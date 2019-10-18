@@ -19,24 +19,25 @@ namespace ProdFloor.Controllers
         }
 
         
-        public ViewResult List(string jobType,int page = 1)
-            => View(new LandingSystemsListViewModel
+        public IActionResult List(LandingSystemsListViewModel viewModel, int page = 1)
+        {
+            if (viewModel.CleanFields) return RedirectToAction("List");
+            IQueryable<LandingSystem> landings = repository.LandingSystems.AsQueryable();
+
+            if (viewModel.JobTypeID != 0) viewModel.UsedIn = repository.JobTypes.FirstOrDefault(m => m.JobTypeID == viewModel.JobTypeID).Name;
+
+            if (!string.IsNullOrEmpty(viewModel.UsedIn)) landings = landings.Where(m => m.UsedIn.Contains(viewModel.UsedIn));
+            if (!string.IsNullOrEmpty(viewModel.Name)) landings = landings.Where(m => m.Name.Contains(viewModel.Name));
+
+            viewModel.LandingSystems = landings.OrderBy(p => p.Name).Skip((page - 1) * 5).Take(5).ToList();
+            viewModel.PagingInfo = new PagingInfo
             {
-                LandingSystems = repository.LandingSystems
-                .Where(j => jobType == null || j.UsedIn == jobType)
-                .OrderBy(p => p.LandingSystemID)
-                .Skip((page - 1) * PageSize)
-                .Take(PageSize).ToList(),
-                PagingInfo = new PagingInfo
-                {
-                    CurrentPage = page,
-                    ItemsPerPage = PageSize,
-                    TotalItems = jobType == null ?
-                    repository.LandingSystems.Count() :
-                    repository.LandingSystems.Where(e =>
-                    e.UsedIn == jobType).Count()
-                }
-            });
+                CurrentPage = page,
+                ItemsPerPage = 5,
+                TotalItems = landings.Count()
+            };
+            return View(viewModel);
+        }
 
         public ViewResult Edit(int ID) =>
             View(repository.LandingSystems

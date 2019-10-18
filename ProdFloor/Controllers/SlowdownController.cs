@@ -21,20 +21,26 @@ namespace ProdFloor.Controllers
             repository = repo;
         }
 
-        public ViewResult List(int page = 1)
-            => View(new SlowdownListViewModel
+        public IActionResult List(SlowdownListViewModel viewModel, int page = 1)
+        {
+            if (viewModel.CleanFields) return RedirectToAction("List");
+            IQueryable<Slowdown> slowdowns = repository.Slowdowns.AsQueryable();
+
+            if (viewModel.CarSpeedFPM > 0) slowdowns = slowdowns.Where(m => m.CarSpeedFPM == viewModel.CarSpeedFPM);
+            if (viewModel.Distance > 0) slowdowns = slowdowns.Where(m => m.Distance == viewModel.Distance);
+            if (viewModel.A > 0) slowdowns = slowdowns.Where(m => m.A == viewModel.A);
+            if (viewModel.SlowLimit > 0) slowdowns = slowdowns.Where(m => m.SlowLimit == viewModel.SlowLimit);
+            if (viewModel.MiniumFloorHeight > 0) slowdowns = slowdowns.Where(m => m.MiniumFloorHeight == viewModel.MiniumFloorHeight);
+
+            viewModel.Slowdowns = slowdowns.OrderBy(p => p.CarSpeedFPM).Skip((page - 1) * 10).Take(10).ToList();
+            viewModel.PagingInfo = new PagingInfo
             {
-                Slowdowns = repository.Slowdowns
-                .OrderBy(p => p.SlowdownID)
-                .Skip((page - 1) * PageSize)
-                .Take(PageSize).ToList(),
-                PagingInfo = new PagingInfo
-                {
-                    CurrentPage = page,
-                    ItemsPerPage = PageSize,
-                    TotalItems = repository.Slowdowns.Count()
-                }
-            });
+                CurrentPage = page,
+                ItemsPerPage = 10,
+                TotalItems = slowdowns.Count()
+            };
+            return View(viewModel);
+        }
 
         public ViewResult Edit(int ID) =>
             View(repository.Slowdowns

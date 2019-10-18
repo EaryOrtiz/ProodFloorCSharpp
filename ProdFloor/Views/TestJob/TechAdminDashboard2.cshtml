@@ -54,6 +54,18 @@
                         @Model.StationsList.FirstOrDefault(m => m.StationID == j.StationID).Label
                     </td>
                     <td>
+                        <form asp-action="AllStepsForJob" asp-controller="TestJob" method="get">
+                            <button type="submit" value="@j.TestJobID" name="ID" class="btn btn-light"
+                                    style="float:left;background-color:transparent">
+                                <i class="fas fa-shoe-prints"></i>
+                            </button>
+                        </form>
+                        <form asp-action="StopsFromTestJob" asp-controller="TestJob" method="get">
+                            <button type="submit" value="@j.TestJobID" name="ID" class="btn btn-light"
+                                    style="float:left;background-color:transparent">
+                                <i class="fas fa-hourglass-half"></i>
+                            </button>
+                        </form>
                         <!-- Button trigger to  return to working on it-->
                         <button type="button" class="btn btn-light" data-toggle="modal" data-target="#exampleModalReturn @j.TestJobID" style="float:left;background-color:transparent">
                             <i class="fas fa-undo"></i>

@@ -3,6 +3,7 @@ using ProdFloor.Models;
 using ProdFloor.Models.ViewModels;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
+using System.Collections.Generic;
 
 namespace ProdFloor.Controllers
 {
@@ -16,21 +17,37 @@ namespace ProdFloor.Controllers
         {
             repository = repo;
         }
-        
-        public ViewResult List(int page = 1)
-            => View(new FireCodesListViewModel
+
+        public ViewResult List(string filtrado, string Sort = "default", int page = 1)
+        {   
+            if (Sort == "default") page = 1;
+            if (filtrado != null) Sort = filtrado;
+
+            List<FireCode> fireCodes = repository.FireCodes
+                .OrderBy(p => p.FireCodeID).ToList();
+
+            if (Sort != "default")
             {
-                FireCodes = repository.FireCodes
-                .OrderBy(p => p.FireCodeID)
-                .Skip((page - 1) * PageSize)
+                fireCodes = repository.FireCodes
+                 .Where(m => m.Name.Contains(Sort))
+                 .OrderBy(p => p.FireCodeID).ToList();
+
+            }
+
+            FireCodesListViewModel fireCodesListView = new FireCodesListViewModel
+            {
+                FireCodes = fireCodes.Skip((page - 1) * PageSize)
                 .Take(PageSize).ToList(),
                 PagingInfo = new PagingInfo
                 {
                     CurrentPage = page,
+                    sort = Sort != "default" ? Sort : "default",
                     ItemsPerPage = PageSize,
-                    TotalItems = repository.FireCodes.Count()
+                    TotalItems = fireCodes.Count()
                 }
-            });
+            };
+            return View(fireCodesListView);
+        }
 
         public ViewResult Edit(int ID) =>
             View(repository.FireCodes
@@ -73,5 +90,20 @@ namespace ProdFloor.Controllers
         }
 
         public ViewResult Add() => View("Edit", new FireCode());
+
+
+        public IActionResult SearchFireCode()
+        {
+            try
+            {
+                string term = HttpContext.Request.Query["term"].ToString();
+                var names = repository.FireCodes.Where(p => p.Name.Contains(term)).Select(p => p.Name).Distinct().ToList();
+                return Ok(names);
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
     }
 }

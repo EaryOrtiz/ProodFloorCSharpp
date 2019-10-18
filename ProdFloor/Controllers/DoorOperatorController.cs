@@ -16,26 +16,25 @@ namespace ProdFloor.Controllers
         {
             repository = repo;
         }
-        
-        public ViewResult List(string brand, int page = 1)
-            => View(new DoorOperatorsListViewModel
+
+        public IActionResult List(DoorOperatorsListViewModel viewModel, int page = 1) 
+        {
+            if (viewModel.CleanFields) return RedirectToAction("List");
+            IQueryable<DoorOperator> doors = repository.DoorOperators.AsQueryable();
+
+            if (!string.IsNullOrEmpty(viewModel.Brand)) doors = doors.Where(m => m.Brand.Contains(viewModel.Brand));
+            if (!string.IsNullOrEmpty(viewModel.Style)) doors = doors.Where(m => m.Style.Contains(viewModel.Style));
+            if (!string.IsNullOrEmpty(viewModel.Name)) doors = doors.Where(m => m.Name.Contains(viewModel.Name));
+
+            viewModel.DoorOperators = doors.OrderBy(p => p.Name).Skip((page - 1) * 5).Take(5).ToList();
+            viewModel.PagingInfo = new PagingInfo
             {
-                DoorOperators = repository.DoorOperators
-                .Where(j => brand == null || j.Brand == brand)
-                .OrderBy(p => p.DoorOperatorID)
-                .Skip((page - 1) * PageSize)
-                .Take(PageSize).ToList(),
-                PagingInfo = new PagingInfo
-                {
-                    CurrentPage = page,
-                    ItemsPerPage = PageSize,
-                    TotalItems =brand == null ?
-                    repository.DoorOperators.Count() :
-                    repository.DoorOperators.Where(e =>
-                    e.Brand == brand).Count()
-                },
-                CurrentBrand = brand
-            });
+                CurrentPage = page,
+                ItemsPerPage = 5,
+                TotalItems = doors.Count()
+            };
+            return View(viewModel);
+        }
 
         public ViewResult Edit(int ID) =>
             View(repository.DoorOperators

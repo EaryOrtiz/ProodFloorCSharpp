@@ -721,6 +721,135 @@ namespace ProdFloor.Infrastructure
             output.Content.AppendHtml(result.InnerHtml);
         }
     }
+    public class CooolPaginationSearhAll : TagHelper
+    {
+        private IUrlHelperFactory urlHelperFactory;
+
+        public CooolPaginationSearhAll(IUrlHelperFactory helperFactory)
+        {
+            urlHelperFactory = helperFactory;
+        }
+        [ViewContext]
+        [HtmlAttributeNotBound]
+        public ViewContext ViewContext { get; set; }
+
+        public PagingInfo PageModel { get; set; }
+
+        public string PageAction { get; set; }
+
+        [HtmlAttributeName(DictionaryAttributePrefix = "page-url-")]
+        public Dictionary<string, object> PageUrlValues { get; set; }
+            = new Dictionary<string, object>();
+
+        public bool PageClassesEnabled { get; set; } = false;
+        public string PageClass { get; set; }
+        public string PageClassNormal { get; set; }
+        public string PageClassSelected { get; set; }
+
+        public string Sort { get; set; }
+
+        public override void Process(TagHelperContext context,
+        TagHelperOutput output)
+        {
+            IUrlHelper urlHelper = urlHelperFactory.GetUrlHelper(ViewContext);
+            TagBuilder result = new TagBuilder("div");
+            TagBuilder tag = new TagBuilder("a");
+            TagBuilder tag1 = new TagBuilder("a");
+            TagBuilder tag4 = new TagBuilder("a");
+            TagBuilder tag5 = new TagBuilder("a");
+            /*************************************************************************/
+            PageUrlValues["page"] = 1;
+            PageUrlValues[Sort] = PageModel.sort;
+            tag.Attributes["href"] = urlHelper.Action(PageAction, PageUrlValues);
+            if (PageClassesEnabled)
+            {
+                tag.AddCssClass(PageClass);
+                tag.AddCssClass(PageClassSelected);
+            }
+            tag.InnerHtml.Append("<<");
+            result.InnerHtml.AppendHtml(tag);
+            output.Content.AppendHtml(result.InnerHtml);
+            /*************************************************************************/
+            PageUrlValues["page"] = (PageModel.CurrentPage - 1) != 0 ? (PageModel.CurrentPage - 1) : 1;
+            PageUrlValues[Sort] = PageModel.sort;
+            tag1.Attributes["href"] = urlHelper.Action(PageAction, PageUrlValues);
+            if (PageClassesEnabled)
+            {
+                tag1.AddCssClass(PageClass);
+                tag1.AddCssClass(PageClassSelected);
+            }
+            tag1.InnerHtml.Append("<");
+            result.InnerHtml.AppendHtml(tag1);
+            output.Content.AppendHtml(result.InnerHtml);
+            /*************************************************************************/
+            List<int> Pages = new List<int>();
+            int countPages = PageModel.CurrentPage;
+            while ((countPages >= PageModel.CurrentPage - 3 && countPages != 0))
+            {
+                Pages.Add(countPages);
+                countPages--;
+            }
+            Pages.Reverse();
+            int pagesRest = 4 - Pages.Count;
+            for (int i = Pages[0]; i <= Pages.Last(); i++)
+            {
+                TagBuilder tag2 = new TagBuilder("a");
+                PageUrlValues["page"] = i;
+                PageUrlValues[Sort] = PageModel.sort;
+                tag2.Attributes["href"] = urlHelper.Action(PageAction, PageUrlValues);
+                if (PageClassesEnabled)
+                {
+                    tag2.AddCssClass(PageClass);
+                    tag2.AddCssClass(i == PageModel.CurrentPage
+                    ? "btn-info" : PageClassNormal);
+                }
+                tag2.InnerHtml.Append(i.ToString());
+                result.InnerHtml.AppendHtml(tag2);
+            }
+            output.Content.AppendHtml(result.InnerHtml);
+            /*************************************************************************/
+            for (int i = PageModel.CurrentPage + 1; (i <= PageModel.CurrentPage + 3 + pagesRest && i <= PageModel.TotalPages); i++)
+            {
+                TagBuilder tag3 = new TagBuilder("a");
+                PageUrlValues["page"] = i;
+                PageUrlValues[Sort] = PageModel.sort;
+                tag3.Attributes["href"] = urlHelper.Action(PageAction, PageUrlValues);
+                if (PageClassesEnabled)
+                {
+                    tag3.AddCssClass(PageClass);
+                    tag3.AddCssClass(i == PageModel.CurrentPage
+                    ? "btn-info" : PageClassNormal);
+                }
+                tag3.InnerHtml.Append(i.ToString());
+                result.InnerHtml.AppendHtml(tag3);
+            }
+            output.Content.AppendHtml(result.InnerHtml);
+            /*************************************************************************/
+            PageUrlValues["page"] = (PageModel.CurrentPage + 1) <= PageModel.TotalPages ? (PageModel.CurrentPage + 1) : PageModel.TotalPages;
+            PageUrlValues[Sort] = PageModel.sort;
+            tag4.Attributes["href"] = urlHelper.Action(PageAction, PageUrlValues);
+            if (PageClassesEnabled)
+            {
+                tag4.AddCssClass(PageClass);
+                tag4.AddCssClass(PageClassSelected);
+            }
+            tag4.InnerHtml.Append(">");
+            result.InnerHtml.AppendHtml(tag4);
+            output.Content.AppendHtml(result.InnerHtml);
+            /*************************************************************************/
+            PageUrlValues["page"] = PageModel.TotalPages;
+            PageUrlValues[Sort] = PageModel.sort;
+            tag5.Attributes["href"] = urlHelper.Action(PageAction, PageUrlValues);
+            if (PageClassesEnabled)
+            {
+                tag5.AddCssClass(PageClass);
+                tag5.AddCssClass(PageClassSelected);
+            }
+            tag5.InnerHtml.Append(">>");
+            result.InnerHtml.AppendHtml(tag5);
+            output.Content.AppendHtml(result.InnerHtml);
+        }
+    }
 
     public class CooolPaginationSearch : TagHelper
     {
@@ -762,7 +891,7 @@ namespace ProdFloor.Infrastructure
             TagBuilder tag5 = new TagBuilder("a");
             /*************************************************************************/
             PageUrlValues["page"] = 1;
-            if (requestQuery.Count > 1)
+            if (requestQuery.Count > 0)
             {
                 foreach (var request in requestQuery)
                 {
@@ -780,6 +909,13 @@ namespace ProdFloor.Infrastructure
             output.Content.AppendHtml(result.InnerHtml);
             /*************************************************************************/
             PageUrlValues["page"] = (PageModel.CurrentPage - 1) != 0 ? (PageModel.CurrentPage - 1) : 1;
+            if (requestQuery.Count > 0)
+            {
+                foreach (var request in requestQuery)
+                {
+                    PageUrlValues[request.Key] = request.Value;
+                }
+            }
             tag1.Attributes["href"] = urlHelper.Action(PageAction, PageUrlValues);
             if (PageClassesEnabled)
             {
@@ -803,6 +939,13 @@ namespace ProdFloor.Infrastructure
             {
                 TagBuilder tag2 = new TagBuilder("a");
                 PageUrlValues["page"] = i;
+                if (requestQuery.Count > 0)
+                {
+                    foreach (var request in requestQuery)
+                    {
+                        PageUrlValues[request.Key] = request.Value;
+                    }
+                }
                 tag2.Attributes["href"] = urlHelper.Action(PageAction, PageUrlValues);
                 if (PageClassesEnabled)
                 {
@@ -819,6 +962,13 @@ namespace ProdFloor.Infrastructure
             {
                 TagBuilder tag3 = new TagBuilder("a");
                 PageUrlValues["page"] = i;
+                if (requestQuery.Count > 0)
+                {
+                    foreach (var request in requestQuery)
+                    {
+                        PageUrlValues[request.Key] = request.Value;
+                    }
+                }
                 tag3.Attributes["href"] = urlHelper.Action(PageAction, PageUrlValues);
                 if (PageClassesEnabled)
                 {
@@ -832,6 +982,13 @@ namespace ProdFloor.Infrastructure
             output.Content.AppendHtml(result.InnerHtml);
             /*************************************************************************/
             PageUrlValues["page"] = (PageModel.CurrentPage + 1) <= PageModel.TotalPages ? (PageModel.CurrentPage + 1) : PageModel.TotalPages;
+            if (requestQuery.Count > 0)
+            {
+                foreach (var request in requestQuery)
+                {
+                    PageUrlValues[request.Key] = request.Value;
+                }
+            }
             tag4.Attributes["href"] = urlHelper.Action(PageAction, PageUrlValues);
             if (PageClassesEnabled)
             {
@@ -843,6 +1000,13 @@ namespace ProdFloor.Infrastructure
             output.Content.AppendHtml(result.InnerHtml);
             /*************************************************************************/
             PageUrlValues["page"] = PageModel.TotalPages;
+            if (requestQuery.Count > 0)
+            {
+                foreach (var request in requestQuery)
+                {
+                    PageUrlValues[request.Key] = request.Value;
+                }
+            }
             tag5.Attributes["href"] = urlHelper.Action(PageAction, PageUrlValues);
             if (PageClassesEnabled)
             {
@@ -2729,6 +2893,8 @@ namespace ProdFloor.Infrastructure
 
         public int SelectedValue { get; set; }
 
+        public int SelectedDefaultValue { get; set; }
+
         [HtmlAttributeName("asp-is-disabled")]
         public bool IsDisabled { set; get; }
 
@@ -2755,7 +2921,11 @@ namespace ProdFloor.Infrastructure
                 State selectedState = itemsrepository.States.FirstOrDefault(s => s.StateID == selectedCity.StateID);
                 stateID = selectedCity.StateID;
                 state = itemsrepository.States.Where(m => m.CountryID == selectedState.CountryID).OrderBy(s => s.Name).AsQueryable();
+            }else if (SelectedDefaultValue != 0)
+            {
+                stateID = itemsrepository.States.FirstOrDefault(s => s.StateID == SelectedDefaultValue).StateID;
             }
+            
             foreach (State states in state)
             {
                 TagBuilder tag = new TagBuilder("option");

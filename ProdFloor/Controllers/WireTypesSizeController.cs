@@ -21,20 +21,24 @@ namespace ProdFloor.Controllers
             repository = repo;
         }
 
-        public ViewResult List(int page = 1)
-            => View(new WireTypesSizeListViewModel
+        public IActionResult List(WireTypesSizeListViewModel viewModel, int page = 1)
+        {
+            if (viewModel.CleanFields) return RedirectToAction("List");
+            IQueryable<WireTypesSize> wires = repository.WireTypesSizes.AsQueryable();
+
+            if (viewModel.AMPRating > 0) wires = wires.Where(m => m.AMPRating == viewModel.AMPRating);
+            if (!string.IsNullOrEmpty(viewModel.Type)) wires = wires.Where(m => m.Type.Contains(viewModel.Type));
+            if (!string.IsNullOrEmpty(viewModel.Size)) wires = wires.Where(m => m.Size.Contains(viewModel.Size));
+
+            viewModel.WireTypes = wires.OrderBy(p => p.Size).Skip((page - 1) * 10).Take(10).ToList();
+            viewModel.PagingInfo = new PagingInfo
             {
-                WireTypes = repository.WireTypesSizes
-                .OrderBy(p => p.WireTypesSizeID)
-                .Skip((page - 1) * PageSize)
-                .Take(PageSize).ToList(),
-                PagingInfo = new PagingInfo
-                {
-                    CurrentPage = page,
-                    ItemsPerPage = PageSize,
-                    TotalItems = repository.WireTypesSizes.Count()
-                }
-            });
+                CurrentPage = page,
+                ItemsPerPage = 10,
+                TotalItems = wires.Count()
+            };
+            return View(viewModel);
+        }
 
         public ViewResult Edit(int ID) =>
             View(repository.WireTypesSizes

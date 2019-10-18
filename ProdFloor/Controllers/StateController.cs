@@ -20,25 +20,22 @@ namespace ProdFloor.Controllers
             repository = repo;
 
         }
-        public ViewResult List(int country, int page = 1)
+        public IActionResult List(StateListViewModel viewModel, int page = 1)
         {
+            if (viewModel.CleanFields) return RedirectToAction("List");
+            IQueryable<State> states = repository.States.AsQueryable();
 
-            var StatesCount = repository.States.Count();
+            if (viewModel.CountryID > 0) states = states.Where(m => m.CountryID == viewModel.CountryID);
+            if (!string.IsNullOrEmpty(viewModel.Name)) states = states.Where(m => m.Name.Contains(viewModel.Name));
 
-            return View(new StateListViewModel
+            viewModel.States = states.OrderBy(p => p.Name).Skip((page - 1) * 5).Take(5).ToList();
+            viewModel.PagingInfo = new PagingInfo
             {
-                States = repository.States
-               .OrderBy(p => p.Name)
-               .Skip((page - 1) * PageSize)
-               .Take(PageSize).ToList(),
-                PagingInfo = new PagingInfo
-                {
-                    CurrentPage = page,
-                    ItemsPerPage = PageSize,
-                    TotalItems = StatesCount
-                },
-                CurrentCountry = country.ToString()
-            });
+                CurrentPage = page,
+                ItemsPerPage = 5,
+                TotalItems = states.Count()
+            };
+            return View(viewModel);
         }
             
 

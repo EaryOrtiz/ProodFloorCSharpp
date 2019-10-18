@@ -20,24 +20,29 @@ namespace ProdFloor.Controllers
             repository = repo;
 
         }
-        public ViewResult List(int separator, int page = 1)
+        public IActionResult List(CityListViewModel viewModel, int page = 1)
         {
-            var CityCount = repository.Cities.Count();
+            if (viewModel.CleanFields) return RedirectToAction("List");
+            IQueryable<City> cities = repository.Cities.AsQueryable();
+            IQueryable<State> states = repository.States.AsQueryable();
 
-            return View(new CityListViewModel
+            if (viewModel.CountryID > 0) 
             {
-                Cities = repository.Cities
-                .OrderBy(p => p.Name)
-                .Skip((page - 1) * PageSize)
-                .Take(PageSize).ToList(),
-                PagingInfo = new PagingInfo
-                {
-                    CurrentPage = page,
-                    ItemsPerPage = PageSize,
-                    TotalItems = CityCount
-                },
-                CurrentSeparator = separator.ToString()
-            });
+                states = repository.States.Where(m => m.CountryID == viewModel.CountryID);
+                cities = repository.Cities.Where(m => states.Any(n => n.StateID == m.StateID));
+            }
+            if (viewModel.StateID > 0) cities = cities.Where(m => m.StateID == viewModel.StateID);
+
+            if (!string.IsNullOrEmpty(viewModel.Name)) cities = cities.Where(m => m.Name.Contains(viewModel.Name));
+
+            viewModel.Cities = cities.OrderBy(p => p.Name).Skip((page - 1) * 5).Take(5).ToList();
+            viewModel.PagingInfo = new PagingInfo
+            {
+                CurrentPage = page,
+                ItemsPerPage = 5,
+                TotalItems = cities.Count()
+            };
+            return View(viewModel);
         }
             
 

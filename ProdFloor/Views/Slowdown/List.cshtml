@@ -12,15 +12,74 @@
         New Slowdown Registry
     </a>
 </div>
-@if (Model.Slowdowns.Count() == 0)
-{
+<br />
+<form asp-action="List" method="get">
+    <div id="accordionSearch">
+        <div class="card" >
+            <div class="card-header text-center" style="background-color:#bee5eb;">
+                <div class="btn-group" style="float:left">
+                    <!--Search and Clean-->
+                    <button class="btn btn-outline-info" style="border-color:transparent" type="submit" value="Search"><i class="fa fa-search" aria-hidden="true"></i></button>
+                    <button class="btn btn-outline-info" style="border-color:transparent" name="CleanFields" type="submit" value="true"><i class="fas fa-undo"></i></button>
+                </div>
+                <div class="btn-group">
+                    <!--Header Info-->
+                    <button type="button" id="headingJobInfo" class="btn btn-outline-info" style="border-color:transparent" data-toggle="collapse" data-target="#collapseJobInfo" aria-expanded="true" aria-controls="collapseJobInfo">
+                        <h6 class="mb-0 text-center">Slowdowns Information</h6>
+                    </button>
+                </div>
+            </div>
+
+            <!--Body Job Info-->
+            <div id="collapseJobInfo" class="collapse" aria-labelledby="headingJobInfo" data-parent="#accordionSearch">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-3 border-right">
+                            <div class="form-group row" style="margin-bottom:0px;">
+                                <label asp-for="CarSpeedFPM" class="col-sm-7 col-form-label"></label>
+                                <input type="text" class="form-control form-control-sm col-sm-3" asp-for="CarSpeedFPM">
+                            </div>
+                        </div>
+                        <div class="col-3 border-right">
+                            <div class="form-group row" style="margin-bottom:0px;">
+                                <label asp-for="Distance" class="col-sm-7 col-form-label"></label>
+                                <input type="text" class="form-control form-control-sm col-sm-3" asp-for="Distance">
+                            </div>
+                        </div>
+                        <div class="col-3 border-right">
+                            <div class="form-group row" style="margin-bottom:0px;">
+                                <label asp-for="A" class="col-sm-7 col-form-label"></label>
+                                <input type="text" class="form-control form-control-sm col-sm-3" asp-for="A">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-3 border-right">
+                            <div class="form-group row" style="margin-bottom:0px;">
+                                <label asp-for="SlowLimit" class="col-sm-7 col-form-label"></label>
+                                <input type="text" class="form-control form-control-sm col-sm-3" asp-for="SlowLimit">
+                            </div>
+                        </div>
+                        <div class="col-3 border-right">
+                            <div class="form-group row" style="margin-bottom:0px;">
+                                <label asp-for="MiniumFloorHeight" class="col-sm-7 col-form-label"></label>
+                                <input type="text" class="form-control form-control-sm col-sm-3" asp-for="MiniumFloorHeight">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</form>
+@*{
     <div class="text-right m-2">
         <form asp-action="SeedXML" method="post">
             <button type="submit" name="buttonImportXML" value="Slowdown" class="btn btn-danger">Import data from XML <i class="fas fa-file-alt"></i></button>
         </form>
     </div>
-}
-<br />
+}*@
 <div>
     <table class="table table-striped border table-sm" style="text-align:center">
         <tr class="table-info">
@@ -76,11 +135,11 @@
         }
     </table>
 </div>
-<coool-pagination-all page-model="@Model.PagingInfo" page-action="List" page-classes-enabled="true"
-                      page-class="btn" page-class-normal="btn-secondary"
-                      page-class-selected="btn-dark"
-                      class="btn-group pull-right m-1">
-</coool-pagination-all>
+<coool-pagination-search page-model="@Model.PagingInfo" page-action="List" page-classes-enabled="true"
+                         page-class="btn" page-class-normal="btn-secondary"
+                         page-class-selected="btn-dark"
+                         class="btn-group pull-right m-1">
+</coool-pagination-search>
 <br />
 <div>
     <form asp-controller="Item" asp-action="ExportToXML" method="post">

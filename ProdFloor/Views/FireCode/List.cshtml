@@ -2,6 +2,13 @@
 @{
     ViewBag.Title = "Fire Codes";
     Layout = "_AdminLayoutWO";
+    <script>
+        $(document).ready(function () {
+            $('#filtrado').autocomplete({
+                source: '/FireCode/SearchFireCode'
+            });
+        });
+    </script>
 }
 <div class="row" style="padding-right:20px">
     <h2 class="col-sm-10">
@@ -20,16 +27,32 @@
         </form>
     </div>
 }
+<form asp-controller="FireCode" asp-action="List" method="get">
+    <div class="input-group">
+        <input type="text" class="form-control form-control-sm col-5" name="filtrado" id="filtrado" placeholder=" Please enter a FireCode">
+        <div class="input-group-append">
+            <div class="btn-group">
+                <button class="btn btn-dark" type="submit" value="Search">
+                    <i class="fa fa-search" aria-hidden="true"></i>
+                </button>
+                <button class="btn btn-dark" type="submit" name="Sort" value="default">
+                    <i class="fas fa-undo" aria-hidden="true"></i>
+                </button>
+            </div>
+        </div>
+
+    </div>
+</form>
 @foreach (var j in Model.FireCodes)
 {
     @Html.Partial("FireCodeSummary", j)
 }
 <br />
-<coool-pagination-all page-model="@Model.PagingInfo" page-action="List" page-classes-enabled="true"
-          page-class="btn" page-class-normal="btn-secondary"
-          page-class-selected="btn-dark"
-          class="btn-group pull-right m-1">
-</coool-pagination-all>
+<coool-pagination-searh-all page-model="@Model.PagingInfo" page-action="List" page-classes-enabled="true"
+                      page-class="btn" page-class-normal="btn-secondary" sort="Sort"
+                      page-class-selected="btn-dark"
+                      class="btn-group pull-right m-1">
+</coool-pagination-searh-all>
 <div>
     <form asp-controller="Item" asp-action="ExportToXML" method="post">
         <button class="btn btn-sm " name="buttonXML" value="FireCodes" style="background-color:steelblue;color:white">Export List to an XML File</button>
