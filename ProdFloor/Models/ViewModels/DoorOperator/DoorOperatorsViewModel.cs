@@ -14,5 +14,6 @@ namespace ProdFloor.Models.ViewModels
         public string Name { get; set; }
 
         public bool CleanFields { get; set; }
+        public int TotalItems { get; set; }
     }
 }

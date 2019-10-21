@@ -9,7 +9,7 @@ namespace ProdFloor.Models.ViewModels
         public List<State> States { get; set; }
         public PagingInfo PagingInfo { get; set; }
         public string CurrentCountry { get; set; }
-
+        public int TotalItems { get; set; }
 
         [Display(Name = "Country")]
         public int CountryID { get; set; }

@@ -36,6 +36,7 @@ namespace ProdFloor.Controllers
             if (!string.IsNullOrEmpty(viewModel.Name)) cities = cities.Where(m => m.Name.Contains(viewModel.Name));
 
             viewModel.Cities = cities.OrderBy(p => p.Name).Skip((page - 1) * 5).Take(5).ToList();
+            viewModel.TotalItems = repository.Cities.Count();
             viewModel.PagingInfo = new PagingInfo
             {
                 CurrentPage = page,

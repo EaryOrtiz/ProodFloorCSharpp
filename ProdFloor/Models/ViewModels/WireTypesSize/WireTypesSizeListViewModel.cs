@@ -20,5 +20,7 @@ namespace ProdFloor.Models.ViewModels.WireTypesSize
 
         [Display(Name = "AMP Rating")]
         public int AMPRating { get; set; }
+
+        public int TotalItems { get; set; }
     }
 }

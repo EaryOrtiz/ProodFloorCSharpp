@@ -31,6 +31,7 @@ namespace ProdFloor.Controllers
             if (!string.IsNullOrEmpty(viewModel.Size)) wires = wires.Where(m => m.Size.Contains(viewModel.Size));
 
             viewModel.WireTypes = wires.OrderBy(p => p.Size).Skip((page - 1) * 10).Take(10).ToList();
+            viewModel.TotalItems = repository.WireTypesSizes.Count();
             viewModel.PagingInfo = new PagingInfo
             {
                 CurrentPage = page,

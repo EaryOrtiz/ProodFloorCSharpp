@@ -37,6 +37,7 @@ namespace ProdFloor.Controllers
             {
                 FireCodes = fireCodes.Skip((page - 1) * PageSize)
                 .Take(PageSize).ToList(),
+                TotalItems = repository.FireCodes.Count(),
                 PagingInfo = new PagingInfo
                 {
                     CurrentPage = page,

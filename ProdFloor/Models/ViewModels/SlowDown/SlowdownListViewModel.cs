@@ -13,6 +13,7 @@ namespace ProdFloor.Models.ViewModels.SlowDown
         public PagingInfo PagingInfo { get; set; }
 
         public bool CleanFields { get; set; }
+        public int TotalItems { get; set; }
 
         [Display(Name = "Car Speed (FPM)")]
         public int CarSpeedFPM { get; set; }

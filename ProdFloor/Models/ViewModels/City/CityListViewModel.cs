@@ -15,6 +15,7 @@ namespace ProdFloor.Models.ViewModels
         [Display(Name = "Country")]
         public int CountryID { get; set; }
         public string Name { get; set; }
+        public int TotalItems { get; set; }
 
         public bool CleanFields { get; set; }
     }

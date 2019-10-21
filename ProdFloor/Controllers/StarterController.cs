@@ -34,6 +34,7 @@ namespace ProdFloor.Controllers
             if (!string.IsNullOrEmpty(viewModel.NewManufacturerPart)) starters = starters.Where(m => m.NewManufacturerPart.Contains(viewModel.NewManufacturerPart));
             if (!string.IsNullOrEmpty(viewModel.OverloadTable)) starters = starters.Where(m => m.OverloadTable == viewModel.OverloadTable);
             viewModel.Starters = starters.OrderBy(p => p.FLA).Skip((page - 1) * 10).Take(10).ToList();
+            viewModel.TotalItems = repository.Starters.Count();
             viewModel.PagingInfo = new PagingInfo
             {
                 CurrentPage = page,

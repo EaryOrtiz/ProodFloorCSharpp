@@ -7,5 +7,6 @@ namespace ProdFloor.Models.ViewModels
     {
         public List<FireCode> FireCodes { get; set; }
         public PagingInfo PagingInfo { get; set; }
+        public int TotalItems { get; set; }
     }
 }

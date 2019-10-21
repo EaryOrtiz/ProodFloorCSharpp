@@ -27,6 +27,7 @@ namespace ProdFloor.Controllers
             if (!string.IsNullOrEmpty(viewModel.Name)) doors = doors.Where(m => m.Name.Contains(viewModel.Name));
 
             viewModel.DoorOperators = doors.OrderBy(p => p.Name).Skip((page - 1) * 5).Take(5).ToList();
+            viewModel.TotalItems = repository.DoorOperators.Count();
             viewModel.PagingInfo = new PagingInfo
             {
                 CurrentPage = page,

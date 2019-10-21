@@ -152,6 +152,7 @@ namespace ProdFloor.Controllers
             {
                 Reasons1 = reason1s.Skip((page - 1) * PageSize)
                 .Take(PageSize).ToList(),
+                TotalItems= repository.Reasons1.Count(),
                 PagingInfo = new PagingInfo
                 {
                     CurrentPage = page,
@@ -172,6 +173,7 @@ namespace ProdFloor.Controllers
             if (!string.IsNullOrEmpty(viewModel.Description)) reasons = reasons.Where(m => m.Description.Contains(viewModel.Description));
 
             viewModel.Reasons2 = reasons.OrderBy(p => p.Description).Skip((page - 1) * 5).Take(5).ToList();
+            viewModel.TotalItems = repository.Reasons2.Count();
             viewModel.PagingInfo = new PagingInfo
             {
                 CurrentPage = page,
@@ -196,6 +198,7 @@ namespace ProdFloor.Controllers
             if (!string.IsNullOrEmpty(viewModel.Description)) reasons3 = reasons3.Where(m => m.Description.Contains(viewModel.Description));
 
             viewModel.Reasons3 = reasons3.OrderBy(p => p.Description).Skip((page - 1) * 5).Take(5).ToList();
+            viewModel.TotalItems = repository.Reasons3.Count();
             viewModel.PagingInfo = new PagingInfo
             {
                 CurrentPage = page,
@@ -229,6 +232,7 @@ namespace ProdFloor.Controllers
             if (!string.IsNullOrEmpty(viewModel.Description)) reasons4 = reasons4.Where(m => m.Description.Contains(viewModel.Description));
 
             viewModel.Reasons4 = reasons4.OrderBy(p => p.Description).Skip((page - 1) * 5).Take(5).ToList();
+            viewModel.TotalItems = repository.Reasons4.Count();
             viewModel.PagingInfo = new PagingInfo
             {
                 CurrentPage = page,
@@ -269,6 +273,7 @@ namespace ProdFloor.Controllers
             if (!string.IsNullOrEmpty(viewModel.Description)) reasons4 = reasons4.Where(m => m.Description.Contains(viewModel.Description));
 
             viewModel.Reasons5 = reasons5.OrderBy(p => p.Description).Skip((page - 1) * 5).Take(5).ToList();
+            viewModel.TotalItems = repository.Reasons5.Count();
             viewModel.PagingInfo = new PagingInfo
             {
                 CurrentPage = page,

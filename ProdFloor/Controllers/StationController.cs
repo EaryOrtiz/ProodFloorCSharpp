@@ -37,6 +37,7 @@ namespace ProdFloor.Controllers
             if (!string.IsNullOrEmpty(viewModel.Label)) stations = stations.Where(m => m.Label.Contains(viewModel.Label));
 
             viewModel.Stations = stations.OrderBy(p => p.Label).Skip((page - 1) * 5).Take(5).ToList();
+            viewModel.TotalItems = testingrepo.Stations.Count();
             viewModel.PagingInfo = new PagingInfo
             {
                 CurrentPage = page,

@@ -12,7 +12,7 @@
         New Wire Types Size Registry
     </a>
 </div>
-@if (Model.WireTypes.Count() == 0)
+@if (Model.TotalItems == 0)
 {
     <div class="text-right m-2">
         <form asp-action="SeedWire" method="post">

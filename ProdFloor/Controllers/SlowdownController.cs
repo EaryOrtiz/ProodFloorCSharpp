@@ -33,6 +33,7 @@ namespace ProdFloor.Controllers
             if (viewModel.MiniumFloorHeight > 0) slowdowns = slowdowns.Where(m => m.MiniumFloorHeight == viewModel.MiniumFloorHeight);
 
             viewModel.Slowdowns = slowdowns.OrderBy(p => p.CarSpeedFPM).Skip((page - 1) * 10).Take(10).ToList();
+            viewModel.TotalItems = repository.Slowdowns.Count();
             viewModel.PagingInfo = new PagingInfo
             {
                 CurrentPage = page,

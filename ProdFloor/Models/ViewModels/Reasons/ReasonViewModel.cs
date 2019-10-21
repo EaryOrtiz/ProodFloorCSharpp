@@ -20,6 +20,7 @@ namespace ProdFloor.Models.ViewModels.Reasons
         public Reason5 Reason5 { get; set; }
         public PagingInfo PagingInfo { get; set; }
         public string CurrentSeparator { get; set; }
+        public int TotalItems { get; set; }
 
         [Display(Name = "Reason 1")]
         public int Reason1ID { get; set; }

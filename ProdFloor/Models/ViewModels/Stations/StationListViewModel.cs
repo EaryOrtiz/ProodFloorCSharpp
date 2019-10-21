@@ -19,5 +19,7 @@ namespace ProdFloor.Models.ViewModels.Stations
 
         [Display(Name = "JobType")]
         public int JobTypeID { get; set; }
+
+        public int TotalItems { get; set; }
     }
 }

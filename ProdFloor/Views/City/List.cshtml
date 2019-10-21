@@ -13,7 +13,7 @@
         New City
     </a>
 </div>
-@if (Model.Cities.Count() == 0)
+@if (Model.TotalItems == 0)
 {
     <div class="text-right m-2">
         <form asp-action="SeedXML" method="post">

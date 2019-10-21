@@ -12,7 +12,7 @@
         New Station
     </a>
 </div>
-@if (Model.Stations.Count() == 0)
+@if (Model.TotalItems == 0)
 {
     <div class="text-right m-2">
         <form asp-controller="Station" asp-action="SeedXML" method="post">
@@ -68,11 +68,11 @@
 @if (Model.Stations.Count() > 0)
 {
 
-<coool-pagination-search page-model="@Model.PagingInfo" page-action="List" page-classes-enabled="true"
-                         page-class="btn" page-class-normal="btn-secondary"
-                         page-class-selected="btn-dark"
-                         class="btn-group pull-right m-1">
-</coool-pagination-search>
+    <coool-pagination-search page-model="@Model.PagingInfo" page-action="List" page-classes-enabled="true"
+                             page-class="btn" page-class-normal="btn-secondary"
+                             page-class-selected="btn-dark"
+                             class="btn-group pull-right m-1">
+    </coool-pagination-search>
     <div>
         <form asp-controller="Item" asp-action="ExportToXML" method="post">
             <button class="btn btn-sm " name="buttonXML" value="Stations" style="background-color:steelblue;color:white;margin-bottom:30px">Export List to an XML File</button>

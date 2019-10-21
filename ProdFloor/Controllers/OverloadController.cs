@@ -33,6 +33,7 @@ namespace ProdFloor.Controllers
             if (!string.IsNullOrEmpty(viewModel.SiemensPart)) overloads = overloads.Where(m => m.SiemensPart.Contains(viewModel.SiemensPart));
 
             viewModel.Overloads = overloads.OrderBy(p => p.AMPMin).Skip((page - 1) * 10).Take(10).ToList();
+            viewModel.TotalItems = repository.Ovearloads.Count();
             viewModel.PagingInfo = new PagingInfo
             {
                 CurrentPage = page,

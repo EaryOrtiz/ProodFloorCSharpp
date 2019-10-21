@@ -11,7 +11,7 @@ namespace ProdFloor.Models.ViewModels.Overload
         public List<Models.Overload> Overloads { get; set; }
 
         public PagingInfo PagingInfo { get; set; }
-
+        public int TotalItems { get; set; }
         public bool CleanFields { get; set; }
 
         [Display(Name = "AMP Minium")]

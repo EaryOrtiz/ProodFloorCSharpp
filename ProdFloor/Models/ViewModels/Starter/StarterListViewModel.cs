@@ -13,7 +13,7 @@ namespace ProdFloor.Models.ViewModels.Starter
         public PagingInfo PagingInfo { get; set; }
 
         public bool CleanFields { get; set; }
-
+        public int TotalItems { get; set; }
 
 
         public float FLA { get; set; }

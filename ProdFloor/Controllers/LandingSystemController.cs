@@ -30,6 +30,7 @@ namespace ProdFloor.Controllers
             if (!string.IsNullOrEmpty(viewModel.Name)) landings = landings.Where(m => m.Name.Contains(viewModel.Name));
 
             viewModel.LandingSystems = landings.OrderBy(p => p.Name).Skip((page - 1) * 5).Take(5).ToList();
+            viewModel.TotalItems = repository.LandingSystems.Count();
             viewModel.PagingInfo = new PagingInfo
             {
                 CurrentPage = page,

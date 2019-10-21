@@ -15,7 +15,7 @@
 <br />
 <form asp-action="List" method="get">
     <div id="accordionSearch">
-        <div class="card" >
+        <div class="card">
             <div class="card-header text-center" style="background-color:#bee5eb;">
                 <div class="btn-group" style="float:left">
                     <!--Search and Clean-->
@@ -73,13 +73,14 @@
 
     </div>
 </form>
-@*{
+@if (Model.TotalItems == 0)
+{ 
     <div class="text-right m-2">
         <form asp-action="SeedXML" method="post">
             <button type="submit" name="buttonImportXML" value="Slowdown" class="btn btn-danger">Import data from XML <i class="fas fa-file-alt"></i></button>
         </form>
     </div>
-}*@
+}
 <div>
     <table class="table table-striped border table-sm" style="text-align:center">
         <tr class="table-info">
