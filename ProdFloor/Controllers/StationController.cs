@@ -31,7 +31,7 @@ namespace ProdFloor.Controllers
         public IActionResult List(StationListViewModel viewModel, int page = 1)
         {
             if (viewModel.CleanFields) return RedirectToAction("List");
-            IQueryable<Station> stations = testingrepo.Stations.AsQueryable();
+            IQueryable<Station> stations = testingrepo.Stations.Where(m => m.Label != "-").AsQueryable();
 
             if (viewModel.JobTypeID > 0) stations = stations.Where(m => m.JobTypeID == viewModel.JobTypeID);
             if (!string.IsNullOrEmpty(viewModel.Label)) stations = stations.Where(m => m.Label.Contains(viewModel.Label));

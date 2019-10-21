@@ -20,7 +20,6 @@ namespace ProdFloor.Controllers
 
         public ViewResult List(string filtrado, string Sort = "default", int page = 1)
         {   
-            if (Sort == "default") page = 1;
             if (filtrado != null) Sort = filtrado;
 
             List<FireCode> fireCodes = repository.FireCodes

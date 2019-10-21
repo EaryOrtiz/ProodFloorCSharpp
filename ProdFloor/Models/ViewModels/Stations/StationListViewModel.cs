@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -15,6 +16,8 @@ namespace ProdFloor.Models.ViewModels.Stations
 
         public int StationID { get; set; }
         public string Label { get; set; }
+
+        [Display(Name = "JobType")]
         public int JobTypeID { get; set; }
     }
 }

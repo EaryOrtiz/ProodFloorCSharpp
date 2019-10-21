@@ -43,14 +43,14 @@
                     <div class="row">
                         <div class="col-3 border-right">
                             <div class="form-group row" style="margin-bottom:0px;">
-                                <label asp-for="Name" class="col-sm-4 col-form-label"></label>
-                                <input type="text" class="form-control form-control-sm col-sm-7" asp-for="Name">
+                                <label asp-for="JobTypeID" class="col-sm-4 col-form-label"></label>
+                                <job-type-select class="form-control col-7" asp-for="JobTypeID" selected-value="@Model.JobTypeID"></job-type-select>
                             </div>
                         </div>
                         <div class="col-3 border-right">
                             <div class="form-group row" style="margin-bottom:0px;">
-                                <label asp-for="JobTypeID" class="col-sm-4 col-form-label"></label>
-                                <job-type-select class="form-control col-7" asp-for="JobTypeID" selected-value="@Model.JobTypeID"></job-type-select>
+                                <label asp-for="Name" class="col-sm-4 col-form-label"></label>
+                                <input type="text" class="form-control form-control-sm col-sm-7" asp-for="Name">
                             </div>
                         </div>
                     </div>

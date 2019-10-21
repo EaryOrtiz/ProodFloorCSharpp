@@ -28,7 +28,7 @@ namespace ProdFloor.Controllers
         }
 
 
-        public ViewResult List(int reasonNumber, int separator, int page = 1)
+        /*public ViewResult List(int reasonNumber, int separator, int page = 1)
         {
 
             switch (reasonNumber)
@@ -132,19 +132,19 @@ namespace ProdFloor.Controllers
 
             return View(NotFound());
         }
-
+        */
         public ViewResult Reason1List(string filtrado, string Sort = "default", int page = 1)
         {
-            if (Sort == "default") page = 1;
             if (filtrado != null) Sort = filtrado;
 
             List<Reason1> reason1s = repository.Reasons1
+                .Where(m => m.Description != "-")
                 .OrderBy(p => p.Reason1ID).ToList();
 
             if (Sort != "default")
             {
                 reason1s = repository.Reasons1
-                 .Where(m => m.Description.Contains(Sort))
+                 .Where(m => m.Description.Contains(Sort) && m.Description != "-")
                  .OrderBy(p => p.Reason1ID).ToList();
             }
 
@@ -166,7 +166,7 @@ namespace ProdFloor.Controllers
         public IActionResult Reason2List(ReasonViewModel viewModel, int page = 1)
         {
             if (viewModel.CleanFields) return RedirectToAction("Reason2List");
-            IQueryable<Reason2> reasons = repository.Reasons2.AsQueryable();
+            IQueryable<Reason2> reasons = repository.Reasons2.Where(m => m.Description != "-").AsQueryable();
 
             if (viewModel.Reason1ID > 0) reasons = reasons.Where(m => m.Reason1ID == viewModel.Reason1ID);
             if (!string.IsNullOrEmpty(viewModel.Description)) reasons = reasons.Where(m => m.Description.Contains(viewModel.Description));
@@ -185,7 +185,7 @@ namespace ProdFloor.Controllers
         {
             if (viewModel.CleanFields) return RedirectToAction("Reason3List");
             IQueryable<Reason2> reasons2 = repository.Reasons2.AsQueryable();
-            IQueryable<Reason3> reasons3 = repository.Reasons3.AsQueryable();
+            IQueryable<Reason3> reasons3 = repository.Reasons3.Where(m => m.Description != "-").AsQueryable();
 
             if (viewModel.Reason1ID > 0)
             {
@@ -210,7 +210,7 @@ namespace ProdFloor.Controllers
             if (viewModel.CleanFields) return RedirectToAction("Reason4List");
             IQueryable<Reason2> reasons2 = repository.Reasons2.AsQueryable();
             IQueryable<Reason3> reasons3 = repository.Reasons3.AsQueryable();
-            IQueryable<Reason4> reasons4 = repository.Reasons4.AsQueryable();
+            IQueryable<Reason4> reasons4 = repository.Reasons4.Where(m => m.Description != "-").AsQueryable();
 
             if (viewModel.Reason1ID > 0)
             {
@@ -244,7 +244,7 @@ namespace ProdFloor.Controllers
             IQueryable<Reason2> reasons2 = repository.Reasons2.AsQueryable();
             IQueryable<Reason3> reasons3 = repository.Reasons3.AsQueryable();
             IQueryable<Reason4> reasons4 = repository.Reasons4.AsQueryable();
-            IQueryable<Reason5> reasons5 = repository.Reasons5.AsQueryable();
+            IQueryable<Reason5> reasons5 = repository.Reasons5.Where(m => m.Description != "-").AsQueryable();
 
             if (viewModel.Reason1ID > 0)
             {
@@ -313,7 +313,7 @@ namespace ProdFloor.Controllers
             {
                 repository.SaveReason1(reason);
                 TempData["message"] = $"{reason.Reason1ID},, has been saved...";
-                return RedirectToAction("List", new { Page = 1, ReasonNumber = 1 });
+                return RedirectToAction("Reason1List");
             }
             else
             {
@@ -329,7 +329,7 @@ namespace ProdFloor.Controllers
             {
                 repository.SaveReason2(reason);
                 TempData["message"] = $"{reason.Reason2ID},, has been saved...";
-                return RedirectToAction("List", new { Page = 1, ReasonNumber = 2 });
+                return RedirectToAction("Reason2List");
             }
             else
             {
@@ -345,7 +345,7 @@ namespace ProdFloor.Controllers
             {
                 repository.SaveReason3(reason);
                 TempData["message"] = $"{reason.Reason3ID}, has been saved...";
-                return RedirectToAction("List", new { Page = 1, ReasonNumber = 3 });
+                return RedirectToAction("Reason3List");
             }
             else
             {
@@ -361,7 +361,7 @@ namespace ProdFloor.Controllers
             {
                 repository.SaveReason4(reason);
                 TempData["message"] = $"{reason.Reason4ID},, has been saved...";
-                return RedirectToAction("List", new { Page = 1, ReasonNumber = 4 });
+                return RedirectToAction("Reason4List");
             }
             else
             {
@@ -377,7 +377,7 @@ namespace ProdFloor.Controllers
             {
                 repository.SaveReason5(reason);
                 TempData["message"] = $"{reason.Reason5ID},, has been saved...";
-                return RedirectToAction("List", new { Page = 1, ReasonNumber = 5 });
+                return RedirectToAction("Reason5List");
             }
             else
             {
@@ -398,7 +398,7 @@ namespace ProdFloor.Controllers
                     {
                         TempData["message"] = $"{deleteReason.Reason1ID} was deleted";
                     }
-                    return RedirectToAction("List", new { Page = 1, ReasonNumber = 1 });
+                    return RedirectToAction("Reason1List");
 
                 case "R2":
                     Reason2 deleteReason2 = repository.DeleteReason2(ID);
@@ -407,7 +407,7 @@ namespace ProdFloor.Controllers
                     {
                         TempData["message"] = $"{deleteReason2.Reason2ID} was deleted";
                     }
-                    return RedirectToAction("List", new { Page = 1, ReasonNumber = 2 });
+                    return RedirectToAction("Reason2List");
                 case "R3":
                     Reason3 deleteReason3 = repository.DeleteReason3(ID);
 
@@ -415,7 +415,7 @@ namespace ProdFloor.Controllers
                     {
                         TempData["message"] = $"{deleteReason3.Reason3ID} was deleted";
                     }
-                    return RedirectToAction("List", new { Page = 1, ReasonNumber = 3 });
+                    return RedirectToAction("Reason3List");
                 case "R4":
                     Reason4 deleteReason4 = repository.DeleteReason4(ID);
 
@@ -423,7 +423,7 @@ namespace ProdFloor.Controllers
                     {
                         TempData["message"] = $"{deleteReason4.Reason4ID} was deleted";
                     }
-                    return RedirectToAction("List", new { Page = 1, ReasonNumber = 4 });
+                    return RedirectToAction("Reason4List");
                 case "R5":
                     Reason5 deleteReason5 = repository.DeleteReason5(ID);
 
@@ -431,7 +431,7 @@ namespace ProdFloor.Controllers
                     {
                         TempData["message"] = $"{deleteReason5.Reason5ID} was deleted";
                     }
-                    return RedirectToAction("List", new { Page = 1, ReasonNumber = 5 });
+                    return RedirectToAction("Reason5List");
             }
 
             return NotFound();
@@ -695,7 +695,7 @@ namespace ProdFloor.Controllers
         public IActionResult SeedXML()
         {
             ReasonsController.ImportXML(HttpContext.RequestServices);
-            return RedirectToAction(nameof(List));
+            return RedirectToAction(nameof(Reason1List));
         }
 
         public IActionResult SearchR1()
