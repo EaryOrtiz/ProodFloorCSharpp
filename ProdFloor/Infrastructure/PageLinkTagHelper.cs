@@ -4011,6 +4011,8 @@ namespace ProdFloor.Infrastructure
         public int SelectedInR4Value { get; set; }
         public int SelectedInR3Value { get; set; }
 
+        public int SelectedValue { get; set; }
+
         [HtmlAttributeName("asp-is-disabled")]
         public bool IsDisabled { set; get; }
 
@@ -4051,6 +4053,10 @@ namespace ProdFloor.Infrastructure
                 Reason3 selectedR3 = repository.Reasons3.FirstOrDefault(c => c.Reason3ID == SelectedInR3Value);
                 Reason2 selectedR2 = repository.Reasons2.FirstOrDefault(c => c.Reason2ID == selectedR3.Reason2ID);
                 reason2ID = selectedR2.Reason2ID;
+            }
+            if (SelectedValue != 0)
+            {
+                reason2ID = SelectedValue;
             }
             IQueryable<Reason2> reason2s = repository.Reasons2.Where(m => m.Description != "-").AsQueryable();
             foreach (Reason2 item in reason2s)
@@ -4095,6 +4101,8 @@ namespace ProdFloor.Infrastructure
         public int SelectedInR4Value { get; set; }
         public int SelectedInR5Value { get; set; }
 
+        public int SelectedValue { get; set; }
+
         [HtmlAttributeName("asp-is-disabled")]
         public bool IsDisabled { set; get; }
 
@@ -4127,6 +4135,10 @@ namespace ProdFloor.Infrastructure
                 Reason4 selectedR4 = repository.Reasons4.FirstOrDefault(c => c.Reason4ID == SelectedInR4Value);
                 Reason3 selectedR3 = repository.Reasons3.FirstOrDefault(c => c.Reason3ID == selectedR4.Reason3ID);
                 reason3ID = selectedR3.Reason3ID;
+            }
+            if (SelectedValue != 0)
+            {
+                reason3ID = SelectedValue;
             }
             IQueryable<Reason3> reason3s = repository.Reasons3.Where(m => m.Description != "-").AsQueryable();
             foreach (Reason3 item in reason3s)
@@ -4170,6 +4182,8 @@ namespace ProdFloor.Infrastructure
 
         public int SelectedInR5Value { get; set; }
 
+        public int SelectedValue { get; set; }
+
         [HtmlAttributeName("asp-is-disabled")]
         public bool IsDisabled { set; get; }
 
@@ -4195,6 +4209,10 @@ namespace ProdFloor.Infrastructure
                 Reason5 selectedR5 = repository.Reasons5.FirstOrDefault(c => c.Reason5ID == SelectedInR5Value);
                 Reason4 selectedR4 = repository.Reasons4.FirstOrDefault(c => c.Reason4ID == selectedR5.Reason4ID);
                 reason4ID = selectedR4.Reason4ID;
+            }
+            if (SelectedInR5Value != 0)
+            {
+                reason4ID = SelectedValue;
             }
             IQueryable<Reason4> reason4s = repository.Reasons4.Where(m => m.Description != "-").AsQueryable();
             foreach (Reason4 item in reason4s)

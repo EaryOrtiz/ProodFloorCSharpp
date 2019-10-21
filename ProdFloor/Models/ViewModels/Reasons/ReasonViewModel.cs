@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -19,5 +20,20 @@ namespace ProdFloor.Models.ViewModels.Reasons
         public Reason5 Reason5 { get; set; }
         public PagingInfo PagingInfo { get; set; }
         public string CurrentSeparator { get; set; }
+
+        [Display(Name = "Reason 1")]
+        public int Reason1ID { get; set; }
+        [Display(Name = "Reason 2")]
+        public int Reason2ID { get; set; }
+        [Display(Name = "Reason 3")]
+        public int Reason3ID { get; set; }
+        [Display(Name = "Reason 4")]
+        public int Reason4ID { get; set; }
+        [Display(Name = "Reason 5")]
+        public int Reason5ID { get; set; }
+
+        public string Description { get; set; }
+
+        public bool CleanFields { get; set; }
     }
 }

@@ -28,20 +28,23 @@ namespace ProdFloor.Controllers
             return View("Edit", new Station());
         }
 
-        public ViewResult List(int page = 1)
-            => View(new StationListViewModel
+        public IActionResult List(StationListViewModel viewModel, int page = 1)
+        {
+            if (viewModel.CleanFields) return RedirectToAction("List");
+            IQueryable<Station> stations = testingrepo.Stations.AsQueryable();
+
+            if (viewModel.JobTypeID > 0) stations = stations.Where(m => m.JobTypeID == viewModel.JobTypeID);
+            if (!string.IsNullOrEmpty(viewModel.Label)) stations = stations.Where(m => m.Label.Contains(viewModel.Label));
+
+            viewModel.Stations = stations.OrderBy(p => p.Label).Skip((page - 1) * 5).Take(5).ToList();
+            viewModel.PagingInfo = new PagingInfo
             {
-                Stations = testingrepo.Stations
-                .OrderBy(p => p.JobTypeID)
-                .Skip((page - 1) * PageSize)
-                .Take(PageSize).ToList(),
-                PagingInfo = new PagingInfo
-                {
-                    CurrentPage = page,
-                    ItemsPerPage = PageSize,
-                    TotalItems = testingrepo.Stations.Count()
-                }
-            });
+                CurrentPage = page,
+                ItemsPerPage = 5,
+                TotalItems = stations.Count()
+            };
+            return View(viewModel);
+        }
 
         public ViewResult Edit(int ID) =>
             View(testingrepo.Stations

@@ -94,7 +94,7 @@
             <div class="form-group row">
                 <label asp-for="CurrentJob.Contractor" class="col-sm-3 col-form-label"></label>
                 <div>
-                    <input asp-for="CurrentJob.Contractor" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" class="form-control col-sm-7" />
+                    <input asp-for="CurrentJob.Contractor" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" class="form-control" />
                     <span asp-validation-for="CurrentJob.Contractor" class="text-danger"></span>
                 </div>
             </div>
