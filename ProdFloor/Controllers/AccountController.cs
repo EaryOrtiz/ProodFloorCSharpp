@@ -91,18 +91,30 @@ namespace ProdFloor.Controllers
             return Redirect("/Account/Login");
         }
 
-        public ViewResult Index(int page = 1) => View(new UsersListViewModel
+        public ViewResult Index(int page = 1)
         {
-            Users = userManager.Users.OrderBy(p => p.UserName)
-                    .Skip((page - 1) * PageSize)
-                    .Take(PageSize),
-            PagingInfo = new PagingInfo
+            bool engineer = GetCurrentUserRole("EngAdmin").Result;
+            bool techAdmin = GetCurrentUserRole("TechAdmin").Result;
+
+            IEnumerable<AppUser> users = userManager.Users;
+            if (engineer) users = users.Where(m => m.EngID >= 1 && m.EngID <= 99);
+            if(techAdmin) users = users.Where(m => m.EngID >= 100 && m.EngID <= 299);
+
+            UsersListViewModel usersList = new UsersListViewModel
             {
-                CurrentPage = page,
-                ItemsPerPage = PageSize,
-                TotalItems = userManager.Users.ToList().Count()
-            }
-        });
+                Users = users.OrderBy(p => p.UserName)
+                     .Skip((page - 1) * PageSize)
+                     .Take(PageSize),
+                PagingInfo = new PagingInfo
+                {
+                    CurrentPage = page,
+                    ItemsPerPage = PageSize,
+                    TotalItems = users.ToList().Count()
+                }
+            };
+
+            return View(usersList);
+        }
 
         public ViewResult Create() => View();
 
@@ -111,17 +123,30 @@ namespace ProdFloor.Controllers
         {
             if (ModelState.IsValid)
             {
+                IdentityResult result;
+                bool engineer = GetCurrentUserRole("EngAdmin").Result;
+                bool techAdmin = GetCurrentUserRole("TechAdmin").Result;
                 AppUser user = new AppUser
                 {
                     UserName = model.Name,
                     Email = model.Email,
                     EngID = model.EngineerID
                 };
-                IdentityResult result
-                = await userManager.CreateAsync(user, model.Password);
+
+                result = await userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("Index");
+                    if (engineer)
+                    {
+                        result = await userManager.AddToRoleAsync(user,"Engineer");
+                        return RedirectToAction("EngineerAdminDashBoard", "Home");
+
+                    }else if (techAdmin)
+                    {
+                        result = await userManager.AddToRoleAsync(user, "Technician");
+                        return RedirectToAction("Index", "Home");
+                    }
+                    else return RedirectToAction("Index");
                 }
                 else
                 {
@@ -351,6 +376,13 @@ namespace ProdFloor.Controllers
             bool isInRole = await userManager.IsInRoleAsync(user, role);
 
             return isInRole;
+        }
+
+        private async Task<AppUser> GetCurrentUser()
+        {
+            AppUser user = await userManager.GetUserAsync(HttpContext.User);
+
+            return user;
         }
     }
 }
