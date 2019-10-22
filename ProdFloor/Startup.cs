@@ -110,7 +110,7 @@ namespace ProdFloor
 
                 routes.MapRoute(
                     name: null,
-                    template: "{MyJobsPage:int}_{OnCrossJobPage:int}_{PendingToCrossJobPage:int}_{Sort}",
+                    template: "Home/{MyJobsPage:int}_{OnCrossJobPage:int}_{PendingToCrossJobPage:int}_{Sort}",
                     defaults: new { controller = "Home", action = "Index" });
 
                
@@ -129,10 +129,6 @@ namespace ProdFloor
                     template: "{EngineerAdminDashBoard}/{MyJobsPage:int}_{OnCrossJobPage:int}_{PendingToCrossJobPage:int}",
                     defaults: new { controller = "Home", action = "EngineerAdminDashBoard" });
 
-                routes.MapRoute(
-                    name: null,
-                    template: "CrossHub/{pendingJobPage:int}_{productionJobPage:int}_{onCrossJobPage:int}",
-                    defaults: new { controller = "Home", action = "CrossHub" });
                 routes.MapRoute(
                     name: null,
                     template: "{pendingJobPage:int}_{productionJobPage:int}",
