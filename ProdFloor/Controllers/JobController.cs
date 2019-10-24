@@ -1372,7 +1372,7 @@ namespace ProdFloor.Controllers
                     continue;
                 }
             }
-            if (PoAux.Count <= 0 || PoAux[0] == null)
+            if (PoAux.Count <= 0 || PoAux[0] == null || nextViewModel.CurrentJobExtension.JobExtensionID == 0)
             {
                 if (nextViewModel.CurrentJob.JobID == 0 && nextViewModel.CurrentJob.Status == "Incomplete") nextViewModel.CurrentJob.JobID = nextViewModel.CurrentJobExtension.JobID;
                 if (nextViewModel.buttonAction == "AddSF")

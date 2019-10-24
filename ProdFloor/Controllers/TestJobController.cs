@@ -93,12 +93,12 @@ namespace ProdFloor.Controllers
             {
                 TestJobIncompletedList = testJobsInCompleted
                     .OrderBy(p => p.TechnicianID)
-                    .Skip((MyJobsPage - 1) * 10)
-                    .Take(10).ToList(),
+                    .Skip((MyJobsPage - 1) * 5)
+                    .Take(5).ToList(),
                 TestJobCompletedList = testJobsCompleted
                     .OrderBy(p => p.TechnicianID)
-                    .Skip((PendingToCrossJobPage - 1) * 10)
-                    .Take(10).ToList(),
+                    .Skip((PendingToCrossJobPage - 1) * 5)
+                    .Take(5).ToList(),
                 
                 JobList = jobRepo.Jobs.ToList(),
                 StationsList = testingRepo.Stations.ToList(),
@@ -109,21 +109,21 @@ namespace ProdFloor.Controllers
                 {
                     CurrentPage = OnCrossJobPage,
                     JobNumb = jobnumb,
-                    ItemsPerPage = 10,
+                    ItemsPerPage = 5,
                     TotalItems = testJobsList.Count()
                 },
                 
                 PagingInfoIncompleted = new PagingInfo
                 {
                     CurrentPage = MyJobsPage,
-                    ItemsPerPage = 10,
+                    ItemsPerPage = 5,
                     JobNumb = jobnumb,
                     TotalItems = testJobsInCompleted.Count()
                 },
                 PagingInfoCompleted = new PagingInfo
                 {
-                    CurrentPage = PendingToCrossJobPage,
-                    ItemsPerPage = 10,
+                    CurrentPage = OnCrossJobPage,
+                    ItemsPerPage = 5,
                     JobNumb = jobnumb,
                     TotalItems = testJobsCompleted.Count()
                 },

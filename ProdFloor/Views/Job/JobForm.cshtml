@@ -4,6 +4,10 @@
     <script src="~/Scripts/CascadingCountryStateCity.js" type="text/javascript"></script>
     <script src="~/Scripts/CascadingCityFireCode.js" type="text/javascript"></script>
 }
+<input type="hidden" asp-for="CurrentJob.JobID" />
+<input type="hidden" asp-for="CurrentJob.Status" />
+<input type="hidden" asp-for="CurrentJob.EngID" />
+<input type="hidden" asp-for="CurrentJob.CrossAppEngID" />
 <input type="hidden" asp-for="CurrentJob.CrossAppEngID" />
 <input type="hidden" asp-for="POList[0].JobID" />
 <input type="hidden" asp-for="POList[0].POID" />
@@ -94,7 +98,7 @@
             <div class="form-group row">
                 <label asp-for="CurrentJob.Contractor" class="col-sm-3 col-form-label"></label>
                 <div>
-                    <input asp-for="CurrentJob.Contractor" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" class="form-control" />
+                    <input asp-for="CurrentJob.Contractor" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" class="form-control col-sm-7" />
                     <span asp-validation-for="CurrentJob.Contractor" class="text-danger"></span>
                 </div>
             </div>
@@ -137,6 +141,5 @@
                 </div>
             </div>
         </div>
-     
     </div>
 </div>

@@ -68,39 +68,49 @@ namespace ProdFloor.Controllers
         [HttpPost]
         public ViewResult NewStop(Stop Stop)
         {
-            bool admin = GetCurrentUserRole("Admin").Result;
-            TestJob testJob = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == Stop.TestJobID);
-            Stop NewtStop = new Stop
+            if(Stop.Reason1 != 0)
             {
-                TestJobID = Stop.TestJobID,
-                Reason1 = Stop.Reason1,
-                Reason2 = 0,
-                Reason3 = 0,
-                Reason4 = 0,
-                Reason5ID = 0,
-                Description = null,
-                Critical = true,
-                StartDate = DateTime.Now,
-                StopDate = DateTime.Now,
-                Elapsed = new DateTime(1, 1, 1, 0, 0, 0),
-                AuxStationID = testJob.StationID,
-                AuxTechnicianID = testJob.TechnicianID,
-            };
+                bool admin = GetCurrentUserRole("Admin").Result;
+                TestJob testJob = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == Stop.TestJobID);
+                Stop NewtStop = new Stop
+                {
+                    TestJobID = Stop.TestJobID,
+                    Reason1 = Stop.Reason1,
+                    Reason2 = 0,
+                    Reason3 = 0,
+                    Reason4 = 0,
+                    Reason5ID = 0,
+                    Description = null,
+                    Critical = true,
+                    StartDate = DateTime.Now,
+                    StopDate = DateTime.Now,
+                    Elapsed = new DateTime(1, 1, 1, 0, 0, 0),
+                    AuxStationID = testJob.StationID,
+                    AuxTechnicianID = testJob.TechnicianID,
+                };
 
-            testingRepo.SaveStop(NewtStop);
-            Stop CurrentStop = testingRepo.Stops.FirstOrDefault(p => p.StopID == testingRepo.Stops.Max(x => x.StopID));
-            string Reason1Name = testingRepo.Reasons1.FirstOrDefault(m => m.Reason1ID == CurrentStop.Reason1).Description;
-            testJob.Status = "Stopped";
-            testingRepo.SaveTestJob(testJob);
-            Job job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == testJob.JobID);
-            if (admin)
-            {
-                Stop CurrentStop2 = testingRepo.Stops.FirstOrDefault(p => p.StopID == CurrentStop.StopID);
-                TestJob testJob2 = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == CurrentStop.TestJobID);
-                Job job2 = jobRepo.Jobs.FirstOrDefault(m => m.JobID == testJob.JobID);
-                return View("Edit", new TestJobViewModel { Job = job2, Stop = CurrentStop2, TestJob = testJob2 });
+                testingRepo.SaveStop(NewtStop);
+                Stop CurrentStop = testingRepo.Stops.FirstOrDefault(p => p.StopID == testingRepo.Stops.Max(x => x.StopID));
+                string Reason1Name = testingRepo.Reasons1.FirstOrDefault(m => m.Reason1ID == CurrentStop.Reason1).Description;
+                testJob.Status = "Stopped";
+                testingRepo.SaveTestJob(testJob);
+                Job job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == testJob.JobID);
+                if (admin)
+                {
+                    Stop CurrentStop2 = testingRepo.Stops.FirstOrDefault(p => p.StopID == CurrentStop.StopID);
+                    TestJob testJob2 = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == CurrentStop.TestJobID);
+                    Job job2 = jobRepo.Jobs.FirstOrDefault(m => m.JobID == testJob.JobID);
+                    return View("Edit", new TestJobViewModel { Job = job2, Stop = CurrentStop2, TestJob = testJob2 });
+                }
+                return View("WaitingForRestar", new TestJobViewModel { Job = job, Stop = CurrentStop, TestJob = testJob, Reason1Name = Reason1Name });
             }
-            return View("WaitingForRestar", new TestJobViewModel { Job = job, Stop = CurrentStop, TestJob = testJob, Reason1Name = Reason1Name });
+            else
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"Error, seleccione una razonn valida";
+                return View("NewStop", Stop);
+            }
+            
         }
 
         public IActionResult WaitingForRestar(int ID)
