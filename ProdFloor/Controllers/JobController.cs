@@ -1399,7 +1399,6 @@ namespace ProdFloor.Controllers
                     {
                         if (nextViewModel.CurrentJobExtension != null && nextViewModel.CurrentJobExtension.JobID != 0)
                         {
-
                             string LastFive = nextViewModel.CurrentJob.JobNum.ToString().Substring(5);
                             string FirstTwo = LastFive.Substring(0, 2);
                             nextViewModel.JobFolder = @"L:\" + FirstTwo + "000\\" + LastFive;
