@@ -194,7 +194,7 @@ namespace ProdFloor.Controllers
                 reasons2 = reasons2.Where(m => m.Reason1ID == viewModel.Reason1ID);
                 reasons3 = reasons3.Where(m => reasons2.Any(s => s.Reason2ID == m.Reason2ID));
             }
-            else if (viewModel.Reason2ID > 0) reasons3 = reasons3.Where(m => m.Reason2ID == viewModel.Reason2ID);
+            if (viewModel.Reason2ID > 0) reasons3 = reasons3.Where(m => m.Reason2ID == viewModel.Reason2ID);
             if (!string.IsNullOrEmpty(viewModel.Description)) reasons3 = reasons3.Where(m => m.Description.Contains(viewModel.Description));
 
             viewModel.Reasons3 = reasons3.OrderBy(p => p.Description).Skip((page - 1) * 5).Take(5).ToList();

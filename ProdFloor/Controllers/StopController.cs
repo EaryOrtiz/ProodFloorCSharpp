@@ -453,7 +453,7 @@ namespace ProdFloor.Controllers
             if (searchViewModel.CleanFields) return RedirectToAction("StopSearchList");
             if (searchViewModel.Stop == null) searchViewModel.Stop = new Stop();
 
-            IQueryable<Stop> StopSearchList = testingRepo.Stops;
+            IQueryable<Stop> StopSearchList = testingRepo.Stops.Where(m => m.Reason1 != 981 && m.Reason1 != 980 & !string.IsNullOrEmpty(m.Description));
 
             #region StopsInfo
             if (searchViewModel.Stop.Reason1 > 0)
