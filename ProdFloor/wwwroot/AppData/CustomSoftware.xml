@@ -1,0 +1,35 @@
+﻿<AllCustoms>
+  <Customs>
+    <Custom>
+      <CustomSoftwareID>6</CustomSoftwareID>
+      <Description>bn</Description>
+    </Custom>
+    <Custom>
+      <CustomSoftwareID>7</CustomSoftwareID>
+      <Description>fgdfg</Description>
+    </Custom>
+  </Customs>
+  <TriggeringCustSofts>
+    <TriggeringCustSoft>
+      <ID>7</ID>
+      <CustomSoftwareID>6</CustomSoftwareID>
+      <Name>City</Name>
+      <IsSelected>False</IsSelected>
+      <itemToMatch>Monterey</itemToMatch>
+    </TriggeringCustSoft>
+    <TriggeringCustSoft>
+      <ID>8</ID>
+      <CustomSoftwareID>6</CustomSoftwareID>
+      <Name>Contractor</Name>
+      <IsSelected>False</IsSelected>
+      <itemToMatch>California</itemToMatch>
+    </TriggeringCustSoft>
+    <TriggeringCustSoft>
+      <ID>9</ID>
+      <CustomSoftwareID>7</CustomSoftwareID>
+      <Name>Contractor</Name>
+      <IsSelected>False</IsSelected>
+      <itemToMatch>Monterey</itemToMatch>
+    </TriggeringCustSoft>
+  </TriggeringCustSofts>
+</AllCustoms>

@@ -12,6 +12,12 @@
         New CustomSofware
     </a>
 </div>
+<form asp-action="SeedXML" asp-controller="CustomSoftware" method="post">
+    @if (Model.CustomSoftwareList.Count() == 0)
+    {
+        <button type="submit" name="buttonImportXML" value="All" class="btn btn-danger btn-sm">Import All Custom Software from XML <i class="fas fa-file-alt"></i></button>
+    }
+</form>
 <br /><br />
 <div>
     <table class="table table-striped border table-sm" style="text-align:center">
@@ -29,13 +35,13 @@
                 </td>
                 <td style="width:100px">
                     <form asp-action="Delete" asp-route-id="@item.CustomSoftwareID" method="post">
-                        <button type="submit" class="btn btn-danger btn-sm">
-                            <i class="far fa-trash-alt"></i>
-                        </button>
                         <a asp-action="Edit" class="btn btn-sm btn-warning"
                            asp-route-Id="@item.CustomSoftwareID">
                             <i class="fas fa-edit"></i>
                         </a>
+                        <button type="submit" class="btn btn-danger btn-sm">
+                            <i class="far fa-trash-alt"></i>
+                        </button>
                     </form>
                 </td>
             </tr>
@@ -47,4 +53,9 @@
                       page-class-selected="btn-dark"
                       class="btn-group pull-right m-1">
 </coool-pagination-all>
+<div>
+    <form asp-controller="CustomSoftware" asp-action="ExportToXML" method="post">
+        <button class="btn btn-sm " name="buttonXML" style="background-color:steelblue;color:white;margin-bottom:30px">Export Table to an XML File</button>
+    </form>
+</div>
 <br />

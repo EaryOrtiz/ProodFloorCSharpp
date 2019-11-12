@@ -1,9 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml;
+using HtmlAgilityPack;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using ProdFloor.Models;
 using ProdFloor.Models.ViewModels;
 using ProdFloor.Models.ViewModels.Job;
@@ -176,14 +181,131 @@ namespace ProdFloor.Controllers
             return RedirectToAction("Edit", new { id = customID });
         }
 
-        /*
+        [HttpPost]
+        public FileStreamResult ExportToXML()
+        {
+            MemoryStream ms = new MemoryStream();
+            XmlWriterSettings xws = new XmlWriterSettings();
+            xws.OmitXmlDeclaration = true;
+            xws.Indent = true;
+
+            List<CustomSoftware> customs = Jobrepo.CustomSoftwares.ToList();
+            List<TriggeringCustSoft> triggerings = Jobrepo.TriggeringCustSofts.ToList();
+
+            using (XmlWriter xw = XmlWriter.Create(ms, xws))
+            {
+                xw.WriteStartDocument();
+                xw.WriteStartElement("AllCustoms");
+
+                xw.WriteStartElement("Customs");
+                foreach (CustomSoftware custom in customs)
+                {
+                    xw.WriteStartElement("Custom");
+                    xw.WriteElementString("CustomSoftwareID", custom.CustomSoftwareID.ToString());
+                    xw.WriteElementString("Description", custom.Description.ToString());
+                    xw.WriteEndElement();
+                }
+                xw.WriteEndElement();
+                xw.WriteStartElement("TriggeringCustSofts");
+                string aux;
+                foreach (TriggeringCustSoft triggering in triggerings)
+                {
+                    xw.WriteStartElement("TriggeringCustSoft");
+                    xw.WriteElementString("ID", triggering.TriggeringCustSoftID.ToString());
+                    xw.WriteElementString("CustomSoftwareID", triggering.CustomSoftwareID.ToString());
+                    aux = !string.IsNullOrEmpty(triggering.Name) ? triggering.Name : "Nulo";
+                    xw.WriteElementString("Name", aux);
+                    xw.WriteElementString("IsSelected", triggering.isSelected.ToString());
+                    xw.WriteElementString("itemToMatch", triggering.itemToMatch.ToString());
+                    xw.WriteEndElement();
+
+                }
+                xw.WriteEndElement();
+                xw.WriteEndElement();
+                xw.WriteEndDocument();
+            }
+
+            ms.Position = 0;
+            return File(ms, "text/xml", "CustomSoftware.xml");
+        }
+
+        public static void ImportXML(IServiceProvider services)
+        {
+            ApplicationDbContext context = services.GetRequiredService<ApplicationDbContext>();
+
+
+            HtmlDocument doc = new HtmlDocument();
+            doc.Load(@"C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\CustomSoftware.xml");
+
+            var ALLSteps = doc.DocumentNode.SelectSingleNode("//allcustoms");
+
+            var ALLXMLobs = ALLSteps.SelectSingleNode("//customs");
+            var XMLobs = ALLXMLobs.SelectNodes("//custom");
+
+            var ALLtriggers = ALLSteps.SelectSingleNode("//triggeringcustsofts");
+            var triggers = ALLtriggers.SelectNodes("//triggeringcustsoft");
+
+            foreach (var XMLob in XMLobs)
+            {
+                var customsoftwareID = XMLob.SelectSingleNode(".//customsoftwareid").InnerText;
+                var description = XMLob.SelectSingleNode(".//description").InnerText;
+
+                context.CustomSoftwares.Add(new CustomSoftware
+                {
+                    CustomSoftwareID = Int32.Parse(customsoftwareID),
+                    Description = description
+                });
+                context.Database.OpenConnection();
+                try
+                {
+                    context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.CustomSoftwares ON");
+                    context.SaveChanges();
+                    context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.CustomSoftwares OFF");
+                }
+                finally
+                {
+                    context.Database.CloseConnection();
+                }
+            }
+            foreach (var po in triggers)
+            {
+                var id = po.SelectSingleNode(".//id").InnerText;
+                var customsoftwareID = po.SelectSingleNode(".//customsoftwareid").InnerText;
+                var name = po.SelectSingleNode(".//name").InnerText;
+                var isselected = po.SelectSingleNode(".//isselected").InnerText;
+                var itemtomatch = po.SelectSingleNode(".//itemtomatch").InnerText;
+                context.TriggeringCustSofts.Add(new TriggeringCustSoft
+                {
+                    TriggeringCustSoftID = Int32.Parse(id),
+                    CustomSoftwareID = Int32.Parse(customsoftwareID),
+                    Name = name == "Nulo" ? null : name,
+                    isSelected = Boolean.Parse(isselected),
+                    itemToMatch = itemtomatch
+
+                });
+                context.Database.OpenConnection();
+                try
+                {
+                    context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.TriggeringCustSofts ON");
+                    context.SaveChanges();
+                    context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.TriggeringCustSofts OFF");
+                }
+                finally
+                {
+                    context.Database.CloseConnection();
+                }
+            }
+
+        }
+
+        
         [HttpPost]
         public IActionResult SeedXML(string buttonImportXML)
         {
             string resp = buttonImportXML;
-            ItemController.ImportXML(HttpContext.RequestServices, resp);
+            CustomSoftwareController.ImportXML(HttpContext.RequestServices);
             return RedirectToAction(nameof(List));
         }
-        */
+        
     }
 }
