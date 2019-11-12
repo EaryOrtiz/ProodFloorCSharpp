@@ -221,12 +221,12 @@ namespace ProdFloor.Controllers
                 reasons3 = reasons3.Where(m => reasons2.Any(s => s.Reason2ID == m.Reason2ID));
                 reasons4 = reasons4.Where(m => reasons3.Any(s => s.Reason3ID == m.Reason3ID));
             }
-            else if (viewModel.Reason2ID > 0)
+            if (viewModel.Reason2ID > 0)
             {
                 reasons3 = reasons3.Where(m => m.Reason2ID == viewModel.Reason2ID);
                 reasons4 = reasons4.Where(m => reasons3.Any(s => s.Reason3ID == m.Reason3ID));
             }
-            else if (viewModel.Reason3ID > 0) reasons4 = reasons4.Where(m => m.Reason3ID == viewModel.Reason3ID);
+            if (viewModel.Reason3ID > 0) reasons4 = reasons4.Where(m => m.Reason3ID == viewModel.Reason3ID);
 
 
             if (!string.IsNullOrEmpty(viewModel.Description)) reasons4 = reasons4.Where(m => m.Description.Contains(viewModel.Description));
@@ -257,18 +257,18 @@ namespace ProdFloor.Controllers
                 reasons4 = reasons4.Where(m => reasons3.Any(s => s.Reason3ID == m.Reason3ID));
                 reasons5 = reasons5.Where(m => reasons4.Any(s => s.Reason4ID == m.Reason4ID));
             }
-            else if (viewModel.Reason2ID > 0)
+            if (viewModel.Reason2ID > 0)
             {
                 reasons3 = reasons3.Where(m => m.Reason2ID == viewModel.Reason2ID);
                 reasons4 = reasons4.Where(m => reasons3.Any(s => s.Reason3ID == m.Reason3ID));
                 reasons5 = reasons5.Where(m => reasons4.Any(s => s.Reason4ID == m.Reason4ID));
             }
-            else if (viewModel.Reason3ID > 0)
+            if (viewModel.Reason3ID > 0)
             {
                 reasons4 = reasons4.Where(m => m.Reason3ID == viewModel.Reason3ID);
                 reasons5 = reasons5.Where(m => reasons4.Any(s => s.Reason4ID == m.Reason4ID));
             }
-            else if (viewModel.Reason4ID > 0) reasons5 = reasons5.Where(m => reasons4.Any(s => s.Reason4ID == m.Reason4ID));
+            if (viewModel.Reason4ID > 0) reasons5 = reasons5.Where(m => reasons4.Any(s => s.Reason4ID == m.Reason4ID));
 
             if (!string.IsNullOrEmpty(viewModel.Description)) reasons4 = reasons4.Where(m => m.Description.Contains(viewModel.Description));
 

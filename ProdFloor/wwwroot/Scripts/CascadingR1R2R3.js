@@ -28,6 +28,8 @@ $(function () {
                 var Reason1ID = $("#Reason1ID").val();
                 var Reason2ID = $('#Reason2ID');
                 Reason2ID.empty();
+                Reason2ID.append('<option value="">' + " --- Please Select a Reason 2--- " + '</option>');
+                $("#Reason2ID").prop("disabled", true);
                 if (Reason1ID != null && Reason1ID != '') {
                     $.ajax({
                         type: 'GET',
@@ -38,7 +40,6 @@ $(function () {
                         },
                         success: function (data) {
                             $("#Reason2ID").prop("disabled", false);
-                            Reason2ID.append('<option value="">' + " --- Please Select a Reason 2--- " + '</option>');
                             $.each(data, function (idx, reason) {
                                 Reason2ID.append('<option value="' + reason.value + '">' + reason.text + '</option>');
                             });
@@ -80,6 +81,8 @@ $(function () {
                 var Reason2ID = $("#Reason2ID").val();
                 var Reason3ID = $('#Reason3ID');
                 Reason3ID.empty();
+                $("#Reason3ID").prop("disabled", true);
+                Reason3ID.append('<option value="">' + " --- Please Select a Reason 3 --- " + '</option>');
                 if (Reason2ID != null && Reason2ID != '') {
                     $.ajax({
                         type: 'GET',
@@ -90,7 +93,6 @@ $(function () {
                         },
                         success: function (data) {
                             $("#Reason3ID").prop("disabled", false);
-                            Reason3ID.append('<option value="">' + " --- Please Select a Reason 3 --- " + '</option>');
                             $.each(data, function (idx, reason) {
                                 Reason3ID.append('<option value="' + reason.value + '">' + reason.text + '</option>');
                             });
