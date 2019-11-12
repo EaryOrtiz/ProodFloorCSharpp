@@ -4148,7 +4148,7 @@ namespace ProdFloor.Controllers
                                 PickVoltage = Int32.Parse(pickvoltage),
                                 HoldVoltage = Int32.Parse(holdvoltage),
                                 Resistance = Int32.Parse(resistance),
-                                Current = Int32.Parse(current),
+                                Current = float.Parse(current),
 
 
                                 Encoder = Boolean.Parse(encoder),
