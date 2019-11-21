@@ -1837,6 +1837,17 @@ namespace ProdFloor.Controllers
             if (searchViewModel.NumJobSearch >= 2015000000 && searchViewModel.NumJobSearch <= 2021000000) jobSearchRepo = jobSearchRepo.Where(s => s.JobNum == searchViewModel.NumJobSearch);
             if (searchViewModel.EngID > 0) jobSearchRepo = jobSearchRepo.Where(s => s.EngID == searchViewModel.EngID);
             if (searchViewModel.CrossAppEngID > 0) jobSearchRepo = jobSearchRepo.Where(s => s.CrossAppEngID == searchViewModel.CrossAppEngID);
+            if (searchViewModel.CountryID > 0){
+                IQueryable<State> states = itemsrepository.States.Where(m => m.CountryID == searchViewModel.CountryID);
+                IQueryable<City> cities = itemsrepository.Cities.Where(m => states.Any( n => n.StateID ==  m.StateID));
+
+                jobSearchRepo = jobSearchRepo.Where(m => cities.Any(n => n.CityID == m.CityID));
+            }
+            if (searchViewModel.StateID > 0)
+            {
+                IQueryable<City> cities = itemsrepository.Cities.Where(m => m.StateID == searchViewModel.StateID);
+                jobSearchRepo = jobSearchRepo.Where(m => cities.Any(n => n.CityID == m.CityID));
+            }
             if (searchViewModel.CityID > 0) jobSearchRepo = jobSearchRepo.Where(s => s.CityID == searchViewModel.CityID);
             if (searchViewModel.FireCodeID > 0) jobSearchRepo = jobSearchRepo.Where(s => s.FireCodeID == searchViewModel.FireCodeID);
             if (searchViewModel.JobTypeID > 0) jobSearchRepo = jobSearchRepo.Where(s => s.JobTypeID == searchViewModel.JobTypeID);
@@ -1978,17 +1989,16 @@ namespace ProdFloor.Controllers
             #endregion
 
             int TotalItemsSearch = jobSearchRepo.Count() + 1;
-            JobSearchViewModel jobSearch = new JobSearchViewModel();
-            jobSearch.Status = new SelectList(statusQuery.Distinct().ToList());
-            jobSearch.JobsSearchList = jobSearchRepo.OrderBy(p => p.JobID).Skip((page - 1) * 10).Take(10).ToList();
-            jobSearch.PagingInfo = new PagingInfo
+            searchViewModel.Status = new SelectList(statusQuery.Distinct().ToList());
+            searchViewModel.JobsSearchList = jobSearchRepo.OrderBy(p => p.JobID).Skip((page - 1) * 5).Take(5).ToList();
+            searchViewModel.PagingInfo = new PagingInfo
             {
                 CurrentPage = page,
-                ItemsPerPage = 10,
-                TotalItems = TotalItemsSearch
+                ItemsPerPage = 5,
+                TotalItems = jobSearchRepo.Count()
             };
 
-            return View(jobSearch);
+            return View(searchViewModel);
         }
 
         //Funciones para el llenado de los dropdowns en casacada

@@ -55,6 +55,7 @@ namespace ProdFloor
             services.AddTransient<IItemRepository, EFItemRepository>();
             services.AddTransient<ITestingRepository, EFTestingRepository>();
             services.AddTransient<ItemController>();
+            services.AddTransient<AccountController>();
             services.AddTransient<JobController>();
             services.AddTransient<TestJobController>();
             services.AddTransient<Microsoft.Extensions.Hosting.IHostedService, DailyJobsBackupHostedService>();
@@ -190,7 +191,7 @@ namespace ProdFloor
                  name: null,
                     template: "{controller=Job}/{action=JobSearchList}/{id?}");
             });
-           SeedData.EnsurePopulated(app);
+           //SeedData.EnsurePopulated(app);
            //IdentitySeedData.EnsurePopulated(app);
         }
     }

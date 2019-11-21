@@ -24,7 +24,7 @@ namespace ProdFloor.Models.ViewModels.Job
         public string NameJobSearch { get; set; }
         [Display(Name = "Job Number")]
         public int NumJobSearch { get; set; }
-        [Display(Name = "PO Name")]
+        [Display(Name = "PO Number")]
         public int POJobSearch { get; set; }
         [Display(Name = "Cust Number")]
         public string CustJobSearch { get; set; }

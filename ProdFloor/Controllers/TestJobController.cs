@@ -476,13 +476,36 @@ namespace ProdFloor.Controllers
                             if (step != null) testingRepo.SaveStepsForJob(step);
                         }
                     }
+                    //Nuevos consecutivos
+                    var AllStepsForJob = testingRepo.StepsForJobs.Where(m => m.TestJobID == testJobView.TestFeature.TestJobID && m.Obsolete == false).OrderBy(m => m.Consecutivo).ToList();
+
+                    int PreviusStepNumber = 0;
+                    foreach(StepsForJob step in AllStepsForJob)
+                    {
+                        if (PreviusStepNumber == 0)
+                        {
+                            PreviusStepNumber = step.Consecutivo;
+                            continue;
+                        }
+
+                        if (PreviusStepNumber == step.Consecutivo)
+                        {
+                            step.Consecutivo += 1;
+                            testingRepo.SaveStepsForJob(step);
+                        }
+                        else
+                        {
+                            PreviusStepNumber = step.Consecutivo;
+                        }
+                        
+                    }
 
 
                     //Despues de terminar de hacer la lista de steps para job se manda el primero a la siguiente vista
                     var stepsForAUX = testingRepo.StepsForJobs.FirstOrDefault(m => m.TestJobID == testJobView.TestFeature.TestJobID && m.Consecutivo == 1); stepsForAUX.Start = DateTime.Now;
                     testingRepo.SaveStepsForJob(stepsForAUX);
 
-                    var AllStepsForJob = testingRepo.StepsForJobs.Where(m => m.TestJobID == testJobView.TestFeature.TestJobID && m.Obsolete == false).OrderBy(m => m.Consecutivo).ToList();
+                    
                     var stepsFor = AllStepsForJob.FirstOrDefault(m => (m.TestJobID == testJobView.TestFeature.TestJobID && m.Consecutivo == 1 && m.Complete == false) || (m.Complete == false));
 
                     var AllStepsForJobInfo = testingRepo.Steps.Where(m => AllStepsForJob.Any(s => s.StepID == m.StepID)).ToList();
@@ -501,6 +524,8 @@ namespace ProdFloor.Controllers
                     int StepsPerStage = auxtStepsPerStageInfo.Count();
                     int auxtStepsPerStage = AllStepsForJob.Where(m => auxtStepsPerStageInfo.Any(s => s.StepID == m.StepID)).Where(m => m.Complete == true).Count() + 1;
 
+
+                    if (techAdmin) return RedirectToAction("Index", "Home");
 
                     return View("StepsForJob", new TestJobViewModel
                     {
@@ -572,7 +597,7 @@ namespace ProdFloor.Controllers
             }//For Next Step
             else if (viewModel.StepsForJob.Consecutivo == (next - 1))
             {
-                var currentStepForJob = AllStepsForJob.FirstOrDefault(m => m.Consecutivo == viewModel.StepsForJob.Consecutivo); 
+                var currentStepForJob = AllStepsForJob.FirstOrDefault(m => m.Consecutivo == viewModel.StepsForJob.Consecutivo && m.Complete == false); 
                 currentStepForJob.Stop = DateTime.Now;
                 currentStepForJob.Complete = true;
                 TimeSpan elapsed = currentStepForJob.Stop - currentStepForJob.Start;
@@ -637,9 +662,47 @@ namespace ProdFloor.Controllers
             }//For Previous Step
             else if (viewModel.StepsForJob.Consecutivo == (next + 1))
             {
-                //Previus step
+                
                 var previusStepForAUX = AllStepsForJob.OrderByDescending(m => m.Consecutivo).FirstOrDefault(m => m.Complete == true);
+                var actualStepForAUX = AllStepsForJob.OrderBy(m => m.Consecutivo).FirstOrDefault(m => m.Complete == false);
+
+                //For actual Step
+                actualStepForAUX.Stop = DateTime.Now;
+                TimeSpan elapsed = actualStepForAUX.Stop - actualStepForAUX.Start;
+                if (actualStepForAUX.Elapsed.Hour == 0 && actualStepForAUX.Elapsed.Minute == 0 && actualStepForAUX.Elapsed.Second == 0)
+                {
+
+                    actualStepForAUX.Elapsed = new DateTime(1, 1, 1, elapsed.Hours, elapsed.Minutes, elapsed.Seconds);
+                }
+                else
+                {
+                    int newsecond = 0, newhour = 0, newMinute = 0;
+
+                    newsecond = actualStepForAUX.Elapsed.Second + elapsed.Seconds;
+                    newMinute = actualStepForAUX.Elapsed.Minute + elapsed.Minutes;
+                    newhour = actualStepForAUX.Elapsed.Hour + elapsed.Hours;
+                    if (newsecond >= 60)
+                    {
+                        newsecond -= 60;
+                        newMinute++;
+                    }
+                    newMinute += elapsed.Minutes;
+                    if (newMinute >= 60)
+                    {
+                        newMinute -= 60;
+                        newhour++;
+                    }
+
+
+                    actualStepForAUX.Elapsed = new DateTime(1, 1, 1, newhour, newMinute, newsecond);
+                }
+                testingRepo.SaveStepsForJob(actualStepForAUX);
+
+                //For target step (before actual step)
+
                 previusStepForAUX.Complete = false;
+                previusStepForAUX.Stop = DateTime.Now;
+                
                 previusStepForAUX.Start = DateTime.Now;
                 testingRepo.SaveStepsForJob(previusStepForAUX);
 
