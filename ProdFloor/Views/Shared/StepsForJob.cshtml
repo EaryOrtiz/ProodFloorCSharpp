@@ -2,8 +2,6 @@
 @{
     ViewBag.Title = "Steps For Job";
     Layout = "_AdminLayoutWO";
-    int nextNum = Model.StepsForJob.Consecutivo + 1;
-    int prevNum = Model.StepsForJob.Consecutivo - 1;
     
 }  
 <div class="container-fluid">
@@ -78,9 +76,9 @@
                 <br />
                 <div class="justify-content-md-center text-center">
                     <div class="btn-group row " style="position:center" role="group" aria-label="Basic example">
-                        <button type="submit" class="btn btn-primary" name="next" value="@prevNum" disabled="@(Model.StepsForJob.Consecutivo <= 1 ? true: false)">Atras</button>
-                        <button type="submit" class="btn btn-success" name="next" value="@nextNum">Siguiente</button>
-                        <a class="btn btn-danger" asp-controller="Stop" asp-action="NewStop" asp-route-id="@Model.TestJob.TestJobID">Stop</a>
+                        <button type="submit" class="btn btn-primary" name="movement" value="previus" disabled="@(Model.StepsForJob.Consecutivo <= 1 ? true: false)">Atras</button>
+                        <button type="submit" class="btn btn-success" name="movement" value="next">Siguiente</button>
+                        <a class="btn btn-danger" asp-controller="Stop" asp-action="NewStop" asp-route-id="@Model.TestJob.TestJobID">Paro</a>
                     </div>
                 </div>
             </form>
