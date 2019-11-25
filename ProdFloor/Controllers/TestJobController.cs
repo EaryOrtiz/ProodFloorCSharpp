@@ -83,9 +83,11 @@ namespace ProdFloor.Controllers
                     .Where(m => m.Status == "Completed").ToList();
             }
 
-            if(testJobsInCompleted == null || Clean == "true" || jobnumb == "0") testJobsInCompleted = testingRepo.TestJobs.Where(m => m.Status != "Completed").ToList();
+            if(testJobsInCompleted == null || jobnumb == "0") testJobsInCompleted = testingRepo.TestJobs.Where(m => m.Status != "Completed").ToList();
 
-            if (testJobsCompleted == null || Clean  == "true" || jobnumb == "0") testJobsCompleted = testingRepo.TestJobs.Where(m => m.Status == "Completed").ToList();
+            if (testJobsCompleted == null || jobnumb == "0") testJobsCompleted = testingRepo.TestJobs.Where(m => m.Status == "Completed").ToList();
+
+            if (Clean == "true") RedirectToAction("SearchTestJob", "TestJob");
 
             var requestQuery = Request.Query;
 
@@ -97,7 +99,7 @@ namespace ProdFloor.Controllers
                     .Take(5).ToList(),
                 TestJobCompletedList = testJobsCompleted
                     .OrderBy(p => p.TechnicianID)
-                    .Skip((PendingToCrossJobPage - 1) * 5)
+                    .Skip((OnCrossJobPage - 1) * 5)
                     .Take(5).ToList(),
                 
                 JobList = jobRepo.Jobs.ToList(),
@@ -445,7 +447,6 @@ namespace ProdFloor.Controllers
                 //Checa que la lista de features no este vacia o nula
                 if (testJobView.TestFeature != null)
                 {
-
                     List<StepsForJob> OldStepsForJob = testingRepo.StepsForJobs.Where(m => m.TestJobID == testJobView.TestJob.TestJobID).ToList();
                     if (OldStepsForJob.Count > 0)
                     {
