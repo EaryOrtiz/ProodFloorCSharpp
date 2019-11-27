@@ -117,7 +117,7 @@ namespace ProdFloor.Controllers
         {
             TestJob testJob = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == ID);
             TestJob OnGoingtestJob = testingRepo.TestJobs.FirstOrDefault(m => m.TechnicianID == testJob.TechnicianID && m.Status == "Working on it");
-            Stop ReturnedFromCompleteStop = testingRepo.Stops.Where(p => p.TestJobID == testJob.TestJobID).Last();
+            Stop ReturnedFromCompleteStop = testingRepo.Stops.LastOrDefault(p => p.TestJobID == testJob.TestJobID);
             if (OnGoingtestJob != null)
             {
                 TempData["alert"] = $"alert-danger";
@@ -145,7 +145,8 @@ namespace ProdFloor.Controllers
         {
             TestJob testJob = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == ID);
             TestJob OnGoingtestJob = testingRepo.TestJobs.FirstOrDefault(m => m.TechnicianID == testJob.TechnicianID && m.Status == "Working on it");
-            Stop ReassignmentStop = testingRepo.Stops.FirstOrDefault(p => p.TestJobID == testJob.TestJobID && p.StopID == testingRepo.Stops.Max(x => x.StopID) && p.Reason1 == 980);
+
+            Stop ReassignmentStop = testingRepo.Stops.LastOrDefault(p => p.TestJobID == testJob.TestJobID && p.Reason1 == 980);
             Stop PreviusStop = testingRepo.Stops.FirstOrDefault(p => p.TestJobID == testJob.TestJobID && p.Reason2 == 0 && p.Critical == true);
 
             if (OnGoingtestJob != null)
