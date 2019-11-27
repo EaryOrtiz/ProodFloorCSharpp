@@ -1169,7 +1169,7 @@ namespace ProdFloor.Controllers
             {
                 if (testJob.Status == "Stopped")
                 {
-                    Stop CurrentStop = testingRepo.Stops.FirstOrDefault(p => p.StopID == testingRepo.Stops.Max(x => x.StopID) && p.Critical == true && p.Reason2 == 0);
+                    Stop CurrentStop = testingRepo.Stops.LastOrDefault(p => p.Critical == true && p.Reason2 == 0);
                     Stop CopyStop = CurrentStop;
 
                     TimeSpan auxTime = (DateTime.Now - CurrentStop.StartDate);
@@ -1291,7 +1291,7 @@ namespace ProdFloor.Controllers
                     else if(testjob.Status == "Stopped")
                     {
 
-                        Stop CurrentStop = testingRepo.Stops.FirstOrDefault(p => p.StopID == testingRepo.Stops.Max(x => x.StopID) && p.Critical == true && p.Reason1 != 980);
+                        Stop CurrentStop = testingRepo.Stops.LastOrDefault(p => p.Critical == true && p.Reason1 != 980);
                         TimeSpan auxTime = (DateTime.Now - CurrentStop.StartDate);
                         CurrentStop.Elapsed += auxTime;
                         CurrentStop.StopDate = DateTime.Now;
@@ -1357,7 +1357,7 @@ namespace ProdFloor.Controllers
                     else
                     {
 
-                        Stop CurrentStop = testingRepo.Stops.FirstOrDefault(p => p.StopID == testingRepo.Stops.Max(x => x.StopID) && p.Critical == true && p.Reason1 != 980);
+                        Stop CurrentStop = testingRepo.Stops.LastOrDefault(p => p.Critical == true && p.Reason1 != 980);
                         TimeSpan auxTime = (DateTime.Now - CurrentStop.StartDate);
                         CurrentStop.Elapsed += auxTime;
                         CurrentStop.StopDate = DateTime.Now;
