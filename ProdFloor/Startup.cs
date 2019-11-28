@@ -91,7 +91,6 @@ namespace ProdFloor
 
 
             app.UseHttpsRedirection();
-            app.UseCookiePolicy();
 
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
@@ -191,8 +190,9 @@ namespace ProdFloor
                  name: null,
                     template: "{controller=Job}/{action=JobSearchList}/{id?}");
             });
-           //SeedData.EnsurePopulated(app);
-           //IdentitySeedData.EnsurePopulated(app);
+            app.UseCookiePolicy();
+            //SeedData.EnsurePopulated(app);
+            //IdentitySeedData.EnsurePopulated(app);
         }
     }
 }
