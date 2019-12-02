@@ -26,8 +26,8 @@ namespace ProdFloor.Controllers
         public IActionResult Index(int statusCode)
 
         {
-            var reExecute = HttpContext.Features.Get<IStatusCodeReExecuteFeature>();
-            _logger.LogInformation($"Unexpected Status Code: {statusCode}, OriginalPath: {reExecute.OriginalPath}");
+            //var reExecute = HttpContext.Features.Get<IStatusCodeReExecuteFeature>();
+            //_logger.LogInformation($"Unexpected Status Code: {statusCode}, OriginalPath: {reExecute.OriginalPath}");
             return View(statusCode);
         }
     

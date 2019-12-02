@@ -30,7 +30,21 @@
 
 }
 
-<div class="jumbotron">
-    <h1>Error @Model</h1>
-    <h3>@statusmessage</h3>
-</div>
+    <div id="notfound"style="max-height:60%;">
+        <div class="notfound-bg"></div>
+        <div class="notfound">
+            <div class="notfound-404">
+                <h1>@Model</h1>
+            </div>
+            <h4>It's looking like you may have taken a wrong turn. Don't worry... It happens to the best of us.</h4>
+            <br />
+            <h5>Please go to home page by clicking the button below</h5>
+            <a href="/home/index/">
+                <span style="font-size: 3em;">
+                    <i class="fas fa-home"></i>
+                </span>
+            </a>
+
+
+        </div>
+    </div>
