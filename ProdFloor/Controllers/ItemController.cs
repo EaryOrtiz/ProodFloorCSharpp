@@ -798,11 +798,11 @@ namespace ProdFloor.Controllers
                         ElementHydro elementHydro = jobrepo.ElementHydros.FirstOrDefault(m => m.JobID == job.JobID);
                         ElementTraction elementTraction = jobrepo.ElementTractions.FirstOrDefault(m => m.JobID == job.JobID);
                         string jobTypeName = JobTypeName(job.JobTypeID);
+                        ViewModel.NumJobSearch = job.JobNum;
 
                         if (jobTypeName  == "ElmHydro")
                         {
                             #region Hydro
-                            ViewModel.NumJobSearch = job.JobNum;
                             ViewModel.SPH = elementHydro.SPH;
                             ViewModel.StarterType = elementHydro.Starter;
                             ViewModel.FLA = elementHydro.FLA;
@@ -907,6 +907,8 @@ namespace ProdFloor.Controllers
                             ReferencesSrchElementViewModel referSearch = new ReferencesSrchElementViewModel
                             {
                                 RefernceData = true,
+
+                                NumJobSearch = ViewModel.NumJobSearch,
 
                                 //General
                                 Speed = ViewModel.Speed,
