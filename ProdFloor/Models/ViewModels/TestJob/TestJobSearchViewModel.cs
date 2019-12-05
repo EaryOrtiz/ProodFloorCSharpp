@@ -72,5 +72,13 @@ namespace ProdFloor.Models.ViewModels.TestJob
         [Display(Name = "Door Control en Cartop")]
         public string Cartop { get; set; }
 
+
+        [Display(Name = "Shift End")]
+        public bool WithShiftEnd { get; set; }
+        [Display(Name = "Job Reassignment ")]
+        public bool WithReassignment { get; set; }
+        [Display(Name = "Returned From Complete ")]
+        public bool WithReturnedFromComplete { get; set; }
+
     }
 }

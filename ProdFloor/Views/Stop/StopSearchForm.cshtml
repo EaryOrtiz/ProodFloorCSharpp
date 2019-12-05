@@ -20,7 +20,7 @@
         <div id="collapseStops" class="collapse" aria-labelledby="headingStops" data-parent="#accordionSearch">
             <div class="card-body">
                 <div class="row">
-                    <div class="col-3 border-right" >
+                    <div class="col-3 border-right">
                         <div class="form-group row" style="margin-bottom:0px;">
                             <label asp-for="Stop.Description" class="col-sm-4 col-form-label"></label>
                             <input type="text" class="form-control form-control-sm col-sm-7" asp-for="Stop.Description">
@@ -38,7 +38,7 @@
                             <reasons2-select class="form-control-sm form-control col-7" asp-for="Stop.Reason2" selected-value="Model.Stop.Reason2" id="Reason2ID"></reasons2-select>
                         </div>
                     </div>
-                    <div class="col-3" >
+                    <div class="col-3">
                         <div class="form-group row" style="margin-bottom:0px;">
                             <label asp-for="Stop.Reason3" class="col-sm-4 col-form-label"></label>
                             <reasons3-select class="form-control-sm form-control col-7" asp-for="Stop.Reason3" selected-value="Model.Stop.Reason3" id="Reason3ID"></reasons3-select>
@@ -50,6 +50,20 @@
                         <div class="form-group row" style="margin-bottom:0px;">
                             <label asp-for="Stop.Reason5ID" class="col-sm-4 col-form-label"></label>
                             <reasons5-select class="form-control-sm form-control col-7" asp-for="Stop.Reason5ID" selected-value="Model.Stop.Reason5ID" id="Reason5ID"></reasons5-select>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="WithReassignment" class="col-sm-9 col-form-label"></label>
+                            <input class="form-control form-control-sm col-sm-2" asp-for="WithReassignment">
+                        </div>
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="WithShiftEnd" class="col-sm-9 col-form-label"></label>
+                            <input class="form-control form-control-sm col-sm-2" asp-for="WithShiftEnd">
+                        </div>
+                        <div class="form-group row" style="margin-bottom:0px;">
+                            <label asp-for="WithReturnedFromComplete" class="col-sm-9 col-form-label"></label>
+                            <input class="form-control form-control-sm col-sm-2" asp-for="WithReturnedFromComplete">
                         </div>
                     </div>
                 </div>
