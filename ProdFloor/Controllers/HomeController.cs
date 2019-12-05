@@ -497,6 +497,7 @@ namespace ProdFloor.Controllers
         {
             AppUser currentUser = GetCurrentUser().Result;
             Job UpdateStatus = repository.Jobs.FirstOrDefault(j => j.JobID == JobCrossID);
+            JobAdditional jobAdditional = repository.JobAdditionals.FirstOrDefault(m => m.JobID == UpdateStatus.JobID);
             if (UpdateStatus != null)
             {
                 if (viewModel.buttonAction == "ToCross" && currentUser.EngID == UpdateStatus.EngID)
@@ -505,6 +506,8 @@ namespace ProdFloor.Controllers
                     {
                         UpdateStatus.Status = "Cross Approval Pending";
                         repository.SaveJob(UpdateStatus);
+                        jobAdditional.Status = "Cross Approval";
+                        repository.SaveJobAdditional(jobAdditional);
 
                         TempData["message"] = $"You have released the Job #{UpdateStatus.JobNum} to Cross Approval";
                     }
@@ -521,6 +524,9 @@ namespace ProdFloor.Controllers
                     {
                         UpdateStatus.Status = "Cross Approval Complete";
                         repository.SaveJob(UpdateStatus);
+                        jobAdditional.Status = "Released";
+                        repository.SaveJobAdditional(jobAdditional);
+
                         TempData["message"] = $"You have approved the Job #{UpdateStatus.JobNum}";
                     }
                     else
@@ -628,7 +634,7 @@ namespace ProdFloor.Controllers
         {
             Job job = repository.Jobs.FirstOrDefault(m => m.JobID == viewModel.JobID);
             int CurrentEngID = job.EngID;
-            if ((job.EngID != viewModel.CurrentEngID) && (job.CrossAppEngID != 0 && job.CrossAppEngID != viewModel.CurrentCrosAppEngID))
+            if ((job.EngID != viewModel.CurrentEngID) && (job.CrossAppEngID != viewModel.CurrentCrosAppEngID))
             {
                 if (viewModel.CurrentEngID != viewModel.CurrentCrosAppEngID)
                 {
@@ -654,7 +660,7 @@ namespace ProdFloor.Controllers
                 return RedirectToAction("EngineerAdminDashBoard");
 
             }
-            else if (job.CrossAppEngID != 0 && job.CrossAppEngID != viewModel.CurrentCrosAppEngID)
+            else if (job.CrossAppEngID != viewModel.CurrentCrosAppEngID)
             {
                 if (CurrentEngID != viewModel.CurrentCrosAppEngID)
                 {

@@ -112,7 +112,7 @@
                                                     <tbody>
                                                         <tr>
                                                             <td><user-select selected-value="@j.TechnicianID" class="form-control form-control-sm" asp-for="@Model.NewTechnicianID" roles="T"></user-select></td>
-                                                            <td><station-select selected-value="@j.StationID" class="form-control form-control-sm" asp-for="@Model.NewStationID"></station-select></td>
+                                                            <td><station-select select-for="Model.JobList.FirstOrDefault(m => m.JobID == j.JobID).JobTypeID" selected-value="@j.StationID" class="form-control form-control-sm" asp-for="@Model.NewStationID"></station-select></td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
@@ -128,10 +128,7 @@
                                     </div>
                                 </div>
                             </div>
-                        }
 
-                        @if (j.Status != "Incomplete")
-                        {
                             <!-- Button trigger to complete-->
                             <button type="button" class="btn btn-light" data-toggle="modal" data-target="#exampleModalReturn @j.TestJobID" style="float:left;background-color:transparent">
                                 <i class="fas fa-forward"></i>

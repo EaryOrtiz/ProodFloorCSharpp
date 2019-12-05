@@ -17,6 +17,13 @@ namespace ProdFloor.Models.ViewModels.TestJob
         public HoistWayData HoistWayData { get; set; }
         public GenericFeatures GenericFeatures { get; set; }
 
+        public List<Reason1> Reasons1List { get; set; }
+        public List<Reason2> Reasons2List { get; set; }
+        public List<Reason3> Reasons3List { get; set; }
+        public List<Reason4> Reasons4List { get; set; }
+        public List<Reason5> Reasons5List { get; set; }
+        public string Reason1Name { get; set; }
+
         public Models.TestJob TestJob { get; set; }
         public Stop Stop { get; set; }
 

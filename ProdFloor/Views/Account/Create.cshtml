@@ -6,10 +6,13 @@
         <label asp-for="Name"></label>
         <input asp-for="Name" class="form-control" />
     </div>
-    <div class="form-group">
-        <label asp-for="EngineerID"></label>
-        <input asp-for="EngineerID" class="form-control" />
-    </div>
+    @if (!User.IsInRole("TechAdmin"))
+    {
+        <div class="form-group">
+            <label asp-for="EngineerID"></label>
+            <input asp-for="EngineerID" class="form-control" />
+        </div>
+    }
     <div class="form-group">
         <label asp-for="Email"></label>
         <input asp-for="Email" class="form-control" />

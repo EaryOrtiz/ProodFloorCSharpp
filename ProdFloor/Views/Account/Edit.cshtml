@@ -16,8 +16,8 @@
         <input asp-for="Email" class="form-control" />
     </div>
     <div class="form-group">
-        <label asp-for="EngID"></label>
-        <input asp-for="EngID" class="form-control" />
+        <label asp-for="EngID" ></label>
+        <input asp-for="EngID" readonly="@(User.IsInRole("TechAdmin") ? true : false)"  class="form-control" />
     </div>
     <div class="form-group">
         <label asp-for="password"></label>

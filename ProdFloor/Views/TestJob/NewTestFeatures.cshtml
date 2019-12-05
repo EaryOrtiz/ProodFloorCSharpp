@@ -20,7 +20,7 @@
             <div class="form-group row">
                 <label asp-for="TestJob.StationID" class="col-sm-2 col-form-label"></label>
                 <div>
-                    <station-select select-for="@Model.Job.JobTypeID" selected-value="@Model.TestJob.StationID"  class="form-control form-control-sm" asp-for="TestJob.StationID"></station-select>
+                    <station-select select-for="@Model.Job.JobTypeID" selected-value="@Model.TestJob.StationID" readonly="@(Model.TestJob.StationID == 0 ? false : true)" class="form-control form-control-sm" asp-for="TestJob.StationID"></station-select>
                     <span asp-validation-for="TestJob.StationID" class="text-danger"></span>
                 </div>
             </div>

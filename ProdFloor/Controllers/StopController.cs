@@ -31,27 +31,56 @@ namespace ProdFloor.Controllers
             userManager = userMgr;
         }
 
-        public ViewResult List(int page = 1)
-            => View(new TestJobViewModel
+        public IActionResult List(TestJobSearchViewModel searchViewModel, int page = 1)
+        {
+            if (searchViewModel.CleanFields) return RedirectToAction("List");
+            if (searchViewModel.Stop == null) searchViewModel.Stop = new Stop();
+
+            IQueryable<Stop> StopSearchList = testingRepo.Stops.Where(m => m.Reason1 != 981 && m.Reason1 != 980 & !string.IsNullOrEmpty(m.Description));
+
+            #region StopsInfo
+            if (searchViewModel.Stop.Reason1 > 0)
             {
-                StopList = testingRepo.Stops
-                .OrderBy(p => p.StopID)
-                .Skip((page - 1) * PageSize)
-                .Take(PageSize).ToList(),
-                JobList = jobRepo.Jobs.ToList(),
-                TestJobList = testingRepo.TestJobs.ToList(),
-                Reasons1List = testingRepo.Reasons1.ToList(),
-                Reasons2List = testingRepo.Reasons2.ToList(),
-                Reasons3List = testingRepo.Reasons3.ToList(),
-                Reasons4List = testingRepo.Reasons4.ToList(),
-                Reasons5List = testingRepo.Reasons5.ToList(),
-                PagingInfo = new PagingInfo
+                StopSearchList = StopSearchList.Where(m => m.Reason1 == searchViewModel.Stop.Reason1);
+                if (searchViewModel.Stop.Reason2 > 0)
                 {
-                    CurrentPage = page,
-                    ItemsPerPage = PageSize,
-                    TotalItems = testingRepo.Stops.Count()
+                    StopSearchList = StopSearchList.Where(m => m.Reason2 == searchViewModel.Stop.Reason2);
+                    if (searchViewModel.Stop.Reason3 > 0)
+                    {
+                        StopSearchList = StopSearchList.Where(m => m.Reason3 == searchViewModel.Stop.Reason3);
+                        if (searchViewModel.Stop.Reason4 > 0)
+                        {
+                            StopSearchList = StopSearchList.Where(m => m.Reason4 == searchViewModel.Stop.Reason2);
+                            if (searchViewModel.Stop.Reason5ID > 0)
+                            {
+                                StopSearchList = StopSearchList.Where(m => m.Reason5ID == searchViewModel.Stop.Reason5ID);
+                            }
+                        }
+                    }
                 }
-            });
+            }
+
+            if (!string.IsNullOrEmpty(searchViewModel.Stop.Description)) StopSearchList = StopSearchList.Where(m => m.Description.Contains(searchViewModel.Stop.Description));
+            if (!string.IsNullOrEmpty(searchViewModel.Critical)) StopSearchList = StopSearchList.Where(m => searchViewModel.Critical == "Si" ? m.Critical == true : m.Critical == false);
+            #endregion
+
+
+            searchViewModel.StopList = StopSearchList.OrderBy(p => p.StopID).Skip((page - 1) * 10).Take(10).ToList();
+            searchViewModel.PagingInfo = new PagingInfo
+            {
+                CurrentPage = page,
+                ItemsPerPage = 10,
+                TotalItems = StopSearchList.Count()
+            };
+            searchViewModel.TestJobsSearchList = testingRepo.TestJobs.ToList();
+            searchViewModel.JobsSearchList = jobRepo.Jobs.ToList();
+            searchViewModel.Reasons1List = testingRepo.Reasons1.ToList();
+            searchViewModel.Reasons2List = testingRepo.Reasons2.ToList();
+            searchViewModel.Reasons3List = testingRepo.Reasons3.ToList();
+            searchViewModel.Reasons4List = testingRepo.Reasons4.ToList();
+            searchViewModel.Reasons5List = testingRepo.Reasons5.ToList();
+            return View(searchViewModel);
+        }
 
         private async Task<AppUser> GetCurrentUser()
         {
@@ -68,7 +97,7 @@ namespace ProdFloor.Controllers
         [HttpPost]
         public ViewResult NewStop(Stop Stop)
         {
-            if(Stop.Reason1 != 0)
+            if (Stop.Reason1 != 0)
             {
                 bool admin = GetCurrentUserRole("Admin").Result;
                 TestJob testJob = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == Stop.TestJobID);
@@ -110,7 +139,7 @@ namespace ProdFloor.Controllers
                 TempData["message"] = $"Error, seleccione una razonn valida";
                 return View("NewStop", Stop);
             }
-            
+
         }
 
         public IActionResult WaitingForRestar(int ID)
@@ -153,7 +182,7 @@ namespace ProdFloor.Controllers
             {
                 TempData["alert"] = $"alert-danger";
                 TempData["message"] = $"Error, Tiene un trabajo activo, intente de nuevo o contacte al admin";
-                return RedirectToAction("Index","Home");
+                return RedirectToAction("Index", "Home");
             }
             else if (PreviusStop != null)
             {
@@ -210,7 +239,7 @@ namespace ProdFloor.Controllers
         [HttpPost]
         public IActionResult RestarTestJob(TestJobViewModel viewModel)
         {
-            
+
             Stop UpdatedStop = testingRepo.Stops.FirstOrDefault(m => m.StopID == viewModel.Stop.StopID);
             TimeSpan auxTime = (DateTime.Now - UpdatedStop.StartDate);
             UpdatedStop.Elapsed += auxTime;
@@ -221,7 +250,7 @@ namespace ProdFloor.Controllers
             UpdatedStop.Reason4 = viewModel.Stop.Reason4;
             UpdatedStop.Reason5ID = viewModel.Stop.Reason5ID;
             UpdatedStop.Description = viewModel.Stop.Description;
-            
+
             testingRepo.SaveStop(UpdatedStop);
             TestJob testJob = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == UpdatedStop.TestJobID);
             testJob.Status = "Working on it";
@@ -296,7 +325,7 @@ namespace ProdFloor.Controllers
                 return FinishPendingStops(testJobView.TestJob.TestJobID);
             }
             return RedirectToAction("JobCompletion", "TestJob", new { TestJobID = testJobView.TestJob.TestJobID });
-            
+
         }
 
         private async Task<bool> GetCurrentUserRole(string role)
@@ -361,7 +390,7 @@ namespace ProdFloor.Controllers
 
             if (XMLobs != null && context.Reasons5.Any() && !context.Stops.Any())
             {
-                foreach(XmlElement stop in XMLStop)
+                foreach (XmlElement stop in XMLStop)
                 {
                     var StopID = stop.SelectSingleNode(".//StopID").InnerText;
                     var TestJobID = stop.SelectSingleNode(".//TestJobID").InnerText;
@@ -402,7 +431,7 @@ namespace ProdFloor.Controllers
                     }
 
                 }
-                
+
             }
 
         }
@@ -423,7 +452,7 @@ namespace ProdFloor.Controllers
             if (StopsFromTestJob.Count > 0 && StopsFromTestJob[0] != null) StopNC = true;
             List<Reason1> reason1s = testingRepo.Reasons1.ToList();
 
-            StepsForJob CurrentStep = AllStepsForJob.FirstOrDefault(m => m.Complete == false); 
+            StepsForJob CurrentStep = AllStepsForJob.FirstOrDefault(m => m.Complete == false);
             testingRepo.SaveStepsForJob(CurrentStep);
             var stepInfo = testingRepo.Steps.FirstOrDefault(m => m.StepID == CurrentStep.StepID);
             var testjobinfo = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == CurrentStep.TestJobID);
@@ -479,17 +508,17 @@ namespace ProdFloor.Controllers
             }
 
             if (!string.IsNullOrEmpty(searchViewModel.Stop.Description)) StopSearchList = StopSearchList.Where(m => m.Description.Contains(searchViewModel.Stop.Description));
-            if (!string.IsNullOrEmpty(searchViewModel.Critical)) StopSearchList = StopSearchList.Where(m =>  searchViewModel.Critical == "Si" ? m.Critical == true : m.Critical == false);
+            if (!string.IsNullOrEmpty(searchViewModel.Critical)) StopSearchList = StopSearchList.Where(m => searchViewModel.Critical == "Si" ? m.Critical == true : m.Critical == false);
             #endregion
 
 
             searchViewModel.StopList = StopSearchList.OrderBy(p => p.StopID).Skip((page - 1) * 10).Take(10).ToList();
-                searchViewModel.PagingInfo = new PagingInfo
-                {
-                    CurrentPage = page,
-                    ItemsPerPage = 10,
-                    TotalItems = StopSearchList.Count()
-                }; 
+            searchViewModel.PagingInfo = new PagingInfo
+            {
+                CurrentPage = page,
+                ItemsPerPage = 10,
+                TotalItems = StopSearchList.Count()
+            };
 
             return View(searchViewModel);
         }
