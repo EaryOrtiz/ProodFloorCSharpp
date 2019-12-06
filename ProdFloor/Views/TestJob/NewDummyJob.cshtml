@@ -36,18 +36,17 @@
                 </div>
                 <div class="form-group row">
                     <label asp-for="Job.JobTypeID" class="col-sm-4 col-form-label"></label>
-                    <job-type-select selected-value="@Model.Job.JobTypeID" class="form-control-sm form-control col-sm-5" id="JobTypeID" asp-for="Job.JobTypeID"></job-type-select>
+                    <job-type-select selected-value="@Model.Job.JobTypeID" class="form-control-sm form-control col-sm-4" id="JobTypeID" asp-for="Job.JobTypeID" required></job-type-select>
                     <span asp-validation-for="Job.JobTypeID" class="text-danger"></span>
                 </div>
                 <div class="form-group row">
                     <label asp-for="JobExtension.JobTypeMain" class="col-sm-4 col-form-label"></label>
-                    <span asp-validation-for="JobExtension.JobTypeMain" class="text-danger"></span>
-                    <indicators select-for="JobType" selected-value="@Model.JobExtension.JobTypeMain" class="form-control-sm form-control col-sm-5" asp-for="JobExtension.JobTypeMain"></indicators>
+                    <indicators select-for="JobType" selected-value="@Model.JobExtension.JobTypeMain" class="form-control-sm form-control col-sm-4" asp-for="JobExtension.JobTypeMain" required></indicators>
                     <span asp-validation-for="JobExtension.JobTypeMain" class="text-danger"></span>
                 </div>
                 <div class="form-group row">
                     <label asp-for="HoistWayData.LandingSystemID" class="col-sm-4 col-form-label"></label>
-                    <landing-sys-select selected-value="@Model.HoistWayData.LandingSystemID" class="form-control-sm form-control col-sm-5" id="LandingSystemID" asp-for="HoistWayData.LandingSystemID"></landing-sys-select>
+                    <landing-sys-select selected-value="@Model.HoistWayData.LandingSystemID" class="form-control-sm form-control col-sm-4" id="LandingSystemID" asp-for="HoistWayData.LandingSystemID" required></landing-sys-select>
                     <span asp-validation-for="HoistWayData.LandingSystemID" class="text-danger"></span>
                 </div>
                 <div class="form-group row">
@@ -150,9 +149,14 @@
         $("#BatterySelected").ready(function () {
             $("#BatteryBrand").hide();
         });
+
         $("#BatterySelected").click(function () {
             $("#BatteryBrand")[this.checked ? "show" : "hide"]();
-            $("#OtherBatteryBrand")[this.checked ? "show" : "hide"]();
+            if (this.checked) {
+                $("#OtherBatteryBrandSelected").attr('required', true);
+            } else {
+                $("#OtherBatteryBrandSelected").attr('required', false);
+            }
         });
     </script>
 }
