@@ -45,6 +45,9 @@ namespace ProdFloor.Models.ViewModels.TestJob
         public int CurrentStep { get; set; }
         public int TotalStepsPerStage { get; set; }
 
+        public string buttonAction { get; set; }
+        public string CurrentTab { get; set; }
+
 
         //Dummy fields
         public bool Canada { get; set; }
@@ -67,6 +70,8 @@ namespace ProdFloor.Models.ViewModels.TestJob
 
         public List<Models.TestJob> TestJobIncompletedList { get; set; }
         public List<Models.TestJob> TestJobCompletedList { get; set; }
+
+        public bool isDummy { get; set; }
 
 
     }
