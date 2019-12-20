@@ -71,7 +71,7 @@ namespace ProdFloor.Models.ViewModels.TestJob
         public List<Models.TestJob> TestJobIncompletedList { get; set; }
         public List<Models.TestJob> TestJobCompletedList { get; set; }
 
-        public bool isDummy { get; set; }
+        public bool isNotDummy { get; set; }
 
 
     }

@@ -151,53 +151,49 @@ namespace ProdFloor.Controllers
             {
                 if (viewModel.POJobSearch >= 3000000 && viewModel.POJobSearch <= 4900000)
                 {
-                    try
+
+                    PO onePO = POSearch.FirstOrDefault(m => m.PONumb == viewModel.POJobSearch);
+                    if (onePO != null)
                     {
-
-                        var onePO = POSearch.First(m => m.PONumb == viewModel.POJobSearch);
-                        if (onePO != null)
+                        var _jobSearch = jobSearch.FirstOrDefault(m => m.JobID == onePO.JobID);
+                        if (_jobSearch != null && _jobSearch.Status != "Incomplete")
                         {
-                            var _jobSearch = jobSearch.First(m => m.JobID == onePO.JobID);
-                            if (_jobSearch != null && _jobSearch.Status != "Incomplete")
+
+                            TestJob testJob = new TestJob
                             {
+                                JobID = _jobSearch.JobID,
+                                TechnicianID = currentUser.EngID,
+                                SinglePO = viewModel.POJobSearch,
+                                Status = "Working on it",
+                                StartDate = DateTime.Now,
+                                CompletedDate = DateTime.Now,
+                                StationID = 0
+                            };
+                            testingRepo.SaveTestJob(testJob);
 
-                                TestJob testJob = new TestJob
-                                {
-                                    JobID = _jobSearch.JobID,
-                                    TechnicianID = currentUser.EngID,
-                                    SinglePO = viewModel.POJobSearch,
-                                    Status = "Working on it",
-                                    StartDate = DateTime.Now,
-                                    CompletedDate = DateTime.Now,
-                                    StationID = 0
-                                };
-                                testingRepo.SaveTestJob(testJob);
-
-                                var currentTestJob = testingRepo.TestJobs
-                                    .FirstOrDefault(p => p.TestJobID == testingRepo.TestJobs.Max(x => x.TestJobID));
+                            var currentTestJob = testingRepo.TestJobs
+                                .FirstOrDefault(p => p.TestJobID == testingRepo.TestJobs.Max(x => x.TestJobID));
 
 
-                                TestJobViewModel testJobView = new TestJobViewModel();
-                                testJobView.TestJob = currentTestJob;
-                                testJobView.Job = _jobSearch;
-                                testJobView.JobExtension = jobRepo.JobsExtensions.FirstOrDefault(m => m.JobID == _jobSearch.JobID);
-                                testJobView.HydroSpecific = jobRepo.HydroSpecifics.FirstOrDefault(m => m.JobID == _jobSearch.JobID);
-                                testJobView.GenericFeatures = jobRepo.GenericFeaturesList.FirstOrDefault(m => m.JobID == _jobSearch.JobID);
-                                testJobView.Indicator = jobRepo.Indicators.FirstOrDefault(m => m.JobID == _jobSearch.JobID);
-                                testJobView.HoistWayData = jobRepo.HoistWayDatas.FirstOrDefault(m => m.JobID == _jobSearch.JobID);
-                                testJobView.POJobSearch = testJob.SinglePO;
-                                testJobView.isDummy = false;
-                                testJobView.TestFeature = new TestFeature();
-                                testJobView.CurrentTab = "NewFeatures";
+                            TestJobViewModel NewtestJobView = new TestJobViewModel();
+                            NewtestJobView.TestJob = currentTestJob;
+                            NewtestJobView.Job = _jobSearch;
+                            NewtestJobView.JobExtension = jobRepo.JobsExtensions.FirstOrDefault(m => m.JobID == _jobSearch.JobID);
+                            NewtestJobView.HydroSpecific = jobRepo.HydroSpecifics.FirstOrDefault(m => m.JobID == _jobSearch.JobID);
+                            NewtestJobView.GenericFeatures = jobRepo.GenericFeaturesList.FirstOrDefault(m => m.JobID == _jobSearch.JobID);
+                            NewtestJobView.Indicator = jobRepo.Indicators.FirstOrDefault(m => m.JobID == _jobSearch.JobID);
+                            NewtestJobView.HoistWayData = jobRepo.HoistWayDatas.FirstOrDefault(m => m.JobID == _jobSearch.JobID);
+                            NewtestJobView.POJobSearch = testJob.SinglePO;
+                            NewtestJobView.isNotDummy = true;
+                            NewtestJobView.TestFeature = new TestFeature();
+                            NewtestJobView.CurrentTab = "NewFeatures";
 
 
-                                return View("NextForm", testJobView);
+                            return View("NextForm", NewtestJobView);
 
-                            }
                         }
-
                     }
-                    catch (Exception e)
+                    else
                     {
                         TestJobViewModel testJobView = new TestJobViewModel()
                         {
@@ -213,12 +209,12 @@ namespace ProdFloor.Controllers
                         };
 
                         testJobView.Job.ShipDate = DateTime.Now;
-                        testJobView.isDummy = true;
+                        testJobView.isNotDummy = false;
                         testJobView.CurrentTab = "DummyJob";
 
                         return View("NextForm", testJobView);
-
                     }
+
                 }
                 else
                 {
@@ -239,40 +235,40 @@ namespace ProdFloor.Controllers
         [HttpPost]
         public IActionResult NextForm(TestJobViewModel nextViewModel)
         {
-            if (ModelState.IsValid)
+
+            if (nextViewModel.TestFeature != null)
             {
-                if (nextViewModel.TestFeature != null)
-                {
-                    testingRepo.SaveTestFeature(nextViewModel.TestFeature);
-                    if (nextViewModel.isDummy == true) SaveDummyJob(nextViewModel);
-                    nextViewModel = SaveDummyJob(nextViewModel);
-                    TempData["message"] = $"everything was saved";
+                testingRepo.SaveTestFeature(nextViewModel.TestFeature);
+                if (nextViewModel.isNotDummy == false) SaveDummyJob(nextViewModel);
+                nextViewModel = SaveDummyJob(nextViewModel);
+                TempData["message"] = $"everything was saved";
 
 
-                    return RedirectToAction("NewTestFeatures", SaveDummyJob(nextViewModel));
-                    /////SOLO FALTAB LAS VISTASSSSSSSSSSS
-                }
-                else
-                {
-                    
-                    if (nextViewModel.isDummy == true)
-                    {
-                        nextViewModel =  SaveDummyJob(nextViewModel);
-                        TempData["message"] = $"Job was saved";
-                    }
-
-                    nextViewModel.TestFeature = new TestFeature();
-                    nextViewModel.CurrentTab = "NewFeatures";
-                    return View(nextViewModel);
-                }
+                return RedirectToAction("NewTestFeatures", SaveDummyJob(nextViewModel));
             }
             else
             {
-                // there is something wrong with the data values
-                TempData["message"] = $"There seems to be errors in the form. Please validate.";
-                TempData["alert"] = $"alert-danger";
+
+                if (nextViewModel.isNotDummy == false)
+                {
+                    nextViewModel = SaveDummyJob(nextViewModel);
+                    TempData["message"] = $"Job was saved";
+                }
+
+
+                nextViewModel.Job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == nextViewModel.Job.JobID);
+                nextViewModel.JobExtension = jobRepo.JobsExtensions.FirstOrDefault(m => m.JobID == nextViewModel.Job.JobID);
+                nextViewModel.HydroSpecific = jobRepo.HydroSpecifics.FirstOrDefault(m => m.JobID == nextViewModel.Job.JobID);
+                nextViewModel.GenericFeatures = jobRepo.GenericFeaturesList.FirstOrDefault(m => m.JobID == nextViewModel.Job.JobID);
+                nextViewModel.Indicator = jobRepo.Indicators.FirstOrDefault(m => m.JobID == nextViewModel.Job.JobID);
+                nextViewModel.HoistWayData = jobRepo.HoistWayDatas.FirstOrDefault(m => m.JobID == nextViewModel.Job.JobID);
+                nextViewModel.POJobSearch = testingRepo.TestJobs.FirstOrDefault(m => m.JobID == nextViewModel.Job.JobID).SinglePO;
+
+                nextViewModel.TestFeature = new TestFeature();
+                nextViewModel.CurrentTab = "NewFeatures";
                 return View(nextViewModel);
             }
+
         }
 
 
