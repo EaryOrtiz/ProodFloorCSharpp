@@ -240,11 +240,9 @@ namespace ProdFloor.Controllers
             {
                 testingRepo.SaveTestFeature(nextViewModel.TestFeature);
                 if (nextViewModel.isNotDummy == false) SaveDummyJob(nextViewModel);
-                nextViewModel = SaveDummyJob(nextViewModel);
                 TempData["message"] = $"everything was saved";
 
-
-                return RedirectToAction("NewTestFeatures", SaveDummyJob(nextViewModel));
+                return NewTestFeatures(nextViewModel);
             }
             else
             {
@@ -257,14 +255,64 @@ namespace ProdFloor.Controllers
 
 
                 nextViewModel.Job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == nextViewModel.Job.JobID);
-                nextViewModel.JobExtension = jobRepo.JobsExtensions.FirstOrDefault(m => m.JobID == nextViewModel.Job.JobID);
-                nextViewModel.HydroSpecific = jobRepo.HydroSpecifics.FirstOrDefault(m => m.JobID == nextViewModel.Job.JobID);
-                nextViewModel.GenericFeatures = jobRepo.GenericFeaturesList.FirstOrDefault(m => m.JobID == nextViewModel.Job.JobID);
-                nextViewModel.Indicator = jobRepo.Indicators.FirstOrDefault(m => m.JobID == nextViewModel.Job.JobID);
-                nextViewModel.HoistWayData = jobRepo.HoistWayDatas.FirstOrDefault(m => m.JobID == nextViewModel.Job.JobID);
                 nextViewModel.POJobSearch = testingRepo.TestJobs.FirstOrDefault(m => m.JobID == nextViewModel.Job.JobID).SinglePO;
 
+                int jobtypeID = jobRepo.Jobs.First(m => m.JobID == nextViewModel.Job.JobID).JobTypeID;
+                switch (JobTypeName(jobtypeID))
+                {
+                    case "M2000":
+                    case "M4000":
+                        nextViewModel.JobExtension = jobRepo.JobsExtensions.FirstOrDefault(m => m.JobID == nextViewModel.Job.JobID);
+                        nextViewModel.HydroSpecific = jobRepo.HydroSpecifics.FirstOrDefault(m => m.JobID == nextViewModel.Job.JobID);
+                        nextViewModel.GenericFeatures = jobRepo.GenericFeaturesList.FirstOrDefault(m => m.JobID == nextViewModel.Job.JobID);
+                        nextViewModel.Indicator = jobRepo.Indicators.FirstOrDefault(m => m.JobID == nextViewModel.Job.JobID);
+                        nextViewModel.HoistWayData = jobRepo.HoistWayDatas.FirstOrDefault(m => m.JobID == nextViewModel.Job.JobID);
+                        break;
+                    case "ElmHydro":
+                        Element element = jobRepo.Elements.FirstOrDefault(m => m.JobID == nextViewModel.Job.JobID);
+                        ElementHydro elementHydro = jobRepo.ElementHydros.FirstOrDefault(m => m.JobID == nextViewModel.Job.JobID);
+                        nextViewModel.JobExtension = new JobExtension();
+                        nextViewModel.HydroSpecific = new HydroSpecific();
+                        nextViewModel.GenericFeatures = new GenericFeatures();
+                        nextViewModel.Indicator = new Indicator();
+                        nextViewModel.HoistWayData = new HoistWayData();
+
+                        nextViewModel.HoistWayData.LandingSystemID = element.LandingSystemID;
+                        if (element.DoorOperatorID == 7) nextViewModel.MOD = true;
+                        else nextViewModel.MOD = false;
+                        if (element.DoorOperatorID == 2) nextViewModel.Manual = true;
+                        else nextViewModel.Manual = false;
+
+                        nextViewModel.HydroSpecific.BatteryBrand = element.HAPS == true ?  "HAPS" : "";
+                        nextViewModel.JobExtension.JobTypeMain = "Simplex";
+
+
+                        break;
+                    case "ElmTract":
+                        Element element2 = jobRepo.Elements.FirstOrDefault(m => m.JobID == nextViewModel.Job.JobID);
+                        ElementTraction elementTract = jobRepo.ElementTractions.FirstOrDefault(m => m.JobID == nextViewModel.Job.JobID);
+                        nextViewModel.JobExtension = new JobExtension();
+                        nextViewModel.HydroSpecific = new HydroSpecific();
+                        nextViewModel.GenericFeatures = new GenericFeatures();
+                        nextViewModel.Indicator = new Indicator();
+                        nextViewModel.HoistWayData = new HoistWayData();
+
+                        nextViewModel.HoistWayData.LandingSystemID = element2.LandingSystemID;
+                        if (element2.DoorOperatorID == 7) nextViewModel.MOD = true;
+                        else nextViewModel.MOD = false;
+                        if (element2.DoorOperatorID == 2) nextViewModel.Manual = true;
+                        else nextViewModel.Manual = false;
+
+                        nextViewModel.HydroSpecific.BatteryBrand = element2.HAPS == true ? "HAPS" : "";
+                        nextViewModel.JobExtension.JobTypeMain = "Simplex";
+
+                        break;
+                }
+
+                
+
                 nextViewModel.TestFeature = new TestFeature();
+                nextViewModel.TestFeature.TestJobID = nextViewModel.TestJob.TestJobID;
                 nextViewModel.CurrentTab = "NewFeatures";
                 return View(nextViewModel);
             }
