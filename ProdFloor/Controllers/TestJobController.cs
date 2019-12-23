@@ -186,6 +186,7 @@ namespace ProdFloor.Controllers
                             NewtestJobView.POJobSearch = testJob.SinglePO;
                             NewtestJobView.isNotDummy = true;
                             NewtestJobView.TestFeature = new TestFeature();
+                            NewtestJobView.TestFeature.TestJobID = testJob.TestJobID;
                             NewtestJobView.CurrentTab = "NewFeatures";
 
 
