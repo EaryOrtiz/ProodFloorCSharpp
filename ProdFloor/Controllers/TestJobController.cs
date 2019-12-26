@@ -184,6 +184,7 @@ namespace ProdFloor.Controllers
                             NewtestJobView.Indicator = jobRepo.Indicators.FirstOrDefault(m => m.JobID == _jobSearch.JobID);
                             NewtestJobView.HoistWayData = jobRepo.HoistWayDatas.FirstOrDefault(m => m.JobID == _jobSearch.JobID);
                             NewtestJobView.POJobSearch = testJob.SinglePO;
+                            NewtestJobView.PO = jobRepo.POs.FirstOrDefault(m => m.JobID == _jobSearch.JobID);
                             NewtestJobView.isNotDummy = true;
                             NewtestJobView.TestFeature = new TestFeature();
                             NewtestJobView.TestFeature.TestJobID = testJob.TestJobID;
@@ -256,7 +257,7 @@ namespace ProdFloor.Controllers
 
 
                 nextViewModel.Job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == nextViewModel.Job.JobID);
-                nextViewModel.POJobSearch = testingRepo.TestJobs.FirstOrDefault(m => m.JobID == nextViewModel.Job.JobID).SinglePO;
+                nextViewModel.PO = jobRepo.POs.FirstOrDefault(m => m.JobID == nextViewModel.Job.JobID);
 
                 int jobtypeID = jobRepo.Jobs.First(m => m.JobID == nextViewModel.Job.JobID).JobTypeID;
                 switch (JobTypeName(jobtypeID))
@@ -320,6 +321,204 @@ namespace ProdFloor.Controllers
 
         }
 
+        public ViewResult EditTestJob(int ID)
+        {
+            TestJob testJob = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == ID);
+            Job CurrentJob = jobRepo.Jobs.FirstOrDefault(m => m.JobID == testJob.JobID);
+            TestFeature testFeature = testingRepo.TestFeatures.FirstOrDefault(m => m.TestJobID == testJob.TestJobID);
+            TestJobViewModel nextViewModel = new TestJobViewModel();
+
+            nextViewModel.PO = jobRepo.POs.FirstOrDefault(m => m.JobID == CurrentJob.JobID);
+            nextViewModel.TestJob = testJob;
+            nextViewModel.Job = CurrentJob;
+            nextViewModel.TestFeature = testFeature;
+            nextViewModel.isNotDummy = CurrentJob.Contractor == "Fake" ? false : true;
+            nextViewModel.CurrentTab = "DummyJob";
+
+            int jobtypeID = jobRepo.Jobs.First(m => m.JobID == CurrentJob.JobID).JobTypeID;
+            switch (JobTypeName(jobtypeID))
+            {
+                case "M2000":
+                case "M4000":
+                    nextViewModel.JobExtension = jobRepo.JobsExtensions.FirstOrDefault(m => m.JobID == nextViewModel.Job.JobID);
+                    nextViewModel.HydroSpecific = jobRepo.HydroSpecifics.FirstOrDefault(m => m.JobID == nextViewModel.Job.JobID);
+                    nextViewModel.GenericFeatures = jobRepo.GenericFeaturesList.FirstOrDefault(m => m.JobID == nextViewModel.Job.JobID);
+                    nextViewModel.Indicator = jobRepo.Indicators.FirstOrDefault(m => m.JobID == nextViewModel.Job.JobID);
+                    nextViewModel.HoistWayData = jobRepo.HoistWayDatas.FirstOrDefault(m => m.JobID == nextViewModel.Job.JobID);
+                    break;
+                case "ElmHydro":
+                    Element element = jobRepo.Elements.FirstOrDefault(m => m.JobID == nextViewModel.Job.JobID);
+                    ElementHydro elementHydro = jobRepo.ElementHydros.FirstOrDefault(m => m.JobID == nextViewModel.Job.JobID);
+                    nextViewModel.JobExtension = new JobExtension();
+                    nextViewModel.HydroSpecific = new HydroSpecific();
+                    nextViewModel.GenericFeatures = new GenericFeatures();
+                    nextViewModel.Indicator = new Indicator();
+                    nextViewModel.HoistWayData = new HoistWayData();
+
+                    nextViewModel.HoistWayData.LandingSystemID = element.LandingSystemID;
+                    if (element.DoorOperatorID == 7) nextViewModel.MOD = true;
+                    else nextViewModel.MOD = false;
+                    if (element.DoorOperatorID == 2) nextViewModel.Manual = true;
+                    else nextViewModel.Manual = false;
+
+                    nextViewModel.HydroSpecific.BatteryBrand = element.HAPS == true ? "HAPS" : "";
+                    nextViewModel.JobExtension.JobTypeMain = "Simplex";
+
+
+                    break;
+                case "ElmTract":
+                    Element element2 = jobRepo.Elements.FirstOrDefault(m => m.JobID == nextViewModel.Job.JobID);
+                    ElementTraction elementTract = jobRepo.ElementTractions.FirstOrDefault(m => m.JobID == nextViewModel.Job.JobID);
+                    nextViewModel.JobExtension = new JobExtension();
+                    nextViewModel.HydroSpecific = new HydroSpecific();
+                    nextViewModel.GenericFeatures = new GenericFeatures();
+                    nextViewModel.Indicator = new Indicator();
+                    nextViewModel.HoistWayData = new HoistWayData();
+
+                    nextViewModel.HoistWayData.LandingSystemID = element2.LandingSystemID;
+                    if (element2.DoorOperatorID == 7) nextViewModel.MOD = true;
+                    else nextViewModel.MOD = false;
+                    if (element2.DoorOperatorID == 2) nextViewModel.Manual = true;
+                    else nextViewModel.Manual = false;
+
+                    nextViewModel.HydroSpecific.BatteryBrand = element2.HAPS == true ? "HAPS" : "";
+                    nextViewModel.JobExtension.JobTypeMain = "Simplex";
+                    break;
+
+            }
+                    return View(nextViewModel);
+        }
+
+        [HttpPost]
+        public ViewResult EditTestJob(TestJobViewModel viewModel)
+        {
+            testingRepo.SaveTestFeature(viewModel.TestFeature);
+            UpdateTestFeatures(viewModel);
+            if (viewModel.isNotDummy == false) SaveDummyJob(viewModel);
+
+            TestJob testJob = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == viewModel.TestJob.TestJobID);
+            Job CurrentJob = jobRepo.Jobs.FirstOrDefault(m => m.JobID == testJob.JobID);
+            TestFeature testFeature = testingRepo.TestFeatures.FirstOrDefault(m => m.TestJobID == testJob.TestJobID);
+            TestJobViewModel nextViewModel = new TestJobViewModel();
+
+            nextViewModel.PO = jobRepo.POs.FirstOrDefault(m => m.JobID == CurrentJob.JobID);
+            nextViewModel.TestJob = testJob;
+            nextViewModel.Job = CurrentJob;
+            nextViewModel.TestFeature = testFeature;
+            nextViewModel.isNotDummy = CurrentJob.Contractor == "Fake" ? false : true;
+            nextViewModel.CurrentTab = "NewFeatures";
+
+            int jobtypeID = jobRepo.Jobs.First(m => m.JobID == CurrentJob.JobID).JobTypeID;
+            switch (JobTypeName(jobtypeID))
+            {
+                case "M2000":
+                case "M4000":
+                    nextViewModel.JobExtension = jobRepo.JobsExtensions.FirstOrDefault(m => m.JobID == nextViewModel.Job.JobID);
+                    nextViewModel.HydroSpecific = jobRepo.HydroSpecifics.FirstOrDefault(m => m.JobID == nextViewModel.Job.JobID);
+                    nextViewModel.GenericFeatures = jobRepo.GenericFeaturesList.FirstOrDefault(m => m.JobID == nextViewModel.Job.JobID);
+                    nextViewModel.Indicator = jobRepo.Indicators.FirstOrDefault(m => m.JobID == nextViewModel.Job.JobID);
+                    nextViewModel.HoistWayData = jobRepo.HoistWayDatas.FirstOrDefault(m => m.JobID == nextViewModel.Job.JobID);
+                    break;
+                case "ElmHydro":
+                    Element element = jobRepo.Elements.FirstOrDefault(m => m.JobID == nextViewModel.Job.JobID);
+                    ElementHydro elementHydro = jobRepo.ElementHydros.FirstOrDefault(m => m.JobID == nextViewModel.Job.JobID);
+                    nextViewModel.JobExtension = new JobExtension();
+                    nextViewModel.HydroSpecific = new HydroSpecific();
+                    nextViewModel.GenericFeatures = new GenericFeatures();
+                    nextViewModel.Indicator = new Indicator();
+                    nextViewModel.HoistWayData = new HoistWayData();
+
+                    nextViewModel.HoistWayData.LandingSystemID = element.LandingSystemID;
+                    if (element.DoorOperatorID == 7) nextViewModel.MOD = true;
+                    else nextViewModel.MOD = false;
+                    if (element.DoorOperatorID == 2) nextViewModel.Manual = true;
+                    else nextViewModel.Manual = false;
+
+                    nextViewModel.HydroSpecific.BatteryBrand = element.HAPS == true ? "HAPS" : "";
+                    nextViewModel.JobExtension.JobTypeMain = "Simplex";
+
+
+                    break;
+                case "ElmTract":
+                    Element element2 = jobRepo.Elements.FirstOrDefault(m => m.JobID == nextViewModel.Job.JobID);
+                    ElementTraction elementTract = jobRepo.ElementTractions.FirstOrDefault(m => m.JobID == nextViewModel.Job.JobID);
+                    nextViewModel.JobExtension = new JobExtension();
+                    nextViewModel.HydroSpecific = new HydroSpecific();
+                    nextViewModel.GenericFeatures = new GenericFeatures();
+                    nextViewModel.Indicator = new Indicator();
+                    nextViewModel.HoistWayData = new HoistWayData();
+
+                    nextViewModel.HoistWayData.LandingSystemID = element2.LandingSystemID;
+                    if (element2.DoorOperatorID == 7) nextViewModel.MOD = true;
+                    else nextViewModel.MOD = false;
+                    if (element2.DoorOperatorID == 2) nextViewModel.Manual = true;
+                    else nextViewModel.Manual = false;
+
+                    nextViewModel.HydroSpecific.BatteryBrand = element2.HAPS == true ? "HAPS" : "";
+                    nextViewModel.JobExtension.JobTypeMain = "Simplex";
+                    break;
+
+            }
+
+            TempData["message"] = $"everything was saved";
+            return View(nextViewModel);
+        }
+
+
+        public void UpdateTestFeatures(TestJobViewModel testJobView)
+        {
+            TestJob testJobToUpdate = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == testJobView.TestJob.TestJobID);
+            TestJob StationAuxTestJob = testingRepo.TestJobs.FirstOrDefault(m => m.StationID == testJobView.TestJob.StationID && m.Status == "Working on it");
+
+            testJobToUpdate.StationID = testJobView.TestJob.StationID;
+            testJobToUpdate.JobLabel = testJobView.TestJob.JobLabel;
+            testingRepo.SaveTestJob(testJobToUpdate);
+            //Checa que la lista de features no este vacia o nula
+            if (testJobView.TestFeature != null)
+            {
+                List<StepsForJob> OldStepsForJob = testingRepo.StepsForJobs.Where(m => m.TestJobID == testJobView.TestJob.TestJobID).ToList();
+                if (OldStepsForJob.Count > 0)
+                {
+                    List<StepsForJob> NewStepsForJob = MakeStepsForJobList(testJobView);
+
+                    foreach (StepsForJob OldStep in OldStepsForJob)
+                    {
+                        if (!(NewStepsForJob.Any(s => s.StepID == OldStep.StepID)))
+                        {
+                            OldStep.Obsolete = true;
+                            testingRepo.SaveStepsForJob(OldStep);
+                        }
+                    }
+
+                    foreach (StepsForJob Newstep in NewStepsForJob)
+                    {
+                        if (!(OldStepsForJob.Any(s => s.StepID == Newstep.StepID)))
+                        {
+                            testingRepo.SaveStepsForJob(Newstep);
+                        }
+                    }
+
+                }
+                else
+                {
+                    foreach (StepsForJob step in MakeStepsForJobList(testJobView))
+                    {
+                        if (step != null) testingRepo.SaveStepsForJob(step);
+                    }
+                }
+                //Nuevos consecutivos
+                var AllStepsForJob = testingRepo.StepsForJobs.Where(m => m.TestJobID == testJobView.TestFeature.TestJobID && m.Obsolete == false).OrderBy(m => m.Consecutivo).ToList();
+
+                int PreviusStepNumber = 1;
+                foreach (StepsForJob step in AllStepsForJob)
+                {
+                    step.Consecutivo = PreviusStepNumber;
+                    testingRepo.SaveStepsForJob(step);
+                    PreviusStepNumber++;
+                }
+            }
+
+        }
 
         public TestJobViewModel SaveDummyJob(TestJobViewModel viewModel)
         {
