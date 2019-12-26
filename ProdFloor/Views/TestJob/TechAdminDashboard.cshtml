@@ -37,7 +37,7 @@
                     <th scope="row">
                         @if (j.Status != "Incomplete")
                         {
-                            <a asp-action="EditTestFeatures"
+                            <a asp-action="EditTestJob"
                                asp-route-Id="@j.TestJobID">
                                 @Model.JobList.FirstOrDefault(m => m.JobID == j.JobID).JobNum
                             </a>
@@ -65,7 +65,7 @@
                     </td>
                     <td>
 
-                        <form asp-action="EditTestFeatures" asp-controller="TestJob" method="get">
+                        <form asp-action="EditTestJob" asp-controller="TestJob" method="get">
                             <button type="submit" value="@j.TestJobID" name="ID" class="btn btn-light"
                                     style="float:left;background-color:transparent">
                                 <i class="fas fa-edit"></i>

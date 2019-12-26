@@ -548,6 +548,9 @@ namespace ProdFloor.Controllers
             else 
             {
                 currentJob = jobRepo.Jobs.FirstOrDefault(m => m.JobID == poUniqueAUx.JobID);
+                currentJob.Name = viewModel.Job.Name;
+                currentJob.JobNum = viewModel.Job.JobNum;
+                currentJob.ShipDate = viewModel.Job.ShipDate;
                 if (viewModel.Canada == true) currentJob.CityID = 10;
                 else if (viewModel.Ontario == true) currentJob.CityID = 11;
                 else currentJob.CityID = 40;
