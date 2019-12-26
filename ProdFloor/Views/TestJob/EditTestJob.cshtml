@@ -26,7 +26,7 @@
         </div>
         <div class="text-center">
             <button class="btn btn-primary" value="Nel" type="submit">Guardar cambios</button>
-            @if (TempData["message"] != null)
+            @if (TempData["message"] != null && User.IsInRole("Technician"))
             {
                 <a asp-action="ContinueStep" asp-controller="TestJob"
                    asp-route-id="@Model.TestJob.TestJobID" class="btn btn-info">

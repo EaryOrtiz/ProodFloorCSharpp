@@ -258,6 +258,8 @@ namespace ProdFloor.Controllers
 
                 nextViewModel.Job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == nextViewModel.Job.JobID);
                 nextViewModel.PO = jobRepo.POs.FirstOrDefault(m => m.JobID == nextViewModel.Job.JobID);
+                if (nextViewModel.Job.CityID == 10) nextViewModel.Canada = true;
+                if (nextViewModel.Job.CityID == 11) nextViewModel.Ontario = true;
 
                 int jobtypeID = jobRepo.Jobs.First(m => m.JobID == nextViewModel.Job.JobID).JobTypeID;
                 switch (JobTypeName(jobtypeID))
@@ -334,6 +336,9 @@ namespace ProdFloor.Controllers
             nextViewModel.TestFeature = testFeature;
             nextViewModel.isNotDummy = CurrentJob.Contractor == "Fake" ? false : true;
             nextViewModel.CurrentTab = "DummyJob";
+
+            if (CurrentJob.CityID == 10) nextViewModel.Canada = true;
+            if (CurrentJob.CityID == 11) nextViewModel.Ontario = true;
 
             int jobtypeID = jobRepo.Jobs.First(m => m.JobID == CurrentJob.JobID).JobTypeID;
             switch (JobTypeName(jobtypeID))
@@ -534,14 +539,22 @@ namespace ProdFloor.Controllers
                 Job Job = viewModel.Job;
                 Job.Contractor = "Fake"; Job.Cust = "Fake"; Job.FireCodeID = 1; Job.LatestFinishDate = new DateTime(1, 1, 1);
                 Job.EngID = currentUser.EngID; Job.Status = "Pending"; Job.CrossAppEngID = 1;
-                if (viewModel.Canada == true) Job.CityID = 10;
-                else Job.CityID = 40;
-                if (viewModel.Ontario == true) Job.CityID = 11;
-                else Job.CityID = 40;
+                if (viewModel.Canada == true) currentJob.CityID = 10;
+                else if (viewModel.Ontario == true) currentJob.CityID = 11;
+                else currentJob.CityID = 40;
                 jobRepo.SaveJob(Job);
                 currentJob = jobRepo.Jobs.FirstOrDefault(p => p.JobID == jobRepo.Jobs.Max(x => x.JobID));
             }
-            else currentJob = jobRepo.Jobs.FirstOrDefault(m => m.JobID == poUniqueAUx.JobID);
+            else 
+            {
+                currentJob = jobRepo.Jobs.FirstOrDefault(m => m.JobID == poUniqueAUx.JobID);
+                if (viewModel.Canada == true) currentJob.CityID = 10;
+                else if (viewModel.Ontario == true) currentJob.CityID = 11;
+                else currentJob.CityID = 40;
+                jobRepo.SaveJob(currentJob);
+                currentJob = jobRepo.Jobs.FirstOrDefault(m => m.JobID == poUniqueAUx.JobID);
+            }
+            
            
             
 
