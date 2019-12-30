@@ -22,7 +22,7 @@ namespace ProdFloor.Services
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            timer = new Timer(DoWork, null, TimeSpan.FromMinutes(30), TimeSpan.FromHours(10));
+            timer = new Timer(DoWork, null, TimeSpan.FromHours(4), TimeSpan.FromHours(10));
             return Task.CompletedTask;
         }
 
