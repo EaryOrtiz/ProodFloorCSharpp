@@ -31,12 +31,19 @@
 
             <tr>
                 <th scope="row">
-                    @if (t.Status == "Working on it")
+                    @if (t.Status == "Incomplete")
                     {
-                        <a asp-action="EditTestJob"
+                        <a asp-action="ContinueForm"
                            asp-controller="TestJob" asp-route-Id="@t.TestJobID">
                             @j.JobNum
                         </a>
+                    }
+                    else if (t.Status == "Working on it")
+                    {
+                        <a asp-action="EditTestJob"
+                         asp-controller="TestJob" asp-route-Id="@t.TestJobID">
+                            @j.JobNum
+                         </a>
                     }
                     else
                     {
@@ -64,10 +71,17 @@
                             Tomar el Job
                         </a>
                     }
-                    else
+                    else if (t.Status == "Working on it")
                     {
                         <a asp-action="ContinueStep" asp-controller="TestJob"
                            asp-route-id="@t.TestJobID" class="btn btn-info btn-sm">
+                            Continuar
+                        </a>
+                    }
+                    else
+                    {
+                        <a asp-action="ContinueForm" asp-controller="TestJob" 
+                           asp-route-Id="@t.TestJobID" class="btn btn-info btn-sm">
                             Continuar
                         </a>
                     }

@@ -164,7 +164,7 @@ namespace ProdFloor.Controllers
                                 JobID = _jobSearch.JobID,
                                 TechnicianID = currentUser.EngID,
                                 SinglePO = viewModel.POJobSearch,
-                                Status = "Working on it",
+                                Status = "Incomplete",
                                 StartDate = DateTime.Now,
                                 CompletedDate = DateTime.Now,
                                 StationID = 0
@@ -242,6 +242,9 @@ namespace ProdFloor.Controllers
             {
                 testingRepo.SaveTestFeature(nextViewModel.TestFeature);
                 if (nextViewModel.isNotDummy == false) SaveDummyJob(nextViewModel);
+                TestJob testJob = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == nextViewModel.TestJob.TestJobID);
+                testJob.Status = "Working on it";
+                testingRepo.SaveTestJob(testJob);
                 TempData["message"] = $"everything was saved";
 
                 return NewTestFeatures(nextViewModel);
@@ -321,6 +324,79 @@ namespace ProdFloor.Controllers
                 return View(nextViewModel);
             }
 
+        }
+
+        public IActionResult ContinueForm(int ID)
+        {
+            TestJob testJob = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == ID);
+            Job CurrentJob = jobRepo.Jobs.FirstOrDefault(m => m.JobID == testJob.JobID);
+            TestFeature testFeature = testingRepo.TestFeatures.FirstOrDefault(m => m.TestJobID == testJob.TestJobID);
+            TestJobViewModel nextViewModel = new TestJobViewModel();
+
+            nextViewModel.PO = jobRepo.POs.FirstOrDefault(m => m.JobID == CurrentJob.JobID);
+            nextViewModel.TestJob = testJob;
+            nextViewModel.Job = CurrentJob;
+            nextViewModel.TestFeature = testFeature;
+            nextViewModel.isNotDummy = CurrentJob.Contractor == "Fake" ? false : true;
+            nextViewModel.CurrentTab = "NewFeatures";
+
+            int jobtypeID = jobRepo.Jobs.First(m => m.JobID == CurrentJob.JobID).JobTypeID;
+            switch (JobTypeName(jobtypeID))
+            {
+                case "M2000":
+                case "M4000":
+                    nextViewModel.JobExtension = jobRepo.JobsExtensions.FirstOrDefault(m => m.JobID == nextViewModel.Job.JobID);
+                    nextViewModel.HydroSpecific = jobRepo.HydroSpecifics.FirstOrDefault(m => m.JobID == nextViewModel.Job.JobID);
+                    nextViewModel.GenericFeatures = jobRepo.GenericFeaturesList.FirstOrDefault(m => m.JobID == nextViewModel.Job.JobID);
+                    nextViewModel.Indicator = jobRepo.Indicators.FirstOrDefault(m => m.JobID == nextViewModel.Job.JobID);
+                    nextViewModel.HoistWayData = jobRepo.HoistWayDatas.FirstOrDefault(m => m.JobID == nextViewModel.Job.JobID);
+                    break;
+                case "ElmHydro":
+                    Element element = jobRepo.Elements.FirstOrDefault(m => m.JobID == nextViewModel.Job.JobID);
+                    ElementHydro elementHydro = jobRepo.ElementHydros.FirstOrDefault(m => m.JobID == nextViewModel.Job.JobID);
+                    nextViewModel.JobExtension = new JobExtension();
+                    nextViewModel.HydroSpecific = new HydroSpecific();
+                    nextViewModel.GenericFeatures = new GenericFeatures();
+                    nextViewModel.Indicator = new Indicator();
+                    nextViewModel.HoistWayData = new HoistWayData();
+
+                    nextViewModel.HoistWayData.LandingSystemID = element.LandingSystemID;
+                    if (element.DoorOperatorID == 7) nextViewModel.MOD = true;
+                    else nextViewModel.MOD = false;
+                    if (element.DoorOperatorID == 2) nextViewModel.Manual = true;
+                    else nextViewModel.Manual = false;
+
+                    nextViewModel.HydroSpecific.BatteryBrand = element.HAPS == true ? "HAPS" : "";
+                    nextViewModel.JobExtension.JobTypeMain = "Simplex";
+
+
+                    break;
+                case "ElmTract":
+                    Element element2 = jobRepo.Elements.FirstOrDefault(m => m.JobID == nextViewModel.Job.JobID);
+                    ElementTraction elementTract = jobRepo.ElementTractions.FirstOrDefault(m => m.JobID == nextViewModel.Job.JobID);
+                    nextViewModel.JobExtension = new JobExtension();
+                    nextViewModel.HydroSpecific = new HydroSpecific();
+                    nextViewModel.GenericFeatures = new GenericFeatures();
+                    nextViewModel.Indicator = new Indicator();
+                    nextViewModel.HoistWayData = new HoistWayData();
+
+                    nextViewModel.HoistWayData.LandingSystemID = element2.LandingSystemID;
+                    if (element2.DoorOperatorID == 7) nextViewModel.MOD = true;
+                    else nextViewModel.MOD = false;
+                    if (element2.DoorOperatorID == 2) nextViewModel.Manual = true;
+                    else nextViewModel.Manual = false;
+
+                    nextViewModel.HydroSpecific.BatteryBrand = element2.HAPS == true ? "HAPS" : "";
+                    nextViewModel.JobExtension.JobTypeMain = "Simplex";
+                    break;
+
+            }
+
+            nextViewModel.TestFeature = new TestFeature();
+            nextViewModel.TestFeature.TestJobID = nextViewModel.TestJob.TestJobID;
+            nextViewModel.CurrentTab = "NewFeatures";
+
+            return View("NextForm",nextViewModel);
         }
 
         public ViewResult EditTestJob(int ID)
@@ -539,9 +615,9 @@ namespace ProdFloor.Controllers
                 Job Job = viewModel.Job;
                 Job.Contractor = "Fake"; Job.Cust = "Fake"; Job.FireCodeID = 1; Job.LatestFinishDate = new DateTime(1, 1, 1);
                 Job.EngID = currentUser.EngID; Job.Status = "Pending"; Job.CrossAppEngID = 1;
-                if (viewModel.Canada == true) currentJob.CityID = 10;
-                else if (viewModel.Ontario == true) currentJob.CityID = 11;
-                else currentJob.CityID = 40;
+                if (viewModel.Canada == true) Job.CityID = 10;
+                else if (viewModel.Ontario == true) Job.CityID = 11;
+                else Job.CityID = 40;
                 jobRepo.SaveJob(Job);
                 currentJob = jobRepo.Jobs.FirstOrDefault(p => p.JobID == jobRepo.Jobs.Max(x => x.JobID));
             }
@@ -695,7 +771,7 @@ namespace ProdFloor.Controllers
                     JobID = currentJob.JobID,
                     TechnicianID = currentUser.EngID,
                     SinglePO = POFake.PONumb,
-                    Status = "Working on it",
+                    Status = "Incomplete",
                     StartDate = DateTime.Now,
                     CompletedDate = DateTime.Now,
                     StationID = 0
@@ -859,7 +935,7 @@ namespace ProdFloor.Controllers
 
 
             //When all steps are completed
-            if (AllStepsForJob.Where(m => m.Complete == false).Count() == 1 && movement == "next")
+            if (AllStepsForJob.Where(m => m.Complete == false).Count() == 0 || (AllStepsForJob.Where(m => m.Complete == false).Count() == 1 && movement == "next"))
             {
 
                 if (StopsFromTestJob.Count > 0 && StopsFromTestJob[0] != null)

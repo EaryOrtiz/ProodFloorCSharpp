@@ -14,11 +14,11 @@
 <br />
 <div class="justify-content-md-center text-center">
     <div class="row justify-content-md-center text-center">
-        <div class="col-2">
-            <a class="btn btn-warning btn-lg" asp-controller="Stop" asp-action="RestarTestJob" asp-route-Critical="@false" asp-route-id="@Model.Stop.StopID">Continuar sin terminar el paro</a>
+        <div class="col-1">
+            <a class="btn btn-danger btn-lg" asp-controller="Stop" asp-action="RestarTestJob" asp-route-id="@Model.Stop.StopID">Reiniciar</a>
         </div>
         <div class="col-2">
-            <a class="btn btn-danger btn-lg" asp-controller="Stop" asp-action="RestarTestJob" asp-route-id="@Model.Stop.StopID">Reiniciar</a>
+            <a class="btn btn-warning btn-lg" asp-controller="Stop" asp-action="RestarTestJob" asp-route-Critical="@false" asp-route-id="@Model.Stop.StopID">Continuar sin terminar el paro</a>
         </div>
     </div> 
 </div>
