@@ -634,9 +634,6 @@ namespace ProdFloor.Controllers
                 currentJob = jobRepo.Jobs.FirstOrDefault(m => m.JobID == poUniqueAUx.JobID);
             }
             
-           
-            
-
             int jobtypeID = jobRepo.Jobs.First(m => m.JobID == currentJob.JobID).JobTypeID;
             switch (JobTypeName(jobtypeID))
             {
@@ -646,6 +643,8 @@ namespace ProdFloor.Controllers
                     //Save the dummy Job Extension
                     JobExtension currentExtension = viewModel.JobExtension; currentExtension.JobID = currentJob.JobID; currentExtension.InputFrecuency = 60; currentExtension.InputPhase = 3; currentExtension.DoorGate = "Fake";
                     currentExtension.InputVoltage = 1; currentExtension.NumOfStops = 2; currentExtension.SHCRisers = 1; currentExtension.DoorHoist = "Fake"; currentExtension.JobTypeAdd = "Fake";
+                    currentExtension.SCOP = viewModel.JobExtension.SCOP;
+                    currentExtension.SHC = viewModel.JobExtension.SHC;
                     if (viewModel.MOD == true) currentExtension.DoorOperatorID = 7;
                     else currentExtension.DoorOperatorID = 1;
                     if (viewModel.Manual == true) currentExtension.DoorOperatorID = 2;
@@ -1354,6 +1353,7 @@ namespace ProdFloor.Controllers
                                                 else if (trigger.IsSelected == false && FeaturesFromJob._jobExtension.JobTypeMain != "Duplex") countAux++;
                                                 break;
                                             case "Serial Halls Calls": if (trigger.IsSelected == FeaturesFromJob._jobExtension.SHC) { countAux++; } break;
+                                            case "Serial COP": if (trigger.IsSelected == FeaturesFromJob._jobExtension.SCOP) { countAux++; } break;
                                             case "Edge-LS":
                                                 if (trigger.IsSelected == true && landing.Name == "LS-EDGE") countAux++;
                                                 else if (trigger.IsSelected == false && landing.Name != "LS-EDGE") countAux++;

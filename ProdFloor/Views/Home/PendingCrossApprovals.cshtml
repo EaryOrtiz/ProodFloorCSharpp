@@ -1,4 +1,11 @@
 ﻿@model DashboardIndexViewModel
+@{
+    <script>
+        $(document).ready(function () {
+            $('[data-tooltip="tooltip"]').tooltip();
+        });
+    </script>
+}
 <h4>Pending Cross Approval(s)</h4>
 <table class="table table-sm">
     <thead style="background-color:#1B2831;color:#fff">
@@ -60,18 +67,18 @@
                         @if (j.Status == "Cross Approval Pending")
                         {
                             if (jobAdditional.Priority == 0)
-                            {<button type="button" title="Normal" class="btn btn-light" style="float:left;background-color:transparent"><i class="fas fa-flag text-success"></i></button>}
+                            {<button type="button" title="Change Priority" class="btn btn-light" style="float:left;background-color:transparent" data-tooltip="tooltip" data-placement="top"><i class="fas fa-flag text-success"></i></button>}
                             if (jobAdditional.Priority == 1)
-                            {<button type="button" title="High Priority" class="btn btn-light" style="float:left;background-color:transparent"><i class="fas fa-flag text-warning"></i></button>}
+                            {<button type="button" title="Change Priority" class="btn btn-light" style="float:left;background-color:transparent" data-tooltip="tooltip" data-placement="top"><i class="fas fa-flag text-warning"></i></button>}
                             if (jobAdditional.Priority == 2)
-                            {<button type="button" title="Short Lead" class="btn btn-light" style="float:left;background-color:transparent"><i class="fas fa-flag text-danger"></i></button>}
+                            {<button type="button" title="Change Priority" class="btn btn-light" style="float:left;background-color:transparent" data-tooltip="tooltip" data-placement="top"><i class="fas fa-flag text-danger"></i></button>}
                             <form asp-action="SearchAux" asp-controller="Item" method="get">
                                 <button type="submit" value="@j.JobID" name="JobID" class="btn btn-light" style="float:left;background-color:transparent">
                                     <i class="fas fa-file-word"></i>
                                 </button>
                             </form>
                             <!-- Button trigger modal -->
-                            <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#exampleModal @j.JobID">
+                            <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#exampleModal @j.JobID" data-tooltip="tooltip" data-placement="top" title="Cross approve Job">
                                 Cross Approving
                             </button>
                             <!-- Modal -->
@@ -110,9 +117,9 @@
 @if (Model.PendingToCrossJobs.Count() > 0)
 {
     <cool-pagination-dash-board current-model="PendingJobs" my-jobs-page-model="@Model.MyJobsPagingInfo" page-action="Index" page-classes-enabled="true"
-                          page-class="btn" page-class-normal="btn-secondary" on-cross-page-model="@Model.OnCrossJobsPagingInfo" pending-to-cross-page-model="@Model.PendingToCrossJobsPagingInfo"
-                          page-class-selected="btn-dark" my-jobs-url-value="MyJobsPage" on-cross-url-value="OnCrossJobPage"
-                          pending-to-cross-url-value="PendingToCrossJobPage" sort="Sort"
-                          class="btn-group pull-right m-1">
+                                page-class="btn" page-class-normal="btn-secondary" on-cross-page-model="@Model.OnCrossJobsPagingInfo" pending-to-cross-page-model="@Model.PendingToCrossJobsPagingInfo"
+                                page-class-selected="btn-dark" my-jobs-url-value="MyJobsPage" on-cross-url-value="OnCrossJobPage"
+                                pending-to-cross-url-value="PendingToCrossJobPage" sort="Sort"
+                                class="btn-group pull-right m-1">
     </cool-pagination-dash-board>
 }

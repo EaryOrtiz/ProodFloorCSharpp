@@ -1,4 +1,11 @@
 ﻿@model DashboardIndexViewModel
+@{
+    <script>
+        $(document).ready(function () {
+            $('[data-tooltip="tooltip"]').tooltip();
+        });
+    </script>
+}
 <br />
 <h4>On Going Test Jobs</h4>
 <table class="table">
@@ -29,74 +36,74 @@
                 var j = Model.PendingJobs.FirstOrDefault(m => m.JobID == t.JobID);
                 string JobtypeName = Model.JobTypesList.First(s => s.JobTypeID == j.JobTypeID).Name;
 
-            <tr>
-                <th scope="row">
-                    @if (t.Status == "Incomplete")
-                    {
-                        <a asp-action="ContinueForm"
-                           asp-controller="TestJob" asp-route-Id="@t.TestJobID">
+                <tr>
+                    <th scope="row">
+                        @if (t.Status == "Incomplete")
+                        {
+                            <a asp-action="ContinueForm"
+                               asp-controller="TestJob" asp-route-Id="@t.TestJobID">
+                                @j.JobNum
+                            </a>
+                        }
+                        else if (t.Status == "Working on it")
+                        {
+                            <a asp-action="EditTestJob"
+                               asp-controller="TestJob" asp-route-Id="@t.TestJobID">
+                                @j.JobNum
+                            </a>
+                        }
+                        else
+                        {
                             @j.JobNum
-                        </a>
-                    }
-                    else if (t.Status == "Working on it")
-                    {
-                        <a asp-action="EditTestJob"
-                         asp-controller="TestJob" asp-route-Id="@t.TestJobID">
-                            @j.JobNum
-                         </a>
-                    }
-                    else
-                    {
-                        @j.JobNum
-                    }
-                </th>
-                <td>@t.SinglePO</td>
-                <td>@j.Name</td>
-                <td>@JobtypeName</td>
-                <td>@j.ShipDate</td>
-                <td>@Model.StationList.FirstOrDefault(m => m.StationID == t.StationID).Label</td>
-                <td>@t.Status</td>
-                <td>
-                    @if (t.Status == "Stopped")
-                    {
-                        <a asp-action="WaitingForRestar" asp-controller="Stop"
-                           asp-route-id="@t.TestJobID" class="btn btn-warning btn-sm">
-                            Reiniciar Job
-                        </a>
-                    }
-                    else if (t.Status == "Reassignment")
-                    {
-                        <a asp-action="RestartReassignment" asp-controller="Stop"
-                           asp-route-id="@t.TestJobID" class="btn btn-warning btn-sm">
-                            Tomar el Job
-                        </a>
-                    }
-                    else if (t.Status == "Working on it")
-                    {
-                        <a asp-action="ContinueStep" asp-controller="TestJob"
-                           asp-route-id="@t.TestJobID" class="btn btn-info btn-sm">
-                            Continuar
-                        </a>
-                    }
-                    else
-                    {
-                        <a asp-action="ContinueForm" asp-controller="TestJob" 
-                           asp-route-Id="@t.TestJobID" class="btn btn-info btn-sm">
-                            Continuar
-                        </a>
-                    }
+                        }
+                    </th>
+                    <td>@t.SinglePO</td>
+                    <td>@j.Name</td>
+                    <td>@JobtypeName</td>
+                    <td>@j.ShipDate</td>
+                    <td>@Model.StationList.FirstOrDefault(m => m.StationID == t.StationID).Label</td>
+                    <td>@t.Status</td>
+                    <td>
+                        @if (t.Status == "Stopped")
+                        {
+                            <a asp-action="WaitingForRestar" asp-controller="Stop"
+                               asp-route-id="@t.TestJobID" class="btn btn-warning btn-sm">
+                                Reiniciar Job
+                            </a>
+                        }
+                        else if (t.Status == "Reassignment")
+                        {
+                            <a asp-action="RestartReassignment" asp-controller="Stop"
+                               asp-route-id="@t.TestJobID" class="btn btn-warning btn-sm">
+                                Tomar el Job
+                            </a>
+                        }
+                        else if (t.Status == "Working on it")
+                        {
+                            <a asp-action="ContinueStep" asp-controller="TestJob"
+                               asp-route-id="@t.TestJobID" class="btn btn-info btn-sm">
+                                Continuar
+                            </a>
+                        }
+                        else
+                        {
+                            <a asp-action="ContinueForm" asp-controller="TestJob"
+                               asp-route-Id="@t.TestJobID" class="btn btn-info btn-sm">
+                                Continuar
+                            </a>
+                        }
 
-                </td>
-            </tr>
+                    </td>
+                </tr>
             }
         }
     </tbody>
 </table>
 @if (Model.PendingTestJobs.Count() > 3)
 {
-<coool-pagination-all page-model="@Model.MyJobsPagingInfo" page-action="Index" page-classes-enabled="true"
-                      page-class="btn" page-class-normal="btn-secondary"
-                      page-class-selected="btn-dark"
-                      class="btn-group pull-right m-1">
-</coool-pagination-all>
+    <coool-pagination-all page-model="@Model.MyJobsPagingInfo" page-action="Index" page-classes-enabled="true"
+                          page-class="btn" page-class-normal="btn-secondary"
+                          page-class-selected="btn-dark"
+                          class="btn-group pull-right m-1">
+    </coool-pagination-all>
 }

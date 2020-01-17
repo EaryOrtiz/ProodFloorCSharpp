@@ -4329,7 +4329,7 @@ namespace ProdFloor.Infrastructure
                 case "TriggerFeature":
                     return new List<string> {"Overlay", "Group","PC de Cliente", "Brake Coil Voltage > 10","EMBrake Module","EMCO Board","R6 Regen Unit","Local","Short Floor"
                                             ,"Custom","MRL","CTL2","Tarjeta CPI Incluida","Door Control en Cartop","Canada","Ontario","Manual Doors","Duplex","Serial Halls Calls"
-                                            ,"Edge-LS","Rail-LS", "mView","iMonitor","HAPS Battery","2+ Starters", "MOD Door Operator"}.AsQueryable();
+                                            ,"Edge-LS","Rail-LS", "mView","iMonitor","HAPS Battery","2+ Starters", "Serial COP","MOD Door Operator"}.AsQueryable();
                 case "TriggerCustom":
                     return new List<string> { "Contractor", "Fire Code", "City", "VCI", "Valve Brand", "Switch Style", "Landing System", "State" }.AsQueryable();
                 default:

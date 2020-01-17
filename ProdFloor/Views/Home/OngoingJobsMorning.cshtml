@@ -1,4 +1,11 @@
 ﻿@model DashboardIndexViewModel
+@{
+    <script>
+        $(document).ready(function () {
+            $('[data-tooltip="tooltip"]').tooltip();
+        });
+    </script>
+}
 <h4>Ongoing Job(s)</h4>
 <div class="container-fluid">
     <table class="table table-sm align-content-center text-center">

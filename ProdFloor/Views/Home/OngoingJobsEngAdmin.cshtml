@@ -1,4 +1,11 @@
 ﻿@model DashboardIndexViewModel
+@{
+    <script>
+        $(document).ready(function () {
+            $('[data-tooltip="tooltip"]').tooltip();
+        });
+    </script>
+}
 <h4>To be released</h4>
 <table class="table table-sm align-content-center text-center">
     <thead style="background-color:#1B2831;color:#fff">
@@ -64,11 +71,11 @@
                     <td>@j.Status</td>
                     <td>
                         @if (jobAdditional.Priority == 0)
-                        {<button type="button" title="Normal" class="btn btn-light" data-toggle="modal" data-target="#priority @j.JobID"  style="float:left;background-color:transparent"><i class="fas fa-flag text-success"></i></button>}
+                        {<button type="button" title="Change Priority" class="btn btn-light" data-toggle="modal" data-target="#priority @j.JobID" style="float:left;background-color:transparent" data-tooltip="tooltip" data-placement="top"><i class="fas fa-flag text-success"></i></button>}
                         @if (jobAdditional.Priority == 1)
-                        {<button type="button" title="High Priority" class="btn btn-light" data-toggle="modal" data-target="#priority @j.JobID"  style="float:left;background-color:transparent"><i class="fas fa-flag text-warning"></i></button>}
+                        {<button type="button" title="Change Priority" class="btn btn-light" data-toggle="modal" data-target="#priority @j.JobID" style="float:left;background-color:transparent" data-tooltip="tooltip" data-placement="top"><i class="fas fa-flag text-warning"></i></button>}
                         @if (jobAdditional.Priority == 2)
-                        {<button type="button" title="Short Lead" class="btn btn-light" data-toggle="modal" data-target="#priority @j.JobID"  style="float:left;background-color:transparent"><i class="fas fa-flag text-danger"></i></button>}
+                        {<button type="button" title="Change Priority" class="btn btn-light" data-toggle="modal" data-target="#priority @j.JobID" style="float:left;background-color:transparent" data-tooltip="tooltip" data-placement="top"><i class="fas fa-flag text-danger"></i></button>}
 
                         @if (JobTypeName == "M2000")
                         {
@@ -86,7 +93,7 @@
                                             <form asp-controller="Home" asp-action="ChangePriorityAdmin">
                                                 <input type="hidden" name="btnJobID" value="@j.JobID" />
                                                 <p>Please select a priority for the job: #@j.JobNum</p>
-                                                <div class="container-fluid" >
+                                                <div class="container-fluid">
                                                     <div class="form-group">
                                                         <button type="submit" class="btn btn-sm btn-light" name="btnPriority" value="0" style="background-color:transparent"><i class="fas fa-flag text-success"></i></button>
                                                         <label>&nbsp;Normal</label>
@@ -111,7 +118,7 @@
                                 </div>
                             </div>
                             <!-- Button trigger to change status-->
-                            <button type="button" class="btn btn-light" data-toggle="modal" data-target="#exampleModalStatus @j.JobID" style="float:left;background-color:transparent">
+                            <button type="button" class="btn btn-light" data-toggle="modal" data-target="#exampleModalStatus @j.JobID" style="float:left;background-color:transparent" data-tooltip="tooltip" data-placement="top" title="Change status">
                                 <i class="fas fa-retweet"></i>
                             </button>
                             <!-- Modal -->
@@ -147,7 +154,7 @@
                             </div>
                         }
                         <!-- Button trigger to change reassign-->
-                        <button type="button" class="btn btn-light" data-toggle="modal" data-target="#exampleModalreassign @j.JobID" style="float:left;background-color:transparent">
+                        <button type="button" class="btn btn-light" data-toggle="modal" data-target="#exampleModalreassign @j.JobID" style="float:left;background-color:transparent" data-tooltip="tooltip" data-placement="top" title="Reassign Job">
                             <i class="fas fa-user-edit"></i>
                         </button>
                         <!-- Modal -->
@@ -190,7 +197,7 @@
                             </div>
                         </div>
                         <!-- Button trigger modal -->
-                        <button type="button" class="btn btn-light" style="float:left;background-color:transparent" data-toggle="modal" data-target="#exampleModalCenter @j.JobID">
+                        <button type="button" class="btn btn-light" style="float:left;background-color:transparent" data-toggle="modal" data-target="#exampleModalCenter @j.JobID" data-tooltip="tooltip" data-placement="top" title="Delete Job">
                             <i class="fas fa-trash-alt"></i>
                         </button>
                         <!-- Modal -->

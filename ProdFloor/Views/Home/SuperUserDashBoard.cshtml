@@ -7,6 +7,7 @@
             $('#jobnumb').autocomplete({
                 source: '/TestJob/SearchJobNum'
             });
+            $('[data-tooltip="tooltip"]').tooltip();
         });
     </script>
 }
@@ -21,10 +22,10 @@
         <input type="text" class="form-control form-control-sm col-5" name="jobNumber" id="jobnumb" value="0" placeholder=" Please enter a Job Number">
         <div class="input-group-append">
             <div class="btn-group">
-                <button class="btn btn-dark" type="submit" value="Search">
+                <button class="btn btn-dark" type="submit" value="Search" data-toggle="tooltip" data-placement="top" title="Search">
                     <i class="fa fa-search" aria-hidden="true"></i>
                 </button>
-                <button class="btn btn-dark" type="submit" name="Clean" value="true">
+                <button class="btn btn-dark" type="submit" name="Clean" value="true" data-toggle="tooltip" data-placement="top" title="Clean field">
                     <i class="fas fa-undo" aria-hidden="true"></i>
                 </button>
             </div>
@@ -78,7 +79,7 @@
                         @if (jobAdditional.Priority == 2)
                         {<button type="button" title="Short Lead" class="btn btn-light" data-toggle="modal" data-target="#priority @j.JobID" style="float:left;background-color:transparent"><i class="fas fa-flag text-danger"></i></button>}
                         <!-- Button trigger to change status-->
-                        <button type="button" class="btn btn-light" data-toggle="modal" data-target="#exampleModalStatus @j.JobID" style="float:left;background-color:transparent">
+                        <button type="button" class="btn btn-light" data-toggle="modal" data-target="#exampleModalStatus @j.JobID" style="float:left;background-color:transparent" data-tooltip="tooltip" data-placement="top" title="Change status">
                             <i class="fas fa-retweet"></i>
                         </button>
                         <!-- Modal -->

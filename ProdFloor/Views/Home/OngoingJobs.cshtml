@@ -1,4 +1,11 @@
 ﻿@model DashboardIndexViewModel
+@{
+    <script>
+        $(document).ready(function () {
+            $('[data-tooltip="tooltip"]').tooltip();
+        });
+    </script>
+}
 <h4>Ongoing Job(s)</h4>
 <table class="table table-sm">
     <thead style="background-color:#1B2831;color:#fff">
@@ -81,7 +88,7 @@
                                 Continue
                             </a>
                             <!-- Button trigger modal -->
-                            <button type="button" class="btn btn-light" style="float:left;background-color:transparent" data-toggle="modal" data-target="#exampleModalCenter @j.JobID">
+                            <button type="button" class="btn btn-light" style="float:left;background-color:transparent" data-toggle="modal" data-target="#exampleModalCenter @j.JobID" data-tooltip="tooltip" data-placement="top" title="Delete Job">
                                 <i class="fas fa-trash-alt"></i>
                             </button>
                             <!-- Modal -->
@@ -116,11 +123,11 @@
 
                                 <!-- Button trigger modal to email template M2000-->
                                 if (jobAdditional.Priority == 0)
-                                {<button type="button" title="Normal" class="btn btn-light" data-toggle="modal" data-target="#priority @j.JobID" style="float:left;background-color:transparent"><i class="fas fa-flag text-success"></i></button>}
+                                {<button type="button" title="Change Priority" class="btn btn-light" data-toggle="modal" data-target="#priority @j.JobID" style="float:left;background-color:transparent" data-tooltip="tooltip" data-placement="top"><i class="fas fa-flag text-success"></i></button>}
                                 if (jobAdditional.Priority == 1)
-                                {<button type="button" title="High Priority" class="btn btn-light" data-toggle="modal" data-target="#priority @j.JobID" style="float:left;background-color:transparent"><i class="fas fa-flag text-warning"></i></button>}
+                                {<button type="button" title="Change Priority" class="btn btn-light" data-toggle="modal" data-target="#priority @j.JobID" style="float:left;background-color:transparent" data-tooltip="tooltip" data-placement="top"><i class="fas fa-flag text-warning"></i></button>}
                                 if (jobAdditional.Priority == 2)
-                                {<button type="button" title="Short Lead" class="btn btn-light" data-toggle="modal" data-target="#priority @j.JobID" style="float:left;background-color:transparent"><i class="fas fa-flag text-danger"></i></button>}
+                                {<button type="button" title="Change Priority" class="btn btn-light" data-toggle="modal" data-target="#priority @j.JobID" style="float:left;background-color:transparent" data-tooltip="tooltip" data-placement="top"><i class="fas fa-flag text-danger"></i></button>}
                                 <!-- Modal -->
                                 <div class="modal fade" id="priority @j.JobID" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -170,7 +177,7 @@
 
 
                             <form asp-action="SearchAux" asp-controller="Item" method="get">
-                                <button type="submit" value="@j.JobID" name="JobID" class="btn btn-light"
+                                <button type="submit" value="@j.JobID" name="JobID" class="btn btn-light" data-tooltip="tooltip" data-placement="top" title="Worksheet"
                                         style="float:left;background-color:transparent">
                                     <i class="fas fa-file-word"></i>
                                 </button>
@@ -179,7 +186,7 @@
                             @if (JobTypeName == "M2000")
                             {
                                 <!-- Button trigger modal to email template M2000-->
-                                <button type="button" class="btn btn-light" data-toggle="modal" data-target="#email @j.JobID" style="float:left;background-color:transparent">
+                                <button type="button" class="btn btn-light" data-toggle="modal" data-target="#email @j.JobID" style="float:left;background-color:transparent" data-tooltip="tooltip" data-placement="top" title="Email Template">
                                     <i class="fas fa-envelope"></i>
                                 </button>
                                 <!-- Modal -->
@@ -230,7 +237,7 @@ Saludos.
                                     </div>
                                 </div>
                             }
-                            <button type="button" class="btn btn-light" data-toggle="modal" data-target="#exampleModalCompleted @j.JobID" style="float:left;background-color:transparent">
+                            <button type="button" class="btn btn-light" data-toggle="modal" data-target="#exampleModalCompleted @j.JobID" style="float:left;background-color:transparent" data-tooltip="tooltip" data-placement="top" title="Send to completed">
                                 <i class="fas fa-bolt"></i>
                             </button>
                             <!-- Modal -->
@@ -259,7 +266,7 @@ Saludos.
                                 </div>
                             </div>
                             <!-- Button trigger modal -->
-                            <button type="button" class="btn btn-light" style="float:left;background-color:transparent" data-toggle="modal" data-target="#exampleModalCenter @j.JobID">
+                            <button type="button" class="btn btn-light" style="float:left;background-color:transparent" data-toggle="modal" data-target="#exampleModalCenter @j.JobID" data-tooltip="tooltip" data-placement="top" title="Delete Job">
                                 <i class="fas fa-trash-alt"></i>
                             </button>
                             <!-- Modal -->
@@ -287,7 +294,7 @@ Saludos.
                                 </div>
                             </form>
                             <!-- Button trigger modal to change the status -->
-                            <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#exampleModal @j.JobID" style="float:left">
+                            <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#exampleModal @j.JobID" style="float:left" data-tooltip="tooltip" data-placement="top" title="Send Job to Cross">
                                 Ready For Cross
                             </button>
                             <!-- Modal -->
@@ -320,11 +327,11 @@ Saludos.
                         {
                             <!-- Button trigger modal to email template M2000-->
                             if (jobAdditional.Priority == 0)
-                            {<button type="button" title="Normal" class="btn btn-light" data-toggle="modal" data-target="#priority @j.JobID" style="float:left;background-color:transparent"><i class="fas fa-flag text-success"></i></button>}
+                            {<button type="button" title="Change Priority" class="btn btn-light" data-toggle="modal" data-target="#priority @j.JobID" style="float:left;background-color:transparent" data-tooltip="tooltip" data-placement="top"><i class="fas fa-flag text-success"></i></button>}
                             if (jobAdditional.Priority == 1)
-                            {<button type="button" title="High Priority" class="btn btn-light" data-toggle="modal" data-target="#priority @j.JobID" style="float:left;background-color:transparent"><i class="fas fa-flag text-warning"></i></button>}
+                            {<button type="button" title="Change Priority" class="btn btn-light" data-toggle="modal" data-target="#priority @j.JobID" style="float:left;background-color:transparent" data-tooltip="tooltip" data-placement="top"><i class="fas fa-flag text-warning"></i></button>}
                             if (jobAdditional.Priority == 2)
-                            {<button type="button" title="Short Lead" class="btn btn-light" data-toggle="modal" data-target="#priority @j.JobID" style="float:left;background-color:transparent"><i class="fas fa-flag text-danger"></i></button>}
+                            {<button type="button" title="Change Priority" class="btn btn-light" data-toggle="modal" data-target="#priority @j.JobID" style="float:left;background-color:transparent" data-tooltip="tooltip" data-placement="top"><i class="fas fa-flag text-danger"></i></button>}
                             <!-- Modal -->
                             <div class="modal fade" id="priority @j.JobID" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered" role="document">
@@ -369,7 +376,7 @@ Saludos.
                             @if (JobTypeName == "M2000")
                             {
                                 <!-- Button trigger modal to email template M2000-->
-                                <button type="button" class="btn btn-light" data-toggle="modal" data-target="#email @j.JobID" style="float:left;background-color:transparent">
+                                <button type="button" class="btn btn-light" data-toggle="modal" data-target="#email @j.JobID" style="float:left;background-color:transparent" data-tooltip="tooltip" data-placement="top" title="Email Template">
                                     <i class="fas fa-envelope"></i>
                                 </button>
                                 <!-- Modal -->
@@ -435,7 +442,7 @@ Thanks,
                             else if (JobTypeName == "ElmHydro" || JobTypeName == "ElmTract")
                             {
                                 <!-- Button trigger modal to email template M2000-->
-                                <button type="button" class="btn btn-light" data-toggle="modal" data-target="#email @j.JobID" style="float:left;background-color:transparent">
+                                <button type="button" class="btn btn-light" data-toggle="modal" data-target="#email @j.JobID" style="float:left;background-color:transparent" data-tooltip="tooltip" data-placement="top" title="Email Template">
                                     <i class="fas fa-envelope"></i>
                                 </button>
                                 <!-- Modal -->
@@ -476,7 +483,7 @@ Thanks,
                                     </div>
                                 </div>
                                 <!-- Button trigger modal -->
-                                <button type="button" class="btn btn-light" style="float:left;background-color:transparent" data-toggle="modal" data-target="#exampleModalCenter @j.JobID">
+                                <button type="button" class="btn btn-light" style="float:left;background-color:transparent" data-toggle="modal" data-target="#exampleModalCenter @j.JobID" data-tooltip="tooltip" data-placement="top" title="Delete Job">
                                     <i class="fas fa-trash-alt"></i>
                                 </button>
                                 <!-- Modal -->
@@ -506,7 +513,7 @@ Thanks,
                             }
 
                             <!-- Button trigger modal to production-->
-                            <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#exampleModal @j.JobID" style="float:left">
+                            <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#exampleModal @j.JobID" style="float:left" data-tooltip="tooltip" data-placement="top" title="Send To Production">
                                 Ready For Production
                             </button>
                             <!-- Modal -->

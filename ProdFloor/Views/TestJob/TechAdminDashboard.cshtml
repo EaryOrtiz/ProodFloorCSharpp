@@ -1,4 +1,11 @@
 ﻿@model ProdFloor.Models.ViewModels.TestJob.TestJobViewModel
+@{
+    <script>
+        $(document).ready(function () {
+            $('[data-tooltip="tooltip"]').tooltip();
+        });
+    </script>
+}
 <h4>Incompleted TestJob(s)</h4>
 <table class="table table-sm">
     <thead style="background-color:#1B2831;color:#fff">
@@ -66,19 +73,19 @@
                     <td>
 
                         <form asp-action="EditTestJob" asp-controller="TestJob" method="get">
-                            <button type="submit" value="@j.TestJobID" name="ID" class="btn btn-light"
+                            <button type="submit" value="@j.TestJobID" name="ID" class="btn btn-light" data-tooltip="tooltip" data-placement="top" title="Edit"
                                     style="float:left;background-color:transparent">
                                 <i class="fas fa-edit"></i>
                             </button>
                         </form>
                         <form asp-action="AllStepsForJob" asp-controller="TestJob" method="get">
-                            <button type="submit" value="@j.TestJobID" name="ID" class="btn btn-light"
+                            <button type="submit" value="@j.TestJobID" name="ID" class="btn btn-light" data-tooltip="tooltip" data-placement="top" title="Steps from Testjob"
                                     style="float:left;background-color:transparent">
                                 <i class="fas fa-shoe-prints"></i>
                             </button>
                         </form>
                         <form asp-action="StopsFromTestJob" asp-controller="TestJob" method="get">
-                            <button type="submit" value="@j.TestJobID" name="ID" class="btn btn-light"
+                            <button type="submit" value="@j.TestJobID" name="ID" class="btn btn-light" data-tooltip="tooltip" data-placement="top" title="Stops from TestJob"
                                     style="float:left;background-color:transparent">
                                 <i class="fas fa-hourglass-half"></i>
                             </button>
@@ -87,7 +94,7 @@
                         @if (j.Status != "Incomplete")
                         {
                             <!-- Button trigger to  reassign-->
-                            <button type="button" class="btn btn-light" data-toggle="modal" data-target="#exampleModalreassign @j.TestJobID" style="float:left;background-color:transparent">
+                            <button type="button" class="btn btn-light" data-toggle="modal" data-target="#exampleModalreassign @j.TestJobID" style="float:left;background-color:transparent" data-tooltip="tooltip" data-placement="top" title="Reassign TestJob">
                                 <i class="fas fa-user-edit"></i>
                             </button>
                             <!-- Modal -->
@@ -130,7 +137,7 @@
                             </div>
 
                             <!-- Button trigger to complete-->
-                            <button type="button" class="btn btn-light" data-toggle="modal" data-target="#exampleModalReturn @j.TestJobID" style="float:left;background-color:transparent">
+                            <button type="button" class="btn btn-light" data-toggle="modal" data-target="#exampleModalReturn @j.TestJobID" style="float:left;background-color:transparent" data-tooltip="tooltip" data-placement="top" title="Send To Completed">
                                 <i class="fas fa-forward"></i>
                             </button>
                             <!-- Modal -->
@@ -184,9 +191,9 @@
 @if (Model.TestJobIncompletedList.Count() > 0)
 {
     <cool-pagination-dash-board-job-num current-model="MyJobs" my-jobs-page-model="@Model.PagingInfoIncompleted" page-action="SearchTestJob" page-classes-enabled="true"
-                                page-class="btn" page-class-normal="btn-secondary" on-cross-page-model="@Model.PagingInfoCompleted" pending-to-cross-page-model="@Model.PagingInfo"
-                                page-class-selected="btn-dark" my-jobs-url-value="MyJobsPage" on-cross-url-value="OnCrossJobPage"
-                                pending-to-cross-url-value="PendingToCrossJobPage" job-numb="JobNumb"
-                                class="btn-group pull-right m-1">
+                                        page-class="btn" page-class-normal="btn-secondary" on-cross-page-model="@Model.PagingInfoCompleted" pending-to-cross-page-model="@Model.PagingInfo"
+                                        page-class-selected="btn-dark" my-jobs-url-value="MyJobsPage" on-cross-url-value="OnCrossJobPage"
+                                        pending-to-cross-url-value="PendingToCrossJobPage" job-numb="JobNumb"
+                                        class="btn-group pull-right m-1">
     </cool-pagination-dash-board-job-num>
 }

@@ -1,4 +1,11 @@
 ﻿@model ProdFloor.Models.ViewModels.TestJob.TestJobViewModel
+@{
+    <script>
+        $(document).ready(function () {
+            $('[data-tooltip="tooltip"]').tooltip();
+        });
+    </script>
+}
 <h4>Completed TestJob(s)</h4>
 <table class="table table-sm">
     <thead style="background-color:#1B2831;color:#fff">
@@ -55,19 +62,19 @@
                     </td>
                     <td>
                         <form asp-action="AllStepsForJob" asp-controller="TestJob" method="get">
-                            <button type="submit" value="@j.TestJobID" name="ID" class="btn btn-light"
+                            <button type="submit" value="@j.TestJobID" name="ID" class="btn btn-light" data-tooltip="tooltip" data-placement="top" title="Steps from Testjob"
                                     style="float:left;background-color:transparent">
                                 <i class="fas fa-shoe-prints"></i>
                             </button>
                         </form>
                         <form asp-action="StopsFromTestJob" asp-controller="TestJob" method="get">
-                            <button type="submit" value="@j.TestJobID" name="ID" class="btn btn-light"
+                            <button type="submit" value="@j.TestJobID" name="ID" class="btn btn-light" data-tooltip="tooltip" data-placement="top" title="Stops from Testjob"
                                     style="float:left;background-color:transparent">
                                 <i class="fas fa-hourglass-half"></i>
                             </button>
                         </form>
                         <!-- Button trigger to  return to working on it-->
-                        <button type="button" class="btn btn-light" data-toggle="modal" data-target="#exampleModalReturn @j.TestJobID" style="float:left;background-color:transparent">
+                        <button type="button" class="btn btn-light" data-toggle="modal" data-target="#exampleModalReturn @j.TestJobID" style="float:left;background-color:transparent" data-tooltip="tooltip" data-placement="top" title="Return to Working on it">
                             <i class="fas fa-undo"></i>
                         </button>
                         <!-- Modal -->
@@ -101,9 +108,9 @@
 @if (Model.TestJobCompletedList.Count() > 0)
 {
     <cool-pagination-dash-board-job-num current-model="OncrossJobs" my-jobs-page-model="@Model.PagingInfoIncompleted" page-action="SearchTestJob" page-classes-enabled="true"
-                                page-class="btn" page-class-normal="btn-secondary" on-cross-page-model="@Model.PagingInfoCompleted" pending-to-cross-page-model="@Model.PagingInfo"
-                                page-class-selected="btn-dark" my-jobs-url-value="MyJobsPage" on-cross-url-value="OnCrossJobPage"
-                                pending-to-cross-url-value="PendingToCrossJobPage" job-numb="JobNumb"
-                                class="btn-group pull-right m-1">
+                                        page-class="btn" page-class-normal="btn-secondary" on-cross-page-model="@Model.PagingInfoCompleted" pending-to-cross-page-model="@Model.PagingInfo"
+                                        page-class-selected="btn-dark" my-jobs-url-value="MyJobsPage" on-cross-url-value="OnCrossJobPage"
+                                        pending-to-cross-url-value="PendingToCrossJobPage" job-numb="JobNumb"
+                                        class="btn-group pull-right m-1">
     </cool-pagination-dash-board-job-num>
 }
