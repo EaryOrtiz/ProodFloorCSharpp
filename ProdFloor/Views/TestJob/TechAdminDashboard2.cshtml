@@ -36,7 +36,7 @@
         }
         else
         {
-            @foreach (var j in Model.TestJobCompletedList.Where(m => m.Status == "Completed"))
+            @foreach (var j in Model.TestJobCompletedList.Where(m => m.Status == "Completed" || m.Status == "Deleted"))
             {
                 AppUser CurrentUser = UserManager.Users.FirstOrDefault(m => m.EngID == j.TechnicianID);
 
@@ -73,32 +73,97 @@
                                 <i class="fas fa-hourglass-half"></i>
                             </button>
                         </form>
-                        <!-- Button trigger to  return to working on it-->
-                        <button type="button" class="btn btn-light" data-toggle="modal" data-target="#exampleModalReturn @j.TestJobID" style="float:left;background-color:transparent" data-tooltip="tooltip" data-placement="top" title="Return to Working on it">
-                            <i class="fas fa-undo"></i>
-                        </button>
-                        <!-- Modal -->
-                        <div class="modal fade" id="exampleModalReturn @j.TestJobID" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLongTitle">Are you sure you want to return Job #@Model.JobList.FirstOrDefault(m => m.JobID == j.JobID).JobNum with PO #@j.SinglePO to "Working on it" Status?</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <form asp-action="ReturnFromComplete" asp-controller="TestJob" method="get">
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
-                                            <input type="hidden" asp-for="@Model.TestJob.TestJobID" value="@j.TestJobID" />
-                                            <button type="submit" value="Completed" name="buttonAction" class="btn btn-danger btn-sm">
-                                                Return it!
+
+                        @if (j.Status != "Deleted")
+                        {
+                            <!-- Button trigger to  return to working on it-->
+                            <button type="button" class="btn btn-light" data-toggle="modal" data-target="#exampleModalReturn @j.TestJobID" style="float:left;background-color:transparent" data-tooltip="tooltip" data-placement="top" title="Return to Working on it">
+                                <i class="fas fa-undo"></i>
+                            </button>
+                            <!-- Modal -->
+                            <div class="modal fade" id="exampleModalReturn @j.TestJobID" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLongTitle">Are you sure you want to return Job #@Model.JobList.FirstOrDefault(m => m.JobID == j.JobID).JobNum with PO #@j.SinglePO to "Working on it" Status?</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
                                             </button>
                                         </div>
-                                    </form>
+                                        <form asp-action="ReturnFromComplete" asp-controller="TestJob" method="get">
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
+                                                <input type="hidden" asp-for="@Model.TestJob.TestJobID" value="@j.TestJobID" />
+                                                <button type="submit" value="Completed" name="buttonAction" class="btn btn-danger btn-sm">
+                                                    Return it!
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+
+                            <!-- Delete Button trigger modal -->
+                            <button type="button" class="btn btn-light" style="float:left;background-color:transparent" data-toggle="modal" data-target="#delete @j.TestJobID" data-tooltip="tooltip" data-placement="top" title="Delete TestJob">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                            <!-- Modal -->
+                            <form asp-action="FakeDelete" asp-controller="TestJob" method="post" asp-route-Id="@j.TestJobID">
+                                <div class="modal fade" id="delete @j.TestJobID" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLongTitle"><i class="fas fa-exclamation-triangle"></i>&nbsp;Warning</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                Are you sure want to delete this Testjob with PO #@j.SinglePO?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
+                                                <button type="submit" class="btn btn-danger btn-sm">
+                                                    Delete
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        }
+                        else if (User.IsInRole("Admin"))
+                        {
+                            <!-- Restore TestJob Button trigger modal -->
+                            <button type="button" class="btn btn-light" style="float:left;background-color:transparent" data-toggle="modal" data-target="#restore @j.TestJobID" data-tooltip="tooltip" data-placement="top" title="Restore TestJob">
+                                <i class="fas fa-trash-restore-alt"></i>
+                            </button>
+                            <!-- Modal -->
+                            <form asp-action="Restore" asp-controller="TestJob" method="post" asp-route-Id="@j.TestJobID">
+                                <div class="modal fade" id="restore @j.TestJobID" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLongTitle"><i class="fas fa-exclamation-triangle"></i>&nbsp;Warning</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                Are you sure want to restore the Testjob with PO #@j.SinglePO?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
+                                                <button type="submit" class="btn btn-danger btn-sm">
+                                                    Delete
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        }
+
                     </td>
                 </tr>
             }

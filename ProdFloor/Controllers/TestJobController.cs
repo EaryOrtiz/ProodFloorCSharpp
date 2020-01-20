@@ -59,6 +59,7 @@ namespace ProdFloor.Controllers
 
         public IActionResult SearchTestJob(string Clean, int jobNumber, string jobnumb = "0", int MyJobsPage = 1, int PendingToCrossJobPage = 1, int OnCrossJobPage = 1)
         {
+            bool admin = GetCurrentUserRole("Admin").Result;
             if (jobnumb != "0") jobNumber = Int32.Parse(jobnumb);
             if (jobNumber != 0) jobnumb = jobNumber.ToString();
 
@@ -83,13 +84,19 @@ namespace ProdFloor.Controllers
                     .Where(m => m.Status == "Completed").ToList();
             }
 
-            if (testJobsInCompleted == null || jobnumb == "0") testJobsInCompleted = testingRepo.TestJobs.Where(m => m.Status != "Completed").ToList();
+            if (!admin) { 
 
-            if (testJobsCompleted == null || jobnumb == "0") testJobsCompleted = testingRepo.TestJobs.Where(m => m.Status == "Completed").ToList();
+                if (testJobsInCompleted == null || jobnumb == "0") testJobsInCompleted = testingRepo.TestJobs.Where(m => m.Status != "Completed" && m.Status != "Deleted").ToList();
+                if (testJobsCompleted == null || jobnumb == "0") testJobsCompleted = testingRepo.TestJobs.Where(m => m.Status == "Completed").ToList();
+            }
+            else
+            {
+                if (testJobsInCompleted == null || jobnumb == "0") testJobsInCompleted = testingRepo.TestJobs.Where(m => m.Status != "Completed" && m.Status != "Deleted").ToList();
+                if (testJobsCompleted == null || jobnumb == "0") testJobsCompleted = testingRepo.TestJobs.Where(m => m.Status == "Completed" || m.Status == "Deleted").ToList();
+            }
 
             if (Clean == "true") RedirectToAction("SearchTestJob", "TestJob");
 
-            var requestQuery = Request.Query;
 
             TestJobViewModel testJobView = new TestJobViewModel
             {
@@ -1185,13 +1192,41 @@ namespace ProdFloor.Controllers
         [HttpPost]
         public IActionResult Delete(int ID)
         {
+            bool admin = GetCurrentUserRole("Admin").Result;
             TestJob deletedItem = testingRepo.DeleteTestJob(ID);
 
             if (deletedItem != null)
             {
-                TempData["message"] = $"{deletedItem.TestJobID} was deleted";
+                TempData["message"] = $"Testjob with #PO{deletedItem.TestJobID} was deleted";
             }
-            return RedirectToAction("List");
+            if (admin) return RedirectToAction("SearchTestJob", "TestJob");
+            return RedirectToAction("Index","Home");
+        }
+
+        [HttpPost]
+        public IActionResult FakeDelete(int ID)
+        {
+            bool admin = GetCurrentUserRole("Admin").Result;
+            TestJob deletedItem = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == ID);
+
+            deletedItem.Status = "Deleted";
+            testingRepo.SaveTestJob(deletedItem);
+            TempData["message"] = $"You have deleted the TestJob with PO# {deletedItem.SinglePO}";
+
+            if (admin) return RedirectToAction("SearchTestJob", "TestJob");
+            return RedirectToAction("Index", "Home");
+        }
+
+        [HttpPost]
+        public IActionResult Restore(int ID)
+        {
+            TestJob restoredItem = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == ID);
+
+            restoredItem.Status = "Completed";
+            testingRepo.SaveTestJob(restoredItem);
+            TempData["message"] = $"You have restored the TestJob with PO# {restoredItem.SinglePO}";
+
+           return RedirectToAction("SearchTestJob", "TestJob");
         }
 
         public ViewResult StopsFromTestJob(int ID, int page = 1)
@@ -1647,7 +1682,7 @@ namespace ProdFloor.Controllers
 
         public void ShiftEnd(int TechnicianID)
         {
-            List<TestJob> testJobList = testingRepo.TestJobs.Where(m => m.TechnicianID == TechnicianID && (m.Status != "Completed" && m.Status != "Incomplete")).ToList();
+            List<TestJob> testJobList = testingRepo.TestJobs.Where(m => m.TechnicianID == TechnicianID && (m.Status == "Working on it" || m.Status == "Stopped")).ToList();
             if (testJobList.Count > 0)
             {
                 foreach (TestJob testjob in testJobList)
@@ -1713,7 +1748,7 @@ namespace ProdFloor.Controllers
 
         public void AutomaticShiftEnd()
         {
-            List<TestJob> testJobs = testingRepo.TestJobs.Where(m => m.Status == "Working on it" || m.Status == "Stopped").ToList();
+            List<TestJob> testJobs = testingRepo.TestJobs.Where(m => m.Status == "Working on it" || m.Status == "Stopped" ).ToList();
             if (testJobs.Count > 0)
             {
                 foreach (TestJob testjob in testJobs)
