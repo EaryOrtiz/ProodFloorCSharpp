@@ -84,7 +84,8 @@ namespace ProdFloor.Controllers
                     .Where(m => m.Status == "Completed").ToList();
             }
 
-            if (!admin) { 
+            if (!admin)
+            {
 
                 if (testJobsInCompleted == null || jobnumb == "0") testJobsInCompleted = testingRepo.TestJobs.Where(m => m.Status != "Completed" && m.Status != "Deleted").ToList();
                 if (testJobsCompleted == null || jobnumb == "0") testJobsCompleted = testingRepo.TestJobs.Where(m => m.Status == "Completed").ToList();
@@ -146,7 +147,7 @@ namespace ProdFloor.Controllers
         }
 
         [HttpPost]
-        public IActionResult SearchJob(TestJobViewModel viewModel)
+        public IActionResult SearchJob(TestJobViewModel viewModel, string JobType)
         {
             AppUser currentUser = GetCurrentUser().Result;
             var jobSearch = jobRepo.Jobs.AsQueryable();
@@ -204,6 +205,7 @@ namespace ProdFloor.Controllers
                     }
                     else
                     {
+                        int JopTypeID = itemRepository.JobTypes.FirstOrDefault(m => m.Name == JobType).JobTypeID;
                         TestJobViewModel testJobView = new TestJobViewModel()
                         {
                             Job = new Job(),
@@ -217,6 +219,7 @@ namespace ProdFloor.Controllers
                             TestFeature = new TestFeature()
                         };
 
+                        testJobView.Job.JobTypeID = JopTypeID;
                         testJobView.Job.ShipDate = DateTime.Now;
                         testJobView.isNotDummy = false;
                         testJobView.CurrentTab = "DummyJob";
@@ -248,10 +251,13 @@ namespace ProdFloor.Controllers
             if (nextViewModel.TestFeature != null)
             {
                 testingRepo.SaveTestFeature(nextViewModel.TestFeature);
-                if (nextViewModel.isNotDummy == false) SaveDummyJob(nextViewModel);
-                TestJob testJob = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == nextViewModel.TestJob.TestJobID);
+                if (nextViewModel.isNotDummy == false) UpdateDummyJob(nextViewModel);
+                TestJob testJob = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == nextViewModel.TestFeature.TestJobID);
                 testJob.Status = "Working on it";
+                testJob.StationID = nextViewModel.TestJob.StationID;
+                testJob.JobLabel = nextViewModel.TestJob.JobLabel;
                 testingRepo.SaveTestJob(testJob);
+                nextViewModel.TestJob = testJob;
                 TempData["message"] = $"everything was saved";
 
                 return NewTestFeatures(nextViewModel);
@@ -261,7 +267,7 @@ namespace ProdFloor.Controllers
 
                 if (nextViewModel.isNotDummy == false)
                 {
-                    nextViewModel = SaveDummyJob(nextViewModel);
+                    nextViewModel = NewDummyJob(nextViewModel);
                     TempData["message"] = $"Job was saved";
                 }
 
@@ -297,7 +303,7 @@ namespace ProdFloor.Controllers
                         if (element.DoorOperatorID == 2) nextViewModel.Manual = true;
                         else nextViewModel.Manual = false;
 
-                        nextViewModel.HydroSpecific.BatteryBrand = element.HAPS == true ?  "HAPS" : "";
+                        nextViewModel.HydroSpecific.BatteryBrand = element.HAPS == true ? "HAPS" : "";
                         nextViewModel.JobExtension.JobTypeMain = "Simplex";
 
 
@@ -323,7 +329,7 @@ namespace ProdFloor.Controllers
                         break;
                 }
 
-                
+
 
                 nextViewModel.TestFeature = new TestFeature();
                 nextViewModel.TestFeature.TestJobID = nextViewModel.TestJob.TestJobID;
@@ -399,11 +405,8 @@ namespace ProdFloor.Controllers
 
             }
 
-            nextViewModel.TestFeature = new TestFeature();
-            nextViewModel.TestFeature.TestJobID = nextViewModel.TestJob.TestJobID;
             nextViewModel.CurrentTab = "NewFeatures";
-
-            return View("NextForm",nextViewModel);
+            return View("NextForm", nextViewModel);
         }
 
         public ViewResult EditTestJob(int ID)
@@ -474,7 +477,7 @@ namespace ProdFloor.Controllers
                     break;
 
             }
-                    return View(nextViewModel);
+            return View(nextViewModel);
         }
 
         [HttpPost]
@@ -482,7 +485,7 @@ namespace ProdFloor.Controllers
         {
             testingRepo.SaveTestFeature(viewModel.TestFeature);
             UpdateTestFeatures(viewModel);
-            if (viewModel.isNotDummy == false) SaveDummyJob(viewModel);
+            if (viewModel.isNotDummy == false) UpdateDummyJob(viewModel);
 
             TestJob testJob = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == viewModel.TestJob.TestJobID);
             Job CurrentJob = jobRepo.Jobs.FirstOrDefault(m => m.JobID == testJob.JobID);
@@ -552,10 +555,9 @@ namespace ProdFloor.Controllers
             return View(nextViewModel);
         }
 
-
         public void UpdateTestFeatures(TestJobViewModel testJobView)
         {
-            TestJob testJobToUpdate = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == testJobView.TestJob.TestJobID);
+            TestJob testJobToUpdate = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == testJobView.TestFeature.TestJobID);
             TestJob StationAuxTestJob = testingRepo.TestJobs.FirstOrDefault(m => m.StationID == testJobView.TestJob.StationID && m.Status == "Working on it");
 
             testJobToUpdate.StationID = testJobView.TestJob.StationID;
@@ -608,39 +610,96 @@ namespace ProdFloor.Controllers
 
         }
 
-        public TestJobViewModel SaveDummyJob(TestJobViewModel viewModel)
+        public TestJobViewModel UpdateDummyJob(TestJobViewModel viewModel)
         {
             Job currentJob = new Job();
             TestJob currentTestJob = new TestJob();
             PO poUniqueAUx = poUniqueAUx = jobRepo.POs.FirstOrDefault(m => m.PONumb == viewModel.PO.PONumb);
-            bool isNew = true;
-            if (poUniqueAUx != null) isNew = false;
 
             AppUser currentUser = GetCurrentUser().Result;
-            if (isNew == true)
+
+            currentJob = jobRepo.Jobs.FirstOrDefault(m => m.JobID == poUniqueAUx.JobID);
+            currentJob.Name = viewModel.Job.Name;
+            currentJob.JobNum = viewModel.Job.JobNum;
+            currentJob.ShipDate = viewModel.Job.ShipDate;
+            if (viewModel.Canada == true) currentJob.CityID = 10;
+            else if (viewModel.Ontario == true) currentJob.CityID = 11;
+            else currentJob.CityID = 40;
+            jobRepo.SaveJob(currentJob);
+            currentJob = jobRepo.Jobs.FirstOrDefault(m => m.JobID == poUniqueAUx.JobID);
+
+            int jobtypeID = jobRepo.Jobs.First(m => m.JobID == currentJob.JobID).JobTypeID;
+            switch (JobTypeName(jobtypeID))
             {
-                Job Job = viewModel.Job;
-                Job.Contractor = "Fake"; Job.Cust = "Fake"; Job.FireCodeID = 1; Job.LatestFinishDate = new DateTime(1, 1, 1);
-                Job.EngID = currentUser.EngID; Job.Status = "Pending"; Job.CrossAppEngID = 1;
-                if (viewModel.Canada == true) Job.CityID = 10;
-                else if (viewModel.Ontario == true) Job.CityID = 11;
-                else Job.CityID = 40;
-                jobRepo.SaveJob(Job);
-                currentJob = jobRepo.Jobs.FirstOrDefault(p => p.JobID == jobRepo.Jobs.Max(x => x.JobID));
+                case "M2000":
+                case "M4000":
+
+                    //Save the dummy Job Extension
+                    JobExtension currentExtension = jobRepo.JobsExtensions.FirstOrDefault(m => m.JobID == currentJob.JobID);
+                    if (viewModel.MOD == true) currentExtension.DoorOperatorID = 7;
+                    else currentExtension.DoorOperatorID = 1;
+                    if (viewModel.Manual == true) currentExtension.DoorOperatorID = 2;
+                    else currentExtension.DoorOperatorID = 1;
+                    jobRepo.SaveJobExtension(currentExtension);
+
+                    //Save the dummy Job HydroSpecific
+                    HydroSpecific currenHydroSpecific = jobRepo.HydroSpecifics.FirstOrDefault(m => m.JobID == currentJob.JobID);
+                    if (viewModel.TwosStarters == true) currenHydroSpecific.MotorsNum = 3;
+                    else currenHydroSpecific.MotorsNum = 1;
+                    jobRepo.SaveHydroSpecific(currenHydroSpecific);
+
+                    //Save the dummy Job Generic Features
+                    GenericFeatures currentGenericFeatures = jobRepo.GenericFeaturesList.FirstOrDefault(m => m.JobID == currentJob.JobID);
+                    if (viewModel.IMonitor == true) currentGenericFeatures.Monitoring = "IMonitor Interface";
+                    else currentGenericFeatures.Monitoring = "Fake";
+                    jobRepo.SaveGenericFeatures(currentGenericFeatures);
+                    if (viewModel.MView == true) currentGenericFeatures.Monitoring = "MView Interface";
+                    else currentGenericFeatures.Monitoring = "Fake";
+                    jobRepo.SaveGenericFeatures(currentGenericFeatures);
+
+                    break;
+                case "ElmTract":
+                case "ElmHydro":
+                    Element element = jobRepo.Elements.FirstOrDefault(m => m.JobID == currentJob.JobID);
+                    element.LandingSystemID = viewModel.HoistWayData.LandingSystemID;
+                    element.HAPS = viewModel.HydroSpecific.BatteryBrand == "HAPS" ? true : false;
+                    if (viewModel.MOD == true) element.DoorOperatorID = 7;
+                    else element.DoorOperatorID = 1;
+                    if (viewModel.Manual == true) element.DoorOperatorID = 2;
+                    else element.DoorOperatorID = 1;
+                    jobRepo.SaveElement(element);
+                    break;
             }
-            else 
+
+            currentTestJob = testingRepo.TestJobs.FirstOrDefault(p => p.JobID == currentJob.JobID);
+
+            TestJobViewModel testJobView = new TestJobViewModel
             {
-                currentJob = jobRepo.Jobs.FirstOrDefault(m => m.JobID == poUniqueAUx.JobID);
-                currentJob.Name = viewModel.Job.Name;
-                currentJob.JobNum = viewModel.Job.JobNum;
-                currentJob.ShipDate = viewModel.Job.ShipDate;
-                if (viewModel.Canada == true) currentJob.CityID = 10;
-                else if (viewModel.Ontario == true) currentJob.CityID = 11;
-                else currentJob.CityID = 40;
-                jobRepo.SaveJob(currentJob);
-                currentJob = jobRepo.Jobs.FirstOrDefault(m => m.JobID == poUniqueAUx.JobID);
-            }
-            
+                TestJob = currentTestJob,
+                Job = currentJob
+            };
+
+            return testJobView;
+        }
+
+
+        public TestJobViewModel NewDummyJob(TestJobViewModel viewModel)
+        {
+            Job currentJob = new Job();
+            TestJob currentTestJob = new TestJob();
+            PO poUniqueAUx = poUniqueAUx = jobRepo.POs.FirstOrDefault(m => m.PONumb == viewModel.PO.PONumb);
+
+            AppUser currentUser = GetCurrentUser().Result;
+            Job Job = viewModel.Job;
+            Job.Contractor = "Fake"; Job.Cust = "Fake"; Job.FireCodeID = 1; Job.LatestFinishDate = new DateTime(1, 1, 1);
+            Job.EngID = currentUser.EngID; Job.Status = "Pending"; Job.CrossAppEngID = 1;
+            if (viewModel.Canada == true) Job.CityID = 10;
+            else if (viewModel.Ontario == true) Job.CityID = 11;
+            else Job.CityID = 40;
+            jobRepo.SaveJob(Job);
+            currentJob = jobRepo.Jobs.FirstOrDefault(p => p.JobID == jobRepo.Jobs.Max(x => x.JobID));
+
+
             int jobtypeID = jobRepo.Jobs.First(m => m.JobID == currentJob.JobID).JobTypeID;
             switch (JobTypeName(jobtypeID))
             {
@@ -676,7 +735,7 @@ namespace ProdFloor.Controllers
                     currentHoistWayData.TotalTravel = 1; currentHoistWayData.UpSpeed = 1; currentHoistWayData.HoistWaysNumber = 1; currentHoistWayData.MachineRooms = 1;
                     jobRepo.SaveHoistWayData(currentHoistWayData);
 
-                    //Save the dummy Job HoistWayData
+                    //Save the dummy Job Generic Features
                     GenericFeatures currentGenericFeatures = viewModel.GenericFeatures; currentGenericFeatures.JobID = currentJob.JobID;
                     if (viewModel.IMonitor == true) currentGenericFeatures.Monitoring = "IMonitor Interface";
                     else currentGenericFeatures.Monitoring = "Fake";
@@ -761,37 +820,27 @@ namespace ProdFloor.Controllers
                     break;
             }
 
-
-
             SpecialFeatures featureFake = viewModel.SpecialFeature; featureFake.JobID = currentJob.JobID; featureFake.Description = null;
             jobRepo.SaveSpecialFeatures(featureFake);
 
             PO POFake = viewModel.PO; POFake.JobID = currentJob.JobID;
             jobRepo.SavePO(POFake);
 
-            if (isNew == true)
+            //Create the new TestJob
+            TestJob testJob = new TestJob
             {
-                //Create the new TestJob
-                TestJob testJob = new TestJob
-                {
-                    JobID = currentJob.JobID,
-                    TechnicianID = currentUser.EngID,
-                    SinglePO = POFake.PONumb,
-                    Status = "Incomplete",
-                    StartDate = DateTime.Now,
-                    CompletedDate = DateTime.Now,
-                    StationID = 0
-                };
-                testingRepo.SaveTestJob(testJob);
+                JobID = currentJob.JobID,
+                TechnicianID = currentUser.EngID,
+                SinglePO = POFake.PONumb,
+                Status = "Incomplete",
+                StartDate = DateTime.Now,
+                CompletedDate = DateTime.Now,
+                StationID = 0
+            };
+            testingRepo.SaveTestJob(testJob);
 
-                currentTestJob = testingRepo.TestJobs.FirstOrDefault(p => p.TestJobID == testingRepo.TestJobs.Max(x => x.TestJobID));
-            }
-            else
-            {
-                currentTestJob = testingRepo.TestJobs.FirstOrDefault(p => p.JobID == currentJob.JobID);
-            }
+            currentTestJob = testingRepo.TestJobs.FirstOrDefault(p => p.TestJobID == testingRepo.TestJobs.Max(x => x.TestJobID));
 
-            
 
             TestJobViewModel testJobView = new TestJobViewModel
             {
@@ -1200,7 +1249,7 @@ namespace ProdFloor.Controllers
                 TempData["message"] = $"Testjob with #PO{deletedItem.TestJobID} was deleted";
             }
             if (admin) return RedirectToAction("SearchTestJob", "TestJob");
-            return RedirectToAction("Index","Home");
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpPost]
@@ -1226,7 +1275,7 @@ namespace ProdFloor.Controllers
             testingRepo.SaveTestJob(restoredItem);
             TempData["message"] = $"You have restored the TestJob with PO# {restoredItem.SinglePO}";
 
-           return RedirectToAction("SearchTestJob", "TestJob");
+            return RedirectToAction("SearchTestJob", "TestJob");
         }
 
         public ViewResult StopsFromTestJob(int ID, int page = 1)
@@ -1748,7 +1797,7 @@ namespace ProdFloor.Controllers
 
         public void AutomaticShiftEnd()
         {
-            List<TestJob> testJobs = testingRepo.TestJobs.Where(m => m.Status == "Working on it" || m.Status == "Stopped" ).ToList();
+            List<TestJob> testJobs = testingRepo.TestJobs.Where(m => m.Status == "Working on it" || m.Status == "Stopped").ToList();
             if (testJobs.Count > 0)
             {
                 foreach (TestJob testjob in testJobs)

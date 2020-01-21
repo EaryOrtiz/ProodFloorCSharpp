@@ -1,122 +1,120 @@
-﻿@model ProdFloor.Models.ViewModels.TestJob.TestJobViewModel
-@{
-    <script src="~/Scripts/CascadingJobTypeStacion.js" type="text/javascript"></script>
-}
-    <input type="hidden" asp-for="Job.JobTypeID" id="JobTypeID" />
-    <input type="hidden" asp-for="@Model.Job.JobID" />
-    <div class="row" style="margin-left:10px;">
-        <div class="col border-bottom">
-            <h3>Test Job Info</h3>
-            <br />
-            <div class="form-group row">
-                <label asp-for="TestJob.JobLabel" class="col-sm-2 col-form-label"></label>
-                <div>
-                    <custom-select selected-value="@Model.TestJob.JobLabel" class="form-control-sm form-control" asp-for="TestJob.JobLabel" select-for="Label"></custom-select>
-                    <span asp-validation-for="TestJob.JobLabel" class="text-danger"></span>
-                </div>
+﻿
+@model ProdFloor.Models.ViewModels.TestJob.TestJobViewModel
+<input type="hidden" asp-for="Job.JobTypeID" id="JobTypeID" />
+<input type="hidden" asp-for="@Model.Job.JobID" />
+<div class="row" style="margin-left:10px;">
+    <div class="col border-bottom">
+        <h3>Test Job Info</h3>
+        <br />
+        <div class="form-group row">
+            <label asp-for="TestJob.JobLabel" class="col-sm-2 col-form-label"></label>
+            <div>
+                <custom-select selected-value="@Model.TestJob.JobLabel" class="form-control-sm form-control" asp-for="TestJob.JobLabel" select-for="Label"></custom-select>
+                <span asp-validation-for="TestJob.JobLabel" class="text-danger"></span>
             </div>
-            <div class="form-group row">
-                <label asp-for="TestJob.StationID" class="col-sm-2 col-form-label"></label>
-                <div>
-                    <station-select select-for="@Model.Job.JobTypeID" selected-value="@Model.TestJob.StationID" readonly="@(Model.TestJob.StationID == 0 || Model.isNotDummy ? false : true)" class="form-control form-control-sm" asp-for="TestJob.StationID" ></station-select>
-                    <span asp-validation-for="TestJob.StationID" class="text-danger"></span>
-                </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="TestJob.StationID" class="col-sm-2 col-form-label"></label>
+            <div>
+                <station-select select-for="@Model.Job.JobTypeID" selected-value="@Model.TestJob.StationID" readonly="@(Model.TestJob.StationID == 0 || Model.isNotDummy ? false : true)" class="form-control form-control-sm" asp-for="TestJob.StationID"></station-select>
+                <span asp-validation-for="TestJob.StationID" class="text-danger"></span>
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-3" style="margin-left:40px;">
-            <br />
-            <input type="hidden" asp-for="TestJob.JobID" />
-            <input type="hidden" asp-for="TestJob.TestJobID" />
-            <input type="hidden" asp-for="TestFeature.TestFeatureID" />
-            <input type="hidden" asp-for="TestFeature.TestJobID" value="@Model.TestJob.TestJobID" />
-            <div class="form-group row">
-                <div class="custom-control custom-checkbox">
-                    <input type="checkbox" asp-for="TestFeature.Overlay" class="custom-control-input" >
-                    <label class="custom-control-label" asp-for="TestFeature.Overlay"></label>
-                </div>
-            </div>
-            <div class="form-group row">
-                <div class="custom-control custom-checkbox">
-                    <input type="checkbox" asp-for="TestFeature.Group" class="custom-control-input" >
-                    <label class="custom-control-label" asp-for="TestFeature.Group"></label>
-                </div>
-            </div>
-            <div class="form-group row">
-                <div class="custom-control custom-checkbox">
-                    <input type="checkbox" asp-for="TestFeature.PC" class="custom-control-input">
-                    <label class="custom-control-label" asp-for="TestFeature.PC"></label>
-                </div>
-            </div>
-            <div class="form-group row">
-                <div class="custom-control custom-checkbox">
-                    <input type="checkbox" asp-for="TestFeature.BrakeCoilVoltageMoreThan10" class="custom-control-input" >
-                    <label class="custom-control-label" asp-for="TestFeature.BrakeCoilVoltageMoreThan10"></label>
-                </div>
-            </div>
-            <div class="form-group row">
-                <div class="custom-control custom-checkbox">
-                    <input type="checkbox" asp-for="TestFeature.EMBrake" class="custom-control-input" >
-                    <label class="custom-control-label" asp-for="TestFeature.EMBrake"></label>
-                </div>
-            </div>
-            <div class="form-group row">
-                <div class="custom-control custom-checkbox">
-                    <input type="checkbox" asp-for="TestFeature.EMCO" class="custom-control-input">
-                    <label class="custom-control-label" asp-for="TestFeature.EMCO"></label>
-                </div>
-            </div>
-            <div class="form-group row">
-                <div class="custom-control custom-checkbox">
-                    <input type="checkbox" asp-for="TestFeature.R6" class="custom-control-input">
-                    <label class="custom-control-label" asp-for="TestFeature.R6"></label>
-                </div>
+</div>
+<div class="row">
+    <div class="col-3" style="margin-left:40px;">
+        <br />
+        <input type="hidden" asp-for="TestJob.JobID" />
+        <input type="hidden" asp-for="TestJob.TestJobID" />
+        <input type="hidden" asp-for="TestFeature.TestFeatureID" />
+        <input type="hidden" asp-for="TestFeature.TestJobID" value="@Model.TestJob.TestJobID" />
+        <div class="form-group row">
+            <div class="custom-control custom-checkbox">
+                <input type="checkbox" asp-for="TestFeature.Overlay" class="custom-control-input">
+                <label class="custom-control-label" asp-for="TestFeature.Overlay"></label>
             </div>
         </div>
-        <div class="col">
-            <br />
-            <div class="form-group row">
-                <div class="custom-control custom-checkbox">
-                    <input type="checkbox" asp-for="TestFeature.Local" class="custom-control-input">
-                    <label class="custom-control-label" asp-for="TestFeature.Local"></label>
-                </div>
+        <div class="form-group row">
+            <div class="custom-control custom-checkbox">
+                <input type="checkbox" asp-for="TestFeature.Group" class="custom-control-input">
+                <label class="custom-control-label" asp-for="TestFeature.Group"></label>
             </div>
-            <div class="form-group row">
-                <div class="custom-control custom-checkbox">
-                    <input type="checkbox" asp-for="TestFeature.ShortFloor" class="custom-control-input" >
-                    <label class="custom-control-label" asp-for="TestFeature.ShortFloor"></label>
-                </div>
+        </div>
+        <div class="form-group row">
+            <div class="custom-control custom-checkbox">
+                <input type="checkbox" asp-for="TestFeature.PC" class="custom-control-input">
+                <label class="custom-control-label" asp-for="TestFeature.PC"></label>
             </div>
-            <div class="form-group row">
-                <div class="custom-control custom-checkbox">
-                    <input type="checkbox" asp-for="TestFeature.Custom" class="custom-control-input" >
-                    <label class="custom-control-label" asp-for="TestFeature.Custom"></label>
-                </div>
+        </div>
+        <div class="form-group row">
+            <div class="custom-control custom-checkbox">
+                <input type="checkbox" asp-for="TestFeature.BrakeCoilVoltageMoreThan10" class="custom-control-input">
+                <label class="custom-control-label" asp-for="TestFeature.BrakeCoilVoltageMoreThan10"></label>
             </div>
-            <div class="form-group row">
-                <div class="custom-control custom-checkbox">
-                    <input type="checkbox" asp-for="TestFeature.MRL" class="custom-control-input" >
-                    <label class="custom-control-label" asp-for="TestFeature.MRL"></label>
-                </div>
+        </div>
+        <div class="form-group row">
+            <div class="custom-control custom-checkbox">
+                <input type="checkbox" asp-for="TestFeature.EMBrake" class="custom-control-input">
+                <label class="custom-control-label" asp-for="TestFeature.EMBrake"></label>
             </div>
-            <div class="form-group row">
-                <div class="custom-control custom-checkbox">
-                    <input type="checkbox" asp-for="TestFeature.CTL2" class="custom-control-input" >
-                    <label class="custom-control-label" asp-for="TestFeature.CTL2"></label>
-                </div>
+        </div>
+        <div class="form-group row">
+            <div class="custom-control custom-checkbox">
+                <input type="checkbox" asp-for="TestFeature.EMCO" class="custom-control-input">
+                <label class="custom-control-label" asp-for="TestFeature.EMCO"></label>
             </div>
-            <div class="form-group row">
-                <div class="custom-control custom-checkbox">
-                    <input type="checkbox" asp-for="TestFeature.Cartop" class="custom-control-input" >
-                    <label class="custom-control-label" asp-for="TestFeature.Cartop"></label>
-                </div>
-            </div>
-            <div class="form-group row">
-                <div class="custom-control custom-checkbox">
-                    <input type="checkbox" asp-for="TestFeature.TrajetaCPI" class="custom-control-input">
-                    <label class="custom-control-label" asp-for="TestFeature.TrajetaCPI"></label>
-                </div>
+        </div>
+        <div class="form-group row">
+            <div class="custom-control custom-checkbox">
+                <input type="checkbox" asp-for="TestFeature.R6" class="custom-control-input">
+                <label class="custom-control-label" asp-for="TestFeature.R6"></label>
             </div>
         </div>
     </div>
+    <div class="col">
+        <br />
+        <div class="form-group row">
+            <div class="custom-control custom-checkbox">
+                <input type="checkbox" asp-for="TestFeature.Local" class="custom-control-input">
+                <label class="custom-control-label" asp-for="TestFeature.Local"></label>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="custom-control custom-checkbox">
+                <input type="checkbox" asp-for="TestFeature.ShortFloor" class="custom-control-input">
+                <label class="custom-control-label" asp-for="TestFeature.ShortFloor"></label>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="custom-control custom-checkbox">
+                <input type="checkbox" asp-for="TestFeature.Custom" class="custom-control-input">
+                <label class="custom-control-label" asp-for="TestFeature.Custom"></label>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="custom-control custom-checkbox">
+                <input type="checkbox" asp-for="TestFeature.MRL" class="custom-control-input">
+                <label class="custom-control-label" asp-for="TestFeature.MRL"></label>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="custom-control custom-checkbox">
+                <input type="checkbox" asp-for="TestFeature.CTL2" class="custom-control-input">
+                <label class="custom-control-label" asp-for="TestFeature.CTL2"></label>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="custom-control custom-checkbox">
+                <input type="checkbox" asp-for="TestFeature.Cartop" class="custom-control-input">
+                <label class="custom-control-label" asp-for="TestFeature.Cartop"></label>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="custom-control custom-checkbox">
+                <input type="checkbox" asp-for="TestFeature.TrajetaCPI" class="custom-control-input">
+                <label class="custom-control-label" asp-for="TestFeature.TrajetaCPI"></label>
+            </div>
+        </div>
+    </div>
+</div>

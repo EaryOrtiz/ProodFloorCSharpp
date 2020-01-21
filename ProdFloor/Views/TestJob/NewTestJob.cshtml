@@ -8,11 +8,19 @@
 <form asp-controller="TestJob" asp-action="SearchJob" method="post">
     <label class="col-form-label">Por favor introduzca un PO:</label>
     <div class="input-group">
-        <input type="number" class="form-control form-control-sm col-5" asp-for="POJobSearch">
+        <input type="number" class="form-control form-control-sm col-3" asp-for="POJobSearch">
         <div class="input-group-append">
-            <button class="btn btn-dark" type="submit" value="Search">
-                <i class="fa fa-plus" aria-hidden="true"></i>
-            </button>
+            <div class="btn-group text-center">
+                <button type="button" class="btn btn-dark dropdown-toggle" style="padding-top:10px;min-width:100px;" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Select a JobType
+                </button>
+                <div class="dropdown-menu">
+                    <button type="submit" name="JobType" value="M2000" class="dropdown-item" style="margin-right:40px">M2000</button>
+                    <button type="submit" name="JobType" value="M4000" class="dropdown-item" style="margin-right:40px">M4000</button>
+                    <button type="submit" name="JobType" value="ElmHydro" class="dropdown-item" style="margin-right:40px">Element Hydro</button>
+                    <button type="submit" name="JobType" value="ElmTract" class="dropdown-item">Element Traction</button>
+                </div>
+            </div> 
         </div>
     </div>
     <br />
@@ -20,5 +28,3 @@
         <span asp-validation-for="POJobSearch" class="text-danger"></span><br />
     </div>
 </form>
-
-
