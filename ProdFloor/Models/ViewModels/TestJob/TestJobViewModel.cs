@@ -16,6 +16,8 @@ namespace ProdFloor.Models.ViewModels.TestJob
         public int CurrentTechnicianID { get; set; }
         public PagingInfo PagingInfo { get; set; }
         public Models.Job Job { get; set; }
+
+        public List<JobType> JobTypeList {get;set;}
         public JobExtension JobExtension { get; set; }
         public HydroSpecific HydroSpecific { get; set; }
         public HoistWayData HoistWayData { get; set; }

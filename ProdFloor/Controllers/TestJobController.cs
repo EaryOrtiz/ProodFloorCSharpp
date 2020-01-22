@@ -111,6 +111,7 @@ namespace ProdFloor.Controllers
                     .Take(5).ToList(),
 
                 JobList = jobRepo.Jobs.ToList(),
+                JobTypeList = itemRepository.JobTypes.ToList(),
                 StationsList = testingRepo.Stations.ToList(),
                 StepList = testingRepo.Steps.ToList(),
                 StepsForJobList = testingRepo.StepsForJobs.ToList(),
@@ -1642,22 +1643,34 @@ namespace ProdFloor.Controllers
                 if (testJob.Status == "Stopped")
                 {
                     Stop CurrentStop = testingRepo.Stops.LastOrDefault(p => p.Critical == true && p.Reason2 == 0);
-                    Stop CopyStop = CurrentStop;
+                    if(CurrentStop != null)
+                    {
+                        Stop CopyStop = new Stop();
 
-                    TimeSpan auxTime = (DateTime.Now - CurrentStop.StartDate);
-                    CurrentStop.Elapsed += auxTime;
-                    CurrentStop.StopDate = DateTime.Now;
-                    CurrentStop.Description = "Job was reassigned";
-                    testingRepo.SaveStop(CurrentStop);
+                        TimeSpan auxTime = (DateTime.Now - CurrentStop.StartDate);
+                        CurrentStop.Elapsed += auxTime;
+                        CurrentStop.StopDate = DateTime.Now;
+                        CurrentStop.Description = "Job was reassigned";
+                        testingRepo.SaveStop(CurrentStop);
 
 
-                    CopyStop.StopID = 0;
-                    CopyStop.StartDate = DateTime.Now;
-                    CopyStop.StopDate = DateTime.Now;
-                    CopyStop.Elapsed = new DateTime(1, 1, 1, 0, 0, 0);
-                    CopyStop.AuxStationID = testJobView.NewStationID;
-                    CopyStop.AuxTechnicianID = testJobView.NewTechnicianID;
-                    testingRepo.SaveStop(CopyStop);
+                        CopyStop.Reason1 = CurrentStop.Reason1;
+                        CopyStop.Reason2 = CurrentStop.Reason2;
+                        CopyStop.Reason3 = CurrentStop.Reason3;
+                        CopyStop.Reason4 = CurrentStop.Reason4;
+                        CopyStop.Reason5ID = CurrentStop.Reason5ID;
+                        CopyStop.Critical = CurrentStop.Critical;
+                        CopyStop.Description = CurrentStop.Description;
+                        CopyStop.TestJobID = CurrentStop.TestJobID;
+
+                        CopyStop.StartDate = DateTime.Now;
+                        CopyStop.StopDate = DateTime.Now;
+                        CopyStop.Elapsed = new DateTime(1, 1, 1, 0, 0, 0);
+                        CopyStop.AuxStationID = testJobView.NewStationID;
+                        CopyStop.AuxTechnicianID = testJobView.NewTechnicianID;
+                        testingRepo.SaveStop(CopyStop);
+                    }
+                   
                 }
                 testJob.TechnicianID = testJobView.NewTechnicianID;
                 testJob.StationID = testJobView.NewStationID;
@@ -1955,7 +1968,7 @@ namespace ProdFloor.Controllers
             testJob.CompletedDate = jobCompletion.FinishDate;
             testJob.Status = "Completed";
             testingRepo.SaveTestJob(testJob);
-            TempData["message"] = $"You have completed the TestJob PO# {testJob.SinglePO} to Working on it";
+            TempData["message"] = $"You have completed the TestJob PO# {testJob.SinglePO}";
             return RedirectToAction("SearchTestJob");
 
         }

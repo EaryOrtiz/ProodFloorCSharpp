@@ -17,6 +17,12 @@
                 PO#
             </th>
             <th scope="col">
+                JobType
+            </th>
+            <th scope="col">
+                Technician
+            </th>
+            <th scope="col">
                 Status
             </th>
             <th scope="col">
@@ -39,12 +45,15 @@
             @foreach (var j in Model.TestJobCompletedList.Where(m => m.Status == "Completed" || m.Status == "Deleted"))
             {
                 AppUser CurrentUser = UserManager.Users.FirstOrDefault(m => m.EngID == j.TechnicianID);
+                Job MyJob = Model.JobList.FirstOrDefault(m => m.JobID == j.JobID);
 
                 <tr>
                     <th scope="row">
                         @Model.JobList.FirstOrDefault(m => m.JobID == j.JobID).JobNum
                     </th>
                     <td>@j.SinglePO</td>
+                    <td>@Model.JobTypeList.FirstOrDefault(m => m.JobTypeID == MyJob.JobTypeID).Name</td>
+                    <td>@CurrentUser.FullName</td>
                     <td>
                         @if (j.Status == "Working on it")
                         {
