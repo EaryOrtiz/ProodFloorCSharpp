@@ -22,10 +22,9 @@
     }
 </div>
 <br /><br />
-@foreach (var j in Model.TestJobList)
-{
-    @Html.Partial("TestJobSummary", j)
-}
+
+@Html.Partial("TestJobSummary", Model)
+
 @if (Model.TestJobList.Count > 3)
 {
     <coool-pagination-all page-model="@Model.PagingInfo" page-action="List" page-classes-enabled="true"

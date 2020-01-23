@@ -9,8 +9,11 @@ namespace ProdFloor.Models.ViewModels.TestJob
     public class TestJobSearchViewModel
     {
         public List<Models.Job> JobsSearchList { get; set; }
+        public List<Models.Job> jobListAux { get; set; }
         public List<Models.TestJob> TestJobsSearchList { get; set; }
         public List<Stop> StopList { get; set; }
+        public List<Station> StationsList { get; set; }
+        public List<JobType> JobTypeList { get; set; }
         public Models.Job Job { get; set; }
         public JobExtension JobExtension { get; set; }
         public HydroSpecific HydroSpecific { get; set; }

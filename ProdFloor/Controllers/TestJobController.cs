@@ -34,13 +34,18 @@ namespace ProdFloor.Controllers
         {
             AppUser currentUser = GetCurrentUser().Result;
 
+            IQueryable<TestJob> testJobList = testingRepo.TestJobs
+                .Where(m => m.TechnicianID == currentUser.EngID);
+
+
             TestJobViewModel testJobView = new TestJobViewModel
             {
-                TestJobList = testingRepo.TestJobs
-                .Where(m => m.TechnicianID == currentUser.EngID)
-                .OrderBy(p => p.TechnicianID)
-                .Skip((page - 1) * PageSize)
-                .Take(PageSize).ToList(),
+                TestJobList = testJobList.OrderBy(p => p.TechnicianID)
+                                .Skip((page - 1) * PageSize)
+                                .Take(PageSize).ToList(),
+                JobList = jobRepo.Jobs.Where(m => testJobList.Any(s => s.JobID == m.JobID)).ToList(),
+                JobTypeList = itemRepository.JobTypes.ToList(),
+                StationsList = testingRepo.Stations.ToList(),
                 PagingInfo = new PagingInfo
                 {
                     CurrentPage = page,
@@ -2256,7 +2261,12 @@ namespace ProdFloor.Controllers
 
             if (anyFeatureFromJob) testJobSearchList = testJobSearchList.Where(m => jobSearchRepo.Any(s => s.JobID == m.JobID));
 
+
+            searchViewModel.jobListAux = jobSearchRepo.Where(m => testJobSearchList.Any(s => s.JobID == m.JobID)).ToList();
             searchViewModel.TestJobsSearchList = testJobSearchList.OrderBy(p => p.TechnicianID).Skip((page - 1) * 10).Take(10).ToList();
+            searchViewModel.JobTypeList = itemRepository.JobTypes.ToList();
+            searchViewModel.StationsList = testingRepo.Stations.ToList();
+            
             searchViewModel.PagingInfo = new PagingInfo
             {
                 CurrentPage = page,

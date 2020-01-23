@@ -1,37 +1,48 @@
 ﻿@model ProdFloor.Models.ViewModels.TestJob.TestJobSearchViewModel
 @foreach (var j in Model.TestJobsSearchList)
 {
+    AppUser CurrentUser = UserManager.Users.FirstOrDefault(m => m.EngID == j.TechnicianID);
+    Job MyJob = Model.jobListAux.FirstOrDefault(m => m.JobID == j.JobID);
+
+
     <div class="card card-outline-primary m-1 p-1">
         <div class="bg-faded p-1">
             <h4>
-                @j.SinglePO
+                Job #@MyJob.JobNum | PO #@j.SinglePO
                 <span class="badge badge-pill badge-secondary" style="float:right">
                     <small>@j.Status</small>
                 </span>
+                <span class="badge badge-pill badge-primary" style="float:right">
+                    <small>Station @Model.StationsList.FirstOrDefault(m => m.StationID == j.StationID).Label</small>
+                </span>
                 <span class="badge badge-pill badge-secondary" style="float:right">
-                    <small>@j.TechnicianID</small>
+                    <small>@Model.JobTypeList.FirstOrDefault(m => m.JobTypeID == MyJob.JobTypeID).Name</small>
+                </span>
+                <span class="badge badge-pill badge-primary" style="float:right">
+                    <small>@CurrentUser.FullName</small>
                 </span>
             </h4>
         </div>
         <div class="card-text p-1">
             <form asp-action="Delete" method="post" asp-route-Id="@j.TestJobID">
-                @if (j.Status != "Incomplete")
+                @if (User.IsInRole("TechAdmin") || User.IsInRole("Admin"))
                 {
-                    <a asp-action="Edit" class="btn btn-sm btn-info"
+                    <a asp-action="EditTestJob" class="btn btn-sm btn-success"
                        asp-route-Id="@j.TestJobID">
-                        Details
+                        Edit
+                    </a>
+                    <a asp-action="AllStepsForJob" class="btn btn-sm btn-primary"
+                       asp-route-Id="@j.TestJobID">
+                        Steps
+                    </a>
+                    <a asp-action="StopsFromTestJob" class="btn btn-sm btn-danger"
+                       asp-route-Id="@j.TestJobID">
+                        Stops
                     </a>
                 }
-                else
-                {
-                    <a asp-action="Continue" class="btn btn-sm btn-warning"
-                       asp-route-Id="@j.TestJobID">
-                        Continue
-                    </a>
-                }
-                <input type="hidden" name="ID" value="@j.TestJobID" />
+
             </form>
         </div>
     </div>
-
 }
+
