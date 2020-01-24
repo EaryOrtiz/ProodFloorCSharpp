@@ -170,8 +170,16 @@ namespace ProdFloor.Controllers
                     if (onePO != null)
                     {
                         var _jobSearch = jobSearch.FirstOrDefault(m => m.JobID == onePO.JobID);
+
                         if (_jobSearch != null && _jobSearch.Status != "Incomplete")
                         {
+                            TestJob testJobAu = testingRepo.TestJobs.FirstOrDefault(m => m.JobID == onePO.JobID);
+                            if (testJobAu != null || _jobSearch.Contractor == "Fake")
+                            {
+                                TempData["alert"] = $"alert-danger";
+                                TempData["message"] = $"Error, Ya existe un TestJob con ese PO, intente de nuevo o contacte al Admin";
+                                return View("NewTestJob", testJobSearchAux);
+                            }
 
                             TestJob testJob = new TestJob
                             {
@@ -1648,7 +1656,7 @@ namespace ProdFloor.Controllers
                 if (testJob.Status == "Stopped")
                 {
                     Stop CurrentStop = testingRepo.Stops.LastOrDefault(p => p.Critical == true && p.Reason2 == 0);
-                    if(CurrentStop != null)
+                    if (CurrentStop != null)
                     {
                         Stop CopyStop = new Stop();
 
@@ -1675,7 +1683,7 @@ namespace ProdFloor.Controllers
                         CopyStop.AuxTechnicianID = testJobView.NewTechnicianID;
                         testingRepo.SaveStop(CopyStop);
                     }
-                   
+
                 }
                 testJob.TechnicianID = testJobView.NewTechnicianID;
                 testJob.StationID = testJobView.NewStationID;
@@ -2266,7 +2274,7 @@ namespace ProdFloor.Controllers
             searchViewModel.TestJobsSearchList = testJobSearchList.OrderBy(p => p.TechnicianID).Skip((page - 1) * 10).Take(10).ToList();
             searchViewModel.JobTypeList = itemRepository.JobTypes.ToList();
             searchViewModel.StationsList = testingRepo.Stations.ToList();
-            
+
             searchViewModel.PagingInfo = new PagingInfo
             {
                 CurrentPage = page,
