@@ -148,71 +148,128 @@ namespace ProdFloor.Controllers
         public IActionResult WaitingForRestar(int ID)
         {
             TestJob testJob = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == ID);
-            TestJob OnGoingtestJob = testingRepo.TestJobs.FirstOrDefault(m => m.TechnicianID == testJob.TechnicianID && m.Status == "Working on it");
-            Stop ReturnedFromCompleteStop = testingRepo.Stops.LastOrDefault(p => p.TestJobID == testJob.TestJobID);
-            if (OnGoingtestJob != null)
+
+            if (testJob != null)
+            {
+                AppUser currentUser = GetCurrentUser().Result;
+                bool isTechAdmin = GetCurrentUserRole("TechAdmin").Result;
+                bool isAdmin = GetCurrentUserRole("Admin").Result;
+                bool isSameEngineer = currentUser.EngID == testJob.TechnicianID;
+                bool isNotCompleted = testJob.Status != "Completed";
+
+                if (isNotCompleted && (isSameEngineer || isAdmin || isTechAdmin))
+                {
+                    TestJob OnGoingtestJob = testingRepo.TestJobs.FirstOrDefault(m => m.TechnicianID == testJob.TechnicianID && m.Status == "Working on it");
+                    Stop ReturnedFromCompleteStop = testingRepo.Stops.LastOrDefault(p => p.TestJobID == testJob.TestJobID);
+                    if (OnGoingtestJob != null)
+                    {
+                        TempData["alert"] = $"alert-danger";
+                        TempData["message"] = $"Error, Tiene un trabajo activo, intente de nuevo o contacte al admin";
+                        return RedirectToAction("Index", "Home");
+                    }
+                    else if (ReturnedFromCompleteStop.Reason1 == 982)
+                    {
+                        TimeSpan auxTime = (DateTime.Now - ReturnedFromCompleteStop.StartDate);
+                        ReturnedFromCompleteStop.Elapsed += auxTime;
+                        ReturnedFromCompleteStop.StopDate = DateTime.Now;
+                        testingRepo.SaveStop(ReturnedFromCompleteStop);
+
+                        testJob.Status = "Working on it";
+                        testingRepo.SaveTestJob(testJob);
+                        return ContinueStep(testJob.TestJobID);
+                    }
+                    Stop CurrentStop = testingRepo.Stops.FirstOrDefault(p => p.TestJobID == testJob.TestJobID && p.Reason2 == 0 && p.Critical == true);
+                    string Reason1Name = testingRepo.Reasons1.FirstOrDefault(m => m.Reason1ID == CurrentStop.Reason1).Description;
+                    Job job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == testJob.JobID);
+                    return View("WaitingForRestar", new TestJobViewModel { Job = job, Stop = CurrentStop, Reason1Name = Reason1Name });
+                }
+                else
+                {
+                    TempData["alert"] = $"alert-danger";
+                    if (isNotCompleted == false) TempData["message"] = $"Error, El Testjob ya ha sido completado, intente de nuevo o contacte al Admin";
+                    else TempData["message"] = $"Error, El Testjob a sido reasignado, intente de nuevo o contacte al Admin";
+
+                    return RedirectToAction("Index", "Home");
+                }
+
+            }
+            else
             {
                 TempData["alert"] = $"alert-danger";
-                TempData["message"] = $"Error, Tiene un trabajo activo, intente de nuevo o contacte al admin";
+                TempData["message"] = $"Error, El Testjob no existe o a sido eliminado, intente de nuevo o contacte al Admin";
                 return RedirectToAction("Index", "Home");
             }
-            else if (ReturnedFromCompleteStop.Reason1 == 982)
-            {
-                TimeSpan auxTime = (DateTime.Now - ReturnedFromCompleteStop.StartDate);
-                ReturnedFromCompleteStop.Elapsed += auxTime;
-                ReturnedFromCompleteStop.StopDate = DateTime.Now;
-                testingRepo.SaveStop(ReturnedFromCompleteStop);
-
-                testJob.Status = "Working on it";
-                testingRepo.SaveTestJob(testJob);
-                return ContinueStep(testJob.TestJobID);
-            }
-            Stop CurrentStop = testingRepo.Stops.FirstOrDefault(p => p.TestJobID == testJob.TestJobID && p.Reason2 == 0 && p.Critical == true);
-            string Reason1Name = testingRepo.Reasons1.FirstOrDefault(m => m.Reason1ID == CurrentStop.Reason1).Description;
-            Job job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == testJob.JobID);
-            return View("WaitingForRestar", new TestJobViewModel { Job = job, Stop = CurrentStop, Reason1Name = Reason1Name });
         }
 
         public IActionResult RestartReassignment(int ID)
         {
             TestJob testJob = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == ID);
-            TestJob OnGoingtestJob = testingRepo.TestJobs.FirstOrDefault(m => m.TechnicianID == testJob.TechnicianID && m.Status == "Working on it");
 
-            Stop ReassignmentStop = testingRepo.Stops.LastOrDefault(p => p.TestJobID == testJob.TestJobID && p.Reason1 == 980);
-            Stop PreviusStop = testingRepo.Stops.FirstOrDefault(p => p.TestJobID == testJob.TestJobID && p.Reason2 == 0 && p.Critical == true);
-
-            if (OnGoingtestJob != null)
+            if (testJob != null)
             {
-                TempData["alert"] = $"alert-danger";
-                TempData["message"] = $"Error, Tiene un trabajo activo, intente de nuevo o contacte al admin";
-                return RedirectToAction("Index", "Home");
-            }
-            else if (PreviusStop != null)
-            {
-                TimeSpan auxTime = (DateTime.Now - ReassignmentStop.StartDate);
-                ReassignmentStop.Elapsed += auxTime;
-                ReassignmentStop.StopDate = DateTime.Now;
-                testingRepo.SaveStop(ReassignmentStop);
+                AppUser currentUser = GetCurrentUser().Result;
+                bool isTechAdmin = GetCurrentUserRole("TechAdmin").Result;
+                bool isAdmin = GetCurrentUserRole("Admin").Result;
+                bool isSameEngineer = currentUser.EngID == testJob.TechnicianID;
+                bool isNotCompleted = testJob.Status != "Completed";
+
+                if (isNotCompleted && (isSameEngineer || isAdmin || isTechAdmin))
+                {
+                    TestJob OnGoingtestJob = testingRepo.TestJobs.FirstOrDefault(m => m.TechnicianID == testJob.TechnicianID && m.Status == "Working on it");
+
+                    Stop ReassignmentStop = testingRepo.Stops.LastOrDefault(p => p.TestJobID == testJob.TestJobID && p.Reason1 == 980);
+                    Stop PreviusStop = testingRepo.Stops.FirstOrDefault(p => p.TestJobID == testJob.TestJobID && p.Reason2 == 0 && p.Critical == true);
+
+                    if (OnGoingtestJob != null)
+                    {
+                        TempData["alert"] = $"alert-danger";
+                        TempData["message"] = $"Error, Tiene un trabajo activo, intente de nuevo o contacte al admin";
+                        return RedirectToAction("Index", "Home");
+                    }
+                    else if (PreviusStop != null)
+                    {
+                        TimeSpan auxTime = (DateTime.Now - ReassignmentStop.StartDate);
+                        ReassignmentStop.Elapsed += auxTime;
+                        ReassignmentStop.StopDate = DateTime.Now;
+                        testingRepo.SaveStop(ReassignmentStop);
 
 
-                PreviusStop.StartDate = DateTime.Now;
-                PreviusStop.StopDate = DateTime.Now;
-                testingRepo.SaveStop(PreviusStop);
+                        PreviusStop.StartDate = DateTime.Now;
+                        PreviusStop.StopDate = DateTime.Now;
+                        testingRepo.SaveStop(PreviusStop);
 
-                testJob.Status = "Stopped";
-                testingRepo.SaveTestJob(testJob);
-                return WaitingForRestar(testJob.TestJobID);
+                        testJob.Status = "Stopped";
+                        testingRepo.SaveTestJob(testJob);
+                        return WaitingForRestar(testJob.TestJobID);
+                    }
+                    else
+                    {
+                        TimeSpan auxTime = (DateTime.Now - ReassignmentStop.StartDate);
+                        ReassignmentStop.Elapsed += auxTime;
+                        ReassignmentStop.StopDate = DateTime.Now;
+                        testingRepo.SaveStop(ReassignmentStop);
+
+                        testJob.Status = "Working on it";
+                        testingRepo.SaveTestJob(testJob);
+                        return ContinueStep(testJob.TestJobID);
+                    }
+
+                }
+                else
+                {
+                    TempData["alert"] = $"alert-danger";
+                    if (isNotCompleted == false) TempData["message"] = $"Error, El Testjob ya ha sido completado, intente de nuevo o contacte al Admin";
+                    else TempData["message"] = $"Error, El Testjob a sido reasignado, intente de nuevo o contacte al Admin";
+
+                    return RedirectToAction("Index", "Home");
+                }
+
             }
             else
             {
-                TimeSpan auxTime = (DateTime.Now - ReassignmentStop.StartDate);
-                ReassignmentStop.Elapsed += auxTime;
-                ReassignmentStop.StopDate = DateTime.Now;
-                testingRepo.SaveStop(ReassignmentStop);
-
-                testJob.Status = "Working on it";
-                testingRepo.SaveTestJob(testJob);
-                return ContinueStep(testJob.TestJobID);
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"Error, El Testjob no existe o a sido eliminado, intente de nuevo o contacte al Admin";
+                return RedirectToAction("Index", "Home");
             }
         }
 
