@@ -75,6 +75,8 @@ namespace ProdFloor.Models.ViewModels.TestJob
 
         public bool isNotDummy { get; set; }
 
+        public string JobTypeName { get; set; }
+
 
     }
 }

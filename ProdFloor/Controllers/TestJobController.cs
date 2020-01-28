@@ -272,6 +272,7 @@ namespace ProdFloor.Controllers
                 testJob.JobLabel = nextViewModel.TestJob.JobLabel;
                 testingRepo.SaveTestJob(testJob);
                 nextViewModel.TestJob = testJob;
+                nextViewModel.JobTypeName = itemRepository.JobTypes.FirstOrDefault(m => m.JobTypeID == nextViewModel.Job.JobTypeID).Name;
                 TempData["message"] = $"everything was saved";
 
                 return NewTestFeatures(nextViewModel);
@@ -344,7 +345,7 @@ namespace ProdFloor.Controllers
                 }
 
 
-
+                nextViewModel.JobTypeName = itemRepository.JobTypes.FirstOrDefault(m => m.JobTypeID == nextViewModel.Job.JobTypeID).Name;
                 nextViewModel.TestFeature = new TestFeature();
                 nextViewModel.TestFeature.TestJobID = nextViewModel.TestJob.TestJobID;
                 nextViewModel.CurrentTab = "NewFeatures";
@@ -491,6 +492,7 @@ namespace ProdFloor.Controllers
                     break;
 
             }
+            nextViewModel.JobTypeName = itemRepository.JobTypes.FirstOrDefault(m => m.JobTypeID == CurrentJob.JobTypeID).Name;
             return View(nextViewModel);
         }
 
@@ -564,7 +566,7 @@ namespace ProdFloor.Controllers
                     break;
 
             }
-
+            nextViewModel.JobTypeName = itemRepository.JobTypes.FirstOrDefault(m => m.JobTypeID == CurrentJob.JobTypeID).Name;
             TempData["message"] = $"everything was saved";
             return View(nextViewModel);
         }
