@@ -358,13 +358,42 @@ namespace ProdFloor.Controllers
         }
 
 
-        public ViewResult FinishPendingStops(int TestJobID)
+        public IActionResult FinishPendingStops(int TestJobID)
         {
-            TestJob testJob = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == TestJobID);
-            Stop CurrentStop = testingRepo.Stops.FirstOrDefault(p => p.TestJobID == testJob.TestJobID);
 
-            Job job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == testJob.JobID);
-            return View(new TestJobViewModel { Job = job, Stop = CurrentStop, TestJob = testJob });
+            TestJob testJob = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == TestJobID);
+
+            if (testJob != null)
+            {
+
+                bool isTechAdmin = GetCurrentUserRole("TechAdmin").Result;
+                bool isAdmin = GetCurrentUserRole("Admin").Result;
+                bool isNotCompleted = testJob.Status != "Completed";
+
+                if (isNotCompleted && (isAdmin || isTechAdmin))
+                {
+                    Stop CurrentStop = testingRepo.Stops.FirstOrDefault(p => p.TestJobID == testJob.TestJobID);
+
+                    Job job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == testJob.JobID);
+                    return View(new TestJobViewModel { Job = job, Stop = CurrentStop, TestJob = testJob });
+
+                }
+                else
+                {
+                    TempData["alert"] = $"alert-danger";
+                    if (isNotCompleted == false) TempData["message"] = $"Error, El Testjob ya ha sido completado, intente de nuevo o contacte al Admin";
+                    else TempData["message"] = $"Error, El Testjob a sido reasignado, intente de nuevo o contacte al Admin";
+
+                    return RedirectToAction("Index", "Home");
+                }
+
+            }
+            else
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"Error, El Testjob no existe o a sido eliminado, intente de nuevo o contacte al Admin";
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         [HttpPost]

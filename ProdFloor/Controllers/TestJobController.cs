@@ -1413,29 +1413,85 @@ namespace ProdFloor.Controllers
         [HttpPost]
         public IActionResult Delete(int ID)
         {
-            bool admin = GetCurrentUserRole("Admin").Result;
-            TestJob deletedItem = testingRepo.DeleteTestJob(ID);
+            TestJob testJob = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == ID);
 
-            if (deletedItem != null)
+            if (testJob != null)
             {
-                TempData["message"] = $"Testjob with #PO {deletedItem.SinglePO} was deleted";
+
+                bool isTechAdmin = GetCurrentUserRole("TechAdmin").Result;
+                bool isAdmin = GetCurrentUserRole("Admin").Result;
+                bool isNotCompleted = testJob.Status != "Completed";
+
+                if (isNotCompleted && (isAdmin || isTechAdmin))
+                {
+                    TestJob deletedItem = testingRepo.DeleteTestJob(ID);
+
+
+                    if (deletedItem != null)
+                    {
+                        TempData["message"] = $"Testjob with #PO {deletedItem.SinglePO} was deleted";
+                    }
+                    if (isAdmin) return RedirectToAction("SearchTestJob", "TestJob");
+                    return RedirectToAction("Index", "Home");
+
+                }
+                else
+                {
+                    TempData["alert"] = $"alert-danger";
+                    if (isNotCompleted == false) TempData["message"] = $"Error, El Testjob ya ha sido completado, intente de nuevo o contacte al Admin";
+                    else TempData["message"] = $"Error, El Testjob a sido reasignado, intente de nuevo o contacte al Admin";
+
+                    return RedirectToAction("Index", "Home");
+                }
+
             }
-            if (admin) return RedirectToAction("SearchTestJob", "TestJob");
-            return RedirectToAction("Index", "Home");
+            else
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"Error, El Testjob no existe o a sido eliminado, intente de nuevo o contacte al Admin";
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         [HttpPost]
         public IActionResult FakeDelete(int ID)
         {
-            bool admin = GetCurrentUserRole("Admin").Result;
-            TestJob deletedItem = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == ID);
+            TestJob testJob = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == ID);
 
-            deletedItem.Status = "Deleted";
-            testingRepo.SaveTestJob(deletedItem);
-            TempData["message"] = $"You have deleted the TestJob with PO# {deletedItem.SinglePO}";
+            if (testJob != null)
+            {
+                bool isTechAdmin = GetCurrentUserRole("TechAdmin").Result;
+                bool isAdmin = GetCurrentUserRole("Admin").Result;
+                bool isCompleted = testJob.Status == "Completed";
 
-            if (admin) return RedirectToAction("SearchTestJob", "TestJob");
-            return RedirectToAction("Index", "Home");
+                if (isCompleted && (isAdmin || isTechAdmin))
+                {
+
+                    TestJob deletedItem = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == ID);
+
+                    deletedItem.Status = "Deleted";
+                    testingRepo.SaveTestJob(deletedItem);
+                    TempData["message"] = $"You have deleted the TestJob with PO# {deletedItem.SinglePO}";
+
+                    if (isAdmin) return RedirectToAction("SearchTestJob", "TestJob");
+                    return RedirectToAction("Index", "Home");
+
+                }
+                else
+                {
+                    TempData["alert"] = $"alert-danger";
+                    TempData["message"] = $"Error, El Testjob se encuentra activo, intente de nuevo o contacte al Admin";
+
+                    return RedirectToAction("Index", "Home");
+                }
+
+            }
+            else
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"Error, El Testjob no existe o a sido eliminado, intente de nuevo o contacte al Admin";
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         [HttpPost]
@@ -1443,11 +1499,37 @@ namespace ProdFloor.Controllers
         {
             TestJob restoredItem = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == ID);
 
-            restoredItem.Status = "Completed";
-            testingRepo.SaveTestJob(restoredItem);
-            TempData["message"] = $"You have restored the TestJob with PO# {restoredItem.SinglePO}";
+            if (restoredItem != null)
+            {
+                bool isTechAdmin = GetCurrentUserRole("TechAdmin").Result;
+                bool isAdmin = GetCurrentUserRole("Admin").Result;
+                bool isCompleted = restoredItem.Status == "Completed";
 
-            return RedirectToAction("SearchTestJob", "TestJob");
+                if (isCompleted && (isAdmin || isTechAdmin))
+                {
+
+                    restoredItem.Status = "Completed";
+                    testingRepo.SaveTestJob(restoredItem);
+                    TempData["message"] = $"You have restored the TestJob with PO# {restoredItem.SinglePO}";
+
+                    return RedirectToAction("SearchTestJob", "TestJob");
+
+                }
+                else
+                {
+                    TempData["alert"] = $"alert-danger";
+                    TempData["message"] = $"Error, El Testjob se encuentra activo, intente de nuevo o contacte al Admin";
+
+                    return RedirectToAction("Index", "Home");
+                }
+
+            }
+            else
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"Error, El Testjob no existe o a sido eliminado, intente de nuevo o contacte al Admin";
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         public ViewResult StopsFromTestJob(int ID, int page = 1)
@@ -1801,77 +1883,104 @@ namespace ProdFloor.Controllers
         public IActionResult Reassignment(TestJobViewModel testJobView)
         {
             TestJob testJob = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == testJobView.TestJob.TestJobID);
-            string StationName = testingRepo.Stations.FirstOrDefault(m => m.StationID == testJobView.NewStationID).Label;
 
-            if (testJob.TechnicianID == testJobView.NewTechnicianID && testJob.StationID == testJobView.NewStationID)
+            if (testJob != null)
             {
-                TempData["alert"] = $"alert-danger";
-                TempData["message"] = $"You cannot reassing the CrossApprover and the station because are the same";
-                return RedirectToAction("SearchTestJob");
-            }
-            else if (testJob.TestJobID != testJobView.NewTechnicianID || testJob.StationID != testJobView.NewStationID)
-            {
-                if (testJob.Status == "Stopped")
+
+                bool isTechAdmin = GetCurrentUserRole("TechAdmin").Result;
+                bool isAdmin = GetCurrentUserRole("Admin").Result;
+                bool isNotCompleted = testJob.Status != "Completed";
+
+                if (isNotCompleted && (isAdmin || isTechAdmin))
                 {
-                    Stop CurrentStop = testingRepo.Stops.LastOrDefault(p => p.Critical == true && p.Reason2 == 0);
-                    if (CurrentStop != null)
+                    string StationName = testingRepo.Stations.FirstOrDefault(m => m.StationID == testJobView.NewStationID).Label;
+
+                    if (testJob.TechnicianID == testJobView.NewTechnicianID && testJob.StationID == testJobView.NewStationID)
                     {
-                        Stop CopyStop = new Stop();
-
-                        TimeSpan auxTime = (DateTime.Now - CurrentStop.StartDate);
-                        CurrentStop.Elapsed += auxTime;
-                        CurrentStop.StopDate = DateTime.Now;
-                        CurrentStop.Description = "Job was reassigned";
-                        testingRepo.SaveStop(CurrentStop);
-
-
-                        CopyStop.Reason1 = CurrentStop.Reason1;
-                        CopyStop.Reason2 = CurrentStop.Reason2;
-                        CopyStop.Reason3 = CurrentStop.Reason3;
-                        CopyStop.Reason4 = CurrentStop.Reason4;
-                        CopyStop.Reason5ID = CurrentStop.Reason5ID;
-                        CopyStop.Critical = CurrentStop.Critical;
-                        CopyStop.Description = CurrentStop.Description;
-                        CopyStop.TestJobID = CurrentStop.TestJobID;
-
-                        CopyStop.StartDate = DateTime.Now;
-                        CopyStop.StopDate = DateTime.Now;
-                        CopyStop.Elapsed = new DateTime(1, 1, 1, 0, 0, 0);
-                        CopyStop.AuxStationID = testJobView.NewStationID;
-                        CopyStop.AuxTechnicianID = testJobView.NewTechnicianID;
-                        testingRepo.SaveStop(CopyStop);
+                        TempData["alert"] = $"alert-danger";
+                        TempData["message"] = $"You cannot reassing the CrossApprover and the station because are the same";
+                        return RedirectToAction("SearchTestJob");
                     }
+                    else if (testJob.TestJobID != testJobView.NewTechnicianID || testJob.StationID != testJobView.NewStationID)
+                    {
+                        if (testJob.Status == "Stopped")
+                        {
+                            Stop CurrentStop = testingRepo.Stops.LastOrDefault(p => p.Critical == true && p.Reason2 == 0);
+                            if (CurrentStop != null)
+                            {
+                                Stop CopyStop = new Stop();
 
+                                TimeSpan auxTime = (DateTime.Now - CurrentStop.StartDate);
+                                CurrentStop.Elapsed += auxTime;
+                                CurrentStop.StopDate = DateTime.Now;
+                                CurrentStop.Description = "Job was reassigned";
+                                testingRepo.SaveStop(CurrentStop);
+
+
+                                CopyStop.Reason1 = CurrentStop.Reason1;
+                                CopyStop.Reason2 = CurrentStop.Reason2;
+                                CopyStop.Reason3 = CurrentStop.Reason3;
+                                CopyStop.Reason4 = CurrentStop.Reason4;
+                                CopyStop.Reason5ID = CurrentStop.Reason5ID;
+                                CopyStop.Critical = CurrentStop.Critical;
+                                CopyStop.Description = CurrentStop.Description;
+                                CopyStop.TestJobID = CurrentStop.TestJobID;
+
+                                CopyStop.StartDate = DateTime.Now;
+                                CopyStop.StopDate = DateTime.Now;
+                                CopyStop.Elapsed = new DateTime(1, 1, 1, 0, 0, 0);
+                                CopyStop.AuxStationID = testJobView.NewStationID;
+                                CopyStop.AuxTechnicianID = testJobView.NewTechnicianID;
+                                testingRepo.SaveStop(CopyStop);
+                            }
+
+                        }
+                        testJob.TechnicianID = testJobView.NewTechnicianID;
+                        testJob.StationID = testJobView.NewStationID;
+                        testJob.Status = "Reassignment";
+                        testingRepo.SaveTestJob(testJob);
+                        Stop NewtStop = new Stop
+                        {
+                            TestJobID = testJob.TestJobID,
+                            Reason1 = 980,
+                            Reason2 = 980,
+                            Reason3 = 980,
+                            Reason4 = 980,
+                            Reason5ID = 980,
+                            Description = "Job was reassigned",
+                            Critical = true,
+                            StartDate = DateTime.Now,
+                            StopDate = DateTime.Now,
+                            Elapsed = new DateTime(1, 1, 1, 0, 0, 0),
+                            AuxStationID = testJob.StationID,
+                            AuxTechnicianID = testJob.TechnicianID,
+                        };
+                        testingRepo.SaveStop(NewtStop);
+                        TempData["message"] = $"You have reassinged the technician for the TestJob PO# {testJob.SinglePO} to T{testJobView.NewTechnicianID} and the station to {StationName}";
+                        return RedirectToAction("SearchTestJob");
+                    }
+                    else
+                    {
+                        TempData["alert"] = $"alert-danger";
+                        TempData["message"] = $"You know nothing John Snow";
+                        return RedirectToAction("SearchTestJob");
+                    }
                 }
-                testJob.TechnicianID = testJobView.NewTechnicianID;
-                testJob.StationID = testJobView.NewStationID;
-                testJob.Status = "Reassignment";
-                testingRepo.SaveTestJob(testJob);
-                Stop NewtStop = new Stop
+                else
                 {
-                    TestJobID = testJob.TestJobID,
-                    Reason1 = 980,
-                    Reason2 = 980,
-                    Reason3 = 980,
-                    Reason4 = 980,
-                    Reason5ID = 980,
-                    Description = "Job was reassigned",
-                    Critical = true,
-                    StartDate = DateTime.Now,
-                    StopDate = DateTime.Now,
-                    Elapsed = new DateTime(1, 1, 1, 0, 0, 0),
-                    AuxStationID = testJob.StationID,
-                    AuxTechnicianID = testJob.TechnicianID,
-                };
-                testingRepo.SaveStop(NewtStop);
-                TempData["message"] = $"You have reassinged the technician for the TestJob PO# {testJob.SinglePO} to T{testJobView.NewTechnicianID} and the station to {StationName}";
-                return RedirectToAction("SearchTestJob");
+                    TempData["alert"] = $"alert-danger";
+                    if (isNotCompleted == false) TempData["message"] = $"Error, El Testjob ya ha sido completado, intente de nuevo o contacte al Admin";
+                    else TempData["message"] = $"Error, El Testjob a sido reasignado, intente de nuevo o contacte al Admin";
+
+                    return RedirectToAction("Index", "Home");
+                }
+
             }
             else
             {
                 TempData["alert"] = $"alert-danger";
-                TempData["message"] = $"You know nothing John Snow";
-                return RedirectToAction("SearchTestJob");
+                TempData["message"] = $"Error, El Testjob no existe o a sido eliminado, intente de nuevo o contacte al Admin";
+                return RedirectToAction("Index", "Home");
             }
 
         }
@@ -1879,38 +1988,67 @@ namespace ProdFloor.Controllers
         public IActionResult ReturnFromComplete(TestJobViewModel testJobView)
         {
             TestJob testJob = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == testJobView.TestJob.TestJobID);
-            TestJob OnGoingtestJob = testingRepo.TestJobs.FirstOrDefault(m => m.TechnicianID == testJob.TechnicianID && m.Status == "Working on it");
-            StepsForJob stepsForJob = testingRepo.StepsForJobs.OrderBy(s => s.Consecutivo).Where(p => p.TestJobID == testJob.TestJobID && p.Obsolete == false).Last();
-            stepsForJob.Complete = false;
-            testingRepo.SaveStepsForJob(stepsForJob);
-            if (OnGoingtestJob != null)
+
+            if (testJob != null)
             {
-                testJob.Status = "Stopped";
-                testingRepo.SaveTestJob(testJob);
-                Stop NewtStop = new Stop
+                bool isTechAdmin = GetCurrentUserRole("TechAdmin").Result;
+                bool isAdmin = GetCurrentUserRole("Admin").Result;
+                bool isCompleted = testJob.Status == "Completed";
+
+                if (isCompleted && (isAdmin || isTechAdmin))
                 {
-                    TestJobID = testJob.TestJobID,
-                    Reason1 = 982,
-                    Reason2 = 982,
-                    Reason3 = 982,
-                    Reason4 = 982,
-                    Reason5ID = 982,
-                    Description = "The admin was returned the job to working on it",
-                    Critical = true,
-                    StartDate = DateTime.Now,
-                    StopDate = DateTime.Now,
-                    Elapsed = new DateTime(1, 1, 1, 0, 0, 0),
-                    AuxStationID = testJob.StationID,
-                    AuxTechnicianID = testJob.TechnicianID,
-                };
-                testingRepo.SaveStop(NewtStop);
-                TempData["message"] = $"You have returned the TestJob PO# {testJob.SinglePO} to stopped";
-                return RedirectToAction("SearchTestJob");
+
+
+                    TestJob OnGoingtestJob = testingRepo.TestJobs.FirstOrDefault(m => m.TechnicianID == testJob.TechnicianID && m.Status == "Working on it");
+                    StepsForJob stepsForJob = testingRepo.StepsForJobs.OrderBy(s => s.Consecutivo).Where(p => p.TestJobID == testJob.TestJobID && p.Obsolete == false).Last();
+                    stepsForJob.Complete = false;
+                    testingRepo.SaveStepsForJob(stepsForJob);
+                    if (OnGoingtestJob != null)
+                    {
+                        testJob.Status = "Stopped";
+                        testingRepo.SaveTestJob(testJob);
+                        Stop NewtStop = new Stop
+                        {
+                            TestJobID = testJob.TestJobID,
+                            Reason1 = 982,
+                            Reason2 = 982,
+                            Reason3 = 982,
+                            Reason4 = 982,
+                            Reason5ID = 982,
+                            Description = "The admin was returned the job to working on it",
+                            Critical = true,
+                            StartDate = DateTime.Now,
+                            StopDate = DateTime.Now,
+                            Elapsed = new DateTime(1, 1, 1, 0, 0, 0),
+                            AuxStationID = testJob.StationID,
+                            AuxTechnicianID = testJob.TechnicianID,
+                        };
+                        testingRepo.SaveStop(NewtStop);
+                        TempData["message"] = $"You have returned the TestJob PO# {testJob.SinglePO} to stopped";
+                        return RedirectToAction("SearchTestJob");
+                    }
+                    testJob.Status = "Working on it";
+                    testingRepo.SaveTestJob(testJob);
+                    TempData["message"] = $"You have returned the TestJob PO# {testJob.SinglePO} to Working on it";
+                    return RedirectToAction("SearchTestJob");
+
+
+                }
+                else
+                {
+                    TempData["alert"] = $"alert-danger";
+                    TempData["message"] = $"Error, El Testjob se encuentra activo, intente de nuevo o contacte al Admin";
+
+                    return RedirectToAction("Index", "Home");
+                }
+
             }
-            testJob.Status = "Working on it";
-            testingRepo.SaveTestJob(testJob);
-            TempData["message"] = $"You have returned the TestJob PO# {testJob.SinglePO} to Working on it";
-            return RedirectToAction("SearchTestJob");
+            else
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"Error, El Testjob no existe o a sido eliminado, intente de nuevo o contacte al Admin";
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         public void ShiftEnd(int TechnicianID)
@@ -2092,15 +2230,44 @@ namespace ProdFloor.Controllers
 
         }
 
-        public ViewResult JobCompletion(int TestJobID)
+        public IActionResult JobCompletion(int TestJobID)
         {
+            TestJob testJob = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == TestJobID);
 
-            JobCompletionViewModel jobCompletion = new JobCompletionViewModel()
+            if (testJob != null)
             {
-                TestJob = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == TestJobID),
-                StepsForJobList = testingRepo.StepsForJobs.Where(m => m.TestJobID == TestJobID && m.Obsolete == false && m.Complete == false).OrderBy(m => m.Consecutivo).ToList(),
-            };
-            return View(jobCompletion);
+
+                bool isTechAdmin = GetCurrentUserRole("TechAdmin").Result;
+                bool isAdmin = GetCurrentUserRole("Admin").Result;
+                bool isNotCompleted = testJob.Status != "Completed";
+
+                if (isNotCompleted && (isAdmin || isTechAdmin))
+                {
+
+                    JobCompletionViewModel jobCompletion = new JobCompletionViewModel()
+                    {
+                        TestJob = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == TestJobID),
+                        StepsForJobList = testingRepo.StepsForJobs.Where(m => m.TestJobID == TestJobID && m.Obsolete == false && m.Complete == false).OrderBy(m => m.Consecutivo).ToList(),
+                    };
+                    return View(jobCompletion);
+
+                }
+                else
+                {
+                    TempData["alert"] = $"alert-danger";
+                    if (isNotCompleted == false) TempData["message"] = $"Error, El Testjob ya ha sido completado, intente de nuevo o contacte al Admin";
+                    else TempData["message"] = $"Error, El Testjob a sido reasignado, intente de nuevo o contacte al Admin";
+
+                    return RedirectToAction("Index", "Home");
+                }
+
+            }
+            else
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"Error, El Testjob no existe o a sido eliminado, intente de nuevo o contacte al Admin";
+                return RedirectToAction("Index", "Home");
+            }
 
         }
 
