@@ -193,24 +193,70 @@ namespace ProdFloor.Controllers
                             };
                             testingRepo.SaveTestJob(testJob);
 
-                            var currentTestJob = testingRepo.TestJobs
-                                .FirstOrDefault(p => p.TestJobID == testingRepo.TestJobs.Max(x => x.TestJobID));
+                            var currentTestJob = testingRepo.TestJobs.Last(s => s.TestJobID == testJob.TestJobID);
 
 
                             TestJobViewModel NewtestJobView = new TestJobViewModel();
                             NewtestJobView.TestJob = currentTestJob;
                             NewtestJobView.Job = _jobSearch;
-                            NewtestJobView.JobExtension = jobRepo.JobsExtensions.FirstOrDefault(m => m.JobID == _jobSearch.JobID);
-                            NewtestJobView.HydroSpecific = jobRepo.HydroSpecifics.FirstOrDefault(m => m.JobID == _jobSearch.JobID);
-                            NewtestJobView.GenericFeatures = jobRepo.GenericFeaturesList.FirstOrDefault(m => m.JobID == _jobSearch.JobID);
-                            NewtestJobView.Indicator = jobRepo.Indicators.FirstOrDefault(m => m.JobID == _jobSearch.JobID);
-                            NewtestJobView.HoistWayData = jobRepo.HoistWayDatas.FirstOrDefault(m => m.JobID == _jobSearch.JobID);
                             NewtestJobView.POJobSearch = testJob.SinglePO;
                             NewtestJobView.PO = jobRepo.POs.FirstOrDefault(m => m.JobID == _jobSearch.JobID);
                             NewtestJobView.isNotDummy = true;
                             NewtestJobView.TestFeature = new TestFeature();
                             NewtestJobView.TestFeature.TestJobID = testJob.TestJobID;
                             NewtestJobView.CurrentTab = "NewFeatures";
+
+                            int jobtypeID = jobRepo.Jobs.First(m => m.JobID == _jobSearch.JobID).JobTypeID;
+                            switch (JobTypeName(jobtypeID))
+                            {
+                                case "M2000":
+                                case "M4000":
+                                    NewtestJobView.JobExtension = jobRepo.JobsExtensions.FirstOrDefault(m => m.JobID == NewtestJobView.Job.JobID);
+                                    NewtestJobView.HydroSpecific = jobRepo.HydroSpecifics.FirstOrDefault(m => m.JobID == NewtestJobView.Job.JobID);
+                                    NewtestJobView.GenericFeatures = jobRepo.GenericFeaturesList.FirstOrDefault(m => m.JobID == NewtestJobView.Job.JobID);
+                                    NewtestJobView.Indicator = jobRepo.Indicators.FirstOrDefault(m => m.JobID == NewtestJobView.Job.JobID);
+                                    NewtestJobView.HoistWayData = jobRepo.HoistWayDatas.FirstOrDefault(m => m.JobID == NewtestJobView.Job.JobID);
+                                    break;
+                                case "ElmHydro":
+                                    Element element = jobRepo.Elements.FirstOrDefault(m => m.JobID == NewtestJobView.Job.JobID);
+                                    ElementHydro elementHydro = jobRepo.ElementHydros.FirstOrDefault(m => m.JobID == NewtestJobView.Job.JobID);
+                                    NewtestJobView.JobExtension = new JobExtension();
+                                    NewtestJobView.HydroSpecific = new HydroSpecific();
+                                    NewtestJobView.GenericFeatures = new GenericFeatures();
+                                    NewtestJobView.Indicator = new Indicator();
+                                    NewtestJobView.HoistWayData = new HoistWayData();
+
+                                    NewtestJobView.HoistWayData.LandingSystemID = element.LandingSystemID;
+                                    if (element.DoorOperatorID == 7) NewtestJobView.MOD = true;
+                                    else NewtestJobView.MOD = false;
+                                    if (element.DoorOperatorID == 2) NewtestJobView.Manual = true;
+                                    else NewtestJobView.Manual = false;
+
+                                    NewtestJobView.HydroSpecific.BatteryBrand = element.HAPS == true ? "HAPS" : "";
+                                    NewtestJobView.JobExtension.JobTypeMain = "Simplex";
+
+
+                                    break;
+                                case "ElmTract":
+                                    Element element2 = jobRepo.Elements.FirstOrDefault(m => m.JobID == NewtestJobView.Job.JobID);
+                                    ElementTraction elementTract = jobRepo.ElementTractions.FirstOrDefault(m => m.JobID == NewtestJobView.Job.JobID);
+                                    NewtestJobView.JobExtension = new JobExtension();
+                                    NewtestJobView.HydroSpecific = new HydroSpecific();
+                                    NewtestJobView.GenericFeatures = new GenericFeatures();
+                                    NewtestJobView.Indicator = new Indicator();
+                                    NewtestJobView.HoistWayData = new HoistWayData();
+
+                                    NewtestJobView.HoistWayData.LandingSystemID = element2.LandingSystemID;
+                                    if (element2.DoorOperatorID == 7) NewtestJobView.MOD = true;
+                                    else NewtestJobView.MOD = false;
+                                    if (element2.DoorOperatorID == 2) NewtestJobView.Manual = true;
+                                    else NewtestJobView.Manual = false;
+
+                                    NewtestJobView.HydroSpecific.BatteryBrand = element2.HAPS == true ? "HAPS" : "";
+                                    NewtestJobView.JobExtension.JobTypeMain = "Simplex";
+                                    break;
+
+                            }
 
 
                             return View("NextForm", NewtestJobView);

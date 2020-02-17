@@ -1,6 +1,6 @@
 ﻿@model DashboardIndexViewModel
 @{
-    ViewBag.Title = "Search Job";
+    ViewBag.Title = "Super User Dashboard";
     Layout = "_AdminLayoutWO";
     <script>
         $(document).ready(function () {
@@ -10,12 +10,7 @@
             $('[data-tooltip="tooltip"]').tooltip();
         });
     </script>
-}
-
-<div class="row" style="padding-right:20px">
-    <h2 class="col-sm-10">Super User Dashboard</h2>
-</div>
-<br />
+    }
 <form asp-controller="Home" asp-action="SuperUserDashBoard" method="get">
     <div class="input-group">
 

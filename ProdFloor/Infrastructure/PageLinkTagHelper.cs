@@ -3967,7 +3967,7 @@ namespace ProdFloor.Infrastructure
             {
                 reason1ID = SelectedValue;
             }
-            IQueryable<Reason1> reason1s = repository.Reasons1.Where(m => m.Description != "-").AsQueryable();
+            IQueryable<Reason1> reason1s = repository.Reasons1.Where(m => m.Description != "-").OrderBy(s => s.Description).AsQueryable();
             foreach (Reason1 item in reason1s)
             {
                 TagBuilder tag = new TagBuilder("option");
@@ -4058,7 +4058,7 @@ namespace ProdFloor.Infrastructure
             {
                 reason2ID = SelectedValue;
             }
-            IQueryable<Reason2> reason2s = repository.Reasons2.Where(m => m.Description != "-").AsQueryable();
+            IQueryable<Reason2> reason2s = repository.Reasons2.Where(m => m.Description != "-").OrderBy(s => s.Description).AsQueryable();
             foreach (Reason2 item in reason2s)
             {
                 TagBuilder tag = new TagBuilder("option");
@@ -4140,7 +4140,7 @@ namespace ProdFloor.Infrastructure
             {
                 reason3ID = SelectedValue;
             }
-            IQueryable<Reason3> reason3s = repository.Reasons3.Where(m => m.Description != "-").AsQueryable();
+            IQueryable<Reason3> reason3s = repository.Reasons3.Where(m => m.Description != "-").OrderBy(s => s.Description).AsQueryable();
             foreach (Reason3 item in reason3s)
             {
                 TagBuilder tag = new TagBuilder("option");
@@ -4214,7 +4214,7 @@ namespace ProdFloor.Infrastructure
             {
                 reason4ID = SelectedValue;
             }
-            IQueryable<Reason4> reason4s = repository.Reasons4.Where(m => m.Description != "-").AsQueryable();
+            IQueryable<Reason4> reason4s = repository.Reasons4.Where(m => m.Description != "-").OrderBy(s => s.Description).AsQueryable();
             foreach (Reason4 item in reason4s)
             {
                 TagBuilder tag = new TagBuilder("option");
@@ -4281,7 +4281,7 @@ namespace ProdFloor.Infrastructure
                 Reason5 selectedR5 = repository.Reasons5.FirstOrDefault(c => c.Reason5ID == SelectedValue);
                 reason5ID = selectedR5.Reason5ID;
             }
-            IQueryable<Reason5> reason5s = repository.Reasons5.Where(m => m.Description != "-").AsQueryable();
+            IQueryable<Reason5> reason5s = repository.Reasons5.Where(m => m.Description != "-").OrderBy(s => s.Description).AsQueryable();
             foreach (Reason5 item in reason5s)
             {
                 TagBuilder tag = new TagBuilder("option");

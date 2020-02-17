@@ -572,10 +572,10 @@ namespace ProdFloor.Controllers
                 viewModel.SpecialFeatureslist = SfList;
                 int jobNumAux = viewModel.CurrentJob.JobNum;
                 viewModel.CurrentJob.JobNum = 0;
-                viewModel.CurrentUserID = currentUser.EngID;
                 viewModel.CurrentJob.Status = "Copied";
                 viewModel.POList = new List<PO> { new PO { JobID = viewModel.CurrentJob.JobID } };
                 viewModel.CurrentUserID = currentUser.EngID;
+                viewModel.CurrentJob.CrossAppEngID = 0;
                 viewModel.CurrentJob.EngID = currentUser.EngID;
                 viewModel.JobTypeName = JobTypeName(jobToCopy.JobTypeID);
 
@@ -605,10 +605,11 @@ namespace ProdFloor.Controllers
                 int jobNumAux = viewModel.CurrentJob.JobNum;
                 viewModel.CurrentJob.JobNum = 0;
                 viewModel.CurrentUserID = currentUser.EngID;
+                viewModel.CurrentJob.CrossAppEngID = 0;
+                viewModel.CurrentJob.CrossAppEngID = 0;
                 viewModel.JobTypeName = JobTypeName(jobToCopy.JobTypeID);
                 viewModel.CurrentJob.Status = "Copied";
                 viewModel.POList = new List<PO> { new PO { JobID = viewModel.CurrentJob.JobID } };
-                viewModel.CurrentUserID = currentUser.EngID;
                 viewModel.CurrentJob.EngID = currentUser.EngID;
 
                 TempData["message"] = $"You have copied the job #{jobNumAux} succesfully, please change the name, Job number & PO";
@@ -638,9 +639,9 @@ namespace ProdFloor.Controllers
                 viewModel.CurrentJob.JobNum = 0;
                 viewModel.JobTypeName = JobTypeName(jobToCopy.JobTypeID);
                 viewModel.CurrentUserID = currentUser.EngID;
+                viewModel.CurrentJob.CrossAppEngID = 0;
                 viewModel.CurrentJob.Status = "Copied";
                 viewModel.POList = new List<PO> { new PO { JobID = viewModel.CurrentJob.JobID } };
-                viewModel.CurrentUserID = currentUser.EngID;
                 viewModel.CurrentJob.EngID = currentUser.EngID;
 
                 TempData["message"] = $"You have copied the job #{jobNumAux} succesfully, please change the name, Job number & PO";

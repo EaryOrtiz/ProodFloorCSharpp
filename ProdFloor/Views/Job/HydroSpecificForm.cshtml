@@ -170,13 +170,51 @@
     <script type="text/javascript">
         $("#BatterySelected").ready(function () {
             $("#BatteryBrand").hide();
+            $("#OtherBatteryBrand").hide();
         });
         $("#BatterySelected").click(function () {
             $("#BatteryBrand")[this.checked ? "show" : "hide"]();
         });
+         $('#OtherBatteryBrandSelected').change(function () {
+            if ($(this).val() == 'Other') {
+                $('#OtherBatteryBrand').show();
+            } else {
+                $('#OtherBatteryBrand').hide();
+            }
+        });
+        $('#OtherBatteryBrandSelected').ready(function () {
+            if ($(this).val() == 'Other') {
+                $('#OtherBatteryBrand').show();
+            } else {
+                $('#OtherBatteryBrand').hide();
+            }
+        });
     </script>
 }
-@if (Model.CurrentHydroSpecific.BatteryBrand != "Other")
+else
+{
+    <script type="text/javascript">
+        $("#BatterySelected").click(function () {
+            $("#BatteryBrand")[this.checked ? "show" : "hide"]();
+        });
+        
+        $('#OtherBatteryBrandSelected').change(function () {
+            if ($(this).val() == 'Other') {
+                $('#OtherBatteryBrand').show();
+            } else {
+                $('#OtherBatteryBrand').hide();
+            }
+        });
+        $('#OtherBatteryBrandSelected').ready(function () {
+            if ($(this).val() == 'Other') {
+                $('#OtherBatteryBrand').show();
+            } else {
+                $('#OtherBatteryBrand').hide();
+            }
+        });
+    </script>
+}
+@if (Model.CurrentHydroSpecific.ValveBrand != "Other")
 {
     <script type="text/javascript">
         $("#ValveBrand").ready(function () {
