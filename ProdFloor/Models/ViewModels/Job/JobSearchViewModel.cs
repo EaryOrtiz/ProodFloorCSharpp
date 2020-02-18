@@ -16,8 +16,14 @@ namespace ProdFloor.Models.ViewModels.Job
         public List<Indicator> IndicatorList { get; set; }
         public List<HoistWayData> HoistWayDataList { get; set; }
         public List<SpecialFeatures> SpecialFeatureslist { get; set; }
+        public List<JobType> JobTypelist { get; set; }
+        public List<City> Citylist { get; set; }
+        public List<State> Statelist { get; set; }
+        public List<LandingSystem> Landinglist { get; set; }
         public PagingInfo PagingInfo { get; set; }
         public bool CleanFields { get; set; }
+
+        public int LastSearch { get; set; }
 
         //Atributos de Job
         [Display(Name ="Job Name")]

@@ -227,8 +227,23 @@ namespace ProdFloor.Controllers
             }
             #endregion
 
-            int TotalItemsSearch = jobSearchRepo.Count() + 1;
+            int TotalItemsSearch = jobSearchRepo.Count();
+            if (page == 1 )
+            {
+                searchViewModel.LastSearch = TotalItemsSearch;
+            }
+            else if(TotalItemsSearch != searchViewModel.LastSearch)
+            {
+                searchViewModel.LastSearch = TotalItemsSearch;
+                page = 1;
+            }
             searchViewModel.Status = new SelectList(statusQuery.Distinct().ToList());
+            searchViewModel.JobTypelist = itemsrepository.JobTypes.ToList();
+            searchViewModel.Citylist = itemsrepository.Cities.ToList();
+            searchViewModel.Statelist = itemsrepository.States.ToList();
+            searchViewModel.Landinglist = itemsrepository.LandingSystems.ToList();
+            searchViewModel.JobExtensionList = repository.JobsExtensions.ToList();
+            searchViewModel.HoistWayDataList = repository.HoistWayDatas.ToList();
             searchViewModel.JobsSearchList = jobSearchRepo.OrderBy(p => p.JobID).Skip((page - 1) * 5).Take(5).ToList();
             searchViewModel.PagingInfo = new PagingInfo
             {

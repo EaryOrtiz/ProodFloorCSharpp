@@ -3,22 +3,21 @@
     ViewBag.Title = "ProdFloor Users";
     Layout = "_AdminLayoutWO";
 }
-<div class="row" style="padding-right:20px">
-    <h2 class="col-sm-10">
-        Users
-    </h2>
-    <a class="btn btn-sm col-sm-2" asp-action="Create" style="background-color:dodgerblue;color:white">
-        <i class="fa fa-plus"></i>
-        New User
-    </a>
-</div>
+    <div class="row" style="float:right;padding-top:5px;padding-right:15px">
+      <a class="btn btn-primary" asp-action="Create">
+            <i class="fa fa-plus"></i>
+            New User
+        </a>
+    </div>
 <br />
 <table class="table">
     <thead style="background-color:#1B2831;color:#fff">
         <tr>
             <th scope="col">Name</th>
-            <th scope="col">Email</th>
-            <th scope="col">Options</th>
+            <th >Email</th>
+            <th >
+                Options
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -33,16 +32,16 @@
             <th scope="row">@j.UserName</th>
             <td>@j.Email</td>
             <td>
-            <form asp-action="Delete" method="post">
-                <a asp-action="Edit" class="btn btn-sm btn-warning"
-                   asp-route-Id="@j.Id">
-                    Edit
-                </a>
-                <input type="hidden" name="ID" value="@j.Id" />
-                <button type="submit" class="btn btn-danger btn-sm">
-                    Delete
-                </button>
-            </form>
+                <form asp-action="Delete" method="post">
+                    <a asp-action="Edit" class="btn btn-sm btn-warning"
+                       asp-route-Id="@j.Id">
+                        Edit
+                    </a>
+                    <input type="hidden" name="ID" value="@j.Id" />
+                    <button type="submit" class="btn btn-danger btn-sm">
+                        Delete
+                    </button>
+                </form>
             </td>
         </tr>
         }

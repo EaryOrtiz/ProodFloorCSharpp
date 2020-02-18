@@ -12,22 +12,21 @@
     </script>
     }
 <form asp-controller="Home" asp-action="SuperUserDashBoard" method="get">
-    <div class="input-group">
+    <div class="input-group" style="padding-top:15px;padding-bottom:5px">
 
         <input type="text" class="form-control form-control-sm col-5" name="jobNumber" id="jobnumb" value="0" placeholder=" Please enter a Job Number">
         <div class="input-group-append">
             <div class="btn-group">
-                <button class="btn btn-dark" type="submit" value="Search" data-toggle="tooltip" data-placement="top" title="Search">
+                <button class="btn btn-dark" type="submit" value="Search" data-tooltip="tooltip" data-placement="top" title="Search">
                     <i class="fa fa-search" aria-hidden="true"></i>
                 </button>
-                <button class="btn btn-dark" type="submit" name="Clean" value="true" data-toggle="tooltip" data-placement="top" title="Clean field">
+                <button class="btn btn-dark" type="submit" name="Clean" value="true" data-tooltip="tooltip" data-placement="top" title="Clean field">
                     <i class="fas fa-undo" aria-hidden="true"></i>
                 </button>
             </div>
         </div>
     </div>
 </form>
-<br />
 <table class="table table-sm align-content-center text-center">
     <thead style="background-color:#1B2831;color:#fff">
         <tr>

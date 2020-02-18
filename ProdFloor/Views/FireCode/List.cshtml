@@ -7,10 +7,10 @@
             $('#filtrado').autocomplete({
                 source: '/FireCode/SearchFireCode'
             });
+            $('[data-tooltip="tooltip"]').tooltip();
         });
     </script>
 }
-  
 @if (Model.TotalItems == 0)
 {
     <div class="text-right m-2">
@@ -19,24 +19,22 @@
         </form>
     </div>
 }
-<a class="btn btn-dark float-right" asp-action="Add" asp-controller="FireCode">
-    <i class="fa fa-plus"></i>
-    New Fire Code
-</a>
 <form asp-controller="FireCode" asp-action="List" method="get">
-    <div class="input-group" style="padding-top:10px;">
-        <input type="text" class="form-control form-control-sm col-5" name="filtrado" id="filtrado" placeholder=" Please enter a FireCode">
+    <div class="input-group" style="padding-top:10px">
+        <input type="text" class="form-control form-control-sm col-5" name="filtrado" id="filtrado" placeholder="Please enter a FireCode">
         <div class="input-group-append">
             <div class="btn-group">
-                <button class="btn btn-dark" type="submit" value="Search">
+                <button class="btn btn-dark" data-tooltip="tooltip" data-placement="top" title="Search" type="submit" value="Search">
                     <i class="fa fa-search" aria-hidden="true"></i>
                 </button>
-                <button class="btn btn-dark" type="submit" name="Sort" value="default">
+                <button class="btn btn-dark" type="submit" name="Sort" data-tooltip="tooltip" data-placement="top" title="Clean" value="default">
                     <i class="fas fa-undo" aria-hidden="true"></i>
                 </button>
+                <a class="btn btn-dark" data-tooltip="tooltip" data-placement="top" title="Add New FireCode" asp-action="Add" asp-controller="FireCode" >
+                    <i class="fa fa-plus"></i>
+                </a>
             </div>
         </div>
-
     </div>
 </form>
 @foreach (var j in Model.FireCodes)

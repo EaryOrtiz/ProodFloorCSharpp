@@ -2,16 +2,13 @@
 @{
     ViewBag.Title = "Steps";
     Layout = "_AdminLayoutWO";
+    <script>
+        $(document).ready(function () {
+            $('[data-tooltip="tooltip"]').tooltip();
+        });
+    </script>
 }
-<div class="row" style="padding-right:20px">
-    <h2 class="col-sm-10">
-        Step Table
-    </h2>
-    <a class="btn btn-success  col-sm-2" asp-action="NewStep" asp-controller="Step" style="padding-top:10px;background-color:dodgerblue;min-width:100px">
-        <i class="fa fa-plus"></i>
-        New Step
-    </a>
-</div>
+
 <br />
 <form asp-action="SeedXML" asp-controller="Step" method="post">
     @if (Model.StepList.Count() == 0)
@@ -21,10 +18,13 @@
 </form>
 <form asp-controller="Step" asp-action="List" method="get">
     <div class="btn-group" role="group">
-        <button class="btn btn-dark" type="submit" name="filtrado" value="Traction">Element Traction</button>
-        <button class="btn btn-dark" type="submit" name="filtrado" value="Hydro">Element Hydro</button>
-        <button class="btn btn-dark" type="submit" name="filtrado" value="M2000">M2000</button>
-        <button class="btn btn-dark" type="submit" name="filtrado" value="M4000">M4000</button>
+        <button class="btn btn-dark" type="submit" name="filtrado" value="Traction" data-tooltip="tooltip" data-placement="top" title="Filter by Traction">Element Traction</button>
+        <button class="btn btn-dark" type="submit" name="filtrado" value="Hydro" data-tooltip="tooltip" data-placement="top" title="Filter by Hydro">Element Hydro</button>
+        <button class="btn btn-dark" type="submit" name="filtrado" value="M2000" data-tooltip="tooltip" data-placement="top" title="Filter by M2000">M2000</button>
+        <button class="btn btn-dark" type="submit" name="filtrado" value="M4000" data-tooltip="tooltip" data-placement="top" title="Filter by M4000">M4000</button>
+        <a class="btn btn-dark" data-tooltip="tooltip" data-placement="top" title="Add New Step" asp-action="NewStep" asp-controller="Step">
+            <i class="fa fa-plus"></i>
+        </a>
     </div>
 </form>
 <div>
@@ -54,64 +54,64 @@
         @foreach (var item in Model.StepList)
         {
             var jobType = Model.JobTypesList.FirstOrDefault(m => m.JobTypeID == item.JobTypeID);
-    <tr>
-        <td>
-            @Html.DisplayFor(m => jobType.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(m => item.Stage)
-        </td>
-        <td>
-            @item.ExpectedTime.TimeOfDay
-        </td>
-        <td>
-            @Html.DisplayFor(m => item.Description)
-        </td>
-        <td>
-            @Html.DisplayFor(m => item.Order)
-        </td>
-        <td>
-            @foreach (TriggeringFeature trigger in Model.TriggeringList.Where(n => n.StepID == item.StepID && n.Name != null && n.Name != ""))
-            {
-                <div class="form-group form-inline text-center" style="margin-bottom:0em;padding-bottom:0em;">
-                    <div class="input-group mb-3" style="margin-bottom:0em;padding-bottom:0em;">
-                        <div class="input-group-prepend" style="margin-bottom:0em;padding-bottom:0em;">
-                            <div class="input-group-text">
-                                @if (trigger.IsSelected)
-                                {
-                                    <i class="fas fa-check-circle"></i>
-                                }
-                                else
-                                {
-                                    <i class="fas fa-times-circle"></i>
-                                }
+            <tr>
+                <td>
+                    @Html.DisplayFor(m => jobType.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(m => item.Stage)
+                </td>
+                <td>
+                    @item.ExpectedTime.TimeOfDay
+                </td>
+                <td>
+                    @Html.DisplayFor(m => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(m => item.Order)
+                </td>
+                <td>
+                    @foreach (TriggeringFeature trigger in Model.TriggeringList.Where(n => n.StepID == item.StepID && n.Name != null && n.Name != ""))
+                    {
+                        <div class="form-group form-inline text-center" style="margin-bottom:0em;padding-bottom:0em;">
+                            <div class="input-group mb-3" style="margin-bottom:0em;padding-bottom:0em;">
+                                <div class="input-group-prepend" style="margin-bottom:0em;padding-bottom:0em;">
+                                    <div class="input-group-text">
+                                        @if (trigger.IsSelected)
+                                        {
+                                            <i class="fas fa-check-circle"></i>
+                                        }
+                                        else
+                                        {
+                                            <i class="fas fa-times-circle"></i>
+                                        }
+                                    </div>
+                                </div>
+                                <input type="text" class="form-control form-control-sm col-sm" value="@trigger.Name" readonly />
                             </div>
                         </div>
-                        <input type="text" class="form-control form-control-sm col-sm" value="@trigger.Name" readonly />
-                    </div>
-                </div>
-            }
-        </td>
-        <td style="width:100px">
-            <form asp-action="Delete" asp-route-id="@item.StepID" method="post">
-                <a asp-action="Edit" class="btn btn-sm btn-warning"
-                   asp-route-Id="@item.StepID">
-                    <i class="fas fa-edit"></i>
-                </a>
-                <button type="submit" class="btn btn-danger btn-sm">
-                    <i class="far fa-trash-alt"></i>
-                </button>
+                    }
+                </td>
+                <td style="width:100px">
+                    <form asp-action="Delete" asp-route-id="@item.StepID" method="post">
+                        <a asp-action="Edit" class="btn btn-sm btn-warning"
+                           asp-route-Id="@item.StepID">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <button type="submit" class="btn btn-danger btn-sm">
+                            <i class="far fa-trash-alt"></i>
+                        </button>
 
-            </form>
-        </td>
-    </tr>
+                    </form>
+                </td>
+            </tr>
         }
     </table>
 </div>
 <cool-pagination-steps elm-hydro-paging-info="@Model.ElmHydroPagingInfo" elm-traction-paging-info="@Model.ElmTractionPagingInfo" m2000-paging-info="@Model.M2000PagingInfo" m4000-paging-info="Model.M4000PagingInfo"
-                 page-action="List"  job-type-selected="JobTypeName" page-class="btn" page-class-normal="btn-secondary" page-classes-enabled="true" current-model="@Model.JobTypeSelected"
-                 page-class-selected="btn-dark"  elm-hydro-url-value="ElmHydroPage" elm-traction-url-value="ElmTractionPage" m2000-url-value="M2000Page"  m4000-url-value="M4000Page"
-                 class="btn-group pull-right m-1">
+                       page-action="List" job-type-selected="JobTypeName" page-class="btn" page-class-normal="btn-secondary" page-classes-enabled="true" current-model="@Model.JobTypeSelected"
+                       page-class-selected="btn-dark" elm-hydro-url-value="ElmHydroPage" elm-traction-url-value="ElmTractionPage" m2000-url-value="M2000Page" m4000-url-value="M4000Page"
+                       class="btn-group pull-right m-1">
 </cool-pagination-steps>
 <div>
     <form asp-controller="Step" asp-action="ExportToXML" method="post">

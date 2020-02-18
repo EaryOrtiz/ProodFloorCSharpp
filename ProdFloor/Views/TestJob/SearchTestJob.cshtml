@@ -10,13 +10,8 @@
         });
     </script>
 }
-
-<div class="row" style="padding-right:20px">
-    <h2 class="col-sm-10">Admin Dashboard</h2>
-</div>
-<br />
 <form asp-controller="TestJob" asp-action="SearchTestJob" method="get">
-    <div class="input-group">
+    <div class="input-group" style="padding-top:20px">
 
         <input type="text" class="form-control form-control-sm col-5" name="jobNumber" id="JobNum" value="0" placeholder=" Please enter a Job Number">
         <div class="input-group-append">
@@ -32,7 +27,6 @@
 
     </div>
 </form>
-<br />
 <div>
     <span asp-validation-for="Job.JobNum" class="text-danger"></span><br />
 </div>

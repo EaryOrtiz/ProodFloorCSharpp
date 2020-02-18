@@ -5,6 +5,7 @@
 }
 <br />
 <form asp-controller="Job" asp-action="List" method="get">
+    <input type="number" asp-for="LastSearch" value="@Model.LastSearch"/>
     @Html.Partial("JobSearchForm", Model)
 </form>
 <div class="text-right m-2">
@@ -17,10 +18,7 @@
 </div>
 @if (Model.JobsSearchList.Count > 0)
 {
-    @foreach (var j in Model.JobsSearchList)
-    {
-        @Html.Partial("JobSummary", j)
-    }
+        @Html.Partial("JobSummary", Model)
 
     <coool-pagination-search page-model="@Model.PagingInfo" page-action="List" page-classes-enabled="true"
                              page-class="btn" page-class-normal="btn-secondary"
