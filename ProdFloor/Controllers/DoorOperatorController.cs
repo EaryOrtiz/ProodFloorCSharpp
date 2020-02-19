@@ -17,7 +17,7 @@ namespace ProdFloor.Controllers
             repository = repo;
         }
 
-        public IActionResult List(DoorOperatorsListViewModel viewModel, int page = 1) 
+        public IActionResult List(DoorOperatorsListViewModel viewModel, int page = 1, int totalitemsfromlastsearch = 0) 
         {
             if (viewModel.CleanFields) return RedirectToAction("List");
             IQueryable<DoorOperator> doors = repository.DoorOperators.AsQueryable();
@@ -26,12 +26,26 @@ namespace ProdFloor.Controllers
             if (!string.IsNullOrEmpty(viewModel.Style)) doors = doors.Where(m => m.Style.Contains(viewModel.Style));
             if (!string.IsNullOrEmpty(viewModel.Name)) doors = doors.Where(m => m.Name.Contains(viewModel.Name));
 
-            viewModel.DoorOperators = doors.OrderBy(p => p.Name).Skip((page - 1) * 5).Take(5).ToList();
+            
             viewModel.TotalItems = repository.DoorOperators.Count();
+
+
+            int TotalItemsSearch = doors.Count();
+            if (page == 1)
+            {
+                totalitemsfromlastsearch = TotalItemsSearch;
+            }
+            else if (TotalItemsSearch != totalitemsfromlastsearch)
+            {
+                totalitemsfromlastsearch = TotalItemsSearch;
+                page = 1;
+            }
+            viewModel.DoorOperators = doors.OrderBy(p => p.Name).Skip((page - 1) * 5).Take(5).ToList();
             viewModel.PagingInfo = new PagingInfo
             {
                 CurrentPage = page,
                 ItemsPerPage = 5,
+                TotalItemsFromLastSearch = totalitemsfromlastsearch,
                 TotalItems = doors.Count()
             };
             return View(viewModel);

@@ -45,7 +45,7 @@ namespace ProdFloor.Controllers
 
         // Recibe jobType y jobPage y regresa un 
         //JobsListViewModel con los jobs filtrados por tipo y sorteados por JobID 
-        public IActionResult List(JobSearchViewModel searchViewModel, int page = 1)
+        public IActionResult List(JobSearchViewModel searchViewModel, int page = 1, int totalitemsfromlastsearch = 0)
         {
             var JobCount = repository.Jobs
                      .Where(s => s.Status != "Pending").Count();
@@ -230,11 +230,11 @@ namespace ProdFloor.Controllers
             int TotalItemsSearch = jobSearchRepo.Count();
             if (page == 1 )
             {
-                searchViewModel.LastSearch = TotalItemsSearch;
+                totalitemsfromlastsearch = TotalItemsSearch;
             }
-            else if(TotalItemsSearch != searchViewModel.LastSearch)
+            else if(TotalItemsSearch != totalitemsfromlastsearch)
             {
-                searchViewModel.LastSearch = TotalItemsSearch;
+                totalitemsfromlastsearch = TotalItemsSearch;
                 page = 1;
             }
             searchViewModel.Status = new SelectList(statusQuery.Distinct().ToList());
@@ -249,6 +249,7 @@ namespace ProdFloor.Controllers
             {
                 CurrentPage = page,
                 ItemsPerPage = 5,
+                TotalItemsFromLastSearch = totalitemsfromlastsearch,
                 TotalItems = jobSearchRepo.Count()
             };
 
@@ -1997,7 +1998,8 @@ namespace ProdFloor.Controllers
             return user;
         }
 
-        public async Task<IActionResult> JobSearchList(JobSearchViewModel searchViewModel, int page = 1)
+        
+       public async Task<IActionResult> JobSearchList(JobSearchViewModel searchViewModel, int page = 1)
         {
             if (searchViewModel.CleanFields) return RedirectToAction("JobSearchList");
 

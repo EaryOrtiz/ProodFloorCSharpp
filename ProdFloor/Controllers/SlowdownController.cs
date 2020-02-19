@@ -21,7 +21,7 @@ namespace ProdFloor.Controllers
             repository = repo;
         }
 
-        public IActionResult List(SlowdownListViewModel viewModel, int page = 1)
+        public IActionResult List(SlowdownListViewModel viewModel, int page = 1, int totalitemsfromlastsearch = 0)
         {
             if (viewModel.CleanFields) return RedirectToAction("List");
             IQueryable<Slowdown> slowdowns = repository.Slowdowns.AsQueryable();
@@ -32,12 +32,24 @@ namespace ProdFloor.Controllers
             if (viewModel.SlowLimit > 0) slowdowns = slowdowns.Where(m => m.SlowLimit == viewModel.SlowLimit);
             if (viewModel.MiniumFloorHeight > 0) slowdowns = slowdowns.Where(m => m.MiniumFloorHeight == viewModel.MiniumFloorHeight);
 
-            viewModel.Slowdowns = slowdowns.OrderBy(p => p.CarSpeedFPM).Skip((page - 1) * 10).Take(10).ToList();
             viewModel.TotalItems = repository.Slowdowns.Count();
+
+            int TotalItemsSearch = slowdowns.Count();
+            if (page == 1)
+            {
+                totalitemsfromlastsearch = TotalItemsSearch;
+            }
+            else if (TotalItemsSearch != totalitemsfromlastsearch)
+            {
+                totalitemsfromlastsearch = TotalItemsSearch;
+                page = 1;
+            }
+            viewModel.Slowdowns = slowdowns.OrderBy(p => p.CarSpeedFPM).Skip((page - 1) * 10).Take(10).ToList();
             viewModel.PagingInfo = new PagingInfo
             {
                 CurrentPage = page,
                 ItemsPerPage = 10,
+                TotalItemsFromLastSearch = totalitemsfromlastsearch,
                 TotalItems = slowdowns.Count()
             };
             return View(viewModel);

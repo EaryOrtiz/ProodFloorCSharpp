@@ -19,7 +19,7 @@ namespace ProdFloor.Controllers
         }
 
         
-        public IActionResult List(LandingSystemsListViewModel viewModel, int page = 1)
+        public IActionResult List(LandingSystemsListViewModel viewModel, int page = 1, int totalitemsfromlastsearch = 0)
         {
             if (viewModel.CleanFields) return RedirectToAction("List");
             IQueryable<LandingSystem> landings = repository.LandingSystems.AsQueryable();
@@ -29,12 +29,25 @@ namespace ProdFloor.Controllers
             if (!string.IsNullOrEmpty(viewModel.UsedIn)) landings = landings.Where(m => m.UsedIn.Contains(viewModel.UsedIn));
             if (!string.IsNullOrEmpty(viewModel.Name)) landings = landings.Where(m => m.Name.Contains(viewModel.Name));
 
-            viewModel.LandingSystems = landings.OrderBy(p => p.Name).Skip((page - 1) * 5).Take(5).ToList();
+            
             viewModel.TotalItems = repository.LandingSystems.Count();
+
+            int TotalItemsSearch = landings.Count();
+            if (page == 1)
+            {
+                totalitemsfromlastsearch = TotalItemsSearch;
+            }
+            else if (TotalItemsSearch != totalitemsfromlastsearch)
+            {
+                totalitemsfromlastsearch = TotalItemsSearch;
+                page = 1;
+            }
+            viewModel.LandingSystems = landings.OrderBy(p => p.Name).Skip((page - 1) * 5).Take(5).ToList();
             viewModel.PagingInfo = new PagingInfo
             {
                 CurrentPage = page,
                 ItemsPerPage = 5,
+                TotalItemsFromLastSearch = totalitemsfromlastsearch,
                 TotalItems = landings.Count()
             };
             return View(viewModel);

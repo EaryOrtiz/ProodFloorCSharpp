@@ -21,7 +21,7 @@ namespace ProdFloor.Controllers
             repository = repo;
         }
 
-        public IActionResult List(WireTypesSizeListViewModel viewModel, int page = 1)
+        public IActionResult List(WireTypesSizeListViewModel viewModel, int page = 1, int totalitemsfromlastsearch = 0)
         {
             if (viewModel.CleanFields) return RedirectToAction("List");
             IQueryable<WireTypesSize> wires = repository.WireTypesSizes.AsQueryable();
@@ -30,12 +30,25 @@ namespace ProdFloor.Controllers
             if (!string.IsNullOrEmpty(viewModel.Type)) wires = wires.Where(m => m.Type.Contains(viewModel.Type));
             if (!string.IsNullOrEmpty(viewModel.Size)) wires = wires.Where(m => m.Size.Contains(viewModel.Size));
 
-            viewModel.WireTypes = wires.OrderBy(p => p.Size).Skip((page - 1) * 10).Take(10).ToList();
+            
             viewModel.TotalItems = repository.WireTypesSizes.Count();
+
+            int TotalItemsSearch = wires.Count();
+            if (page == 1)
+            {
+                totalitemsfromlastsearch = TotalItemsSearch;
+            }
+            else if (TotalItemsSearch != totalitemsfromlastsearch)
+            {
+                totalitemsfromlastsearch = TotalItemsSearch;
+                page = 1;
+            }
+            viewModel.WireTypes = wires.OrderBy(p => p.Size).Skip((page - 1) * 10).Take(10).ToList();
             viewModel.PagingInfo = new PagingInfo
             {
                 CurrentPage = page,
                 ItemsPerPage = 10,
+                TotalItemsFromLastSearch = totalitemsfromlastsearch,
                 TotalItems = wires.Count()
             };
             return View(viewModel);

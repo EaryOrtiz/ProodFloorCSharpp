@@ -28,7 +28,7 @@ namespace ProdFloor.Controllers
             return View("Edit", new Station());
         }
 
-        public IActionResult List(StationListViewModel viewModel, int page = 1)
+        public IActionResult List(StationListViewModel viewModel, int page = 1, int totalitemsfromlastsearch = 0)
         {
             if (viewModel.CleanFields) return RedirectToAction("List");
             IQueryable<Station> stations = testingrepo.Stations.Where(m => m.Label != "-").AsQueryable();
@@ -36,12 +36,24 @@ namespace ProdFloor.Controllers
             if (viewModel.JobTypeID > 0) stations = stations.Where(m => m.JobTypeID == viewModel.JobTypeID);
             if (!string.IsNullOrEmpty(viewModel.Label)) stations = stations.Where(m => m.Label.Contains(viewModel.Label));
 
-            viewModel.Stations = stations.OrderBy(p => p.Label).Skip((page - 1) * 5).Take(5).ToList();
             viewModel.TotalItems = testingrepo.Stations.Count();
+
+            int TotalItemsSearch = stations.Count();
+            if (page == 1)
+            {
+                totalitemsfromlastsearch = TotalItemsSearch;
+            }
+            else if (TotalItemsSearch != totalitemsfromlastsearch)
+            {
+                totalitemsfromlastsearch = TotalItemsSearch;
+                page = 1;
+            }
+            viewModel.Stations = stations.OrderBy(p => p.Label).Skip((page - 1) * 5).Take(5).ToList();
             viewModel.PagingInfo = new PagingInfo
             {
                 CurrentPage = page,
                 ItemsPerPage = 5,
+                TotalItemsFromLastSearch = totalitemsfromlastsearch,
                 TotalItems = stations.Count()
             };
             return View(viewModel);

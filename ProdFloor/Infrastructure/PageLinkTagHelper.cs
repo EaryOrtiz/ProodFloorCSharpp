@@ -759,6 +759,7 @@ namespace ProdFloor.Infrastructure
             TagBuilder tag5 = new TagBuilder("a");
             /*************************************************************************/
             PageUrlValues["page"] = 1;
+            PageUrlValues["totalitemsfromlastsearch"] = PageModel.TotalItemsFromLastSearch;
             PageUrlValues[Sort] = PageModel.sort;
             tag.Attributes["href"] = urlHelper.Action(PageAction, PageUrlValues);
             if (PageClassesEnabled)
@@ -795,6 +796,7 @@ namespace ProdFloor.Infrastructure
             {
                 TagBuilder tag2 = new TagBuilder("a");
                 PageUrlValues["page"] = i;
+                PageUrlValues["totalitemsfromlastsearch"] = PageModel.TotalItemsFromLastSearch;
                 PageUrlValues[Sort] = PageModel.sort;
                 tag2.Attributes["href"] = urlHelper.Action(PageAction, PageUrlValues);
                 if (PageClassesEnabled)
@@ -812,6 +814,7 @@ namespace ProdFloor.Infrastructure
             {
                 TagBuilder tag3 = new TagBuilder("a");
                 PageUrlValues["page"] = i;
+                PageUrlValues["totalitemsfromlastsearch"] = PageModel.TotalItemsFromLastSearch;
                 PageUrlValues[Sort] = PageModel.sort;
                 tag3.Attributes["href"] = urlHelper.Action(PageAction, PageUrlValues);
                 if (PageClassesEnabled)
@@ -826,6 +829,7 @@ namespace ProdFloor.Infrastructure
             output.Content.AppendHtml(result.InnerHtml);
             /*************************************************************************/
             PageUrlValues["page"] = (PageModel.CurrentPage + 1) <= PageModel.TotalPages ? (PageModel.CurrentPage + 1) : PageModel.TotalPages;
+            PageUrlValues["totalitemsfromlastsearch"] = PageModel.TotalItemsFromLastSearch;
             PageUrlValues[Sort] = PageModel.sort;
             tag4.Attributes["href"] = urlHelper.Action(PageAction, PageUrlValues);
             if (PageClassesEnabled)
@@ -838,6 +842,7 @@ namespace ProdFloor.Infrastructure
             output.Content.AppendHtml(result.InnerHtml);
             /*************************************************************************/
             PageUrlValues["page"] = PageModel.TotalPages;
+            PageUrlValues["totalitemsfromlastsearch"] = PageModel.TotalItemsFromLastSearch;
             PageUrlValues[Sort] = PageModel.sort;
             tag5.Attributes["href"] = urlHelper.Action(PageAction, PageUrlValues);
             if (PageClassesEnabled)
@@ -891,6 +896,7 @@ namespace ProdFloor.Infrastructure
             TagBuilder tag5 = new TagBuilder("a");
             /*************************************************************************/
             PageUrlValues["page"] = 1;
+            PageUrlValues["totalitemsfromlastsearch"] = PageModel.TotalItemsFromLastSearch;
             if (requestQuery.Count > 0)
             {
                 foreach (var request in requestQuery)
@@ -909,6 +915,7 @@ namespace ProdFloor.Infrastructure
             output.Content.AppendHtml(result.InnerHtml);
             /*************************************************************************/
             PageUrlValues["page"] = (PageModel.CurrentPage - 1) != 0 ? (PageModel.CurrentPage - 1) : 1;
+            PageUrlValues["totalitemsfromlastsearch"] = PageModel.TotalItemsFromLastSearch;
             if (requestQuery.Count > 0)
             {
                 foreach (var request in requestQuery)
@@ -939,6 +946,7 @@ namespace ProdFloor.Infrastructure
             {
                 TagBuilder tag2 = new TagBuilder("a");
                 PageUrlValues["page"] = i;
+                PageUrlValues["totalitemsfromlastsearch"] = PageModel.TotalItemsFromLastSearch;
                 if (requestQuery.Count > 0)
                 {
                     foreach (var request in requestQuery)
@@ -962,6 +970,7 @@ namespace ProdFloor.Infrastructure
             {
                 TagBuilder tag3 = new TagBuilder("a");
                 PageUrlValues["page"] = i;
+                PageUrlValues["totalitemsfromlastsearch"] = PageModel.TotalItemsFromLastSearch;
                 if (requestQuery.Count > 0)
                 {
                     foreach (var request in requestQuery)
@@ -982,6 +991,7 @@ namespace ProdFloor.Infrastructure
             output.Content.AppendHtml(result.InnerHtml);
             /*************************************************************************/
             PageUrlValues["page"] = (PageModel.CurrentPage + 1) <= PageModel.TotalPages ? (PageModel.CurrentPage + 1) : PageModel.TotalPages;
+            PageUrlValues["totalitemsfromlastsearch"] = PageModel.TotalItemsFromLastSearch;
             if (requestQuery.Count > 0)
             {
                 foreach (var request in requestQuery)
@@ -1000,6 +1010,7 @@ namespace ProdFloor.Infrastructure
             output.Content.AppendHtml(result.InnerHtml);
             /*************************************************************************/
             PageUrlValues["page"] = PageModel.TotalPages;
+            PageUrlValues["totalitemsfromlastsearch"] = PageModel.TotalItemsFromLastSearch;
             if (requestQuery.Count > 0)
             {
                 foreach (var request in requestQuery)

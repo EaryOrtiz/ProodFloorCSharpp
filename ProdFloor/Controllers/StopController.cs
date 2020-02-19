@@ -567,7 +567,7 @@ namespace ProdFloor.Controllers
             });
         }
 
-        public async Task<IActionResult> StopSearchList(TestJobSearchViewModel searchViewModel, int page = 1)
+        public async Task<IActionResult> StopSearchList(TestJobSearchViewModel searchViewModel, int page = 1, int totalitemsfromlastsearch = 0)
         {
             if (searchViewModel.CleanFields) return RedirectToAction("StopSearchList");
             if (searchViewModel.Stop == null) searchViewModel.Stop = new Stop();
@@ -600,12 +600,22 @@ namespace ProdFloor.Controllers
             if (!string.IsNullOrEmpty(searchViewModel.Critical)) StopSearchList = StopSearchList.Where(m => searchViewModel.Critical == "Si" ? m.Critical == true : m.Critical == false);
             #endregion
 
-
+            int TotalItemsSearch = StopSearchList.Count();
+            if (page == 1)
+            {
+                totalitemsfromlastsearch = TotalItemsSearch;
+            }
+            else if (TotalItemsSearch != totalitemsfromlastsearch)
+            {
+                totalitemsfromlastsearch = TotalItemsSearch;
+                page = 1;
+            }
             searchViewModel.StopList = StopSearchList.OrderBy(p => p.StopID).Skip((page - 1) * 10).Take(10).ToList();
             searchViewModel.PagingInfo = new PagingInfo
             {
                 CurrentPage = page,
                 ItemsPerPage = 10,
+                TotalItemsFromLastSearch = totalitemsfromlastsearch,
                 TotalItems = StopSearchList.Count()
             };
 

@@ -2426,7 +2426,7 @@ namespace ProdFloor.Controllers
         }
 
 
-        public async Task<IActionResult> TestJobSearchList(TestJobSearchViewModel searchViewModel, int page = 1)
+        public async Task<IActionResult> TestJobSearchList(TestJobSearchViewModel searchViewModel, int page = 1, int totalitemsfromlastsearch = 0)
         {
             if (searchViewModel.CleanFields) return RedirectToAction("TestJobSearchList");
             if (searchViewModel.Job == null) searchViewModel.Job = new Job();
@@ -2646,10 +2646,21 @@ namespace ProdFloor.Controllers
             searchViewModel.JobTypeList = itemRepository.JobTypes.ToList();
             searchViewModel.StationsList = testingRepo.Stations.ToList();
 
+            int TotalItemsSearch = testJobSearchList.Count();
+            if (page == 1)
+            {
+                totalitemsfromlastsearch = TotalItemsSearch;
+            }
+            else if (TotalItemsSearch != totalitemsfromlastsearch)
+            {
+                totalitemsfromlastsearch = TotalItemsSearch;
+                page = 1;
+            }
             searchViewModel.PagingInfo = new PagingInfo
             {
                 CurrentPage = page,
                 ItemsPerPage = 10,
+                TotalItemsFromLastSearch = totalitemsfromlastsearch,
                 TotalItems = testJobSearchList.Count()
             };
 

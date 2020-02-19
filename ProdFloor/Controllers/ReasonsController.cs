@@ -133,7 +133,7 @@ namespace ProdFloor.Controllers
             return View(NotFound());
         }
         */
-        public ViewResult Reason1List(string filtrado, string Sort = "default", int page = 1)
+        public ViewResult Reason1List(string filtrado, string Sort = "default", int page = 1, int totalitemsfromlastsearch = 0)
         {
             if (filtrado != null) Sort = filtrado;
 
@@ -148,6 +148,16 @@ namespace ProdFloor.Controllers
                  .OrderBy(p => p.Reason1ID).ToList();
             }
 
+            int TotalItemsSearch = reason1s.Count();
+            if (page == 1)
+            {
+                totalitemsfromlastsearch = TotalItemsSearch;
+            }
+            else if (TotalItemsSearch != totalitemsfromlastsearch)
+            {
+                totalitemsfromlastsearch = TotalItemsSearch;
+                page = 1;
+            }
             ReasonViewModel reasonView = new ReasonViewModel
             {
                 Reasons1 = reason1s.Skip((page - 1) * PageSize)
@@ -158,32 +168,44 @@ namespace ProdFloor.Controllers
                     CurrentPage = page,
                     sort = Sort != "default" ? Sort : "default",
                     ItemsPerPage = PageSize,
+
                     TotalItems = reason1s.Count()
                 }
             };
             return View(reasonView);
         }
 
-        public IActionResult Reason2List(ReasonViewModel viewModel, int page = 1)
+        public IActionResult Reason2List(ReasonViewModel viewModel, int page = 1, int totalitemsfromlastsearch = 0)
         {
             if (viewModel.CleanFields) return RedirectToAction("Reason2List");
             IQueryable<Reason2> reasons = repository.Reasons2.Where(m => m.Description != "-").AsQueryable();
 
             if (viewModel.Reason1ID > 0) reasons = reasons.Where(m => m.Reason1ID == viewModel.Reason1ID);
             if (!string.IsNullOrEmpty(viewModel.Description)) reasons = reasons.Where(m => m.Description.Contains(viewModel.Description));
-
-            viewModel.Reasons2 = reasons.OrderBy(p => p.Description).Skip((page - 1) * 5).Take(5).ToList();
             viewModel.TotalItems = repository.Reasons2.Count();
+
+            int TotalItemsSearch = viewModel.Reasons2.Count();
+            if (page == 1)
+            {
+                totalitemsfromlastsearch = TotalItemsSearch;
+            }
+            else if (TotalItemsSearch != totalitemsfromlastsearch)
+            {
+                totalitemsfromlastsearch = TotalItemsSearch;
+                page = 1;
+            }
+            viewModel.Reasons2 = reasons.OrderBy(p => p.Description).Skip((page - 1) * 5).Take(5).ToList();
             viewModel.PagingInfo = new PagingInfo
             {
                 CurrentPage = page,
+                TotalItemsFromLastSearch = totalitemsfromlastsearch,
                 ItemsPerPage = 5,
                 TotalItems = reasons.Count()
             };
             return View(viewModel);
         }
 
-        public IActionResult Reason3List(ReasonViewModel viewModel, int page = 1)
+        public IActionResult Reason3List(ReasonViewModel viewModel, int page = 1, int totalitemsfromlastsearch = 0)
         {
             if (viewModel.CleanFields) return RedirectToAction("Reason3List");
             IQueryable<Reason2> reasons2 = repository.Reasons2.AsQueryable();
@@ -197,18 +219,30 @@ namespace ProdFloor.Controllers
             if (viewModel.Reason2ID > 0) reasons3 = reasons3.Where(m => m.Reason2ID == viewModel.Reason2ID);
             if (!string.IsNullOrEmpty(viewModel.Description)) reasons3 = reasons3.Where(m => m.Description.Contains(viewModel.Description));
 
-            viewModel.Reasons3 = reasons3.OrderBy(p => p.Description).Skip((page - 1) * 5).Take(5).ToList();
             viewModel.TotalItems = repository.Reasons3.Count();
+
+            int TotalItemsSearch = viewModel.Reasons3.Count();
+            if (page == 1)
+            {
+                totalitemsfromlastsearch = TotalItemsSearch;
+            }
+            else if (TotalItemsSearch != totalitemsfromlastsearch)
+            {
+                totalitemsfromlastsearch = TotalItemsSearch;
+                page = 1;
+            }
+            viewModel.Reasons3 = reasons3.OrderBy(p => p.Description).Skip((page - 1) * 5).Take(5).ToList();
             viewModel.PagingInfo = new PagingInfo
             {
                 CurrentPage = page,
                 ItemsPerPage = 5,
+                TotalItemsFromLastSearch = totalitemsfromlastsearch,
                 TotalItems = reasons3.Count()
             };
             return View(viewModel);
         }
 
-        public IActionResult Reason4List(ReasonViewModel viewModel, int page = 1)
+        public IActionResult Reason4List(ReasonViewModel viewModel, int page = 1, int totalitemsfromlastsearch = 0)
         {
             if (viewModel.CleanFields) return RedirectToAction("Reason4List");
             IQueryable<Reason2> reasons2 = repository.Reasons2.AsQueryable();
@@ -231,18 +265,30 @@ namespace ProdFloor.Controllers
 
             if (!string.IsNullOrEmpty(viewModel.Description)) reasons4 = reasons4.Where(m => m.Description.Contains(viewModel.Description));
 
-            viewModel.Reasons4 = reasons4.OrderBy(p => p.Description).Skip((page - 1) * 5).Take(5).ToList();
             viewModel.TotalItems = repository.Reasons4.Count();
+
+            int TotalItemsSearch = viewModel.Reasons4.Count();
+            if (page == 1)
+            {
+                totalitemsfromlastsearch = TotalItemsSearch;
+            }
+            else if (TotalItemsSearch != totalitemsfromlastsearch)
+            {
+                totalitemsfromlastsearch = TotalItemsSearch;
+                page = 1;
+            }
+            viewModel.Reasons4 = reasons4.OrderBy(p => p.Description).Skip((page - 1) * 5).Take(5).ToList();
             viewModel.PagingInfo = new PagingInfo
             {
                 CurrentPage = page,
                 ItemsPerPage = 5,
+                TotalItemsFromLastSearch = totalitemsfromlastsearch,
                 TotalItems = reasons4.Count()
             };
             return View(viewModel);
         }
 
-        public IActionResult Reason5List(ReasonViewModel viewModel, int page = 1)
+        public IActionResult Reason5List(ReasonViewModel viewModel, int page = 1, int totalitemsfromlastsearch = 0)
         {
             if (viewModel.CleanFields) return RedirectToAction("Reason5List");
             IQueryable<Reason2> reasons2 = repository.Reasons2.AsQueryable();
@@ -272,12 +318,24 @@ namespace ProdFloor.Controllers
 
             if (!string.IsNullOrEmpty(viewModel.Description)) reasons4 = reasons4.Where(m => m.Description.Contains(viewModel.Description));
 
-            viewModel.Reasons5 = reasons5.OrderBy(p => p.Description).Skip((page - 1) * 5).Take(5).ToList();
             viewModel.TotalItems = repository.Reasons5.Count();
+
+            int TotalItemsSearch = viewModel.Reasons5.Count();
+            if (page == 1)
+            {
+                totalitemsfromlastsearch = TotalItemsSearch;
+            }
+            else if (TotalItemsSearch != totalitemsfromlastsearch)
+            {
+                totalitemsfromlastsearch = TotalItemsSearch;
+                page = 1;
+            }
+            viewModel.Reasons5 = reasons5.OrderBy(p => p.Description).Skip((page - 1) * 5).Take(5).ToList();
             viewModel.PagingInfo = new PagingInfo
             {
                 CurrentPage = page,
                 ItemsPerPage = 5,
+                TotalItemsFromLastSearch = totalitemsfromlastsearch,
                 TotalItems = reasons5.Count()
             };
             return View(viewModel);

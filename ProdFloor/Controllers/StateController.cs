@@ -20,7 +20,7 @@ namespace ProdFloor.Controllers
             repository = repo;
 
         }
-        public IActionResult List(StateListViewModel viewModel, int page = 1)
+        public IActionResult List(StateListViewModel viewModel, int page = 1, int totalitemsfromlastsearch = 0)
         {
             if (viewModel.CleanFields) return RedirectToAction("List");
             IQueryable<State> states = repository.States.AsQueryable();
@@ -28,12 +28,25 @@ namespace ProdFloor.Controllers
             if (viewModel.CountryID > 0) states = states.Where(m => m.CountryID == viewModel.CountryID);
             if (!string.IsNullOrEmpty(viewModel.Name)) states = states.Where(m => m.Name.Contains(viewModel.Name));
 
-            viewModel.States = states.OrderBy(p => p.Name).Skip((page - 1) * 5).Take(5).ToList();
+            
             viewModel.TotalItems = repository.States.Count();
+
+            int TotalItemsSearch = states.Count();
+            if (page == 1)
+            {
+                totalitemsfromlastsearch = TotalItemsSearch;
+            }
+            else if (TotalItemsSearch != totalitemsfromlastsearch)
+            {
+                totalitemsfromlastsearch = TotalItemsSearch;
+                page = 1;
+            }
+            viewModel.States = states.OrderBy(p => p.Name).Skip((page - 1) * 5).Take(5).ToList();
             viewModel.PagingInfo = new PagingInfo
             {
                 CurrentPage = page,
                 ItemsPerPage = 5,
+                TotalItemsFromLastSearch = totalitemsfromlastsearch,
                 TotalItems = states.Count()
             };
             return View(viewModel);

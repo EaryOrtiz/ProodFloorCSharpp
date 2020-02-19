@@ -18,7 +18,7 @@ namespace ProdFloor.Controllers
             repository = repo;
         }
 
-        public ViewResult List(string filtrado, string Sort = "default", int page = 1)
+        public ViewResult List(string filtrado, string Sort = "default", int page = 1, int totalitemsfromlastsearch = 0)
         {   
             if (filtrado != null) Sort = filtrado;
 
@@ -33,6 +33,16 @@ namespace ProdFloor.Controllers
 
             }
 
+            int TotalItemsSearch = fireCodes.Count();
+            if (page == 1)
+            {
+                totalitemsfromlastsearch = TotalItemsSearch;
+            }
+            else if (TotalItemsSearch != totalitemsfromlastsearch)
+            {
+                totalitemsfromlastsearch = TotalItemsSearch;
+                page = 1;
+            }
             FireCodesListViewModel fireCodesListView = new FireCodesListViewModel
             {
                 FireCodes = fireCodes.Skip((page - 1) * PageSize)
@@ -43,6 +53,7 @@ namespace ProdFloor.Controllers
                     CurrentPage = page,
                     sort = Sort != "default" ? Sort : "default",
                     ItemsPerPage = PageSize,
+                    TotalItemsFromLastSearch = totalitemsfromlastsearch,
                     TotalItems = fireCodes.Count()
                 }
             };

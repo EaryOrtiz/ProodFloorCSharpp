@@ -5,7 +5,6 @@
 }
 <br />
 <form asp-controller="Job" asp-action="List" method="get">
-    <input type="number" asp-for="LastSearch" value="@Model.LastSearch"/>
     @Html.Partial("JobSearchForm", Model)
 </form>
 <div class="text-right m-2">

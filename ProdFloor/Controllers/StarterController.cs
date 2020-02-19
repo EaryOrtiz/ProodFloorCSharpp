@@ -21,7 +21,7 @@ namespace ProdFloor.Controllers
             repository = repo;
         }
 
-        public IActionResult List(StarterListViewModel viewModel, int page = 1)
+        public IActionResult List(StarterListViewModel viewModel, int page = 1, int totalitemsfromlastsearch = 0)
         {
             if (viewModel.CleanFields) return RedirectToAction("List");
             IQueryable<Starter> starters = repository.Starters.AsQueryable();
@@ -33,12 +33,25 @@ namespace ProdFloor.Controllers
             if (!string.IsNullOrEmpty(viewModel.MCPart)) starters = starters.Where(m => m.MCPart.Contains(viewModel.MCPart));
             if (!string.IsNullOrEmpty(viewModel.NewManufacturerPart)) starters = starters.Where(m => m.NewManufacturerPart.Contains(viewModel.NewManufacturerPart));
             if (!string.IsNullOrEmpty(viewModel.OverloadTable)) starters = starters.Where(m => m.OverloadTable == viewModel.OverloadTable);
-            viewModel.Starters = starters.OrderBy(p => p.FLA).Skip((page - 1) * 10).Take(10).ToList();
+            
             viewModel.TotalItems = repository.Starters.Count();
+
+            int TotalItemsSearch = starters.Count();
+            if (page == 1)
+            {
+                totalitemsfromlastsearch = TotalItemsSearch;
+            }
+            else if (TotalItemsSearch != totalitemsfromlastsearch)
+            {
+                totalitemsfromlastsearch = TotalItemsSearch;
+                page = 1;
+            }
+            viewModel.Starters = starters.OrderBy(p => p.FLA).Skip((page - 1) * 10).Take(10).ToList();
             viewModel.PagingInfo = new PagingInfo
             {
                 CurrentPage = page,
                 ItemsPerPage = 10,
+                TotalItemsFromLastSearch = totalitemsfromlastsearch,
                 TotalItems = starters.Count()
             };
             return View(viewModel);

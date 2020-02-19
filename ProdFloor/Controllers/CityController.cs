@@ -20,7 +20,7 @@ namespace ProdFloor.Controllers
             repository = repo;
 
         }
-        public IActionResult List(CityListViewModel viewModel, int page = 1)
+        public IActionResult List(CityListViewModel viewModel, int page = 1, int totalitemsfromlastsearch = 0)
         {
             if (viewModel.CleanFields) return RedirectToAction("List");
             IQueryable<City> cities = repository.Cities.AsQueryable();
@@ -35,12 +35,25 @@ namespace ProdFloor.Controllers
 
             if (!string.IsNullOrEmpty(viewModel.Name)) cities = cities.Where(m => m.Name.Contains(viewModel.Name));
 
-            viewModel.Cities = cities.OrderBy(p => p.Name).Skip((page - 1) * 5).Take(5).ToList();
+            
             viewModel.TotalItems = repository.Cities.Count();
+
+            int TotalItemsSearch = cities.Count();
+            if (page == 1)
+            {
+                totalitemsfromlastsearch = TotalItemsSearch;
+            }
+            else if (TotalItemsSearch != totalitemsfromlastsearch)
+            {
+                totalitemsfromlastsearch = TotalItemsSearch;
+                page = 1;
+            }
+            viewModel.Cities = cities.OrderBy(p => p.Name).Skip((page - 1) * 5).Take(5).ToList();
             viewModel.PagingInfo = new PagingInfo
             {
                 CurrentPage = page,
                 ItemsPerPage = 5,
+                TotalItemsFromLastSearch = totalitemsfromlastsearch,
                 TotalItems = cities.Count()
             };
             return View(viewModel);
