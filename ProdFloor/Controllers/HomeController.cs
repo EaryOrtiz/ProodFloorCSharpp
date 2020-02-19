@@ -197,7 +197,7 @@ namespace ProdFloor.Controllers
             return NotFound();
         }
 
-        public ActionResult EngineerAdminDashBoard(string filtrado, string Sort = "default", int MyJobsPage = 1, int OnCrossJobPage = 1, int PendingToCrossJobPage = 1)
+        public ActionResult EngineerAdminDashBoard(string filtrado, string Sort = "default", int ActiveJobPage = 1, int MyJobsPage = 1, int OnCrossJobPage = 1, int PendingToCrossJobPage = 1)
         {
             AppUser currentUser = GetCurrentUser().Result;
             bool engineer = GetCurrentUserRole("EngAdmin").Result;
@@ -219,9 +219,13 @@ namespace ProdFloor.Controllers
                 List<Job> PendingToCrossJobList = repository.Jobs
                         .Where(j => j.Status == "Cross Approval Pending").OrderByDescending(m => m._JobAdditional.Priority).ThenBy(n => n.LatestFinishDate).ToList();
 
+                List<Job> ActiveJobList = repository.Jobs
+                        .Where(j => j.Status == "Working on it").OrderByDescending(m => m._JobAdditional.Priority).ThenBy(n => n.LatestFinishDate).ToList();
+
                 List<JobAdditional> MyJobAdditionalList = repository.JobAdditionals.Where(m => MyjobsList.Any(n => n.JobID == m.JobID)).ToList();
                 List<JobAdditional> OnCrossJobAdditionalList = repository.JobAdditionals.Where(m => OnCrossJobsList.Any(n => n.JobID == m.JobID)).ToList();
                 List<JobAdditional> PendingJobAdditionalList = repository.JobAdditionals.Where(m => PendingToCrossJobList.Any(n => n.JobID == m.JobID)).ToList();
+                List<JobAdditional> ActiveJobAdditionalList = repository.JobAdditionals.Where(m => ActiveJobList.Any(n => n.JobID == m.JobID)).ToList();
 
 
                 switch (Sort)
@@ -229,26 +233,32 @@ namespace ProdFloor.Controllers
                     case "1JobNumAsc": MyjobsList = MyjobsList.OrderBy(m => m.JobNum).ToList(); break;
                     case "2JobNumAsc": OnCrossJobsList = OnCrossJobsList.OrderBy(m => m.JobNum).ToList(); break;
                     case "3JobNumAsc": PendingToCrossJobList = PendingToCrossJobList.OrderBy(m => m.JobNum).ToList(); break;
+                    case "4JobNumAsc": ActiveJobList = ActiveJobList.OrderBy(m => m.JobNum).ToList(); break;
 
                     case "1JobNumDesc": MyjobsList = MyjobsList.OrderByDescending(m => m.JobNum).ToList(); break;
                     case "2JobNumDesc": OnCrossJobsList = OnCrossJobsList.OrderByDescending(m => m.JobNum).ToList(); break;
                     case "3JobNumDesc": PendingToCrossJobList = PendingToCrossJobList.OrderByDescending(m => m.JobNum).ToList(); break;
+                    case "4JobNumDesc": ActiveJobList = ActiveJobList.OrderByDescending(m => m.JobNum).ToList(); break;
 
                     case "1NameAsc": MyjobsList = MyjobsList.OrderBy(m => m.Name).ToList(); break;
                     case "2NameAsc": OnCrossJobsList = OnCrossJobsList.OrderBy(m => m.Name).ToList(); break;
                     case "3NameAsc": PendingToCrossJobList = PendingToCrossJobList.OrderBy(m => m.Name).ToList(); break;
+                    case "4NameAsc": ActiveJobList = ActiveJobList.OrderBy(m => m.Name).ToList(); break;
 
                     case "1NameDesc": MyjobsList = MyjobsList.OrderByDescending(m => m.Name).ToList(); break;
                     case "2NameDesc": OnCrossJobsList = OnCrossJobsList.OrderByDescending(m => m.Name).ToList(); break;
                     case "3NameDesc": PendingToCrossJobList = PendingToCrossJobList.OrderByDescending(m => m.Name).ToList(); break;
+                    case "4NameDesc": ActiveJobList = ActiveJobList.OrderByDescending(m => m.Name).ToList(); break;
 
                     case "1DateAsc": MyjobsList = MyjobsList.OrderBy(m => m.LatestFinishDate).ToList(); break;
                     case "2DateAsc": OnCrossJobsList = OnCrossJobsList.OrderBy(m => m.LatestFinishDate).ToList(); break;
                     case "3DateAsc": PendingToCrossJobList = PendingToCrossJobList.OrderBy(m => m.LatestFinishDate).ToList(); break;
+                    case "4DateAsc": ActiveJobList = ActiveJobList.OrderBy(m => m.LatestFinishDate).ToList(); break;
 
                     case "1DateDesc": MyjobsList = MyjobsList.OrderByDescending(m => m.LatestFinishDate).ToList(); break;
                     case "2DateDesc": OnCrossJobsList = OnCrossJobsList.OrderByDescending(m => m.LatestFinishDate).ToList(); break;
                     case "3DateDesc": PendingToCrossJobList = PendingToCrossJobList.OrderByDescending(m => m.LatestFinishDate).ToList(); break;
+                    case "4DateDesc": ActiveJobList = ActiveJobList.OrderByDescending(m => m.LatestFinishDate).ToList(); break;
                     default: break;
                 }
 
@@ -258,6 +268,7 @@ namespace ProdFloor.Controllers
                     MyJobAdditionals = MyJobAdditionalList,
                     OnCrossJobAdditionals = OnCrossJobAdditionalList,
                     PendingJobAdditionals = PendingJobAdditionalList,
+                    ActiveJobAdditionals = ActiveJobAdditionalList,
                     MyJobsPagingInfo = new PagingInfo
                     {
                         CurrentPage = MyJobsPage,
@@ -283,6 +294,15 @@ namespace ProdFloor.Controllers
                         CurrentPage = PendingToCrossJobPage,
                         ItemsPerPage = 6,
                         TotalItems = PendingToCrossJobList.Count(),
+                        sort = Sort != "default" ? Sort : "deafult"
+                    },
+
+                    ActiveJobs = ActiveJobList.Skip((ActiveJobPage - 1) * 6).Take(6),
+                    ActiveJobsPagingInfo = new PagingInfo
+                    {
+                        CurrentPage = PendingToCrossJobPage,
+                        ItemsPerPage = 6,
+                        TotalItems = ActiveJobList.Count(),
                         sort = Sort != "default" ? Sort : "deafult"
                     },
                 };

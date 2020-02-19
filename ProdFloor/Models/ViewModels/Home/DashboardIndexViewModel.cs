@@ -11,6 +11,8 @@ namespace ProdFloor.Models.ViewModels
         public PagingInfo PendingJobsPagingInfo { get; set; }
         public IEnumerable<Models.Job> ProductionJobs { get; set; }
         public PagingInfo ProductionJobsPagingInfo { get; set; }
+        public IEnumerable<Models.Job> ActiveJobs { get; set; }
+        public PagingInfo ActiveJobsPagingInfo { get; set; }
         public List<JobType> JobTypesList { get; set; }
         
         public IEnumerable<Models.Job> MyJobs { get; set; }
@@ -25,6 +27,7 @@ namespace ProdFloor.Models.ViewModels
         public List<JobType> JobTypes { get; set; }
         public List<PO> POs { get; set; }
         public List<JobAdditional> MyJobAdditionals { get; set; }
+        public List<JobAdditional> ActiveJobAdditionals { get; set; }
         public List<JobAdditional> OnCrossJobAdditionals { get; set; }
         public List<JobAdditional> PendingJobAdditionals { get; set; }
         public int CurrentEngID { get; set; }
