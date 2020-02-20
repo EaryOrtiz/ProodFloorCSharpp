@@ -303,7 +303,7 @@ namespace ProdFloor.Controllers
                     ActiveJobs = ActiveJobList.Skip((ActiveJobPage - 1) * 6).Take(6),
                     ActiveJobsPagingInfo = new PagingInfo
                     {
-                        CurrentPage = PendingToCrossJobPage,
+                        CurrentPage = ActiveJobPage,
                         ItemsPerPage = 6,
                         TotalItems = ActiveJobList.Count(),
                         sort = Sort != "default" ? Sort : "deafult"
