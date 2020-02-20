@@ -1574,7 +1574,7 @@ namespace ProdFloor.Infrastructure
         public string MyJobsUrlValue { get; set; }
         public string OnCrossUrlValue { get; set; }
         public string PendingToCrossUrlValue { get; set; }
-        public string ActiveCrossUrlValue { get; set; }
+        public string ActiveUrlValue { get; set; }
         public string Sort { get; set; }
         public string CurrentModel { get; set; }
 
@@ -1596,6 +1596,7 @@ namespace ProdFloor.Infrastructure
                         PageUrlValues[MyJobsUrlValue] = 1;
                         PageUrlValues[OnCrossUrlValue] = OnCrossPageModel.CurrentPage;
                         PageUrlValues[PendingToCrossUrlValue] = PendingToCrossPageModel.CurrentPage;
+                        PageUrlValues[ActiveUrlValue] = ActivePageModel.CurrentPage;
                         PageUrlValues[Sort] = MyJobsPageModel.sort;
                         tag.Attributes["href"] = urlHelper.Action(PageAction, PageUrlValues);
                         if (PageClassesEnabled)
@@ -1610,6 +1611,8 @@ namespace ProdFloor.Infrastructure
                         PageUrlValues[MyJobsUrlValue] = (MyJobsPageModel.CurrentPage - 1) != 0 ? (MyJobsPageModel.CurrentPage - 1) : 1;
                         PageUrlValues[OnCrossUrlValue] = OnCrossPageModel.CurrentPage;
                         PageUrlValues[PendingToCrossUrlValue] = PendingToCrossPageModel.CurrentPage;
+                        PageUrlValues[ActiveUrlValue] = ActivePageModel.CurrentPage;
+                        PageUrlValues[Sort] = MyJobsPageModel.sort;
                         tag1.Attributes["href"] = urlHelper.Action(PageAction, PageUrlValues);
                         if (PageClassesEnabled)
                         {
@@ -1635,6 +1638,7 @@ namespace ProdFloor.Infrastructure
                             PageUrlValues[MyJobsUrlValue] = i;
                             PageUrlValues[OnCrossUrlValue] = OnCrossPageModel.CurrentPage;
                             PageUrlValues[PendingToCrossUrlValue] = PendingToCrossPageModel.CurrentPage;
+                            PageUrlValues[ActiveUrlValue] = ActivePageModel.CurrentPage;
                             PageUrlValues[Sort] = MyJobsPageModel.sort;
                             tag2.Attributes["href"] = urlHelper.Action(PageAction, PageUrlValues);
                             if (PageClassesEnabled)
@@ -1654,6 +1658,7 @@ namespace ProdFloor.Infrastructure
                             PageUrlValues[MyJobsUrlValue] = i;
                             PageUrlValues[OnCrossUrlValue] = OnCrossPageModel.CurrentPage;
                             PageUrlValues[PendingToCrossUrlValue] = PendingToCrossPageModel.CurrentPage;
+                            PageUrlValues[ActiveUrlValue] = ActivePageModel.CurrentPage;
                             PageUrlValues[Sort] = MyJobsPageModel.sort;
                             tag3.Attributes["href"] = urlHelper.Action(PageAction, PageUrlValues);
                             if (PageClassesEnabled)
@@ -1670,6 +1675,7 @@ namespace ProdFloor.Infrastructure
                         PageUrlValues[MyJobsUrlValue] = (MyJobsPageModel.CurrentPage + 1) <= MyJobsPageModel.TotalPages ? (MyJobsPageModel.CurrentPage + 1) : MyJobsPageModel.TotalPages;
                         PageUrlValues[OnCrossUrlValue] = OnCrossPageModel.CurrentPage;
                         PageUrlValues[PendingToCrossUrlValue] = PendingToCrossPageModel.CurrentPage;
+                        PageUrlValues[ActiveUrlValue] = ActivePageModel.CurrentPage;
                         PageUrlValues[Sort] = MyJobsPageModel.sort;
                         tag4.Attributes["href"] = urlHelper.Action(PageAction, PageUrlValues);
                         if (PageClassesEnabled)
@@ -1684,6 +1690,7 @@ namespace ProdFloor.Infrastructure
                         PageUrlValues[MyJobsUrlValue] = MyJobsPageModel.TotalPages;
                         PageUrlValues[OnCrossUrlValue] = OnCrossPageModel.CurrentPage;
                         PageUrlValues[PendingToCrossUrlValue] = PendingToCrossPageModel.CurrentPage;
+                        PageUrlValues[ActiveUrlValue] = ActivePageModel.CurrentPage;
                         PageUrlValues[Sort] = MyJobsPageModel.sort;
                         tag5.Attributes["href"] = urlHelper.Action(PageAction, PageUrlValues);
                         if (PageClassesEnabled)
@@ -1707,6 +1714,7 @@ namespace ProdFloor.Infrastructure
                         PageUrlValues[MyJobsUrlValue] = MyJobsPageModel.CurrentPage;
                         PageUrlValues[OnCrossUrlValue] = 1;
                         PageUrlValues[PendingToCrossUrlValue] = PendingToCrossPageModel.CurrentPage;
+                        PageUrlValues[ActiveUrlValue] = ActivePageModel.CurrentPage;
                         PageUrlValues[Sort] = OnCrossPageModel.sort;
                         tag6.Attributes["href"] = urlHelper2.Action(PageAction, PageUrlValues);
                         if (PageClassesEnabled)
@@ -1721,6 +1729,8 @@ namespace ProdFloor.Infrastructure
                         PageUrlValues[MyJobsUrlValue] = MyJobsPageModel.CurrentPage;
                         PageUrlValues[OnCrossUrlValue] = (OnCrossPageModel.CurrentPage - 1) != 0 ? (OnCrossPageModel.CurrentPage - 1) : 1;
                         PageUrlValues[PendingToCrossUrlValue] = PendingToCrossPageModel.CurrentPage;
+                        PageUrlValues[ActiveUrlValue] = ActivePageModel.CurrentPage;
+                        PageUrlValues[Sort] = OnCrossPageModel.sort;
                         tag7.Attributes["href"] = urlHelper2.Action(PageAction, PageUrlValues);
                         if (PageClassesEnabled)
                         {
@@ -1746,6 +1756,7 @@ namespace ProdFloor.Infrastructure
                             PageUrlValues[MyJobsUrlValue] = MyJobsPageModel.CurrentPage;
                             PageUrlValues[OnCrossUrlValue] = i;
                             PageUrlValues[PendingToCrossUrlValue] = PendingToCrossPageModel.CurrentPage;
+                            PageUrlValues[ActiveUrlValue] = ActivePageModel.CurrentPage;
                             PageUrlValues[Sort] = OnCrossPageModel.sort;
                             tag2.Attributes["href"] = urlHelper2.Action(PageAction, PageUrlValues);
                             if (PageClassesEnabled)
@@ -1765,6 +1776,7 @@ namespace ProdFloor.Infrastructure
                             PageUrlValues[MyJobsUrlValue] = MyJobsPageModel.CurrentPage;
                             PageUrlValues[OnCrossUrlValue] = i;
                             PageUrlValues[PendingToCrossUrlValue] = PendingToCrossPageModel.CurrentPage;
+                            PageUrlValues[ActiveUrlValue] = ActivePageModel.CurrentPage;
                             PageUrlValues[Sort] = OnCrossPageModel.sort;
                             tag3.Attributes["href"] = urlHelper2.Action(PageAction, PageUrlValues);
                             if (PageClassesEnabled)
@@ -1781,6 +1793,7 @@ namespace ProdFloor.Infrastructure
                         PageUrlValues[MyJobsUrlValue] = MyJobsPageModel.CurrentPage;
                         PageUrlValues[OnCrossUrlValue] = (OnCrossPageModel.CurrentPage + 1) <= OnCrossPageModel.TotalPages ? (OnCrossPageModel.CurrentPage + 1) : OnCrossPageModel.TotalPages;
                         PageUrlValues[PendingToCrossUrlValue] = PendingToCrossPageModel.CurrentPage;
+                        PageUrlValues[ActiveUrlValue] = ActivePageModel.CurrentPage;
                         PageUrlValues[Sort] = OnCrossPageModel.sort;
                         tag8.Attributes["href"] = urlHelper2.Action(PageAction, PageUrlValues);
                         if (PageClassesEnabled)
@@ -1795,6 +1808,7 @@ namespace ProdFloor.Infrastructure
                         PageUrlValues[MyJobsUrlValue] = MyJobsPageModel.CurrentPage;
                         PageUrlValues[OnCrossUrlValue] = OnCrossPageModel.TotalPages;
                         PageUrlValues[PendingToCrossUrlValue] = PendingToCrossPageModel.CurrentPage;
+                        PageUrlValues[ActiveUrlValue] = ActivePageModel.CurrentPage;
                         PageUrlValues[Sort] = OnCrossPageModel.sort;
                         tag9.Attributes["href"] = urlHelper2.Action(PageAction, PageUrlValues);
                         if (PageClassesEnabled)
@@ -1819,6 +1833,7 @@ namespace ProdFloor.Infrastructure
                         PageUrlValues[MyJobsUrlValue] = MyJobsPageModel.CurrentPage;
                         PageUrlValues[OnCrossUrlValue] = OnCrossPageModel.CurrentPage;
                         PageUrlValues[PendingToCrossUrlValue] = 1;
+                        PageUrlValues[ActiveUrlValue] = ActivePageModel.CurrentPage;
                         PageUrlValues[Sort] = PendingToCrossPageModel.sort;
                         tag10.Attributes["href"] = urlHelper3.Action(PageAction, PageUrlValues);
                         if (PageClassesEnabled)
@@ -1833,6 +1848,8 @@ namespace ProdFloor.Infrastructure
                         PageUrlValues[MyJobsUrlValue] = MyJobsPageModel.CurrentPage;
                         PageUrlValues[OnCrossUrlValue] = OnCrossPageModel.CurrentPage;
                         PageUrlValues[PendingToCrossUrlValue] = (PendingToCrossPageModel.CurrentPage - 1) != 0 ? (PendingToCrossPageModel.CurrentPage - 1) : 1;
+                        PageUrlValues[ActiveUrlValue] = ActivePageModel.CurrentPage;
+                        PageUrlValues[Sort] = PendingToCrossPageModel.sort;
                         tag11.Attributes["href"] = urlHelper3.Action(PageAction, PageUrlValues);
                         if (PageClassesEnabled)
                         {
@@ -1858,6 +1875,7 @@ namespace ProdFloor.Infrastructure
                             PageUrlValues[MyJobsUrlValue] = MyJobsPageModel.CurrentPage;
                             PageUrlValues[OnCrossUrlValue] = OnCrossPageModel.CurrentPage;
                             PageUrlValues[PendingToCrossUrlValue] = i;
+                            PageUrlValues[ActiveUrlValue] = ActivePageModel.CurrentPage;
                             PageUrlValues[Sort] = PendingToCrossPageModel.sort;
                             tag2.Attributes["href"] = urlHelper3.Action(PageAction, PageUrlValues);
                             if (PageClassesEnabled)
@@ -1877,6 +1895,7 @@ namespace ProdFloor.Infrastructure
                             PageUrlValues[MyJobsUrlValue] = MyJobsPageModel.CurrentPage;
                             PageUrlValues[OnCrossUrlValue] = OnCrossPageModel.CurrentPage;
                             PageUrlValues[PendingToCrossUrlValue] = i;
+                            PageUrlValues[ActiveUrlValue] = ActivePageModel.CurrentPage;
                             PageUrlValues[Sort] = PendingToCrossPageModel.sort;
                             tag3.Attributes["href"] = urlHelper3.Action(PageAction, PageUrlValues);
                             if (PageClassesEnabled)
@@ -1893,6 +1912,7 @@ namespace ProdFloor.Infrastructure
                         PageUrlValues[MyJobsUrlValue] = MyJobsPageModel.CurrentPage;
                         PageUrlValues[OnCrossUrlValue] = OnCrossPageModel.CurrentPage;
                         PageUrlValues[PendingToCrossUrlValue] = (PendingToCrossPageModel.CurrentPage + 1) <= PendingToCrossPageModel.TotalPages ? (PendingToCrossPageModel.CurrentPage + 1) : PendingToCrossPageModel.TotalPages;
+                        PageUrlValues[ActiveUrlValue] = ActivePageModel.CurrentPage;
                         PageUrlValues[Sort] = PendingToCrossPageModel.sort;
                         tag12.Attributes["href"] = urlHelper3.Action(PageAction, PageUrlValues);
                         if (PageClassesEnabled)
@@ -1907,6 +1927,7 @@ namespace ProdFloor.Infrastructure
                         PageUrlValues[MyJobsUrlValue] = MyJobsPageModel.CurrentPage;
                         PageUrlValues[OnCrossUrlValue] = OnCrossPageModel.CurrentPage;
                         PageUrlValues[PendingToCrossUrlValue] = PendingToCrossPageModel.TotalPages;
+                        PageUrlValues[ActiveUrlValue] = ActivePageModel.CurrentPage;
                         PageUrlValues[Sort] = PendingToCrossPageModel.sort;
                         tag13.Attributes["href"] = urlHelper3.Action(PageAction, PageUrlValues);
                         if (PageClassesEnabled)
@@ -1917,6 +1938,124 @@ namespace ProdFloor.Infrastructure
                         tag13.InnerHtml.Append(">>");
                         result3.InnerHtml.AppendHtml(tag13);
                         output.Content.AppendHtml(result3.InnerHtml);
+                        break;
+
+                    case "ActiveJobs":
+                        IUrlHelper urlHelper4 = urlHelperFactory.GetUrlHelper(ViewContext);
+                        TagBuilder result4 = new TagBuilder("div");
+                        TagBuilder tag14 = new TagBuilder("a");
+                        TagBuilder tag15 = new TagBuilder("a");
+                        TagBuilder tag16 = new TagBuilder("a");
+                        TagBuilder tag17 = new TagBuilder("a");
+                        /*************************************************************************/
+                        PageUrlValues[MyJobsUrlValue] = MyJobsPageModel.CurrentPage;
+                        PageUrlValues[OnCrossUrlValue] = OnCrossPageModel.CurrentPage;
+                        PageUrlValues[PendingToCrossUrlValue] = PendingToCrossPageModel.CurrentPage;
+                        PageUrlValues[ActiveUrlValue] = 1;
+                        PageUrlValues[Sort] = ActivePageModel.sort;
+                        tag14.Attributes["href"] = urlHelper4.Action(PageAction, PageUrlValues);
+                        if (PageClassesEnabled)
+                        {
+                            tag14.AddCssClass(PageClass);
+                            tag14.AddCssClass(PageClassSelected);
+                        }
+                        tag14.InnerHtml.Append("<<");
+                        result4.InnerHtml.AppendHtml(tag14);
+                        output.Content.AppendHtml(result4.InnerHtml);
+                        /*************************************************************************/
+                        PageUrlValues[MyJobsUrlValue] = MyJobsPageModel.CurrentPage;
+                        PageUrlValues[OnCrossUrlValue] = OnCrossPageModel.CurrentPage;
+                        PageUrlValues[PendingToCrossUrlValue] = PendingToCrossPageModel.CurrentPage;
+                        PageUrlValues[ActiveUrlValue] = (ActivePageModel.CurrentPage - 1) != 0 ? (ActivePageModel.CurrentPage - 1) : 1;
+                        PageUrlValues[Sort] = ActivePageModel.sort;
+                        tag15.Attributes["href"] = urlHelper4.Action(PageAction, PageUrlValues);
+                        if (PageClassesEnabled)
+                        {
+                            tag15.AddCssClass(PageClass);
+                            tag15.AddCssClass(PageClassSelected);
+                        }
+                        tag15.InnerHtml.Append("<");
+                        result4.InnerHtml.AppendHtml(tag15);
+                        output.Content.AppendHtml(result4.InnerHtml);
+                        /*************************************************************************/
+                        List<int> Pages4 = new List<int>();
+                        int countPages4 = ActivePageModel.CurrentPage;
+                        while ((countPages4 >= ActivePageModel.CurrentPage - 3 && countPages4!= 0))
+                        {
+                            Pages4.Add(countPages4);
+                            countPages4--;
+                        }
+                        Pages4.Reverse();
+                        int pagesRest4 = 4 - Pages4.Count;
+                        for (int i = Pages4[0]; i <= Pages4.Last(); i++)
+                        {
+                            TagBuilder tag2 = new TagBuilder("a");
+                            PageUrlValues[MyJobsUrlValue] = MyJobsPageModel.CurrentPage;
+                            PageUrlValues[OnCrossUrlValue] = OnCrossPageModel.CurrentPage;
+                            PageUrlValues[PendingToCrossUrlValue] = PendingToCrossPageModel.CurrentPage;
+                            PageUrlValues[ActiveUrlValue] = i;
+                            PageUrlValues[Sort] = ActivePageModel.sort;
+                            tag2.Attributes["href"] = urlHelper4.Action(PageAction, PageUrlValues);
+                            if (PageClassesEnabled)
+                            {
+                                tag2.AddCssClass(PageClass);
+                                tag2.AddCssClass(i == ActivePageModel.CurrentPage
+                                ? "btn-info" : PageClassNormal);
+                            }
+                            tag2.InnerHtml.Append(i.ToString());
+                            result4.InnerHtml.AppendHtml(tag2);
+                        }
+                        output.Content.AppendHtml(result4.InnerHtml);
+                        /*************************************************************************/
+                        for (int i = ActivePageModel.CurrentPage + 1; (i <= ActivePageModel.CurrentPage + 3 + pagesRest4 && i <= ActivePageModel.TotalPages); i++)
+                        {
+                            TagBuilder tag3 = new TagBuilder("a");
+                            PageUrlValues[MyJobsUrlValue] = MyJobsPageModel.CurrentPage;
+                            PageUrlValues[OnCrossUrlValue] = OnCrossPageModel.CurrentPage;
+                            PageUrlValues[PendingToCrossUrlValue] = PendingToCrossPageModel.CurrentPage;
+                            PageUrlValues[ActiveUrlValue] = i;
+                            PageUrlValues[Sort] = ActivePageModel.sort;
+                            tag3.Attributes["href"] = urlHelper4.Action(PageAction, PageUrlValues);
+                            if (PageClassesEnabled)
+                            {
+                                tag3.AddCssClass(PageClass);
+                                tag3.AddCssClass(i == ActivePageModel.CurrentPage
+                                ? "btn-info" : PageClassNormal);
+                            }
+                            tag3.InnerHtml.Append(i.ToString());
+                            result4.InnerHtml.AppendHtml(tag3);
+                        }
+                        output.Content.AppendHtml(result4.InnerHtml);
+                        /*************************************************************************/
+                        PageUrlValues[MyJobsUrlValue] = MyJobsPageModel.CurrentPage;
+                        PageUrlValues[OnCrossUrlValue] = OnCrossPageModel.CurrentPage;
+                        PageUrlValues[PendingToCrossUrlValue] = PendingToCrossPageModel.CurrentPage;
+                        PageUrlValues[ActiveUrlValue] = (ActivePageModel.CurrentPage + 1) <= ActivePageModel.TotalPages ? (ActivePageModel.CurrentPage + 1) : ActivePageModel.TotalPages;
+                        PageUrlValues[Sort] = ActivePageModel.sort;
+                        tag16.Attributes["href"] = urlHelper4.Action(PageAction, PageUrlValues);
+                        if (PageClassesEnabled)
+                        {
+                            tag16.AddCssClass(PageClass);
+                            tag16.AddCssClass(PageClassSelected);
+                        }
+                        tag16.InnerHtml.Append(">");
+                        result4.InnerHtml.AppendHtml(tag16);
+                        output.Content.AppendHtml(result4.InnerHtml);
+                        /*************************************************************************/
+                        PageUrlValues[MyJobsUrlValue] = MyJobsPageModel.CurrentPage;
+                        PageUrlValues[OnCrossUrlValue] = OnCrossPageModel.CurrentPage;
+                        PageUrlValues[PendingToCrossUrlValue] = PendingToCrossPageModel.TotalPages;
+                        PageUrlValues[ActiveUrlValue] = ActivePageModel.CurrentPage;
+                        PageUrlValues[Sort] = ActivePageModel.sort;
+                        tag17.Attributes["href"] = urlHelper4.Action(PageAction, PageUrlValues);
+                        if (PageClassesEnabled)
+                        {
+                            tag17.AddCssClass(PageClass);
+                            tag17.AddCssClass(PageClassSelected);
+                        }
+                        tag17.InnerHtml.Append(">>");
+                        result4.InnerHtml.AppendHtml(tag17);
+                        output.Content.AppendHtml(result4.InnerHtml);
                         break;
                 }
 

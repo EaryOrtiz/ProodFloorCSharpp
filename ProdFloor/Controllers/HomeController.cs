@@ -259,6 +259,9 @@ namespace ProdFloor.Controllers
                     case "2DateDesc": OnCrossJobsList = OnCrossJobsList.OrderByDescending(m => m.LatestFinishDate).ToList(); break;
                     case "3DateDesc": PendingToCrossJobList = PendingToCrossJobList.OrderByDescending(m => m.LatestFinishDate).ToList(); break;
                     case "4DateDesc": ActiveJobList = ActiveJobList.OrderByDescending(m => m.LatestFinishDate).ToList(); break;
+
+                    case "4ShippingAsc": ActiveJobList = ActiveJobList.OrderBy(m => m.ShipDate).ToList(); break;
+                    case "4ShippingDesc": ActiveJobList = ActiveJobList.OrderByDescending(m => m.ShipDate).ToList(); break;
                     default: break;
                 }
 

@@ -4,9 +4,9 @@
     Layout = "_AdminLayoutWO";
 
 }
-<br />
 @if (User.IsInRole("EngAdmin"))
 {
+
     @if (Model.OnCrossJobs != null)
     {
         @Html.Partial("OngoingJobsEngAdmin", Model)
@@ -21,4 +21,11 @@
     {
         @Html.Partial("PendingCrossApprovalsEngAdmin", Model)
     }
+    <br />
+    @if (Model.ActiveJobs != null)
+    {
+        @Html.Partial("ActiveJobsEngAdmin", Model)
+    }
+    <br />
+    <br />
 }

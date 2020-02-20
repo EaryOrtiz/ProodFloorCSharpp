@@ -110,6 +110,11 @@ namespace ProdFloor
 
                 routes.MapRoute(
                     name: null,
+                    template: "Home/{MyJobsPage:int}_{OnCrossJobPage:int}_{PendingToCrossJobPage:int}_{ActiveJobPage:int}_{Sort}",
+                    defaults: new { controller = "Home", action = "Index" });
+
+                routes.MapRoute(
+                    name: null,
                     template: "Home/{MyJobsPage:int}_{OnCrossJobPage:int}_{PendingToCrossJobPage:int}_{Sort}",
                     defaults: new { controller = "Home", action = "Index" });
 
