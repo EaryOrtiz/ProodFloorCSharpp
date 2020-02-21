@@ -256,7 +256,7 @@ namespace ProdFloor.Controllers
             return View(searchViewModel);
         }
 
-        public IActionResult ElementList(JobSearchViewModel searchViewModel, int page = 1, int totalitemsfromlastsearch = 0)
+        public IActionResult ElementList(ElementSearchViewModel searchViewModel, int page = 1, int totalitemsfromlastsearch = 0)
         {
             var JobCount = repository.Jobs
                      .Where(s => s.Status != "Pending").Count();
@@ -312,121 +312,84 @@ namespace ProdFloor.Controllers
             if (!string.IsNullOrEmpty(searchViewModel.StatusJobSearch)) jobSearchRepo = jobSearchRepo.Where(s => s.Status.Equals(searchViewModel.StatusJobSearch));
             #endregion
 
-            #region JobExtension
-            //Opciones de busqueda para el modelo de jobExtensions.
-            if (searchViewModel.InputFrecuency >= 50 && searchViewModel.InputFrecuency <= 61) jobSearchRepo = jobSearchRepo.Where(s => s._jobExtension.InputFrecuency == searchViewModel.InputFrecuency);
-            if (searchViewModel.InputPhase >= 1 && searchViewModel.InputPhase <= 3) jobSearchRepo = jobSearchRepo.Where(s => s._jobExtension.InputPhase == searchViewModel.InputPhase);
-            if (searchViewModel.InputVoltage >= 114 && searchViewModel.InputVoltage <= 600) jobSearchRepo = jobSearchRepo.Where(s => s._jobExtension.InputVoltage == searchViewModel.InputVoltage);
-            if (searchViewModel.NumOfStops >= 1 && searchViewModel.NumOfStops <= 32) jobSearchRepo = jobSearchRepo.Where(s => s._jobExtension.NumOfStops == searchViewModel.NumOfStops);
-            if (searchViewModel.DoorOperatorID > 0) jobSearchRepo = jobSearchRepo.Where(s => s._jobExtension.DoorOperatorID == searchViewModel.DoorOperatorID);
 
-            if (!string.IsNullOrEmpty(searchViewModel.JobTypeAdd)) jobSearchRepo = jobSearchRepo.Where(s => s._jobExtension.JobTypeAdd.Equals(searchViewModel.JobTypeAdd));
-            if (!string.IsNullOrEmpty(searchViewModel.JobTypeMain)) jobSearchRepo = jobSearchRepo.Where(s => s._jobExtension.JobTypeMain.Equals(searchViewModel.JobTypeMain));
-
-            if (!string.IsNullOrEmpty(searchViewModel.AuxCop)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.AuxCop == "Si" ? s._jobExtension.AUXCOP == true : s._jobExtension.AUXCOP == false);
-            if (!string.IsNullOrEmpty(searchViewModel.CartopDoorButtons)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.CartopDoorButtons == "Si" ? s._jobExtension.CartopDoorButtons == true : s._jobExtension.CartopDoorButtons == false);
-            if (!string.IsNullOrEmpty(searchViewModel.DoorHold)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.DoorHold == "Si" ? s._jobExtension.DoorHold == true : s._jobExtension.DoorHold == false);
-            if (!string.IsNullOrEmpty(searchViewModel.HeavyDoors)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.HeavyDoors == "Si" ? s._jobExtension.HeavyDoors == true : s._jobExtension.HeavyDoors == false);
-            if (!string.IsNullOrEmpty(searchViewModel.InfDetector)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.InfDetector == "Si" ? s._jobExtension.InfDetector == true : s._jobExtension.InfDetector == false);
-            if (!string.IsNullOrEmpty(searchViewModel.MechSafEdge)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.MechSafEdge == "Si" ? s._jobExtension.MechSafEdge == true : s._jobExtension.MechSafEdge == false);
-            if (!string.IsNullOrEmpty(searchViewModel.Scop)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.Scop == "Si" ? s._jobExtension.SCOP == true : s._jobExtension.SCOP == false);
-            if (!string.IsNullOrEmpty(searchViewModel.Shc)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.Shc == "Si" ? s._jobExtension.SHC == true : s._jobExtension.SHC == false);
-            #endregion
-
-            #region HydroSpecifics
-            //Opciones de bsuqueda para el modelo de HydroSpecifics
-            if (searchViewModel.FLA > 0) jobSearchRepo = jobSearchRepo.Where(s => s._HydroSpecific.FLA == searchViewModel.FLA);
-            if (searchViewModel.HP > 0) jobSearchRepo = jobSearchRepo.Where(s => s._HydroSpecific.HP == searchViewModel.HP);
-            if (searchViewModel.MotorsNum > 0) jobSearchRepo = jobSearchRepo.Where(s => s._HydroSpecific.MotorsNum == searchViewModel.MotorsNum);
-            if (searchViewModel.SPH > 0) jobSearchRepo = jobSearchRepo.Where(s => s._HydroSpecific.SPH == searchViewModel.SPH);
-
-            if (!string.IsNullOrEmpty(searchViewModel.BatteryBrand)) jobSearchRepo = jobSearchRepo.Where(s => s._HydroSpecific.BatteryBrand.Equals(searchViewModel.BatteryBrand));
-            if (!string.IsNullOrEmpty(searchViewModel.Starter)) jobSearchRepo = jobSearchRepo.Where(s => s._HydroSpecific.Starter.Contains(searchViewModel.Starter));
-            if (!string.IsNullOrEmpty(searchViewModel.ValveBrand)) jobSearchRepo = jobSearchRepo.Where(s => s._HydroSpecific.ValveBrand.Equals(searchViewModel.ValveBrand));
-
-            //if (!string.IsNullOrEmpty(searchViewModel.Battery)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.Battery == "Si" ? s._HydroSpecific.Battery == true : s._HydroSpecific.Battery == false);
-            if (!string.IsNullOrEmpty(searchViewModel.LOS)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.LOS == "Si" ? s._HydroSpecific.LOS == true : s._HydroSpecific.LOS == false);
-            if (!string.IsNullOrEmpty(searchViewModel.LifeJacket)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.LifeJacket == "Si" ? s._HydroSpecific.LifeJacket == true : s._HydroSpecific.LifeJacket == false);
-            if (!string.IsNullOrEmpty(searchViewModel.OilCool)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.OilCool == "Si" ? s._HydroSpecific.OilCool == true : s._HydroSpecific.OilCool == false);
-            if (!string.IsNullOrEmpty(searchViewModel.OilTank)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.OilTank == "Si" ? s._HydroSpecific.OilTank == true : s._HydroSpecific.OilTank == false);
-            if (!string.IsNullOrEmpty(searchViewModel.PSS)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.PSS == "Si" ? s._HydroSpecific.PSS == true : s._HydroSpecific.PSS == false);
-            if (!string.IsNullOrEmpty(searchViewModel.Resync)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.Resync == "Si" ? s._HydroSpecific.Resync == true : s._HydroSpecific.Resync == false);
-            if (!string.IsNullOrEmpty(searchViewModel.VCI)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.VCI == "Si" ? s._HydroSpecific.VCI == true : s._HydroSpecific.VCI == false);
-            #endregion
-
-            #region GenericFeatures
+            #region ElementInfo
             //Opciones de bsuqueda para el modelo de GenericFeatures
-            if (!string.IsNullOrEmpty(searchViewModel.EPCarsNumber)) jobSearchRepo = jobSearchRepo.Where(s => s._GenericFeatures.EPCarsNumber.Equals(searchViewModel.EPCarsNumber));
-            if (!string.IsNullOrEmpty(searchViewModel.SwitchStyle)) jobSearchRepo = jobSearchRepo.Where(s => s._GenericFeatures.SwitchStyle.Equals(searchViewModel.SwitchStyle));
-            if (!string.IsNullOrEmpty(searchViewModel.BottomAccessLocation)) jobSearchRepo = jobSearchRepo.Where(s => s._GenericFeatures.BottomAccessLocation.Equals(searchViewModel.BottomAccessLocation));
-            if (!string.IsNullOrEmpty(searchViewModel.EPContact)) jobSearchRepo = jobSearchRepo.Where(s => s._GenericFeatures.EPContact.Equals(searchViewModel.EPContact));
-            if (!string.IsNullOrEmpty(searchViewModel.GovModel)) jobSearchRepo = jobSearchRepo.Where(s => s._GenericFeatures.GovModel.Contains(searchViewModel.GovModel));
-            if (!string.IsNullOrEmpty(searchViewModel.INCPButtons)) jobSearchRepo = jobSearchRepo.Where(s => s._GenericFeatures.INCPButtons.Equals(searchViewModel.INCPButtons));
-            if (!string.IsNullOrEmpty(searchViewModel.Monitoring)) jobSearchRepo = jobSearchRepo.Where(s => s._GenericFeatures.Monitoring.Equals(searchViewModel.Monitoring));
-            if (!string.IsNullOrEmpty(searchViewModel.TopAccessLocation)) jobSearchRepo = jobSearchRepo.Where(s => s._GenericFeatures.TopAccessLocation.Equals(searchViewModel.TopAccessLocation));
 
-            if (!string.IsNullOrEmpty(searchViewModel.Attendant)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.Attendant == "Si" ? s._GenericFeatures.Attendant == true : s._GenericFeatures.Attendant == false);
-            if (!string.IsNullOrEmpty(searchViewModel.CallEnable)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.CallEnable == "Si" ? s._GenericFeatures.CallEnable == true : s._GenericFeatures.CallEnable == false);
-            if (!string.IsNullOrEmpty(searchViewModel.CarToLobby)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.CarToLobby == "Si" ? s._GenericFeatures.CarToLobby == true : s._GenericFeatures.CarToLobby == false);
-            if (!string.IsNullOrEmpty(searchViewModel.EMT)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.EMT == "Si" ? s._GenericFeatures.EMT == true : s._GenericFeatures.EMT == false);
-            if (!string.IsNullOrEmpty(searchViewModel.EP)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.EP == "Si" ? s._GenericFeatures.EP == true : s._GenericFeatures.EP == false);
-            if (!string.IsNullOrEmpty(searchViewModel.EQ)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.EQ == "Si" ? s._GenericFeatures.EQ == true : s._GenericFeatures.EQ == false);
-            if (!string.IsNullOrEmpty(searchViewModel.FLO)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.FLO == "Si" ? s._GenericFeatures.FLO == true : s._GenericFeatures.FLO == false);
-            if (!string.IsNullOrEmpty(searchViewModel.FRON2)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.FRON2 == "Si" ? s._GenericFeatures.FRON2 == true : s._GenericFeatures.FRON2 == false);
-            if (!string.IsNullOrEmpty(searchViewModel.Hosp)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.Hosp == "Si" ? s._GenericFeatures.Hosp == true : s._GenericFeatures.Hosp == false);
-            if (!string.IsNullOrEmpty(searchViewModel.EPVoltage)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.EPVoltage == "Si" ? s._GenericFeatures.EPVoltage == true : s._GenericFeatures.EPVoltage == false);
-            if (!string.IsNullOrEmpty(searchViewModel.INA)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.INA == "Si" ? s._GenericFeatures.INA == true : s._GenericFeatures.INA == false);
-            if (!string.IsNullOrEmpty(searchViewModel.INCP)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.INCP == "Si" ? s._GenericFeatures.INCP == true : s._GenericFeatures.INCP == false);
-            if (!string.IsNullOrEmpty(searchViewModel.Ind)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.Ind == "Si" ? s._GenericFeatures.Pit == true : s._GenericFeatures.Pit == false);
-            if (!string.IsNullOrEmpty(searchViewModel.LoadWeigher)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.LoadWeigher == "Si" ? s._GenericFeatures.LoadWeigher == true : s._GenericFeatures.LoadWeigher == false);
-            if (!string.IsNullOrEmpty(searchViewModel.TopAccess)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.TopAccess == "Si" ? s._GenericFeatures.TopAccess == true : s._GenericFeatures.TopAccess == false);
-            if (!string.IsNullOrEmpty(searchViewModel.CRO)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.CRO == "Si" ? s._GenericFeatures.CRO == true : s._GenericFeatures.CRO == false);
-            if (!string.IsNullOrEmpty(searchViewModel.CarCallRead)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.CarCallRead == "Si" ? s._GenericFeatures.CarCallRead == true : s._GenericFeatures.CarCallRead == false);
-            if (!string.IsNullOrEmpty(searchViewModel.CarKey)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.CarKey == "Si" ? s._GenericFeatures.CarKey == true : s._GenericFeatures.CarKey == false);
-            if (!string.IsNullOrEmpty(searchViewModel.HCRO)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.HCRO == "Si" ? s._GenericFeatures.HCRO == true : s._GenericFeatures.HCRO == false);
-            if (!string.IsNullOrEmpty(searchViewModel.HallCallRead)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.HallCallRead == "Si" ? s._GenericFeatures.HallCallRead == true : s._GenericFeatures.HallCallRead == false);
-            if (!string.IsNullOrEmpty(searchViewModel.HallKey)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.HallKey == "Si" ? s._GenericFeatures.HallKey == true : s._GenericFeatures.HallKey == false);
-            if (!string.IsNullOrEmpty(searchViewModel.BottomAccess)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.BottomAccess == "Si" ? s._GenericFeatures.BottomAccess == true : s._GenericFeatures.BottomAccess == false);
-            if (!string.IsNullOrEmpty(searchViewModel.CTINSPST)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.CTINSPST == "Si" ? s._GenericFeatures.CTINSPST == true : s._GenericFeatures.CTINSPST == false);
-            if (!string.IsNullOrEmpty(searchViewModel.EPSelect)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.EPSelect == "Si" ? s._GenericFeatures.EPSelect == true : s._GenericFeatures.EPSelect == false);
-            if (!string.IsNullOrEmpty(searchViewModel.PTI)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.PTI == "Si" ? s._GenericFeatures.PTI == true : s._GenericFeatures.PTI == false);
+            if (searchViewModel.DoorOperatorID > 0) jobSearchRepo = jobSearchRepo.Where(s => s._Elements.Any(m => m.DoorOperatorID == searchViewModel.DoorOperatorID));
+            if (searchViewModel.LandingSystemID > 0) jobSearchRepo = jobSearchRepo.Where(s => s._Elements.Any(m => m.DoorOperatorID == searchViewModel.LandingSystemID));
+            if (searchViewModel.Capacity > 0) jobSearchRepo = jobSearchRepo.Where(s => s._Elements.Any(m => m.DoorOperatorID == searchViewModel.LandingSystemID));
+            if (searchViewModel.Speed > 0) jobSearchRepo = jobSearchRepo.Where(s => s._Elements.Any(m => m.Speed == searchViewModel.Speed));
+            if (searchViewModel.Voltage > 0) jobSearchRepo = jobSearchRepo.Where(s => s._Elements.Any(m => m.Voltage == searchViewModel.Voltage));
+            if (searchViewModel.Phase > 0) jobSearchRepo = jobSearchRepo.Where(s => s._Elements.Any(m => m.Phase == searchViewModel.Phase));
+            if (searchViewModel.Frequency > 0) jobSearchRepo = jobSearchRepo.Where(s => s._Elements.Any(m => m.Frequency == searchViewModel.Frequency));
+
+            if (!string.IsNullOrEmpty(searchViewModel.LoadWeigher)) jobSearchRepo = jobSearchRepo.Where(s => s._Elements.Any(m => m.LoadWeigher.Contains(searchViewModel.LoadWeigher)));
+            if (!string.IsNullOrEmpty(searchViewModel.INA)) jobSearchRepo = jobSearchRepo.Where(s => s._Elements.Any(m => m.INA.Contains(searchViewModel.INA)));
+
+            if (!string.IsNullOrEmpty(searchViewModel.CallEnable)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.CallEnable == "Si" ? s._Elements.Any(m => m.CallEnable == true) : s._Elements.Any(m => m.CallEnable == false));
+            if (!string.IsNullOrEmpty(searchViewModel.EMT)) jobSearchRepo = jobSearchRepo.Where(s =>searchViewModel.EMT == "Si" ? s._Elements.Any(m => m.EMT == true) : s._Elements.Any(m => m.EMT == false));
+            if (!string.IsNullOrEmpty(searchViewModel.EP)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.EP == "Si" ? s._Elements.Any(m => m.EP == true) : s._Elements.Any(m => m.EP == false));
+            if (!string.IsNullOrEmpty(searchViewModel.EQ)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.EQ == "Si" ? s._Elements.Any(m => m.EQ == true) : s._Elements.Any(m => m.EQ == false));
+            if (!string.IsNullOrEmpty(searchViewModel.FRON2)) jobSearchRepo = jobSearchRepo.Where(s =>searchViewModel.FRON2 == "Si" ? s._Elements.Any(m => m.FRON2 == true) : s._Elements.Any(m => m.FRON2 == false));
+            if (!string.IsNullOrEmpty(searchViewModel.CRO)) jobSearchRepo = jobSearchRepo.Where(s =>searchViewModel.CRO == "Si" ? s._Elements.Any(m => m.CRO == true) : s._Elements.Any(m => m.CRO == false));
+            if (!string.IsNullOrEmpty(searchViewModel.CarKey)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.CarKey == "Si" ? s._Elements.Any(m => m.CarKey == true) : s._Elements.Any(m => m.CarKey == false));
+            if (!string.IsNullOrEmpty(searchViewModel.HCRO)) jobSearchRepo = jobSearchRepo.Where(s =>searchViewModel.HCRO == "Si" ? s._Elements.Any(m => m.HCRO == true) : s._Elements.Any(m => m.HCRO == false));
+            if (!string.IsNullOrEmpty(searchViewModel.HallKey)) jobSearchRepo = jobSearchRepo.Where(s =>searchViewModel.HallKey == "Si" ? s._Elements.Any(m => m.HallKey == true) : s._Elements.Any(m => m.HallKey == false));
+            if (!string.IsNullOrEmpty(searchViewModel.LOS)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.LOS == "Si" ? s._Elements.Any(m => m.LOS == true) : s._Elements.Any(m => m.LOS == false));
+            if (!string.IsNullOrEmpty(searchViewModel.PSS)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.PSS == "Si" ? s._Elements.Any(m => m.PSS == true) : s._Elements.Any(m => m.PSS == false));
+            if (!string.IsNullOrEmpty(searchViewModel.VCI)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.VCI == "Si" ? s._Elements.Any(m => m.VCI == true) : s._Elements.Any(m => m.VCI == false));
+
+            if (!string.IsNullOrEmpty(searchViewModel.INCP)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.INCP == "Si" ? s._Elements.Any(m => m.INCP == true) : s._Elements.Any(m => m.INCP == false));
+            if (!string.IsNullOrEmpty(searchViewModel.HallCardReader)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.HallCardReader == "Si" ? s._Elements.Any(m => m.HallCardReader == true) : s._Elements.Any(m => m.HallCardReader == false));
+            if (!string.IsNullOrEmpty(searchViewModel.HAPS)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.HAPS == "Si" ? s._Elements.Any(m => m.HAPS == true) : s._Elements.Any(m => m.HAPS == false));
+            if (!string.IsNullOrEmpty(searchViewModel.PTFLD)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.PTFLD == "Si" ? s._Elements.Any(m => m.PTFLD == true) : s._Elements.Any(m => m.PTFLD == false));
+            if (!string.IsNullOrEmpty(searchViewModel.CReg)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.CReg == "Si" ? s._Elements.Any(m => m.CReg == true) : s._Elements.Any(m => m.CReg == false));
+            if (!string.IsNullOrEmpty(searchViewModel.Egress)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.Egress == "Si" ? s._Elements.Any(m => m.Egress == true) : s._Elements.Any(m => m.Egress == false));
+            if (!string.IsNullOrEmpty(searchViewModel.PHECutOut)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.PHECutOut == "Si" ? s._Elements.Any(m => m.PHECutOut == true) : s._Elements.Any(m => m.PHECutOut == false));
+            if (!string.IsNullOrEmpty(searchViewModel.CTINSPST)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.CTINSPST == "Si" ? s._Elements.Any(m => m.CTINSPST == true) : s._Elements.Any(m => m.CTINSPST == false));
+            if (!string.IsNullOrEmpty(searchViewModel.Traveler)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.Traveler == "Si" ? s._Elements.Any(m => m.Traveler == true) : s._Elements.Any(m => m.Traveler == false));
+            if (!string.IsNullOrEmpty(searchViewModel.PFGE)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.PFGE == "Si" ? s._Elements.Any(m => m.PFGE == true) : s._Elements.Any(m => m.PFGE == false));
+
+            if (!string.IsNullOrEmpty(searchViewModel.CTL)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.CTL == "Si" ? s._Elements.Any(m => m.CTL == true) : s._Elements.Any(m => m.CTL == false));
+            if (!string.IsNullOrEmpty(searchViewModel.CSD)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.CSD == "Si" ? s._Elements.Any(m => m.CSD == true) : s._Elements.Any(m => m.CSD == false));
+            if (!string.IsNullOrEmpty(searchViewModel.CTF)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.CTF == "Si" ? s._Elements.Any(m => m.CTF == true) : s._Elements.Any(m => m.CTF == false));
+            if (!string.IsNullOrEmpty(searchViewModel.LJ)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.LJ == "Si" ? s._Elements.Any(m => m.LJ == true) : s._Elements.Any(m => m.LJ == false));
+            if (!string.IsNullOrEmpty(searchViewModel.DHLD)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.DHLD == "Si" ? s._Elements.Any(m => m.DHLD == true) : s._Elements.Any(m => m.DHLD == false));
+
             #endregion
 
-            #region HydroSpecifics
+            #region Elements
             //Opciones de bsuqueda para el modelo de HydroSpecifics
-            if (searchViewModel.IndicatorsVoltage > 0) jobSearchRepo = jobSearchRepo.Where(s => s._Indicator.IndicatorsVoltage == searchViewModel.IndicatorsVoltage);
 
-            if (!string.IsNullOrEmpty(searchViewModel.CarCallsVoltage)) jobSearchRepo = jobSearchRepo.Where(s => s._Indicator.CarCallsVoltage.Equals(searchViewModel.CarCallsVoltage));
-            if (!string.IsNullOrEmpty(searchViewModel.HallCallsType)) jobSearchRepo = jobSearchRepo.Where(s => s._Indicator.HallCallsType.Equals(searchViewModel.HallCallsType));
-            if (!string.IsNullOrEmpty(searchViewModel.CarCallsVoltageType)) jobSearchRepo = jobSearchRepo.Where(s => s._Indicator.CarCallsVoltageType.Equals(searchViewModel.CarCallsVoltageType));
-            if (!string.IsNullOrEmpty(searchViewModel.HallCallsVoltage)) jobSearchRepo = jobSearchRepo.Where(s => s._Indicator.HallCallsVoltage.Equals(searchViewModel.HallCallsVoltage));
-            if (!string.IsNullOrEmpty(searchViewModel.HallCallsVoltageType)) jobSearchRepo = jobSearchRepo.Where(s => s._Indicator.HallCallsVoltageType.Equals(searchViewModel.HallCallsVoltageType));
-            if (!string.IsNullOrEmpty(searchViewModel.IndicatorsVoltageType)) jobSearchRepo = jobSearchRepo.Where(s => s._Indicator.IndicatorsVoltageType.Equals(searchViewModel.IndicatorsVoltageType));
+            if (searchViewModel.JobTypeName == "ElmTraction")
+            {
+                if (searchViewModel.FLA > 0) jobSearchRepo = jobSearchRepo.Where(s => s._EmentTractions.Any(m => m.FLA == searchViewModel.FLA));
+                if (searchViewModel.HP > 0) jobSearchRepo = jobSearchRepo.Where(s => s._EmentTractions.Any(m => m.HP == searchViewModel.HP));
+                if (searchViewModel.PickVoltage > 0) jobSearchRepo = jobSearchRepo.Where(s => s._EmentTractions.Any(m => m.PickVoltage == searchViewModel.PickVoltage));
+                if (searchViewModel.HoldVoltage > 0) jobSearchRepo = jobSearchRepo.Where(s => s._EmentTractions.Any(m => m.HoldVoltage == searchViewModel.HoldVoltage));
+                if (searchViewModel.Resistance > 0) jobSearchRepo = jobSearchRepo.Where(s => s._EmentTractions.Any(m => m.Resistance == searchViewModel.Resistance));
+                if (searchViewModel.Current > 0) jobSearchRepo = jobSearchRepo.Where(s => s._EmentTractions.Any(m => m.Current == searchViewModel.Current));
 
-            if (!string.IsNullOrEmpty(searchViewModel.CarLanterns)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.CarLanterns == "Si" ? s._Indicator.CarLanterns == true : s._Indicator.CarLanterns == false);
-            if (!string.IsNullOrEmpty(searchViewModel.HallLanterns)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.HallLanterns == "Si" ? s._Indicator.HallLanterns == true : s._Indicator.HallLanterns == false);
-            if (!string.IsNullOrEmpty(searchViewModel.HallPI)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.HallPI == "Si" ? s._Indicator.HallPI == true : s._Indicator.HallPI == false);
-            if (!string.IsNullOrEmpty(searchViewModel.PassingFloor)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.PassingFloor == "Si" ? s._Indicator.PassingFloor == true : s._Indicator.PassingFloor == false);
-            if (!string.IsNullOrEmpty(searchViewModel.VoiceAnnunciationPI)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.VoiceAnnunciationPI == "Si" ? s._Indicator.VoiceAnnunciationPI == true : s._Indicator.VoiceAnnunciationPI == false);
-            #endregion
+                if (!string.IsNullOrEmpty(searchViewModel.MachineLocation)) jobSearchRepo = jobSearchRepo.Where(s => s._EmentTractions.Any(m => m.MachineLocation.Contains(searchViewModel.MachineLocation)));
+                if (!string.IsNullOrEmpty(searchViewModel.VVVF)) jobSearchRepo = jobSearchRepo.Where(s => s._EmentTractions.Any(m => m.VVVF.Contains(searchViewModel.VVVF)));
+                if (!string.IsNullOrEmpty(searchViewModel.MotorBrand)) jobSearchRepo = jobSearchRepo.Where(s => s._EmentTractions.Any(m => m.MotorBrand.Contains(searchViewModel.MotorBrand)));
+                if (!string.IsNullOrEmpty(searchViewModel.Contact)) jobSearchRepo = jobSearchRepo.Where(s => s._EmentTractions.Any(m => m.Contact.Contains(searchViewModel.Contact)));
 
-            #region HoistWayData
-            //Opciones de bsuqueda para el modelo de HoistWayData
-            if (!string.IsNullOrEmpty(searchViewModel.AnyRear)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.AnyRear == "Si" ? s._HoistWayData.AnyRear == true : s._HoistWayData.AnyRear == false);
+                if (!string.IsNullOrEmpty(searchViewModel.Encoder)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.Encoder == "Si" ? s._EmentTractions.Any(m => m.Encoder == true) : s._EmentTractions.Any(m => m.Encoder == false));
+                if (!string.IsNullOrEmpty(searchViewModel.ISO)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.ISO == "Si" ? s._EmentTractions.Any(m => m.ISO == true) : s._EmentTractions.Any(m => m.ISO == false));
+            }
+            else
+            {
+                if (searchViewModel.FLA > 0) jobSearchRepo = jobSearchRepo.Where(s => s._ElementHydros.Any(m => m.FLA == searchViewModel.FLA));
+                if (searchViewModel.HP > 0) jobSearchRepo = jobSearchRepo.Where(s => s._ElementHydros.Any(m => m.HP == searchViewModel.HP));
+                if (searchViewModel.SPH > 0) jobSearchRepo = jobSearchRepo.Where(s => s._ElementHydros.Any(m => m.SPH == searchViewModel.SPH));
+                
 
-            if (!string.IsNullOrEmpty(searchViewModel.IndependentRearOpenings)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.IndependentRearOpenings == "Si" ?
-            s._HoistWayData.IndependentRearOpenings == true && s._HoistWayData.AnyRear == true : s._HoistWayData.IndependentRearOpenings == false && s._HoistWayData.AnyRear == true);
+                if (!string.IsNullOrEmpty(searchViewModel.Starter)) jobSearchRepo = jobSearchRepo.Where(s => s._ElementHydros.Any(m => m.Starter.Contains(searchViewModel.Starter)));
+                if (!string.IsNullOrEmpty(searchViewModel.Starter)) jobSearchRepo = jobSearchRepo.Where(s => s._ElementHydros.Any(m => m.Starter.Contains(searchViewModel.ValveBrand)));
+            }
 
-            if (searchViewModel.RearFloorOpenings > 0) jobSearchRepo = jobSearchRepo.Where(s => s._HoistWayData.RearFloorOpenings == searchViewModel.RearFloorOpenings);
-            if (searchViewModel.TopFloor > 0) jobSearchRepo = jobSearchRepo.Where(s => s._HoistWayData.TopFloor == searchViewModel.TopFloor);
-            if (searchViewModel.FrontFloorOpenings > 0) jobSearchRepo = jobSearchRepo.Where(s => s._HoistWayData.FrontFloorOpenings == searchViewModel.FrontFloorOpenings);
-
-            if (searchViewModel.Capacity > 0) jobSearchRepo = jobSearchRepo.Where(s => s._HoistWayData.Capacity == searchViewModel.Capacity);
-            if (searchViewModel.DownSpeed > 0) jobSearchRepo = jobSearchRepo.Where(s => s._HoistWayData.DownSpeed == searchViewModel.DownSpeed);
-            if (searchViewModel.UpSpeed > 0) jobSearchRepo = jobSearchRepo.Where(s => s._HoistWayData.UpSpeed == searchViewModel.UpSpeed);
-            if (searchViewModel.HoistWaysNumber > 0) jobSearchRepo = jobSearchRepo.Where(s => s._HoistWayData.HoistWaysNumber == searchViewModel.HoistWaysNumber);
-            if (searchViewModel.MachineRooms > 0) jobSearchRepo = jobSearchRepo.Where(s => s._HoistWayData.MachineRooms == searchViewModel.MachineRooms);
-            if (searchViewModel.LandingSystemID > 0) jobSearchRepo = jobSearchRepo.Where(s => s._HoistWayData.LandingSystemID == searchViewModel.LandingSystemID);
             #endregion
 
             #region SpecialFeatures
@@ -452,8 +415,6 @@ namespace ProdFloor.Controllers
             searchViewModel.Citylist = itemsrepository.Cities.ToList();
             searchViewModel.Statelist = itemsrepository.States.ToList();
             searchViewModel.Landinglist = itemsrepository.LandingSystems.ToList();
-            searchViewModel.JobExtensionList = repository.JobsExtensions.ToList();
-            searchViewModel.HoistWayDataList = repository.HoistWayDatas.ToList();
             searchViewModel.JobsSearchList = jobSearchRepo.OrderBy(p => p.JobID).Skip((page - 1) * 5).Take(5).ToList();
             searchViewModel.PagingInfo = new PagingInfo
             {

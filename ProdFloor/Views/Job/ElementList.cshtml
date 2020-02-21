@@ -1,0 +1,35 @@
+﻿@model ProdFloor.Models.ViewModels.Job.JobSearchViewModel
+@{
+    ViewBag.Title = "Jobs";
+    Layout = "_AdminLayoutWO";
+}
+<br />
+<form asp-controller="Job" asp-action="List" method="get">
+    @Html.Partial("ElementSearchForm", Model)
+</form>
+<div class="text-right m-2">
+    <form asp-action="SeedXML" asp-controller="Job" method="post">
+        @if (Model.JobsSearchList.Count() == 0)
+        {
+            <button type="submit" name="buttonImportXML" value="All" class="btn btn-danger btn-sm">Import All Jobs from XML <i class="fas fa-file-alt"></i></button>
+        }
+    </form>
+</div>
+@if (Model.JobsSearchList.Count > 0)
+{
+        @Html.Partial("ElementSummary", Model)
+
+    <coool-pagination-search page-model="@Model.PagingInfo" page-action="List" page-classes-enabled="true"
+                             page-class="btn" page-class-normal="btn-secondary"
+                             page-class-selected="btn-dark"
+                             class="btn-group pull-right m-1">
+    </coool-pagination-search>
+}
+@if (Model.JobsSearchList.Count() > 0)
+{
+    <div>
+        <form asp-controller="Job" asp-action="ExportJobToXML" method="post">
+            <button class="btn btn-sm" name="buttonXML" value="All" style="background-color:steelblue;color:white">Export All Jobs to an XML File</button>
+        </form>
+    </div>
+}
