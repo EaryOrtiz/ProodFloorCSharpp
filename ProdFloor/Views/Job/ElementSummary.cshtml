@@ -1,72 +1,22 @@
-﻿@model ProdFloor.Models.ViewModels.Job.JobSearchViewModel
+﻿@model ProdFloor.Models.ViewModels.Job.ElementSearchViewModel
 @inject SignInManager<AppUser> SignInManager ;
 @inject UserManager<AppUser> UserManager ;
 
 @foreach (var j in Model.JobsSearchList)
 {
-    string JobTypeName = Model.JobTypelist.FirstOrDefault(m => m.JobTypeID == j.JobTypeID).Name;
+    Element elementAux = Model.ElementList.FirstOrDefault(m => m.JobID == j.JobID);
     City cityAux = Model.Citylist.FirstOrDefault(m => m.CityID == j.CityID);
     State StateAux = Model.Statelist.FirstOrDefault(m => m.StateID == cityAux.StateID);
     <div class="card card-outline-primary m-1 p-1">
         <div class="bg-faded p-1">
             <h4>
                 Job #@j.JobNum
-                @{
-                    JobExtension JobExtensionAux = Model.JobExtensionList.FirstOrDefault(m => m.JobID == j.JobID);
-                    HoistWayData hoistAux = Model.HoistWayDataList.FirstOrDefault(m => m.JobID == j.JobID);
-
-                }
-
-                @if (hoistAux.AnyRear)
-                {
-                    <span class="badge badge-pill badge-success" style="float:right">
-                        <small>Has Rear</small>
-                    </span>
-                }
-                else
-                {
-                    <span class="badge badge-pill badge-danger" style="float:right">
-                        <small>Has Rear</small>
-                    </span>
-                }
-                @if (JobExtensionAux.SCOP)
-                {
-                    <span class="badge badge-pill badge-success" style="float:right">
-                        <small>SCOP</small>
-                    </span>
-                }
-                else
-                {
-                    <span class="badge badge-pill badge-danger" style="float:right">
-                        <small>SCOP</small>
-                    </span>
-                }
-                @if (JobExtensionAux.SHC)
-                {
-                    <span class="badge badge-pill badge-success" style="float:right">
-                        <small>SHC</small>
-                    </span>
-                }
-                else
-                {
-                    <span class="badge badge-pill badge-danger" style="float:right">
-                        <small>SHC</small>
-                    </span>
-                }
                 <span class="badge badge-pill badge-primary" style="float:right">
-                    <small>@Model.Landinglist.FirstOrDefault(m => m.LandingSystemID == hoistAux.LandingSystemID).Name</small>
+                    <small>@Model.Landinglist.FirstOrDefault(m => m.LandingSystemID == elementAux.LandingSystemID).Name</small>
                 </span>
                 <span class="badge badge-pill badge-primary" style="float:right">
                     <small>@StateAux.Name - @cityAux.Name</small>
                 </span>
-                <span class="badge badge-pill badge-primary" style="float:right">
-                    <small>@JobTypeName</small>
-                </span>
-
-
-
-
-
             </h4>
         </div>
         <div class="card-text p-1">

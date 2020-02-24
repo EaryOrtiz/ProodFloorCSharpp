@@ -2,6 +2,10 @@
 @{
     ViewBag.Title = "Jobs";
     Layout = "_AdminLayoutWO";
+
+    <script src="~/Scripts/CascadingCountryStateCity.js" type="text/javascript"></script>
+    <script src="~/Scripts/CascadingStyleBrandDoorOperator.js" type="text/javascript"></script>
+    <script src="~/Scripts/CascadingJobType.js" type="text/javascript"></script>
 }
 <br />
 <form asp-controller="Job" asp-action="List" method="get">
@@ -17,7 +21,7 @@
 </div>
 @if (Model.JobsSearchList.Count > 0)
 {
-        @Html.Partial("JobSummary", Model)
+    @Html.Partial("JobSummary", Model)
 
     <coool-pagination-search page-model="@Model.PagingInfo" page-action="List" page-classes-enabled="true"
                              page-class="btn" page-class-normal="btn-secondary"

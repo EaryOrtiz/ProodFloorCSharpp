@@ -256,14 +256,23 @@ namespace ProdFloor.Controllers
             return View(searchViewModel);
         }
 
-        public IActionResult ElementList(ElementSearchViewModel searchViewModel, int page = 1, int totalitemsfromlastsearch = 0)
+        public IActionResult ElementList(ElementSearchViewModel searchViewModel, int page = 1, int totalitemsfromlastsearch = 0, string JobTypeName = "")
         {
+            if(!string.IsNullOrEmpty(JobTypeName)) searchViewModel.JobTypeName = JobTypeName;
+            JobType jobType = itemsrepository.JobTypes.FirstOrDefault(m => m.Name == JobTypeName);
             var JobCount = repository.Jobs
-                     .Where(s => s.Status != "Pending").Count();
+                     .Where(s => s.Status != "Pending")
+                     .Where(d => d.JobTypeID == jobType.JobTypeID)
+                     .Count();
 
 
-            if (searchViewModel.CleanFields) return RedirectToAction("List");
-            var jobSearchRepo = repository.Jobs.Include(j => j._Elements).Include(hy => hy._ElementHydros).Include(g => g._EmentTractions).Include(sp => sp._SpecialFeatureslist).Include(po => po._PO).Where(y => y.Status != "Pending").AsQueryable();
+            if (searchViewModel.CleanFields) {
+                ElementSearchViewModel NewViewModel = new ElementSearchViewModel();
+                NewViewModel.JobTypeName = searchViewModel.JobTypeName;
+                return RedirectToAction("ElementList", NewViewModel); 
+            }
+            var jobSearchRepo = repository.Jobs.Include(j => j._Elements).Include(hy => hy._ElementHydros).Include(g => g._EmentTractions).Include(sp => sp._SpecialFeatureslist)
+                .Include(po => po._PO).Where(y => y.Status != "Pending").Where(d => d.JobTypeID == jobType.JobTypeID).AsQueryable();
             IQueryable<string> statusQuery = from s in repository.Jobs orderby s.Status select s.Status;
             #region comments
             /*
@@ -362,7 +371,7 @@ namespace ProdFloor.Controllers
             #region Elements
             //Opciones de bsuqueda para el modelo de HydroSpecifics
 
-            if (searchViewModel.JobTypeName == "ElmTraction")
+            if (searchViewModel.JobTypeName == "ElmTract")
             {
                 if (searchViewModel.FLA > 0) jobSearchRepo = jobSearchRepo.Where(s => s._EmentTractions.Any(m => m.FLA == searchViewModel.FLA));
                 if (searchViewModel.HP > 0) jobSearchRepo = jobSearchRepo.Where(s => s._EmentTractions.Any(m => m.HP == searchViewModel.HP));
@@ -411,15 +420,16 @@ namespace ProdFloor.Controllers
                 page = 1;
             }
             searchViewModel.Status = new SelectList(statusQuery.Distinct().ToList());
-            searchViewModel.JobTypelist = itemsrepository.JobTypes.ToList();
             searchViewModel.Citylist = itemsrepository.Cities.ToList();
             searchViewModel.Statelist = itemsrepository.States.ToList();
+            searchViewModel.ElementList = repository.Elements.ToList();
             searchViewModel.Landinglist = itemsrepository.LandingSystems.ToList();
             searchViewModel.JobsSearchList = jobSearchRepo.OrderBy(p => p.JobID).Skip((page - 1) * 5).Take(5).ToList();
             searchViewModel.PagingInfo = new PagingInfo
             {
                 CurrentPage = page,
                 ItemsPerPage = 5,
+                JobTypeName = searchViewModel.JobTypeName,
                 TotalItemsFromLastSearch = totalitemsfromlastsearch,
                 TotalItems = jobSearchRepo.Count()
             };

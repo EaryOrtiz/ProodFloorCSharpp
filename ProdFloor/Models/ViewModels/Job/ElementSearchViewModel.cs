@@ -10,7 +10,7 @@ namespace ProdFloor.Models.ViewModels.Job
     public class ElementSearchViewModel
     {
         public List<Models.Job> JobsSearchList { get; set; }
-        public List<Element> JobExtensionList { get; set; }
+        public List<Element> ElementList { get; set; }
         public List<ElementHydro> ElementTractionList { get; set; }
         public List<ElementHydro> ElementHydroList { get; set; }
         public List<SpecialFeatures> SpecialFeatureslist { get; set; }
@@ -137,36 +137,24 @@ namespace ProdFloor.Models.ViewModels.Job
         [Display(Name = "Door Hold")]
         public string DHLD { get; set; }
 
-        [Required(ErrorMessage = "Please enter the Speed")]
         public int Speed { get; set; }
-        [Required(ErrorMessage = "Please enter the Voltage")]
         public int Voltage { get; set; }
-        [Required(ErrorMessage = "Please enter the Phase")]
         public int Phase { get; set; }
-        [Required(ErrorMessage = "Please enter the Frequency")]
         public int Frequency { get; set; }
 
 
 
-        [Required(ErrorMessage = "Please enter the MachineLocation")]
         public string MachineLocation { get; set; }
-        [Required(ErrorMessage = "Please enter the VVVF")]
         public string VVVF { get; set; }
-        [Required(ErrorMessage = "Please enter the MotorBrand")]
         public string MotorBrand { get; set; }
-        [Required(ErrorMessage = "Please enter the Contact")]
         public string Contact { get; set; }
 
         public string Encoder { get; set; }
         public string ISO { get; set; }
 
-        [Required(ErrorMessage = "Please enter the PickVoltage")]
         public int PickVoltage { get; set; }
-        [Required(ErrorMessage = "Please enter the HoldVoltage")]
         public int HoldVoltage { get; set; }
-        [Required(ErrorMessage = "Please enter the Resistance")]
         public int Resistance { get; set; }
-        [Required(ErrorMessage = "Please enter the Current")]
         public float Current { get; set; }
 
         //Atributos de Special Features
