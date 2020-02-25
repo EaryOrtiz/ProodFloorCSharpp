@@ -259,10 +259,10 @@ namespace ProdFloor.Controllers
         public IActionResult ElementList(ElementSearchViewModel searchViewModel, int page = 1, int totalitemsfromlastsearch = 0, string JobTypeName = "")
         {
             if(!string.IsNullOrEmpty(JobTypeName)) searchViewModel.JobTypeName = JobTypeName;
-            JobType jobType = itemsrepository.JobTypes.FirstOrDefault(m => m.Name == JobTypeName);
+            searchViewModel.jobTypeAux = itemsrepository.JobTypes.FirstOrDefault(m => m.Name == JobTypeName);
             var JobCount = repository.Jobs
                      .Where(s => s.Status != "Pending")
-                     .Where(d => d.JobTypeID == jobType.JobTypeID)
+                     .Where(d => d.JobTypeID == searchViewModel.jobTypeAux.JobTypeID)
                      .Count();
 
 
@@ -272,7 +272,7 @@ namespace ProdFloor.Controllers
                 return RedirectToAction("ElementList", NewViewModel); 
             }
             var jobSearchRepo = repository.Jobs.Include(j => j._Elements).Include(hy => hy._ElementHydros).Include(g => g._EmentTractions).Include(sp => sp._SpecialFeatureslist)
-                .Include(po => po._PO).Where(y => y.Status != "Pending").Where(d => d.JobTypeID == jobType.JobTypeID).AsQueryable();
+                .Include(po => po._PO).Where(y => y.Status != "Pending").Where(d => d.JobTypeID == searchViewModel.jobTypeAux.JobTypeID).AsQueryable();
             IQueryable<string> statusQuery = from s in repository.Jobs orderby s.Status select s.Status;
             #region comments
             /*
@@ -326,8 +326,8 @@ namespace ProdFloor.Controllers
             //Opciones de bsuqueda para el modelo de GenericFeatures
 
             if (searchViewModel.DoorOperatorID > 0) jobSearchRepo = jobSearchRepo.Where(s => s._Elements.Any(m => m.DoorOperatorID == searchViewModel.DoorOperatorID));
-            if (searchViewModel.LandingSystemID > 0) jobSearchRepo = jobSearchRepo.Where(s => s._Elements.Any(m => m.DoorOperatorID == searchViewModel.LandingSystemID));
-            if (searchViewModel.Capacity > 0) jobSearchRepo = jobSearchRepo.Where(s => s._Elements.Any(m => m.DoorOperatorID == searchViewModel.LandingSystemID));
+            if (searchViewModel.LandingSystemID > 0) jobSearchRepo = jobSearchRepo.Where(s => s._Elements.Any(m => m.LandingSystemID == searchViewModel.LandingSystemID));
+            if (searchViewModel.Capacity > 0) jobSearchRepo = jobSearchRepo.Where(s => s._Elements.Any(m => m.Capacity == searchViewModel.Capacity));
             if (searchViewModel.Speed > 0) jobSearchRepo = jobSearchRepo.Where(s => s._Elements.Any(m => m.Speed == searchViewModel.Speed));
             if (searchViewModel.Voltage > 0) jobSearchRepo = jobSearchRepo.Where(s => s._Elements.Any(m => m.Voltage == searchViewModel.Voltage));
             if (searchViewModel.Phase > 0) jobSearchRepo = jobSearchRepo.Where(s => s._Elements.Any(m => m.Phase == searchViewModel.Phase));
@@ -4481,7 +4481,7 @@ namespace ProdFloor.Controllers
                                 Starter = starter,
                                 HP = float.Parse(hp),
                                 FLA = float.Parse(fla),
-                                SPH = Int32.Parse(voltage),
+                                SPH = Int32.Parse(sph),
                                 ValveBrand = valvebrand,
 
                             });

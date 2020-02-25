@@ -22,6 +22,8 @@ namespace ProdFloor.Models.ViewModels.Job
         public bool CleanFields { get; set; }
         public int LastSearch { get; set; }
 
+        public JobType jobTypeAux { get; set; }
+
         public string JobTypeName { get; set; }
 
         //Atributos de Job
