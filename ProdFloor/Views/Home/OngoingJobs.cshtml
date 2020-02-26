@@ -6,10 +6,32 @@
         });
     </script>
 }
-<h4>Ongoing Job(s)</h4>
-<table class="table table-sm">
-    <thead style="background-color:#1B2831;color:#fff">
-        <tr>
+<table class="table table-sm " style="border-collapse:collapse">
+    <thead style="background-color:#1B2831;color:#fff;">
+        <tr style="border-bottom:3px solid #243542">
+            <th class="text-center" colspan="4">
+                <h5 >Ongoing Job(s)</h5>
+            </th>
+            <th colspan="1">
+                <div class="row float-right" style="padding-right:20px">
+                    <div class="text-center">
+                        <div class="btn-group text-center">
+                            <form asp-action="NewJob" asp-controller="Job" method="get">
+                                <button type="button" class="btn btn-outline-dark btn-sm dropdown-toggle"  style="background-color:#1B2831;color:#fff" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Add New Job
+                                </button>
+                                <div class="dropdown-menu">
+                                    <button type="submit" name="JobType" value="M2000" class="dropdown-item" style="margin-right:40px">M2000</button>
+                                    <button type="submit" name="JobType" value="ElmHydro" class="dropdown-item" style="margin-right:40px">Element Hydro</button>
+                                    <button type="submit" name="JobType" value="ElmTract" class="dropdown-item">Element Traction</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </th>
+        </tr>
+        <tr >
             <th scope="col">
                 Job# &nbsp;
                 <div class="btn-group">
@@ -32,7 +54,7 @@
                     </form>
                 </div>
             </th>
-            <th scope="col">Options</th>
+            <th colspan="2">Options</th>
             <th scope="col">
                 Latest Finish&nbsp;
                 <div class="btn-group">
@@ -80,7 +102,7 @@
                         }
                     </th>
                     <td>@j.Name</td>
-                    <td>
+                    <td colspan="2">
                         @if (j.Status == "Incomplete")
                         {
                             <a asp-controller="Job" asp-action="Continue" class="btn btn-sm btn-warning"

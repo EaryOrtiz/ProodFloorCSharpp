@@ -184,7 +184,7 @@ namespace ProdFloor.Controllers
             if (!string.IsNullOrEmpty(viewModel.Description)) reasons = reasons.Where(m => m.Description.Contains(viewModel.Description));
             viewModel.TotalItems = repository.Reasons2.Count();
 
-            int TotalItemsSearch = viewModel.Reasons2.Count();
+            int TotalItemsSearch = viewModel.TotalItems;
             if (page == 1)
             {
                 totalitemsfromlastsearch = TotalItemsSearch;
@@ -221,7 +221,7 @@ namespace ProdFloor.Controllers
 
             viewModel.TotalItems = repository.Reasons3.Count();
 
-            int TotalItemsSearch = viewModel.Reasons3.Count();
+            int TotalItemsSearch = viewModel.TotalItems;
             if (page == 1)
             {
                 totalitemsfromlastsearch = TotalItemsSearch;
@@ -265,7 +265,7 @@ namespace ProdFloor.Controllers
 
             if (!string.IsNullOrEmpty(viewModel.Description)) reasons4 = reasons4.Where(m => m.Description.Contains(viewModel.Description));
 
-            viewModel.TotalItems = repository.Reasons4.Count();
+            viewModel.TotalItems = viewModel.TotalItems;
 
             int TotalItemsSearch = viewModel.Reasons4.Count();
             if (page == 1)
@@ -318,7 +318,7 @@ namespace ProdFloor.Controllers
 
             if (!string.IsNullOrEmpty(viewModel.Description)) reasons4 = reasons4.Where(m => m.Description.Contains(viewModel.Description));
 
-            viewModel.TotalItems = repository.Reasons5.Count();
+            viewModel.TotalItems = viewModel.TotalItems;
 
             int TotalItemsSearch = viewModel.Reasons5.Count();
             if (page == 1)

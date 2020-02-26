@@ -3,18 +3,27 @@
     ViewBag.Title = "Roles";
     Layout = "_AdminLayoutWO";
 }
-    <div class="row" style="float:right;padding-top:5px;padding-right:15px">
-        <a class="btn btn-primary" asp-action="Create">
-            <i class="fa fa-plus"></i>
-            New Role
-        </a>
-    </div>
 <br />
 <div class="text-danger" asp-validation-summary="ModelOnly"></div>
-<table class="table">
+<table class="table table-sm">
     <thead style="background-color:#1B2831;color:#fff">
+        <tr style="border-bottom:3px solid #243542">
+            <th class="text-center" colspan="2">
+                <h5>Rol(s)</h5>
+            </th>
+            <th colspan="1">
+                <div class="row float-right" style="padding-right:20px">
+                    <div class="text-center">
+                        <div class="btn-group text-center">
+                            <a class="btn btn-outline-dark" style="background-color:#1B2831;color:#fff;" asp-action="Create">
+                                New Rol
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </th>
+        </tr>
         <tr>
-            <th scope="col">ID</th>
             <th scope="col">Name</th>
             <th scope="col">Users</th>
             <th scope="col">Actions</th>
@@ -30,7 +39,6 @@
         foreach (var role in Model)
         {
             <tr>
-                <td>@role.Id</td>
                 <td>@role.Name</td>
                 <td identity-role="@role.Id"></td>
                 <td>

@@ -10,7 +10,7 @@ namespace ProdFloor.Controllers
     public class JobTypeController : Controller
     {
         private IItemRepository repository;
-        public int PageSize = 4;
+        public int PageSize = 10;
 
         public JobTypeController(IItemRepository repo)
         {

@@ -6,10 +6,35 @@
         });
     </script>
 }
-<h4>Ongoing Job(s)</h4>
 <div class="container-fluid">
     <table class="table table-sm align-content-center text-center">
         <thead style="background-color:#1B2831;color:#fff">
+            @if (Model.MyJobAdditionals.Count() > 0)
+            {
+                <tr style="border-bottom:3px solid #243542">
+                    <th class="text-center" colspan="5">
+                        <h5>Morning Report</h5>
+                    </th>
+                    <th colspan="1">
+                        <div class="row float-right" style="padding-right:20px">
+                            <div class="text-center">
+                                <div class="btn-group text-center">
+                                    <button class="btn btn-outline-dark" style="background-color:#1B2831;color:#fff;" value="Save" type="submit">Update</button>
+                                </div>
+                            </div>
+                        </div>
+                    </th>
+                </tr>
+            }
+            else
+            {
+                <tr style="border-bottom:3px solid #243542">
+                    <th class="text-center" colspan="12">
+                        <h5>Morning Job(s</h5>
+                    </th>
+                </tr>
+            }
+
             <tr>
                 <th scope="col">
                     Job#
