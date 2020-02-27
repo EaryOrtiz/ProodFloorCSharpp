@@ -10,17 +10,6 @@
         });
     </script>
 }
-<div class="row" style="padding-right:20px">
-    <h2 class="col-sm-10">
-        Reasons 1 List
-    </h2>
-    <form asp-action="Add" asp-controller="Reasons" method="get">
-        <button class="btn btn-success" name="AddR" value="R1" style="background-color:dodgerblue;padding-top:10px;min-width:150px">
-            <i class="fa fa-plus"></i>
-            New Reason 1
-        </button>
-    </form>
-</div>
 <form asp-action="SeedXML" asp-controller="Reasons" method="post">
     @if (Model.Reasons1.Count() == 0)
     {
@@ -30,7 +19,7 @@
 <br />
 <form asp-controller="Reasons" asp-action="Reason1List" method="get">
     <div class="input-group">
-        <input type="text" class="form-control form-control-sm col-5" name="filtrado" id="filtrado" placeholder=" Please enter a reason">
+        <input type="text" class="form-control form-control-sm col-5" name="filtrado" id="filtrado" placeholder=" Please enter a reason 1">
         <div class="input-group-append">
             <div class="btn-group">
                 <button class="btn btn-dark" type="submit" value="Search">
@@ -39,6 +28,9 @@
                 <button class="btn btn-dark" type="submit" name="Sort" value="default">
                     <i class="fas fa-undo" aria-hidden="true"></i>
                 </button>
+                <a class="btn  btn-dark" asp-route-AddR="R1" asp-action="Add" asp-controller="Reasons">
+                    <i class="fa fa-plus"></i>
+                </a>
             </div>
         </div>
 

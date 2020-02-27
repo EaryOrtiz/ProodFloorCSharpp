@@ -7,11 +7,11 @@
     </script>
 }
 <div class="container-fluid">
-    <table class="table table-sm align-content-center text-center">
-        <thead style="background-color:#1B2831;color:#fff">
+    <table class="table table-striped  text-center table-sm" style="text-align:center">
+        <thead style="background-color:#343a40!important;color:#fff;">
             @if (Model.MyJobAdditionals.Count() > 0)
             {
-                <tr style="border-bottom:3px solid #243542">
+                <tr>
                     <th class="text-center" colspan="5">
                         <h5>Morning Report</h5>
                     </th>
@@ -19,7 +19,7 @@
                         <div class="row float-right" style="padding-right:20px">
                             <div class="text-center">
                                 <div class="btn-group text-center">
-                                    <button class="btn btn-outline-dark" style="background-color:#1B2831;color:#fff;" value="Save" type="submit">Update</button>
+                                    <button class="btn btn-dark"  value="Save" type="submit">Update</button>
                                 </div>
                             </div>
                         </div>
@@ -28,7 +28,7 @@
             }
             else
             {
-                <tr style="border-bottom:3px solid #243542">
+                <tr>
                     <th class="text-center" colspan="12">
                         <h5>Morning Job(s</h5>
                     </th>

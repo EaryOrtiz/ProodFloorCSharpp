@@ -7,12 +7,24 @@
     </script>
 }
 <br />
-<table class="table">
-    <thead class="text-light" style="background-color:#1B2831;">
-        <tr style="border-bottom:3px solid #243542">
-            <th class="text-center" colspan="12">
+<table class="table table-striped  text-center table-sm" style="text-align:center">
+    <thead style="background-color:#343a40!important;color:#fff;">
+        <tr>
+            <th class="text-center" colspan="7">
                 <h5>On Going Test Jobs</h5>
             </th>
+            <th colspan="1">
+                <div class="row float-right" style="padding-right:20px">
+                    <div class="text-center">
+                        <div class="btn-group text-center">
+                                <a class="btn btn-dark" asp-action="NewTestJob" asp-controller="TestJob">
+                                    New Test Job
+                                </a>
+                        </div>
+                    </div>
+                </div>
+            </th>
+        </tr>
         </tr>
         <tr>
             <th scope="col">Job#</th>

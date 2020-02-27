@@ -7,9 +7,9 @@
     </script>
 }
 <br />
-<table class="table table-sm align-content-center text-center">
-    <thead style="background-color:#1B2831;color:#fff">
-        <tr style="border-bottom:3px solid #243542">
+<table class="table table-striped  text-center table-sm" style="text-align:center">
+    <thead style="background-color:#343a40!important;color:#fff;">
+        <tr>
             <th class="text-center" colspan="12">
                 <h5>All Ongoing Cross Approval(s)</h5>
             </th>
@@ -67,141 +67,141 @@
                 JobAdditional jobAdditional = Model.OnCrossJobAdditionals.FirstOrDefault(m => m.JobID == j.JobID);
                 string JobTypeName = Model.JobTypes.FirstOrDefault(m => m.JobTypeID == j.JobTypeID).Name;
 
-    <tr>
-        <th scope="row">@j.JobNum</th>
-        <td>@j.Name</td>
-        <td>E@(j.EngID)</td>
-        <td>E@(j.CrossAppEngID)</td>
-        <td>@j.LatestFinishDate.ToShortDateString()</td>
+                <tr>
+                    <th scope="row">@j.JobNum</th>
+                    <td>@j.Name</td>
+                    <td>E@(j.EngID)</td>
+                    <td>E@(j.CrossAppEngID)</td>
+                    <td>@j.LatestFinishDate.ToShortDateString()</td>
 
-        <td>
-            @if (jobAdditional.Priority == 0)
-            {<button type="button" title="Change Priority" class="btn btn-light" data-toggle="modal" data-target="#priority @j.JobID" style="float:left;background-color:transparent" data-tooltip="tooltip" data-placement="top"><i class="fas fa-flag text-success"></i></button>}
-            @if (jobAdditional.Priority == 1)
-            {<button type="button" title="Change Priority" class="btn btn-light" data-toggle="modal" data-target="#priority @j.JobID" style="float:left;background-color:transparent" data-tooltip="tooltip" data-placement="top"><i class="fas fa-flag text-warning"></i></button>}
-            @if (jobAdditional.Priority == 2)
-            {<button type="button" title="Change Priority" class="btn btn-light" data-toggle="modal" data-target="#priority @j.JobID" style="float:left;background-color:transparent" data-tooltip="tooltip" data-placement="top"><i class="fas fa-flag text-danger"></i></button>}
-            @if (JobTypeName == "M2000")
-            {
-                <!-- Modal -->
-                <div class="modal fade" id="priority @j.JobID" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLongTitle">Priority</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <form asp-controller="Home" asp-action="ChangePriorityAdmin">
-                                    <input type="hidden" name="btnJobID" value="@j.JobID" />
-                                    <p>Please select a priority for the job: #@j.JobNum</p>
-                                    <div class="container-fluid">
-                                        <div class="form-group">
-                                            <button type="submit" class="btn btn-sm btn-light" name="btnPriority" value="0" style="background-color:transparent"><i class="fas fa-flag text-success"></i></button>
-                                            <label>&nbsp;Normal</label>
+                    <td>
+                        @if (jobAdditional.Priority == 0)
+                        {<button type="button" title="Change Priority" class="btn btn-light" data-toggle="modal" data-target="#priority @j.JobID" style="float:left;background-color:transparent" data-tooltip="tooltip" data-placement="top"><i class="fas fa-flag text-success"></i></button>}
+                        @if (jobAdditional.Priority == 1)
+                        {<button type="button" title="Change Priority" class="btn btn-light" data-toggle="modal" data-target="#priority @j.JobID" style="float:left;background-color:transparent" data-tooltip="tooltip" data-placement="top"><i class="fas fa-flag text-warning"></i></button>}
+                        @if (jobAdditional.Priority == 2)
+                        {<button type="button" title="Change Priority" class="btn btn-light" data-toggle="modal" data-target="#priority @j.JobID" style="float:left;background-color:transparent" data-tooltip="tooltip" data-placement="top"><i class="fas fa-flag text-danger"></i></button>}
+                        @if (JobTypeName == "M2000")
+                        {
+                            <!-- Modal -->
+                            <div class="modal fade" id="priority @j.JobID" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLongTitle">Priority</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
                                         </div>
-                                        <div class="form-group">
-                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                            <button type="submit" class="btn btn-sm btn-light" name="btnPriority" value="1" style="background-color:transparent"><i class="fas fa-flag text-warning"></i></button>
-                                            <label>&nbsp;High Priority</label>
+                                        <div class="modal-body">
+                                            <form asp-controller="Home" asp-action="ChangePriorityAdmin">
+                                                <input type="hidden" name="btnJobID" value="@j.JobID" />
+                                                <p>Please select a priority for the job: #@j.JobNum</p>
+                                                <div class="container-fluid">
+                                                    <div class="form-group">
+                                                        <button type="submit" class="btn btn-sm btn-light" name="btnPriority" value="0" style="background-color:transparent"><i class="fas fa-flag text-success"></i></button>
+                                                        <label>&nbsp;Normal</label>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                        <button type="submit" class="btn btn-sm btn-light" name="btnPriority" value="1" style="background-color:transparent"><i class="fas fa-flag text-warning"></i></button>
+                                                        <label>&nbsp;High Priority</label>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        &nbsp;&nbsp;&nbsp;
+                                                        <button type="submit" class="btn btn-sm btn-light" name="btnPriority" value="2" style="background-color:transparent"><i class="fas fa-flag text-danger"></i></button>
+                                                        <label>&nbsp;Short Lead</label>
+                                                    </div>
+                                                </div>
+                                            </form>
                                         </div>
-                                        <div class="form-group">
-                                            &nbsp;&nbsp;&nbsp;
-                                            <button type="submit" class="btn btn-sm btn-light" name="btnPriority" value="2" style="background-color:transparent"><i class="fas fa-flag text-danger"></i></button>
-                                            <label>&nbsp;Short Lead</label>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Back</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Button trigger to change status-->
-                <button type="button" class="btn btn-light" data-toggle="modal" data-target="#exampleModalStatus @j.JobID" style="float:left;background-color:transparent" data-tooltip="tooltip" data-placement="top" title="Change Status">
-                    <i class="fas fa-retweet"></i>
-                </button>
-                <!-- Modal -->
-                <div class="modal fade" id="exampleModalStatus @j.JobID" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLongTitle">Are you sure you want to change the status for the Job #@j.JobNum?></h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <form asp-action="ChangeStatus" method="post">
-                                <div class="modal-body">
-                                    <div class="form-group row" style="margin-bottom:0.5em;">
-                                        <label class="col-sm-5 col-form-label font-weight-bold">Current Status:</label>
-                                        <div>
-                                            <span asp-validation-for="@j.Status" class="text-danger"></span>
-                                            <custom-select select-for="Status" selected-value="@j.Status" class="form-control form-control-sm" asp-for="@Model.CurrentStatus"></custom-select>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Back</button>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
-                                    <input type="hidden" asp-for="@Model.JobID" value="@j.JobID" />
-                                    <button type="submit" value="Completed" name="buttonAction" class="btn btn-danger btn-sm">
-                                        Change it!
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            }
-            <!-- Button trigger to change reassign-->
-            <button type="button" class="btn btn-light" data-toggle="modal" data-target="#exampleModalreassign @j.JobID" style="float:left;background-color:transparent" data-tooltip="tooltip" data-placement="top" title="Reassign Job">
-                <i class="fas fa-user-edit"></i>
-            </button>
-            <!-- Modal -->
-            <div class="modal fade" id="exampleModalreassign @j.JobID" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLongTitle">Are you sure you want to reassign the Job #@j.JobNum?</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
+                            </div>
+                            <!-- Button trigger to change status-->
+                            <button type="button" class="btn btn-light" data-toggle="modal" data-target="#exampleModalStatus @j.JobID" style="float:left;background-color:transparent" data-tooltip="tooltip" data-placement="top" title="Change Status">
+                                <i class="fas fa-retweet"></i>
                             </button>
-                        </div>
-                        <form asp-action="JobReassignment" method="post">
-                            <div class="modal-body">
-                                <table class="table text-center align-content-center">
-                                    <thead>
-                                        <tr>
-                                            <th>Current Engineer</th>
-                                            <th>Current CrossAppEngineer</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td><user-select selected-value="@j.EngID" class="form-control form-control-sm" asp-for="@Model.CurrentEngID" roles="E"></user-select></td>
-                                            <td><user-select selected-value="@j.CrossAppEngID" class="form-control form-control-sm" asp-for="@Model.CurrentCrosAppEngID" roles="E"></user-select></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                            <!-- Modal -->
+                            <div class="modal fade" id="exampleModalStatus @j.JobID" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLongTitle">Are you sure you want to change the status for the Job #@j.JobNum?></h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <form asp-action="ChangeStatus" method="post">
+                                            <div class="modal-body">
+                                                <div class="form-group row" style="margin-bottom:0.5em;">
+                                                    <label class="col-sm-5 col-form-label font-weight-bold">Current Status:</label>
+                                                    <div>
+                                                        <span asp-validation-for="@j.Status" class="text-danger"></span>
+                                                        <custom-select select-for="Status" selected-value="@j.Status" class="form-control form-control-sm" asp-for="@Model.CurrentStatus"></custom-select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
+                                                <input type="hidden" asp-for="@Model.JobID" value="@j.JobID" />
+                                                <button type="submit" value="Completed" name="buttonAction" class="btn btn-danger btn-sm">
+                                                    Change it!
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
-                                <input type="hidden" asp-for="@Model.JobID" value="@j.JobID" />
-                                <button type="submit" value="Completed" name="buttonAction" class="btn btn-warning btn-sm">
-                                    Reassign it!
-                                </button>
+                        }
+                        <!-- Button trigger to change reassign-->
+                        <button type="button" class="btn btn-light" data-toggle="modal" data-target="#exampleModalreassign @j.JobID" style="float:left;background-color:transparent" data-tooltip="tooltip" data-placement="top" title="Reassign Job">
+                            <i class="fas fa-user-edit"></i>
+                        </button>
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModalreassign @j.JobID" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLongTitle">Are you sure you want to reassign the Job #@j.JobNum?</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <form asp-action="JobReassignment" method="post">
+                                        <div class="modal-body">
+                                            <table class="table text-center align-content-center">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Current Engineer</th>
+                                                        <th>Current CrossAppEngineer</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td><user-select selected-value="@j.EngID" class="form-control form-control-sm" asp-for="@Model.CurrentEngID" roles="E"></user-select></td>
+                                                        <td><user-select selected-value="@j.CrossAppEngID" class="form-control form-control-sm" asp-for="@Model.CurrentCrosAppEngID" roles="E"></user-select></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
+                                            <input type="hidden" asp-for="@Model.JobID" value="@j.JobID" />
+                                            <button type="submit" value="Completed" name="buttonAction" class="btn btn-warning btn-sm">
+                                                Reassign it!
+                                            </button>
 
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </td>
-    </tr>
+                        </div>
+                    </td>
+                </tr>
             }
         }
     </tbody>

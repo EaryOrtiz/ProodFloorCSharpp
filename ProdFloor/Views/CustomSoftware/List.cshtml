@@ -10,47 +10,47 @@
     }
 </form>
 <br /><br />
-<div>
-    <table class="table table-sm" style="text-align:center">
-        <thead style="background-color:#1B2831;color:#fff">
-            <tr style="border-bottom:3px solid #243542">
-                <th colspan="1">
-                    <h5>Description</h5>
-                </th>
-                <th colspan="1">
-                    <div class="row float-right" style="padding-right:20px">
-                        <div class="text-center">
-                            <div class="btn-group text-center">
-                                <a class="btn btn-outline-dark" style="background-color:#1B2831;color:#fff;" asp-action="NewCustomSoftware" asp-controller="CustomSoftware">
-                                    New Custom Software
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </th>
-            </tr>
-         </thead>
-            @foreach (var item in Model.CustomSoftwareList)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(m => item.Description)
-                    </td>
-                    <td style="width:100px">
-                        <form asp-action="Delete" asp-route-id="@item.CustomSoftwareID" method="post">
-                            <a asp-action="Edit" class="btn btn-sm btn-warning"
-                               asp-route-Id="@item.CustomSoftwareID">
-                                <i class="fas fa-edit"></i>
-                            </a>
-                            <button type="submit" class="btn btn-danger btn-sm">
-                                <i class="far fa-trash-alt"></i>
-                            </button>
-                        </form>
-                    </td>
-                </tr>
-            }
-    </table>
-</div>
+      <div>
+          <table class="table table-striped  text-center table-sm" style="text-align:center">
+              <thead style="background-color:#343a40!important;color:#fff;">
+                  <tr>
+                      <th colspan="1">
+                          <h5>Description</h5>
+                      </th>
+                      <th colspan="1">
+                          <div class="row float-right" style="padding-right:20px">
+                              <div class="text-center">
+                                  <div class="btn-group text-center">
+                                      <a class="btn btn-dark" asp-action="NewCustomSoftware" asp-controller="CustomSoftware">
+                                          New Custom Software
+                                      </a>
+                                  </div>
+                              </div>
+                          </div>
+                      </th>
+                  </tr>
+              </thead>
+              @foreach (var item in Model.CustomSoftwareList)
+              {
+                  <tr>
+                      <td>
+                          @Html.DisplayFor(m => item.Description)
+                      </td>
+                      <td style="width:100px">
+                          <form asp-action="Delete" asp-route-id="@item.CustomSoftwareID" method="post">
+                              <a asp-action="Edit" class="btn btn-sm btn-warning"
+                                 asp-route-Id="@item.CustomSoftwareID">
+                                  <i class="fas fa-edit"></i>
+                              </a>
+                              <button type="submit" class="btn btn-danger btn-sm">
+                                  <i class="far fa-trash-alt"></i>
+                              </button>
+                          </form>
+                      </td>
+                  </tr>
+              }
+          </table>
+      </div>
 <coool-pagination-all page-model="@Model.PagingInfo" page-action="List" page-classes-enabled="true"
                       page-class="btn" page-class-normal="btn-secondary"
                       page-class-selected="btn-dark"

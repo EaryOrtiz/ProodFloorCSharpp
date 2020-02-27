@@ -3,13 +3,13 @@
     ViewBag.Title = "ProdFloor Users";
     Layout = "_AdminLayoutWO";
 }
-    <div class="row" style="float:right;padding-top:5px;padding-right:15px">
-      
-    </div>
+<div class="row" style="float:right;padding-top:5px;padding-right:15px">
+
+</div>
 <br />
-<table class="table table-sm">
-    <thead style="background-color:#1B2831;color:#fff">
-        <tr style="border-bottom:3px solid #243542">
+<table class="table table-striped  text-center table-sm" style="text-align:center">
+    <thead style="background-color:#343a40!important;color:#fff;">
+        <tr>
             <th class="text-center" colspan="2">
                 <h5>User(s)</h5>
             </th>
@@ -17,7 +17,7 @@
                 <div class="row float-right" style="padding-right:20px">
                     <div class="text-center">
                         <div class="btn-group text-center">
-                            <a class="btn btn-outline-dark" style="background-color:#1B2831;color:#fff;" asp-action="Create">
+                            <a class="btn btn-dark"asp-action="Create">
                                 New User
                             </a>
                         </div>
@@ -35,28 +35,28 @@
     </thead>
     <tbody>
         @*@foreach (var j in Model.Users)
-        {
-            @Html.Partial("UserSummary", j)
-        }*@
+            {
+                @Html.Partial("UserSummary", j)
+            }*@
 
         @foreach (var j in Model.Users)
         {
-        <tr>
-            <th scope="row">@j.UserName</th>
-            <td>@j.Email</td>
-            <td>
-                <form asp-action="Delete" method="post">
-                    <a asp-action="Edit" class="btn btn-sm btn-warning"
-                       asp-route-Id="@j.Id">
-                        Edit
-                    </a>
-                    <input type="hidden" name="ID" value="@j.Id" />
-                    <button type="submit" class="btn btn-danger btn-sm">
-                        Delete
-                    </button>
-                </form>
-            </td>
-        </tr>
+            <tr>
+                <th scope="row">@j.UserName</th>
+                <td>@j.Email</td>
+                <td>
+                    <form asp-action="Delete" method="post">
+                        <a asp-action="Edit" class="btn btn-sm btn-warning"
+                           asp-route-Id="@j.Id">
+                            Edit
+                        </a>
+                        <input type="hidden" name="ID" value="@j.Id" />
+                        <button type="submit" class="btn btn-danger btn-sm">
+                            Delete
+                        </button>
+                    </form>
+                </td>
+            </tr>
         }
     </tbody>
 </table>
