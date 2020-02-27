@@ -8,11 +8,11 @@
     <div id="accordionSearch" style="padding-top:5px;">
         <div class="card">
             <div class="card-header bg-dark text-center">
-            <div class="btn-group" style="float:left">
-                <!--Search and Clean-->
-                <button class="btn btn-dark" style="border-color:transparent" type="submit" value="Search"><i class="fa fa-search" aria-hidden="true"></i></button>
-                <button class="btn btn-dark" style="border-color:transparent" name="CleanFields" type="submit" value="true"><i class="fas fa-undo"></i></button>
-            </div>
+                <div class="btn-group" style="float:left">
+                    <!--Search and Clean-->
+                    <button class="btn btn-dark" style="border-color:transparent" type="submit" value="Search" data-tooltip="tooltip" data-placement="top" title="Search"><i class="fa fa-search" aria-hidden="true"></i></button>
+                    <button class="btn btn-dark" style="border-color:transparent" name="CleanFields" type="submit" value="true" data-tooltip="tooltip" data-placement="top" title="Clean"><i class="fas fa-undo"></i></button>
+                </div>
             <div class="btn-group">
                 <!--Header Info-->
                 <button type="button" id="headingJobInfo" class="btn btn-dark" style="border-color:transparent" data-toggle="collapse" data-target="#collapseJobInfo" aria-expanded="true" aria-controls="collapseJobInfo">
@@ -20,7 +20,7 @@
                 </button>
             </div>
             <div class="btn-group" style="float:right">
-                <a class="btn btn-sm btn-dark" asp-action="Add" asp-controller="Slowdown"  style="padding-top:5px;min-width:100px;">
+                <a class="btn btn-sm btn-dark" asp-action="Add" asp-controller="Slowdown"  style="padding-top:5px;min-width:100px;" data-tooltip="tooltip" data-placement="top" title="Add new slowdown">
                     New Slowdown Registry
                 </a>
             </div>
