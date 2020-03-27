@@ -70,8 +70,10 @@ namespace ProdFloor.Models.ViewModels.Job
         public string LOS { get; set; }
         [Display(Name = "Life Jacket")]
         public string PSS { get; set; }
-        [Display(Name = "Resync operation")]
+
         public string Starter { get; set; }
+
+
         [Display(Name = "Viscosity Control")]
         public string VCI { get; set; }
         [Display(Name = "Valve's Brand")]
@@ -79,7 +81,7 @@ namespace ProdFloor.Models.ViewModels.Job
 
         public int FLA { get; set; }
         public int HP { get; set; }
-        [Display(Name = "Number of motors")]
+
         public int SPH { get; set; }
 
         //Atributos de GenericFeatureList

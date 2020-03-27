@@ -64,19 +64,16 @@
                             <select asp-for="StatusJobSearch" class="form-control form-control-sm col-6" asp-items="Model.Status"><option value="">Select a Status</option></select>
                         </div>
                         <div class="form-group form-inline" style="margin-bottom:0px;">
-                            <label asp-for="JobTypeID" class="col-sm-5 col-form-label"></label>
-                            <job-type-in-job-select selected-value="@Model.JobTypeID" class="form-control form-control-sm col-6" asp-for="JobTypeID"></job-type-in-job-select>
-                        </div>
-                        <div class="form-group form-inline" style="margin-bottom:0px;">
                             <label asp-for="FireCodeID" class="col-sm-5 col-form-label"></label>
                             <fire-code-in-jobs-select selected-value="@Model.FireCodeID" class="form-control form-control-sm col-6" asp-for="FireCodeID"></fire-code-in-jobs-select>
                         </div>
+                        <div class="form-group form-inline" style="margin-bottom:0px;">
+                            <label asp-for="NumJobSearch" class="col-sm-5 col-form-label"></label>
+                            <input type="text" class="form-control form-control-sm col-sm-6" asp-for="NumJobSearch">
+                        </div>
                     </div>
                     <div class="col-2 border-right" style="padding-right:0px;margin-right:0px;padding-left:0px;margin-left:0px">
-                        <div class="form-group form-inline" style="margin-bottom:0px;">
-                            <label asp-for="NumJobSearch" class="col-sm-6 col-form-label"></label>
-                            <input type="text" class="form-control form-control-sm col-sm-5" asp-for="NumJobSearch">
-                        </div>
+
                         <div class="form-group form-inline" style="margin-bottom:0px;">
                             <label asp-for="POJobSearch" class="col-sm-6 col-form-label"></label>
                             <input type="text" class="form-control form-control-sm col-sm-5" asp-for="POJobSearch">
@@ -135,7 +132,7 @@
                         </div>
                         <div class="form-group row" style="margin-bottom:0px;">
                             <label asp-for="LoadWeigher" class="col-sm-7 col-form-label"></label>
-                            <custom-select selected-value="@Model.LoadWeigher" class="form-control-sm form-control col-sm-4" asp-for="LoadWeigher" select-for="LoadWeigher"></custom-select>
+                            <custom-select selected-value="@Model.LoadWeigher" class="form-control-sm form-control col-sm-4" asp-for="LoadWeigher" select-for="LoadWeigherElement"></custom-select>
                         </div>
                     </div>
                     <div class="col-2 border-right">

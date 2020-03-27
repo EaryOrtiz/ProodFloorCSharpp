@@ -25,6 +25,10 @@ namespace ProdFloor.Models.ViewModels.Job
 
         public int LastSearch { get; set; }
 
+        public string JobTypeName { get; set; }
+
+        public JobType jobTypeAux { get; set; }
+
         //Atributos de Job
         [Display(Name ="Job Name")]
         public string NameJobSearch { get; set; }

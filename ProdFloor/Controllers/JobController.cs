@@ -45,15 +45,20 @@ namespace ProdFloor.Controllers
 
         // Recibe jobType y jobPage y regresa un 
         //JobsListViewModel con los jobs filtrados por tipo y sorteados por JobID 
-        public IActionResult List(JobSearchViewModel searchViewModel, int page = 1, int totalitemsfromlastsearch = 0)
+        public IActionResult List(JobSearchViewModel searchViewModel, int page = 1, int totalitemsfromlastsearch = 0 , string JobTypeName = "M2000")
         {
-            var JobCount = repository.Jobs
-                     .Where(s => s.Status != "Pending").Count();
 
+            if (!string.IsNullOrEmpty(JobTypeName)) searchViewModel.JobTypeName = JobTypeName;
+            searchViewModel.jobTypeAux = itemsrepository.JobTypes.FirstOrDefault(m => m.Name == JobTypeName);
+            var JobCount = repository.Jobs
+                     .Where(s => s.Status != "Pending")
+                     .Where(d => d.JobTypeID == searchViewModel.jobTypeAux.JobTypeID)
+                     .Count();
 
             if (searchViewModel.CleanFields) return RedirectToAction("List");
             var jobSearchRepo = repository.Jobs.Include(j => j._jobExtension).Include(hy => hy._HydroSpecific).Include(g => g._GenericFeatures)
-                .Include(i => i._Indicator).Include(ho => ho._HoistWayData).Include(sp => sp._SpecialFeatureslist).Include(po => po._PO).Where(y => y.Status != "Pending").AsQueryable();
+                .Include(i => i._Indicator).Include(ho => ho._HoistWayData).Include(sp => sp._SpecialFeatureslist).Include(po => po._PO).Where(y => y.Status != "Pending")
+                .Where(d => d.JobTypeID == searchViewModel.jobTypeAux.JobTypeID).AsQueryable();
             IQueryable<string> statusQuery = from s in repository.Jobs orderby s.Status select s.Status;
             #region comments
             /*
@@ -75,21 +80,22 @@ namespace ProdFloor.Controllers
             if (searchViewModel.NumJobSearch >= 2015000000 && searchViewModel.NumJobSearch <= 2021000000) jobSearchRepo = jobSearchRepo.Where(s => s.JobNum == searchViewModel.NumJobSearch);
             if (searchViewModel.EngID > 0) jobSearchRepo = jobSearchRepo.Where(s => s.EngID == searchViewModel.EngID);
             if (searchViewModel.CrossAppEngID > 0) jobSearchRepo = jobSearchRepo.Where(s => s.CrossAppEngID == searchViewModel.CrossAppEngID);
-            if (searchViewModel.CountryID > 0)
+            if (searchViewModel.CityID > 0) jobSearchRepo = jobSearchRepo.Where(s => s.CityID == searchViewModel.CityID);
+            else if (searchViewModel.StateID > 0)
+            {
+                IQueryable<City> cities = itemsrepository.Cities.Where(m => m.StateID == searchViewModel.StateID);
+                jobSearchRepo = jobSearchRepo.Where(m => cities.Any(n => n.CityID == m.CityID));
+            } else if (searchViewModel.CountryID > 0)
             {
                 IQueryable<State> states = itemsrepository.States.Where(m => m.CountryID == searchViewModel.CountryID);
                 IQueryable<City> cities = itemsrepository.Cities.Where(m => states.Any(n => n.StateID == m.StateID));
 
                 jobSearchRepo = jobSearchRepo.Where(m => cities.Any(n => n.CityID == m.CityID));
             }
-            if (searchViewModel.StateID > 0)
-            {
-                IQueryable<City> cities = itemsrepository.Cities.Where(m => m.StateID == searchViewModel.StateID);
-                jobSearchRepo = jobSearchRepo.Where(m => cities.Any(n => n.CityID == m.CityID));
-            }
-            if (searchViewModel.CityID > 0) jobSearchRepo = jobSearchRepo.Where(s => s.CityID == searchViewModel.CityID);
+
+
+
             if (searchViewModel.FireCodeID > 0) jobSearchRepo = jobSearchRepo.Where(s => s.FireCodeID == searchViewModel.FireCodeID);
-            if (searchViewModel.JobTypeID > 0) jobSearchRepo = jobSearchRepo.Where(s => s.JobTypeID == searchViewModel.JobTypeID);
             if (searchViewModel.POJobSearch > 3000000 && searchViewModel.POJobSearch < 4900000)
             {
                 jobSearchRepo = jobSearchRepo.Where(a => a._PO.Any(b => b.PONumb.Equals(searchViewModel.POJobSearch)));
@@ -249,6 +255,7 @@ namespace ProdFloor.Controllers
             {
                 CurrentPage = page,
                 ItemsPerPage = 5,
+                JobTypeName = searchViewModel.JobTypeName,
                 TotalItemsFromLastSearch = totalitemsfromlastsearch,
                 TotalItems = jobSearchRepo.Count()
             };
@@ -294,21 +301,20 @@ namespace ProdFloor.Controllers
             if (searchViewModel.NumJobSearch >= 2015000000 && searchViewModel.NumJobSearch <= 2021000000) jobSearchRepo = jobSearchRepo.Where(s => s.JobNum == searchViewModel.NumJobSearch);
             if (searchViewModel.EngID > 0) jobSearchRepo = jobSearchRepo.Where(s => s.EngID == searchViewModel.EngID);
             if (searchViewModel.CrossAppEngID > 0) jobSearchRepo = jobSearchRepo.Where(s => s.CrossAppEngID == searchViewModel.CrossAppEngID);
-            if (searchViewModel.CountryID > 0)
+            if (searchViewModel.CityID > 0) jobSearchRepo = jobSearchRepo.Where(s => s.CityID == searchViewModel.CityID);
+            else if (searchViewModel.StateID > 0)
+            {
+                IQueryable<City> cities = itemsrepository.Cities.Where(m => m.StateID == searchViewModel.StateID);
+                jobSearchRepo = jobSearchRepo.Where(m => cities.Any(n => n.CityID == m.CityID));
+            }
+            else if (searchViewModel.CountryID > 0)
             {
                 IQueryable<State> states = itemsrepository.States.Where(m => m.CountryID == searchViewModel.CountryID);
                 IQueryable<City> cities = itemsrepository.Cities.Where(m => states.Any(n => n.StateID == m.StateID));
 
                 jobSearchRepo = jobSearchRepo.Where(m => cities.Any(n => n.CityID == m.CityID));
             }
-            if (searchViewModel.StateID > 0)
-            {
-                IQueryable<City> cities = itemsrepository.Cities.Where(m => m.StateID == searchViewModel.StateID);
-                jobSearchRepo = jobSearchRepo.Where(m => cities.Any(n => n.CityID == m.CityID));
-            }
-            if (searchViewModel.CityID > 0) jobSearchRepo = jobSearchRepo.Where(s => s.CityID == searchViewModel.CityID);
             if (searchViewModel.FireCodeID > 0) jobSearchRepo = jobSearchRepo.Where(s => s.FireCodeID == searchViewModel.FireCodeID);
-            if (searchViewModel.JobTypeID > 0) jobSearchRepo = jobSearchRepo.Where(s => s.JobTypeID == searchViewModel.JobTypeID);
             if (searchViewModel.POJobSearch > 3000000 && searchViewModel.POJobSearch < 4900000)
             {
                 jobSearchRepo = jobSearchRepo.Where(a => a._PO.Any(b => b.PONumb.Equals(searchViewModel.POJobSearch)));
@@ -396,7 +402,7 @@ namespace ProdFloor.Controllers
                 
 
                 if (!string.IsNullOrEmpty(searchViewModel.Starter)) jobSearchRepo = jobSearchRepo.Where(s => s._ElementHydros.Any(m => m.Starter.Contains(searchViewModel.Starter)));
-                if (!string.IsNullOrEmpty(searchViewModel.Starter)) jobSearchRepo = jobSearchRepo.Where(s => s._ElementHydros.Any(m => m.Starter.Contains(searchViewModel.ValveBrand)));
+                if (!string.IsNullOrEmpty(searchViewModel.ValveBrand)) jobSearchRepo = jobSearchRepo.Where(s => s._ElementHydros.Any(m => m.ValveBrand.Contains(searchViewModel.ValveBrand)));
             }
 
             #endregion

@@ -3255,6 +3255,8 @@ namespace ProdFloor.Infrastructure
                     return new List<string> { "Top & Bottom", "Top","bottom", "None"}.AsQueryable();
                 case "LoadWeigher":
                     return new List<string> {"Discrete", "EMCO" }.AsQueryable();
+                case "LoadWeigherElement":
+                    return new List<string> { "N/A","Discrete", "EMCO" }.AsQueryable();
                 case "MachineLocation":
                     return new List<string> { "Overhead", "Basement"}.AsQueryable();
                 case "VVVF":
@@ -3314,7 +3316,13 @@ namespace ProdFloor.Infrastructure
                 m_tag.Attributes["value"] = "N/A";
                 m_tag.InnerHtml.Append("N/A");
 
-            }else if(SelectFor == "boolSearch")
+            }
+            else if (SelectFor == "LoadWeigherElement")
+            {
+                m_tag.Attributes["value"] = "";
+                m_tag.InnerHtml.Append("N/C");
+            }
+            else if(SelectFor == "boolSearch")
             {
                 m_tag.Attributes["value"] ="";
                 m_tag.InnerHtml.Append("N/A");
