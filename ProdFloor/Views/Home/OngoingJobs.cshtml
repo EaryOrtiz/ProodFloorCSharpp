@@ -17,7 +17,7 @@
                     <div class="text-center">
                         <div class="btn-group text-center">
                             <form asp-action="NewJob" asp-controller="Job" method="get">
-                                <button type="button" class="btn btn-dark btn-sm dropdown-toggle"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <button type="button" style="background-color:seagreen;color:white" class="btn btn-sm dropdown-toggle"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     Add New Job
                                 </button>
                                 <div class="dropdown-menu">
@@ -47,7 +47,8 @@
                 Name &nbsp;
                 <div class="btn-group">
                     <form asp-controller="Home" asp-action="Index" method="get">
-                        <button class="btn-outline-dark btn btn-sm" style="background-color:transparent;" type="submit" name="filtrado" value="1NameAsc"><i class="fa fa-sort-amount-down-alt"></i></button>
+                        <button class="btn-outline-dark btn btn-sm" style="        background-color: transparent;
+" type="submit" name="filtrado" value="1NameAsc"><i class="fa fa-sort-amount-down-alt"></i></button>
                     </form>
                     <form asp-controller="Home" asp-action="Index" method="get">
                         <button class="btn btn-outline-dark btn-sm" style="background-color:transparent;" type="submit" name="filtrado" value="1NameDesc"><i class="fas fa-sort-amount-down"></i></button>
