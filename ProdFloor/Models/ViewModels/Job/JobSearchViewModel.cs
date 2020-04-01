@@ -99,7 +99,7 @@ namespace ProdFloor.Models.ViewModels.Job
         public string DoorBrand { get; set; }
 
         //Atributos de HydroSpecifics
-        public bool Battery { get; set; }
+        public String Battery { get; set; }
         [Display(Name = "Battery's Brand")]
         public string BatteryBrand { get; set; }
         [Display(Name = "Low oil sw.")]
