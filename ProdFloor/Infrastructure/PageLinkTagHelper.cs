@@ -3552,6 +3552,8 @@ namespace ProdFloor.Infrastructure
 
         public int SelectedValue { get; set; }
 
+        public int SelectedSearchValue { get; set; }
+
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
             IUrlHelper urlHelper = urlHelperFactory.GetUrlHelper(ViewContext);
@@ -3572,6 +3574,10 @@ namespace ProdFloor.Infrastructure
             {
                 int SelectedStateInCityID = itemsrepository.Cities.FirstOrDefault(n => n.CityID == SelectedValue).StateID;
                 city = itemsrepository.Cities.Where(m => m.StateID == SelectedStateInCityID).OrderBy(s => s.Name);
+            }
+            else if (SelectedSearchValue != 0)
+            {
+                city = itemsrepository.Cities.Where(m => m.StateID == SelectedSearchValue).OrderBy(s => s.Name);
             }
             foreach (City cities in city)
             {
@@ -3614,6 +3620,10 @@ namespace ProdFloor.Infrastructure
 
         public int SelectedValue { get; set; }
 
+        public int SelectedSearchValue { get; set; }
+
+        public int SelectedCountryValue { get; set; }
+
         public int SelectedDefaultValue { get; set; }
 
         [HtmlAttributeName("asp-is-disabled")]
@@ -3642,7 +3652,17 @@ namespace ProdFloor.Infrastructure
                 State selectedState = itemsrepository.States.FirstOrDefault(s => s.StateID == selectedCity.StateID);
                 stateID = selectedCity.StateID;
                 state = itemsrepository.States.Where(m => m.CountryID == selectedState.CountryID).OrderBy(s => s.Name).AsQueryable();
-            }else if (SelectedDefaultValue != 0)
+            }else if (SelectedSearchValue != 0)
+            {
+                State selectedState = itemsrepository.States.FirstOrDefault(s => s.StateID == SelectedSearchValue);
+                stateID = selectedState.StateID;
+                state = itemsrepository.States.Where(m => m.CountryID == selectedState.CountryID).OrderBy(s => s.Name).AsQueryable();
+            }
+            else if (SelectedCountryValue != 0)
+            {
+                state = itemsrepository.States.Where(m => m.CountryID == SelectedCountryValue).OrderBy(s => s.Name).AsQueryable();
+            }
+            else if (SelectedDefaultValue != 0)
             {
                 stateID = itemsrepository.States.FirstOrDefault(s => s.StateID == SelectedDefaultValue).StateID;
             }

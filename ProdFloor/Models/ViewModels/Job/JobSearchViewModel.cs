@@ -25,6 +25,8 @@ namespace ProdFloor.Models.ViewModels.Job
 
         public int LastSearch { get; set; }
 
+        public int JobTotalCount { get; set; }
+
         public string JobTypeName { get; set; }
 
         public JobType jobTypeAux { get; set; }
@@ -118,6 +120,21 @@ namespace ProdFloor.Models.ViewModels.Job
         [Display(Name = "Valve's Brand")]
         public string ValveBrand { get; set; }
 
+
+        [Display(Name = "Number of motors disconnects")]
+        public int MotorsDisconnect { get; set; }
+
+        [Display(Name = "Coils per valve")]
+        public int ValveCoils { get; set; }
+
+        [Display(Name = "Number of valves")]
+        public int ValveNum { get; set; }
+
+        [Display(Name = "Valve's Voltage")]
+        public int ValveVoltage { get; set; }
+
+
+
         public int FLA { get; set; }
         public int HP { get; set; }
         [Display(Name = "Number of motors")]
@@ -148,7 +165,9 @@ namespace ProdFloor.Models.ViewModels.Job
         public string INA { get; set; }
         [Display(Name = "In-Car Inspection")]
         public string INCP { get; set; }
-        public string Ind { get; set; }
+
+        [Display(Name = "Pit Flood")]
+        public string Pit { get; set; }
         [Display(Name = "Load Weigher")]
         public string LoadWeigher { get; set; }
         [Display(Name = "Top Access Switch")]
@@ -168,7 +187,8 @@ namespace ProdFloor.Models.ViewModels.Job
         public string HallKey { get; set; }
         [Display(Name = "Bottom Access Switch")]
         public string BottomAccess { get; set; }
-        [Display(Name = "Top Access Switch Location")]
+
+        [Display(Name = "Bottom Access Switch Location")]
         public string BottomAccessLocation { get; set; }
         [Display(Name = "Cartop Inspection Station")]
         public string CTINSPST { get; set; }
@@ -188,20 +208,50 @@ namespace ProdFloor.Models.ViewModels.Job
         [Display(Name = "Top Access Switch Location")]
         public string TopAccessLocation { get; set; }
 
+        [Display(Name = "BSI")]
+        public String BSI { get; set; }
+
+        [Display(Name = "Car call code security")]
+        public string CarCallCodeSecurity { get; set; }
+
+
         //Atributos de Indicators
         public string CarLanterns { get; set; }
-        public string HallCallsType { get; set; }
-        public string HallCallsVoltageType { get; set; }
         public string HallLanterns { get; set; }
         public string HallPI { get; set; }
+        public string CarPI { get; set; }
         public string IndicatorsVoltageType { get; set; }
         public string PassingFloor { get; set; }
         public string VoiceAnnunciationPI { get; set; }
-        public string CarCallsVoltageType { get; set; }
 
-        public string CarCallsVoltage { get; set; }
-        public string HallCallsVoltage { get; set; }
         public int IndicatorsVoltage { get; set; }
+
+
+        public string CarPIType { get; set; } 
+        public string CarPIDiscreteType { get; set; } 
+
+        public string HallPIType { get; set; } 
+        public string HallPIDiscreteType { get; set; } 
+
+        public string VoiceAnnunciationPIType { get; set; } 
+
+        public string CarLanternsStyle { get; set; } 
+
+        public string CarLanternsType { get; set; } 
+
+
+        public string HallLanternsStyle { get; set; } 
+
+        public string HallLanternsType { get; set; } 
+
+
+        public string PassingFloorType { get; set; } 
+
+        public string PassingFloorDiscreteType { get; set; } 
+
+        public string PassingFloorEnable { get; set; } 
+
+        public string HallPIAll { get; set; }
 
         //Atributos de HoistWayData
         public string AnyRear { get; set; }

@@ -52,11 +52,11 @@
                         </div>
                         <div class="form-group form-inline" style="margin-bottom:0px;">
                             <label asp-for="StateID" class="col-sm-4 col-form-label"></label>
-                            <state-select id="StateID" asp-for="StateID" class="form-control form-control-sm col-7 " selected-default-value="@Model.StateID"></state-select>
+                            <state-select id="StateID" asp-for="StateID" class="form-control form-control-sm col-7 " selected-country-value="@Model.CountryID" selected-value="@Model.CityID" selected-search-value="@Model.StateID"></state-select>
                         </div>
                         <div class="form-group form-inline" style="margin-bottom:0px;">
                             <label asp-for="CityID" class="col-sm-4 col-form-label"></label>
-                            <city-select selected-value="@Model.CityID" id="CityID" class="form-control form-control-sm col-7" asp-for="CityID"></city-select>
+                            <city-select selected-value="@Model.CityID" class="form-control form-control-sm col-7 " selected-search-value="@Model.StateID" asp-for="CityID"></city-select>
                         </div>
                     </div>
                     <div class="col-3 border-right" style="padding-right:0px;margin-right:0px;padding-left:0px;margin-left:0px">
