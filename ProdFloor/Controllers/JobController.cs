@@ -45,9 +45,9 @@ namespace ProdFloor.Controllers
 
         // Recibe jobType y jobPage y regresa un 
         //JobsListViewModel con los jobs filtrados por tipo y sorteados por JobID 
-        public IActionResult List(JobSearchViewModel searchViewModel, int page = 1, int totalitemsfromlastsearch = 0 , string JobTypeName = "M2000")
+        public IActionResult List(JobSearchViewModel searchViewModel, int page = 1, int totalitemsfromlastsearch = 0 ,int EngID = 0, string JobTypeName = "M2000")
         {
-            
+            if (EngID != 0) searchViewModel.EngID = EngID; 
             if (!string.IsNullOrEmpty(JobTypeName)) searchViewModel.JobTypeName = JobTypeName;
             searchViewModel.jobTypeAux = itemsrepository.JobTypes.FirstOrDefault(m => m.Name == JobTypeName);
             var JobCount = repository.Jobs

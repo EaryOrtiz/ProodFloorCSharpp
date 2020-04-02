@@ -36,7 +36,7 @@
                             <a class="nav-link" asp-controller="Job" asp-action="List">All Jobs</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-controller="Job" asp-action="MyjobsList">My Jobs</a>
+                            <a class="nav-link" asp-controller="Job" asp-action="List" asp-route-EngID=" @UserManager.GetUserAsync(User).Result.EngID">My Jobs</a>
                         </li>
                     }
                 </ul>
