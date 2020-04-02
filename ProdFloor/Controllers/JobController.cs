@@ -78,6 +78,12 @@ namespace ProdFloor.Controllers
 
             #region JobModelSearch
             if (searchViewModel.NumJobSearch >= 2015000000 && searchViewModel.NumJobSearch <= 2021000000) jobSearchRepo = jobSearchRepo.Where(s => s.JobNum == searchViewModel.NumJobSearch);
+            else if (searchViewModel.NumJobSearch != 0)
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"Job number is out of range, ";
+
+            }
             if (searchViewModel.EngID > 0) jobSearchRepo = jobSearchRepo.Where(s => s.EngID == searchViewModel.EngID);
             if (searchViewModel.CrossAppEngID > 0) jobSearchRepo = jobSearchRepo.Where(s => s.CrossAppEngID == searchViewModel.CrossAppEngID);
             if (searchViewModel.CityID > 0) jobSearchRepo = jobSearchRepo.Where(s => s.CityID == searchViewModel.CityID);
@@ -100,6 +106,12 @@ namespace ProdFloor.Controllers
             {
                 jobSearchRepo = jobSearchRepo.Where(a => a._PO.Any(b => b.PONumb.Equals(searchViewModel.POJobSearch)));
             }
+            else if (searchViewModel.POJobSearch != 0)
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] += $"PO number is out of range, ";
+
+            }
 
             if (!string.IsNullOrEmpty(searchViewModel.NameJobSearch)) jobSearchRepo = jobSearchRepo.Where(s => s.Name.Contains(searchViewModel.NameJobSearch));
             if (!string.IsNullOrEmpty(searchViewModel.Name2)) jobSearchRepo = jobSearchRepo.Where(s => s.Name2.Contains(searchViewModel.Name2));
@@ -111,9 +123,32 @@ namespace ProdFloor.Controllers
             #region JobExtension
             //Opciones de busqueda para el modelo de jobExtensions.
             if (searchViewModel.InputFrecuency >= 50 && searchViewModel.InputFrecuency <= 61) jobSearchRepo = jobSearchRepo.Where(s => s._jobExtension.InputFrecuency == searchViewModel.InputFrecuency);
+            else if(searchViewModel.InputFrecuency != 0)
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] += $"Frequency out of range, ";
+            } 
             if (searchViewModel.InputPhase >= 1 && searchViewModel.InputPhase <= 3) jobSearchRepo = jobSearchRepo.Where(s => s._jobExtension.InputPhase == searchViewModel.InputPhase);
+            else if (searchViewModel.InputPhase != 0)
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] += $"Please enter the input phase, ";
+            }
             if (searchViewModel.InputVoltage >= 114 && searchViewModel.InputVoltage <= 600) jobSearchRepo = jobSearchRepo.Where(s => s._jobExtension.InputVoltage == searchViewModel.InputVoltage);
+            else if (searchViewModel.InputVoltage != 0)
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] += $"Voltage out of range, ";
+            }
             if (searchViewModel.NumOfStops >= 1 && searchViewModel.NumOfStops <= 32) jobSearchRepo = jobSearchRepo.Where(s => s._jobExtension.NumOfStops == searchViewModel.NumOfStops);
+            else if (searchViewModel.NumOfStops != 0)
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] += $"Stops are out of range, ";
+            }
+
+
+
             if (searchViewModel.DoorOperatorID > 0) jobSearchRepo = jobSearchRepo.Where(s => s._jobExtension.DoorOperatorID == searchViewModel.DoorOperatorID);
 
             if (!string.IsNullOrEmpty(searchViewModel.JobTypeAdd)) jobSearchRepo = jobSearchRepo.Where(s => s._jobExtension.JobTypeAdd.Equals(searchViewModel.JobTypeAdd));
@@ -269,7 +304,16 @@ namespace ProdFloor.Controllers
             searchViewModel.JobExtensionList = repository.JobsExtensions.ToList();
             searchViewModel.HoistWayDataList = repository.HoistWayDatas.ToList();
             searchViewModel.JobTotalCount = repository.Jobs.Count();
-            searchViewModel.JobsSearchList = jobSearchRepo.OrderBy(p => p.JobID).Skip((page - 1) * 5).Take(5).ToList();
+            searchViewModel.JobsSearchList = jobSearchRepo.OrderByDescending(p => p.JobNum).Skip((page - 1) * 5).Take(5).ToList();
+
+            if (TempData["message"] != null)
+            {
+                TempData["alert"] = $"alert-danger";
+                string Messagge = TempData["message"].ToString();
+                TempData["message"] = $"Search error: ";
+                TempData["message"] += Messagge;
+                TempData["message"] += "please try again.";
+            }
             searchViewModel.PagingInfo = new PagingInfo
             {
                 CurrentPage = page,
