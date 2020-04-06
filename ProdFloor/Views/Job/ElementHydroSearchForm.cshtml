@@ -74,7 +74,7 @@
                         </div>
                     </div>
                     <div class="col-2 border-right" style="padding-right:0px;margin-right:0px;padding-left:0px;margin-left:0px">
-                        
+
                         <div class="form-group form-inline" style="margin-bottom:0px;">
                             <label asp-for="POJobSearch" class="col-sm-6 col-form-label"></label>
                             <input type="text" class="form-control form-control-sm col-sm-5" asp-for="POJobSearch">
@@ -287,7 +287,7 @@
                             <label asp-for="CTL" class="col-sm-9 col-form-label"></label>
                             <custom-select selected-value="@Model.CTL" class="form-control-sm form-control col-sm-2" asp-for="CTL" select-for="boolSearch"></custom-select>
                         </div>
-                        
+
                     </div>
                 </div>
 
@@ -332,14 +332,62 @@
         <div id="collapseSpecial" class="collapse" aria-labelledby="headingSpecial" data-parent="#accordionSearch">
             <div class="card-body">
                 <div class="row">
-                    <div class="col" style="padding-right:0px;margin-right:0px;padding-left:0px;margin-left:0px">
+                    <div class="col-8">
                         <div class="form-group row" style="margin-bottom:0px;">
-                            <label asp-for="Description" class="col-sm-1 col-form-label"></label>
-                            <input type="text" class="form-control form-control-sm col-sm-8" id="productName" asp-for="Description">
+                            <label asp-for="Description" class="col-sm-2 col-form-label"></label>
+                            <div class="btn-group col-10">
+                                <input type="text" class="form-control form-control-sm " id="productName" asp-for="Description">
+                                <button id="btnAllSteps" class="btn btn-dark" type="button" title="Special Feature List" data-toggle="collapse" data-target="#collapseCustom" aria-expanded="false" aria-controls="collapseCustom" style="float:left">
+                                    <i class="fas fa-question-circle"></i>
+                                </button>
+                            </div>
+
                         </div>
                     </div>
+                    <div class="col-4">
+                        <div class="collapse" id="collapseCustom">
+                            <div style="overflow-y:scroll;height:70vh;">
+                                <div class="card card-body">
+                                    <table class="table table-sm text-center align-content-center table-hover">
+                                        <thead class="thead-light">
+                                            <tr>
+                                                <th colspan="2">
+                                                    Special Features for HMC-2000
+                                                </th>
+                                            </tr>
+                                            <tr>
+                                                <th>
+                                                    Prod Floor "Special Feature"
+                                                </th>
+                                                <th>
+                                                    Description
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (SpecialFeaturesEX specialFeature in Model.SpecialFeaturesTable)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        @specialFeature.Name
+                                                    </td>
+                                                    <td>
+                                                        @specialFeature.Description
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
+
             </div>
+
+
         </div>
     </div>
 

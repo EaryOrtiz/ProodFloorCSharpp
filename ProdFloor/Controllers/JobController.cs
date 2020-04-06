@@ -17,6 +17,9 @@ using Microsoft.Extensions.DependencyInjection;
 using TextCopy;
 using System.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
+using NPOI.SS.UserModel;
+using NPOI.XSSF.UserModel;
+using System.Data;
 
 namespace ProdFloor.Controllers
 {
@@ -47,17 +50,18 @@ namespace ProdFloor.Controllers
         //JobsListViewModel con los jobs filtrados por tipo y sorteados por JobID 
         public IActionResult List(JobSearchViewModel searchViewModel, int page = 1, int totalitemsfromlastsearch = 0 ,int EngID = 0, string JobTypeName = "M2000")
         {
+            searchViewModel.CurrentUserEngID = GetCurrentUser().Result.EngID;
             if (EngID != 0) searchViewModel.EngID = EngID; 
             if (!string.IsNullOrEmpty(JobTypeName)) searchViewModel.JobTypeName = JobTypeName;
             searchViewModel.jobTypeAux = itemsrepository.JobTypes.FirstOrDefault(m => m.Name == JobTypeName);
             var JobCount = repository.Jobs
-                     .Where(s => s.Status != "Pending")
+                     .Where(s => s.Status != "Pending" && s.Status != "Incomplete")
                      .Where(d => d.JobTypeID == searchViewModel.jobTypeAux.JobTypeID)
                      .Count();
 
             if (searchViewModel.CleanFields) return RedirectToAction("List");
             var jobSearchRepo = repository.Jobs.Include(j => j._jobExtension).Include(hy => hy._HydroSpecific).Include(g => g._GenericFeatures)
-                .Include(i => i._Indicator).Include(ho => ho._HoistWayData).Include(sp => sp._SpecialFeatureslist).Include(po => po._PO).Where(y => y.Status != "Pending")
+                .Include(i => i._Indicator).Include(ho => ho._HoistWayData).Include(sp => sp._SpecialFeatureslist).Include(po => po._PO).Where(y => y.Status != "Pending" && y.Status != "Incomplete")
                 .Where(d => d.JobTypeID == searchViewModel.jobTypeAux.JobTypeID).AsQueryable();
             IQueryable<string> statusQuery = from s in repository.Jobs orderby s.Status select s.Status;
             #region comments
@@ -303,6 +307,7 @@ namespace ProdFloor.Controllers
             searchViewModel.Landinglist = itemsrepository.LandingSystems.ToList();
             searchViewModel.JobExtensionList = repository.JobsExtensions.ToList();
             searchViewModel.HoistWayDataList = repository.HoistWayDatas.ToList();
+            searchViewModel.SpecialFeaturesTable = getSpecialFeaturesEX();
             searchViewModel.JobTotalCount = repository.Jobs.Count();
             searchViewModel.JobsSearchList = jobSearchRepo.OrderByDescending(p => p.JobNum).Skip((page - 1) * 5).Take(5).ToList();
 
@@ -328,10 +333,11 @@ namespace ProdFloor.Controllers
 
         public IActionResult ElementList(ElementSearchViewModel searchViewModel, int page = 1, int totalitemsfromlastsearch = 0, string JobTypeName = "")
         {
-            if(!string.IsNullOrEmpty(JobTypeName)) searchViewModel.JobTypeName = JobTypeName;
+            searchViewModel.CurrentUserEngID = GetCurrentUser().Result.EngID;
+            if (!string.IsNullOrEmpty(JobTypeName)) searchViewModel.JobTypeName = JobTypeName;
             searchViewModel.jobTypeAux = itemsrepository.JobTypes.FirstOrDefault(m => m.Name == JobTypeName);
             var JobCount = repository.Jobs
-                     .Where(s => s.Status != "Pending")
+                     .Where(s => s.Status != "Pending" && s.Status != "Incomplete")
                      .Where(d => d.JobTypeID == searchViewModel.jobTypeAux.JobTypeID)
                      .Count();
 
@@ -342,7 +348,7 @@ namespace ProdFloor.Controllers
                 return RedirectToAction("ElementList", NewViewModel); 
             }
             var jobSearchRepo = repository.Jobs.Include(j => j._Elements).Include(hy => hy._ElementHydros).Include(g => g._EmentTractions).Include(sp => sp._SpecialFeatureslist)
-                .Include(po => po._PO).Where(y => y.Status != "Pending").Where(d => d.JobTypeID == searchViewModel.jobTypeAux.JobTypeID).AsQueryable();
+                .Include(po => po._PO).Where(y => y.Status != "Pending" && y.Status != "Incomplete").Where(d => d.JobTypeID == searchViewModel.jobTypeAux.JobTypeID).AsQueryable();
             IQueryable<string> statusQuery = from s in repository.Jobs orderby s.Status select s.Status;
             #region comments
             /*
@@ -493,6 +499,7 @@ namespace ProdFloor.Controllers
             searchViewModel.Statelist = itemsrepository.States.ToList();
             searchViewModel.ElementList = repository.Elements.ToList();
             searchViewModel.Landinglist = itemsrepository.LandingSystems.ToList();
+            searchViewModel.SpecialFeaturesTable = getSpecialFeaturesEX();
             searchViewModel.JobsSearchList = jobSearchRepo.OrderBy(p => p.JobID).Skip((page - 1) * 5).Take(5).ToList();
             searchViewModel.PagingInfo = new PagingInfo
             {
@@ -622,6 +629,7 @@ namespace ProdFloor.Controllers
         {
             //Desactivar esta funcion para que funcione el test de Job
             AppUser currentUser = GetCurrentUser().Result;
+            newJob.SpecialFeaturesTable = getSpecialFeaturesEX();
             if (ModelState.IsValid)
             {
                 List<PO> PoAux = new List<PO>();
@@ -675,6 +683,7 @@ namespace ProdFloor.Controllers
                             ElementHydro = new ElementHydro(),
                             SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures() },
                             POList = POlistAUX,
+                            SpecialFeaturesTable = getSpecialFeaturesEX(),
                             CurrentTab = "Element"
                         };
                         TempData["message"] = $"Job# {elementHydroViewModel.CurrentJob.JobNum} has been saved...{elementHydroViewModel.CurrentJob.JobID}...";
@@ -690,6 +699,7 @@ namespace ProdFloor.Controllers
                             ElementTraction = new ElementTraction(),
                             SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures() },
                             POList = POlistAUX,
+                            SpecialFeaturesTable = getSpecialFeaturesEX(),
                             CurrentTab = "Element"
                         };
                         TempData["message"] = $"Job# {jobElementTraction.CurrentJob.JobNum} has been saved...{jobElementTraction.CurrentJob.JobID}...";
@@ -708,6 +718,7 @@ namespace ProdFloor.Controllers
                             CurrentHoistWayData = new HoistWayData(),
                             SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures() },
                             POList = POlistAUX,
+                            SpecialFeaturesTable = getSpecialFeaturesEX(),
                             CurrentTab = "Extension"
                         };
                         TempData["message"] = $"Job# {newJobViewModel.CurrentJob.JobNum} has been saved...{newJobViewModel.CurrentJob.JobID}...";
@@ -762,6 +773,7 @@ namespace ProdFloor.Controllers
                     hydroViewModel.CurrentUserID = currentUser.EngID;
                     hydroViewModel.CurrentTab = "Main";
                     hydroViewModel.JobTypeName = JobTypeName(job.JobTypeID);
+                    hydroViewModel.SpecialFeaturesTable = getSpecialFeaturesEX();
 
                     return View("EditHydro", hydroViewModel);
                 }
@@ -783,6 +795,7 @@ namespace ProdFloor.Controllers
                     jobElementTractionView.CurrentUserID = currentUser.EngID;
                     jobElementTractionView.CurrentTab = "Main";
                     jobElementTractionView.JobTypeName = JobTypeName(job.JobTypeID);
+                    jobElementTractionView.SpecialFeaturesTable = getSpecialFeaturesEX();
 
                     return View("EditTraction", jobElementTractionView);
                 }
@@ -807,6 +820,7 @@ namespace ProdFloor.Controllers
                     viewModel.CurrentUserID = currentUser.EngID;
                     viewModel.CurrentTab = "Main";
                     viewModel.JobTypeName = JobTypeName(viewModel.CurrentJob.JobTypeID);
+                    viewModel.SpecialFeaturesTable = getSpecialFeaturesEX();
                     return View(viewModel);
                 }
 
@@ -924,6 +938,7 @@ namespace ProdFloor.Controllers
         public IActionResult Edit(JobViewModel multiEditViewModel)
         {
             AppUser currentUser = GetCurrentUser().Result;
+            multiEditViewModel.SpecialFeaturesTable = getSpecialFeaturesEX();
             multiEditViewModel.CurrentUserID = currentUser.EngID;
             string StatusAux = "Working on it";
             if (multiEditViewModel.CurrentJob.Status == "Copied") StatusAux = "Copied";
@@ -1081,6 +1096,7 @@ namespace ProdFloor.Controllers
         public IActionResult EditHydro(JobElementHydroViewModel multiEditViewModel)
         {
             AppUser currentUser = GetCurrentUser().Result;
+            multiEditViewModel.SpecialFeaturesTable = getSpecialFeaturesEX();
             multiEditViewModel.CurrentUserID = currentUser.EngID;
             string StatusAux = "Cross Approval Complete";
             if (multiEditViewModel.CurrentJob.Status == "Copied") StatusAux = "Copied";
@@ -1179,6 +1195,7 @@ namespace ProdFloor.Controllers
         public IActionResult EditTraction(JobElementTractionViewModel multiEditViewModel)
         {
             AppUser currentUser = GetCurrentUser().Result;
+            multiEditViewModel.SpecialFeaturesTable = getSpecialFeaturesEX();
             multiEditViewModel.CurrentUserID = currentUser.EngID;
             string StatusAux = "Working on it";
             if (multiEditViewModel.CurrentJob.Status == "Copied") StatusAux = "Copied";
@@ -1289,6 +1306,7 @@ namespace ProdFloor.Controllers
         public IActionResult AddPo(JobViewModel jobView)
         {
             AppUser currentUser = GetCurrentUser().Result;
+            jobView.SpecialFeaturesTable = getSpecialFeaturesEX();
 
             if (jobView.CurrentJob.Status == null)
             {
@@ -1340,6 +1358,7 @@ namespace ProdFloor.Controllers
         public IActionResult AddPoHydro(JobElementHydroViewModel jobView)
         {
             AppUser currentUser = GetCurrentUser().Result;
+            jobView.SpecialFeaturesTable = getSpecialFeaturesEX();
             if (jobView.CurrentJob.Status == "Incomplete")
             {
                 jobView.CurrentUserID = currentUser.EngID;
@@ -1376,6 +1395,7 @@ namespace ProdFloor.Controllers
         public IActionResult AddPoTraction(JobElementTractionViewModel jobView)
         {
             AppUser currentUser = GetCurrentUser().Result;
+            jobView.SpecialFeaturesTable = getSpecialFeaturesEX();
             if (jobView.CurrentJob.Status == "Incomplete")
             {
                 jobView.CurrentUserID = currentUser.EngID;
@@ -1428,6 +1448,7 @@ namespace ProdFloor.Controllers
                 CurrentHoistWayData = hoist,
                 CurrentTab = "SpecialFeatures"
             };
+            viewModel.SpecialFeaturesTable = getSpecialFeaturesEX();
             return View("Edit", viewModel);
         }
 
@@ -1469,7 +1490,7 @@ namespace ProdFloor.Controllers
                 };
                 repository.SaveSpecialFeatures(NewSpecial);
             }
-
+            EditViewModel.SpecialFeaturesTable = getSpecialFeaturesEX();
             SpecialFeatures deletedField = repository.DeleteSpecialFeatures(fieldID);
             if (deletedField != null)
             {
@@ -1524,6 +1545,7 @@ namespace ProdFloor.Controllers
                 CurrentTab = "SpecialFeatures",
                 CurrentUserID = currentUser.EngID
             };
+            EditViewModel.SpecialFeaturesTable = getSpecialFeaturesEX();
             List<SpecialFeatures> specialFeaturesList = repository.SpecialFeatures.Where(j => j.JobID == job.JobID).ToList();
             if (specialFeaturesList.Count <= 1)
             {
@@ -1589,6 +1611,7 @@ namespace ProdFloor.Controllers
                 CurrentTab = "SpecialFeatures",
                 CurrentUserID = currentUser.EngID
             };
+            EditViewModel.SpecialFeaturesTable = getSpecialFeaturesEX();
             List<SpecialFeatures> specialFeaturesList = repository.SpecialFeatures.Where(j => j.JobID == job.JobID).ToList();
             if (specialFeaturesList.Count <= 1)
             {
@@ -1638,6 +1661,7 @@ namespace ProdFloor.Controllers
         [HttpPost]
         public IActionResult DeletePOs(JobViewModel viewModel)
         {
+            viewModel.SpecialFeaturesTable = getSpecialFeaturesEX();
             AppUser currentUser = GetCurrentUser().Result;
             PO deletedField = repository.DeletePO(viewModel.fieldID);
             Job job = repository.Jobs.FirstOrDefault(j => j.JobID == viewModel.CurrentJob.JobID);
@@ -1715,6 +1739,7 @@ namespace ProdFloor.Controllers
                     if (SfList.Count > 1) continueJobViewModel.SpecialFeatureslist = SfList;
                     else continueJobViewModel.SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures() };
                     continueJobViewModel.JobTypeName = JobTypeName(Job.JobTypeID);
+                    continueJobViewModel.SpecialFeaturesTable = getSpecialFeaturesEX();
 
                     return View("NextFormHydro", continueJobViewModel);
                 }
@@ -1737,6 +1762,7 @@ namespace ProdFloor.Controllers
                     if (SfList.Count > 1) continueJobViewModel.SpecialFeatureslist = SfList;
                     else continueJobViewModel.SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures() };
                     continueJobViewModel.JobTypeName = JobTypeName(Job.JobTypeID);
+                    continueJobViewModel.SpecialFeaturesTable = getSpecialFeaturesEX();
 
                     return View("NextFormTraction", continueJobViewModel);
                 }
@@ -1762,6 +1788,7 @@ namespace ProdFloor.Controllers
                     if (SfList.Count > 1) continueJobViewModel.SpecialFeatureslist = SfList;
                     else continueJobViewModel.SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures() };
                     continueJobViewModel.JobTypeName = JobTypeName(Job.JobTypeID);
+                    continueJobViewModel.SpecialFeaturesTable = getSpecialFeaturesEX();
 
                     return View("NextForm", continueJobViewModel);
                 }
@@ -1792,6 +1819,7 @@ namespace ProdFloor.Controllers
         {
             AppUser currentUser = GetCurrentUser().Result;
             nextViewModel.CurrentUserID = currentUser.EngID;
+            nextViewModel.SpecialFeaturesTable = getSpecialFeaturesEX();
             List<PO> PoAux = new List<PO>();
             foreach (PO itemes in nextViewModel.POList)
             {
@@ -2001,6 +2029,7 @@ namespace ProdFloor.Controllers
         {
             AppUser currentUser = GetCurrentUser().Result;
             nextViewModel.CurrentUserID = currentUser.EngID;
+            nextViewModel.SpecialFeaturesTable = getSpecialFeaturesEX();
             List<PO> PoAux = new List<PO>();
             foreach (PO itemes in nextViewModel.POList)
             {
@@ -2122,6 +2151,7 @@ namespace ProdFloor.Controllers
         {
             AppUser currentUser = GetCurrentUser().Result;
             nextViewModel.CurrentUserID = currentUser.EngID;
+            nextViewModel.SpecialFeaturesTable = getSpecialFeaturesEX();
             List<PO> PoAux = new List<PO>();
             foreach (PO itemes in nextViewModel.POList)
             {
@@ -4705,6 +4735,46 @@ namespace ProdFloor.Controllers
                 return BadRequest();
             }
         }
+
+        public List<SpecialFeaturesEX> getSpecialFeaturesEX()
+        {
+            List<SpecialFeaturesEX> specialFeaturesTable = new List<SpecialFeaturesEX>();
+            List<string> rowList = new List<string>();
+            ISheet sheet;
+            using (var stream = new FileStream(@"wwwroot\resources\SpecialFeaturesEX.xlsx", FileMode.Open))
+            {
+                stream.Position = 0;
+                XSSFWorkbook xssWorkbook = new XSSFWorkbook(stream);
+                sheet = xssWorkbook.GetSheetAt(0);
+                IRow headerRow = sheet.GetRow(0);
+                int cellCount = headerRow.LastCellNum;
+                for (int i = (sheet.FirstRowNum + 1); i <= sheet.LastRowNum; i++)
+                {
+                    SpecialFeaturesEX specialFeaturesEXItem = new SpecialFeaturesEX();
+                    IRow row = sheet.GetRow(i);
+                    if (row == null) continue;
+                    if (row.Cells.All(d => d.CellType == CellType.Blank)) continue;
+                    for (int j = row.FirstCellNum; j < cellCount; j++)
+                    {
+                        if (row.GetCell(j) != null)
+                        {
+                            if (!string.IsNullOrEmpty(row.GetCell(j).ToString()) & !string.IsNullOrWhiteSpace(row.GetCell(j).ToString()))
+                            {
+                                rowList.Add(row.GetCell(j).ToString());
+                             }
+                        }
+                    }
+                    if (rowList.Count > 0)
+                        specialFeaturesEXItem.Name = rowList.ElementAt(0);
+                        specialFeaturesEXItem.Description = rowList.ElementAt(1);
+                        specialFeaturesTable.Add(specialFeaturesEXItem);
+                    rowList.Clear(); 
+                }
+            }
+
+            return specialFeaturesTable;
+        }
+
 
     }
 }
