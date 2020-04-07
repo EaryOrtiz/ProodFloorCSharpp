@@ -3,8 +3,23 @@
     <li class="nav-item nav">
         <a class="nav-link  text-light" asp-controller="Home" asp-action="SuperUserDashBoard"><i class="fas fa-crown"></i>&nbsp;Super User</a>
     </li>
-    <li class="nav-item" role="tab" id="job">
-        <a asp-action="List" asp-controller="Job" asp-route-jobType="" asp-route-jobPage="1" class="nav-link text-light"><i class="fas fa-briefcase"></i>&nbsp; Jobs</a>
+    <li class="nav-item" role="tab" id="JobSearch">
+        <a data-toggle="collapse" href="#collapseJobSearch" role="button" aria-expanded="false" aria-controls="collapseJobSearch"
+           class="nav-link text-light"><i class="fas fa-briefcase"></i>&nbsp; Job Search</a>
+        <ul id="collapseJobSearch" class="collapse" role="tabpanel" aria-labelledby="collapseJobSearch" data-parent="#accordion">
+            <li class="nav-link"
+                style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue">
+                <a style="color:white" asp-controller="Job" asp-action="List" asp-route-JobTypeName="M2000">M2000</a>
+            </li>
+            <li class="nav-link"
+                style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue">
+                <a style="color:white" asp-controller="Job" asp-action="ElementList" asp-route-JobTypeName="ElmTract">Element Traction</a>
+            </li>
+            <li class="nav-link"
+                style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue">
+                <a style="color:white" asp-controller="Job" asp-action="ElementList" asp-route-JobTypeName="ElmHydro">Element Hydro</a>
+            </li>
+        </ul>
     </li>
     <li class="nav-item" role="tab" id="dooroperators">
         <a id="doors" asp-action="List" asp-controller="DoorOperator" asp-route-brand="" asp-route-Page="1" class="nav-link text-light"><i class="fas fa-door-open"></i>&nbsp; Door Operators</a>

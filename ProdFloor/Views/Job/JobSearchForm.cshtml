@@ -1,4 +1,11 @@
 ﻿@model ProdFloor.Models.ViewModels.Job.JobSearchViewModel
+    <script>
+    $(document).ready(function () {
+        $('#productName').autocomplete({
+            source: '/Job/Search'
+        });
+    });
+    </script>
 <div id="accordionSearch">
     <div class="card">
         <div class="card-header bg-dark text-center">
