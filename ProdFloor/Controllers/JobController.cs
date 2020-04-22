@@ -1879,8 +1879,8 @@ namespace ProdFloor.Controllers
                                         if (nextViewModel.CurrentHoistWayData != null && nextViewModel.CurrentHoistWayData.JobID != 0)
                                         {
                                             if (nextViewModel.SpecialFeatureslist != null)
-                                            {
-                                                nextViewModel.CurrentJob.Status = "Working on it";
+                                            {   
+                                                if(nextViewModel.CurrentJob.Status == "Incomplete") nextViewModel.CurrentJob.Status = "Working on it";
                                                 repository.SaveEngJobView(nextViewModel);
                                                 nextViewModel.CurrentTab = "Main";
                                                 TempData["message"] = $"everything was saved";
@@ -2079,7 +2079,7 @@ namespace ProdFloor.Controllers
 
                                 if (nextViewModel.SpecialFeatureslist != null)
                                 {
-                                    nextViewModel.CurrentJob.Status = "Cross Approval Complete";
+                                    if (nextViewModel.CurrentJob.Status == "Incomplete") nextViewModel.CurrentJob.Status = "Cross Approval Complete";
                                     repository.SaveEngElementHydroJobView(nextViewModel);
                                     nextViewModel.CurrentTab = "Main";
                                     TempData["message"] = $"everything was saved";
@@ -2200,7 +2200,7 @@ namespace ProdFloor.Controllers
                                 if (nextViewModel.Element.ElementID == 0 && nextViewModel.CurrentJob.Status == "Incomplete") nextViewModel.Element.ElementID = repository.Elements.FirstOrDefault(m => m.JobID == nextViewModel.CurrentJob.JobID).ElementID;
                                 if (nextViewModel.SpecialFeatureslist != null)
                                 {
-                                    nextViewModel.CurrentJob.Status = "Cross Approval Complete";
+                                    if (nextViewModel.CurrentJob.Status == "Incomplete") nextViewModel.CurrentJob.Status = "Cross Approval Complete";
                                     repository.SaveEngElementTractionJobView(nextViewModel);
                                     nextViewModel.CurrentTab = "Main";
                                     TempData["message"] = $"everything was saved";

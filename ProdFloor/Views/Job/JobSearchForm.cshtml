@@ -4,6 +4,11 @@
         $('#productName').autocomplete({
             source: '/Job/Search'
         });
+
+        $(".btn.btn-dark").click(function () {
+                $(".btn.btn-dark").removeClass("active"); //delete all "active" classes from all buttons
+                $(this).addClass("active");
+        });
     });
     </script>
 <div id="accordionSearch">
@@ -16,7 +21,7 @@
             </div>
             <div class="btn-group">
                 <!--Header 1-->
-                <button type="button" id="headingJobInfo" class="btn btn-dark" style="border-color:transparent" data-toggle="collapse" data-target="#collapseJobInfo" aria-expanded="true" aria-controls="collapseJobInfo">
+                <button type="button" id="headingJobInfo" class="btn btn-dark active" style="border-color:transparent" data-toggle="collapse" data-target="#collapseJobInfo" aria-expanded="true" aria-controls="collapseJobInfo">
                     <h6 class="mb-0 text-center"> Job Information</h6>
                 </button>
                 <!--Header 2-->
