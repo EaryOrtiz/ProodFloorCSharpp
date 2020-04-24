@@ -59,8 +59,6 @@ namespace ProdFloor.Controllers
                      .Where(d => d.JobTypeID == searchViewModel.jobTypeAux.JobTypeID)
                      .Count();
 
-            searchViewModel.NumJobSearch = getJobNumb(searchViewModel.JobNumFirstDigits, searchViewModel.JobNumLastDigits);
-
             if (searchViewModel.CleanFields) return RedirectToAction("List");
             var jobSearchRepo = repository.Jobs.Include(j => j._jobExtension).Include(hy => hy._HydroSpecific).Include(g => g._GenericFeatures)
                 .Include(i => i._Indicator).Include(ho => ho._HoistWayData).Include(sp => sp._SpecialFeatureslist).Include(po => po._PO).Where(y => y.Status != "Pending" && y.Status != "Incomplete")
@@ -83,7 +81,7 @@ namespace ProdFloor.Controllers
             #endregion
 
             #region JobModelSearch
-            if (!string.IsNullOrEmpty(searchViewModel.NumJobSearch)) jobSearchRepo = jobSearchRepo.Where(s => s.JobNum == searchViewModel.NumJobSearch);
+            if (!string.IsNullOrEmpty(searchViewModel.NumJobSearch)) jobSearchRepo = jobSearchRepo.Where(s => s.JobNum.Contains(searchViewModel.NumJobSearch));
 
             if (searchViewModel.EngID > 0) jobSearchRepo = jobSearchRepo.Where(s => s.EngID == searchViewModel.EngID);
             if (searchViewModel.CrossAppEngID > 0) jobSearchRepo = jobSearchRepo.Where(s => s.CrossAppEngID == searchViewModel.CrossAppEngID);
@@ -363,9 +361,8 @@ namespace ProdFloor.Controllers
             */
             //Opciones de busqueda para el modelo principal de job
             #endregion
-            searchViewModel.NumJobSearch = getJobNumb(searchViewModel.JobNumFirstDigits, searchViewModel.JobNumLastDigits);
             #region JobModelSearch
-            if (!string.IsNullOrEmpty(searchViewModel.NumJobSearch)) jobSearchRepo = jobSearchRepo.Where(s => s.JobNum == searchViewModel.NumJobSearch);
+            if (!string.IsNullOrEmpty(searchViewModel.NumJobSearch)) jobSearchRepo = jobSearchRepo = jobSearchRepo.Where(s => s.JobNum.Contains(searchViewModel.NumJobSearch));
             if (searchViewModel.EngID > 0) jobSearchRepo = jobSearchRepo.Where(s => s.EngID == searchViewModel.EngID);
             if (searchViewModel.CrossAppEngID > 0) jobSearchRepo = jobSearchRepo.Where(s => s.CrossAppEngID == searchViewModel.CrossAppEngID);
             if (searchViewModel.CityID > 0) jobSearchRepo = jobSearchRepo.Where(s => s.CityID == searchViewModel.CityID);
