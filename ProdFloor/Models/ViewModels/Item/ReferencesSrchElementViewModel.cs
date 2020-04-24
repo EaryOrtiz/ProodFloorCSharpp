@@ -18,7 +18,12 @@ namespace ProdFloor.Models.ViewModels.Item
         public int JobID { get; set; }
 
         //Hydro
-        public int NumJobSearch { get; set; }
+        public string NumJobSearch { get; set; }
+
+        //Aux fields for New JobNumber
+        public string JobNumFirstDigits { get; set; }
+        public int JobNumLastDigits { get; set; }
+
         public int PO { get; set; }
         public int Voltage { get; set; }
         public string Volts { get; set; }

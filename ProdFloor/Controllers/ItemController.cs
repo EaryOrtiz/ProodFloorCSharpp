@@ -1464,5 +1464,12 @@ namespace ProdFloor.Controllers
         {
             return repository.JobTypes.FirstOrDefault(m => m.JobTypeID == ID).Name;
         }
+
+        public String getJobNumb(string firstDigits, int lastDigits)
+        {
+            string JobNumb = firstDigits + lastDigits.ToString();
+
+            return JobNumb;
+        }
     }
 }

@@ -62,11 +62,10 @@ namespace ProdFloor.Controllers
         }
 
 
-        public IActionResult SearchTestJob(string Clean, int jobNumber, string jobnumb = "0", int MyJobsPage = 1, int PendingToCrossJobPage = 1, int OnCrossJobPage = 1)
+        public IActionResult SearchTestJob(string Clean, string jobNumber, string jobnumb = "0", int MyJobsPage = 1, int PendingToCrossJobPage = 1, int OnCrossJobPage = 1)
         {
             bool admin = GetCurrentUserRole("Admin").Result;
-            if (jobnumb != "0") jobNumber = Int32.Parse(jobnumb);
-            if (jobNumber != 0) jobnumb = jobNumber.ToString();
+            if (jobNumber !="") jobnumb = jobNumber;
 
             List<TestJob> testJobsInCompleted = new List<TestJob>();
             List<TestJob> testJobsCompleted = new List<TestJob>();
@@ -145,7 +144,7 @@ namespace ProdFloor.Controllers
                 },
 
             };
-            if (jobNumber == 0) return View(testJobView);
+            if (jobNumber == "") return View(testJobView);
             if (testJobsList.Count > 0 && testJobsList[0] != null) return View(testJobView);
             TempData["message"] = $"Does not exist any job with the JobNum #{jobNumber}, please try again.";
             TempData["alert"] = $"alert-danger";
@@ -2385,7 +2384,7 @@ namespace ProdFloor.Controllers
                 string term = HttpContext.Request.Query["term"].ToString();
                 var names = jobRepo.Jobs.Where(p => p.JobNum.ToString().Contains(term)).Select(p => p.JobNum).Distinct().ToList();
                 List<string> numbers = new List<string>();
-                foreach (int number in names)
+                foreach (string number in names)
                 {
                     numbers.Add(number.ToString());
                 }
@@ -2436,6 +2435,7 @@ namespace ProdFloor.Controllers
             if (searchViewModel.JobExtension == null) searchViewModel.JobExtension = new JobExtension();
             if (searchViewModel.TestJobsSearchList == null) searchViewModel.TestJobsSearchList = new List<TestJob>();
             if (searchViewModel.JobsSearchList == null) searchViewModel.JobsSearchList = new List<Job>();
+            searchViewModel.JobNum = getJobNumb(searchViewModel.JobNumFirstDigits, searchViewModel.JobNumLastDigits);
 
             IQueryable<TestJob> testJobSearchList = testingRepo.TestJobs.Include(m => m._Stops).Include(m => m._TestFeature);
             IQueryable<Stop> stops = testingRepo.Stops.Where(m => testJobSearchList.Any(s => s.TestJobID == m.TestJobID));
@@ -2476,7 +2476,7 @@ namespace ProdFloor.Controllers
             #endregion
 
             #region JobFromTestJobInfo
-            if (searchViewModel.JobNum >= 2015000000 && searchViewModel.JobNum <= 2021000000)
+            if (!string.IsNullOrEmpty(searchViewModel.JobNum))
             {
                 jobSearchRepo = jobSearchRepo.Where(s => s.JobNum == searchViewModel.JobNum); anyFeatureFromJob = true;
             }
@@ -2665,6 +2665,13 @@ namespace ProdFloor.Controllers
             };
 
             return View(searchViewModel);
+        }
+
+        public String getJobNumb(string firstDigits, int lastDigits)
+        {
+            string JobNumb = firstDigits + lastDigits.ToString();
+
+            return JobNumb;
         }
     }
 }

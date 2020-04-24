@@ -35,7 +35,13 @@ namespace ProdFloor.Models.ViewModels.TestJob
 
         //Dummy fields
         public string JobName { get; set; }
-        public int JobNum { get; set; }
+
+        public string JobNum { get; set; }
+        //Aux fields for New JobNumber
+        public string JobNumFirstDigits { get; set; }
+        public int JobNumLastDigits { get; set; }
+
+
         public string Canada { get; set; }
         public string Ontario { get; set; }
         public string MOD { get; set; }

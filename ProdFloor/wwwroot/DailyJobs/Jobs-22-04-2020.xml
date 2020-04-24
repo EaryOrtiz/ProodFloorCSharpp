@@ -80873,7 +80873,7 @@
       <Frequency>60</Frequency>
       <LoadWeigher>EMCO</LoadWeigher>
       <DoorGate>Automatic</DoorGate>
-      <INA>Top &amp;amp; Bottom</INA>
+      <INA>Top &amp; Bottom</INA>
       <LoadWeigher>EMCO</LoadWeigher>
       <FRON2>False</FRON2>
       <EQ>False</EQ>
@@ -80920,7 +80920,23 @@
       <Encoder>False</Encoder>
       <ISO>False</ISO>
     </ElementTraction>
-    <SpecialFeatures />
+    <SpecialFeatures>
+      <SpecialFeature>
+        <ID>3384</ID>
+        <JobID>2475</JobID>
+        <Description>2 HOISTWAYS 1 MACHINE ROOM</Description>
+      </SpecialFeature>
+      <SpecialFeature>
+        <ID>5510</ID>
+        <JobID>2475</JobID>
+        <Description>BROWNOUT</Description>
+      </SpecialFeature>
+      <SpecialFeature>
+        <ID>5511</ID>
+        <JobID>2475</JobID>
+        <Description>BATTERY LOWERING LIGHT</Description>
+      </SpecialFeature>
+    </SpecialFeatures>
   </Job>
   <Job>
     <JobBase>
@@ -91217,7 +91233,18 @@
       <FrontSixteenthServed>False</FrontSixteenthServed>
       <RearSixteenthServed>False</RearSixteenthServed>
     </HoistWayData>
-    <SpecialFeatures />
+    <SpecialFeatures>
+      <SpecialFeature>
+        <ID>3437</ID>
+        <JobID>2539</JobID>
+        <Description>Car Shutdown</Description>
+      </SpecialFeature>
+      <SpecialFeature>
+        <ID>5509</ID>
+        <JobID>2539</JobID>
+        <Description>BROWNOUT</Description>
+      </SpecialFeature>
+    </SpecialFeatures>
   </Job>
   <Job>
     <JobBase>
@@ -95137,6 +95164,208 @@
         <ID>5502</ID>
         <JobID>6284</JobID>
         <Description>24VAC FIRE SENSORS</Description>
+      </SpecialFeature>
+    </SpecialFeatures>
+  </Job>
+  <Job>
+    <JobBase>
+      <ID>6287</ID>
+      <Status>Cross Approval Pending</Status>
+      <EngID>27</EngID>
+      <CrossAppEngID>0</CrossAppEngID>
+      <Name>test</Name>
+      <Name2>test</Name2>
+      <JobNum>2020165465</JobNum>
+      <ShipDate>4/22/2020 12:00:00 AM</ShipDate>
+      <LatestFinishDate>4/22/2020 12:00:00 AM</LatestFinishDate>
+      <Cust>NYAE1000</Cust>
+      <Contractor>American Elevator &amp;amp; Machine</Contractor>
+      <JobTypeID>2</JobTypeID>
+      <CityID>69</CityID>
+      <FireCodeID>13</FireCodeID>
+    </JobBase>
+    <POs>
+      <PO>
+        <ID>6319</ID>
+        <JobID>6287</JobID>
+        <PONumb>3016546</PONumb>
+      </PO>
+    </POs>
+    <JobExtension>
+      <ID>4242</ID>
+      <JobID>6287</JobID>
+      <NumOfStops>1</NumOfStops>
+      <JobTypeMain>Simplex</JobTypeMain>
+      <JobTypeAdd>Selective Collective</JobTypeAdd>
+      <InputVoltage>240</InputVoltage>
+      <InputPhase>1</InputPhase>
+      <InputFrecuency>60</InputFrecuency>
+      <DoorGate>Manual</DoorGate>
+      <DoorHoist>Automatic</DoorHoist>
+      <SHCRisers>0</SHCRisers>
+      <DoorOperatorID>2</DoorOperatorID>
+      <SwingOp>False</SwingOp>
+      <BackUpDisp>False</BackUpDisp>
+      <AltRis>False</AltRis>
+      <InfDetector>False</InfDetector>
+      <MechSafEdge>False</MechSafEdge>
+      <HeavyDoors>False</HeavyDoors>
+      <CartopDoorButtons>False</CartopDoorButtons>
+      <DoorHold>False</DoorHold>
+      <Nudging>False</Nudging>
+      <SCOP>True</SCOP>
+      <SHC>True</SHC>
+      <AUXCOP>True</AUXCOP>
+    </JobExtension>
+    <HydroSpecific>
+      <ID>3239</ID>
+      <JobID>6287</JobID>
+      <Starter>Siemens SS : 6/12</Starter>
+      <HP>10</HP>
+      <FLA>15</FLA>
+      <SPH>80</SPH>
+      <MotorsNum>1</MotorsNum>
+      <MotorsDisconnect>1</MotorsDisconnect>
+      <ValveBrand>Blain</ValveBrand>
+      <ValveCoils>3</ValveCoils>
+      <ValveNum>1</ValveNum>
+      <ValveVoltage>1</ValveVoltage>
+      <BatteryBrand>Nulo</BatteryBrand>
+      <Battery>False</Battery>
+      <LifeJacket>False</LifeJacket>
+      <LOS>False</LOS>
+      <OilCool>True</OilCool>
+      <OilTank>True</OilTank>
+      <PSS>False</PSS>
+      <Resync>False</Resync>
+      <VCI>False</VCI>
+    </HydroSpecific>
+    <GenericFeatures>
+      <ID>3237</ID>
+      <JobID>6287</JobID>
+      <EPCarsNumber>Nulo</EPCarsNumber>
+      <EPContact>Nulo</EPContact>
+      <TopAccessLocation>Nulo</TopAccessLocation>
+      <BottomAccessLocation>Nulo</BottomAccessLocation>
+      <INCPButtons>Nulo</INCPButtons>
+      <SwitchStyle>Nulo</SwitchStyle>
+      <GovModel>Nulo</GovModel>
+      <Monitoring>Nulo</Monitoring>
+      <CarCallCodeSecurity>Nulo</CarCallCodeSecurity>
+      <SpecialInstructions>Nulo</SpecialInstructions>
+      <FRON2>True</FRON2>
+      <Attendant>True</Attendant>
+      <CarToLobby>True</CarToLobby>
+      <EQ>False</EQ>
+      <EMT>False</EMT>
+      <EP>False</EP>
+      <EPVoltage>False</EPVoltage>
+      <EPOtherCars>False</EPOtherCars>
+      <PTI>False</PTI>
+      <EPSelect>False</EPSelect>
+      <FLO>False</FLO>
+      <Hosp>False</Hosp>
+      <Pit>False</Pit>
+      <INA>False</INA>
+      <TopAccess>False</TopAccess>
+      <BottomAccess>False</BottomAccess>
+      <INCP>False</INCP>
+      <LoadWeigher>False</LoadWeigher>
+      <CTINSPST>False</CTINSPST>
+      <Roped>False</Roped>
+      <CallEnable>False</CallEnable>
+      <CarCallRead>False</CarCallRead>
+      <HallCallRead>False</HallCallRead>
+      <CarKey>False</CarKey>
+      <HallKey>False</HallKey>
+      <CRO>False</CRO>
+      <HCRO>False</HCRO>
+      <BSI>False</BSI>
+    </GenericFeatures>
+    <Indicator>
+      <ID>3236</ID>
+      <JobID>6287</JobID>
+      <CarCallsVoltage>24</CarCallsVoltage>
+      <CarCallsVoltageType>DC</CarCallsVoltageType>
+      <CarCallsType>LED</CarCallsType>
+      <HallCallsVoltage>24</HallCallsVoltage>
+      <HallCallsVoltageType>DC</HallCallsVoltageType>
+      <HallCallsType>LED</HallCallsType>
+      <CarPIType>Emotive</CarPIType>
+      <CarPIDiscreteType>Binary 00</CarPIDiscreteType>
+      <HallPIType>CE Electronics</HallPIType>
+      <HallPIDiscreteType>Binary 01</HallPIDiscreteType>
+      <VoiceAnnunciationPIType>CE Electronics</VoiceAnnunciationPIType>
+      <CarLanternsStyle>CE Electronics</CarLanternsStyle>
+      <CarLanternsType>Chime</CarLanternsType>
+      <HallLanternsStyle>CE Electronics</HallLanternsStyle>
+      <HallLanternsType>Chime</HallLanternsType>
+      <PassingFloorType>CE Electronics</PassingFloorType>
+      <PassingFloorDiscreteType>Chime</PassingFloorDiscreteType>
+      <IndicatorsVoltage>48</IndicatorsVoltage>
+      <IndicatorsVoltageType>DC</IndicatorsVoltageType>
+      <CarPI>False</CarPI>
+      <HallPI>False</HallPI>
+      <VoiceAnnunciationPI>False</VoiceAnnunciationPI>
+      <CarLanterns>False</CarLanterns>
+      <HallLanterns>False</HallLanterns>
+      <PassingFloor>False</PassingFloor>
+      <PassingFloorEnable>False</PassingFloorEnable>
+      <hallpiall>False</hallpiall>
+    </Indicator>
+    <HoistWayData>
+      <ID>3235</ID>
+      <JobID>6287</JobID>
+      <HoistWaysNumber>2</HoistWaysNumber>
+      <MachineRooms>1</MachineRooms>
+      <Capacity>1</Capacity>
+      <UpSpeed>1</UpSpeed>
+      <DownSpeed>1</DownSpeed>
+      <TotalTravel>2</TotalTravel>
+      <LandingSystemID>2</LandingSystemID>
+      <FrontFirstServed>True</FrontFirstServed>
+      <RearFirstServed>False</RearFirstServed>
+      <FrontSecondServed>True</FrontSecondServed>
+      <RearSecondServed>False</RearSecondServed>
+      <FrontThirdServed>False</FrontThirdServed>
+      <RearThirdServed>False</RearThirdServed>
+      <FrontFourthServed>False</FrontFourthServed>
+      <RearFourthServed>False</RearFourthServed>
+      <FrontFifthServed>False</FrontFifthServed>
+      <RearFifthServed>False</RearFifthServed>
+      <FrontSexthServed>False</FrontSexthServed>
+      <RearSexthServed>False</RearSexthServed>
+      <FrontSeventhServed>False</FrontSeventhServed>
+      <RearSeventhServed>False</RearSeventhServed>
+      <FrontEightServed>False</FrontEightServed>
+      <RearEightServed>False</RearEightServed>
+      <FrontNinthServed>False</FrontNinthServed>
+      <RearNinthServed>False</RearNinthServed>
+      <FrontTenthServed>False</FrontTenthServed>
+      <RearTenthServed>False</RearTenthServed>
+      <FrontEleventhServed>False</FrontEleventhServed>
+      <RearEleventhServed>False</RearEleventhServed>
+      <FrontTwelvethServed>False</FrontTwelvethServed>
+      <RearTwelvethServed>False</RearTwelvethServed>
+      <FrontThirteenthServed>False</FrontThirteenthServed>
+      <RearThirteenthServed>False</RearThirteenthServed>
+      <FrontFourteenthServed>False</FrontFourteenthServed>
+      <RearFourteenthServed>False</RearFourteenthServed>
+      <FrontFifteenthServed>False</FrontFifteenthServed>
+      <RearFifteenthServed>False</RearFifteenthServed>
+      <FrontSixteenthServed>False</FrontSixteenthServed>
+      <RearSixteenthServed>False</RearSixteenthServed>
+    </HoistWayData>
+    <SpecialFeatures>
+      <SpecialFeature>
+        <ID>5513</ID>
+        <JobID>6287</JobID>
+        <Description>AIR CONDITIONER</Description>
+      </SpecialFeature>
+      <SpecialFeature>
+        <ID>5514</ID>
+        <JobID>6287</JobID>
+        <Description>BROWNOUT</Description>
       </SpecialFeature>
     </SpecialFeatures>
   </Job>

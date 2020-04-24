@@ -316,16 +316,16 @@ namespace ProdFloor.Controllers
             return NotFound();
         }
 
-        public IActionResult SuperUserDashBoard(string Clean, int jobNumber, string jobnumb = "0", int MyJobsPage = 1, int PendingToCrossJobPage = 1, int OnCrossJobPage = 1)
+        public IActionResult SuperUserDashBoard(string Clean, string jobNumber, string jobnumb = "", int MyJobsPage = 1, int PendingToCrossJobPage = 1, int OnCrossJobPage = 1)
         {
-            if (jobnumb != "0") jobNumber = int.Parse(jobnumb);
-            if (jobNumber != 0) jobnumb = jobNumber.ToString();
+            if (!string.IsNullOrEmpty(jobnumb)) jobNumber = jobnumb;
+            if (!string.IsNullOrEmpty(jobNumber)) jobnumb = jobNumber;
 
             List<JobType> JobTyPeList = itemRepo.JobTypes.ToList();
             List<PO> POsList = repository.POs.ToList();
             List<JobAdditional> MyJobAdditionalList = repository.JobAdditionals.ToList();
             List<Job> MyjobsList = new List<Job>();
-            List<Job> jobList = repository.Jobs.Where(m => m.JobNum == jobNumber).ToList();
+            List<Job> jobList = repository.Jobs.Where(m => m.JobNum.Contains(jobNumber)).ToList();
             List<Job> OnCrossJobsList = repository.Jobs
                        .Where(j => j.Status == "On Cross Approval").OrderByDescending(m => m._JobAdditional.Priority).ThenBy(n => n.LatestFinishDate).ToList();
             
@@ -339,9 +339,11 @@ namespace ProdFloor.Controllers
                     .OrderByDescending(m => m._JobAdditional.Priority).ThenBy(n => n.LatestFinishDate).ToList();
             }
 
-            if (Clean == "true" || jobnumb == "0") MyjobsList = repository.Jobs
-                    .OrderByDescending(m => m._JobAdditional.Priority).ThenBy(n => n.LatestFinishDate).ToList();
-
+            if (Clean == "true" || jobnumb == "")
+            {
+                MyjobsList = repository.Jobs.OrderByDescending(m => m._JobAdditional.Priority).ThenBy(n => n.LatestFinishDate).ToList();
+                jobnumb = "";
+            }
 
             DashboardIndexViewModel dashboard = new DashboardIndexViewModel()
             {
@@ -375,9 +377,9 @@ namespace ProdFloor.Controllers
 
             };
 
-            if (jobNumber == 0) return View(dashboard);
+            if (jobNumber == "") return View(dashboard);
             if (MyjobsList.Count > 0 && MyjobsList[0] != null) return View(dashboard);
-            TempData["message"] = $"Does not exist any job with the JobNum #{jobNumber}, please try again.";
+            TempData["message"] = $"Does not exist any job with the JobNum #{jobNumber} or with the status 'On Cross Approval' or 'Cross Approval Pending', please try again.";
             TempData["alert"] = $"alert-danger";
             return View(dashboard);
         }

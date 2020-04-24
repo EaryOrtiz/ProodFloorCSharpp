@@ -29,9 +29,19 @@ namespace ProdFloor.Models
         public string Name2 { get; set; }
 
         [Display(Name = "Job Number")]
-        [Range(2015000000, 3030000000, ErrorMessage = "Job number is out of range")]
-        [Required(ErrorMessage = "Please enter a Job Num")]
-        public int JobNum { get; set; }
+        public string JobNum { get; set; }
+
+        //Aux fields for New JobNumber
+        [NotMapped]
+        [Required(ErrorMessage = "Please enter the first digits")]
+        public string JobNumFirstDigits { get; set; }
+
+        [NotMapped]
+        [Required(ErrorMessage = "Please enter the last digits")]
+        [Range(10000, 99999, ErrorMessage = "Last digits is out of range")]
+        public int JobNumLastDigits { get; set; }
+
+
 
         [Display(Name = "Shipping Date")]
         [Required(ErrorMessage = "Please enter a Shipping Date")]
@@ -90,6 +100,13 @@ namespace ProdFloor.Models
         [Display(Name = "Fire Code")]
         public int FireCodeID { get; set; }
 
+    }
+
+    public class JobNumber
+    {
+        public string firstDigits { get; set; }
+
+        public int lastDigits { get; set; }
     }
 
     public class PO

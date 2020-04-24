@@ -3288,6 +3288,14 @@ namespace ProdFloor.Infrastructure
                     if (BatteryInHydro.Count > 0) BatteryList.AddRange(BatteryInHydro);
 
                     return BatteryList.Distinct().AsQueryable();
+                case "JobNumber":
+                    int YearNow = DateTime.Now.Year;
+                    int YearPast = YearNow - 1;
+
+                    string YearNowCanada = "C" + YearNow.ToString().Remove(0, 2) + "00";
+                    string YearPastCanada = "C" + YearPast.ToString().Remove(0, 2) + "00";
+
+                    return new List<string> { YearNowCanada, YearPast.ToString() + "0", YearPastCanada }.AsQueryable();
                 default:
                     return new List<string> { "Beginning", "Program", "Logic", "Ending", "Complete" }.AsQueryable();
             }
@@ -3321,6 +3329,11 @@ namespace ProdFloor.Infrastructure
             {
                 m_tag.Attributes["value"] = "";
                 m_tag.InnerHtml.Append("N/C");
+            }
+            else if (SelectFor == "JobNumber")
+            {
+                m_tag.Attributes["value"] = (DateTime.Now.Year.ToString() + "0");
+                m_tag.InnerHtml.Append((DateTime.Now.Year.ToString() + "0"));
             }
             else if(SelectFor == "boolSearch")
             {

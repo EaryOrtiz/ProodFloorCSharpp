@@ -1706,7 +1706,7 @@ namespace ProdFloor.Models
                     {
                         JobID = 1,
                         Name = "BRENTWOOD CONDOS",
-                        JobNum = 2017088571,
+                        JobNum = "2017088571",
                         Cust = "OTIS-MP",
                         CityID = 25,
                         FireCodeID = 11,
@@ -1722,7 +1722,7 @@ namespace ProdFloor.Models
                     {
                         JobID = 2,
                         Name = "Job Name 2",
-                        JobNum = 2017088362,
+                        JobNum = "2017088362",
                         Cust = "FAKE-2",
                         CityID = 60,
                         FireCodeID = 7,
@@ -1738,7 +1738,7 @@ namespace ProdFloor.Models
                     {
                         JobID = 3,
                         Name = "PACIFIC PALISADES LAUSD CHARTER HIGH SCHOOL",
-                        JobNum = 2017088536,
+                        JobNum = "2017088536",
                         Cust = "CAEE2999",
                         CityID = 61,
                         FireCodeID = 18,
@@ -1754,7 +1754,7 @@ namespace ProdFloor.Models
                     {
                         JobID = 4,
                         Name = "SMC ADMIN",
-                        JobNum = 2017088535,
+                        JobNum = "2017088535",
                         Cust = "CAEE3000",
                         CityID = 73,
                         FireCodeID = 18,
