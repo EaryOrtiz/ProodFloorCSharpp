@@ -339,7 +339,7 @@ namespace ProdFloor.Controllers
                     .OrderByDescending(m => m._JobAdditional.Priority).ThenBy(n => n.LatestFinishDate).ToList();
             }
 
-            if (Clean == "true" || jobnumb == "")
+            if (Clean == "true" || string.IsNullOrEmpty(jobnumb))
             {
                 MyjobsList = repository.Jobs.OrderByDescending(m => m._JobAdditional.Priority).ThenBy(n => n.LatestFinishDate).ToList();
                 jobnumb = "";
@@ -377,7 +377,7 @@ namespace ProdFloor.Controllers
 
             };
 
-            if (jobNumber == "") return View(dashboard);
+            if (string.IsNullOrEmpty(jobNumber)) return View(dashboard);
             if (MyjobsList.Count > 0 && MyjobsList[0] != null) return View(dashboard);
             TempData["message"] = $"Does not exist any job with the JobNum #{jobNumber} or with the status 'On Cross Approval' or 'Cross Approval Pending', please try again.";
             TempData["alert"] = $"alert-danger";

@@ -13,7 +13,7 @@
 <form asp-controller="TestJob" asp-action="SearchTestJob" method="get">
     <div class="input-group" style="padding-top:20px">
 
-        <input type="text" class="form-control form-control-sm col-5" name="jobNumber" id="JobNum" value="0" placeholder=" Please enter a Job Number">
+        <input type="text" class="form-control form-control-sm col-5" name="jobNumber" id="JobNum" value="@Model.PagingInfo.JobNumb" placeholder=" Please enter a Job Number">
         <div class="input-group-append">
             <div class="btn-group">
                 <button class="btn btn-dark" type="submit" value="Search" data-tooltip="tooltip" data-placement="top" title="Search">

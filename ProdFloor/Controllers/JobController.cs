@@ -856,8 +856,14 @@ namespace ProdFloor.Controllers
                 viewModel.CurrentGenericFeatures = repository.GenericFeaturesList.FirstOrDefault(j => j.JobID == ID);
                 viewModel.CurrentIndicator = repository.Indicators.FirstOrDefault(j => j.JobID == ID);
                 viewModel.CurrentHoistWayData = repository.HoistWayDatas.FirstOrDefault(j => j.JobID == ID);
+                
                 viewModel.SpecialFeatureslist = SfList;
                 string jobNumAux = viewModel.CurrentJob.JobNum;
+
+                viewModel.CurrentJob.JobNumFirstDigits = getJobNumbDivided(viewModel.CurrentJob.JobNum).firstDigits;
+                viewModel.CurrentJob.JobNumLastDigits = getJobNumbDivided(viewModel.CurrentJob.JobNum).lastDigits;
+                viewModel.SpecialFeaturesTable = getSpecialFeaturesEX();
+
                 viewModel.CurrentJob.JobNum = "";
                 viewModel.CurrentJob.Status = "Copied";
                 viewModel.POList = new List<PO> { new PO { JobID = viewModel.CurrentJob.JobID } };
@@ -866,8 +872,7 @@ namespace ProdFloor.Controllers
                 viewModel.CurrentJob.EngID = currentUser.EngID;
                 viewModel.JobTypeName = JobTypeName(jobToCopy.JobTypeID);
 
-                viewModel.CurrentJob.JobNumFirstDigits = getJobNumbDivided(jobToCopy.JobNum).firstDigits;
-                viewModel.CurrentJob.JobNumLastDigits = getJobNumbDivided(jobToCopy.JobNum).lastDigits;
+                
 
                 TempData["message"] = $"You have copied the job #{jobNumAux} succesfully, please change the name, Job number & PO";
                 return View("Edit", viewModel);
@@ -893,6 +898,11 @@ namespace ProdFloor.Controllers
                 viewModel.ElementHydro = repository.ElementHydros.FirstOrDefault(j => j.JobID == ID);
                 viewModel.SpecialFeatureslist = SfList;
                 string jobNumAux = viewModel.CurrentJob.JobNum;
+
+                viewModel.CurrentJob.JobNumFirstDigits = getJobNumbDivided(viewModel.CurrentJob.JobNum).firstDigits;
+                viewModel.CurrentJob.JobNumLastDigits = getJobNumbDivided(viewModel.CurrentJob.JobNum).lastDigits;
+                viewModel.SpecialFeaturesTable = getSpecialFeaturesEX();
+
                 viewModel.CurrentJob.JobNum = "";
                 viewModel.CurrentUserID = currentUser.EngID;
                 viewModel.CurrentJob.CrossAppEngID = 0;
@@ -901,9 +911,6 @@ namespace ProdFloor.Controllers
                 viewModel.CurrentJob.Status = "Copied";
                 viewModel.POList = new List<PO> { new PO { JobID = viewModel.CurrentJob.JobID } };
                 viewModel.CurrentJob.EngID = currentUser.EngID;
-
-                viewModel.CurrentJob.JobNumFirstDigits = getJobNumbDivided(jobToCopy.JobNum).firstDigits;
-                viewModel.CurrentJob.JobNumLastDigits = getJobNumbDivided(jobToCopy.JobNum).lastDigits;
 
                 TempData["message"] = $"You have copied the job #{jobNumAux} succesfully, please change the name, Job number & PO";
                 return View("EditHydro", viewModel);
@@ -929,6 +936,11 @@ namespace ProdFloor.Controllers
                 viewModel.ElementTraction = repository.ElementTractions.FirstOrDefault(j => j.JobID == ID);
                 viewModel.SpecialFeatureslist = SfList;
                 string jobNumAux = viewModel.CurrentJob.JobNum;
+
+                viewModel.CurrentJob.JobNumFirstDigits = getJobNumbDivided(viewModel.CurrentJob.JobNum).firstDigits;
+                viewModel.CurrentJob.JobNumLastDigits = getJobNumbDivided(viewModel.CurrentJob.JobNum).lastDigits;
+                viewModel.SpecialFeaturesTable = getSpecialFeaturesEX();
+
                 viewModel.CurrentJob.JobNum = "";
                 viewModel.JobTypeName = JobTypeName(jobToCopy.JobTypeID);
                 viewModel.CurrentUserID = currentUser.EngID;
@@ -937,8 +949,6 @@ namespace ProdFloor.Controllers
                 viewModel.POList = new List<PO> { new PO { JobID = viewModel.CurrentJob.JobID } };
                 viewModel.CurrentJob.EngID = currentUser.EngID;
 
-                viewModel.CurrentJob.JobNumFirstDigits = getJobNumbDivided(jobToCopy.JobNum).firstDigits;
-                viewModel.CurrentJob.JobNumLastDigits = getJobNumbDivided(jobToCopy.JobNum).lastDigits;
 
                 TempData["message"] = $"You have copied the job #{jobNumAux} succesfully, please change the name, Job number & PO";
                 return View("EditTraction", viewModel);
@@ -4841,6 +4851,14 @@ namespace ProdFloor.Controllers
 
             return jobNum;
         }
+
+        /*
+         NewtestJobView.Job.JobNumFirstDigits = getJobNumbDivided(_jobSearch.JobNum).firstDigits;
+         NewtestJobView.Job.JobNumLastDigits = getJobNumbDivided(_jobSearch.JobNum).lastDigits;
+
+         nextViewModel.Job.JobNum = getJobNumb(nextViewModel.Job.JobNumFirstDigits, nextViewModel.Job.JobNumLastDigits);
+         * 
+         * **/
 
 
     }

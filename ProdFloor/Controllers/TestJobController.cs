@@ -62,15 +62,22 @@ namespace ProdFloor.Controllers
         }
 
 
-        public IActionResult SearchTestJob(string Clean, string jobNumber, string jobnumb = "0", int MyJobsPage = 1, int PendingToCrossJobPage = 1, int OnCrossJobPage = 1)
+        public IActionResult SearchTestJob(string Clean, string jobNumber, string jobnumb = "", int MyJobsPage = 1, int PendingToCrossJobPage = 1, int OnCrossJobPage = 1)
         {
             bool admin = GetCurrentUserRole("Admin").Result;
-            if (jobNumber !="") jobnumb = jobNumber;
+            if (!string.IsNullOrEmpty(jobnumb)) jobNumber = jobnumb;
+            if (!string.IsNullOrEmpty(jobNumber)) jobnumb = jobNumber;
+
+            if (!string.IsNullOrEmpty(Clean))
+            {
+                RedirectToAction("SearchTestJob", "TestJob");
+                jobnumb = "";
+            }
 
             List<TestJob> testJobsInCompleted = new List<TestJob>();
             List<TestJob> testJobsCompleted = new List<TestJob>();
             List<TestJob> testJobsList = new List<TestJob>();
-            List<Job> jobList = jobRepo.Jobs.Where(m => m.JobNum == jobNumber).ToList();
+            List<Job> jobList = jobRepo.Jobs.Where(m => m.JobNum.Contains(jobnumb)).ToList();
 
 
             foreach (Job job in jobList)
@@ -91,16 +98,16 @@ namespace ProdFloor.Controllers
             if (!admin)
             {
 
-                if (testJobsInCompleted == null || jobnumb == "0") testJobsInCompleted = testingRepo.TestJobs.Where(m => m.Status != "Completed" && m.Status != "Deleted").ToList();
-                if (testJobsCompleted == null || jobnumb == "0") testJobsCompleted = testingRepo.TestJobs.Where(m => m.Status == "Completed").ToList();
+                if (testJobsInCompleted == null || string.IsNullOrEmpty(jobnumb)) testJobsInCompleted = testingRepo.TestJobs.Where(m => m.Status != "Completed" && m.Status != "Deleted").ToList();
+                if (testJobsCompleted == null || string.IsNullOrEmpty(jobnumb)) testJobsCompleted = testingRepo.TestJobs.Where(m => m.Status == "Completed").ToList();
             }
             else
             {
-                if (testJobsInCompleted == null || jobnumb == "0") testJobsInCompleted = testingRepo.TestJobs.Where(m => m.Status != "Completed" && m.Status != "Deleted").ToList();
-                if (testJobsCompleted == null || jobnumb == "0") testJobsCompleted = testingRepo.TestJobs.Where(m => m.Status == "Completed" || m.Status == "Deleted").ToList();
+                if (testJobsInCompleted == null || string.IsNullOrEmpty(jobnumb)) testJobsInCompleted = testingRepo.TestJobs.Where(m => m.Status != "Completed" && m.Status != "Deleted").ToList();
+                if (testJobsCompleted == null || string.IsNullOrEmpty(jobnumb)) testJobsCompleted = testingRepo.TestJobs.Where(m => m.Status == "Completed" || m.Status == "Deleted").ToList();
             }
 
-            if (Clean == "true") RedirectToAction("SearchTestJob", "TestJob");
+           
 
 
             TestJobViewModel testJobView = new TestJobViewModel
@@ -144,7 +151,7 @@ namespace ProdFloor.Controllers
                 },
 
             };
-            if (jobNumber == "") return View(testJobView);
+            if (string.IsNullOrEmpty(jobNumber)) return View(testJobView);
             if (testJobsList.Count > 0 && testJobsList[0] != null) return View(testJobView);
             TempData["message"] = $"Does not exist any job with the JobNum #{jobNumber}, please try again.";
             TempData["alert"] = $"alert-danger";
@@ -204,6 +211,8 @@ namespace ProdFloor.Controllers
                             NewtestJobView.TestFeature = new TestFeature();
                             NewtestJobView.TestFeature.TestJobID = testJob.TestJobID;
                             NewtestJobView.CurrentTab = "NewFeatures";
+                            NewtestJobView.Job.JobNumFirstDigits = getJobNumbDivided(_jobSearch.JobNum).firstDigits;
+                            NewtestJobView.Job.JobNumLastDigits = getJobNumbDivided(_jobSearch.JobNum).lastDigits;
 
                             int jobtypeID = jobRepo.Jobs.First(m => m.JobID == _jobSearch.JobID).JobTypeID;
                             switch (JobTypeName(jobtypeID))
@@ -306,7 +315,7 @@ namespace ProdFloor.Controllers
         [HttpPost]
         public IActionResult NextForm(TestJobViewModel nextViewModel)
         {
-
+            nextViewModel.Job.JobNum = getJobNumb(nextViewModel.Job.JobNumFirstDigits, nextViewModel.Job.JobNumLastDigits);
             if (nextViewModel.TestFeature != null)
             {
                 TestJob testJob = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == nextViewModel.TestFeature.TestJobID);
@@ -456,6 +465,9 @@ namespace ProdFloor.Controllers
                     nextViewModel.isNotDummy = CurrentJob.Contractor == "Fake" ? false : true;
                     nextViewModel.CurrentTab = "NewFeatures";
 
+                    nextViewModel.Job.JobNumFirstDigits = getJobNumbDivided(nextViewModel.Job.JobNum).firstDigits;
+                    nextViewModel.Job.JobNumLastDigits = getJobNumbDivided(nextViewModel.Job.JobNum).lastDigits;
+
                     int jobtypeID = jobRepo.Jobs.First(m => m.JobID == CurrentJob.JobID).JobTypeID;
                     switch (JobTypeName(jobtypeID))
                     {
@@ -554,6 +566,9 @@ namespace ProdFloor.Controllers
                     nextViewModel.isNotDummy = CurrentJob.Contractor == "Fake" ? false : true;
                     nextViewModel.CurrentTab = "DummyJob";
 
+                    nextViewModel.Job.JobNumFirstDigits = getJobNumbDivided(nextViewModel.Job.JobNum).firstDigits;
+                    nextViewModel.Job.JobNumLastDigits = getJobNumbDivided(nextViewModel.Job.JobNum).lastDigits;
+
                     if (CurrentJob.CityID == 10) nextViewModel.Canada = true;
                     if (CurrentJob.CityID == 11) nextViewModel.Ontario = true;
 
@@ -635,6 +650,7 @@ namespace ProdFloor.Controllers
         [HttpPost]
         public ViewResult EditTestJob(TestJobViewModel viewModel)
         {
+            viewModel.Job.JobNum = getJobNumb(viewModel.Job.JobNumFirstDigits, viewModel.Job.JobNumLastDigits);
             testingRepo.SaveTestFeature(viewModel.TestFeature);
             UpdateTestFeatures(viewModel);
             if (viewModel.isNotDummy == false) UpdateDummyJob(viewModel);
@@ -999,6 +1015,8 @@ namespace ProdFloor.Controllers
                 TestJob = currentTestJob,
                 Job = currentJob
             };
+            testJobView.Job.JobNumFirstDigits = viewModel.Job.JobNumFirstDigits;
+            testJobView.Job.JobNumLastDigits = viewModel.Job.JobNumLastDigits;
 
             return testJobView;
         }
@@ -2435,7 +2453,6 @@ namespace ProdFloor.Controllers
             if (searchViewModel.JobExtension == null) searchViewModel.JobExtension = new JobExtension();
             if (searchViewModel.TestJobsSearchList == null) searchViewModel.TestJobsSearchList = new List<TestJob>();
             if (searchViewModel.JobsSearchList == null) searchViewModel.JobsSearchList = new List<Job>();
-            searchViewModel.JobNum = getJobNumb(searchViewModel.JobNumFirstDigits, searchViewModel.JobNumLastDigits);
 
             IQueryable<TestJob> testJobSearchList = testingRepo.TestJobs.Include(m => m._Stops).Include(m => m._TestFeature);
             IQueryable<Stop> stops = testingRepo.Stops.Where(m => testJobSearchList.Any(s => s.TestJobID == m.TestJobID));
@@ -2478,7 +2495,7 @@ namespace ProdFloor.Controllers
             #region JobFromTestJobInfo
             if (!string.IsNullOrEmpty(searchViewModel.JobNum))
             {
-                jobSearchRepo = jobSearchRepo.Where(s => s.JobNum == searchViewModel.JobNum); anyFeatureFromJob = true;
+                jobSearchRepo = jobSearchRepo.Where(s => s.JobNum.Contains(searchViewModel.JobNum)); anyFeatureFromJob = true;
             }
 
             if (!string.IsNullOrEmpty(searchViewModel.JobName))
@@ -2673,5 +2690,16 @@ namespace ProdFloor.Controllers
 
             return JobNumb;
         }
+
+        public JobNumber getJobNumbDivided(string JobNumber)
+        {
+            JobNumber jobNum = new JobNumber();
+
+            jobNum.firstDigits = JobNumber.Remove(5, 5);
+            jobNum.lastDigits = int.Parse(JobNumber.Remove(0, 5));
+
+            return jobNum;
+        }
+
     }
 }
