@@ -2,6 +2,18 @@
   "version": 3,
   "targets": {
     ".NETCoreApp,Version=v2.1": {
+      "ChartJSCore/1.5.7": {
+        "type": "package",
+        "dependencies": {
+          "Newtonsoft.Json": "10.0.3"
+        },
+        "compile": {
+          "lib/netstandard2.0/ChartJSCore.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/ChartJSCore.dll": {}
+        }
+      },
       "DotNetCore.NPOI/1.2.2": {
         "type": "package",
         "dependencies": {
@@ -4766,6 +4778,20 @@
     }
   },
   "libraries": {
+    "ChartJSCore/1.5.7": {
+      "sha512": "qCjvKZ7SmsF6AFaLpi3227cJt5TPOsc4R4btRlFcgowfz3bpT0JOA5WobaEgkXjiHlTrqW6sQd5/FbKqzR219w==",
+      "type": "package",
+      "path": "chartjscore/1.5.7",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "chartjscore.1.5.7.nupkg.sha512",
+        "chartjscore.nuspec",
+        "lib/net45/ChartJSCore.dll",
+        "lib/net46/ChartJSCore.dll",
+        "lib/netstandard2.0/ChartJSCore.dll"
+      ]
+    },
     "DotNetCore.NPOI/1.2.2": {
       "sha512": "DACoUvopt/8z6PhWQdMoXogVdVqI8k6Z++oEWUO5PToUwcK73hsTDOeaqh2hgHHxdRsRtzImqG7Cbw1gPPOAjA==",
       "type": "package",
@@ -12855,6 +12881,7 @@
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v2.1": [
+      "ChartJSCore >= 1.5.7",
       "DotNetCore.NPOI >= 1.2.2",
       "HtmlAgilityPack >= 1.9.2",
       "Microsoft.AspNetCore.App >= 2.1.1",
@@ -12907,6 +12934,10 @@
     "frameworks": {
       "netcoreapp2.1": {
         "dependencies": {
+          "ChartJSCore": {
+            "target": "Package",
+            "version": "[1.5.7, )"
+          },
           "DotNetCore.NPOI": {
             "target": "Package",
             "version": "[1.2.2, )"

@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="ChartJSCore" Version="1.5.7" />
     <PackageReference Include="DotNetCore.NPOI" Version="1.2.2" />
     <PackageReference Include="HtmlAgilityPack" Version="1.9.2" />
     <PackageReference Include="Microsoft.AspNetCore.App" />

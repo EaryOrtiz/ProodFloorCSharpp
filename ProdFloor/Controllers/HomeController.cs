@@ -10,6 +10,9 @@ using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 using ProdFloor.Models.ViewModels.Home;
 using System.Collections.Generic;
+using ChartJSCore.Models;
+using System;
+using ChartJSCore.Helpers;
 
 namespace ProdFloor.Controllers
 {
@@ -768,6 +771,55 @@ namespace ProdFloor.Controllers
             return RedirectToAction(nameof(EngineerAdminDashBoard));
 
         }
+
+        public IActionResult EngineerChartsDashBoard()
+        {
+            #region JobTypePieChart
+
+            int M2000Count = repository.Jobs.Where(j => j.JobTypeID == 2 && j.EngID > 0 && j.EngID < 100).Count();
+            int ElementHydroListCount = repository.Jobs.Where(j => j.JobTypeID == 1 && j.EngID > 0 && j.EngID < 100 ).Count();
+            int ElementTractionCount = repository.Jobs.Where(j => j.JobTypeID == 5 && j.EngID > 0 && j.EngID < 100).Count();
+
+            List<double?> DataPieChart = new List<double?> { M2000Count , ElementHydroListCount , ElementTractionCount };
+            List<string> LabelsPiechart = new List<string> { "M2000", "Element Hydro", "Element Traction" };
+
+            var JobTypePieChart = new Chart { Type = Enums.ChartType.Pie };
+
+            var data = new Data { Labels = LabelsPiechart };
+
+            var dataset = new PieDataset
+            {
+                Label = "My dataset",
+                BackgroundColor = new List<ChartColor>
+                {
+                    ChartColor.FromHexString("#FF6384"),
+                    ChartColor.FromHexString("#36A2EB"),
+                    ChartColor.FromHexString("#FFCE56")
+                },
+                HoverBackgroundColor = new List<ChartColor>
+                {
+                    ChartColor.FromHexString("#FF6384"),
+                    ChartColor.FromHexString("#36A2EB"),
+                    ChartColor.FromHexString("#FFCE56")
+                },
+                Data = DataPieChart
+            };
+
+            data.Datasets = new List<Dataset> { dataset };
+
+            JobTypePieChart.Data = data;
+            ViewData["JobTypePieChart"] = JobTypePieChart;
+
+
+            #endregion
+
+
+
+
+            return View("AdminDashBoard");
+        }
+
+
 
         public string JobTypeName(int ID)
         {
