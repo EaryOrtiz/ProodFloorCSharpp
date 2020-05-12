@@ -4,15 +4,46 @@
     ViewBag.Brand = "ProdFloor";
     Layout = "_AdminLayoutWO";
 }
+    <script src="~/lib/Chart.js/dist/Chart.js"></script>
 
-<div><canvas id="JobTypePieChart"></canvas></div>
-@{ChartJSCore.Models.Chart JobTypePieChart = (ChartJSCore.Models.Chart)ViewData["JobTypePieChart"]; }
-<script src="~/lib/Chart.js/dist/Chart.js"></script>
-<script>
-    @Html.Raw(JobTypePieChart.CreateChartCode("JobTypePieChart"));
+    <div>
+        <div class="row" style="padding-bottom:40px;">
+            <div class="col-6">
+                <h4 class="text-center">Jobs</h4>
+                <canvas id="JobTypePieChart"></canvas>
+                @{ChartJSCore.Models.Chart JobTypePieChart = (ChartJSCore.Models.Chart)ViewData["JobTypePieChart"]; }
+                <script>@Html.Raw(JobTypePieChart.CreateChartCode("JobTypePieChart"));</script>
+            </div>
+            
 
+            <div class="col-6">
+                <h4 class="text-center">M2000</h4>
+                <canvas id="JobTypePieChartM2000"></canvas>
+                @{ChartJSCore.Models.Chart JobTypePieChartM2000 = (ChartJSCore.Models.Chart)ViewData["JobTypePieChartM2000"]; }
+                <script>@Html.Raw(JobTypePieChartM2000.CreateChartCode("JobTypePieChartM2000"));</script>
+            </div>
+           
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <h4 class="text-center">Element Hydro</h4>
+                <canvas id="JobTypePieChartHydro"></canvas>
+                @{ChartJSCore.Models.Chart JobTypePieChartHydro = (ChartJSCore.Models.Chart)ViewData["JobTypePieChartHydro"]; }
+                <script>@Html.Raw(JobTypePieChartHydro.CreateChartCode("JobTypePieChartHydro"));</script>
+            </div>
+            
 
-$(document).ready(function () {
+            <div class="col-6">
+                <h4 class="text-center">Element Traction</h4>
+                <canvas id="JobTypePieChartTraction"></canvas>
+                @{ChartJSCore.Models.Chart JobTypePieChartTraction = (ChartJSCore.Models.Chart)ViewData["JobTypePieChartTraction"]; }
+                <script>@Html.Raw(JobTypePieChartTraction.CreateChartCode("JobTypePieChartTraction"));</script>
+            </div>
+            
+        </div>
+    </div>
+@***/
+    $(document).ready(function () {
                     var ctx = document.getElementById("JobTypePieChart").getContext("2d");
                     var myPieChart = new Chart(ctx,{
                         type: 'pie',
@@ -36,74 +67,73 @@ $(document).ready(function () {
             );
 });
 
-</script>
-
-<!-- Modal JobTypePieChartDetails M2000 -->
-<div class="modal fade" id="JobTypePieChartDetailsM2000" tabindex="-1" role="dialog" aria-labelledby="JobTypePieChartDetailsCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="JobTypePieChartDetailsCenterTitle">M2000</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                Do you wanna see full details?
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
-                <button type="submit" value="CrossApproved" name="buttonAction" class="btn btn-primary btn-sm">
-                    Go!
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Modal JobTypePieChartDetails Element Hydro -->
-<div class="modal fade" id="JobTypePieChartDetailsHydro" tabindex="-1" role="dialog" aria-labelledby="JobTypePieChartDetailsCenterTitleHydro" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="JobTypePieChartDetailsCenterTitleHydro">Element Hydro</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                Do you wanna see full details?
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
-                <button type="submit" value="CrossApproved" name="buttonAction" class="btn btn-primary btn-sm">
-                    Go!
-                </button>
+    <!-- Modal JobTypePieChartDetails M2000 -->
+    <div class="modal fade" id="JobTypePieChartDetailsM2000" tabindex="-1" role="dialog" aria-labelledby="JobTypePieChartDetailsCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="JobTypePieChartDetailsCenterTitle">M2000</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Do you wanna see full details?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
+                    <button type="submit" value="CrossApproved" name="buttonAction" class="btn btn-primary btn-sm">
+                        Go!
+                    </button>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<!-- Modal JobTypePieChartDetails Element Traction -->
-<div class="modal fade" id="JobTypePieChartDetailsTraction" tabindex="-1" role="dialog" aria-labelledby="JobTypePieChartDetailsCenterTitleTraction" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="JobTypePieChartDetailsCenterTitleTraction">Element Traction</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                Do you wanna see full details?
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
-                <button type="submit" value="CrossApproved" name="buttonAction" class="btn btn-primary btn-sm">
-                    Go!
-                </button>
+    <!-- Modal JobTypePieChartDetails Element Hydro -->
+    <div class="modal fade" id="JobTypePieChartDetailsHydro" tabindex="-1" role="dialog" aria-labelledby="JobTypePieChartDetailsCenterTitleHydro" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="JobTypePieChartDetailsCenterTitleHydro">Element Hydro</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Do you wanna see full details?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
+                    <button type="submit" value="CrossApproved" name="buttonAction" class="btn btn-primary btn-sm">
+                        Go!
+                    </button>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
+    <!-- Modal JobTypePieChartDetails Element Traction -->
+    <div class="modal fade" id="JobTypePieChartDetailsTraction" tabindex="-1" role="dialog" aria-labelledby="JobTypePieChartDetailsCenterTitleTraction" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="JobTypePieChartDetailsCenterTitleTraction">Element Traction</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Do you wanna see full details?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
+                    <button type="submit" value="CrossApproved" name="buttonAction" class="btn btn-primary btn-sm">
+                        Go!
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+\**@
