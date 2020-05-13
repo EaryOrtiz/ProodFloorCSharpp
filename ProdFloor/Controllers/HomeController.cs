@@ -772,7 +772,7 @@ namespace ProdFloor.Controllers
 
         }
 
-        public IActionResult EngineerChartsDashBoard()
+        public IActionResult JobChartsDashBoard()
         {
             #region JobTypePieChartByJobType
 
@@ -938,6 +938,60 @@ namespace ProdFloor.Controllers
 
 
             return View("AdminDashBoard");
+        }
+
+        public IActionResult EngineerChartsDashBoard()
+        {
+            List<AppUser> users = userManager.Users.Where(m => m.EngID >= 1 && m.EngID <= 99 && !m.UserName.Contains("Tester") ).ToList();
+            DashboardIndexViewModel dashboard = new DashboardIndexViewModel()
+            {
+                users = users
+            };
+
+            foreach (AppUser user in users)
+            {
+                string username = user.FullName.Replace(" ","");
+                int WorkinOnItCountM2000 = repository.Jobs.Where(j => j.JobTypeID == 2 && j.EngID == user.EngID && j.Status == "Working on it").Count();
+                int CrossPendingListCountM2000 = repository.Jobs.Where(j => j.JobTypeID == 2 && j.EngID == user.EngID && j.Status == "Cross Approval Pending").Count();
+                int OnCrossCountM2000 = repository.Jobs.Where(j => j.JobTypeID == 2 && j.EngID == user.EngID && j.Status == "On Cross Approval").Count();
+                int CrossCompleteCountM2000 = repository.Jobs.Where(j => j.JobTypeID == 2 && j.EngID == user.EngID && j.Status == "Cross Approval Complete").Count();
+
+                List<double?> DataPieChartM2000 = new List<double?> { WorkinOnItCountM2000, CrossPendingListCountM2000, OnCrossCountM2000, CrossCompleteCountM2000 };
+                List<string> LabelsPiechartM2000 = new List<string> { "Working on it", "Cross Approval Pending", "On Cross Approval", "Cross Approval Complete" };
+
+                var JobTypePieChartM2000 = new Chart { Type = Enums.ChartType.Pie };
+
+                var dataM2000 = new Data { Labels = LabelsPiechartM2000 };
+
+                var datasetM2000 = new PieDataset
+                {
+                    Label = "My dataset",
+                    BackgroundColor = new List<ChartColor>
+                {
+                    ChartColor.FromHexString("#FF6384"),
+                    ChartColor.FromHexString("#36A2EB"),
+                    ChartColor.FromHexString("#FFCE56"),
+                    ChartColor.FromHexString("#7cf233")
+                },
+                    HoverBackgroundColor = new List<ChartColor>
+                {
+                    ChartColor.FromHexString("#FF6384"),
+                    ChartColor.FromHexString("#36A2EB"),
+                    ChartColor.FromHexString("#FFCE56"),
+                    ChartColor.FromHexString("#7cf233")
+                },
+                    Data = DataPieChartM2000
+                };
+
+                dataM2000.Datasets = new List<Dataset> { datasetM2000 };
+
+                JobTypePieChartM2000.Data = dataM2000;
+                ViewData["M2000byEnginnerPieChart"+username] = JobTypePieChartM2000;
+            }
+
+            
+
+            return View("EngineerCharts", dashboard);
         }
 
 
