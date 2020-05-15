@@ -936,6 +936,50 @@ namespace ProdFloor.Controllers
 
             #endregion
 
+            #region PriorityPieChartByJobType
+
+            List<Job> JobsM2000 = repository.Jobs.Where(j => j.JobTypeID == 2 && j.EngID > 0 && j.EngID < 100 
+                                                   && (j.Status == "Working on it" || j.Status == "Cross Approval Pending" 
+                                                   || j.Status == "On Cross Approval" || j.Status == "Cross Approval Complete")).ToList();
+
+            List<JobAdditional> MyJobAdditionalList = repository.JobAdditionals.Where(m => JobsM2000.Any(n => n.JobID == m.JobID)).ToList();
+
+            int NormalPriority = MyJobAdditionalList.Where(m => m.Priority == 0).Count();
+            int HighPriority = MyJobAdditionalList.Where(m => m.Priority == 1).Count();
+            int ShortLeadPriority = MyJobAdditionalList.Where(m => m.Priority == 2).Count();
+
+
+            List<double?> DataPieChartPriority = new List<double?> { NormalPriority, HighPriority, ShortLeadPriority };
+            List<string> PriorityLabelsPiechart = new List<string> { "Normal", "High", "Short Lead" };
+
+            var PieChartPriority = new Chart { Type = Enums.ChartType.Pie };
+
+            var dataPriority = new Data { Labels = PriorityLabelsPiechart };
+
+            var datasetPriority = new PieDataset
+            {
+                Label = "My dataset",
+                BackgroundColor = new List<ChartColor>
+                {
+                    ChartColor.FromHexString("#6ADE4E"),
+                    ChartColor.FromHexString("#FCF927"),
+                    ChartColor.FromHexString("#F54242")
+                },
+                HoverBackgroundColor = new List<ChartColor>
+                {
+                    ChartColor.FromHexString("#6ADE4E"),
+                    ChartColor.FromHexString("#FCF927"),
+                    ChartColor.FromHexString("#F54242")
+                },
+                Data = DataPieChartPriority
+            };
+
+            dataPriority.Datasets = new List<Dataset> { datasetPriority };
+
+            PieChartPriority.Data = dataPriority;
+            ViewData["PieChartPriority"] = PieChartPriority;
+            #endregion
+
 
             return View("AdminDashBoard");
         }
@@ -951,6 +995,8 @@ namespace ProdFloor.Controllers
             foreach (AppUser user in users)
             {
                 string username = user.FullName.Replace(" ","");
+
+                //M2000NyStatus
                 int WorkinOnItCountM2000 = repository.Jobs.Where(j => j.JobTypeID == 2 && j.EngID == user.EngID && j.Status == "Working on it").Count();
                 int CrossPendingListCountM2000 = repository.Jobs.Where(j => j.JobTypeID == 2 && j.EngID == user.EngID && j.Status == "Cross Approval Pending").Count();
                 int OnCrossCountM2000 = repository.Jobs.Where(j => j.JobTypeID == 2 && j.EngID == user.EngID && j.Status == "On Cross Approval").Count();
@@ -987,9 +1033,103 @@ namespace ProdFloor.Controllers
 
                 JobTypePieChartM2000.Data = dataM2000;
                 ViewData["M2000byEnginnerPieChart"+username] = JobTypePieChartM2000;
+
+
+
+                //PriorityBy User
+                List<Job> JobsM2000 = repository.Jobs.Where(j => j.JobTypeID == 2 && j.EngID == user.EngID
+                                                   && (j.Status == "Working on it" || j.Status == "Cross Approval Pending"
+                                                   || j.Status == "On Cross Approval" || j.Status == "Cross Approval Complete")).ToList();
+
+                List<JobAdditional> MyJobAdditionalList = repository.JobAdditionals.Where(m => JobsM2000.Any(n => n.JobID == m.JobID)).ToList();
+
+                int NormalPriority = MyJobAdditionalList.Where(m => m.Priority == 0).Count();
+                int HighPriority = MyJobAdditionalList.Where(m => m.Priority == 1).Count();
+                int ShortLeadPriority = MyJobAdditionalList.Where(m => m.Priority == 2).Count();
+
+
+                List<double?> DataPieChartPriority = new List<double?> { NormalPriority, HighPriority, ShortLeadPriority };
+                List<string> PriorityLabelsPiechart = new List<string> { "Normal", "High", "Short Lead" };
+
+                var PieChartPriority = new Chart { Type = Enums.ChartType.Pie };
+
+                var dataPriority = new Data { Labels = PriorityLabelsPiechart };
+
+                var datasetPriority = new PieDataset
+                {
+                    Label = "My dataset",
+                    BackgroundColor = new List<ChartColor>
+                {
+                    ChartColor.FromHexString("#6ADE4E"),
+                    ChartColor.FromHexString("#FCF927"),
+                    ChartColor.FromHexString("#F54242")
+                },
+                    HoverBackgroundColor = new List<ChartColor>
+                {
+                    ChartColor.FromHexString("#6ADE4E"),
+                    ChartColor.FromHexString("#FCF927"),
+                    ChartColor.FromHexString("#F54242")
+                },
+                    Data = DataPieChartPriority
+                };
+
+                dataPriority.Datasets = new List<Dataset> { datasetPriority };
+
+                PieChartPriority.Data = dataPriority;
+                ViewData["PieChartPriority"+username] = PieChartPriority;
+
+                //Morning Report
+                List<Job> JobsM2000ByEnginner = repository.Jobs.Where(j => j.JobTypeID == 2 && j.EngID == user.EngID
+                                                   && (j.Status == "Working on it" || j.Status == "Cross Approval Pending"
+                                                   || j.Status == "On Cross Approval" || j.Status == "Cross Approval Complete")).ToList();
+
+                List<JobAdditional> MyJobAdditionalListByEnginner = repository.JobAdditionals.Where(m => JobsM2000ByEnginner.Any(n => n.JobID == m.JobID)).ToList();
+
+                int NotReviewedMorning = MyJobAdditionalList.Where(m => m.Status == "Not Reviewed").Count();
+                int WorkingOnItMorning = MyJobAdditionalList.Where(m => m.Status == "Working on it").Count();
+                int MissingDatalMorning = MyJobAdditionalList.Where(m => m.Status == "Missing Data").Count();
+                int OnSalesMorning = MyJobAdditionalList.Where(m => m.Status == "On Sales").Count();
+                int CrossApprovalMorning = MyJobAdditionalList.Where(m => m.Status == "Cross Approval").Count();
+                int ReleasedMorning = MyJobAdditionalList.Where(m => m.Status == "Released").Count();
+
+                List<double?> DataPieChartMorning = new List<double?> { NotReviewedMorning, WorkingOnItMorning, MissingDatalMorning, OnSalesMorning, CrossApprovalMorning, ReleasedMorning };
+                List<string> MorningLabelsPiechart = new List<string> { "Not Reviewed", "Working on it", "Missing Data", "On Sales", "Cross Approval", "Released" };
+
+                var PieChartMorning = new Chart { Type = Enums.ChartType.Pie };
+
+                var dataMorning = new Data { Labels = MorningLabelsPiechart };
+
+                var datasetMorning = new PieDataset
+                {
+                    Label = "My dataset",
+                    BackgroundColor = new List<ChartColor>
+                {
+                    ChartColor.FromHexString("#6ADE4E"),
+                    ChartColor.FromHexString("#FCF927"),
+                    ChartColor.FromHexString("#D441F8"),
+                    ChartColor.FromHexString("#FF6384"),
+                    ChartColor.FromHexString("#36A2EB"),
+                    ChartColor.FromHexString("#5C50D1"),
+                },
+                    HoverBackgroundColor = new List<ChartColor>
+                {
+                    ChartColor.FromHexString("#6ADE4E"),
+                    ChartColor.FromHexString("#FCF927"),
+                    ChartColor.FromHexString("#D441F8"),
+                    ChartColor.FromHexString("#FF6384"),
+                    ChartColor.FromHexString("#36A2EB"),
+                    ChartColor.FromHexString("#5C50D1"),
+                },
+                    Data = DataPieChartMorning
+                };
+
+                dataMorning.Datasets = new List<Dataset> { datasetMorning };
+
+                PieChartMorning.Data = dataMorning;
+                ViewData["PieChartMorning" + username] = PieChartMorning;
             }
 
-            
+
 
             return View("EngineerCharts", dashboard);
         }

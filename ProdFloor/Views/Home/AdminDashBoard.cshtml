@@ -7,39 +7,62 @@
     <script src="~/lib/Chart.js/dist/Chart.js"></script>
 
     <div>
-        <div class="row" style="padding-bottom:40px;">
-            <div class="col-6">
-                <h4 class="text-center">Jobs</h4>
-                <canvas id="JobTypePieChart"></canvas>
-                @{ChartJSCore.Models.Chart JobTypePieChart = (ChartJSCore.Models.Chart)ViewData["JobTypePieChart"]; }
-                <script>@Html.Raw(JobTypePieChart.CreateChartCode("JobTypePieChart"));</script>
+        <div class="card">
+            <div class="card-header bg-dark text-center">
+                <div class="btn-group">
+                    <!--Header Info-->
+                    <button type="button" id="headingJobInfo" class="btn btn-dark" style="border-color:transparent" data-toggle="collapse" data-target="#collapseJobInfo" aria-expanded="true" aria-controls="collapseJobInfo">
+                        <h6 class="mb-0 text-left">General Information</h6>
+                    </button>
+                </div>
             </div>
-            
+            <div class="row " style="padding-bottom:15px;">
+                <div class="col-6 border-right">
+                    <div class="col">
+                            <h4 class="text-center">Jobs</h4>
+                            <canvas id="JobTypePieChart"></canvas>
+                            @{ChartJSCore.Models.Chart JobTypePieChart = (ChartJSCore.Models.Chart)ViewData["JobTypePieChart"]; }
+                            <script>@Html.Raw(JobTypePieChart.CreateChartCode("JobTypePieChart"));</script>
 
-            <div class="col-6">
-                <h4 class="text-center">M2000</h4>
-                <canvas id="JobTypePieChartM2000"></canvas>
-                @{ChartJSCore.Models.Chart JobTypePieChartM2000 = (ChartJSCore.Models.Chart)ViewData["JobTypePieChartM2000"]; }
-                <script>@Html.Raw(JobTypePieChartM2000.CreateChartCode("JobTypePieChartM2000"));</script>
-            </div>
-           
-        </div>
-        <div class="row">
-            <div class="col-6">
-                <h4 class="text-center">Element Hydro</h4>
-                <canvas id="JobTypePieChartHydro"></canvas>
-                @{ChartJSCore.Models.Chart JobTypePieChartHydro = (ChartJSCore.Models.Chart)ViewData["JobTypePieChartHydro"]; }
-                <script>@Html.Raw(JobTypePieChartHydro.CreateChartCode("JobTypePieChartHydro"));</script>
-            </div>
-            
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="row border-bottom" style="padding-bottom:40px;">
+                        <div class="col-6">
+                            <h4 class="text-center">M2000</h4>
+                            <canvas id="JobTypePieChartM2000"></canvas>
+                            @{ChartJSCore.Models.Chart JobTypePieChartM2000 = (ChartJSCore.Models.Chart)ViewData["JobTypePieChartM2000"]; }
+                            <script>@Html.Raw(JobTypePieChartM2000.CreateChartCode("JobTypePieChartM2000"));</script>
+                        </div>
 
-            <div class="col-6">
-                <h4 class="text-center">Element Traction</h4>
-                <canvas id="JobTypePieChartTraction"></canvas>
-                @{ChartJSCore.Models.Chart JobTypePieChartTraction = (ChartJSCore.Models.Chart)ViewData["JobTypePieChartTraction"]; }
-                <script>@Html.Raw(JobTypePieChartTraction.CreateChartCode("JobTypePieChartTraction"));</script>
+                        <div class="col-6">
+                            <h4 class="text-center">Priority</h4>
+                            <canvas id="PieChartPriority"></canvas>
+                            @{ChartJSCore.Models.Chart PieChartPriority = (ChartJSCore.Models.Chart)ViewData["PieChartPriority"]; }
+                            <script>@Html.Raw(PieChartPriority.CreateChartCode("PieChartPriority"));</script>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-6 border-right">
+                            <h4 class="text-center">Element Hydro</h4>
+                            <canvas id="JobTypePieChartHydro"></canvas>
+                            @{ChartJSCore.Models.Chart JobTypePieChartHydro = (ChartJSCore.Models.Chart)ViewData["JobTypePieChartHydro"]; }
+                            <script>@Html.Raw(JobTypePieChartHydro.CreateChartCode("JobTypePieChartHydro"));</script>
+                        </div>
+
+
+                        <div class="col-6">
+                            <h4 class="text-center">Element Traction</h4>
+                            <canvas id="JobTypePieChartTraction"></canvas>
+                            @{ChartJSCore.Models.Chart JobTypePieChartTraction = (ChartJSCore.Models.Chart)ViewData["JobTypePieChartTraction"]; }
+                            <script>@Html.Raw(JobTypePieChartTraction.CreateChartCode("JobTypePieChartTraction"));</script>
+                        </div>
+
+                    </div>
+                </div>
             </div>
-            
+
         </div>
     </div>
 @***/

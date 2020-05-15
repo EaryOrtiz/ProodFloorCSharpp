@@ -6,21 +6,54 @@
 }
     <script src="~/lib/Chart.js/dist/Chart.js"></script>
 
-    <div class="row">
         @foreach (AppUser user in Model.users)
         {
             string username = user.FullName.Replace(" ", "");
-            <div class="col-6">
-            @{
-                <h4 class="text-center">M2000 by @user.FullName</h4>
-                <canvas id="@("M2000byEnginnerPieChart"+username)" style="max-width:800px;max-height:400px"></canvas>
-                ChartJSCore.Models.Chart JobTypePieChart = (ChartJSCore.Models.Chart)ViewData["M2000byEnginnerPieChart" + username];
-                <script>@Html.Raw(JobTypePieChart.CreateChartCode("M2000byEnginnerPieChart"+username));</script>
-            }
-        </div>
-        }
+            <div class="card">
+                <div class="card-header bg-dark text-center">
+                    <div class="btn-group">
+                        <!--Header Info-->
+                        <button type="button" id="headingJobInfo" class="btn btn-dark" style="border-color:transparent" data-toggle="collapse" data-target="#collapseJobInfo" aria-expanded="true" aria-controls="collapseJobInfo">
+                            <h6 class="mb-0 text-left">@user.FullName Stats</h6>
+                        </button>
+                    </div>
+                </div>
+                <div class="row " style="padding-bottom:15px;">
+                    <div class="col-4 border-right">
+                        <div class="col">
+                                @{
+                                    <h4 class="text-center">M2000</h4>
+                                    <canvas id="@("M2000byEnginnerPieChart"+username)" style="max-width:800px;max-height:400px"></canvas>
+                                    ChartJSCore.Models.Chart JobTypePieChart = (ChartJSCore.Models.Chart)ViewData["M2000byEnginnerPieChart" + username];
+                                    <script>@Html.Raw(JobTypePieChart.CreateChartCode("M2000byEnginnerPieChart"+username));</script>
+                                }
+                        </div>
+                    </div>
+                    <div class="col-4 border-right">
+                        <div class="col">
+                                @{
+                                    <h4 class="text-center">Morning </h4>
+                                    <canvas id="@("PieChartMorning"+username)" style="max-width:800px;max-height:400px"></canvas>
+                                    ChartJSCore.Models.Chart JobTypePieChartMorning = (ChartJSCore.Models.Chart)ViewData["PieChartMorning" + username];
+                                    <script>@Html.Raw(JobTypePieChartMorning.CreateChartCode("PieChartMorning" + username));</script>
+                                }
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="col">
+                                @{
+                                    <h4 class="text-center">Priority </h4>
+                                    <canvas id="@("PieChartPriority"+username)" style="max-width:800px;max-height:400px"></canvas>
+                                    ChartJSCore.Models.Chart JobTypePieChartPriority = (ChartJSCore.Models.Chart)ViewData["PieChartPriority" + username];
+                                    <script>@Html.Raw(JobTypePieChartPriority.CreateChartCode("PieChartPriority" + username));</script>
+                                }
+                        </div>
+                    </div>
+                </div>
 
-    </div>
+            </div>
+            
+        }
 @***/
     $(document).ready(function () {
                     var ctx = document.getElementById("JobTypePieChart").getContext("2d");
