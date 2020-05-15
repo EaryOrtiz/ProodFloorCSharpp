@@ -980,13 +980,8 @@ namespace ProdFloor.Controllers
             ViewData["PieChartPriority"] = PieChartPriority;
             #endregion
 
-
-            return View("AdminDashBoard");
-        }
-
-        public IActionResult EngineerChartsDashBoard()
-        {
-            List<AppUser> users = userManager.Users.Where(m => m.EngID >= 1 && m.EngID <= 99 && !m.UserName.Contains("Tester") ).ToList();
+            #region ChartsByUser
+            List<AppUser> users = userManager.Users.Where(m => m.EngID >= 1 && m.EngID <= 99 && !m.UserName.Contains("Tester")).ToList();
             DashboardIndexViewModel dashboard = new DashboardIndexViewModel()
             {
                 users = users
@@ -994,22 +989,22 @@ namespace ProdFloor.Controllers
 
             foreach (AppUser user in users)
             {
-                string username = user.FullName.Replace(" ","");
+                string username = user.FullName.Replace(" ", "");
 
                 //M2000NyStatus
-                int WorkinOnItCountM2000 = repository.Jobs.Where(j => j.JobTypeID == 2 && j.EngID == user.EngID && j.Status == "Working on it").Count();
-                int CrossPendingListCountM2000 = repository.Jobs.Where(j => j.JobTypeID == 2 && j.EngID == user.EngID && j.Status == "Cross Approval Pending").Count();
-                int OnCrossCountM2000 = repository.Jobs.Where(j => j.JobTypeID == 2 && j.EngID == user.EngID && j.Status == "On Cross Approval").Count();
-                int CrossCompleteCountM2000 = repository.Jobs.Where(j => j.JobTypeID == 2 && j.EngID == user.EngID && j.Status == "Cross Approval Complete").Count();
+                int WorkinOnItCountM2000User = repository.Jobs.Where(j => j.JobTypeID == 2 && j.EngID == user.EngID && j.Status == "Working on it").Count();
+                int CrossPendingListCountM2000User = repository.Jobs.Where(j => j.JobTypeID == 2 && j.EngID == user.EngID && j.Status == "Cross Approval Pending").Count();
+                int OnCrossCountM2000User = repository.Jobs.Where(j => j.JobTypeID == 2 && j.EngID == user.EngID && j.Status == "On Cross Approval").Count();
+                int CrossCompleteCountM2000User = repository.Jobs.Where(j => j.JobTypeID == 2 && j.EngID == user.EngID && j.Status == "Cross Approval Complete").Count();
 
-                List<double?> DataPieChartM2000 = new List<double?> { WorkinOnItCountM2000, CrossPendingListCountM2000, OnCrossCountM2000, CrossCompleteCountM2000 };
-                List<string> LabelsPiechartM2000 = new List<string> { "Working on it", "Cross Approval Pending", "On Cross Approval", "Cross Approval Complete" };
+                List<double?> DataPieChartM2000User = new List<double?> { WorkinOnItCountM2000User, CrossPendingListCountM2000User, OnCrossCountM2000User, CrossCompleteCountM2000User };
+                List<string> LabelsPiechartM2000User = new List<string> { "Working on it", "Cross Approval Pending", "On Cross Approval", "Cross Approval Complete" };
 
-                var JobTypePieChartM2000 = new Chart { Type = Enums.ChartType.Pie };
+                var JobTypePieChartM2000User = new Chart { Type = Enums.ChartType.Pie };
 
-                var dataM2000 = new Data { Labels = LabelsPiechartM2000 };
+                var dataM2000User = new Data { Labels = LabelsPiechartM2000User };
 
-                var datasetM2000 = new PieDataset
+                var datasetM2000User = new PieDataset
                 {
                     Label = "My dataset",
                     BackgroundColor = new List<ChartColor>
@@ -1026,36 +1021,36 @@ namespace ProdFloor.Controllers
                     ChartColor.FromHexString("#FFCE56"),
                     ChartColor.FromHexString("#7cf233")
                 },
-                    Data = DataPieChartM2000
+                    Data = DataPieChartM2000User
                 };
 
-                dataM2000.Datasets = new List<Dataset> { datasetM2000 };
+                dataM2000User.Datasets = new List<Dataset> { datasetM2000User };
 
-                JobTypePieChartM2000.Data = dataM2000;
-                ViewData["M2000byEnginnerPieChart"+username] = JobTypePieChartM2000;
+                JobTypePieChartM2000User.Data = dataM2000User;
+                ViewData["M2000byEnginnerPieChart" + username] = JobTypePieChartM2000User;
 
 
 
                 //PriorityBy User
-                List<Job> JobsM2000 = repository.Jobs.Where(j => j.JobTypeID == 2 && j.EngID == user.EngID
+                List<Job> JobsM2000User = repository.Jobs.Where(j => j.JobTypeID == 2 && j.EngID == user.EngID
                                                    && (j.Status == "Working on it" || j.Status == "Cross Approval Pending"
                                                    || j.Status == "On Cross Approval" || j.Status == "Cross Approval Complete")).ToList();
 
-                List<JobAdditional> MyJobAdditionalList = repository.JobAdditionals.Where(m => JobsM2000.Any(n => n.JobID == m.JobID)).ToList();
+                List<JobAdditional> MyJobAdditionalListUser = repository.JobAdditionals.Where(m => JobsM2000User.Any(n => n.JobID == m.JobID)).ToList();
 
-                int NormalPriority = MyJobAdditionalList.Where(m => m.Priority == 0).Count();
-                int HighPriority = MyJobAdditionalList.Where(m => m.Priority == 1).Count();
-                int ShortLeadPriority = MyJobAdditionalList.Where(m => m.Priority == 2).Count();
+                int NormalPriorityUser = MyJobAdditionalListUser.Where(m => m.Priority == 0).Count();
+                int HighPriorityUser = MyJobAdditionalListUser.Where(m => m.Priority == 1).Count();
+                int ShortLeadPriorityUser = MyJobAdditionalListUser.Where(m => m.Priority == 2).Count();
 
 
-                List<double?> DataPieChartPriority = new List<double?> { NormalPriority, HighPriority, ShortLeadPriority };
-                List<string> PriorityLabelsPiechart = new List<string> { "Normal", "High", "Short Lead" };
+                List<double?> DataPieChartPriorityUser = new List<double?> { NormalPriorityUser, HighPriorityUser, ShortLeadPriorityUser };
+                List<string> PriorityLabelsPiechartUser = new List<string> { "Normal", "High", "Short Lead" };
 
-                var PieChartPriority = new Chart { Type = Enums.ChartType.Pie };
+                var PieChartPriorityUser = new Chart { Type = Enums.ChartType.Pie };
 
-                var dataPriority = new Data { Labels = PriorityLabelsPiechart };
+                var dataPriorityUser = new Data { Labels = PriorityLabelsPiechartUser };
 
-                var datasetPriority = new PieDataset
+                var datasetPriorityUser = new PieDataset
                 {
                     Label = "My dataset",
                     BackgroundColor = new List<ChartColor>
@@ -1070,13 +1065,13 @@ namespace ProdFloor.Controllers
                     ChartColor.FromHexString("#FCF927"),
                     ChartColor.FromHexString("#F54242")
                 },
-                    Data = DataPieChartPriority
+                    Data = DataPieChartPriorityUser
                 };
 
-                dataPriority.Datasets = new List<Dataset> { datasetPriority };
+                dataPriorityUser.Datasets = new List<Dataset> { datasetPriorityUser };
 
-                PieChartPriority.Data = dataPriority;
-                ViewData["PieChartPriority"+username] = PieChartPriority;
+                PieChartPriorityUser.Data = dataPriorityUser;
+                ViewData["PieChartPriority" + username] = PieChartPriorityUser;
 
                 //Morning Report
                 List<Job> JobsM2000ByEnginner = repository.Jobs.Where(j => j.JobTypeID == 2 && j.EngID == user.EngID
@@ -1128,12 +1123,11 @@ namespace ProdFloor.Controllers
                 PieChartMorning.Data = dataMorning;
                 ViewData["PieChartMorning" + username] = PieChartMorning;
             }
+            #endregion
 
 
-
-            return View("EngineerCharts", dashboard);
+            return View("AdminDashBoard", dashboard);
         }
-
 
 
         public string JobTypeName(int ID)
