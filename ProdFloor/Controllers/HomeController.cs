@@ -776,8 +776,8 @@ namespace ProdFloor.Controllers
         {
             #region JobTypePieChartByJobType
 
-            int M2000Count = repository.Jobs.Where(j => j.JobTypeID == 2 && j.EngID > 0 && j.EngID < 100 
-                                                   && (j.Status == "Working on it" || j.Status == "Cross Approval Pending" 
+            int M2000Count = repository.Jobs.Where(j => j.JobTypeID == 2 && j.EngID > 0 && j.EngID < 100
+                                                   && (j.Status == "Working on it" || j.Status == "Cross Approval Pending"
                                                    || j.Status == "On Cross Approval" || j.Status == "Cross Approval Complete")).Count();
 
             int ElementHydroListCount = repository.Jobs.Where(j => j.JobTypeID == 1 && j.EngID > 0 && j.EngID < 100
@@ -789,7 +789,7 @@ namespace ProdFloor.Controllers
                                                    || j.Status == "On Cross Approval" || j.Status == "Cross Approval Complete")).Count();
 
 
-            List<double?> DataPieChart = new List<double?> { M2000Count , ElementHydroListCount , ElementTractionCount };
+            List<double?> DataPieChart = new List<double?> { M2000Count, ElementHydroListCount, ElementTractionCount };
             List<string> LabelsPiechart = new List<string> { "M2000", "Element Hydro", "Element Traction" };
 
             var JobTypePieChart = new Chart { Type = Enums.ChartType.Pie };
@@ -820,6 +820,50 @@ namespace ProdFloor.Controllers
             ViewData["JobTypePieChart"] = JobTypePieChart;
 
 
+            #endregion
+
+            #region PriorityPieChartByJobType
+
+            List<Job> AllJobs = repository.Jobs.Where(j => (j.JobTypeID == 2 || j.JobTypeID == 1 || j.JobTypeID == 5) && j.EngID > 0 && j.EngID < 100
+                                                   && (j.Status == "Working on it" || j.Status == "Cross Approval Pending"
+                                                   || j.Status == "On Cross Approval" || j.Status == "Cross Approval Complete")).ToList();
+
+            List<JobAdditional> MyJobAdditionalList = repository.JobAdditionals.Where(m => AllJobs.Any(n => n.JobID == m.JobID)).ToList();
+
+            int NormalPriority = MyJobAdditionalList.Where(m => m.Priority == 0).Count();
+            int HighPriority = MyJobAdditionalList.Where(m => m.Priority == 1).Count();
+            int ShortLeadPriority = MyJobAdditionalList.Where(m => m.Priority == 2).Count();
+
+
+            List<double?> DataPieChartPriority = new List<double?> { NormalPriority, HighPriority, ShortLeadPriority };
+            List<string> PriorityLabelsPiechart = new List<string> { "Normal", "High", "Short Lead" };
+
+            var PieChartPriority = new Chart { Type = Enums.ChartType.Pie };
+
+            var dataPriority = new Data { Labels = PriorityLabelsPiechart };
+
+            var datasetPriority = new PieDataset
+            {
+                Label = "My dataset",
+                BackgroundColor = new List<ChartColor>
+                {
+                    ChartColor.FromHexString("#6ADE4E"),
+                    ChartColor.FromHexString("#FCF927"),
+                    ChartColor.FromHexString("#F54242")
+                },
+                HoverBackgroundColor = new List<ChartColor>
+                {
+                    ChartColor.FromHexString("#6ADE4E"),
+                    ChartColor.FromHexString("#FCF927"),
+                    ChartColor.FromHexString("#F54242")
+                },
+                Data = DataPieChartPriority
+            };
+
+            dataPriority.Datasets = new List<Dataset> { datasetPriority };
+
+            PieChartPriority.Data = dataPriority;
+            ViewData["PieChartPriority"] = PieChartPriority;
             #endregion
 
             #region JobTypePieChartM200ByStatus
@@ -864,6 +908,50 @@ namespace ProdFloor.Controllers
 
             #endregion
 
+            #region PriorityPieChartByM2000
+
+            List<Job> JobsM2000 = repository.Jobs.Where(j => j.JobTypeID == 2 && j.EngID > 0 && j.EngID < 100
+                                                   && (j.Status == "Working on it" || j.Status == "Cross Approval Pending"
+                                                   || j.Status == "On Cross Approval" || j.Status == "Cross Approval Complete")).ToList();
+
+            List<JobAdditional> MyJobAdditionalListM2000 = repository.JobAdditionals.Where(m => JobsM2000.Any(n => n.JobID == m.JobID)).ToList();
+
+            int NormalPriorityM2000 = MyJobAdditionalListM2000.Where(m => m.Priority == 0).Count();
+            int HighPriorityM2000 = MyJobAdditionalListM2000.Where(m => m.Priority == 1).Count();
+            int ShortLeadPriorityM2000 = MyJobAdditionalListM2000.Where(m => m.Priority == 2).Count();
+
+
+            List<double?> DataPieChartPriorityM2000 = new List<double?> { NormalPriorityM2000, HighPriorityM2000, ShortLeadPriorityM2000 };
+            List<string> PriorityLabelsPiechartM2000 = new List<string> { "Normal", "High", "Short Lead" };
+
+            var PieChartPriorityM2000 = new Chart { Type = Enums.ChartType.Pie };
+
+            var dataPriorityM2000 = new Data { Labels = PriorityLabelsPiechartM2000 };
+
+            var datasetPriorityM2000 = new PieDataset
+            {
+                Label = "My dataset",
+                BackgroundColor = new List<ChartColor>
+                {
+                    ChartColor.FromHexString("#6ADE4E"),
+                    ChartColor.FromHexString("#FCF927"),
+                    ChartColor.FromHexString("#F54242")
+                },
+                HoverBackgroundColor = new List<ChartColor>
+                {
+                    ChartColor.FromHexString("#6ADE4E"),
+                    ChartColor.FromHexString("#FCF927"),
+                    ChartColor.FromHexString("#F54242")
+                },
+                Data = DataPieChartPriorityM2000
+            };
+
+            dataPriorityM2000.Datasets = new List<Dataset> { datasetPriorityM2000 };
+
+            PieChartPriorityM2000.Data = dataPriorityM2000;
+            ViewData["PieChartPriorityM2000"] = PieChartPriorityM2000;
+            #endregion
+
             #region JobTypePieChartHydroByStatus
 
             int WorkinOnItCountHydro = repository.Jobs.Where(j => j.JobTypeID == 1 && j.EngID > 0 && j.EngID < 100 && j.Status == "Working on it").Count();
@@ -898,6 +986,50 @@ namespace ProdFloor.Controllers
             ViewData["JobTypePieChartHydro"] = JobTypePieChartHydro;
 
 
+            #endregion
+
+            #region PriorityPieChartByHydro
+
+            List<Job> JobsHydro = repository.Jobs.Where(j => j.JobTypeID == 1 && j.EngID > 0 && j.EngID < 100
+                                                   && (j.Status == "Working on it" || j.Status == "Cross Approval Pending"
+                                                   || j.Status == "On Cross Approval" || j.Status == "Cross Approval Complete")).ToList();
+
+            List<JobAdditional> MyJobAdditionalListHydro = repository.JobAdditionals.Where(m => JobsHydro.Any(n => n.JobID == m.JobID)).ToList();
+
+            int NormalPriorityHydro = MyJobAdditionalListHydro.Where(m => m.Priority == 0).Count();
+            int HighPriorityHydro = MyJobAdditionalListHydro.Where(m => m.Priority == 1).Count();
+            int ShortLeadPriorityHydro = MyJobAdditionalListHydro.Where(m => m.Priority == 2).Count();
+
+
+            List<double?> DataPieChartPriorityHydro = new List<double?> { NormalPriorityHydro, HighPriorityHydro, ShortLeadPriorityHydro };
+            List<string> PriorityLabelsPiechartHydro = new List<string> { "Normal", "High", "Short Lead" };
+
+            var PieChartPriorityHydro = new Chart { Type = Enums.ChartType.Pie };
+
+            var dataPriorityHydro = new Data { Labels = PriorityLabelsPiechartHydro };
+
+            var datasetPriorityHydro = new PieDataset
+            {
+                Label = "My dataset",
+                BackgroundColor = new List<ChartColor>
+                {
+                    ChartColor.FromHexString("#6ADE4E"),
+                    ChartColor.FromHexString("#FCF927"),
+                    ChartColor.FromHexString("#F54242")
+                },
+                HoverBackgroundColor = new List<ChartColor>
+                {
+                    ChartColor.FromHexString("#6ADE4E"),
+                    ChartColor.FromHexString("#FCF927"),
+                    ChartColor.FromHexString("#F54242")
+                },
+                Data = DataPieChartPriorityHydro
+            };
+
+            dataPriorityHydro.Datasets = new List<Dataset> { datasetPriorityHydro };
+
+            PieChartPriorityHydro.Data = dataPriorityHydro;
+            ViewData["PieChartPriorityHydro"] = PieChartPriorityHydro;
             #endregion
 
             #region JobTypePieChartTractionByStatus
@@ -936,27 +1068,27 @@ namespace ProdFloor.Controllers
 
             #endregion
 
-            #region PriorityPieChartByJobType
+            #region PriorityPieChartByTraction
 
-            List<Job> JobsM2000 = repository.Jobs.Where(j => j.JobTypeID == 2 && j.EngID > 0 && j.EngID < 100 
-                                                   && (j.Status == "Working on it" || j.Status == "Cross Approval Pending" 
+            List<Job> JobsTraction = repository.Jobs.Where(j => j.JobTypeID == 5 && j.EngID > 0 && j.EngID < 100
+                                                   && (j.Status == "Working on it" || j.Status == "Cross Approval Pending"
                                                    || j.Status == "On Cross Approval" || j.Status == "Cross Approval Complete")).ToList();
 
-            List<JobAdditional> MyJobAdditionalList = repository.JobAdditionals.Where(m => JobsM2000.Any(n => n.JobID == m.JobID)).ToList();
+            List<JobAdditional> MyJobAdditionalListTraction = repository.JobAdditionals.Where(m => JobsTraction.Any(n => n.JobID == m.JobID)).ToList();
 
-            int NormalPriority = MyJobAdditionalList.Where(m => m.Priority == 0).Count();
-            int HighPriority = MyJobAdditionalList.Where(m => m.Priority == 1).Count();
-            int ShortLeadPriority = MyJobAdditionalList.Where(m => m.Priority == 2).Count();
+            int NormalPriorityTraction = MyJobAdditionalListTraction.Where(m => m.Priority == 0).Count();
+            int HighPriorityTraction = MyJobAdditionalListTraction.Where(m => m.Priority == 1).Count();
+            int ShortLeadPriorityTraction = MyJobAdditionalListTraction.Where(m => m.Priority == 2).Count();
 
 
-            List<double?> DataPieChartPriority = new List<double?> { NormalPriority, HighPriority, ShortLeadPriority };
-            List<string> PriorityLabelsPiechart = new List<string> { "Normal", "High", "Short Lead" };
+            List<double?> DataPieChartPriorityTraction = new List<double?> { NormalPriorityTraction, HighPriorityTraction, ShortLeadPriorityTraction };
+            List<string> PriorityLabelsPiechartTraction = new List<string> { "Normal", "High", "Short Lead" };
 
-            var PieChartPriority = new Chart { Type = Enums.ChartType.Pie };
+            var PieChartPriorityTraction = new Chart { Type = Enums.ChartType.Pie };
 
-            var dataPriority = new Data { Labels = PriorityLabelsPiechart };
+            var dataPriorityTraction = new Data { Labels = PriorityLabelsPiechartTraction };
 
-            var datasetPriority = new PieDataset
+            var datasetPriorityTraction = new PieDataset
             {
                 Label = "My dataset",
                 BackgroundColor = new List<ChartColor>
@@ -971,13 +1103,13 @@ namespace ProdFloor.Controllers
                     ChartColor.FromHexString("#FCF927"),
                     ChartColor.FromHexString("#F54242")
                 },
-                Data = DataPieChartPriority
+                Data = DataPieChartPriorityTraction
             };
 
-            dataPriority.Datasets = new List<Dataset> { datasetPriority };
+            dataPriorityTraction.Datasets = new List<Dataset> { datasetPriorityTraction };
 
-            PieChartPriority.Data = dataPriority;
-            ViewData["PieChartPriority"] = PieChartPriority;
+            PieChartPriorityTraction.Data = dataPriorityTraction;
+            ViewData["PieChartPriorityTraction"] = PieChartPriorityTraction;
             #endregion
 
             #region ChartsByUser
