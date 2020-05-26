@@ -1261,6 +1261,143 @@ namespace ProdFloor.Controllers
             return View("AdminDashBoard", dashboard);
         }
 
+        public ActionResult EngineerListDashBoard(string filtrado, string Sort = "default", int WorkingOnItM2000Page = 1, int PendingM2000Page = 1, int OnCrossM2000Page = 1, int CompleteM2000Page = 1,
+                                                                                            int WorkingOnItHydroPage = 1, int CompleteHydroPage = 1, int WorkingOnItTractionPage = 1, int CompleteTractionPage = 1)
+        {
+            AppUser currentUser = GetCurrentUser().Result;
+            bool engineer = GetCurrentUserRole("EngAdmin").Result;
+            if (filtrado != null) Sort = filtrado;
+
+                List<JobType> JobTyPeList = itemRepo.JobTypes.ToList();
+                List<JobAdditional> MyJobAdditionalList = repository.JobAdditionals.ToList();
+                List<PO> POsList = repository.POs.ToList();
+
+
+                //M2000
+                List<Job> JobsWorkingOnItM2000 = repository.Jobs
+                        .Where(j => j.Status == "Working on it").OrderByDescending(m => m._JobAdditional.Priority).ThenBy(n => n.LatestFinishDate).ToList();
+
+                List<Job> JobsCrossPendingM2000 = repository.Jobs
+                        .Where(j => j.Status == "Cross Approval Pending").OrderByDescending(m => m._JobAdditional.Priority).ThenBy(n => n.LatestFinishDate).ToList();
+
+                List<Job> JobsOnCrossM2000 = repository.Jobs
+                        .Where(j => j.Status == "On Cross Approval").OrderByDescending(m => m._JobAdditional.Priority).ThenBy(n => n.LatestFinishDate).ToList();
+
+                List<Job> JobsCrossCompleteM2000 = repository.Jobs
+                        .Where(j => j.Status == "Cross Approval Complete").OrderByDescending(m => m._JobAdditional.Priority).ThenBy(n => n.LatestFinishDate).ToList();
+
+
+                //Hydro
+                List<Job> JobsWorkingOnItHydro = repository.Jobs
+                        .Where(j => j.Status == "Working on it").OrderByDescending(m => m._JobAdditional.Priority).ThenBy(n => n.LatestFinishDate).ToList();
+
+                List<Job> JobsCrossCompleteHydro = repository.Jobs
+                    .Where(j => j.Status == "Cross Approval Complete").OrderByDescending(m => m._JobAdditional.Priority).ThenBy(n => n.LatestFinishDate).ToList();
+
+
+                //Traction
+                List<Job> JobsWorkingOnItTraction = repository.Jobs
+                        .Where(j => j.Status == "Working on it").OrderByDescending(m => m._JobAdditional.Priority).ThenBy(n => n.LatestFinishDate).ToList();
+
+                List<Job> JobsCrossCompleteTraction = repository.Jobs
+                    .Where(j => j.Status == "Cross Approval Complete").OrderByDescending(m => m._JobAdditional.Priority).ThenBy(n => n.LatestFinishDate).ToList();
+
+                
+
+
+                EngineerChartsViewModel dashboard = new EngineerChartsViewModel()
+                {
+                    JobTypes = JobTyPeList,
+                    POs = POsList,
+                    MyJobAdditionals = MyJobAdditionalList,
+
+                    JobsWorkingOnItM2000 = JobsWorkingOnItM2000.Skip((WorkingOnItM2000Page - 1) * 6).Take(6),
+                    PagingInfoWorkingOnItM2000 = new PagingInfo
+                    {
+                        CurrentPage = WorkingOnItM2000Page,
+                        ItemsPerPage = 6,
+                        TotalItems = JobsWorkingOnItM2000.Count(),
+                        sort = Sort != "default" ? Sort : "deafult"
+
+                    },
+
+                    JobsCrossPendingM2000 = JobsCrossPendingM2000.Skip((PendingM2000Page - 1) * 6).Take(6),
+                    PagingInfoCrossPendingM2000 = new PagingInfo
+                    {
+                        CurrentPage = PendingM2000Page,
+                        ItemsPerPage = 6,
+                        TotalItems = JobsCrossPendingM2000.Count(),
+                        sort = Sort != "default" ? Sort : "deafult"
+
+                    },
+
+                    JobsOnCrossM2000 = JobsOnCrossM2000.Skip((OnCrossM2000Page - 1) * 6).Take(6),
+                    PagingInfoOnCrossM2000 = new PagingInfo
+                    {
+                        CurrentPage = OnCrossM2000Page,
+                        ItemsPerPage = 6,
+                        TotalItems = JobsOnCrossM2000.Count(),
+                        sort = Sort != "default" ? Sort : "deafult"
+
+                    },
+
+                    JobsCrossCompleteM2000 = JobsCrossCompleteM2000.Skip((CompleteM2000Page - 1) * 6).Take(6),
+                    PagingInfoCrossCompleteM2000 = new PagingInfo
+                    {
+                        CurrentPage = CompleteM2000Page,
+                        ItemsPerPage = 6,
+                        TotalItems = JobsCrossCompleteM2000.Count(),
+                        sort = Sort != "default" ? Sort : "deafult"
+
+                    },
+
+                    JobsWorkingOnItHydro = JobsWorkingOnItHydro.Skip((WorkingOnItHydroPage - 1) * 6).Take(6),
+                    PagingInfoWorkingOnItHydro = new PagingInfo
+                    {
+                        CurrentPage = WorkingOnItHydroPage,
+                        ItemsPerPage = 6,
+                        TotalItems = JobsWorkingOnItHydro.Count(),
+                        sort = Sort != "default" ? Sort : "deafult"
+
+                    },
+
+                    JobsCrossCompleteHydro = JobsCrossCompleteHydro.Skip((CompleteHydroPage - 1) * 6).Take(6),
+                    PagingInfoCrossCompleteHydro = new PagingInfo
+                    {
+                        CurrentPage = CompleteHydroPage,
+                        ItemsPerPage = 6,
+                        TotalItems = JobsCrossCompleteHydro.Count(),
+                        sort = Sort != "default" ? Sort : "deafult"
+
+                    },
+
+
+                    JobsWorkingOnItTraction = JobsWorkingOnItTraction.Skip((WorkingOnItTractionPage - 1) * 6).Take(6),
+                    PagingInfoWorkingOnItTraction = new PagingInfo
+                    {
+                        CurrentPage = WorkingOnItTractionPage,
+                        ItemsPerPage = 6,
+                        TotalItems = JobsWorkingOnItHydro.Count(),
+                        sort = Sort != "default" ? Sort : "deafult"
+
+                    },
+
+                    JobsCrossCompleteTraction = JobsCrossCompleteTraction.Skip((CompleteTractionPage - 1) * 6).Take(6),
+                    PagingInfoCrossCompleteTraction = new PagingInfo
+                    {
+                        CurrentPage = CompleteTractionPage,
+                        ItemsPerPage = 6,
+                        TotalItems = JobsCrossCompleteTraction.Count(),
+                        sort = Sort != "default" ? Sort : "deafult"
+
+                    },
+
+
+                };
+
+                return View("EngineerAdminDashBoard", dashboard);
+        }
+
 
         public string JobTypeName(int ID)
         {

@@ -1,0 +1,68 @@
+﻿@model ProdFloor.Models.ViewModels.Home.EngineerChartsViewModel
+@{
+    ViewBag.Title = "Enginneer List Charts";
+    Layout = "_AdminLayoutWO";
+
+}
+@if (User.IsInRole("EngAdmin"))
+{
+    @if (Model.JobsWorkingOnItM2000 != null)
+    {
+        @Html.Partial("OngoingJobsM2000", Model)
+    }
+
+    <br />
+
+    @if (Model.JobsCrossPendingM2000 != null)
+    {
+        @Html.Partial("PendingCrossApprovalsM2000", Model)
+    }
+
+    <br />
+
+    @if (Model.JobsCrossCompleteM2000 != null)
+    {
+        @Html.Partial("OngoingCrossApprovalsM2000", Model)
+    }
+
+    <br />
+
+    @if (Model.JobsCrossCompleteM2000 != null)
+    {
+        @Html.Partial("CompleteJobsM2000", Model)
+    }
+
+    <br />
+
+    @if (Model.JobsWorkingOnItHydro != null)
+    {
+        @Html.Partial("OngoingJobsHydro", Model)
+    }
+
+    <br />
+
+    @if (Model.PagingInfoCrossCompleteHydro != null)
+    {
+        @Html.Partial("CompleteJobsHydro", Model)
+    }
+
+    <br />
+
+    <br />
+
+    @if (Model.JobsWorkingOnItTraction != null)
+    {
+        @Html.Partial("OngoingJobsTraction", Model)
+    }
+
+    <br />
+
+    @if (Model.JobsCrossCompleteTraction != null)
+    {
+        @Html.Partial("CompleteJobsTraction", Model)
+    }
+
+    <br />
+
+    <br />
+}
