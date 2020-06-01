@@ -4,65 +4,50 @@
     Layout = "_AdminLayoutWO";
 
 }
-@if (User.IsInRole("EngAdmin"))
-{
-    @if (Model.JobsWorkingOnItM2000 != null)
+    @if (Model.JobsWorkingOnItM2000 != null && Model.PagingInfoWorkingOnItM2000.sort == "OngoingM2000")
     {
         @Html.Partial("OngoingJobsM2000", Model)
     }
 
-    <br />
 
-    @if (Model.JobsCrossPendingM2000 != null)
+    @if (Model.JobsCrossPendingM2000 != null && Model.PagingInfoCrossPendingM2000.sort == "PendingCrossM2000")
     {
-        @Html.Partial("PendingCrossApprovalsM2000", Model)
+        @Html.Partial("PendingJobsM2000", Model)
     }
 
-    <br />
 
-    @if (Model.JobsCrossCompleteM2000 != null)
+    @if (Model.JobsOnCrossM2000 != null && Model.PagingInfoOnCrossM2000.sort == "OnCrossM2000")
     {
-        @Html.Partial("OngoingCrossApprovalsM2000", Model)
+        @Html.Partial("OnCrossJobsM2000", Model)
     }
 
-    <br />
 
-    @if (Model.JobsCrossCompleteM2000 != null)
+    @if (Model.JobsCrossCompleteM2000 != null && Model.PagingInfoCrossCompleteM2000.sort == "CrossCompleteM2000")
     {
         @Html.Partial("CompleteJobsM2000", Model)
     }
 
-    <br />
 
-    @if (Model.JobsWorkingOnItHydro != null)
+    @if (Model.JobsWorkingOnItHydro != null && Model.PagingInfoWorkingOnItHydro.sort == "OngoingHydro")
     {
         @Html.Partial("OngoingJobsHydro", Model)
     }
 
-    <br />
 
-    @if (Model.PagingInfoCrossCompleteHydro != null)
+    @if (Model.PagingInfoCrossCompleteHydro != null && Model.PagingInfoCrossCompleteHydro.sort == "CrossCompleteHydro")
     {
         @Html.Partial("CompleteJobsHydro", Model)
     }
 
-    <br />
 
-    <br />
-
-    @if (Model.JobsWorkingOnItTraction != null)
+    @if (Model.JobsWorkingOnItTraction != null && Model.PagingInfoWorkingOnItTraction.sort == "OngoingTraction")
     {
         @Html.Partial("OngoingJobsTraction", Model)
     }
 
-    <br />
 
-    @if (Model.JobsCrossCompleteTraction != null)
+    @if (Model.JobsCrossCompleteTraction != null && Model.PagingInfoCrossCompleteTraction.sort == "CrossCompleteTraction")
     {
         @Html.Partial("CompleteJobsTraction", Model)
     }
 
-    <br />
-
-    <br />
-}

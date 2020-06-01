@@ -6,12 +6,16 @@
         });
     </script>
 }
-<br />
 <table class="table table-striped  text-center table-sm" style="text-align:center">
     <thead style="background-color:#343a40!important;color:#fff;">
         <tr>
             <th class="text-center" colspan="12">
-                <h5>Working on it Hydro</h5>
+                <div class="btn-group" style="float:left">
+                    <button type="button" value="Back" style="border-color:transparent" class="btn btn-dark btn-sm" onclick="window.location.href = '/Home/JobChartsDashBoard/?ChartName=OngoingTraction';">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                </div>
+                <h5>Working on it Traction</h5>
             </th>
         </tr>
         <tr>
@@ -76,10 +80,10 @@
 </table>
 @if (Model.JobsWorkingOnItTraction.Count() > 0)
 {
-    <cool-pagination-dash-board4d current-model="MyJobs" active-page-model="@Model.PagingInfoCrossCompleteM2000" my-jobs-page-model="@Model.PagingInfoWorkingOnItTraction" page-action="EngineerAdminDashBoard" page-classes-enabled="true"
-                                  page-class="btn" page-class-normal="btn-secondary" on-cross-page-model="@Model.PagingInfoOnCrossM2000" pending-to-cross-page-model="@Model.PagingInfoCrossPendingM2000"
-                                  page-class-selected="btn-dark" active-url-value="ActiveJobPage" my-jobs-url-value="MyJobsPage" on-cross-url-value="OnCrossJobPage"
-                                  pending-to-cross-url-value="PendingToCrossJobPage" sort="Sort"
-                                  class="btn-group pull-right m-1">
-    </cool-pagination-dash-board4d>
+    <cool-pagination-dash-board4d current-model="MyJobs" active-page-model="@Model.PagingInfoCrossCompleteTraction" my-jobs-page-model="@Model.PagingInfoWorkingOnItTraction" page-action="EngineerListDashBoard" page-classes-enabled="true"
+                              page-class="btn" page-class-normal="btn-secondary" on-cross-page-model="@Model.PagingInfoOnCrossM2000" pending-to-cross-page-model="@Model.PagingInfoCrossPendingM2000"
+                              page-class-selected="btn-dark" active-url-value="CompleteTractionPage" my-jobs-url-value="WorkingOnItTractionPage" on-cross-url-value="OnCrossM2000Page"
+                              pending-to-cross-url-value="PendingM2000Page" sort="Sort"
+                              class="btn-group pull-right m-1">
+</cool-pagination-dash-board4d>
 }

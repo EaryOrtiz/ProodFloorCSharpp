@@ -10,6 +10,8 @@ namespace ProdFloor.Models.ViewModels.Home
 
         public List<AppUser> users { get; set; }
 
+        public string ChartName { get; set; }
+
 
         //M2000 charts details
         public IEnumerable<Models.Job> JobsWorkingOnItM2000 { get; set; }

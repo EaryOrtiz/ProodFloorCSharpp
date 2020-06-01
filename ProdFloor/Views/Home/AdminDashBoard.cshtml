@@ -1,10 +1,123 @@
-﻿@model DashboardIndexViewModel
+﻿@model ProdFloor.Models.ViewModels.Home.EngineerChartsViewModel
 @{
     ViewBag.Title = "ProdFloor";
     ViewBag.Brand = "ProdFloor";
     Layout = "_AdminLayoutWO";
 }
 <script src="~/lib/Chart.js/dist/Chart.js"></script>
+<div>
+    <!--Genral-->
+    <div id="General" class="card" style="margin-bottom:50px">
+        <div class="card-header bg-dark text-center">
+            <div class="btn-group">
+                <!--Header Info-->
+                <button type="button" id="headingJobInfo" class="btn btn-dark" style="border-color:transparent" data-toggle="collapse" data-target="#collapseJobInfo" aria-expanded="true" aria-controls="collapseJobInfo">
+                    <h6 class="mb-0 text-left">General Information</h6>
+                </button>
+            </div>
+        </div>
+        <div class="row " style="padding-bottom:15px;">
+            <div class="col-6 border-right">
+                <h4 class="text-center">Jobs</h4>
+                <canvas id="JobTypePieChart"></canvas>
+                @{ChartJSCore.Models.Chart JobTypePieChart = (ChartJSCore.Models.Chart)ViewData["JobTypePieChart"]; }
+                <script>@Html.Raw(JobTypePieChart.CreateChartCode("JobTypePieChart"));</script>
+            </div>
+            <div class="col-6">
+                <h4 class="text-center">Priority</h4>
+                <canvas id="PieChartPriority"></canvas>
+                @{ChartJSCore.Models.Chart PieChartPriority = (ChartJSCore.Models.Chart)ViewData["PieChartPriority"]; }
+                <script>@Html.Raw(PieChartPriority.CreateChartCode("PieChartPriority"));</script>
+            </div>
+        </div>
+    </div>
+    <!--M2000-->
+    <div id="M2000" class="card" style="margin-bottom:50px;display:none;">
+        <div class="card-header bg-dark text-center">
+            <div class="btn-group" style="float:left">
+                <button type="button" value="Back" style="border-color:transparent" class="btn btn-dark btn-sm" onclick="displayGeneral()">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+            </div>
+            <div class="btn-group">
+                <button type="button" id="headingJobInfo" class="btn btn-dark" style="border-color:transparent" data-toggle="collapse" data-target="#collapseJobInfo" aria-expanded="true" aria-controls="collapseJobInfo">
+                    <h6 class="mb-0 text-left">M2000 Information</h6>
+                </button>
+            </div>
+        </div>
+        <div class="row" style="padding-bottom:15px;">
+            <div class="col-6 border-right">
+                <h4 class="text-center">M2000</h4>
+                <canvas id="JobTypePieChartM2000"></canvas>
+                @{ChartJSCore.Models.Chart JobTypePieChartM2000 = (ChartJSCore.Models.Chart)ViewData["JobTypePieChartM2000"]; }
+            </div>
+            <div class="col-6">
+                <h4 class="text-center">Priority</h4>
+                <canvas id="PieChartPriorityM2000"></canvas>
+                @{ChartJSCore.Models.Chart PieChartPriorityM2000 = (ChartJSCore.Models.Chart)ViewData["PieChartPriorityM2000"]; }
+                <script>@Html.Raw(PieChartPriorityM2000.CreateChartCode("PieChartPriorityM2000"));</script>
+            </div>
+        </div>
+    </div>
+    <!--Hydro-->
+    <div id="Hydro" class="card" style="margin-bottom:50px;display:none;">
+        <div class="card-header bg-dark text-center">
+            <div class="btn-group" style="float:left">
+                <button type="button" value="Back" style="border-color:transparent" class="btn btn-dark btn-sm" onclick="displayGeneral()">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+            </div>
+            <div class="btn-group">
+                <!--Header Info-->
+                <button type="button" id="headingJobInfo" class="btn btn-dark" style="border-color:transparent" data-toggle="collapse" data-target="#collapseJobInfo" aria-expanded="true" aria-controls="collapseJobInfo">
+                    <h6 class="mb-0 text-left">Hydro Information</h6>
+                </button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6 border-right">
+                <h4 class="text-center">Element Hydro</h4>
+                <canvas id="JobTypePieChartHydro"></canvas>
+                @{ChartJSCore.Models.Chart JobTypePieChartHydro = (ChartJSCore.Models.Chart)ViewData["JobTypePieChartHydro"]; }
+            </div>
+            <div class="col-6">
+                <h4 class="text-center">Priority</h4>
+                <canvas id="PieChartPriorityHydro"></canvas>
+                @{ChartJSCore.Models.Chart PieChartPriorityHydro = (ChartJSCore.Models.Chart)ViewData["PieChartPriorityHydro"]; }
+                <script>@Html.Raw(PieChartPriorityHydro.CreateChartCode("PieChartPriorityHydro"));</script>
+            </div>
+        </div>
+    </div>
+    <!--Traction-->
+    <div id="Traction" class="card" style="margin-bottom:50px;display:none;">
+        <div class="card-header bg-dark text-center">
+            <div class="btn-group" style="float:left">
+                <button type="button" value="Back" style="border-color:transparent" class="btn btn-dark btn-sm" onclick="displayGeneral()">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+            </div>
+            <div class="btn-group">
+                <!--Header Info-->
+                <button type="button" id="headingJobInfo" class="btn btn-dark" style="border-color:transparent" data-toggle="collapse" data-target="#collapseJobInfo" aria-expanded="true" aria-controls="collapseJobInfo">
+                    <h6 class="mb-0 text-left">Traction Information</h6>
+                </button>
+            </div>
+        </div>
+        <div class="row " style="padding-bottom:15px;">
+            <div class="col-6">
+                <h4 class="text-center">Element Traction</h4>
+                <canvas id="JobTypePieChartTraction"></canvas>
+                @{ChartJSCore.Models.Chart JobTypePieChartTraction = (ChartJSCore.Models.Chart)ViewData["JobTypePieChartTraction"]; }
+            </div>
+            <div class="col-6">
+                <h4 class="text-center">Priority</h4>
+                <canvas id="PieChartPriorityTraction"></canvas>
+                @{ChartJSCore.Models.Chart PieChartPriorityTraction = (ChartJSCore.Models.Chart)ViewData["PieChartPriorityTraction"]; }
+                <script>@Html.Raw(PieChartPriorityTraction.CreateChartCode("PieChartPriorityTraction"));</script>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
 
     function displayM2000() {
@@ -14,6 +127,29 @@
             document.getElementById('General').style.display = "none";
             document.getElementById('Hydro').style.display = "none";
             document.getElementById('Traction').style.display = "none";
+
+            @Html.Raw(JobTypePieChartM2000.CreateChartCode("JobTypePieChartM2000"));
+            var ctxM2000 = document.getElementById("JobTypePieChartM2000").getContext("2d");
+            var myPieChartM2000 = new Chart(ctxM2000, {
+                data: JobTypePieChartM2000.data,
+                options: JobTypePieChartM2000.options,
+            });
+
+            $("#JobTypePieChartM2000").click(
+                function (evt) {
+                    var activePoints = myPieChartM2000.getElementsAtEvent(evt);
+
+                    var chartData = activePoints[0]['_chart'].config.data;
+                    var idx = activePoints[0]['_index'];
+
+                    var label = chartData.labels[idx];
+                    var value = chartData.datasets[0].data[idx];
+                    if (label == "Working on it") window.location.href = '/Home/EngineerListDashBoard/?ChartName=OngoingM2000';
+                    if (label == "Cross Approval Pending") window.location.href = '/Home/EngineerListDashBoard/?ChartName=PendingCrossM2000';
+                    if (label == "On Cross Approval") window.location.href = '/Home/EngineerListDashBoard/?ChartName=OnCrossM2000';
+                    if (label == "Cross Approval Complete") window.location.href = '/Home/EngineerListDashBoard/?ChartName=CrossCompleteM2000';
+                }
+            );
 
         }
     }
@@ -26,6 +162,27 @@
             document.getElementById('Traction').style.display = "none";
             document.getElementById('General').style.display = "none";
 
+             @Html.Raw(JobTypePieChartHydro.CreateChartCode("JobTypePieChartHydro"));
+            var ctxHydro = document.getElementById("JobTypePieChartHydro").getContext("2d");
+            var myPieChartHydro = new Chart(ctxHydro, {
+                data: JobTypePieChartHydro.data,
+                options: JobTypePieChartHydro.options,
+            });
+
+            $("#JobTypePieChartHydro").click(
+                function (evt) {
+                    var activePoints = myPieChartHydro.getElementsAtEvent(evt);
+
+                    var chartData = activePoints[0]['_chart'].config.data;
+                    var idx = activePoints[0]['_index'];
+
+                    var label = chartData.labels[idx];
+                    var value = chartData.datasets[0].data[idx];
+                    if (label == "Working on it") window.location.href = '/Home/EngineerListDashBoard/?ChartName=OngoingHydro';
+                    if (label == "Cross Approval Complete") window.location.href = '/Home/EngineerListDashBoard/?ChartName=CrossCompleteHydro';
+                }
+            );
+
         }
     }
 
@@ -36,6 +193,27 @@
             document.getElementById('M2000').style.display = "none";
             document.getElementById('Hydro').style.display = "none";
             document.getElementById('General').style.display = "none";
+
+             @Html.Raw(JobTypePieChartTraction.CreateChartCode("JobTypePieChartTraction"));
+            var ctxTraction = document.getElementById("JobTypePieChartTraction").getContext("2d");
+            var myPieChartTraction = new Chart(ctxTraction, {
+                data: JobTypePieChartTraction.data,
+                options: JobTypePieChartTraction.options,
+            });
+
+            $("#JobTypePieChartTraction").click(
+                function (evt) {
+                    var activePoints = myPieChartTraction.getElementsAtEvent(evt);
+
+                    var chartData = activePoints[0]['_chart'].config.data;
+                    var idx = activePoints[0]['_index'];
+
+                    var label = chartData.labels[idx];
+                    var value = chartData.datasets[0].data[idx];
+                    if (label == "Working on it") window.location.href = '/Home/EngineerListDashBoard/?ChartName=OngoingTraction';
+                    if (label == "Cross Approval Complete") window.location.href = '/Home/EngineerListDashBoard/?ChartName=CrossCompleteTraction';
+                }
+            );
 
         }
     }
@@ -50,6 +228,7 @@
 
         }
     }
+
 
     $(document).ready(function () {
         var ctx = document.getElementById("JobTypePieChart").getContext("2d");
@@ -74,202 +253,34 @@
             }
         );
 
+
     });
 
 </script>
-
-
-<div>
-    <!--Genral-->
-    <div id="General" class="card" style="margin-bottom:50px">
-        <div class="card-header bg-dark text-center">
-            <div class="btn-group">
-                <!--Header Info-->
-                <button type="button" id="headingJobInfo" class="btn btn-dark" style="border-color:transparent" data-toggle="collapse" data-target="#collapseJobInfo" aria-expanded="true" aria-controls="collapseJobInfo">
-                    <h6 class="mb-0 text-left">General Information</h6>
-                </button>
-            </div>
-        </div>
-        <div class="row " style="padding-bottom:15px;">
-                <div class="col-6 border-right">
-                    <h4 class="text-center">Jobs</h4>
-                    <canvas id="JobTypePieChart"></canvas>
-                    @{ChartJSCore.Models.Chart JobTypePieChart = (ChartJSCore.Models.Chart)ViewData["JobTypePieChart"]; }
-                    <script>@Html.Raw(JobTypePieChart.CreateChartCode("JobTypePieChart"));</script>
-
-                </div>
-                <div class="col-6">
-                    <h4 class="text-center">Priority</h4>
-                    <canvas id="PieChartPriority"></canvas>
-                    @{ChartJSCore.Models.Chart PieChartPriority = (ChartJSCore.Models.Chart)ViewData["PieChartPriority"]; }
-                    <script>@Html.Raw(PieChartPriority.CreateChartCode("PieChartPriority"));</script>
-                </div>
-        </div>
-
-    </div>
-    <!--M2000-->
-    <div id="M2000" class="card" style="margin-bottom:50px;display:none;">
-        <div class="card-header bg-dark text-center">
-            <div class="btn-group" style="float:left">
-                <button type="button" value="Back" style="border-color:transparent" class="btn btn-dark btn-sm" onclick="displayGeneral()" >
-                    <i class="fas fa-arrow-left"></i>
-                </button>
-            </div>
-            <div class="btn-group">
-                <button type="button" id="headingJobInfo" class="btn btn-dark" style="border-color:transparent" data-toggle="collapse" data-target="#collapseJobInfo" aria-expanded="true" aria-controls="collapseJobInfo">
-                    <h6 class="mb-0 text-left">M2000 Information</h6>
-                </button>
-            </div>
-        </div>
-        <div class="row">
-                <div class="col-6">
-                    <h4 class="text-center">M2000</h4>
-                    <canvas id="JobTypePieChartM2000"></canvas>
-                    @{ChartJSCore.Models.Chart JobTypePieChartM2000 = (ChartJSCore.Models.Chart)ViewData["JobTypePieChartM2000"]; }
-                    <script>@Html.Raw(JobTypePieChartM2000.CreateChartCode("JobTypePieChartM2000"));</script>
-                </div>
-
-                <div class="col-6">
-                    <h4 class="text-center">Priority</h4>
-                    <canvas id="PieChartPriorityM2000"></canvas>
-                    @{ChartJSCore.Models.Chart PieChartPriorityM2000 = (ChartJSCore.Models.Chart)ViewData["PieChartPriorityM2000"]; }
-                    <script>@Html.Raw(PieChartPriorityM2000.CreateChartCode("PieChartPriorityM2000"));</script>
-                </div>
-        </div>
-
-    </div>
-    <!--Hydro-->
-    <div id="Hydro" class="card" style="margin-bottom:50px;display:none;">
-        <div class="card-header bg-dark text-center">
-            <div class="btn-group" style="float:left">
-                <button type="button" value="Back" style="border-color:transparent" class="btn btn-dark btn-sm" onclick="displayGeneral()">
-                    <i class="fas fa-arrow-left"></i>
-                </button>
-            </div>
-            <div class="btn-group">
-                <!--Header Info-->
-                <button type="button" id="headingJobInfo" class="btn btn-dark" style="border-color:transparent" data-toggle="collapse" data-target="#collapseJobInfo" aria-expanded="true" aria-controls="collapseJobInfo">
-                    <h6 class="mb-0 text-left">Hydro Information</h6>
-                </button>
-            </div>
-        </div>
-            <div class="row">
-                <div class="col-6 border-right">
-                    <h4 class="text-center">Element Hydro</h4>
-                    <canvas id="JobTypePieChartHydro"></canvas>
-                    @{ChartJSCore.Models.Chart JobTypePieChartHydro = (ChartJSCore.Models.Chart)ViewData["JobTypePieChartHydro"]; }
-                    <script>@Html.Raw(JobTypePieChartHydro.CreateChartCode("JobTypePieChartHydro"));</script>
-                </div>
-
-
-                <div class="col-6">
-                    <h4 class="text-center">Priority</h4>
-                    <canvas id="PieChartPriorityHydro"></canvas>
-                    @{ChartJSCore.Models.Chart PieChartPriorityHydro = (ChartJSCore.Models.Chart)ViewData["PieChartPriorityHydro"]; }
-                    <script>@Html.Raw(PieChartPriorityHydro.CreateChartCode("PieChartPriorityHydro"));</script>
-                </div>
-
-            </div>
-
-    </div>
-    <!--Traction-->
-    <div id="Traction" class="card" style="margin-bottom:50px;display:none;">
-        <div class="card-header bg-dark text-center">
-            <div class="btn-group" style="float:left">
-                <button type="button" value="Back" style="border-color:transparent" class="btn btn-dark btn-sm" onclick="displayGeneral()">
-                    <i class="fas fa-arrow-left"></i>
-                </button>
-            </div>
-            <div class="btn-group">
-                <!--Header Info-->
-                <button type="button" id="headingJobInfo" class="btn btn-dark" style="border-color:transparent" data-toggle="collapse" data-target="#collapseJobInfo" aria-expanded="true" aria-controls="collapseJobInfo">
-                    <h6 class="mb-0 text-left">Traction Information</h6>
-                </button>
-            </div>
-        </div>
-        <div class="row " style="padding-bottom:15px;">
-
-            <div class="col-6">
-                <h4 class="text-center">Element Traction</h4>
-                <canvas id="JobTypePieChartTraction"></canvas>
-                @{ChartJSCore.Models.Chart JobTypePieChartTraction = (ChartJSCore.Models.Chart)ViewData["JobTypePieChartTraction"]; }
-                <script>@Html.Raw(JobTypePieChartTraction.CreateChartCode("JobTypePieChartTraction"));</script>
-            </div>
-
-            <div class="col-6">
-                <h4 class="text-center">Priority</h4>
-                <canvas id="PieChartPriorityTraction"></canvas>
-                @{ChartJSCore.Models.Chart PieChartPriorityTraction = (ChartJSCore.Models.Chart)ViewData["PieChartPriorityTraction"]; }
-                <script>@Html.Raw(PieChartPriorityTraction.CreateChartCode("PieChartPriorityTraction"));</script>
-            </div>
-
-        </div>
-
-    </div>
-</div>
-        
-
-        <!-- Modal JobTypePieChartDetails M2000 -->
-        <div class="modal fade" id="JobTypePieChartDetailsM2000" tabindex="-1" role="dialog" aria-labelledby="JobTypePieChartDetailsCenterTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="JobTypePieChartDetailsCenterTitle">M2000</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        Do you wanna see full details?
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
-                        <input type="button" value="Go!" name="buttonAction" class="btn btn-primary btn-sm" onclick="displayM2000()">
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Modal JobTypePieChartDetails Element Hydro -->
-        <div class="modal fade" id="JobTypePieChartDetailsHydro" tabindex="-1" role="dialog" aria-labelledby="JobTypePieChartDetailsCenterTitleHydro" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="JobTypePieChartDetailsCenterTitleHydro">Element Hydro</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        Do you wanna see full details?
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
-                        
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Modal JobTypePieChartDetails Element Traction -->
-        <div class="modal fade" id="JobTypePieChartDetailsTraction" tabindex="-1" role="dialog" aria-labelledby="JobTypePieChartDetailsCenterTitleTraction" onclick="displayTraction()" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="JobTypePieChartDetailsCenterTitleTraction">Element Traction</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        Do you wanna see full details?
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
-                        <button type="submit" value="CrossApproved" name="buttonAction" class="btn btn-primary btn-sm">
-                            Go!
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
+@if (Model.ChartName != null && Model.ChartName != "")
+{
+    if (Model.ChartName == "OngoingM2000" || Model.ChartName == "PendingCrossM2000" || Model.ChartName == "OnCrossM2000" || Model.ChartName == "CrossCompleteM2000")
+    {
+        <script>
+            $(document).ready(function () {
+                displayM2000();
+            });
+        </script>
+    }
+    else if (Model.ChartName == "OngoingHydro" || Model.ChartName == "CrossCompleteHydro")
+    {
+        <script>
+            $(document).ready(function () {
+                displayHydro();
+            });
+        </script>
+    }
+    else if (Model.ChartName == "OngoingTraction" || Model.ChartName == "CrossCompleteTraction")
+    {
+        <script>
+            $(document).ready(function () {
+                displayTraction();
+            });
+        </script>
+    }
+}

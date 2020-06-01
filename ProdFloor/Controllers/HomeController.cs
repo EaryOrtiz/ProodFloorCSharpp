@@ -772,7 +772,7 @@ namespace ProdFloor.Controllers
 
         }
 
-        public IActionResult JobChartsDashBoard()
+        public IActionResult JobChartsDashBoard(string ChartName)
         {
             #region JobTypePieChartByJobType
 
@@ -1114,9 +1114,10 @@ namespace ProdFloor.Controllers
 
             #region ChartsByUser
             List<AppUser> users = userManager.Users.Where(m => m.EngID >= 1 && m.EngID <= 99 && !m.UserName.Contains("Tester")).ToList();
-            DashboardIndexViewModel dashboard = new DashboardIndexViewModel()
+            EngineerChartsViewModel dashboard = new EngineerChartsViewModel()
             {
-                users = users
+                users = users,
+                ChartName = ChartName
             };
 
             foreach (AppUser user in users)
@@ -1261,55 +1262,57 @@ namespace ProdFloor.Controllers
             return View("AdminDashBoard", dashboard);
         }
 
-        public ActionResult EngineerListDashBoard(string filtrado, string Sort = "default", int WorkingOnItM2000Page = 1, int PendingM2000Page = 1, int OnCrossM2000Page = 1, int CompleteM2000Page = 1,
+        public ActionResult EngineerListDashBoard(string ChartName, string Sort = "default", int WorkingOnItM2000Page = 1, int PendingM2000Page = 1, int OnCrossM2000Page = 1, int CompleteM2000Page = 1,
                                                                                             int WorkingOnItHydroPage = 1, int CompleteHydroPage = 1, int WorkingOnItTractionPage = 1, int CompleteTractionPage = 1)
         {
             AppUser currentUser = GetCurrentUser().Result;
             bool engineer = GetCurrentUserRole("EngAdmin").Result;
-            if (filtrado != null) Sort = filtrado;
-
-                List<JobType> JobTyPeList = itemRepo.JobTypes.ToList();
-                List<JobAdditional> MyJobAdditionalList = repository.JobAdditionals.ToList();
-                List<PO> POsList = repository.POs.ToList();
+            if (ChartName != null) Sort = ChartName;
 
 
-                //M2000
-                List<Job> JobsWorkingOnItM2000 = repository.Jobs
-                        .Where(j => j.Status == "Working on it").OrderByDescending(m => m._JobAdditional.Priority).ThenBy(n => n.LatestFinishDate).ToList();
-
-                List<Job> JobsCrossPendingM2000 = repository.Jobs
-                        .Where(j => j.Status == "Cross Approval Pending").OrderByDescending(m => m._JobAdditional.Priority).ThenBy(n => n.LatestFinishDate).ToList();
-
-                List<Job> JobsOnCrossM2000 = repository.Jobs
-                        .Where(j => j.Status == "On Cross Approval").OrderByDescending(m => m._JobAdditional.Priority).ThenBy(n => n.LatestFinishDate).ToList();
-
-                List<Job> JobsCrossCompleteM2000 = repository.Jobs
-                        .Where(j => j.Status == "Cross Approval Complete").OrderByDescending(m => m._JobAdditional.Priority).ThenBy(n => n.LatestFinishDate).ToList();
+            List<JobType> JobTyPeList = itemRepo.JobTypes.ToList();
+             List<JobAdditional> MyJobAdditionalList = repository.JobAdditionals.ToList();
+             List<PO> POsList = repository.POs.ToList();
 
 
-                //Hydro
-                List<Job> JobsWorkingOnItHydro = repository.Jobs
-                        .Where(j => j.Status == "Working on it").OrderByDescending(m => m._JobAdditional.Priority).ThenBy(n => n.LatestFinishDate).ToList();
+             //M2000
+             List<Job> JobsWorkingOnItM2000 = repository.Jobs.Where(j => j.Status == "Working on it" && j.JobTypeID == 2  && j.EngID > 0 && j.EngID < 100)
+                                                                .OrderByDescending(m => m._JobAdditional.Priority).ThenBy(n => n.LatestFinishDate).ToList();
 
-                List<Job> JobsCrossCompleteHydro = repository.Jobs
-                    .Where(j => j.Status == "Cross Approval Complete").OrderByDescending(m => m._JobAdditional.Priority).ThenBy(n => n.LatestFinishDate).ToList();
+             List<Job> JobsCrossPendingM2000 = repository.Jobs.Where(j => j.Status == "Cross Approval Pending" && j.JobTypeID == 2 && j.EngID > 0 && j.EngID < 100)
+                                                                .OrderByDescending(m => m._JobAdditional.Priority).ThenBy(n => n.LatestFinishDate).ToList();
 
+            List<Job> JobsOnCrossM2000 = repository.Jobs.Where(j => j.Status == "On Cross Approval" && j.JobTypeID == 2 && j.EngID > 0 && j.EngID < 100)
+                                                                .OrderByDescending(m => m._JobAdditional.Priority).ThenBy(n => n.LatestFinishDate).ToList();
 
-                //Traction
-                List<Job> JobsWorkingOnItTraction = repository.Jobs
-                        .Where(j => j.Status == "Working on it").OrderByDescending(m => m._JobAdditional.Priority).ThenBy(n => n.LatestFinishDate).ToList();
-
-                List<Job> JobsCrossCompleteTraction = repository.Jobs
-                    .Where(j => j.Status == "Cross Approval Complete").OrderByDescending(m => m._JobAdditional.Priority).ThenBy(n => n.LatestFinishDate).ToList();
-
-                
+            List<Job> JobsCrossCompleteM2000 = repository.Jobs.Where(j => j.Status == "Cross Approval Complete" && j.JobTypeID == 2 && j.EngID > 0 && j.EngID < 100)
+                                                                .OrderByDescending(m => m._JobAdditional.Priority).ThenBy(n => n.LatestFinishDate).ToList();
 
 
-                EngineerChartsViewModel dashboard = new EngineerChartsViewModel()
+            //Hydro
+            List<Job> JobsWorkingOnItHydro = repository.Jobs.Where(j => j.Status == "Working on it" &&  j.JobTypeID == 1  && j.EngID > 0 && j.EngID < 100)
+                                                                .OrderByDescending(m => m._JobAdditional.Priority).ThenBy(n => n.LatestFinishDate).ToList();
+
+            List<Job> JobsCrossCompleteHydro = repository.Jobs.Where(j => j.Status == "Cross Approval Complete" && j.JobTypeID == 1 && j.EngID > 0 && j.EngID < 100)
+                                                                .OrderByDescending(m => m._JobAdditional.Priority).ThenBy(n => n.LatestFinishDate).ToList();
+
+
+            //Traction
+            List<Job> JobsWorkingOnItTraction = repository.Jobs.Where(j => j.Status == "Working on it" &&  j.JobTypeID == 5 && j.EngID > 0 && j.EngID < 100)
+                                                                .OrderByDescending(m => m._JobAdditional.Priority).ThenBy(n => n.LatestFinishDate).ToList();
+
+            List<Job> JobsCrossCompleteTraction = repository.Jobs.Where(j => j.Status == "Cross Approval Complete" && j.JobTypeID == 5 && j.EngID > 0 && j.EngID < 100)
+                                                                .OrderByDescending(m => m._JobAdditional.Priority).ThenBy(n => n.LatestFinishDate).ToList();
+
+
+
+
+            EngineerChartsViewModel dashboard = new EngineerChartsViewModel()
                 {
                     JobTypes = JobTyPeList,
                     POs = POsList,
                     MyJobAdditionals = MyJobAdditionalList,
+                    ChartName = ChartName,
 
                     JobsWorkingOnItM2000 = JobsWorkingOnItM2000.Skip((WorkingOnItM2000Page - 1) * 6).Take(6),
                     PagingInfoWorkingOnItM2000 = new PagingInfo
@@ -1320,7 +1323,6 @@ namespace ProdFloor.Controllers
                         sort = Sort != "default" ? Sort : "deafult"
 
                     },
-
                     JobsCrossPendingM2000 = JobsCrossPendingM2000.Skip((PendingM2000Page - 1) * 6).Take(6),
                     PagingInfoCrossPendingM2000 = new PagingInfo
                     {
@@ -1377,7 +1379,7 @@ namespace ProdFloor.Controllers
                     {
                         CurrentPage = WorkingOnItTractionPage,
                         ItemsPerPage = 6,
-                        TotalItems = JobsWorkingOnItHydro.Count(),
+                        TotalItems = JobsWorkingOnItTraction.Count(),
                         sort = Sort != "default" ? Sort : "deafult"
 
                     },
@@ -1395,7 +1397,7 @@ namespace ProdFloor.Controllers
 
                 };
 
-                return View("EngineerAdminDashBoard", dashboard);
+                return View("EngineerListsChart", dashboard);
         }
 
 
