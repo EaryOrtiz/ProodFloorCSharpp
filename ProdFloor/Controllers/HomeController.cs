@@ -1265,6 +1265,7 @@ namespace ProdFloor.Controllers
         public ActionResult EngineerListDashBoard(string ChartName, string Sort = "default", int WorkingOnItM2000Page = 1, int PendingM2000Page = 1, int OnCrossM2000Page = 1, int CompleteM2000Page = 1,
                                                                                             int WorkingOnItHydroPage = 1, int CompleteHydroPage = 1, int WorkingOnItTractionPage = 1, int CompleteTractionPage = 1)
         {
+            int PageSize = 12;
             AppUser currentUser = GetCurrentUser().Result;
             bool engineer = GetCurrentUserRole("EngAdmin").Result;
             if (ChartName != null) Sort = ChartName;
@@ -1314,81 +1315,81 @@ namespace ProdFloor.Controllers
                     MyJobAdditionals = MyJobAdditionalList,
                     ChartName = ChartName,
 
-                    JobsWorkingOnItM2000 = JobsWorkingOnItM2000.Skip((WorkingOnItM2000Page - 1) * 6).Take(6),
+                    JobsWorkingOnItM2000 = JobsWorkingOnItM2000.Skip((WorkingOnItM2000Page - 1) * PageSize).Take(PageSize),
                     PagingInfoWorkingOnItM2000 = new PagingInfo
                     {
                         CurrentPage = WorkingOnItM2000Page,
-                        ItemsPerPage = 6,
+                        ItemsPerPage = PageSize,
                         TotalItems = JobsWorkingOnItM2000.Count(),
                         sort = Sort != "default" ? Sort : "deafult"
 
                     },
-                    JobsCrossPendingM2000 = JobsCrossPendingM2000.Skip((PendingM2000Page - 1) * 6).Take(6),
+                    JobsCrossPendingM2000 = JobsCrossPendingM2000.Skip((PendingM2000Page - 1) * PageSize).Take(PageSize),
                     PagingInfoCrossPendingM2000 = new PagingInfo
                     {
                         CurrentPage = PendingM2000Page,
-                        ItemsPerPage = 6,
+                        ItemsPerPage = PageSize,
                         TotalItems = JobsCrossPendingM2000.Count(),
                         sort = Sort != "default" ? Sort : "deafult"
 
                     },
 
-                    JobsOnCrossM2000 = JobsOnCrossM2000.Skip((OnCrossM2000Page - 1) * 6).Take(6),
+                    JobsOnCrossM2000 = JobsOnCrossM2000.Skip((OnCrossM2000Page - 1) * PageSize).Take(PageSize),
                     PagingInfoOnCrossM2000 = new PagingInfo
                     {
                         CurrentPage = OnCrossM2000Page,
-                        ItemsPerPage = 6,
+                        ItemsPerPage = PageSize,
                         TotalItems = JobsOnCrossM2000.Count(),
                         sort = Sort != "default" ? Sort : "deafult"
 
                     },
 
-                    JobsCrossCompleteM2000 = JobsCrossCompleteM2000.Skip((CompleteM2000Page - 1) * 6).Take(6),
+                    JobsCrossCompleteM2000 = JobsCrossCompleteM2000.Skip((CompleteM2000Page - 1) * PageSize).Take(PageSize),
                     PagingInfoCrossCompleteM2000 = new PagingInfo
                     {
                         CurrentPage = CompleteM2000Page,
-                        ItemsPerPage = 6,
+                        ItemsPerPage = PageSize,
                         TotalItems = JobsCrossCompleteM2000.Count(),
                         sort = Sort != "default" ? Sort : "deafult"
 
                     },
 
-                    JobsWorkingOnItHydro = JobsWorkingOnItHydro.Skip((WorkingOnItHydroPage - 1) * 6).Take(6),
+                    JobsWorkingOnItHydro = JobsWorkingOnItHydro.Skip((WorkingOnItHydroPage - 1) * PageSize).Take(PageSize),
                     PagingInfoWorkingOnItHydro = new PagingInfo
                     {
                         CurrentPage = WorkingOnItHydroPage,
-                        ItemsPerPage = 6,
+                        ItemsPerPage = PageSize,
                         TotalItems = JobsWorkingOnItHydro.Count(),
                         sort = Sort != "default" ? Sort : "deafult"
 
                     },
 
-                    JobsCrossCompleteHydro = JobsCrossCompleteHydro.Skip((CompleteHydroPage - 1) * 6).Take(6),
+                    JobsCrossCompleteHydro = JobsCrossCompleteHydro.Skip((CompleteHydroPage - 1) * PageSize).Take(PageSize),
                     PagingInfoCrossCompleteHydro = new PagingInfo
                     {
                         CurrentPage = CompleteHydroPage,
-                        ItemsPerPage = 6,
+                        ItemsPerPage = PageSize,
                         TotalItems = JobsCrossCompleteHydro.Count(),
                         sort = Sort != "default" ? Sort : "deafult"
 
                     },
 
 
-                    JobsWorkingOnItTraction = JobsWorkingOnItTraction.Skip((WorkingOnItTractionPage - 1) * 6).Take(6),
+                    JobsWorkingOnItTraction = JobsWorkingOnItTraction.Skip((WorkingOnItTractionPage - 1) * PageSize).Take(PageSize),
                     PagingInfoWorkingOnItTraction = new PagingInfo
                     {
                         CurrentPage = WorkingOnItTractionPage,
-                        ItemsPerPage = 6,
+                        ItemsPerPage = PageSize,
                         TotalItems = JobsWorkingOnItTraction.Count(),
                         sort = Sort != "default" ? Sort : "deafult"
 
                     },
 
-                    JobsCrossCompleteTraction = JobsCrossCompleteTraction.Skip((CompleteTractionPage - 1) * 6).Take(6),
+                    JobsCrossCompleteTraction = JobsCrossCompleteTraction.Skip((CompleteTractionPage - 1) * PageSize).Take(PageSize),
                     PagingInfoCrossCompleteTraction = new PagingInfo
                     {
                         CurrentPage = CompleteTractionPage,
-                        ItemsPerPage = 6,
+                        ItemsPerPage = PageSize,
                         TotalItems = JobsCrossCompleteTraction.Count(),
                         sort = Sort != "default" ? Sort : "deafult"
 

@@ -3,13 +3,12 @@
     ViewBag.Title = "Steps for job";
     Layout = "_AdminLayoutWO";
 }
+<br />
 <div class="row" style="padding-right:20px">
-    <br /><br />
     <h4 class="col-sm-10">
         Steps for Job #@Model.Job.JobNum and PO #@Model.TestJob.SinglePO
     </h4>
 </div>
-<br />
 <div>
     <table class="table table-striped border table-sm" style="text-align:center">
         <tr class="table-info">
@@ -45,39 +44,39 @@
         @foreach (var item in Model.StepsForJobList)
         {
 
-    <tr>
-        <td>
-            @Html.DisplayFor(m => item.Consecutivo)
-        </td>
-        <td>
-            @Html.DisplayFor(m => Model.StepList.FirstOrDefault(s => s.StepID == item.StepID).Description)
-        </td>
-        <td>
-            @Html.DisplayFor(m => item.Start)
-        </td>
-        <td>
-            @Html.DisplayFor(m => item.Stop)
-        </td>
-        <td>
-            @((item.Elapsed.Day - 1).ToString()):@(item.Elapsed.Hour.ToString()):@(item.Elapsed.Minute.ToString()):@(item.Elapsed.Second.ToString())
-        </td>
-        <td>
-            @Html.DisplayFor(m => item.Complete)
-        </td>
-        <td>
-            @Html.DisplayFor(m => item.Obsolete)
-        </td>
-        @if (User.IsInRole("Admin"))
-        {
-            <td style="width:100px">
+            <tr>
+                <td>
+                    @Html.DisplayFor(m => item.Consecutivo)
+                </td>
+                <td>
+                    @Html.DisplayFor(m => Model.StepList.FirstOrDefault(s => s.StepID == item.StepID).Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(m => item.Start)
+                </td>
+                <td>
+                    @Html.DisplayFor(m => item.Stop)
+                </td>
+                <td>
+                    @((item.Elapsed.Day - 1).ToString()):@(item.Elapsed.Hour.ToString()):@(item.Elapsed.Minute.ToString()):@(item.Elapsed.Second.ToString())
+                </td>
+                <td>
+                    @Html.DisplayFor(m => item.Complete)
+                </td>
+                <td>
+                    @Html.DisplayFor(m => item.Obsolete)
+                </td>
+                @if (User.IsInRole("Admin"))
+                {
+                    <td style="width:100px">
 
-                <a asp-action="EditStepsForJob" asp-controller="Step" class="btn btn-sm btn-warning"
-                   asp-route-Id="@item.StepsForJobID">
-                    <i class="fas fa-edit"></i>
-                </a>
-            </td>
-        }
-    </tr>
+                        <a asp-action="EditStepsForJob" asp-controller="Step" class="btn btn-sm btn-warning"
+                           asp-route-Id="@item.StepsForJobID">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                    </td>
+                }
+            </tr>
 
         }
     </table>
