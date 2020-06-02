@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.ComponentModel.DataAnnotations.Schema;
+using NPOI.SS.Formula.Functions;
 
 namespace ProdFloor.Models
 {
@@ -663,6 +664,7 @@ namespace ProdFloor.Models
         [Required(ErrorMessage = "Please enter the total travel")]
         [Display(Name = "Total Travel")]
         public int TotalTravel { get; set; }
+
         [Required(ErrorMessage = "Please enter the landing system")]
         [Display(Name = "Landing System")]
         public int LandingSystemID { get; set; }

@@ -13,43 +13,51 @@
         <h3>Additional Information</h3>
         <div class="form-group row has-warning has-feedback">
             <label asp-for="CurrentJobExtension.NumOfStops" class="col-sm-5 col-form-label"></label>
-            <div><span asp-validation-for="CurrentJobExtension.NumOfStops" class="text-danger"></span></div>
-            <input asp-for="CurrentJobExtension.NumOfStops" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control col-sm-6" />
+            <div>
+                <input asp-for="CurrentJobExtension.NumOfStops" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control col-sm-6" />
+                <span asp-validation-for="CurrentJobExtension.NumOfStops" class="text-danger"></span>
+            </div>
         </div>
         <div class="form-group row" style="margin-bottom:0.5em;">
             <label asp-for="CurrentJobExtension.JobTypeMain" class="col-sm-5 col-form-label"></label>
             <div>
-                <span asp-validation-for="CurrentJobExtension.JobTypeMain" class="text-danger"></span>
                 <indicators id="JobTypeMain" select-for="JobType" selected-value="@Model.CurrentJobExtension.JobTypeMain" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" class="form-control form-control-sm" asp-for="CurrentJobExtension.JobTypeMain"></indicators>
+                <span asp-validation-for="CurrentJobExtension.JobTypeMain" class="text-danger"></span>
             </div>
         </div>
         <div class="form-group row" style="margin-bottom:0.5em;">
             <label asp-for="CurrentJobExtension.JobTypeAdd" class="col-sm-5 col-form-label"></label>
             <div>
-                <span asp-validation-for="CurrentJobExtension.JobTypeAdd" class="text-danger"></span>
                 <indicators id="JobTypeAdd" select-for="JobType2" selected-value="@Model.CurrentJobExtension.JobTypeAdd" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" class="form-control form-control-sm" asp-for="CurrentJobExtension.JobTypeAdd"></indicators>
+                <span asp-validation-for="CurrentJobExtension.JobTypeAdd" class="text-danger"></span>
             </div>
         </div>
         <div class="form-group row">
             <label asp-for="CurrentJobExtension.InputVoltage" class="col-sm-5 col-form-label"></label>
-            <div><span asp-validation-for="CurrentJobExtension.InputVoltage" class="text-danger"></span></div>
-            <input asp-for="CurrentJobExtension.InputVoltage" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" class="form-control col-sm-6" />
+            <div>
+                <input asp-for="CurrentJobExtension.InputVoltage" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" class="form-control col-sm-6" />
+                <span asp-validation-for="CurrentJobExtension.InputVoltage" class="text-danger"></span>
+            </div>
         </div>
         <div class="form-group row">
             <label asp-for="CurrentJobExtension.InputPhase" class="col-sm-5 col-form-label"></label>
-            <div><span asp-validation-for="CurrentJobExtension.InputPhase" class="text-danger"></span></div>
-            <input asp-for="CurrentJobExtension.InputPhase" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true )" class="form-control col-sm-6" />
+            <div>
+                <input asp-for="CurrentJobExtension.InputPhase" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true )" class="form-control col-sm-6" />
+                <span asp-validation-for="CurrentJobExtension.InputPhase" class="text-danger"></span>
+            </div>
         </div>
         <div class="form-group row">
             <label asp-for="CurrentJobExtension.InputFrecuency" class="col-sm-5 col-form-label"></label>
-            <div><span asp-validation-for="CurrentJobExtension.InputFrecuency" class="text-danger"></span></div>
-            <input asp-for="CurrentJobExtension.InputFrecuency" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true )" class="form-control col-sm-6" />
+            <div>
+                <input asp-for="CurrentJobExtension.InputFrecuency" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true )" class="form-control col-sm-6" />
+                <span asp-validation-for="CurrentJobExtension.InputFrecuency" class="text-danger"></span>
+            </div>
         </div>
         <div class="form-group row" style="margin-bottom:0.5em;">
             <label asp-for="CurrentJobExtension.DoorHoist" class="col-sm-5 col-form-label"></label>
             <div>
-                <span asp-validation-for="CurrentJobExtension.DoorHoist" class="text-danger"></span>
                 <custom-select select-for="Style" selected-value="@Model.CurrentJobExtension.DoorHoist" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" class="form-control form-control-sm" asp-for="CurrentJobExtension.DoorHoist"></custom-select>
+                <span asp-validation-for="CurrentJobExtension.DoorHoist" class="text-danger"></span>
             </div>
         </div>
         <div class="form-group row" style="margin-bottom:0.5em;">
