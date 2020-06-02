@@ -55,7 +55,6 @@
                 <h4 class="text-center">Priority</h4>
                 <canvas id="PieChartPriorityM2000"></canvas>
                 @{ChartJSCore.Models.Chart PieChartPriorityM2000 = (ChartJSCore.Models.Chart)ViewData["PieChartPriorityM2000"]; }
-                <script>@Html.Raw(PieChartPriorityM2000.CreateChartCode("PieChartPriorityM2000"));</script>
             </div>
         </div>
     </div>
@@ -84,7 +83,6 @@
                 <h4 class="text-center">Priority</h4>
                 <canvas id="PieChartPriorityHydro"></canvas>
                 @{ChartJSCore.Models.Chart PieChartPriorityHydro = (ChartJSCore.Models.Chart)ViewData["PieChartPriorityHydro"]; }
-                <script>@Html.Raw(PieChartPriorityHydro.CreateChartCode("PieChartPriorityHydro"));</script>
             </div>
         </div>
     </div>
@@ -113,7 +111,6 @@
                 <h4 class="text-center">Priority</h4>
                 <canvas id="PieChartPriorityTraction"></canvas>
                 @{ChartJSCore.Models.Chart PieChartPriorityTraction = (ChartJSCore.Models.Chart)ViewData["PieChartPriorityTraction"]; }
-                <script>@Html.Raw(PieChartPriorityTraction.CreateChartCode("PieChartPriorityTraction"));</script>
             </div>
         </div>
     </div>
@@ -129,6 +126,7 @@
             document.getElementById('Traction').style.display = "none";
 
             @Html.Raw(JobTypePieChartM2000.CreateChartCode("JobTypePieChartM2000"));
+            @Html.Raw(PieChartPriorityM2000.CreateChartCode("PieChartPriorityM2000"));
             var ctxM2000 = document.getElementById("JobTypePieChartM2000").getContext("2d");
             var myPieChartM2000 = new Chart(ctxM2000, {
                 data: JobTypePieChartM2000.data,
@@ -162,7 +160,8 @@
             document.getElementById('Traction').style.display = "none";
             document.getElementById('General').style.display = "none";
 
-             @Html.Raw(JobTypePieChartHydro.CreateChartCode("JobTypePieChartHydro"));
+            @Html.Raw(JobTypePieChartHydro.CreateChartCode("JobTypePieChartHydro"));
+            @Html.Raw(PieChartPriorityHydro.CreateChartCode("PieChartPriorityHydro"));
             var ctxHydro = document.getElementById("JobTypePieChartHydro").getContext("2d");
             var myPieChartHydro = new Chart(ctxHydro, {
                 data: JobTypePieChartHydro.data,
@@ -194,7 +193,8 @@
             document.getElementById('Hydro').style.display = "none";
             document.getElementById('General').style.display = "none";
 
-             @Html.Raw(JobTypePieChartTraction.CreateChartCode("JobTypePieChartTraction"));
+            @Html.Raw(JobTypePieChartTraction.CreateChartCode("JobTypePieChartTraction"));
+            @Html.Raw(PieChartPriorityTraction.CreateChartCode("PieChartPriorityTraction"));
             var ctxTraction = document.getElementById("JobTypePieChartTraction").getContext("2d");
             var myPieChartTraction = new Chart(ctxTraction, {
                 data: JobTypePieChartTraction.data,
