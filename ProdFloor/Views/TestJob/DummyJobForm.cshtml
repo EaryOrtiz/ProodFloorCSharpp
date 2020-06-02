@@ -33,18 +33,24 @@
             </div>
             <div class="form-group row">
                 <label asp-for="Job.JobTypeID" class="col-sm-4 col-form-label"></label>
-                <job-type-select selected-value="@Model.Job.JobTypeID" class="form-control-sm form-control col-sm-4" id="JobTypeNum" asp-for="Job.JobTypeID"  asp-is-disabled="@true"></job-type-select>
-                <span asp-validation-for="Job.JobTypeID" class="text-danger"></span>
+                <div>
+                    <job-type-select selected-value="@Model.Job.JobTypeID" class="form-control-sm form-control col-sm-15" id="JobTypeNum" asp-for="Job.JobTypeID" asp-is-disabled="@true"></job-type-select>
+                    <span asp-validation-for="Job.JobTypeID" class="text-danger"></span>
+                </div>
             </div>
             <div class="form-group row">
                 <label asp-for="JobExtension.JobTypeMain" class="col-sm-4 col-form-label"></label>
-                <indicators select-for="JobType" selected-value="@Model.JobExtension.JobTypeMain" class="form-control-sm form-control col-sm-4" asp-for="JobExtension.JobTypeMain" required asp-is-disabled="@Model.isNotDummy"></indicators>
-                <span asp-validation-for="JobExtension.JobTypeMain" class="text-danger"></span>
+                <div>
+                    <indicators select-for="JobType" selected-value="@Model.JobExtension.JobTypeMain" class="form-control-sm form-control col-sm-15" asp-for="JobExtension.JobTypeMain" required asp-is-disabled="@Model.isNotDummy"></indicators>
+                    <span asp-validation-for="JobExtension.JobTypeMain" class="text-danger"></span>
+                </div>
             </div>
             <div class="form-group row">
                 <label asp-for="HoistWayData.LandingSystemID" class="col-sm-4 col-form-label"></label>
-                <landing-sys-select selected-value="@Model.HoistWayData.LandingSystemID" class="form-control-sm form-control col-sm-4" id="LandingSystemID" asp-for="HoistWayData.LandingSystemID" required asp-is-disabled="@Model.isNotDummy"></landing-sys-select>
-                <span asp-validation-for="HoistWayData.LandingSystemID" class="text-danger"></span>
+                <div>
+                    <landing-sys-select selected-value="@Model.HoistWayData.LandingSystemID" class="form-control-sm form-control col-sm-15" id="LandingSystemID" asp-for="HoistWayData.LandingSystemID" required asp-is-disabled="@Model.isNotDummy"></landing-sys-select>
+                    <span asp-validation-for="HoistWayData.LandingSystemID" class="text-danger"></span>
+                </div>
             </div>
             <div class="form-group row">
                 <label asp-for="PO.PONumb" class="col-sm-4 col-form-label"></label>
