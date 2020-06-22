@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using ProdFloor.Models;
 using ProdFloor.Models.ViewModels;
 using ProdFloor.Models.ViewModels.TestJob;
@@ -2699,6 +2700,69 @@ namespace ProdFloor.Controllers
             jobNum.lastDigits = int.Parse(JobNumber.Remove(0, 5));
 
             return jobNum;
+        }
+
+        public ViewResult TechStats()
+        {
+            List<TestJob>  ActiveTestJobs = testingRepo.TestJobs.Where(m => m.Status != "Completed" && m.Status != "Deleted").ToList();
+            List<AppUser> Users = userManager.Users.Where(m => m.EngID >= 100 && m.EngID <= 299).ToList();
+            List<Job> JobsinTest = jobRepo.Jobs.Where(m => ActiveTestJobs.Any(n => n.JobID == m.JobID)).ToList();
+            List<Station> StationFromTestJobs= testingRepo.Stations.Where(m => ActiveTestJobs.Any(n => n.StationID == m.StationID)).ToList();
+            List<Step> StepsListForIncompleted = testingRepo.Steps.ToList();
+            List<Step> StepsListForCompleted = StepsListForIncompleted;
+
+            List<StepsForJob> stepsForJobCompleted = new List<StepsForJob>();
+            List<StepsForJob> stepsForJobNotCompleted = new List<StepsForJob>();
+
+            foreach (TestJob testjob in ActiveTestJobs)
+            {
+                string JobNum = JobsinTest.FirstOrDefault(m => m.JobID == testjob.JobID).JobNum.Remove(0, 5);
+                string TechName = Users.FirstOrDefault(m => m.EngID == testjob.TechnicianID).FullName;
+                string StationName = StationFromTestJobs.FirstOrDefault(m => m.StationID == testjob.StationID).Label;
+                string Efficiency = "";
+                string Stage = "";
+                double ExpectedTimeSUM = 0;
+                double RealTimeSUM = 0;
+                double TTC = 0;
+
+                stepsForJobNotCompleted = testingRepo.StepsForJobs.Where(m => m.TestJobID == testjob.TestJobID && m.Complete == false && m.Obsolete == false).OrderBy(n => n.Consecutivo).ToList();
+                StepsListForIncompleted = StepsListForIncompleted.Where(m => stepsForJobNotCompleted.Any(n => n.StepID == m.StepID)).ToList();
+
+                foreach (StepsForJob step in stepsForJobNotCompleted)
+                {
+                    TTC =+ ToHours(StepsListForIncompleted.FirstOrDefault(m => m.StepID == step.StepID).ExpectedTime);
+                }
+
+                stepsForJobCompleted = testingRepo.StepsForJobs.Where(m => m.TestJobID == testjob.TestJobID && m.Complete == true).OrderBy(n => n.Consecutivo).ToList();
+                StepsListForCompleted = StepsListForCompleted.Where(m => stepsForJobCompleted.Any(n => n.StepID == m.StepID)).ToList();
+
+                Stage = StepsListForCompleted.FirstOrDefault(m => m.StepID == stepsForJobCompleted.Last().StepID).Stage;
+
+                if(testjob.Status == "Working on it")
+                {
+                    foreach (StepsForJob step in stepsForJobCompleted)
+                    {
+                        ExpectedTimeSUM = +ToHours(StepsListForCompleted.FirstOrDefault(m => m.StepID == step.StepID).ExpectedTime);
+                        RealTimeSUM = +ToHours(step.Elapsed);
+                    }
+
+                    Efficiency = ((ExpectedTimeSUM / RealTimeSUM) * 100).ToString();
+                }else if(testjob.Status == "Stopped")
+                {
+
+                }
+                else if(testjob.Status == "Shift End")
+                { 
+
+                }
+
+               
+                
+
+            }
+
+
+            return View();
         }
 
     }
