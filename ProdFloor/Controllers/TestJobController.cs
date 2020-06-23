@@ -2706,28 +2706,59 @@ namespace ProdFloor.Controllers
         {
             List<TestJob>  ActiveTestJobs = testingRepo.TestJobs.Where(m => m.Status != "Completed" && m.Status != "Deleted").ToList();
             List<AppUser> Users = userManager.Users.Where(m => m.EngID >= 100 && m.EngID <= 299).ToList();
-            List<Job> JobsinTest = jobRepo.Jobs.Where(m => ActiveTestJobs.Any(n => n.JobID == m.JobID)).ToList();
+            IQueryable<Job> JobsinTest = jobRepo.Jobs.Where(m => ActiveTestJobs.Any(n => n.JobID == m.JobID));
             List<Station> StationFromTestJobs= testingRepo.Stations.Where(m => ActiveTestJobs.Any(n => n.StationID == m.StationID)).ToList();
             List<Step> StepsListForIncompleted = testingRepo.Steps.ToList();
             List<Step> StepsListForCompleted = StepsListForIncompleted;
 
             List<StepsForJob> stepsForJobCompleted = new List<StepsForJob>();
             List<StepsForJob> stepsForJobNotCompleted = new List<StepsForJob>();
+            int counter = 1;
+
+            //Auxiliares
+            
 
             foreach (TestJob testjob in ActiveTestJobs)
             {
-                string JobNum = JobsinTest.FirstOrDefault(m => m.JobID == testjob.JobID).JobNum.Remove(0, 5);
+                TestFeature FeaturesFromTestJob = testingRepo.TestFeatures.First(m => m.TestJobID == testjob.TestJobID);
+                Job FeaturesFromJob = JobsinTest.FirstOrDefault(m => m.JobID == testjob.JobID);
+                LandingSystem Landing = new LandingSystem();
+                City UniqueCity = itemRepository.Cities.FirstOrDefault(m => m.CityID == FeaturesFromJob.CityID);
+                State StateFromCity = itemRepository.States.FirstOrDefault(m => m.StateID == UniqueCity.StateID);
+
+                string JobNum = FeaturesFromJob.JobNum.Remove(0, 5);
                 string TechName = Users.FirstOrDefault(m => m.EngID == testjob.TechnicianID).FullName;
                 string StationName = StationFromTestJobs.FirstOrDefault(m => m.StationID == testjob.StationID).Label;
-                string Efficiency = "";
+                double Efficiency = 0;
                 string Stage = "";
+                string Status = "";
+                string Color = "";
                 double ExpectedTimeSUM = 0;
                 double RealTimeSUM = 0;
                 double TTC = 0;
 
+                int jobtypeID = FeaturesFromJob.JobTypeID;
+                if(JobTypeName(jobtypeID) == "M2000" || JobTypeName(jobtypeID) == "M4000")
+                {
+                    FeaturesFromJob = JobsinTest.Include(m => m._jobExtension).Include(m => m._HydroSpecific).Include(m => m._HoistWayData).Include(m => m._GenericFeatures).FirstOrDefault(m => m.JobID == testjob.JobID);
+                    Landing = itemRepository.LandingSystems.FirstOrDefault(m => m.LandingSystemID == FeaturesFromJob._HoistWayData.LandingSystemID);
+
+                }
+                else
+                {
+                    FeaturesFromJob = jobRepo.Jobs.First(m => m.JobID == testjob.JobID);
+                    Element element = jobRepo.Elements.FirstOrDefault(j => j.JobID == FeaturesFromJob.JobID);
+                    ElementHydro elementHydro = jobRepo.ElementHydros.FirstOrDefault(j => j.JobID == FeaturesFromJob.JobID);
+                    Landing = itemRepository.LandingSystems.FirstOrDefault(m => m.LandingSystemID == element.LandingSystemID);
+                }
+                
+               
+
+
                 stepsForJobNotCompleted = testingRepo.StepsForJobs.Where(m => m.TestJobID == testjob.TestJobID && m.Complete == false && m.Obsolete == false).OrderBy(n => n.Consecutivo).ToList();
                 StepsListForIncompleted = StepsListForIncompleted.Where(m => stepsForJobNotCompleted.Any(n => n.StepID == m.StepID)).ToList();
-
+                
+                //loop for TTC
                 foreach (StepsForJob step in stepsForJobNotCompleted)
                 {
                     TTC =+ ToHours(StepsListForIncompleted.FirstOrDefault(m => m.StepID == step.StepID).ExpectedTime);
@@ -2735,9 +2766,11 @@ namespace ProdFloor.Controllers
 
                 stepsForJobCompleted = testingRepo.StepsForJobs.Where(m => m.TestJobID == testjob.TestJobID && m.Complete == true).OrderBy(n => n.Consecutivo).ToList();
                 StepsListForCompleted = StepsListForCompleted.Where(m => stepsForJobCompleted.Any(n => n.StepID == m.StepID)).ToList();
-
+                
+                //a simple query to get the stage
                 Stage = StepsListForCompleted.FirstOrDefault(m => m.StepID == stepsForJobCompleted.Last().StepID).Stage;
 
+                //if to get efficiency or status(stopped)
                 if(testjob.Status == "Working on it")
                 {
                     foreach (StepsForJob step in stepsForJobCompleted)
@@ -2746,15 +2779,28 @@ namespace ProdFloor.Controllers
                         RealTimeSUM = +ToHours(step.Elapsed);
                     }
 
-                    Efficiency = ((ExpectedTimeSUM / RealTimeSUM) * 100).ToString();
-                }else if(testjob.Status == "Stopped")
+                    Efficiency = Math.Round((ExpectedTimeSUM / RealTimeSUM) * 100, MidpointRounding.AwayFromZero);
+
+                    if (Efficiency > 82) Color = "DodgerBlue";
+                    else if (Efficiency > 69) Color = "DarkOrange";
+                    else Color = "Red";
+
+                    Status = Efficiency.ToString() + "%";
+
+                }
+                else
                 {
+                    Stop stop = testingRepo.Stops.Where(m => m.TestJobID == testjob.TestJobID).Last();
+                    Reason1 reason = testingRepo.Reasons1.FirstOrDefault(m => m.Reason1ID == stop.Reason1);
+                    Status = "Stopped: " + reason.Description;
+
+                    if (stop.Critical) Color = "Red";
+                    else Color = "DarkGrey";
 
                 }
-                else if(testjob.Status == "Shift End")
-                { 
 
-                }
+                //logic to get the cat(difficulty)
+                TestFeature testFeature = testingRepo.TestFeatures.FirstOrDefault();
 
                
                 
