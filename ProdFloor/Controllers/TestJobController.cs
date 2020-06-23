@@ -2737,28 +2737,11 @@ namespace ProdFloor.Controllers
                 double RealTimeSUM = 0;
                 double TTC = 0;
 
-                int jobtypeID = FeaturesFromJob.JobTypeID;
-                if(JobTypeName(jobtypeID) == "M2000" || JobTypeName(jobtypeID) == "M4000")
-                {
-                    FeaturesFromJob = JobsinTest.Include(m => m._jobExtension).Include(m => m._HydroSpecific).Include(m => m._HoistWayData).Include(m => m._GenericFeatures).FirstOrDefault(m => m.JobID == testjob.JobID);
-                    Landing = itemRepository.LandingSystems.FirstOrDefault(m => m.LandingSystemID == FeaturesFromJob._HoistWayData.LandingSystemID);
 
-                }
-                else
-                {
-                    FeaturesFromJob = jobRepo.Jobs.First(m => m.JobID == testjob.JobID);
-                    Element element = jobRepo.Elements.FirstOrDefault(j => j.JobID == FeaturesFromJob.JobID);
-                    ElementHydro elementHydro = jobRepo.ElementHydros.FirstOrDefault(j => j.JobID == FeaturesFromJob.JobID);
-                    Landing = itemRepository.LandingSystems.FirstOrDefault(m => m.LandingSystemID == element.LandingSystemID);
-                }
-                
-               
-
-
+                //Logic for TTC
                 stepsForJobNotCompleted = testingRepo.StepsForJobs.Where(m => m.TestJobID == testjob.TestJobID && m.Complete == false && m.Obsolete == false).OrderBy(n => n.Consecutivo).ToList();
                 StepsListForIncompleted = StepsListForIncompleted.Where(m => stepsForJobNotCompleted.Any(n => n.StepID == m.StepID)).ToList();
                 
-                //loop for TTC
                 foreach (StepsForJob step in stepsForJobNotCompleted)
                 {
                     TTC =+ ToHours(StepsListForIncompleted.FirstOrDefault(m => m.StepID == step.StepID).ExpectedTime);
@@ -2800,10 +2783,21 @@ namespace ProdFloor.Controllers
                 }
 
                 //logic to get the cat(difficulty)
-                TestFeature testFeature = testingRepo.TestFeatures.FirstOrDefault();
+                int jobtypeID = FeaturesFromJob.JobTypeID;
+                if (JobTypeName(jobtypeID) == "M2000" || JobTypeName(jobtypeID) == "M4000")
+                {
+                    FeaturesFromJob = JobsinTest.Include(m => m._jobExtension).Include(m => m._HydroSpecific).Include(m => m._HoistWayData).Include(m => m._GenericFeatures).FirstOrDefault(m => m.JobID == testjob.JobID);
+                    Landing = itemRepository.LandingSystems.FirstOrDefault(m => m.LandingSystemID == FeaturesFromJob._HoistWayData.LandingSystemID);
 
-               
-                
+                }
+                else
+                {
+                    FeaturesFromJob = jobRepo.Jobs.First(m => m.JobID == testjob.JobID);
+                    Element element = jobRepo.Elements.FirstOrDefault(j => j.JobID == FeaturesFromJob.JobID);
+                    ElementHydro elementHydro = jobRepo.ElementHydros.FirstOrDefault(j => j.JobID == FeaturesFromJob.JobID);
+                    Landing = itemRepository.LandingSystems.FirstOrDefault(m => m.LandingSystemID == element.LandingSystemID);
+                }
+
 
             }
 
