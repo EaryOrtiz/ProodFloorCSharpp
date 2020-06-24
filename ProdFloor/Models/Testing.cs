@@ -251,8 +251,9 @@ namespace ProdFloor.Models
         public string Status { get; set; }
         public string Category { get; set; }
         public string Station { get; set; }
-        public string TTC { get; set; }
-        public string JobType { get; set; }
+        public DateTime TTC { get; set; }
+
+        public string Color { get; set; }
     }
 
 }

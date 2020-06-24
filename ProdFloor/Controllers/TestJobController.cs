@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -2702,7 +2703,7 @@ namespace ProdFloor.Controllers
             return jobNum;
         }
 
-        public ViewResult TestStats(string JobType)
+        public ViewResult TestStats(TestJobViewModel viewModel, string JobType)
         {
             List<TestJob>  ActiveTestJobs = testingRepo.TestJobs.Where(m => m.Status != "Completed" && m.Status != "Deleted").ToList();
             List<AppUser> Users = userManager.Users.Where(m => m.EngID >= 100 && m.EngID <= 299).ToList();
@@ -2735,17 +2736,22 @@ namespace ProdFloor.Controllers
                 double Efficiency = 0;
                 double ExpectedTimeSUM = 0;
                 double RealTimeSUM = 0;
-                double TTC = 0;
+                double TTCAux = 0;
+                DateTime TTC = new DateTime();
 
 
                 //Logic for TTC
                 stepsForJobNotCompleted = testingRepo.StepsForJobs.Where(m => m.TestJobID == testjob.TestJobID && m.Complete == false && m.Obsolete == false).OrderBy(n => n.Consecutivo).ToList();
                 StepsListForIncompleted = StepsListForIncompleted.Where(m => stepsForJobNotCompleted.Any(n => n.StepID == m.StepID)).ToList();
-                
+                StepsForJob LastStepsForJob = stepsForJobNotCompleted.FirstOrDefault(m => m.Complete == false);
+                Step LastStepInfo = StepsListForIncompleted.FirstOrDefault(m => m.StepID == LastStepsForJob.StepID);
+
                 foreach (StepsForJob step in stepsForJobNotCompleted)
                 {
-                    TTC =+ ToHours(StepsListForIncompleted.FirstOrDefault(m => m.StepID == step.StepID).ExpectedTime);
+                    TTCAux =+ ToHours(StepsListForIncompleted.FirstOrDefault(m => m.StepID == step.StepID).ExpectedTime);
                 }
+
+                TTC = ToDateTime(TTCAux);
 
                 stepsForJobCompleted = testingRepo.StepsForJobs.Where(m => m.TestJobID == testjob.TestJobID && m.Complete == true).OrderBy(n => n.Consecutivo).ToList();
                 StepsListForCompleted = StepsListForCompleted.Where(m => stepsForJobCompleted.Any(n => n.StepID == m.StepID)).ToList();
@@ -2759,8 +2765,11 @@ namespace ProdFloor.Controllers
                     foreach (StepsForJob step in stepsForJobCompleted)
                     {
                         ExpectedTimeSUM = +ToHours(StepsListForCompleted.FirstOrDefault(m => m.StepID == step.StepID).ExpectedTime);
+
                         RealTimeSUM = +ToHours(step.Elapsed);
                     }
+                    ExpectedTimeSUM += ToHours(LastStepInfo.ExpectedTime);
+                    RealTimeSUM += ToHours(LastStepsForJob.Elapsed);
 
                     Efficiency = Math.Round((ExpectedTimeSUM / RealTimeSUM) * 100, MidpointRounding.AwayFromZero);
 
@@ -2805,11 +2814,22 @@ namespace ProdFloor.Controllers
                     else Category = "1";
                 }else Category = "Indefinida";
 
+                TestStats testStats = new TestStats()
+                {
+                    JobNumer = JobNum,
+                    TechName = TechName,
+                    Stage = Stage,
+                    Status = Status,
+                    Category = Category,
+                    Station = StationName,
+                    TTC = TTC,
+                    Color = Color
 
+                };
             }
 
 
-            return View();
+            return View(viewModel);
         }
 
     }
