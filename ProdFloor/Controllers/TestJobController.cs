@@ -2702,7 +2702,7 @@ namespace ProdFloor.Controllers
             return jobNum;
         }
 
-        public ViewResult TechStats()
+        public ViewResult TestStats(string JobType)
         {
             List<TestJob>  ActiveTestJobs = testingRepo.TestJobs.Where(m => m.Status != "Completed" && m.Status != "Deleted").ToList();
             List<AppUser> Users = userManager.Users.Where(m => m.EngID >= 100 && m.EngID <= 299).ToList();
@@ -2721,18 +2721,18 @@ namespace ProdFloor.Controllers
             foreach (TestJob testjob in ActiveTestJobs)
             {
                 TestFeature FeaturesFromTestJob = testingRepo.TestFeatures.First(m => m.TestJobID == testjob.TestJobID);
-                Job FeaturesFromJob = JobsinTest.FirstOrDefault(m => m.JobID == testjob.JobID);
-                LandingSystem Landing = new LandingSystem();
+                Job FeaturesFromJob = JobsinTest.Include(m => m._jobExtension).Include(m => m._HydroSpecific).Include(m => m._HoistWayData).Include(m => m._GenericFeatures).FirstOrDefault(m => m.JobID == testjob.JobID);
                 City UniqueCity = itemRepository.Cities.FirstOrDefault(m => m.CityID == FeaturesFromJob.CityID);
                 State StateFromCity = itemRepository.States.FirstOrDefault(m => m.StateID == UniqueCity.StateID);
 
                 string JobNum = FeaturesFromJob.JobNum.Remove(0, 5);
                 string TechName = Users.FirstOrDefault(m => m.EngID == testjob.TechnicianID).FullName;
                 string StationName = StationFromTestJobs.FirstOrDefault(m => m.StationID == testjob.StationID).Label;
-                double Efficiency = 0;
                 string Stage = "";
                 string Status = "";
                 string Color = "";
+                string Category = "";
+                double Efficiency = 0;
                 double ExpectedTimeSUM = 0;
                 double RealTimeSUM = 0;
                 double TTC = 0;
@@ -2783,20 +2783,27 @@ namespace ProdFloor.Controllers
                 }
 
                 //logic to get the cat(difficulty)
-                int jobtypeID = FeaturesFromJob.JobTypeID;
-                if (JobTypeName(jobtypeID) == "M2000" || JobTypeName(jobtypeID) == "M4000")
+                if (JobType == "M2000")
                 {
-                    FeaturesFromJob = JobsinTest.Include(m => m._jobExtension).Include(m => m._HydroSpecific).Include(m => m._HoistWayData).Include(m => m._GenericFeatures).FirstOrDefault(m => m.JobID == testjob.JobID);
-                    Landing = itemRepository.LandingSystems.FirstOrDefault(m => m.LandingSystemID == FeaturesFromJob._HoistWayData.LandingSystemID);
+                    if (FeaturesFromJob.CityID == 11) Category = "6";
+                    else if (FeaturesFromTestJob.Custom || FeaturesFromTestJob.MRL) Category = "5";
+                    else if (FeaturesFromJob._jobExtension.DoorOperatorID == 2 || FeaturesFromTestJob.Overlay) Category = "4";
+                    else if (FeaturesFromJob._GenericFeatures.Monitoring.Contains("MView") || FeaturesFromJob._GenericFeatures.Monitoring.Contains("IMonitor") || FeaturesFromTestJob.Local) Category = "3";
+                    else if (FeaturesFromJob._HoistWayData.AnyRear || FeaturesFromJob._jobExtension.JobTypeMain == "Duplex" || (FeaturesFromJob._jobExtension.DoorOperatorID == 7 || FeaturesFromJob._jobExtension.DoorOperatorID == 8)
+                        || FeaturesFromJob._HydroSpecific.MotorsNum >= 2 || FeaturesFromJob._jobExtension.SHC || FeaturesFromTestJob.EMCO || FeaturesFromTestJob.R6) Category = "2";
+                    else Category = "1";
 
                 }
-                else
+                else if (JobType == "M4000")
                 {
-                    FeaturesFromJob = jobRepo.Jobs.First(m => m.JobID == testjob.JobID);
-                    Element element = jobRepo.Elements.FirstOrDefault(j => j.JobID == FeaturesFromJob.JobID);
-                    ElementHydro elementHydro = jobRepo.ElementHydros.FirstOrDefault(j => j.JobID == FeaturesFromJob.JobID);
-                    Landing = itemRepository.LandingSystems.FirstOrDefault(m => m.LandingSystemID == element.LandingSystemID);
-                }
+                    if (FeaturesFromJob.CityID == 11) Category = "6";
+                    else if (FeaturesFromTestJob.Custom) Category = "5";
+                    else if (FeaturesFromJob._jobExtension.DoorOperatorID == 2 || FeaturesFromTestJob.Overlay) Category = "4";
+                    else if (FeaturesFromJob._GenericFeatures.Monitoring.Contains("MView") || FeaturesFromJob._GenericFeatures.Monitoring.Contains("IMonitor") || FeaturesFromTestJob.Local || FeaturesFromTestJob.ShortFloor) Category = "3";
+                    else if (FeaturesFromJob._HoistWayData.AnyRear || FeaturesFromJob._jobExtension.JobTypeMain == "Duplex" || (FeaturesFromJob._jobExtension.DoorOperatorID == 7 || FeaturesFromJob._jobExtension.DoorOperatorID == 8)
+                        || FeaturesFromJob._HydroSpecific.MotorsNum >= 2) Category = "2";
+                    else Category = "1";
+                }else Category = "Indefinida";
 
 
             }
