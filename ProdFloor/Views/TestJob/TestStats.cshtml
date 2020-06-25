@@ -1,0 +1,64 @@
+﻿@model ProdFloor.Models.ViewModels.TestJob.TestJobViewModel
+@{
+    ViewData["Title"] = "TestStats";
+}
+<br />
+<table class="table table-striped  text-center table-sm" style="text-align:center">
+    <thead style="background-color:#343a40!important;color:#fff;">
+        <tr>
+            <th class="text-center" colspan="12">
+                <h5>Jobs in Progress</h5>
+            </th>
+        </tr>
+        <tr>
+            <th scope="col">
+                Job#
+            </th>
+            <th scope="col">
+                Tech
+            </th>
+            <th scope="col">
+                Stage
+            </th>
+            <th scope="col">
+                Status
+            </th>
+            <th scope="col">
+                Cat
+            </th>
+            <th scope="col">
+                ST
+            </th>
+            <th scope="col">
+                TTC
+            </th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.TestStatsList.Count() == 0)
+        {
+            <tr>
+                <td>No active TestJobs!</td>
+            </tr>
+        }
+        else
+        {
+            @foreach (var j in Model.TestStatsList)
+            {
+
+                <tr>
+                    <th scope="row">@j.JobNumer</th>
+                    <td>@j.TechName</td>
+                    <td>@j.Stage</td>
+                    <td>@j.Status</td>
+                    <td>@j.Station</td>
+                    <td>@j.TTC.Hour:@j.TTC.Minute</td>
+                    <td>
+                    </td>
+
+                </tr>
+            }
+        }
+    </tbody>
+</table>

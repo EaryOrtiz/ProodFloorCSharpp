@@ -2826,6 +2826,8 @@ namespace ProdFloor.Controllers
                     Color = Color
 
                 };
+
+                viewModel.TestStatsList.Add(testStats);
             }
 
 
