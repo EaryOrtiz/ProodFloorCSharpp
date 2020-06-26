@@ -2437,6 +2437,11 @@ namespace ProdFloor.Controllers
             };
             int Hours = (int)AuxTotalHours;
             int Minutes = (int)(Math.Round(AuxTotalMinutes * 60));
+            if(Minutes == 60)
+            {
+                Hours++;
+                Minutes = 0;
+            }
             int Days = 0;
             if (AuxDays > 1) Days = AuxDays - 1;
             else Days = 1;
@@ -2705,6 +2710,7 @@ namespace ProdFloor.Controllers
 
         public ViewResult TestStats(TestJobViewModel viewModel, string JobType)
         {
+            viewModel.TestStatsList = new List<TestStats>(); 
             List<TestJob>  ActiveTestJobs = testingRepo.TestJobs.Where(m => m.Status != "Completed" && m.Status != "Deleted").ToList();
             List<AppUser> Users = userManager.Users.Where(m => m.EngID >= 100 && m.EngID <= 299).ToList();
             IQueryable<Job> JobsinTest = jobRepo.Jobs.Where(m => ActiveTestJobs.Any(n => n.JobID == m.JobID));
@@ -2748,7 +2754,7 @@ namespace ProdFloor.Controllers
 
                 foreach (StepsForJob step in stepsForJobNotCompleted)
                 {
-                    TTCAux =+ ToHours(StepsListForIncompleted.FirstOrDefault(m => m.StepID == step.StepID).ExpectedTime);
+                    TTCAux += ToHours(StepsListForIncompleted.FirstOrDefault(m => m.StepID == step.StepID).ExpectedTime);
                 }
 
                 TTC = ToDateTime(TTCAux);
@@ -2757,21 +2763,21 @@ namespace ProdFloor.Controllers
                 StepsListForCompleted = StepsListForCompleted.Where(m => stepsForJobCompleted.Any(n => n.StepID == m.StepID)).ToList();
                 
                 //a simple query to get the stage
-                Stage = StepsListForCompleted.FirstOrDefault(m => m.StepID == stepsForJobCompleted.Last().StepID).Stage;
+                Stage = LastStepInfo.Stage;
 
                 //if to get efficiency or status(stopped)
                 if(testjob.Status == "Working on it")
                 {
                     foreach (StepsForJob step in stepsForJobCompleted)
                     {
-                        ExpectedTimeSUM = +ToHours(StepsListForCompleted.FirstOrDefault(m => m.StepID == step.StepID).ExpectedTime);
+                        ExpectedTimeSUM += ToHours(StepsListForCompleted.FirstOrDefault(m => m.StepID == step.StepID).ExpectedTime);
 
-                        RealTimeSUM = +ToHours(step.Elapsed);
+                        RealTimeSUM += ToHours(step.Elapsed);
                     }
                     ExpectedTimeSUM += ToHours(LastStepInfo.ExpectedTime);
                     RealTimeSUM += ToHours(LastStepsForJob.Elapsed);
 
-                    Efficiency = Math.Round((ExpectedTimeSUM / RealTimeSUM) * 100, MidpointRounding.AwayFromZero);
+                    Efficiency = Math.Round((ExpectedTimeSUM / RealTimeSUM) * 100);
 
                     if (Efficiency > 82) Color = "DodgerBlue";
                     else if (Efficiency > 69) Color = "DarkOrange";
@@ -2827,6 +2833,7 @@ namespace ProdFloor.Controllers
 
                 };
 
+                ViewBag.Jobtype = JobType;
                 viewModel.TestStatsList.Add(testStats);
             }
 

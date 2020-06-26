@@ -7,7 +7,7 @@
     <thead style="background-color:#343a40!important;color:#fff;">
         <tr>
             <th class="text-center" colspan="12">
-                <h5>Jobs in Progress</h5>
+                <h5>Productio Floor @ViewBag.JobType</h5>
             </th>
         </tr>
         <tr>
@@ -47,17 +47,16 @@
             @foreach (var j in Model.TestStatsList)
             {
 
-                <tr>
-                    <th scope="row">@j.JobNumer</th>
-                    <td>@j.TechName</td>
-                    <td>@j.Stage</td>
-                    <td>@j.Status</td>
-                    <td>@j.Station</td>
-                    <td>@j.TTC.Hour:@j.TTC.Minute</td>
-                    <td>
-                    </td>
+    <tr>
+        <th scope="row">@j.JobNumer</th>
+        <td>@j.TechName</td>
+        <td>@j.Stage</td>
+        <td>@j.Status</td>
+        <td>@j.Category</td>
+        <td>@j.Station</td>
+        <td>@j.TTC.Hour:@j.TTC.Minute</td>
 
-                </tr>
+    </tr>
             }
         }
     </tbody>
