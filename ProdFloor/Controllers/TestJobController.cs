@@ -2715,8 +2715,7 @@ namespace ProdFloor.Controllers
             List<AppUser> Users = userManager.Users.Where(m => m.EngID >= 100 && m.EngID <= 299).ToList();
             IQueryable<Job> JobsinTest = jobRepo.Jobs.Where(m => ActiveTestJobs.Any(n => n.JobID == m.JobID));
             List<Station> StationFromTestJobs= testingRepo.Stations.Where(m => ActiveTestJobs.Any(n => n.StationID == m.StationID)).ToList();
-            List<Step> StepsListForIncompleted = testingRepo.Steps.ToList();
-            List<Step> StepsListForCompleted = StepsListForIncompleted;
+            List<Step> StepsListInfo = testingRepo.Steps.ToList();
 
             List<StepsForJob> stepsForJobCompleted = new List<StepsForJob>();
             List<StepsForJob> stepsForJobNotCompleted = new List<StepsForJob>();
@@ -2739,6 +2738,7 @@ namespace ProdFloor.Controllers
                 string Status = "";
                 string Color = "";
                 string Category = "";
+                string TextColor = "White";
                 double Efficiency = 0;
                 double ExpectedTimeSUM = 0;
                 double RealTimeSUM = 0;
@@ -2748,19 +2748,17 @@ namespace ProdFloor.Controllers
 
                 //Logic for TTC
                 stepsForJobNotCompleted = testingRepo.StepsForJobs.Where(m => m.TestJobID == testjob.TestJobID && m.Complete == false && m.Obsolete == false).OrderBy(n => n.Consecutivo).ToList();
-                StepsListForIncompleted = StepsListForIncompleted.Where(m => stepsForJobNotCompleted.Any(n => n.StepID == m.StepID)).ToList();
                 StepsForJob LastStepsForJob = stepsForJobNotCompleted.FirstOrDefault(m => m.Complete == false);
-                Step LastStepInfo = StepsListForIncompleted.FirstOrDefault(m => m.StepID == LastStepsForJob.StepID);
+                Step LastStepInfo = StepsListInfo.FirstOrDefault(m => m.StepID == LastStepsForJob.StepID);
 
                 foreach (StepsForJob step in stepsForJobNotCompleted)
                 {
-                    TTCAux += ToHours(StepsListForIncompleted.FirstOrDefault(m => m.StepID == step.StepID).ExpectedTime);
+                    TTCAux += ToHours(StepsListInfo.FirstOrDefault(m => m.StepID == step.StepID).ExpectedTime);
                 }
 
                 TTC = ToDateTime(TTCAux);
 
                 stepsForJobCompleted = testingRepo.StepsForJobs.Where(m => m.TestJobID == testjob.TestJobID && m.Complete == true).OrderBy(n => n.Consecutivo).ToList();
-                StepsListForCompleted = StepsListForCompleted.Where(m => stepsForJobCompleted.Any(n => n.StepID == m.StepID)).ToList();
                 
                 //a simple query to get the stage
                 Stage = LastStepInfo.Stage;
@@ -2770,7 +2768,7 @@ namespace ProdFloor.Controllers
                 {
                     foreach (StepsForJob step in stepsForJobCompleted)
                     {
-                        ExpectedTimeSUM += ToHours(StepsListForCompleted.FirstOrDefault(m => m.StepID == step.StepID).ExpectedTime);
+                        ExpectedTimeSUM += ToHours(StepsListInfo.FirstOrDefault(m => m.StepID == step.StepID).ExpectedTime);
 
                         RealTimeSUM += ToHours(step.Elapsed);
                     }
@@ -2779,20 +2777,33 @@ namespace ProdFloor.Controllers
 
                     Efficiency = Math.Round((ExpectedTimeSUM / RealTimeSUM) * 100);
 
+                    if (Efficiency > 99) Efficiency = 99;
                     if (Efficiency > 82) Color = "DodgerBlue";
                     else if (Efficiency > 69) Color = "DarkOrange";
-                    else Color = "Red";
+                    else
+                    {
+                        Color = "#ffdf00";
+                        TextColor = "Black";
+                    }
+                    
 
                     Status = Efficiency.ToString() + "%";
 
                 }
                 else
                 {
+                    Efficiency = 99;
+
+                    TextColor = "Black";
                     Stop stop = testingRepo.Stops.Where(m => m.TestJobID == testjob.TestJobID).Last();
                     Reason1 reason = testingRepo.Reasons1.FirstOrDefault(m => m.Reason1ID == stop.Reason1);
                     Status = "Stopped: " + reason.Description;
 
-                    if (stop.Critical) Color = "Red";
+                    if (stop.Critical)
+                    {
+                        Color = "Red";
+                        TextColor = "White";
+                    }
                     else Color = "DarkGrey";
 
                 }
@@ -2825,11 +2836,13 @@ namespace ProdFloor.Controllers
                     JobNumer = JobNum,
                     TechName = TechName,
                     Stage = Stage,
+                    Efficiency = Efficiency,
                     Status = Status,
                     Category = Category,
                     Station = StationName,
                     TTC = TTC,
-                    Color = Color
+                    Color = Color,
+                    TextColor = TextColor,
 
                 };
 

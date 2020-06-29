@@ -248,12 +248,14 @@ namespace ProdFloor.Models
         public string JobNumer { get; set; }
         public string TechName { get; set; }
         public string Stage { get; set; }
+        public double Efficiency { get; set; }
         public string Status { get; set; }
         public string Category { get; set; }
         public string Station { get; set; }
         public DateTime TTC { get; set; }
 
         public string Color { get; set; }
+        public string TextColor { get; set; }
     }
 
 }

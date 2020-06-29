@@ -3,33 +3,33 @@
     ViewData["Title"] = "TestStats";
 }
 <br />
-<table class="table table-striped  text-center table-sm" style="text-align:center">
+<table class="table table-striped  text-center " style="text-align:center">
     <thead style="background-color:#343a40!important;color:#fff;">
         <tr>
             <th class="text-center" colspan="12">
-                <h5>Productio Floor @ViewBag.JobType</h5>
+                <h5>Production Floor @ViewBag.JobType</h5>
             </th>
         </tr>
-        <tr>
-            <th scope="col">
+        <tr style="font-size:25px">
+            <th style="width:10%" colspan="1">
                 Job#
             </th>
-            <th scope="col">
+            <th style="width:10%"  colspan="1">
                 Tech
             </th>
-            <th scope="col">
+            <th style="width:10%" colspan="1">
                 Stage
             </th>
-            <th scope="col">
+            <th colspan="6">
                 Status
             </th>
-            <th scope="col">
+            <th style="width:5%" colspan="1">
                 Cat
             </th>
-            <th scope="col">
+            <th style="width:5%" colspan="1">
                 ST
             </th>
-            <th scope="col">
+            <th style="width:5%" colspan="1">
                 TTC
             </th>
 
@@ -47,14 +47,19 @@
             @foreach (var j in Model.TestStatsList)
             {
 
-    <tr>
-        <th scope="row">@j.JobNumer</th>
-        <td>@j.TechName</td>
-        <td>@j.Stage</td>
-        <td>@j.Status</td>
-        <td>@j.Category</td>
-        <td>@j.Station</td>
-        <td>@j.TTC.Hour:@j.TTC.Minute</td>
+    <tr style="font-size:20px"> 
+        <td style="width:10%" colspan="1" >@j.JobNumer</td>
+        <td style="width:10%" colspan="1">@j.TechName</td>
+        <td style="width:10%" colspan="1">@j.Stage</td>
+        <td colspan="6">
+            <div  style="height: 20px;" class="progress">
+                <div class="progress-bar progress-bar-striped progress-bar-animated " role="progressbar" style="width: @j.Efficiency.ToString()%; background-color: @j.Color;color:  @j.TextColor;font-size:20px;" 
+                     aria-valuenow="@j.Efficiency.ToString()" aria-valuemin="0" aria-valuemax="99">@j.Status</div>
+            </div>
+        </td>
+        <td style="width:5%" colspan="1">@j.Category</td>
+        <td style="width:5%" colspan="1">@j.Station</td>
+        <td style="width:5%" colspan="1">@j.TTC.Hour:@j.TTC.Minute</td>
 
     </tr>
             }
