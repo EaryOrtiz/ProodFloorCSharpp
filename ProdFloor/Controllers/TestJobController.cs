@@ -2710,8 +2710,13 @@ namespace ProdFloor.Controllers
 
         public ViewResult TestStats(TestJobViewModel viewModel, string JobType)
         {
-            viewModel.TestStatsList = new List<TestStats>(); 
-            List<TestJob>  ActiveTestJobs = testingRepo.TestJobs.Where(m => m.Status != "Completed" && m.Status != "Deleted").ToList();
+            viewModel.TestStatsList = new List<TestStats>();
+            List<TestJob> ActiveTestJobs = testingRepo.TestJobs.Where(m => m.Status != "Completed" && m.Status != "Deleted").ToList();
+            int JobTypeID = (JobType == "M2000") ? 2 : 4;
+            List<Job> JobsFilteredByJobtype = jobRepo.Jobs.Where(m => ActiveTestJobs.Any(n => n.JobID == m.JobID) && m.JobTypeID == JobTypeID).ToList();
+            ActiveTestJobs = ActiveTestJobs.Where(m => JobsFilteredByJobtype.Any(n => n.JobID == m.JobID)).ToList();
+            
+
             List<AppUser> Users = userManager.Users.Where(m => m.EngID >= 100 && m.EngID <= 299).ToList();
             IQueryable<Job> JobsinTest = jobRepo.Jobs.Where(m => ActiveTestJobs.Any(n => n.JobID == m.JobID));
             List<Station> StationFromTestJobs= testingRepo.Stations.Where(m => ActiveTestJobs.Any(n => n.StationID == m.StationID)).ToList();
@@ -2782,7 +2787,7 @@ namespace ProdFloor.Controllers
                     else if (Efficiency > 69) Color = "DarkOrange";
                     else
                     {
-                        Color = "#ffdf00";
+                        Color = "#ffc107!important";
                         TextColor = "Black";
                     }
                     
@@ -2849,7 +2854,6 @@ namespace ProdFloor.Controllers
                 ViewBag.Jobtype = JobType;
                 viewModel.TestStatsList.Add(testStats);
             }
-
 
             return View(viewModel);
         }
