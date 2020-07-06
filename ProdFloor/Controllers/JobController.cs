@@ -51,13 +51,13 @@ namespace ProdFloor.Controllers
             if (!string.IsNullOrEmpty(JobTypeName)) searchViewModel.JobTypeName = JobTypeName;
             searchViewModel.jobTypeAux = itemsrepository.JobTypes.FirstOrDefault(m => m.Name == JobTypeName);
             var JobCount = repository.Jobs
-                     .Where(s => s.Status != "Pending")
+                     .Where(s => s.Status != "Pending" && s.Status != "Incomplete")
                      .Where(d => d.JobTypeID == searchViewModel.jobTypeAux.JobTypeID)
                      .Count();
 
             if (searchViewModel.CleanFields) return RedirectToAction("List");
             var jobSearchRepo = repository.Jobs.Include(j => j._jobExtension).Include(hy => hy._HydroSpecific).Include(g => g._GenericFeatures)
-                .Include(i => i._Indicator).Include(ho => ho._HoistWayData).Include(sp => sp._SpecialFeatureslist).Include(po => po._PO).Where(y => y.Status != "Pending")
+                .Include(i => i._Indicator).Include(ho => ho._HoistWayData).Include(sp => sp._SpecialFeatureslist).Include(po => po._PO).Where(y => y.Status != "Pending" && y.Status != "Incomplete")
                 .Where(d => d.JobTypeID == searchViewModel.jobTypeAux.JobTypeID).AsQueryable();
             IQueryable<string> statusQuery = from s in repository.Jobs orderby s.Status select s.Status;
             #region comments
@@ -331,7 +331,7 @@ namespace ProdFloor.Controllers
             if(!string.IsNullOrEmpty(JobTypeName)) searchViewModel.JobTypeName = JobTypeName;
             searchViewModel.jobTypeAux = itemsrepository.JobTypes.FirstOrDefault(m => m.Name == JobTypeName);
             var JobCount = repository.Jobs
-                     .Where(s => s.Status != "Pending")
+                     .Where(s => s.Status != "Pending" && s.Status != "Incomplete")
                      .Where(d => d.JobTypeID == searchViewModel.jobTypeAux.JobTypeID)
                      .Count();
 
@@ -342,7 +342,7 @@ namespace ProdFloor.Controllers
                 return RedirectToAction("ElementList", NewViewModel); 
             }
             var jobSearchRepo = repository.Jobs.Include(j => j._Elements).Include(hy => hy._ElementHydros).Include(g => g._EmentTractions).Include(sp => sp._SpecialFeatureslist)
-                .Include(po => po._PO).Where(y => y.Status != "Pending").Where(d => d.JobTypeID == searchViewModel.jobTypeAux.JobTypeID).AsQueryable();
+                .Include(po => po._PO).Where(y => y.Status != "Pending" && y.Status != "Incomplete").Where(d => d.JobTypeID == searchViewModel.jobTypeAux.JobTypeID).AsQueryable();
             IQueryable<string> statusQuery = from s in repository.Jobs orderby s.Status select s.Status;
             #region comments
             /*

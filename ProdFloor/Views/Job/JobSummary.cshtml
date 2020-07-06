@@ -71,7 +71,7 @@
         </div>
         <div class="card-text p-1">
             <form asp-action="Delete" method="post" asp-route-Id="@j.JobID">
-                @if (j.Status != "Incomplete" && (UserManager.GetUserAsync(User).Result.EngID == Model.EngID || User.IsInRole("Admin")))
+                @if (j.Status != "Incomplete" && (UserManager.GetUserAsync(User).Result.EngID == j.EngID || User.IsInRole("Admin")))
                 {
                     <a asp-action="Edit" class="btn btn-sm btn-warning"
                        asp-route-Id="@j.JobID">
@@ -85,7 +85,7 @@
                         Details
                     </a>
                 }
-                else if (UserManager.GetUserAsync(User).Result.EngID == Model.EngID || User.IsInRole("Admin"))
+                else if (UserManager.GetUserAsync(User).Result.EngID == j.EngID || User.IsInRole("Admin"))
                 {
                     <a asp-action="Continue" class="btn btn-sm btn-warning"
                        asp-route-Id="@j.JobID">
@@ -93,7 +93,7 @@
                     </a>
                 }
                 <!-- Button trigger modal -->
-                <button type="button" class="btn btn-danger btn-sm" disabled="@(UserManager.GetUserAsync(User).Result.EngID == Model.EngID|| User.IsInRole("Admin") ? false : true)" data-toggle="modal" data-target="#exampleModalCenter @j.JobID">
+                <button type="button" class="btn btn-danger btn-sm" disabled="@(UserManager.GetUserAsync(User).Result.EngID == j.EngID|| User.IsInRole("Admin") ? false : true)" data-toggle="modal" data-target="#exampleModalCenter @j.JobID">
                     Delete
                 </button>
                 <!-- Modal -->
