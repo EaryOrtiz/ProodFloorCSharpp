@@ -20,6 +20,8 @@ namespace ProdFloor.Models.ViewModels
         //public SpecialFeatures CurrentSpecialFeatures { get; set; }
         public List <JobAdditional> JobAdditionalsList { get; set; }
         public List<SpecialFeatures> SpecialFeatureslist { get; set; }
+        public List<SpecialFeaturesEX> SpecialFeaturesTable { get; set; }
+
         public List<PO> POList { get; set; }
         public string CurrentTab { get; set; }
         public string buttonAction { get; set; }

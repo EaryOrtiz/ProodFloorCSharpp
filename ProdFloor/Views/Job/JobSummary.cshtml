@@ -16,57 +16,60 @@
                     HoistWayData hoistAux = Model.HoistWayDataList.FirstOrDefault(m => m.JobID == j.JobID);
 
                 }
-
-                @if (hoistAux.AnyRear)
+                @if (j.Status != "Incomplete")
                 {
-                    <span class="badge badge-pill badge-success" style="float:right">
-                        <small>Has Rear</small>
+                    @if (hoistAux.AnyRear)
+                    {
+                        <span class="badge badge-pill badge-success" style="float:right">
+                            <small>Has Rear</small>
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="badge badge-pill badge-danger" style="float:right">
+                            <small>Has Rear</small>
+                        </span>
+                    }
+                    @if (JobExtensionAux.SCOP)
+                    {
+                        <span class="badge badge-pill badge-success" style="float:right">
+                            <small>SCOP</small>
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="badge badge-pill badge-danger" style="float:right">
+                            <small>SCOP</small>
+                        </span>
+                    }
+                    @if (JobExtensionAux.SHC)
+                    {
+                        <span class="badge badge-pill badge-success" style="float:right">
+                            <small>SHC</small>
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="badge badge-pill badge-danger" style="float:right">
+                            <small>SHC</small>
+                        </span>
+                    }
+                    <span class="badge badge-pill badge-primary" style="float:right">
+                        <small>@Model.Landinglist.FirstOrDefault(m => m.LandingSystemID == hoistAux.LandingSystemID).Name</small>
+                    </span>
+                    <span class="badge badge-pill badge-primary" style="float:right">
+                        <small>@StateAux.Name - @cityAux.Name</small>
+                    </span>
+                    <span class="badge badge-pill badge-primary" style="float:right">
+                        <small>@JobTypeName</small>
                     </span>
                 }
                 else
                 {
-                    <span class="badge badge-pill badge-danger" style="float:right">
-                        <small>Has Rear</small>
+                    <span class="badge badge-pill badge-warning" style="float:right">
+                        <small>Incomplete</small>
                     </span>
                 }
-                @if (JobExtensionAux.SCOP)
-                {
-                    <span class="badge badge-pill badge-success" style="float:right">
-                        <small>SCOP</small>
-                    </span>
-                }
-                else
-                {
-                    <span class="badge badge-pill badge-danger" style="float:right">
-                        <small>SCOP</small>
-                    </span>
-                }
-                @if (JobExtensionAux.SHC)
-                {
-                    <span class="badge badge-pill badge-success" style="float:right">
-                        <small>SHC</small>
-                    </span>
-                }
-                else
-                {
-                    <span class="badge badge-pill badge-danger" style="float:right">
-                        <small>SHC</small>
-                    </span>
-                }
-                <span class="badge badge-pill badge-primary" style="float:right">
-                    <small>@Model.Landinglist.FirstOrDefault(m => m.LandingSystemID == hoistAux.LandingSystemID).Name</small>
-                </span>
-                <span class="badge badge-pill badge-primary" style="float:right">
-                    <small>@StateAux.Name - @cityAux.Name</small>
-                </span>
-                <span class="badge badge-pill badge-primary" style="float:right">
-                    <small>@JobTypeName</small>
-                </span>
-
-
-
-
-
             </h4>
         </div>
         <div class="card-text p-1">
@@ -86,6 +89,7 @@
                     </a>
                 }
                 else if (UserManager.GetUserAsync(User).Result.EngID == j.EngID || User.IsInRole("Admin"))
+
                 {
                     <a asp-action="Continue" class="btn btn-sm btn-warning"
                        asp-route-Id="@j.JobID">

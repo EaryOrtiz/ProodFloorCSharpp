@@ -18,6 +18,8 @@ namespace ProdFloor.Models.ViewModels.Job
         public List<City> Citylist { get; set; }
         public List<State> Statelist { get; set; }
         public List<LandingSystem> Landinglist { get; set; }
+
+        public List<SpecialFeaturesEX> SpecialFeaturesTable { get; set; }
         public PagingInfo PagingInfo { get; set; }
         public bool CleanFields { get; set; }
         public int LastSearch { get; set; }
@@ -39,6 +41,7 @@ namespace ProdFloor.Models.ViewModels.Job
         public string ContractorJobSearch { get; set; }
 
         public int EngID { get; set; }
+        public int CurrentUserEngID { get; set; }
         public int CrossAppEngID { get; set; }
 
         [Display(Name = "Country")]

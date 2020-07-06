@@ -11,6 +11,7 @@ namespace ProdFloor.Models.ViewModels.Job
         public Element Element { get; set; }
         public ElementTraction ElementTraction { get; set; }
         public List<SpecialFeatures> SpecialFeatureslist { get; set; }
+        public List<SpecialFeaturesEX> SpecialFeaturesTable { get; set; }
         public List<PO> POList { get; set; }
         public string CurrentTab { get; set; }
         public string buttonAction { get; set; }
