@@ -317,10 +317,11 @@ namespace ProdFloor.Controllers
         [HttpPost]
         public IActionResult NextForm(TestJobViewModel nextViewModel)
         {
+            TestJob testJob = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == nextViewModel.TestFeature.TestJobID);
             nextViewModel.Job.JobNum = getJobNumb(nextViewModel.Job.JobNumFirstDigits, nextViewModel.Job.JobNumLastDigits);
             if (nextViewModel.TestFeature != null)
             {
-                TestJob testJob = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == nextViewModel.TestFeature.TestJobID);
+                
 
                 if (testJob != null)
                 {
@@ -367,7 +368,7 @@ namespace ProdFloor.Controllers
             else
             {
 
-                if (nextViewModel.isNotDummy == false)
+                if (nextViewModel.isNotDummy == false && testJob.TestJobID == 0)
                 {
                     nextViewModel = NewDummyJob(nextViewModel);
                     TempData["message"] = $"Job was saved";
@@ -459,18 +460,19 @@ namespace ProdFloor.Controllers
 
                 if (isNotCompleted && (isSameEngineer || isAdmin || isTechAdmin))
                 {
-
+                    int jobtypeID = jobRepo.Jobs.First(m => m.JobID == CurrentJob.JobID).JobTypeID;
                     nextViewModel.PO = jobRepo.POs.FirstOrDefault(m => m.JobID == CurrentJob.JobID);
                     nextViewModel.TestJob = testJob;
                     nextViewModel.Job = CurrentJob;
-                    nextViewModel.TestFeature = testFeature;
+                    nextViewModel.TestFeature = testFeature != null ? testFeature : new TestFeature() { TestJobID = testJob.TestJobID}; 
                     nextViewModel.isNotDummy = CurrentJob.Contractor == "Fake" ? false : true;
                     nextViewModel.CurrentTab = "NewFeatures";
+                    nextViewModel.JobTypeName = JobTypeName(jobtypeID);
 
                     nextViewModel.Job.JobNumFirstDigits = getJobNumbDivided(nextViewModel.Job.JobNum).firstDigits;
                     nextViewModel.Job.JobNumLastDigits = getJobNumbDivided(nextViewModel.Job.JobNum).lastDigits;
 
-                    int jobtypeID = jobRepo.Jobs.First(m => m.JobID == CurrentJob.JobID).JobTypeID;
+                    
                     switch (JobTypeName(jobtypeID))
                     {
                         case "M2000":
@@ -522,7 +524,6 @@ namespace ProdFloor.Controllers
 
                     }
 
-                    nextViewModel.CurrentTab = "NewFeatures";
                     return View("NextForm", nextViewModel);
                 }
                 else
