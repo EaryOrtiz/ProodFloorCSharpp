@@ -1401,7 +1401,6 @@ namespace ProdFloor.Controllers
                 return View("EngineerListsChart", dashboard);
         }
 
-
         public string JobTypeName(int ID)
         {
             return itemRepo.JobTypes.FirstOrDefault(m => m.JobTypeID == ID).Name;
