@@ -2853,6 +2853,7 @@ namespace ProdFloor.Controllers
                 };
 
                 ViewBag.Jobtype = JobType;
+                ViewData["TV"] = "Simontl";
                 viewModel.TestStatsList.Add(testStats);
             }
 

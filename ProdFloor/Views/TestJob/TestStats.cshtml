@@ -3,22 +3,169 @@
     ViewData["Title"] = "TestStats";
 }
 <script src="~/lib/jQuery-Knob/js/jquery.knob.js"></script>
-<script src="~/lib/AdminLTE-js/adminlte.js"></script>
-<br />
-<div class="row">
+@for (int j = 0; j < 2; j++)
+{
+    <div class="row">
+        <!-----------------------------D2-------------------------------------------->
+        @for (int i = 0; i < 4; i++)
+        {
+            <div class="col-3" style="padding-bottom: 20px;">
+                <div class="card text-center  mb-6" style="max-width: 28rem;box-shadow: 0 17px 17px 0 rgba(0,0,0,0.15),0 27px 55px 0 rgba(0,0,0,0.3)">
+                    <div class="card-header" style="border-top-color:#ffc107!important;border-top: solid;border-top-width:8px;background-color:transparent;max-height:60px;"><h3>S@(1 +i +j+j+j+j)</h3></div>
+                    <div class="card-body">
+
+                        <div class="row" style="padding-bottom:5px">
+                            <div class="col-12">
+                                <label class="font-weight-bold float-left" style="font-size: 20px;">Job Progress</label>
+                            </div>
+                            <div class="col-12">
+                                <div class="progress ">
+                                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning" role="progressbar" style="width: 45%" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <label class="font-weight-bold float-left" style="font-size: 20px;">Stage Progress</label>
+                            </div>
+                            <div class="col-12">
+                                <div class="progress ">
+                                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" style="width: 80%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="card-footer bg-white p-0">
+                        <ul class="nav nav-pills flex-column" style=" font-size: 20px;">
+                            <li class="nav-item border-bottom" style="padding-bottom:5px; padding-top:8px;margin-left:10px; margin-right: 10px;">
+                                <span class=" float-left font-weight-bold">
+                                    <i class="fa fa-briefcase"></i>&nbsp;&nbsp;Job#
+                                </span>
+                                <span class="float-right text-secondary font-weight-bold">
+                                    95213
+                                </span>
+                            </li>
+                            <li class="nav-item border-bottom" style="padding-bottom:5px; padding-top:8px;margin-left:10px; margin-right: 10px;">
+                                <span class=" float-left font-weight-bold">
+                                    <i class="fas fa-user-tie"></i>&nbsp;&nbsp;Tech Name
+                                </span>
+                                <span class="float-right text-secondary font-weight-bold">
+                                    Adriana Barron
+                                </span>
+                            </li>
+                            <li class="nav-item border-bottom " style="padding-bottom:5px; padding-top:8px;padding-left:10px; padding-right: 10px;">
+                                <span class=" float-left font-weight-bold">
+                                    <i class="fas fa-map-marker-alt"></i>&nbsp;&nbsp;Stage
+                                </span>
+                                <span class="float-right text-secondary font-weight-bold">
+                                    Ending
+                                </span>
+                            </li>
+                            <li class="nav-item border-bottom" style="padding-bottom:5px; padding-top:8px;margin-left:10px; margin-right: 10px;">
+                                <span class=" float-left font-weight-bold">
+                                    <i class="fas fa-exclamation-circle"></i>&nbsp;&nbsp;Category
+                                </span>
+                                <span class="float-right text-secondary font-weight-bold">
+                                    6
+                                </span>
+                            </li>
+
+                            <li class="nav-item border-bottom" style="padding-bottom:5px; padding-top:8px;margin-left:10px; margin-right: 10px;">
+                                <span class=" float-left font-weight-bold">
+                                    <i class="fas fa-chart-line"></i>&nbsp;&nbsp;Efficiency
+                                </span>
+                                <span class="float-right text-secondary font-weight-bold">
+                                    65%
+                                </span>
+                            </li>
+                            <li class="nav-item border-bottom" style="padding-bottom:5px; padding-top:8px;margin-left:10px; margin-right: 10px;">
+                                <span class=" float-left font-weight-bold">
+                                    <i class="fas fa-clock"></i>&nbsp;&nbsp;Time To Complete
+                                </span>
+                                <span class="float-right text-secondary font-weight-bold">
+                                    00:32
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        }
+
+        <!-----------------------------D2-------------------------------------------->
+
+
+
+    </div>
+}
+
+
+<script>
+    $(function ($) {
+
+        $(".knob").knob({
+
+            draw: function () {
+
+                // "tron" case
+                if (this.$.data('skin') == 'tron') {
+
+                    this.cursorExt = 0.3;
+
+                    var a = this.arc(this.cv)  // Arc
+                        , pa                   // Previous arc
+                        , r = 1;
+
+                    this.g.lineWidth = this.lineWidth;
+
+                    if (this.o.displayPrevious) {
+                        pa = this.arc(this.v);
+                        this.g.beginPath();
+                        this.g.strokeStyle = this.pColor;
+                        this.g.arc(this.xy, this.xy, this.radius - this.lineWidth, pa.s, pa.e, pa.d);
+                        this.g.stroke();
+                    }
+
+                    this.g.beginPath();
+                    this.g.strokeStyle = r ? this.o.fgColor : this.fgColor;
+                    this.g.arc(this.xy, this.xy, this.radius - this.lineWidth, a.s, a.e, a.d);
+                    this.g.stroke();
+
+                    this.g.lineWidth = 2;
+                    this.g.beginPath();
+                    this.g.strokeStyle = this.o.fgColor;
+                    this.g.arc(this.xy, this.xy, this.radius - this.lineWidth + 1 + this.lineWidth * 2 / 3, 0, 2 * Math.PI, false);
+                    this.g.stroke();
+
+                    return false;
+                }
+            },
+            format: function (value) {
+                return value + '%';
+            }
+        })
+    });
+</script>
+
+
+
+
+@*
     <!-----------------------------D1-------------------------------------------->
-    <div class="col-6">
-        <div class="card text-center  mb-6" style="max-width: 35rem;">
-            <div class="card-header" style="border-top-color:forestgreen !important;border-top: solid;border-top-width:10px;background-color:transparent"><h3>S1</h3></div>
+    <div class="col-3">
+        <div class="card text-center  mb-6" style="max-width: 20rem;">
+            <div class="card-header" style="border-top-color:forestgreen !important;border-top: solid;border-top-width:10px;background-color:transparent"><h4>S1</h4></div>
             <div class="card-body">
                 <div class="row">
                     <div class="form-group col-6">
                         <label class="font-weight-bold" style="font-size: 20px;">Completion</label>
-                        <input type="text" value="90" class="knob" data-width="180" data-height="200" data-readOnly=true data-fgColor="green" data-skin="tron" data-thickness=".2">
+                        <input type="text" value="90" class="knob" data-width="100" data-height="120" data-readOnly=true data-fgColor="green" data-skin="tron" data-thickness=".2">
                     </div>
                     <div class="form-group col-6">
                         <label class="font-weight-bold" style="font-size: 20px;">Efficiency</label>
-                        <input type="text" value="60" class="knob" data-width="180" data-height="200" data-readOnly=true data-fgColor="DarkOrange" data-skin="tron" data-thickness=".2">
+                        <input type="text" value="60" class="knob" data-width="100" data-height="120" data-readOnly=true data-fgColor="DarkOrange" data-skin="tron" data-thickness=".2">
                     </div>
                 </div>
 
@@ -71,139 +218,6 @@
     </div>
     <!-----------------------------D1-------------------------------------------->
 
-    <!-----------------------------D2-------------------------------------------->
-    <div class="col-6">
-        <div class="card text-center  mb-6" style="max-width: 35rem;">
-            <div class="card-header" style="border-top-color:#ffc107!important;border-top: solid;border-top-width:10px;background-color:transparent"><h3>S1</h3></div>
-            <div class="card-body">
-                
-                <div class="row" style="padding-bottom:18px">
-                    <div class="col-12">
-                        <label class="font-weight-bold float-left" style="font-size: 20px;">Completion</label>
-                        <label class="font-weight-bold float-right text-warning" style="font-size: 20px;">45%</label>
-                    </div>
-                    <div class="col-12">
-                        <div class="progress ">
-                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning" role="progressbar" style="width: 45%" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="row" style="padding-bottom:18px">
-                    <div class="col-12">
-                        <label class="font-weight-bold float-left" style="font-size: 20px;">Efficiency</label>
-                        <label class="font-weight-bold float-right text-success" style="font-size: 20px;">80%</label>
-                    </div>
-                    <div class="col-12">
-                        <div class="progress ">
-                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" style="width: 80%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-            <div class="card-footer bg-white p-0">
-                <ul class="nav nav-pills flex-column" style=" font-size: 20px;">
-                    <li class="nav-item border-bottom" style="padding-bottom:8px; padding-top:8px;margin-left:10px; margin-right: 10px;">
-                        <span class=" float-left font-weight-bold">
-                            Job#
-                        </span>
-                        <span class="float-right text-secondary font-weight-bold">
-                            95213
-                        </span>
-                    </li>
-                    <li class="nav-item border-bottom" style="padding-bottom:8px; padding-top:8px;margin-left:10px; margin-right: 10px;">
-                        <span class=" float-left font-weight-bold">
-                            Tech Name
-                        </span>
-                        <span class="float-right text-secondary font-weight-bold">
-                            Adriana Barron
-                        </span>
-                    </li>
-                    <li class="nav-item border-bottom" style="padding-bottom:8px; padding-top:8px;margin-left:10px; margin-right: 10px;">
-                        <span class=" float-left font-weight-bold">
-                            Category
-                        </span>
-                        <span class="float-right text-secondary font-weight-bold">
-                            6
-                        </span>
-                    </li>
-                    <li class="nav-item border-bottom " style="padding-bottom:8px; padding-top:8px;padding-left:10px; padding-right: 10px;">
-                        <span class=" float-left font-weight-bold">
-                            Stage
-                        </span>
-                        <span class="float-right text-secondary font-weight-bold">
-                            Ending
-                        </span>
-                    </li>
-                    <li class="nav-item border-bottom" style="padding-bottom:8px; padding-top:8px;margin-left:10px; margin-right: 10px;">
-                        <span class=" float-left font-weight-bold">
-                            Time To Complete
-                        </span>
-                        <span class="float-right text-secondary font-weight-bold">
-                            00:32
-                        </span>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-    <!-----------------------------D2-------------------------------------------->
-
-
-
-</div>
-<script>
-    $(function ($) {
-
-        $(".knob").knob({
-
-            draw: function () {
-
-                // "tron" case
-                if (this.$.data('skin') == 'tron') {
-
-                    this.cursorExt = 0.3;
-
-                    var a = this.arc(this.cv)  // Arc
-                        , pa                   // Previous arc
-                        , r = 1;
-
-                    this.g.lineWidth = this.lineWidth;
-
-                    if (this.o.displayPrevious) {
-                        pa = this.arc(this.v);
-                        this.g.beginPath();
-                        this.g.strokeStyle = this.pColor;
-                        this.g.arc(this.xy, this.xy, this.radius - this.lineWidth, pa.s, pa.e, pa.d);
-                        this.g.stroke();
-                    }
-
-                    this.g.beginPath();
-                    this.g.strokeStyle = r ? this.o.fgColor : this.fgColor;
-                    this.g.arc(this.xy, this.xy, this.radius - this.lineWidth, a.s, a.e, a.d);
-                    this.g.stroke();
-
-                    this.g.lineWidth = 2;
-                    this.g.beginPath();
-                    this.g.strokeStyle = this.o.fgColor;
-                    this.g.arc(this.xy, this.xy, this.radius - this.lineWidth + 1 + this.lineWidth * 2 / 3, 0, 2 * Math.PI, false);
-                    this.g.stroke();
-
-                    return false;
-                }
-            },
-            format: function (value) {
-                return value + '%';
-            }
-        })
-    });
-</script>
-
-
-
-
-@*
     <table class="table table-striped  text-center " style="text-align:center">
         <thead style="background-color:#343a40!important;color:#fff;">
             <tr>
