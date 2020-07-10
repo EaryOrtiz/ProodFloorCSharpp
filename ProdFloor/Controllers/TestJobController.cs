@@ -2709,6 +2709,7 @@ namespace ProdFloor.Controllers
             return jobNum;
         }
 
+        [AllowAnonymous]
         public ViewResult TestStats(TestJobViewModel viewModel, string JobType)
         {
             viewModel.TestStatsList = new List<TestStats>();
