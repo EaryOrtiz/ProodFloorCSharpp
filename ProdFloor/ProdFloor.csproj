@@ -5,6 +5,10 @@
     <UserSecretsId>aspnet-{Project Name}-{GUID}</UserSecretsId>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <Optimize>false</Optimize>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="DotNetCore.NPOI" Version="1.2.2" />
     <PackageReference Include="HtmlAgilityPack" Version="1.9.2" />

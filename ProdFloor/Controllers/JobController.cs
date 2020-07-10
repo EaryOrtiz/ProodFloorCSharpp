@@ -849,8 +849,11 @@ namespace ProdFloor.Controllers
                 viewModel.CurrentGenericFeatures = repository.GenericFeaturesList.FirstOrDefault(j => j.JobID == ID);
                 viewModel.CurrentIndicator = repository.Indicators.FirstOrDefault(j => j.JobID == ID);
                 viewModel.CurrentHoistWayData = repository.HoistWayDatas.FirstOrDefault(j => j.JobID == ID);
+
                 viewModel.SpecialFeatureslist = SfList;
                 int jobNumAux = viewModel.CurrentJob.JobNum;
+                viewModel.SpecialFeaturesTable = getSpecialFeaturesEX();
+
                 viewModel.CurrentJob.JobNum = 0;
                 viewModel.CurrentJob.Status = "Copied";
                 viewModel.POList = new List<PO> { new PO { JobID = viewModel.CurrentJob.JobID } };
@@ -883,6 +886,7 @@ namespace ProdFloor.Controllers
                 viewModel.ElementHydro = repository.ElementHydros.FirstOrDefault(j => j.JobID == ID);
                 viewModel.SpecialFeatureslist = SfList;
                 int jobNumAux = viewModel.CurrentJob.JobNum;
+                viewModel.SpecialFeaturesTable = getSpecialFeaturesEX();
                 viewModel.CurrentJob.JobNum = 0;
                 viewModel.CurrentUserID = currentUser.EngID;
                 viewModel.CurrentJob.CrossAppEngID = 0;
@@ -918,6 +922,7 @@ namespace ProdFloor.Controllers
                 int jobNumAux = viewModel.CurrentJob.JobNum;
                 viewModel.CurrentJob.JobNum = 0;
                 viewModel.JobTypeName = JobTypeName(jobToCopy.JobTypeID);
+                viewModel.SpecialFeaturesTable = getSpecialFeaturesEX();
                 viewModel.CurrentUserID = currentUser.EngID;
                 viewModel.CurrentJob.CrossAppEngID = 0;
                 viewModel.CurrentJob.Status = "Copied";
