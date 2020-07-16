@@ -2715,6 +2715,16 @@ namespace ProdFloor.Controllers
             viewModel.TestStatsList = new List<TestStats>();
             List<TestJob> ActiveTestJobs = testingRepo.TestJobs.Where(m => m.Status != "Completed" && m.Status != "Deleted").ToList();
             int JobTypeID = (JobType == "M2000") ? 2 : 4;
+            if(JobTypeID == 2)
+            {
+                viewModel.StationsList = testingRepo.Stations.Where(m => m.JobTypeID == JobTypeID).OrderBy(n => n.Label).ToList();
+                viewModel.StationsList.AddRange(testingRepo.Stations.Where(m => m.JobTypeID == 5).OrderBy(n => n.Label).ToList());
+            }
+            else
+            {
+                viewModel.StationsList = testingRepo.Stations.Where(m => m.JobTypeID == JobTypeID).OrderBy(n => n.Label).ToList();
+                viewModel.StationsList.AddRange(testingRepo.Stations.Where(m => m.JobTypeID == 1).OrderBy(n => n.Label).ToList());
+            }
             List<Job> JobsFilteredByJobtype = jobRepo.Jobs.Where(m => ActiveTestJobs.Any(n => n.JobID == m.JobID) && m.JobTypeID == JobTypeID).ToList();
             ActiveTestJobs = ActiveTestJobs.Where(m => JobsFilteredByJobtype.Any(n => n.JobID == m.JobID)).ToList();
             
@@ -2737,6 +2747,7 @@ namespace ProdFloor.Controllers
                 Job FeaturesFromJob = JobsinTest.Include(m => m._jobExtension).Include(m => m._HydroSpecific).Include(m => m._HoistWayData).Include(m => m._GenericFeatures).FirstOrDefault(m => m.JobID == testjob.JobID);
                 City UniqueCity = itemRepository.Cities.FirstOrDefault(m => m.CityID == FeaturesFromJob.CityID);
                 State StateFromCity = itemRepository.States.FirstOrDefault(m => m.StateID == UniqueCity.StateID);
+                List<StepsForJob> AllSteps = testingRepo.StepsForJobs.Where(m => m.TestJobID == testjob.TestJobID && m.Obsolete == false).OrderBy(n => n.Consecutivo).ToList();
 
                 string JobNum = FeaturesFromJob.JobNum.Remove(0, 5);
                 string TechName = Users.FirstOrDefault(m => m.EngID == testjob.TechnicianID).FullName;
@@ -2754,7 +2765,7 @@ namespace ProdFloor.Controllers
 
 
                 //Logic for TTC
-                stepsForJobNotCompleted = testingRepo.StepsForJobs.Where(m => m.TestJobID == testjob.TestJobID && m.Complete == false && m.Obsolete == false).OrderBy(n => n.Consecutivo).ToList();
+                stepsForJobNotCompleted = AllSteps.Where(m => m.TestJobID == testjob.TestJobID && m.Complete == false && m.Obsolete == false).OrderBy(n => n.Consecutivo).ToList();
                 StepsForJob LastStepsForJob = stepsForJobNotCompleted.FirstOrDefault(m => m.Complete == false);
                 Step LastStepInfo = StepsListInfo.FirstOrDefault(m => m.StepID == LastStepsForJob.StepID);
 
@@ -2765,7 +2776,7 @@ namespace ProdFloor.Controllers
 
                 TTC = ToDateTime(TTCAux);
 
-                stepsForJobCompleted = testingRepo.StepsForJobs.Where(m => m.TestJobID == testjob.TestJobID && m.Complete == true).OrderBy(n => n.Consecutivo).ToList();
+                stepsForJobCompleted = AllSteps.Where(m => m.TestJobID == testjob.TestJobID && m.Complete == true).OrderBy(n => n.Consecutivo).ToList();
                 
                 //a simple query to get the stage
                 Stage = LastStepInfo.Stage;
@@ -2838,9 +2849,24 @@ namespace ProdFloor.Controllers
                     else Category = "1";
                 }else Category = "Indefinida";
 
+                //JobProgress
+                double JobProgress = (stepsForJobCompleted.Count() * 100)/ AllSteps.Count();
+
+                //Stage Progress
+                /*
+                var auxtStepsPerStageInfo = AllStepsForJobInfo.Where(m => m.Stage == stepInfo.Stage).ToList();
+                int StepsPerStage = auxtStepsPerStageInfo.Count();
+                int auxtStepsPerStage = AllStepsForJob.Where(m => auxtStepsPerStageInfo.Any(s => s.StepID == m.StepID)).Where(m => m.Complete == true).Count() + 1;
+                */
+                List<Step> stepsPerStage = StepsListInfo.Where(m => m.Stage == Stage && AllSteps.Any(n => n.StepID == m.StepID)).ToList();
+                int stepsPerJobCompleted = AllSteps.Where(m => stepsPerStage.Any(s => s.StepID == m.StepID)).Where(m => m.Complete == true).Count();
+
+                double StagePogress = (stepsPerJobCompleted * 100) / stepsPerStage.Count(); 
+
                 TestStats testStats = new TestStats()
                 {
                     JobNumer = JobNum,
+                    StationID = testjob.StationID,
                     TechName = TechName,
                     Stage = Stage,
                     Efficiency = Efficiency,
@@ -2848,6 +2874,8 @@ namespace ProdFloor.Controllers
                     Category = Category,
                     Station = StationName,
                     TTC = TTC,
+                    JobProgress = JobProgress,
+                    StageProgress = StagePogress,
                     Color = Color,
                     TextColor = TextColor,
 

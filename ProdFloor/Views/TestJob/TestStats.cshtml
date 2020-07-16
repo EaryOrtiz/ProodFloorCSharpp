@@ -2,131 +2,144 @@
 @{
     ViewData["Title"] = "TestStats";
 }
-@for (int j = 0; j < 2; j++)
-{
     <div class="row">
-        <!-----------------------------D2-------------------------------------------->
-        @for (int i = 0; i < 4; i++)
+        @foreach (Station station in Model.StationsList)
         {
-            <div class="col-sm" style="padding-bottom: 20px;">
-                <div class="card text-center  mb-6" style="max-width: 30rem;box-shadow: 0 17px 17px 0 rgba(0,0,0,0.15),0 27px 55px 0 rgba(0,0,0,0.3)">
-                    <div class="card-header" style="border-top-color:#ffc107!important;border-top: solid;border-top-width:8px;background-color:transparent;max-height:60px;">
-                        <h2>S@(1 +i +j+j+j+j)</h2>
-                    </div>
-                    <div class="card-body">
+            if (Model.TestStatsList.Any(m => m.StationID == station.StationID))
+            {
+                TestStats testStat = Model.TestStatsList.FirstOrDefault(m => m.StationID == station.StationID);
 
-                        <div class="row" style="padding-bottom:5px">
-                            <div class="col-12">
-                                <label class="font-weight-bold float-left" style="font-size: 30px;">Job Progress</label>
-                                <label class="font-weight-bold float-right text-secondary" style="font-size: 26px;">00:32</label>
-                            </div>
-                            <div class="col-12">
-                                <div class="progress ">
-                                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning" role="progressbar" style="width: 45%" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                            </div>
-
+                <div class="col-3" style="padding-bottom: 20px;">
+                    <div class="card text-center  mb-6" style="max-width: 30rem;box-shadow: 0 17px 17px 0 rgba(0,0,0,0.15),0 27px 55px 0 rgba(0,0,0,0.3)">
+                        <div class="card-header" style="border-top-color:@testStat.Color!important;border-top: solid;border-top-width:8px;background-color:transparent;max-height:60px;">
+                            <h2>@station.Label</h2>
                         </div>
-                        <div class="row">
-                            <div class="col-12">
-                                <label class="font-weight-bold float-left" style="font-size: 30px;">Stage Progress</label>
-                                <label class="font-weight-bold float-right text-secondary" style="font-size: 26px;">Ending</label>
-                            </div>
-                            <div class="col-12">
-                                <div class="progress ">
-                                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" style="width: 80%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                            </div>
+                        <div class="card-body">
 
+                            <div class="row" style="padding-bottom:5px">
+                                <div class="col-12">
+                                    <label class="font-weight-bold float-left" style="font-size: 32px;">Job Progress</label>
+                                    <label class="font-weight-bold float-right text-secondary" style="font-size: 26px;">@testStat.TTC.Hour.ToString().PadLeft(2, '0'):@testStat.TTC.Minute.ToString().PadLeft(2, '0')</label>
+                                </div>
+                                <div class="col-12">
+                                    <div class="progress ">
+                                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: @testStat.JobProgress%;background-color:@testStat.Color" aria-valuenow="@testStat.JobProgress" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <label class="font-weight-bold float-left" style="font-size: 32px;">Stage Progress</label>
+                                    <label class="font-weight-bold float-right text-secondary" style="font-size: 26px;">@testStat.Stage</label>
+                                </div>
+                                <div class="col-12">
+                                    <div class="progress ">
+                                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: @testStat.StageProgress%;background-color:@testStat.Color" aria-valuenow="@testStat.StageProgress" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+
+                            </div>
                         </div>
-                    </div>
-                    <div class="card-footer bg-white p-0">
-                        <ul class="nav nav-pills flex-column" style=" font-size: 30px;">
-                            <li class="nav-item border-bottom" style="padding-bottom:5px; padding-top:8px;margin-left:10px; margin-right: 10px;">
-                                <span class=" float-left font-weight-bold">
-                                    Job#
-                                </span>
-                                <span class="float-right text-secondary font-weight-bold">
-                                    95213
-                                </span>
-                            </li>
-                            <li class="nav-item border-bottom" style="padding-bottom:5px; padding-top:8px;margin-left:10px; margin-right: 10px;">
-                                <span class=" float-left font-weight-bold">
-                                    Tech Name
-                                </span>
-                                <span class="float-right text-secondary font-weight-bold">
-                                    Adriana Barron
-                                </span>
-                            </li>
-                            <li class="nav-item border-bottom" style="padding-bottom:5px; padding-top:8px;margin-left:10px; margin-right: 10px;">
-                                <span class=" float-left font-weight-bold">
-                                    CAT | Efficiency
-                                </span>
-                                <span class="float-right text-secondary font-weight-bold">
-                                    6 | 65%
-                                </span>
-                            </li>
-                        </ul>
+                        <div class="card-footer bg-white p-0">
+                            <ul class="nav nav-pills flex-column" style=" font-size: 32px;">
+                                <li class="nav-item border-bottom" style="padding-bottom:5px; padding-top:8px;margin-left:10px; margin-right: 10px;">
+                                    <span class=" float-left font-weight-bold">
+                                        Job#
+                                    </span>
+                                    <span class="float-right text-secondary font-weight-bold">
+                                        @testStat.JobNumer
+                                    </span>
+                                </li>
+                                <li class="nav-item border-bottom" style="padding-bottom:5px; padding-top:8px;margin-left:10px; margin-right: 10px;">
+                                    <span class=" float-left font-weight-bold">
+                                        Tech Name
+                                    </span>
+                                    <span class="float-right text-secondary font-weight-bold">
+                                        @testStat.TechName
+                                    </span>
+                                </li>
+                                <li class="nav-item border-bottom" style="padding-bottom:5px; padding-top:8px;margin-left:10px; margin-right: 10px;">
+                                    <span class=" float-left font-weight-bold">
+                                        CAT | Efficiency
+                                    </span>
+                                    <span class="float-right text-secondary font-weight-bold">
+                                        @testStat.Category | @testStat.Efficiency%
+                                    </span>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-            </div>
+            }
+            else
+            {
+                <div class="col-3" style="padding-bottom: 20px;">
+                    <div class="card text-center  mb-6" style="max-width: 30rem;box-shadow: 0 17px 17px 0 rgba(0,0,0,0.15),0 27px 55px 0 rgba(0,0,0,0.3)">
+                        <div class="card-header" style="border-top-color:gray !important;border-top: solid;border-top-width:8px;background-color:transparent;max-height:60px;">
+                            <h2>@station.Label</h2>
+                        </div>
+                        <div class="card-body">
+
+                            <div class="row" style="padding-bottom:5px">
+                                <div class="col-12">
+                                    <label class="font-weight-bold float-left" style="font-size: 32px;">Job Progress</label>
+                                </div>
+                                <div class="col-12">
+                                    <div class="progress ">
+                                        <div class="progress-bar" role="progressbar" style="width: 100%;background-color: gray;" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <label class="font-weight-bold float-left" style="font-size: 32px;">Stage Progress</label>
+                                </div>
+                                <div class="col-12">
+                                    <div class="progress ">
+                                        <div class="progress-bar" role="progressbar" style="width: 100%;background-color: gray;" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="card-footer bg-white p-0">
+                            <ul class="nav nav-pills flex-column" style=" font-size: 32px;">
+                                <li class="nav-item border-bottom" style="padding-bottom:5px; padding-top:8px;margin-left:10px; margin-right: 10px;">
+                                    <span class=" float-left font-weight-bold">
+                                        Job#
+                                    </span>
+                                    <span class="float-right text-secondary font-weight-bold">
+                                        ----
+                                    </span>
+                                </li>
+                                <li class="nav-item border-bottom" style="padding-bottom:5px; padding-top:8px;margin-left:10px; margin-right: 10px;">
+                                    <span class=" float-left font-weight-bold">
+                                        Tech Name
+                                    </span>
+                                    <span class="float-right text-secondary font-weight-bold">
+                                        ----
+                                    </span>
+                                </li>
+                                <li class="nav-item border-bottom" style="padding-bottom:5px; padding-top:8px;margin-left:10px; margin-right: 10px;">
+                                    <span class=" float-left font-weight-bold">
+                                        CAT | Efficiency
+                                    </span>
+                                    <span class="float-right text-secondary font-weight-bold">
+                                        ----
+                                    </span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            }
+
+
         }
 
-        <!-----------------------------D2-------------------------------------------->
-
-
-
     </div>
-}
-
-
-<script>
-    $(function ($) {
-
-        $(".knob").knob({
-
-            draw: function () {
-
-                // "tron" case
-                if (this.$.data('skin') == 'tron') {
-
-                    this.cursorExt = 0.3;
-
-                    var a = this.arc(this.cv)  // Arc
-                        , pa                   // Previous arc
-                        , r = 1;
-
-                    this.g.lineWidth = this.lineWidth;
-
-                    if (this.o.displayPrevious) {
-                        pa = this.arc(this.v);
-                        this.g.beginPath();
-                        this.g.strokeStyle = this.pColor;
-                        this.g.arc(this.xy, this.xy, this.radius - this.lineWidth, pa.s, pa.e, pa.d);
-                        this.g.stroke();
-                    }
-
-                    this.g.beginPath();
-                    this.g.strokeStyle = r ? this.o.fgColor : this.fgColor;
-                    this.g.arc(this.xy, this.xy, this.radius - this.lineWidth, a.s, a.e, a.d);
-                    this.g.stroke();
-
-                    this.g.lineWidth = 2;
-                    this.g.beginPath();
-                    this.g.strokeStyle = this.o.fgColor;
-                    this.g.arc(this.xy, this.xy, this.radius - this.lineWidth + 1 + this.lineWidth * 2 / 3, 0, 2 * Math.PI, false);
-                    this.g.stroke();
-
-                    return false;
-                }
-            },
-            format: function (value) {
-                return value + '%';
-            }
-        })
-    });
-</script>
-
 
 
 

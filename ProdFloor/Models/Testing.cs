@@ -246,6 +246,9 @@ namespace ProdFloor.Models
     public class TestStats
     {
         public string JobNumer { get; set; }
+        public double JobProgress { get; set; }
+        public double StageProgress { get; set; }
+        public int StationID { get; set; }
         public string TechName { get; set; }
         public string Stage { get; set; }
         public double Efficiency { get; set; }
