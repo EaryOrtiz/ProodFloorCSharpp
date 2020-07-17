@@ -257,8 +257,8 @@ namespace ProdFloor.Models
         public string Station { get; set; }
         public DateTime TTC { get; set; }
 
-        public string Color { get; set; }
-        public string TextColor { get; set; }
+        public string StatusColor { get; set; }
+        public string EfficiencyColor { get; set; }
     }
 
 }

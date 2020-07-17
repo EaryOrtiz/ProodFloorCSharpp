@@ -2754,9 +2754,9 @@ namespace ProdFloor.Controllers
                 string StationName = StationFromTestJobs.FirstOrDefault(m => m.StationID == testjob.StationID).Label;
                 string Stage = "";
                 string Status = "";
-                string Color = "";
+                string EfficiencyColor = "green";
+                string StatusColor = "green";
                 string Category = "";
-                string TextColor = "White";
                 double Efficiency = 0;
                 double ExpectedTimeSUM = 0;
                 double RealTimeSUM = 0;
@@ -2796,33 +2796,21 @@ namespace ProdFloor.Controllers
                     Efficiency = Math.Round((ExpectedTimeSUM / RealTimeSUM) * 100);
 
                     if (Efficiency > 99) Efficiency = 99;
-                    if (Efficiency > 82) Color = "DodgerBlue";
-                    else if (Efficiency > 69) Color = "DarkOrange";
-                    else
-                    {
-                        Color = "#ffc107!important";
-                        TextColor = "Black";
-                    }
-                    
-
-                    Status = Efficiency.ToString() + "%";
+                    if (Efficiency < 82) EfficiencyColor = "Orange";
+                    else if (Efficiency < 69) EfficiencyColor = "#ffc107!important";
 
                 }
                 else
                 {
                     Efficiency = 99;
 
-                    TextColor = "Black";
                     Stop stop = testingRepo.Stops.Where(m => m.TestJobID == testjob.TestJobID).Last();
                     Reason1 reason = testingRepo.Reasons1.FirstOrDefault(m => m.Reason1ID == stop.Reason1);
                     Status = "Stopped: " + reason.Description;
 
-                    if (stop.Critical)
-                    {
-                        Color = "Red";
-                        TextColor = "White";
-                    }
-                    else Color = "DarkGrey";
+                    if (stop.Critical) StatusColor = "Red";
+                    if (stop.Reason1 == 980 || stop.Reason1 == 981 || stop.Reason1 == 982) StatusColor = "Gray";
+                    
 
                 }
 
@@ -2853,11 +2841,6 @@ namespace ProdFloor.Controllers
                 double JobProgress = (stepsForJobCompleted.Count() * 100)/ AllSteps.Count();
 
                 //Stage Progress
-                /*
-                var auxtStepsPerStageInfo = AllStepsForJobInfo.Where(m => m.Stage == stepInfo.Stage).ToList();
-                int StepsPerStage = auxtStepsPerStageInfo.Count();
-                int auxtStepsPerStage = AllStepsForJob.Where(m => auxtStepsPerStageInfo.Any(s => s.StepID == m.StepID)).Where(m => m.Complete == true).Count() + 1;
-                */
                 List<Step> stepsPerStage = StepsListInfo.Where(m => m.Stage == Stage && AllSteps.Any(n => n.StepID == m.StepID)).ToList();
                 int stepsPerJobCompleted = AllSteps.Where(m => stepsPerStage.Any(s => s.StepID == m.StepID)).Where(m => m.Complete == true).Count();
 
@@ -2870,14 +2853,14 @@ namespace ProdFloor.Controllers
                     TechName = TechName,
                     Stage = Stage,
                     Efficiency = Efficiency,
+                    StatusColor = StatusColor,
                     Status = Status,
                     Category = Category,
                     Station = StationName,
                     TTC = TTC,
                     JobProgress = JobProgress,
                     StageProgress = StagePogress,
-                    Color = Color,
-                    TextColor = TextColor,
+                    EfficiencyColor = EfficiencyColor,
 
                 };
 
