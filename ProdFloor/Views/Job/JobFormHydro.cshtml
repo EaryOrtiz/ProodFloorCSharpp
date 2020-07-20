@@ -3,141 +3,142 @@
     <script src="~/Scripts/CascadingCountryStateCity.js" type="text/javascript"></script>
     <script src="~/Scripts/CascadingCityFireCode.js" type="text/javascript"></script>
 }
-    <form asp-action="DeletePOs" method="post">
-        <input type="hidden" asp-for="CurrentJob.JobID" />
-        <input type="hidden" asp-for="CurrentJob.Status" />
-        <input type="hidden" asp-for="CurrentJob.EngID" />
-        <input type="hidden" asp-for="CurrentJob.CrossAppEngID" />
-        <input type="hidden" asp-for="CurrentJob.CrossAppEngID" />
-        <input type="hidden" asp-for="CurrentJob.JobTypeID" />
-        <div class="form-row col-sm-12" style="padding-bottom:15px">
-            <div class="col-4 form-line border-right justify-content-md-center">
-                <div class="form-group row">
-                    <label asp-for="CurrentJob.Name" class="col-sm-3 col-form-label"></label>
-                    <div>
-                        <input asp-for="CurrentJob.Name" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" class="form-control col-sm-15" />
-                        <span asp-validation-for="CurrentJob.Name" class="text-danger"></span>
-                    </div>
+<form asp-action="DeletePOs" method="post">
+    <input type="hidden" asp-for="CurrentJob.JobID" />
+    <input type="hidden" asp-for="CurrentJob.Status" />
+    <input type="hidden" asp-for="CurrentJob.EngID" />
+    <input type="hidden" asp-for="CurrentJob.CrossAppEngID" />
+    <input type="hidden" asp-for="CurrentJob.CrossAppEngID" />
+    <input type="hidden" asp-for="POList[0].JobID" />
+    <input type="hidden" asp-for="POList[0].POID" />
+    <input type="hidden" asp-for="CurrentJob.JobTypeID" />
+    <div class="form-row col-sm-12" style="padding-bottom:15px">
+        <div class="col-4 form-line border-right justify-content-md-center">
+            <div class="form-group row">
+                <label asp-for="CurrentJob.Name" class="col-sm-3 col-form-label"></label>
+                <div>
+                    <input asp-for="CurrentJob.Name" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" class="form-control col-sm-15" />
+                    <span asp-validation-for="CurrentJob.Name" class="text-danger"></span>
                 </div>
-                <div class="form-group row">
-                    <label asp-for="CurrentJob.Name2" class="col-sm-3 col-form-label"></label>
-                    <div>
-                        <input asp-for="CurrentJob.Name2" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" class="form-control col-sm-15" />
-                        <span asp-validation-for="CurrentJob.Name2" class="text-danger"></span>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label asp-for="CurrentJob.JobTypeID" class="col-sm-3 col-form-label"></label>
-                    <div>
-                        <input asp-for="JobTypeName" readonly="@(true)" class="form-control col-sm-15" />
-                    </div>
-                </div>
-                <div class="form-group row @(Model.CurrentUserID != Model.CurrentJob.EngID ? "disabled" : "disabled")">
-                    <label asp-for="CurrentJob.JobNum" class="col-sm-3 col-form-label"></label>
-                    <div>
-                        <input asp-for="CurrentJob.JobNum" class="form-control" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" style="width:auto" />
-                        <span asp-validation-for="CurrentJob.JobNum" class="text-danger"></span>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label asp-for="POList[0].PONumb" class="col-sm-3 col-form-label"></label>
-                    <div class="form-inline">
-                        <input asp-for="POList[0].PONumb" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" class="form-control col-sm-7" />
-                        <button asp-action="AddPoHydro" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" type="submit" value="AddPO" name="buttonAction" class="btn btn-success btn-sm col-sm-2" style="margin-left:20px;">
-                            <i class="fa fa-plus"></i>
-                        </button>
-                        <span asp-validation-for="POList[0].PONumb" class="text-danger"></span>
-                    </div>
-                </div>
-                @for (int i = 1; i < Model.POList.Count; i++)
-                {
-                    <input type="hidden" asp-for="POList[i].POID" />
-                    <input type="hidden" asp-for="POList[i].JobID" />
-                    <input type="hidden" asp-for="@Model.fieldID" value="@Model.POList.Last().POID" />
-                    <div class="form-group row">
-                        <label asp-for="POList[i].PONumb" class="col-sm-3 col-form-label"></label>
-                        <div class="form-inline">
-                            <input asp-for="POList[i].PONumb" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" class="form-control col-sm-7" data-val="@false" />
-                            <input type="hidden" asp-for="POList[i].POID" />
-                            <input type="hidden" asp-for="POList[i].JobID" />
-                            <input type="hidden" asp-for="CurrentJob.JobID" />
-                            <button asp-action="DeletePOs" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="btn btn-danger btn-sm" style="margin-left:20px;">
-                                <i class="fa fa-minus-circle"></i>
-                            </button>
-                            <span asp-validation-for="POList[i].PONumb" class="text-danger"></span>
-                        </div>
-                    </div>
-                }
             </div>
-            <div class="col-md-6 justify-content-md-center">
-                <div class="container text-left" style="padding-left:30px;">
-                    <div class="form-group row">
-                        <label asp-for="CurrentJob.LatestFinishDate" class="col-sm-3 col-form-label"></label>
-                        <div>
-                            <input asp-for="CurrentJob.LatestFinishDate" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" class="form-control col-sm-15" />
-                            <span asp-validation-for="CurrentJob.LatestFinishDate" class="text-danger"></span>
-                        </div>
+            <div class="form-group row">
+                <label asp-for="CurrentJob.Name2" class="col-sm-3 col-form-label"></label>
+                <div>
+                    <input asp-for="CurrentJob.Name2" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" class="form-control col-sm-15" />
+                    <span asp-validation-for="CurrentJob.Name2" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="CurrentJob.JobTypeID" class="col-sm-3 col-form-label"></label>
+                <div>
+                    <input asp-for="JobTypeName" readonly="@(true)" class="form-control col-sm-15" />
+                </div>
+            </div>
+            <div class="form-group row @(Model.CurrentUserID != Model.CurrentJob.EngID ? "disabled" : "disabled")">
+                <label asp-for="CurrentJob.JobNum" class="col-sm-3 col-form-label"></label>
+                <div>
+                    <input asp-for="CurrentJob.JobNum" class="form-control" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" style="width:auto" />
+                    <span asp-validation-for="CurrentJob.JobNum" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="POList[0].PONumb" class="col-sm-3 col-form-label"></label>
+                <div class="form-inline">
+                    <input asp-for="POList[0].PONumb" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" class="form-control col-sm-7" />
+                    <button asp-action="AddPoHydro" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" type="submit" value="AddPO" name="buttonAction" class="btn btn-success btn-sm col-sm-2" style="margin-left:20px;">
+                        <i class="fa fa-plus"></i>
+                    </button>
+                    <span asp-validation-for="POList[0].PONumb" class="text-danger"></span>
+                </div>
+            </div>
+            @for (int i = 1; i < Model.POList.Count; i++)
+            {
+                <input type="hidden" asp-for="POList[i].POID" />
+                <input type="hidden" asp-for="POList[i].JobID" />
+                <input type="hidden" asp-for="CurrentJob.JobID" />
+                <input type="hidden" asp-for="CurrentJob.JobTypeID" />
+                <input type="hidden" asp-for="@Model.fieldID" value="@Model.POList.Last().POID" />
+                <div class="form-group row">
+                    <label asp-for="POList[i].PONumb" class="col-sm-3 col-form-label"></label>
+                    <div class="form-inline">
+                        <input asp-for="POList[i].PONumb" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" class="form-control col-sm-7" data-val="@false" />
+                        <button asp-action="DeletePOs" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="btn btn-danger btn-sm" style="margin-left:20px;">
+                            <i class="fa fa-minus-circle"></i>
+                        </button>
+                        <span asp-validation-for="POList[i].PONumb" class="text-danger"></span>
                     </div>
-                    <div class="form-group row">
-                        <label asp-for="CurrentJob.ShipDate" class="col-sm-3 col-form-label"></label>
-                        <div>
-                            <input asp-for="CurrentJob.ShipDate" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" class="form-control col-sm-15" />
-                            <span asp-validation-for="CurrentJob.ShipDate" class="text-danger"></span>
-                        </div>
+                </div>
+            }
+        </div>
+        <div class="col-md-6 justify-content-md-center">
+            <div class="container text-left" style="padding-left:30px;">
+                <div class="form-group row">
+                    <label asp-for="CurrentJob.LatestFinishDate" class="col-sm-3 col-form-label"></label>
+                    <div>
+                        <input asp-for="CurrentJob.LatestFinishDate" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" class="form-control col-sm-15" />
+                        <span asp-validation-for="CurrentJob.LatestFinishDate" class="text-danger"></span>
                     </div>
-                    <div class="form-group row">
-                        <label asp-for="CurrentJob.Cust" class="col-sm-3 col-form-label"></label>
-                        <div>
-                            <input asp-for="CurrentJob.Cust" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" class="form-control col-sm-7" />
-                            <span asp-validation-for="CurrentJob.Cust" class="text-danger"></span>
-                        </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="CurrentJob.ShipDate" class="col-sm-3 col-form-label"></label>
+                    <div>
+                        <input asp-for="CurrentJob.ShipDate" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" class="form-control col-sm-15" />
+                        <span asp-validation-for="CurrentJob.ShipDate" class="text-danger"></span>
                     </div>
-                    <div class="form-group row">
-                        <label asp-for="CurrentJob.Contractor" class="col-sm-3 col-form-label"></label>
-                        <div>
-                            <input asp-for="CurrentJob.Contractor" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" class="form-control col-sm-7" />
-                            <span asp-validation-for="CurrentJob.Contractor" class="text-danger"></span>
-                        </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="CurrentJob.Cust" class="col-sm-3 col-form-label"></label>
+                    <div>
+                        <input asp-for="CurrentJob.Cust" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" class="form-control col-sm-7" />
+                        <span asp-validation-for="CurrentJob.Cust" class="text-danger"></span>
                     </div>
-                    <div class="form-group row" style="margin-bottom:0.5em;">
-                        <label asp-for="CurrentJob.CountryID" class="col-sm-3 col-form-label"></label>
-                        <div>
-                            <country-select id="CountryID" asp-for="@Model.CurrentJob.CountryID" class="form-control form-control-sm" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" selected-value="@Model.CurrentJob.CityID">
-                            </country-select>
-                            <span asp-validation-for="CurrentJob.CountryID" class="text-danger"></span>
-                        </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="CurrentJob.Contractor" class="col-sm-3 col-form-label"></label>
+                    <div>
+                        <input asp-for="CurrentJob.Contractor" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" class="form-control col-sm-7" />
+                        <span asp-validation-for="CurrentJob.Contractor" class="text-danger"></span>
                     </div>
-                    <div class="form-group row" style="margin-bottom:0.5em;">
-                        <label asp-for="CurrentJob.StateID" class="col-sm-3 col-form-label"></label>
-                        <div>
-                            <state-select id="StateID" asp-for="@Model.CurrentJob.StateID" class="form-control form-control-sm" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" selected-value="@Model.CurrentJob.CityID">
-                            </state-select>
-                            <span asp-validation-for="CurrentJob.StateID" class="text-danger"></span>
-                        </div>
+                </div>
+                <div class="form-group row" style="margin-bottom:0.5em;">
+                    <label asp-for="CurrentJob.CountryID" class="col-sm-3 col-form-label"></label>
+                    <div>
+                        <country-select id="CountryID" asp-for="@Model.CurrentJob.CountryID" class="form-control form-control-sm" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" selected-value="@Model.CurrentJob.CityID">
+                        </country-select>
+                        <span asp-validation-for="CurrentJob.CountryID" class="text-danger"></span>
                     </div>
-                    <div class="form-group row" style="margin-bottom:0.5em;">
-                        <label asp-for="CurrentJob.CityID" class="col-sm-3 col-form-label"></label>
-                        <div>
-                            <city-select id="CityID" asp-for="@Model.CurrentJob.CityID" class="form-control form-control-sm" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" selected-value="Model.CurrentJob.CityID">
-                            </city-select>
-                            <span asp-validation-for="CurrentJob.CityID" class="text-danger"></span>
-                        </div>
+                </div>
+                <div class="form-group row" style="margin-bottom:0.5em;">
+                    <label asp-for="CurrentJob.StateID" class="col-sm-3 col-form-label"></label>
+                    <div>
+                        <state-select id="StateID" asp-for="@Model.CurrentJob.StateID" class="form-control form-control-sm" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" selected-value="@Model.CurrentJob.CityID">
+                        </state-select>
+                        <span asp-validation-for="CurrentJob.StateID" class="text-danger"></span>
                     </div>
-                    <div class="form-group row" style="margin-bottom:0.5em;">
-                        <label asp-for="CurrentJob.CurrentFirecode" class="col-sm-3 col-form-label"></label>
-                        <div>
-                            <fire-code-select selected-current-fire-code="@Model.CurrentJob.CityID" class="form-control form-control-sm" id="CurrentFireCode" asp-is-disabled="@true" asp-for="CurrentJob.CurrentFirecode"></fire-code-select>
-                            <span asp-validation-for="CurrentJob.CurrentFirecode" class="text-danger"></span>
-                        </div>
+                </div>
+                <div class="form-group row" style="margin-bottom:0.5em;">
+                    <label asp-for="CurrentJob.CityID" class="col-sm-3 col-form-label"></label>
+                    <div>
+                        <city-select id="CityID" asp-for="@Model.CurrentJob.CityID" class="form-control form-control-sm" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" selected-value="Model.CurrentJob.CityID">
+                        </city-select>
+                        <span asp-validation-for="CurrentJob.CityID" class="text-danger"></span>
                     </div>
-                    <div class="form-group row" style="margin-bottom:0.5em;">
-                        <label asp-for="CurrentJob.FireCodeID" class="col-sm-3 col-form-label"></label>
-                        <div>
-                            <fire-code-select selected-value="@Model.CurrentJob.FireCodeID" class="form-control form-control-sm" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" asp-for="CurrentJob.FireCodeID"></fire-code-select>
-                            <span asp-validation-for="CurrentJob.FireCodeID" class="text-danger"></span>
-                        </div>
+                </div>
+                <div class="form-group row" style="margin-bottom:0.5em;">
+                    <label asp-for="CurrentJob.CurrentFirecode" class="col-sm-3 col-form-label"></label>
+                    <div>
+                        <fire-code-select selected-current-fire-code="@Model.CurrentJob.CityID" class="form-control form-control-sm" id="CurrentFireCode" asp-is-disabled="@true" asp-for="CurrentJob.CurrentFirecode"></fire-code-select>
+                        <span asp-validation-for="CurrentJob.CurrentFirecode" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group row" style="margin-bottom:0.5em;">
+                    <label asp-for="CurrentJob.FireCodeID" class="col-sm-3 col-form-label"></label>
+                    <div>
+                        <fire-code-select selected-value="@Model.CurrentJob.FireCodeID" class="form-control form-control-sm" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" asp-for="CurrentJob.FireCodeID"></fire-code-select>
+                        <span asp-validation-for="CurrentJob.FireCodeID" class="text-danger"></span>
                     </div>
                 </div>
             </div>
         </div>
-    </form>
+    </div>
+</form>
