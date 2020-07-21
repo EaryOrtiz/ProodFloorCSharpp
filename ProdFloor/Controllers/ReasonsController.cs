@@ -148,7 +148,7 @@ namespace ProdFloor.Controllers
                  .OrderBy(p => p.Reason1ID).ToList();
             }
 
-            int TotalItemsSearch = reason1s.Count();
+            int TotalItemsSearch = repository.Reasons1.Count();
             if (page == 1)
             {
                 totalitemsfromlastsearch = TotalItemsSearch;
@@ -168,8 +168,9 @@ namespace ProdFloor.Controllers
                     CurrentPage = page,
                     sort = Sort != "default" ? Sort : "default",
                     ItemsPerPage = PageSize,
+                    TotalItemsFromLastSearch = totalitemsfromlastsearch,
 
-                    TotalItems = reason1s.Count()
+                    TotalItems = TotalItemsSearch
                 }
             };
             return View(reasonView);

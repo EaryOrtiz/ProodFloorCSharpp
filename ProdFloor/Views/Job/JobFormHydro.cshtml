@@ -43,11 +43,13 @@
             </div>
             <div class="form-group row">
                 <label asp-for="POList[0].PONumb" class="col-sm-3 col-form-label"></label>
-                <div class="form-inline">
-                    <input asp-for="POList[0].PONumb" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" class="form-control col-sm-7" />
-                    <button asp-action="AddPoHydro" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" type="submit" value="AddPO" name="buttonAction" class="btn btn-success btn-sm col-sm-2" style="margin-left:20px;">
-                        <i class="fa fa-plus"></i>
-                    </button>
+                <div>
+                    <div class="form-inline">
+                        <input asp-for="POList[0].PONumb" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" class="form-control col-sm-7" />
+                        <button asp-action="AddPo" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" type="submit" value="AddPO" name="buttonAction" class="btn btn-success btn-sm col-sm-2" style="margin-left:20px;">
+                            <i class="fa fa-plus"></i>
+                        </button>
+                    </div>
                     <span asp-validation-for="POList[0].PONumb" class="text-danger"></span>
                 </div>
             </div>

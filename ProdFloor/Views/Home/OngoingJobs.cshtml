@@ -82,6 +82,11 @@
             {
                 AppUser CurrentUser = UserManager.Users.FirstOrDefault(m => m.EngID == j.EngID);
                 AppUser CrosAppUser = UserManager.Users.FirstOrDefault(m => m.EngID == j.CrossAppEngID);
+                if(CrosAppUser == null)
+                {
+                    CrosAppUser = new AppUser { EngID = 0, Email = "N/A", UserName = "Default.User" };
+                }
+
                 string JobTypeName = Model.JobTypes.FirstOrDefault(m => m.JobTypeID == j.JobTypeID).Name;
                 var POForJobLlist = Model.POs.Where(m => m.JobID == j.JobID).ToList();
                 string POsNumber = "";

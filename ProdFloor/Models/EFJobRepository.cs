@@ -131,6 +131,7 @@ namespace ProdFloor.Models
                     dbEntry.PSS = hydroSpecific.PSS;
                     dbEntry.Resync = hydroSpecific.Resync;
                     dbEntry.VCI = hydroSpecific.VCI;
+                    dbEntry.MotorsDisconnect = hydroSpecific.MotorsDisconnect;
                 }
             }
             context.SaveChanges();
@@ -310,6 +311,8 @@ namespace ProdFloor.Models
                     dbEntry.DownSpeed = hoistWayData.DownSpeed;
                     dbEntry.TotalTravel = hoistWayData.TotalTravel;
                     dbEntry.LandingSystemID = hoistWayData.LandingSystemID;
+                    dbEntry.HoistWaysNumber = hoistWayData.HoistWaysNumber;
+                    dbEntry.MachineRooms = hoistWayData.MachineRooms;
                 }
             }
             context.SaveChanges();

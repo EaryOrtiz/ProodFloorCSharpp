@@ -1129,7 +1129,7 @@ namespace ProdFloor.Controllers
                             continue;
                         }
                     }
-                    if (PoAux[0] != null || PoAux.Count > 1 )
+                    if (PoAux.Count > 1 )
                     {
                         TempData["message"] = $"That PO already exists. Please validate.";
                         TempData["alert"] = $"alert-danger";
@@ -1228,7 +1228,7 @@ namespace ProdFloor.Controllers
                             continue;
                         }
                     }
-                    if (PoAux[0] != null || PoAux.Count > 1)
+                    if (PoAux.Count > 1)
                     {
                         TempData["message"] = $"That PO already exists. Please validate.";
                         TempData["alert"] = $"alert-danger";
