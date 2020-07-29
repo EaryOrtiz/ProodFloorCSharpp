@@ -91,7 +91,7 @@
             @if (Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin"))
             {
             <button class="btn btn-primary" value="Save" type="submit">Save</button>
-            <a asp-action="List" class="btn btn-secondary">Cancel</a>
+            <a href="/" class="btn btn-secondary">Cancel</a>
             }
             else
             {

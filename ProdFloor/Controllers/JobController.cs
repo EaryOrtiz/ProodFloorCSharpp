@@ -48,10 +48,10 @@ namespace ProdFloor.Controllers
 
         // Recibe jobType y jobPage y regresa un 
         //JobsListViewModel con los jobs filtrados por tipo y sorteados por JobID 
-        public IActionResult List(JobSearchViewModel searchViewModel, int page = 1, int totalitemsfromlastsearch = 0 ,int EngID = 0, string JobTypeName = "M2000")
+        public IActionResult List(JobSearchViewModel searchViewModel, int page = 1, int totalitemsfromlastsearch = 0, int EngID = 0, string JobTypeName = "M2000")
         {
             searchViewModel.CurrentUserEngID = GetCurrentUser().Result.EngID;
-            if (EngID != 0) searchViewModel.EngID = EngID; 
+            if (EngID != 0) searchViewModel.EngID = EngID;
             if (!string.IsNullOrEmpty(JobTypeName)) searchViewModel.JobTypeName = JobTypeName;
             searchViewModel.jobTypeAux = itemsrepository.JobTypes.FirstOrDefault(m => m.Name == JobTypeName);
             var JobCount = repository.Jobs
@@ -95,7 +95,8 @@ namespace ProdFloor.Controllers
             {
                 IQueryable<City> cities = itemsrepository.Cities.Where(m => m.StateID == searchViewModel.StateID);
                 jobSearchRepo = jobSearchRepo.Where(m => cities.Any(n => n.CityID == m.CityID));
-            } else if (searchViewModel.CountryID > 0)
+            }
+            else if (searchViewModel.CountryID > 0)
             {
                 IQueryable<State> states = itemsrepository.States.Where(m => m.CountryID == searchViewModel.CountryID);
                 IQueryable<City> cities = itemsrepository.Cities.Where(m => states.Any(n => n.StateID == m.StateID));
@@ -127,11 +128,11 @@ namespace ProdFloor.Controllers
             #region JobExtension
             //Opciones de busqueda para el modelo de jobExtensions.
             if (searchViewModel.InputFrecuency >= 50 && searchViewModel.InputFrecuency <= 61) jobSearchRepo = jobSearchRepo.Where(s => s._jobExtension.InputFrecuency == searchViewModel.InputFrecuency);
-            else if(searchViewModel.InputFrecuency != 0)
+            else if (searchViewModel.InputFrecuency != 0)
             {
                 TempData["alert"] = $"alert-danger";
                 TempData["message"] += $"Frequency out of range, ";
-            } 
+            }
             if (searchViewModel.InputPhase >= 1 && searchViewModel.InputPhase <= 3) jobSearchRepo = jobSearchRepo.Where(s => s._jobExtension.InputPhase == searchViewModel.InputPhase);
             else if (searchViewModel.InputPhase != 0)
             {
@@ -291,11 +292,11 @@ namespace ProdFloor.Controllers
             #endregion
 
             int TotalItemsSearch = jobSearchRepo.Count();
-            if (page == 1 )
+            if (page == 1)
             {
                 totalitemsfromlastsearch = TotalItemsSearch;
             }
-            else if(TotalItemsSearch != totalitemsfromlastsearch)
+            else if (TotalItemsSearch != totalitemsfromlastsearch)
             {
                 totalitemsfromlastsearch = TotalItemsSearch;
                 page = 1;
@@ -342,10 +343,11 @@ namespace ProdFloor.Controllers
                      .Count();
 
 
-            if (searchViewModel.CleanFields) {
+            if (searchViewModel.CleanFields)
+            {
                 ElementSearchViewModel NewViewModel = new ElementSearchViewModel();
                 NewViewModel.JobTypeName = searchViewModel.JobTypeName;
-                return RedirectToAction("ElementList", NewViewModel); 
+                return RedirectToAction("ElementList", NewViewModel);
             }
             var jobSearchRepo = repository.Jobs.Include(j => j._Elements).Include(hy => hy._ElementHydros).Include(g => g._EmentTractions).Include(sp => sp._SpecialFeatureslist)
                 .Include(po => po._PO).Where(y => y.Status != "Pending" && y.Status != "Incomplete").Where(d => d.JobTypeID == searchViewModel.jobTypeAux.JobTypeID).AsQueryable();
@@ -412,14 +414,14 @@ namespace ProdFloor.Controllers
             if (!string.IsNullOrEmpty(searchViewModel.INA)) jobSearchRepo = jobSearchRepo.Where(s => s._Elements.Any(m => m.INA.Contains(searchViewModel.INA)));
 
             if (!string.IsNullOrEmpty(searchViewModel.CallEnable)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.CallEnable == "Si" ? s._Elements.Any(m => m.CallEnable == true) : s._Elements.Any(m => m.CallEnable == false));
-            if (!string.IsNullOrEmpty(searchViewModel.EMT)) jobSearchRepo = jobSearchRepo.Where(s =>searchViewModel.EMT == "Si" ? s._Elements.Any(m => m.EMT == true) : s._Elements.Any(m => m.EMT == false));
+            if (!string.IsNullOrEmpty(searchViewModel.EMT)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.EMT == "Si" ? s._Elements.Any(m => m.EMT == true) : s._Elements.Any(m => m.EMT == false));
             if (!string.IsNullOrEmpty(searchViewModel.EP)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.EP == "Si" ? s._Elements.Any(m => m.EP == true) : s._Elements.Any(m => m.EP == false));
             if (!string.IsNullOrEmpty(searchViewModel.EQ)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.EQ == "Si" ? s._Elements.Any(m => m.EQ == true) : s._Elements.Any(m => m.EQ == false));
-            if (!string.IsNullOrEmpty(searchViewModel.FRON2)) jobSearchRepo = jobSearchRepo.Where(s =>searchViewModel.FRON2 == "Si" ? s._Elements.Any(m => m.FRON2 == true) : s._Elements.Any(m => m.FRON2 == false));
-            if (!string.IsNullOrEmpty(searchViewModel.CRO)) jobSearchRepo = jobSearchRepo.Where(s =>searchViewModel.CRO == "Si" ? s._Elements.Any(m => m.CRO == true) : s._Elements.Any(m => m.CRO == false));
+            if (!string.IsNullOrEmpty(searchViewModel.FRON2)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.FRON2 == "Si" ? s._Elements.Any(m => m.FRON2 == true) : s._Elements.Any(m => m.FRON2 == false));
+            if (!string.IsNullOrEmpty(searchViewModel.CRO)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.CRO == "Si" ? s._Elements.Any(m => m.CRO == true) : s._Elements.Any(m => m.CRO == false));
             if (!string.IsNullOrEmpty(searchViewModel.CarKey)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.CarKey == "Si" ? s._Elements.Any(m => m.CarKey == true) : s._Elements.Any(m => m.CarKey == false));
-            if (!string.IsNullOrEmpty(searchViewModel.HCRO)) jobSearchRepo = jobSearchRepo.Where(s =>searchViewModel.HCRO == "Si" ? s._Elements.Any(m => m.HCRO == true) : s._Elements.Any(m => m.HCRO == false));
-            if (!string.IsNullOrEmpty(searchViewModel.HallKey)) jobSearchRepo = jobSearchRepo.Where(s =>searchViewModel.HallKey == "Si" ? s._Elements.Any(m => m.HallKey == true) : s._Elements.Any(m => m.HallKey == false));
+            if (!string.IsNullOrEmpty(searchViewModel.HCRO)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.HCRO == "Si" ? s._Elements.Any(m => m.HCRO == true) : s._Elements.Any(m => m.HCRO == false));
+            if (!string.IsNullOrEmpty(searchViewModel.HallKey)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.HallKey == "Si" ? s._Elements.Any(m => m.HallKey == true) : s._Elements.Any(m => m.HallKey == false));
             if (!string.IsNullOrEmpty(searchViewModel.LOS)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.LOS == "Si" ? s._Elements.Any(m => m.LOS == true) : s._Elements.Any(m => m.LOS == false));
             if (!string.IsNullOrEmpty(searchViewModel.PSS)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.PSS == "Si" ? s._Elements.Any(m => m.PSS == true) : s._Elements.Any(m => m.PSS == false));
             if (!string.IsNullOrEmpty(searchViewModel.VCI)) jobSearchRepo = jobSearchRepo.Where(s => searchViewModel.VCI == "Si" ? s._Elements.Any(m => m.VCI == true) : s._Elements.Any(m => m.VCI == false));
@@ -468,7 +470,7 @@ namespace ProdFloor.Controllers
                 if (searchViewModel.FLA > 0) jobSearchRepo = jobSearchRepo.Where(s => s._ElementHydros.Any(m => m.FLA == searchViewModel.FLA));
                 if (searchViewModel.HP > 0) jobSearchRepo = jobSearchRepo.Where(s => s._ElementHydros.Any(m => m.HP == searchViewModel.HP));
                 if (searchViewModel.SPH > 0) jobSearchRepo = jobSearchRepo.Where(s => s._ElementHydros.Any(m => m.SPH == searchViewModel.SPH));
-                
+
 
                 if (!string.IsNullOrEmpty(searchViewModel.Starter)) jobSearchRepo = jobSearchRepo.Where(s => s._ElementHydros.Any(m => m.Starter.Contains(searchViewModel.Starter)));
                 if (!string.IsNullOrEmpty(searchViewModel.ValveBrand)) jobSearchRepo = jobSearchRepo.Where(s => s._ElementHydros.Any(m => m.ValveBrand.Contains(searchViewModel.ValveBrand)));
@@ -525,7 +527,7 @@ namespace ProdFloor.Controllers
             {
                 Jobs = repository.Jobs
                     .Where(s => s.Status != "Pending")
-                    .Where( n => n.EngID == currentUser.EngID)
+                    .Where(n => n.EngID == currentUser.EngID)
                     .OrderBy(p => p.JobID)
                     .Skip((page - 1) * PageSize)
                     .Take(PageSize),
@@ -554,7 +556,7 @@ namespace ProdFloor.Controllers
                 TempData["alert"] = $"alert-danger";
                 TempData["message"] = $"There was an error with your request";
             }
-            return RedirectToAction("Index","Home");
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpPost]
@@ -943,6 +945,7 @@ namespace ProdFloor.Controllers
         public IActionResult Edit(JobViewModel multiEditViewModel)
         {
             AppUser currentUser = GetCurrentUser().Result;
+            List<PO> POsList = repository.POs.Where(j => j.JobID == multiEditViewModel.CurrentJob.JobID).ToList();
             multiEditViewModel.SpecialFeaturesTable = getSpecialFeaturesEX();
             multiEditViewModel.CurrentUserID = currentUser.EngID;
             string StatusAux = "Working on it";
@@ -957,10 +960,10 @@ namespace ProdFloor.Controllers
                     {
                         try
                         {
-                            if (multiEditViewModel.POList[0].PONumb != itemes.PONumb || multiEditViewModel.POList[0].POID == 0)
+                            if (!POsList.Any(m => m.PONumb == itemes.PONumb) || multiEditViewModel.POList[0].POID == 0)
                             {
-                                    PO poUniqueAUx = repository.POs.FirstOrDefault(m => m.PONumb == itemes.PONumb);
-                                    PoAux.Add(poUniqueAUx);
+                                PO poUniqueAUx = repository.POs.FirstOrDefault(m => m.PONumb == itemes.PONumb);
+                                PoAux.Add(poUniqueAUx);
                             }
                         }
                         catch (Exception)
@@ -968,20 +971,18 @@ namespace ProdFloor.Controllers
                             continue;
                         }
                     }
-                    foreach(PO po in PoAux)
+                    try
                     {
-                        if(po != null)
+                        if (PoAux.Count > 0 && PoAux.Any(m => m != null))
                         {
+
                             TempData["message"] = $"That PO already exists. Please validate.";
                             TempData["alert"] = $"alert-danger";
                             multiEditViewModel.CurrentTab = "Main";
                             return View(multiEditViewModel);
                         }
-                        else
-                        {
-                            continue;
-                        }
                     }
+                    catch (ArgumentOutOfRangeException) { }
                     multiEditViewModel.CurrentJob.JobID = 0;
                     multiEditViewModel.CurrentJob.Status = "Working on it";
                     repository.SaveJob(multiEditViewModel.CurrentJob);
@@ -1026,61 +1027,52 @@ namespace ProdFloor.Controllers
                 {
                     multiEditViewModel.CurrentHydroSpecific.BatteryBrand = multiEditViewModel.CurrentHydroSpecific.OtherBatteryBrand;
                 }
-                try
+                foreach (PO itemes in multiEditViewModel.POList)
                 {
-                    foreach (PO itemes in multiEditViewModel.POList.Where(m => m.POID == 0))
+                    try
                     {
-                        try
+                        if ( !POsList.Any(m => m.PONumb == itemes.PONumb) || multiEditViewModel.POList[0].POID == 0)
                         {
-                            if (multiEditViewModel.POList[0].PONumb != itemes.PONumb || multiEditViewModel.POList[0].POID == 0)
-                            {
-                                PO poUniqueAUx = repository.POs.FirstOrDefault(m => m.PONumb == itemes.PONumb);
-                                PoAux.Add(poUniqueAUx);
-                            }
-                        }
-                        catch (Exception)
-                        {
-                            continue;
+                            PO poUniqueAUx = repository.POs.FirstOrDefault(m => m.PONumb == itemes.PONumb);
+                            PoAux.Add(poUniqueAUx);
                         }
                     }
-                    foreach (PO po in PoAux)
+                    catch (Exception)
                     {
-                        if (po != null)
-                        {
-                            TempData["message"] = $"That PO already exists. Please validate.";
-                            TempData["alert"] = $"alert-danger";
-                            multiEditViewModel.CurrentTab = "Main";
-                            return View(multiEditViewModel);
-                        }
-                        else
-                        {
-                            continue;
-                        }
-                    }
-                    repository.SaveEngJobView(multiEditViewModel);
-                    JobViewModel CopyJobViewModel = new JobViewModel();
-                    if (StatusAux == "Copied")
-                    {
-                        List<SpecialFeatures> SfList = repository.SpecialFeatures.Where(j => j.JobID == multiEditViewModel.CurrentJob.JobID).ToList();
-                        List<PO> PoList = repository.POs.Where(j => j.JobID == multiEditViewModel.CurrentJob.JobID).ToList();
-                        CopyJobViewModel.CurrentJob = multiEditViewModel.CurrentJob;
-                        CopyJobViewModel.CurrentJobExtension = repository.JobsExtensions.FirstOrDefault(j => j.JobID == multiEditViewModel.CurrentJob.JobID);
-                        CopyJobViewModel.CurrentHydroSpecific = repository.HydroSpecifics.FirstOrDefault(j => j.JobID == multiEditViewModel.CurrentJob.JobID);
-                        CopyJobViewModel.CurrentGenericFeatures = repository.GenericFeaturesList.FirstOrDefault(j => j.JobID == multiEditViewModel.CurrentJob.JobID);
-                        CopyJobViewModel.CurrentIndicator = repository.Indicators.FirstOrDefault(j => j.JobID == multiEditViewModel.CurrentJob.JobID);
-                        CopyJobViewModel.CurrentHoistWayData = repository.HoistWayDatas.FirstOrDefault(j => j.JobID == multiEditViewModel.CurrentJob.JobID);
-                        CopyJobViewModel.SpecialFeatureslist = SfList;
-                        CopyJobViewModel.POList = PoList;
-                        CopyJobViewModel.JobTypeName = JobTypeName(CopyJobViewModel.CurrentJob.JobTypeID);
-                        CopyJobViewModel.CurrentTab = "Main";
-                        TempData["message"] = $"{CopyJobViewModel.CurrentJob.JobNum} ID has been saved...{CopyJobViewModel.CurrentJob.JobID}";
-                        return RedirectToAction("Edit", new { id = multiEditViewModel.CurrentJob.JobID });
+                        continue;
                     }
                 }
-                catch (DbUpdateException e)
+                try
                 {
-                    TempData["message"] = $"That PO already exists. Please validate.";
-                    TempData["alert"] = $"alert-danger";
+                    if (PoAux.Count > 0 && PoAux.Any(m => m != null) )
+                    {
+
+                        TempData["message"] = $"That PO already exists. Please validate.";
+                        TempData["alert"] = $"alert-danger";
+                        multiEditViewModel.CurrentTab = "Main";
+                        return View(multiEditViewModel);
+                    }else repository.SaveEngJobView(multiEditViewModel);
+                }
+                catch (ArgumentOutOfRangeException) { }
+                
+
+                JobViewModel CopyJobViewModel = new JobViewModel();
+                if (StatusAux == "Copied")
+                {
+                    List<SpecialFeatures> SfList = repository.SpecialFeatures.Where(j => j.JobID == multiEditViewModel.CurrentJob.JobID).ToList();
+                    List<PO> PoList = repository.POs.Where(j => j.JobID == multiEditViewModel.CurrentJob.JobID).ToList();
+                    CopyJobViewModel.CurrentJob = multiEditViewModel.CurrentJob;
+                    CopyJobViewModel.CurrentJobExtension = repository.JobsExtensions.FirstOrDefault(j => j.JobID == multiEditViewModel.CurrentJob.JobID);
+                    CopyJobViewModel.CurrentHydroSpecific = repository.HydroSpecifics.FirstOrDefault(j => j.JobID == multiEditViewModel.CurrentJob.JobID);
+                    CopyJobViewModel.CurrentGenericFeatures = repository.GenericFeaturesList.FirstOrDefault(j => j.JobID == multiEditViewModel.CurrentJob.JobID);
+                    CopyJobViewModel.CurrentIndicator = repository.Indicators.FirstOrDefault(j => j.JobID == multiEditViewModel.CurrentJob.JobID);
+                    CopyJobViewModel.CurrentHoistWayData = repository.HoistWayDatas.FirstOrDefault(j => j.JobID == multiEditViewModel.CurrentJob.JobID);
+                    CopyJobViewModel.SpecialFeatureslist = SfList;
+                    CopyJobViewModel.POList = PoList;
+                    CopyJobViewModel.JobTypeName = JobTypeName(CopyJobViewModel.CurrentJob.JobTypeID);
+                    CopyJobViewModel.CurrentTab = "Main";
+                    TempData["message"] = $"{CopyJobViewModel.CurrentJob.JobNum} ID has been saved...{CopyJobViewModel.CurrentJob.JobID}";
+                    return RedirectToAction("Edit", new { id = multiEditViewModel.CurrentJob.JobID });
                 }
 
                 multiEditViewModel.CurrentTab = "Main";
@@ -1101,6 +1093,8 @@ namespace ProdFloor.Controllers
         public IActionResult EditHydro(JobElementHydroViewModel multiEditViewModel)
         {
             AppUser currentUser = GetCurrentUser().Result;
+            List<PO> POsList = repository.POs.Where(j => j.JobID == multiEditViewModel.CurrentJob.JobID).ToList();
+            List<PO> PoAux = new List<PO>();
             multiEditViewModel.SpecialFeaturesTable = getSpecialFeaturesEX();
             multiEditViewModel.CurrentUserID = currentUser.EngID;
             string StatusAux = "Cross Approval Complete";
@@ -1110,18 +1104,14 @@ namespace ProdFloor.Controllers
                 if (multiEditViewModel.CurrentJob.Status == "Copied")
                 {
                     multiEditViewModel.CurrentJob.EngID = currentUser.EngID;
-                    List<PO> PoAux = new List<PO>();
                     foreach (PO itemes in multiEditViewModel.POList)
                     {
                         try
                         {
-                            if (multiEditViewModel.POList[0].PONumb != itemes.PONumb || multiEditViewModel.POList[0].POID == 0)
+                            if (!POsList.Any(m => m.PONumb == itemes.PONumb) || multiEditViewModel.POList[0].POID == 0)
                             {
-                                if (itemes.JobID == 0)
-                                {
-                                    PO poUniqueAUx = repository.POs.FirstOrDefault(m => m.PONumb == itemes.PONumb);
-                                    PoAux.Add(poUniqueAUx);
-                                }
+                                PO poUniqueAUx = repository.POs.FirstOrDefault(m => m.PONumb == itemes.PONumb);
+                                PoAux.Add(poUniqueAUx);
                             }
                         }
                         catch (Exception)
@@ -1129,13 +1119,18 @@ namespace ProdFloor.Controllers
                             continue;
                         }
                     }
-                    if (PoAux.Count > 1 )
+                    try
                     {
-                        TempData["message"] = $"That PO already exists. Please validate.";
-                        TempData["alert"] = $"alert-danger";
-                        multiEditViewModel.CurrentTab = "Main";
-                        return View(multiEditViewModel);
+                        if (PoAux.Count > 0 && PoAux.Any(m => m != null))
+                        {
+
+                            TempData["message"] = $"That PO already exists. Please validate.";
+                            TempData["alert"] = $"alert-danger";
+                            multiEditViewModel.CurrentTab = "Main";
+                            return View(multiEditViewModel);
+                        }
                     }
+                    catch (ArgumentOutOfRangeException) { }
                     multiEditViewModel.CurrentJob.JobID = 0;
                     multiEditViewModel.CurrentJob.Status = "Cross Approval Complete";
                     repository.SaveJob(multiEditViewModel.CurrentJob);
@@ -1165,9 +1160,34 @@ namespace ProdFloor.Controllers
                     }
                     multiEditViewModel.SpecialFeatureslist = multiEditViewModel.SpecialFeatureslist;
                 }
-                if (multiEditViewModel.CurrentJob.Status == "" || multiEditViewModel.CurrentJob.Status == null || multiEditViewModel.CurrentJob.Status == "Copied") multiEditViewModel.CurrentJob.Status = "Cross Approval Complete";
+                foreach (PO itemes in multiEditViewModel.POList)
+                {
+                    try
+                    {
+                        if (!POsList.Any(m => m.PONumb == itemes.PONumb) || multiEditViewModel.POList[0].POID == 0)
+                        {
+                            PO poUniqueAUx = repository.POs.FirstOrDefault(m => m.PONumb == itemes.PONumb);
+                            PoAux.Add(poUniqueAUx);
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        continue;
+                    }
+                }
+                try
+                {
+                    if (PoAux.Count > 0 && PoAux.Any(m => m != null))
+                    {
 
-                repository.SaveEngElementHydroJobView(multiEditViewModel);
+                        TempData["message"] = $"That PO already exists. Please validate.";
+                        TempData["alert"] = $"alert-danger";
+                        multiEditViewModel.CurrentTab = "Main";
+                        return View(multiEditViewModel);
+                    }
+                    else repository.SaveEngElementHydroJobView(multiEditViewModel);
+                }
+                catch (ArgumentOutOfRangeException) { }
                 JobElementHydroViewModel CopyJobViewModel = new JobElementHydroViewModel();
                 if (StatusAux == "Copied")
                 {
@@ -1201,6 +1221,8 @@ namespace ProdFloor.Controllers
         {
             AppUser currentUser = GetCurrentUser().Result;
             multiEditViewModel.SpecialFeaturesTable = getSpecialFeaturesEX();
+            List<PO> POsList = repository.POs.Where(j => j.JobID == multiEditViewModel.CurrentJob.JobID).ToList();
+            List<PO> PoAux = new List<PO>();
             multiEditViewModel.CurrentUserID = currentUser.EngID;
             string StatusAux = "Working on it";
             if (multiEditViewModel.CurrentJob.Status == "Copied") StatusAux = "Copied";
@@ -1209,7 +1231,6 @@ namespace ProdFloor.Controllers
                 if (multiEditViewModel.CurrentJob.Status == "Copied")
                 {
                     multiEditViewModel.CurrentJob.EngID = currentUser.EngID;
-                    List<PO> PoAux = new List<PO>();
                     foreach (PO itemes in multiEditViewModel.POList)
                     {
                         try
@@ -1269,10 +1290,36 @@ namespace ProdFloor.Controllers
                 {
                     multiEditViewModel.CurrentJob.Status = "Working on it";
                 }
+
+                foreach (PO itemes in multiEditViewModel.POList)
+                {
+                    try
+                    {
+                        if (!POsList.Any(m => m.PONumb == itemes.PONumb) || multiEditViewModel.POList[0].POID == 0)
+                        {
+                            PO poUniqueAUx = repository.POs.FirstOrDefault(m => m.PONumb == itemes.PONumb);
+                            PoAux.Add(poUniqueAUx);
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        continue;
+                    }
+                }
                 try
                 {
-                    repository.SaveEngElementTractionJobView(multiEditViewModel);
-                    JobElementTractionViewModel CopyJobViewModel = new JobElementTractionViewModel();
+                    if (PoAux.Count > 0 && PoAux.Any(m => m != null))
+                    {
+
+                        TempData["message"] = $"That PO already exists. Please validate.";
+                        TempData["alert"] = $"alert-danger";
+                        multiEditViewModel.CurrentTab = "Main";
+                        return View(multiEditViewModel);
+                    }
+                    else repository.SaveEngElementTractionJobView(multiEditViewModel);
+                }
+                catch (ArgumentOutOfRangeException) { }
+                JobElementTractionViewModel CopyJobViewModel = new JobElementTractionViewModel();
                     if (StatusAux == "Copied")
                     {
 
@@ -1287,12 +1334,7 @@ namespace ProdFloor.Controllers
                         TempData["message"] = $"{CopyJobViewModel.CurrentJob.JobNum} ID has been saved...{CopyJobViewModel.CurrentJob.JobID}";
                         return RedirectToAction("Edit", new { id = multiEditViewModel.CurrentJob.JobID, buttonAction = "ElmTract" });
                     }
-                }
-                catch (DbUpdateException e)
-                {
-                    TempData["message"] = $"That PO already exists. Please validate.";
-                    TempData["alert"] = $"alert-danger";
-                }
+
 
                 multiEditViewModel.CurrentTab = "Main";
                 TempData["message"] = $"{multiEditViewModel.CurrentJob.JobNum} ID has been saved...{multiEditViewModel.CurrentJob.JobID}";
@@ -1825,18 +1867,16 @@ namespace ProdFloor.Controllers
             AppUser currentUser = GetCurrentUser().Result;
             nextViewModel.CurrentUserID = currentUser.EngID;
             nextViewModel.SpecialFeaturesTable = getSpecialFeaturesEX();
+            List<PO> POsList = repository.POs.Where(j => j.JobID == nextViewModel.CurrentJob.JobID).ToList();
             List<PO> PoAux = new List<PO>();
             foreach (PO itemes in nextViewModel.POList)
             {
                 try
                 {
-                    if (nextViewModel.POList[0].PONumb != itemes.PONumb)
+                    if (!POsList.Any(m => m.PONumb == itemes.PONumb) || nextViewModel.POList[0].POID == 0)
                     {
-                        if (itemes.JobID == 0)
-                        {
-                            PO poUniqueAUx = repository.POs.FirstOrDefault(m => m.PONumb == itemes.PONumb);
-                            PoAux.Add(poUniqueAUx);
-                        }
+                        PO poUniqueAUx = repository.POs.FirstOrDefault(m => m.PONumb == itemes.PONumb);
+                        PoAux.Add(poUniqueAUx);
                     }
                 }
                 catch (Exception)
@@ -1844,12 +1884,30 @@ namespace ProdFloor.Controllers
                     continue;
                 }
             }
-            if (PoAux.Count <= 0 || PoAux[0] == null || nextViewModel.CurrentJobExtension.JobExtensionID == 0)
+            if (PoAux.Count > 0 && PoAux.Any(m => m != null))
             {
+                TempData["message"] = $"That PO already exists. Please validate.";
+                TempData["alert"] = $"alert-danger";
+
+                nextViewModel.CurrentJob = (nextViewModel.CurrentJob ?? new Job());
+                nextViewModel.POList = (nextViewModel.POList ?? new List<PO> { new PO() });
+                nextViewModel.CurrentJobExtension = (nextViewModel.CurrentJobExtension ?? new JobExtension());
+                nextViewModel.CurrentHydroSpecific = (nextViewModel.CurrentHydroSpecific ?? new HydroSpecific());
+                nextViewModel.CurrentGenericFeatures = (nextViewModel.CurrentGenericFeatures ?? new GenericFeatures());
+                nextViewModel.CurrentIndicator = (nextViewModel.CurrentIndicator ?? new Indicator());
+                nextViewModel.CurrentHoistWayData = (nextViewModel.CurrentHoistWayData ?? new HoistWayData());
+                nextViewModel.SpecialFeatureslist = (nextViewModel.SpecialFeatureslist ?? new List<SpecialFeatures> { new SpecialFeatures() });
+
+                
+                return View(nextViewModel);
+            }
+            else
+            {
+
                 if (nextViewModel.CurrentJob.JobID == 0 && nextViewModel.CurrentJob.Status == "Incomplete") nextViewModel.CurrentJob.JobID = nextViewModel.CurrentJobExtension.JobID;
                 if (nextViewModel.buttonAction == "AddSF")
                 {
-                    if(nextViewModel.SpecialFeatureslist != null)
+                    if (nextViewModel.SpecialFeatureslist != null)
                     {
                         if (!string.IsNullOrWhiteSpace(nextViewModel.SpecialFeatureslist.Last().Description))
                         {
@@ -2011,19 +2069,6 @@ namespace ProdFloor.Controllers
                     }
                 }
             }
-            else
-            {
-                nextViewModel.CurrentJob = (nextViewModel.CurrentJob ?? new Job());
-                nextViewModel.POList = (nextViewModel.POList ?? new List<PO> { new PO() });
-                nextViewModel.CurrentJobExtension = (nextViewModel.CurrentJobExtension ?? new JobExtension());
-                nextViewModel.CurrentHydroSpecific = (nextViewModel.CurrentHydroSpecific ?? new HydroSpecific());
-                nextViewModel.CurrentGenericFeatures = (nextViewModel.CurrentGenericFeatures ?? new GenericFeatures());
-                nextViewModel.CurrentIndicator = (nextViewModel.CurrentIndicator ?? new Indicator());
-                nextViewModel.CurrentHoistWayData = (nextViewModel.CurrentHoistWayData ?? new HoistWayData());
-                nextViewModel.SpecialFeatureslist = (nextViewModel.SpecialFeatureslist ?? new List<SpecialFeatures> { new SpecialFeatures() });
-                TempData["message"] = $"nothing was saved";
-                return View(nextViewModel);
-            }
 
 
             return View(nextViewModel);
@@ -2035,18 +2080,16 @@ namespace ProdFloor.Controllers
             AppUser currentUser = GetCurrentUser().Result;
             nextViewModel.CurrentUserID = currentUser.EngID;
             nextViewModel.SpecialFeaturesTable = getSpecialFeaturesEX();
+            List<PO> POsList = repository.POs.Where(j => j.JobID == nextViewModel.CurrentJob.JobID).ToList();
             List<PO> PoAux = new List<PO>();
             foreach (PO itemes in nextViewModel.POList)
             {
                 try
                 {
-                    if (nextViewModel.POList[0].PONumb != itemes.PONumb)
+                    if (!POsList.Any(m => m.PONumb == itemes.PONumb) || nextViewModel.POList[0].POID == 0)
                     {
-                        if (itemes.JobID == 0)
-                        {
-                            PO poUniqueAUx = repository.POs.FirstOrDefault(m => m.PONumb == itemes.PONumb);
-                            PoAux.Add(poUniqueAUx);
-                        }
+                        PO poUniqueAUx = repository.POs.FirstOrDefault(m => m.PONumb == itemes.PONumb);
+                        PoAux.Add(poUniqueAUx);
                     }
                 }
                 catch (Exception)
@@ -2054,8 +2097,20 @@ namespace ProdFloor.Controllers
                     continue;
                 }
             }
-            if (PoAux.Count <= 0 || PoAux[0] == null)
+            if (PoAux.Count > 0 && PoAux.Any(m => m != null))
             {
+                nextViewModel.CurrentJob = (nextViewModel.CurrentJob ?? new Job());
+                nextViewModel.POList = (nextViewModel.POList ?? new List<PO> { new PO() });
+                nextViewModel.Element = (nextViewModel.Element ?? new Element());
+                nextViewModel.ElementHydro = (nextViewModel.ElementHydro ?? new ElementHydro());
+                nextViewModel.SpecialFeatureslist = (nextViewModel.SpecialFeatureslist ?? new List<SpecialFeatures> { new SpecialFeatures() });
+                TempData["message"] = $"One of the POs already exists. Please validate.";
+                TempData["alert"] = $"alert-danger";
+                return View(nextViewModel);
+            }
+            else
+            {
+                
                 if (nextViewModel.CurrentJob.JobID == 0 && nextViewModel.CurrentJob.Status == "Incomplete") nextViewModel.CurrentJob.JobID = nextViewModel.Element.JobID;
                 if (nextViewModel.buttonAction == "AddSF")
                 {
@@ -2137,17 +2192,6 @@ namespace ProdFloor.Controllers
                     return View(nextViewModel);
                 }
             }
-            else
-            {
-                nextViewModel.CurrentJob = (nextViewModel.CurrentJob ?? new Job());
-                nextViewModel.POList = (nextViewModel.POList ?? new List<PO> { new PO() });
-                nextViewModel.Element = (nextViewModel.Element ?? new Element());
-                nextViewModel.ElementHydro = (nextViewModel.ElementHydro ?? new ElementHydro());
-                nextViewModel.SpecialFeatureslist = (nextViewModel.SpecialFeatureslist ?? new List<SpecialFeatures> { new SpecialFeatures() });
-                TempData["message"] = $"One of the POs already exists. Please validate.";
-                TempData["alert"] = $"alert-danger";
-                return View(nextViewModel);
-            }
             return View(nextViewModel);
         }
 
@@ -2157,18 +2201,16 @@ namespace ProdFloor.Controllers
             AppUser currentUser = GetCurrentUser().Result;
             nextViewModel.CurrentUserID = currentUser.EngID;
             nextViewModel.SpecialFeaturesTable = getSpecialFeaturesEX();
+            List<PO> POsList = repository.POs.Where(j => j.JobID == nextViewModel.CurrentJob.JobID).ToList();
             List<PO> PoAux = new List<PO>();
             foreach (PO itemes in nextViewModel.POList)
             {
                 try
                 {
-                    if (nextViewModel.POList[0].PONumb != itemes.PONumb)
+                    if (!POsList.Any(m => m.PONumb == itemes.PONumb) || nextViewModel.POList[0].POID == 0)
                     {
-                        if (itemes.JobID == 0)
-                        {
-                            PO poUniqueAUx = repository.POs.FirstOrDefault(m => m.PONumb == itemes.PONumb);
-                            PoAux.Add(poUniqueAUx);
-                        }
+                        PO poUniqueAUx = repository.POs.FirstOrDefault(m => m.PONumb == itemes.PONumb);
+                        PoAux.Add(poUniqueAUx);
                     }
                 }
                 catch (Exception)
@@ -2176,7 +2218,20 @@ namespace ProdFloor.Controllers
                     continue;
                 }
             }
-            if (PoAux.Count <= 0 || PoAux[0] == null)
+            if (PoAux.Count > 0 && PoAux.Any(m => m != null))
+            {
+
+                nextViewModel.CurrentJob = (nextViewModel.CurrentJob ?? new Job());
+                nextViewModel.POList = (nextViewModel.POList ?? new List<PO> { new PO() });
+                nextViewModel.Element = (nextViewModel.Element ?? new Element());
+                nextViewModel.ElementTraction = (nextViewModel.ElementTraction ?? new ElementTraction());
+                nextViewModel.SpecialFeatureslist = (nextViewModel.SpecialFeatureslist ?? new List<SpecialFeatures> { new SpecialFeatures() });
+                TempData["message"] = $"One of the POs already exists. Please validate.";
+                TempData["alert"] = $"alert-danger";
+                return View(nextViewModel);
+
+            }
+            else
             {
                 if (nextViewModel.CurrentJob.JobID == 0 && nextViewModel.CurrentJob.Status == "Incomplete") nextViewModel.CurrentJob.JobID = nextViewModel.Element.JobID;
                 if (nextViewModel.buttonAction == "AddSF")
@@ -2259,17 +2314,6 @@ namespace ProdFloor.Controllers
                     return View(nextViewModel);
                 }
             }
-            else
-            {
-                nextViewModel.CurrentJob = (nextViewModel.CurrentJob ?? new Job());
-                nextViewModel.POList = (nextViewModel.POList ?? new List<PO> { new PO() });
-                nextViewModel.Element = (nextViewModel.Element ?? new Element());
-                nextViewModel.ElementTraction = (nextViewModel.ElementTraction ?? new ElementTraction());
-                nextViewModel.SpecialFeatureslist = (nextViewModel.SpecialFeatureslist ?? new List<SpecialFeatures> { new SpecialFeatures() });
-                TempData["message"] = $"One of the POs already exists. Please validate.";
-                TempData["alert"] = $"alert-danger";
-                return View(nextViewModel);
-            }
 
 
             return View(nextViewModel);
@@ -2283,8 +2327,8 @@ namespace ProdFloor.Controllers
             return user;
         }
 
-        
-       public async Task<IActionResult> JobSearchList(JobSearchViewModel searchViewModel, int page = 1)
+
+        public async Task<IActionResult> JobSearchList(JobSearchViewModel searchViewModel, int page = 1)
         {
             if (searchViewModel.CleanFields) return RedirectToAction("JobSearchList");
 
@@ -2312,9 +2356,10 @@ namespace ProdFloor.Controllers
             if (searchViewModel.NumJobSearch >= 2015000000 && searchViewModel.NumJobSearch <= 2021000000) jobSearchRepo = jobSearchRepo.Where(s => s.JobNum == searchViewModel.NumJobSearch);
             if (searchViewModel.EngID > 0) jobSearchRepo = jobSearchRepo.Where(s => s.EngID == searchViewModel.EngID);
             if (searchViewModel.CrossAppEngID > 0) jobSearchRepo = jobSearchRepo.Where(s => s.CrossAppEngID == searchViewModel.CrossAppEngID);
-            if (searchViewModel.CountryID > 0){
+            if (searchViewModel.CountryID > 0)
+            {
                 IQueryable<State> states = itemsrepository.States.Where(m => m.CountryID == searchViewModel.CountryID);
-                IQueryable<City> cities = itemsrepository.Cities.Where(m => states.Any( n => n.StateID ==  m.StateID));
+                IQueryable<City> cities = itemsrepository.Cities.Where(m => states.Any(n => n.StateID == m.StateID));
 
                 jobSearchRepo = jobSearchRepo.Where(m => cities.Any(n => n.CityID == m.CityID));
             }
@@ -2423,7 +2468,7 @@ namespace ProdFloor.Controllers
 
             #region Indicators
             //Opciones de bsuqueda para el modelo de Indicators
-           
+
             if (!string.IsNullOrEmpty(searchViewModel.CarPIType)) jobSearchRepo = jobSearchRepo.Where(s => s._Indicator.CarPIType.Equals(searchViewModel.CarPIType));
             if (!string.IsNullOrEmpty(searchViewModel.CarPIDiscreteType)) jobSearchRepo = jobSearchRepo.Where(s => s._Indicator.CarPIDiscreteType.Equals(searchViewModel.CarPIDiscreteType));
             if (!string.IsNullOrEmpty(searchViewModel.HallPIType)) jobSearchRepo = jobSearchRepo.Where(s => s._Indicator.HallPIType.Equals(searchViewModel.HallPIType));
@@ -3475,7 +3520,7 @@ namespace ProdFloor.Controllers
             XmlWriterSettings xws = new XmlWriterSettings();
             xws.OmitXmlDeclaration = true;
             xws.Indent = true;
-           string fileName = "Jobs-"+ DateTime.Now.ToString("dd-MM-yyyy")+".xml";
+            string fileName = "Jobs-" + DateTime.Now.ToString("dd-MM-yyyy") + ".xml";
 
             List<Job> jobs = repository.Jobs.Where(m => m.Contractor != "Fake").ToList();
             var path = $@"{environment.ContentRootPath}\wwwroot\DailyJobs\{fileName}";
@@ -4594,7 +4639,7 @@ namespace ProdFloor.Controllers
                             {
                                 ElementHydroID = Int32.Parse(idElmh),
                                 JobID = Int32.Parse(jobid),
-                                
+
                                 Starter = starter,
                                 HP = float.Parse(hp),
                                 FLA = float.Parse(fla),
@@ -4766,14 +4811,14 @@ namespace ProdFloor.Controllers
                             if (!string.IsNullOrEmpty(row.GetCell(j).ToString()) & !string.IsNullOrWhiteSpace(row.GetCell(j).ToString()))
                             {
                                 rowList.Add(row.GetCell(j).ToString());
-                             }
+                            }
                         }
                     }
                     if (rowList.Count > 0)
                         specialFeaturesEXItem.Name = rowList.ElementAt(0);
-                        specialFeaturesEXItem.Description = rowList.ElementAt(1);
-                        specialFeaturesTable.Add(specialFeaturesEXItem);
-                    rowList.Clear(); 
+                    specialFeaturesEXItem.Description = rowList.ElementAt(1);
+                    specialFeaturesTable.Add(specialFeaturesEXItem);
+                    rowList.Clear();
                 }
             }
 

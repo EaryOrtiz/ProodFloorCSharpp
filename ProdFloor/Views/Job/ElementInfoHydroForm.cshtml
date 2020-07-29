@@ -42,7 +42,7 @@
             <label asp-for="Element.Frequency" class="col-sm-4 col-form-label"></label>
             <div>
                 <input asp-for="Element.Frequency" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" class="form-control col-sm-8" />
-                <span asp-validation-for="Element.Capacity" class="text-danger"></span>
+                <span asp-validation-for="Element.Frequency" class="text-danger"></span>
             </div>
         </div>
         <div class="form-group row">
