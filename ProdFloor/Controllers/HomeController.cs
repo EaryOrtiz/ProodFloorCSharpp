@@ -598,7 +598,7 @@ namespace ProdFloor.Controllers
         public IActionResult GetCross(int JobCrossID)
         {
             Job jobToCross = repository.Jobs.FirstOrDefault(j => j.JobID == JobCrossID);
-            if (jobToCross != null)
+            if (jobToCross != null && jobToCross.Status == "Cross Approval Pending")
             {
                 jobToCross.CrossAppEngID = GetCurrentUser().Result.EngID;
                 jobToCross.Status = "On Cross Approval";
@@ -608,7 +608,7 @@ namespace ProdFloor.Controllers
             else
             {
                 TempData["alert"] = $"alert-danger";
-                TempData["message"] = $"There was an error with your request";
+                TempData["message"] = $"Job status has changed or another engineer has taken it";
             }
             return RedirectToAction("Index");
         }
@@ -665,7 +665,7 @@ namespace ProdFloor.Controllers
                     job.CrossAppEngID = viewModel.CurrentCrosAppEngID;
                     repository.SaveJob(job);
 
-                    TempData["message"] = $"You have reassinged the the Engineer for the Job #{job.JobNum} to E{job.EngID} and the CrossApprover E{job.EngID}";
+                    TempData["message"] = $"You have reassigned the the Engineer for the Job #{job.JobNum} to E{job.EngID} and the CrossApprover E{job.EngID}";
                     return RedirectToAction("EngineerAdminDashBoard");
                 }
 

@@ -46,6 +46,15 @@ namespace ProdFloor.Controllers
             TempData["message"] = $"There was an error with your request";
         }
 
+        private async Task<bool> GetCurrentUserRole(string role)
+        {
+            AppUser user = await userManager.GetUserAsync(HttpContext.User);
+
+            bool isInRole = await userManager.IsInRoleAsync(user, role);
+
+            return isInRole;
+        }
+
         // Recibe jobType y jobPage y regresa un 
         //JobsListViewModel con los jobs filtrados por tipo y sorteados por JobID 
         public IActionResult List(JobSearchViewModel searchViewModel, int page = 1, int totalitemsfromlastsearch = 0, int EngID = 0, string JobTypeName = "M2000")
@@ -948,14 +957,89 @@ namespace ProdFloor.Controllers
             List<PO> POsList = repository.POs.Where(j => j.JobID == multiEditViewModel.CurrentJob.JobID).ToList();
             multiEditViewModel.SpecialFeaturesTable = getSpecialFeaturesEX();
             multiEditViewModel.CurrentUserID = currentUser.EngID;
-            string StatusAux = "Working on it";
-            if (multiEditViewModel.CurrentJob.Status == "Copied") StatusAux = "Copied";
-            List<PO> PoAux = new List<PO>();
-            if (ModelState.IsValid)
+            bool Admin = GetCurrentUserRole("Admin").Result;
+            Job job = repository.Jobs.FirstOrDefault(m => m.JobID == multiEditViewModel.CurrentJob.JobID);
+            if (currentUser.EngID == job.EngID || Admin || multiEditViewModel.CurrentJob.Status == "Copied")
             {
-                if (multiEditViewModel.CurrentJob.Status == "Copied")
+                string StatusAux = "Working on it";
+                if (multiEditViewModel.CurrentJob.Status == "Copied") StatusAux = "Copied";
+                List<PO> PoAux = new List<PO>();
+                if (ModelState.IsValid)
                 {
-                    multiEditViewModel.CurrentJob.EngID = currentUser.EngID;
+                    if (multiEditViewModel.CurrentJob.Status == "Copied")
+                    {
+                        multiEditViewModel.CurrentJob.EngID = currentUser.EngID;
+                        foreach (PO itemes in multiEditViewModel.POList)
+                        {
+                            try
+                            {
+                                if (!POsList.Any(m => m.PONumb == itemes.PONumb) || multiEditViewModel.POList[0].POID == 0)
+                                {
+                                    PO poUniqueAUx = repository.POs.FirstOrDefault(m => m.PONumb == itemes.PONumb);
+                                    PoAux.Add(poUniqueAUx);
+                                }
+                            }
+                            catch (Exception)
+                            {
+                                continue;
+                            }
+                        }
+                        try
+                        {
+                            if (PoAux.Count > 0 && PoAux.Any(m => m != null))
+                            {
+
+                                TempData["message"] = $"That PO already exists. Please validate.";
+                                TempData["alert"] = $"alert-danger";
+                                multiEditViewModel.CurrentTab = "Main";
+                                return View(multiEditViewModel);
+                            }
+                        }
+                        catch (ArgumentOutOfRangeException) { }
+                        multiEditViewModel.CurrentJob.JobID = 0;
+                        multiEditViewModel.CurrentJob.Status = "Working on it";
+                        repository.SaveJob(multiEditViewModel.CurrentJob);
+                        multiEditViewModel.CurrentJob = repository.Jobs.LastOrDefault();
+                        JobAdditional jobAdditional = new JobAdditional
+                        {
+                            JobID = multiEditViewModel.CurrentJob.JobID,
+                            Status = "",
+                            Action = "",
+                            Priority = 0,
+                            ERDate = multiEditViewModel.CurrentJob.LatestFinishDate
+                        };
+                        repository.SaveJobAdditional(jobAdditional);
+                        multiEditViewModel.CurrentJobExtension.JobID = multiEditViewModel.CurrentJob.JobID;
+                        multiEditViewModel.CurrentHydroSpecific.JobID = multiEditViewModel.CurrentJob.JobID;
+                        multiEditViewModel.CurrentGenericFeatures.JobID = multiEditViewModel.CurrentJob.JobID;
+                        multiEditViewModel.CurrentIndicator.JobID = multiEditViewModel.CurrentJob.JobID;
+                        multiEditViewModel.CurrentHoistWayData.JobID = multiEditViewModel.CurrentJob.JobID;
+                        multiEditViewModel.CurrentJobExtension.JobExtensionID = 0;
+                        multiEditViewModel.CurrentHydroSpecific.HydroSpecificID = 0;
+                        multiEditViewModel.CurrentGenericFeatures.GenericFeaturesID = 0;
+                        multiEditViewModel.CurrentIndicator.IndicatorID = 0;
+                        multiEditViewModel.CurrentHoistWayData.HoistWayDataID = 0;
+                        foreach (PO singlPO in multiEditViewModel.POList)
+                        {
+                            singlPO.POID = 0;
+                            singlPO.JobID = multiEditViewModel.CurrentJob.JobID;
+                        }
+                        foreach (SpecialFeatures special in multiEditViewModel.SpecialFeatureslist)
+                        {
+                            special.SpecialFeaturesID = 0;
+                            special.JobID = multiEditViewModel.CurrentJob.JobID;
+                        }
+                        multiEditViewModel.SpecialFeatureslist = multiEditViewModel.SpecialFeatureslist;
+                    }
+
+                    if (multiEditViewModel.CurrentJob.Status == "" || multiEditViewModel.CurrentJob.Status == null || multiEditViewModel.CurrentJob.Status == "Copied")
+                    {
+                        multiEditViewModel.CurrentJob.Status = "Working on it";
+                    }
+                    if (multiEditViewModel.CurrentHydroSpecific.BatteryBrand == "Other" && !string.IsNullOrEmpty(multiEditViewModel.CurrentHydroSpecific.OtherBatteryBrand))
+                    {
+                        multiEditViewModel.CurrentHydroSpecific.BatteryBrand = multiEditViewModel.CurrentHydroSpecific.OtherBatteryBrand;
+                    }
                     foreach (PO itemes in multiEditViewModel.POList)
                     {
                         try
@@ -981,112 +1065,52 @@ namespace ProdFloor.Controllers
                             multiEditViewModel.CurrentTab = "Main";
                             return View(multiEditViewModel);
                         }
+                        else repository.SaveEngJobView(multiEditViewModel);
                     }
                     catch (ArgumentOutOfRangeException) { }
-                    multiEditViewModel.CurrentJob.JobID = 0;
-                    multiEditViewModel.CurrentJob.Status = "Working on it";
-                    repository.SaveJob(multiEditViewModel.CurrentJob);
-                    multiEditViewModel.CurrentJob = repository.Jobs.LastOrDefault();
-                    JobAdditional jobAdditional = new JobAdditional
+
+
+                    JobViewModel CopyJobViewModel = new JobViewModel();
+                    if (StatusAux == "Copied")
                     {
-                        JobID = multiEditViewModel.CurrentJob.JobID,
-                        Status = "",
-                        Action = "",
-                        Priority = 0,
-                        ERDate = multiEditViewModel.CurrentJob.LatestFinishDate
-                    };
-                    repository.SaveJobAdditional(jobAdditional);
-                    multiEditViewModel.CurrentJobExtension.JobID = multiEditViewModel.CurrentJob.JobID;
-                    multiEditViewModel.CurrentHydroSpecific.JobID = multiEditViewModel.CurrentJob.JobID;
-                    multiEditViewModel.CurrentGenericFeatures.JobID = multiEditViewModel.CurrentJob.JobID;
-                    multiEditViewModel.CurrentIndicator.JobID = multiEditViewModel.CurrentJob.JobID;
-                    multiEditViewModel.CurrentHoistWayData.JobID = multiEditViewModel.CurrentJob.JobID;
-                    multiEditViewModel.CurrentJobExtension.JobExtensionID = 0;
-                    multiEditViewModel.CurrentHydroSpecific.HydroSpecificID = 0;
-                    multiEditViewModel.CurrentGenericFeatures.GenericFeaturesID = 0;
-                    multiEditViewModel.CurrentIndicator.IndicatorID = 0;
-                    multiEditViewModel.CurrentHoistWayData.HoistWayDataID = 0;
-                    foreach (PO singlPO in multiEditViewModel.POList)
-                    {
-                        singlPO.POID = 0;
-                        singlPO.JobID = multiEditViewModel.CurrentJob.JobID;
+                        List<SpecialFeatures> SfList = repository.SpecialFeatures.Where(j => j.JobID == multiEditViewModel.CurrentJob.JobID).ToList();
+                        List<PO> PoList = repository.POs.Where(j => j.JobID == multiEditViewModel.CurrentJob.JobID).ToList();
+                        CopyJobViewModel.CurrentJob = multiEditViewModel.CurrentJob;
+                        CopyJobViewModel.CurrentJobExtension = repository.JobsExtensions.FirstOrDefault(j => j.JobID == multiEditViewModel.CurrentJob.JobID);
+                        CopyJobViewModel.CurrentHydroSpecific = repository.HydroSpecifics.FirstOrDefault(j => j.JobID == multiEditViewModel.CurrentJob.JobID);
+                        CopyJobViewModel.CurrentGenericFeatures = repository.GenericFeaturesList.FirstOrDefault(j => j.JobID == multiEditViewModel.CurrentJob.JobID);
+                        CopyJobViewModel.CurrentIndicator = repository.Indicators.FirstOrDefault(j => j.JobID == multiEditViewModel.CurrentJob.JobID);
+                        CopyJobViewModel.CurrentHoistWayData = repository.HoistWayDatas.FirstOrDefault(j => j.JobID == multiEditViewModel.CurrentJob.JobID);
+                        CopyJobViewModel.SpecialFeatureslist = SfList;
+                        CopyJobViewModel.POList = PoList;
+                        CopyJobViewModel.JobTypeName = JobTypeName(CopyJobViewModel.CurrentJob.JobTypeID);
+                        CopyJobViewModel.CurrentTab = "Main";
+                        TempData["message"] = $"{CopyJobViewModel.CurrentJob.JobNum} ID has been saved...{CopyJobViewModel.CurrentJob.JobID}";
+                        return RedirectToAction("Edit", new { id = multiEditViewModel.CurrentJob.JobID });
                     }
-                    foreach (SpecialFeatures special in multiEditViewModel.SpecialFeatureslist)
-                    {
-                        special.SpecialFeaturesID = 0;
-                        special.JobID = multiEditViewModel.CurrentJob.JobID;
-                    }
-                    multiEditViewModel.SpecialFeatureslist = multiEditViewModel.SpecialFeatureslist;
+
+                    multiEditViewModel.CurrentTab = "Main";
+                    multiEditViewModel.JobTypeName = JobTypeName(multiEditViewModel.CurrentJob.JobTypeID);
+                    TempData["message"] = $"{multiEditViewModel.CurrentJob.JobNum} ID has been saved...{multiEditViewModel.CurrentJob.JobID}";
+                    return View(multiEditViewModel);
+                }
+                else
+                {
+                    // there is something wrong with the data values
+                    TempData["message"] = $"There seems to be errors in the form. Please validate.";
+                    TempData["alert"] = $"alert-danger";
+                    return View(multiEditViewModel);
                 }
 
-                if (multiEditViewModel.CurrentJob.Status == "" || multiEditViewModel.CurrentJob.Status == null || multiEditViewModel.CurrentJob.Status == "Copied")
-                {
-                    multiEditViewModel.CurrentJob.Status = "Working on it";
-                }
-                if (multiEditViewModel.CurrentHydroSpecific.BatteryBrand == "Other" && !string.IsNullOrEmpty(multiEditViewModel.CurrentHydroSpecific.OtherBatteryBrand))
-                {
-                    multiEditViewModel.CurrentHydroSpecific.BatteryBrand = multiEditViewModel.CurrentHydroSpecific.OtherBatteryBrand;
-                }
-                foreach (PO itemes in multiEditViewModel.POList)
-                {
-                    try
-                    {
-                        if ( !POsList.Any(m => m.PONumb == itemes.PONumb) || multiEditViewModel.POList[0].POID == 0)
-                        {
-                            PO poUniqueAUx = repository.POs.FirstOrDefault(m => m.PONumb == itemes.PONumb);
-                            PoAux.Add(poUniqueAUx);
-                        }
-                    }
-                    catch (Exception)
-                    {
-                        continue;
-                    }
-                }
-                try
-                {
-                    if (PoAux.Count > 0 && PoAux.Any(m => m != null) )
-                    {
-
-                        TempData["message"] = $"That PO already exists. Please validate.";
-                        TempData["alert"] = $"alert-danger";
-                        multiEditViewModel.CurrentTab = "Main";
-                        return View(multiEditViewModel);
-                    }else repository.SaveEngJobView(multiEditViewModel);
-                }
-                catch (ArgumentOutOfRangeException) { }
                 
-
-                JobViewModel CopyJobViewModel = new JobViewModel();
-                if (StatusAux == "Copied")
-                {
-                    List<SpecialFeatures> SfList = repository.SpecialFeatures.Where(j => j.JobID == multiEditViewModel.CurrentJob.JobID).ToList();
-                    List<PO> PoList = repository.POs.Where(j => j.JobID == multiEditViewModel.CurrentJob.JobID).ToList();
-                    CopyJobViewModel.CurrentJob = multiEditViewModel.CurrentJob;
-                    CopyJobViewModel.CurrentJobExtension = repository.JobsExtensions.FirstOrDefault(j => j.JobID == multiEditViewModel.CurrentJob.JobID);
-                    CopyJobViewModel.CurrentHydroSpecific = repository.HydroSpecifics.FirstOrDefault(j => j.JobID == multiEditViewModel.CurrentJob.JobID);
-                    CopyJobViewModel.CurrentGenericFeatures = repository.GenericFeaturesList.FirstOrDefault(j => j.JobID == multiEditViewModel.CurrentJob.JobID);
-                    CopyJobViewModel.CurrentIndicator = repository.Indicators.FirstOrDefault(j => j.JobID == multiEditViewModel.CurrentJob.JobID);
-                    CopyJobViewModel.CurrentHoistWayData = repository.HoistWayDatas.FirstOrDefault(j => j.JobID == multiEditViewModel.CurrentJob.JobID);
-                    CopyJobViewModel.SpecialFeatureslist = SfList;
-                    CopyJobViewModel.POList = PoList;
-                    CopyJobViewModel.JobTypeName = JobTypeName(CopyJobViewModel.CurrentJob.JobTypeID);
-                    CopyJobViewModel.CurrentTab = "Main";
-                    TempData["message"] = $"{CopyJobViewModel.CurrentJob.JobNum} ID has been saved...{CopyJobViewModel.CurrentJob.JobID}";
-                    return RedirectToAction("Edit", new { id = multiEditViewModel.CurrentJob.JobID });
-                }
-
-                multiEditViewModel.CurrentTab = "Main";
-                multiEditViewModel.JobTypeName = JobTypeName(multiEditViewModel.CurrentJob.JobTypeID);
-                TempData["message"] = $"{multiEditViewModel.CurrentJob.JobNum} ID has been saved...{multiEditViewModel.CurrentJob.JobID}";
-                return View(multiEditViewModel);
             }
             else
             {
-                // there is something wrong with the data values
-                TempData["message"] = $"There seems to be errors in the form. Please validate.";
+                TempData["message"] = $"You are not assigned to this job.";
                 TempData["alert"] = $"alert-danger";
-                return View(multiEditViewModel);
+                return RedirectToAction("Edit", new { ID = multiEditViewModel.CurrentJob.JobID, buttonAction = "" });
             }
+            
         }
 
         [HttpPost]
@@ -1097,13 +1121,73 @@ namespace ProdFloor.Controllers
             List<PO> PoAux = new List<PO>();
             multiEditViewModel.SpecialFeaturesTable = getSpecialFeaturesEX();
             multiEditViewModel.CurrentUserID = currentUser.EngID;
-            string StatusAux = "Cross Approval Complete";
-            if (multiEditViewModel.CurrentJob.Status == "Copied") StatusAux = "Copied";
-            if (ModelState.IsValid)
+            bool Admin = GetCurrentUserRole("Admin").Result;
+            Job job = repository.Jobs.FirstOrDefault(m => m.JobID == multiEditViewModel.CurrentJob.JobID);
+            if (currentUser.EngID == job.EngID || Admin || multiEditViewModel.CurrentJob.Status == "Copied")
             {
-                if (multiEditViewModel.CurrentJob.Status == "Copied")
+                string StatusAux = "Cross Approval Complete";
+                if (multiEditViewModel.CurrentJob.Status == "Copied") StatusAux = "Copied";
+                if (ModelState.IsValid)
                 {
-                    multiEditViewModel.CurrentJob.EngID = currentUser.EngID;
+                    if (multiEditViewModel.CurrentJob.Status == "Copied")
+                    {
+                        multiEditViewModel.CurrentJob.EngID = currentUser.EngID;
+                        foreach (PO itemes in multiEditViewModel.POList)
+                        {
+                            try
+                            {
+                                if (!POsList.Any(m => m.PONumb == itemes.PONumb) || multiEditViewModel.POList[0].POID == 0)
+                                {
+                                    PO poUniqueAUx = repository.POs.FirstOrDefault(m => m.PONumb == itemes.PONumb);
+                                    PoAux.Add(poUniqueAUx);
+                                }
+                            }
+                            catch (Exception)
+                            {
+                                continue;
+                            }
+                        }
+                        try
+                        {
+                            if (PoAux.Count > 0 && PoAux.Any(m => m != null))
+                            {
+
+                                TempData["message"] = $"That PO already exists. Please validate.";
+                                TempData["alert"] = $"alert-danger";
+                                multiEditViewModel.CurrentTab = "Main";
+                                return View(multiEditViewModel);
+                            }
+                        }
+                        catch (ArgumentOutOfRangeException) { }
+                        multiEditViewModel.CurrentJob.JobID = 0;
+                        multiEditViewModel.CurrentJob.Status = "Cross Approval Complete";
+                        repository.SaveJob(multiEditViewModel.CurrentJob);
+                        multiEditViewModel.CurrentJob = repository.Jobs.LastOrDefault();
+                        JobAdditional jobAdditional = new JobAdditional
+                        {
+                            JobID = multiEditViewModel.CurrentJob.JobID,
+                            Status = "",
+                            Action = "",
+                            Priority = 0,
+                            ERDate = multiEditViewModel.CurrentJob.LatestFinishDate
+                        };
+                        repository.SaveJobAdditional(jobAdditional);
+                        multiEditViewModel.Element.JobID = multiEditViewModel.CurrentJob.JobID;
+                        multiEditViewModel.ElementHydro.JobID = multiEditViewModel.CurrentJob.JobID;
+                        multiEditViewModel.Element.ElementID = 0;
+                        multiEditViewModel.ElementHydro.ElementHydroID = 0;
+                        foreach (PO singlPO in multiEditViewModel.POList)
+                        {
+                            singlPO.POID = 0;
+                            singlPO.JobID = multiEditViewModel.CurrentJob.JobID;
+                        }
+                        foreach (SpecialFeatures special in multiEditViewModel.SpecialFeatureslist)
+                        {
+                            special.SpecialFeaturesID = 0;
+                            special.JobID = multiEditViewModel.CurrentJob.JobID;
+                        }
+                        multiEditViewModel.SpecialFeatureslist = multiEditViewModel.SpecialFeatureslist;
+                    }
                     foreach (PO itemes in multiEditViewModel.POList)
                     {
                         try
@@ -1129,91 +1213,43 @@ namespace ProdFloor.Controllers
                             multiEditViewModel.CurrentTab = "Main";
                             return View(multiEditViewModel);
                         }
+                        else repository.SaveEngElementHydroJobView(multiEditViewModel);
                     }
                     catch (ArgumentOutOfRangeException) { }
-                    multiEditViewModel.CurrentJob.JobID = 0;
-                    multiEditViewModel.CurrentJob.Status = "Cross Approval Complete";
-                    repository.SaveJob(multiEditViewModel.CurrentJob);
-                    multiEditViewModel.CurrentJob = repository.Jobs.LastOrDefault();
-                    JobAdditional jobAdditional = new JobAdditional
+                    JobElementHydroViewModel CopyJobViewModel = new JobElementHydroViewModel();
+                    if (StatusAux == "Copied")
                     {
-                        JobID = multiEditViewModel.CurrentJob.JobID,
-                        Status = "",
-                        Action = "",
-                        Priority = 0,
-                        ERDate = multiEditViewModel.CurrentJob.LatestFinishDate
-                    };
-                    repository.SaveJobAdditional(jobAdditional);
-                    multiEditViewModel.Element.JobID = multiEditViewModel.CurrentJob.JobID;
-                    multiEditViewModel.ElementHydro.JobID = multiEditViewModel.CurrentJob.JobID;
-                    multiEditViewModel.Element.ElementID = 0;
-                    multiEditViewModel.ElementHydro.ElementHydroID = 0;
-                    foreach (PO singlPO in multiEditViewModel.POList)
-                    {
-                        singlPO.POID = 0;
-                        singlPO.JobID = multiEditViewModel.CurrentJob.JobID;
+                        List<SpecialFeatures> SfList = repository.SpecialFeatures.Where(j => j.JobID == multiEditViewModel.CurrentJob.JobID).ToList();
+                        List<PO> PoList = repository.POs.Where(j => j.JobID == multiEditViewModel.CurrentJob.JobID).ToList();
+                        CopyJobViewModel.CurrentJob = multiEditViewModel.CurrentJob;
+                        CopyJobViewModel.Element = repository.Elements.FirstOrDefault(j => j.JobID == multiEditViewModel.CurrentJob.JobID);
+                        CopyJobViewModel.ElementHydro = repository.ElementHydros.FirstOrDefault(j => j.JobID == multiEditViewModel.CurrentJob.JobID);
+                        CopyJobViewModel.SpecialFeatureslist = SfList;
+                        CopyJobViewModel.POList = PoList;
+                        CopyJobViewModel.CurrentTab = "Main";
+                        TempData["message"] = $"{CopyJobViewModel.CurrentJob.JobNum} ID has been saved...{CopyJobViewModel.CurrentJob.JobID}";
+                        return RedirectToAction("Edit", new { id = multiEditViewModel.CurrentJob.JobID, buttonAction = "ElmHydro" });
                     }
-                    foreach (SpecialFeatures special in multiEditViewModel.SpecialFeatureslist)
-                    {
-                        special.SpecialFeaturesID = 0;
-                        special.JobID = multiEditViewModel.CurrentJob.JobID;
-                    }
-                    multiEditViewModel.SpecialFeatureslist = multiEditViewModel.SpecialFeatureslist;
-                }
-                foreach (PO itemes in multiEditViewModel.POList)
-                {
-                    try
-                    {
-                        if (!POsList.Any(m => m.PONumb == itemes.PONumb) || multiEditViewModel.POList[0].POID == 0)
-                        {
-                            PO poUniqueAUx = repository.POs.FirstOrDefault(m => m.PONumb == itemes.PONumb);
-                            PoAux.Add(poUniqueAUx);
-                        }
-                    }
-                    catch (Exception)
-                    {
-                        continue;
-                    }
-                }
-                try
-                {
-                    if (PoAux.Count > 0 && PoAux.Any(m => m != null))
-                    {
 
-                        TempData["message"] = $"That PO already exists. Please validate.";
-                        TempData["alert"] = $"alert-danger";
-                        multiEditViewModel.CurrentTab = "Main";
-                        return View(multiEditViewModel);
-                    }
-                    else repository.SaveEngElementHydroJobView(multiEditViewModel);
+                    multiEditViewModel.CurrentTab = "Main";
+                    TempData["message"] = $"{multiEditViewModel.CurrentJob.JobNum} ID has been saved...{multiEditViewModel.CurrentJob.JobID}";
+                    return View(multiEditViewModel);
                 }
-                catch (ArgumentOutOfRangeException) { }
-                JobElementHydroViewModel CopyJobViewModel = new JobElementHydroViewModel();
-                if (StatusAux == "Copied")
+                else
                 {
-                    List<SpecialFeatures> SfList = repository.SpecialFeatures.Where(j => j.JobID == multiEditViewModel.CurrentJob.JobID).ToList();
-                    List<PO> PoList = repository.POs.Where(j => j.JobID == multiEditViewModel.CurrentJob.JobID).ToList();
-                    CopyJobViewModel.CurrentJob = multiEditViewModel.CurrentJob;
-                    CopyJobViewModel.Element = repository.Elements.FirstOrDefault(j => j.JobID == multiEditViewModel.CurrentJob.JobID);
-                    CopyJobViewModel.ElementHydro = repository.ElementHydros.FirstOrDefault(j => j.JobID == multiEditViewModel.CurrentJob.JobID);
-                    CopyJobViewModel.SpecialFeatureslist = SfList;
-                    CopyJobViewModel.POList = PoList;
-                    CopyJobViewModel.CurrentTab = "Main";
-                    TempData["message"] = $"{CopyJobViewModel.CurrentJob.JobNum} ID has been saved...{CopyJobViewModel.CurrentJob.JobID}";
-                    return RedirectToAction("Edit", new { id = multiEditViewModel.CurrentJob.JobID, buttonAction = "ElmHydro" });
+                    // there is something wrong with the data values
+                    TempData["message"] = $"There seems to be errors in the form. Please validate.";
+                    TempData["alert"] = $"alert-danger";
+                    return View(multiEditViewModel);
                 }
-
-                multiEditViewModel.CurrentTab = "Main";
-                TempData["message"] = $"{multiEditViewModel.CurrentJob.JobNum} ID has been saved...{multiEditViewModel.CurrentJob.JobID}";
-                return View(multiEditViewModel);
             }
             else
             {
-                // there is something wrong with the data values
-                TempData["message"] = $"There seems to be errors in the form. Please validate.";
+                TempData["message"] = $"You are not assigned to this job.";
                 TempData["alert"] = $"alert-danger";
-                return View(multiEditViewModel);
+                return RedirectToAction("Edit", new { ID = multiEditViewModel.CurrentJob.JobID, buttonAction = "" });
             }
+            
         }
 
         [HttpPost]
@@ -1224,24 +1260,85 @@ namespace ProdFloor.Controllers
             List<PO> POsList = repository.POs.Where(j => j.JobID == multiEditViewModel.CurrentJob.JobID).ToList();
             List<PO> PoAux = new List<PO>();
             multiEditViewModel.CurrentUserID = currentUser.EngID;
-            string StatusAux = "Working on it";
-            if (multiEditViewModel.CurrentJob.Status == "Copied") StatusAux = "Copied";
-            if (ModelState.IsValid)
+            bool Admin = GetCurrentUserRole("Admin").Result;
+            Job job = repository.Jobs.FirstOrDefault(m => m.JobID == multiEditViewModel.CurrentJob.JobID);
+            if (currentUser.EngID == job.EngID || Admin || multiEditViewModel.CurrentJob.Status == "Copied")
             {
-                if (multiEditViewModel.CurrentJob.Status == "Copied")
+                string StatusAux = "Working on it";
+                if (multiEditViewModel.CurrentJob.Status == "Copied") StatusAux = "Copied";
+                if (ModelState.IsValid)
                 {
-                    multiEditViewModel.CurrentJob.EngID = currentUser.EngID;
+                    if (multiEditViewModel.CurrentJob.Status == "Copied")
+                    {
+                        multiEditViewModel.CurrentJob.EngID = currentUser.EngID;
+                        foreach (PO itemes in multiEditViewModel.POList)
+                        {
+                            try
+                            {
+                                if (multiEditViewModel.POList[0].PONumb != itemes.PONumb || multiEditViewModel.POList[0].POID == 0)
+                                {
+                                    if (itemes.JobID == 0)
+                                    {
+                                        PO poUniqueAUx = repository.POs.FirstOrDefault(m => m.PONumb == itemes.PONumb);
+                                        PoAux.Add(poUniqueAUx);
+                                    }
+                                }
+                            }
+                            catch (Exception)
+                            {
+                                continue;
+                            }
+                        }
+                        if (PoAux.Count > 1)
+                        {
+                            TempData["message"] = $"That PO already exists. Please validate.";
+                            TempData["alert"] = $"alert-danger";
+                            multiEditViewModel.CurrentTab = "Main";
+                            return View(multiEditViewModel);
+                        }
+                        multiEditViewModel.CurrentJob.JobID = 0;
+                        multiEditViewModel.CurrentJob.Status = "Cross Approval Complete";
+                        repository.SaveJob(multiEditViewModel.CurrentJob);
+                        multiEditViewModel.CurrentJob = repository.Jobs.LastOrDefault();
+                        JobAdditional jobAdditional = new JobAdditional
+                        {
+                            JobID = multiEditViewModel.CurrentJob.JobID,
+                            Status = "",
+                            Action = "",
+                            Priority = 0,
+                            ERDate = multiEditViewModel.CurrentJob.LatestFinishDate
+                        };
+                        repository.SaveJobAdditional(jobAdditional);
+                        multiEditViewModel.Element.JobID = multiEditViewModel.CurrentJob.JobID;
+                        multiEditViewModel.ElementTraction.JobID = multiEditViewModel.CurrentJob.JobID;
+                        multiEditViewModel.Element.ElementID = 0;
+                        multiEditViewModel.ElementTraction.ElementTractionID = 0;
+                        foreach (PO singlPO in multiEditViewModel.POList)
+                        {
+                            singlPO.POID = 0;
+                            singlPO.JobID = multiEditViewModel.CurrentJob.JobID;
+                        }
+                        foreach (SpecialFeatures special in multiEditViewModel.SpecialFeatureslist)
+                        {
+                            special.SpecialFeaturesID = 0;
+                            special.JobID = multiEditViewModel.CurrentJob.JobID;
+                        }
+                        multiEditViewModel.SpecialFeatureslist = multiEditViewModel.SpecialFeatureslist;
+                    }
+
+                    if (multiEditViewModel.CurrentJob.Status == "" || multiEditViewModel.CurrentJob.Status == null || multiEditViewModel.CurrentJob.Status == "Copied")
+                    {
+                        multiEditViewModel.CurrentJob.Status = "Working on it";
+                    }
+
                     foreach (PO itemes in multiEditViewModel.POList)
                     {
                         try
                         {
-                            if (multiEditViewModel.POList[0].PONumb != itemes.PONumb || multiEditViewModel.POList[0].POID == 0)
+                            if (!POsList.Any(m => m.PONumb == itemes.PONumb) || multiEditViewModel.POList[0].POID == 0)
                             {
-                                if (itemes.JobID == 0)
-                                {
-                                    PO poUniqueAUx = repository.POs.FirstOrDefault(m => m.PONumb == itemes.PONumb);
-                                    PoAux.Add(poUniqueAUx);
-                                }
+                                PO poUniqueAUx = repository.POs.FirstOrDefault(m => m.PONumb == itemes.PONumb);
+                                PoAux.Add(poUniqueAUx);
                             }
                         }
                         catch (Exception)
@@ -1249,77 +1346,20 @@ namespace ProdFloor.Controllers
                             continue;
                         }
                     }
-                    if (PoAux.Count > 1)
-                    {
-                        TempData["message"] = $"That PO already exists. Please validate.";
-                        TempData["alert"] = $"alert-danger";
-                        multiEditViewModel.CurrentTab = "Main";
-                        return View(multiEditViewModel);
-                    }
-                    multiEditViewModel.CurrentJob.JobID = 0;
-                    multiEditViewModel.CurrentJob.Status = "Cross Approval Complete";
-                    repository.SaveJob(multiEditViewModel.CurrentJob);
-                    multiEditViewModel.CurrentJob = repository.Jobs.LastOrDefault();
-                    JobAdditional jobAdditional = new JobAdditional
-                    {
-                        JobID = multiEditViewModel.CurrentJob.JobID,
-                        Status = "",
-                        Action = "",
-                        Priority = 0,
-                        ERDate = multiEditViewModel.CurrentJob.LatestFinishDate
-                    };
-                    repository.SaveJobAdditional(jobAdditional);
-                    multiEditViewModel.Element.JobID = multiEditViewModel.CurrentJob.JobID;
-                    multiEditViewModel.ElementTraction.JobID = multiEditViewModel.CurrentJob.JobID;
-                    multiEditViewModel.Element.ElementID = 0;
-                    multiEditViewModel.ElementTraction.ElementTractionID = 0;
-                    foreach (PO singlPO in multiEditViewModel.POList)
-                    {
-                        singlPO.POID = 0;
-                        singlPO.JobID = multiEditViewModel.CurrentJob.JobID;
-                    }
-                    foreach (SpecialFeatures special in multiEditViewModel.SpecialFeatureslist)
-                    {
-                        special.SpecialFeaturesID = 0;
-                        special.JobID = multiEditViewModel.CurrentJob.JobID;
-                    }
-                    multiEditViewModel.SpecialFeatureslist = multiEditViewModel.SpecialFeatureslist;
-                }
-
-                if (multiEditViewModel.CurrentJob.Status == "" || multiEditViewModel.CurrentJob.Status == null || multiEditViewModel.CurrentJob.Status == "Copied")
-                {
-                    multiEditViewModel.CurrentJob.Status = "Working on it";
-                }
-
-                foreach (PO itemes in multiEditViewModel.POList)
-                {
                     try
                     {
-                        if (!POsList.Any(m => m.PONumb == itemes.PONumb) || multiEditViewModel.POList[0].POID == 0)
+                        if (PoAux.Count > 0 && PoAux.Any(m => m != null))
                         {
-                            PO poUniqueAUx = repository.POs.FirstOrDefault(m => m.PONumb == itemes.PONumb);
-                            PoAux.Add(poUniqueAUx);
-                        }
-                    }
-                    catch (Exception)
-                    {
-                        continue;
-                    }
-                }
-                try
-                {
-                    if (PoAux.Count > 0 && PoAux.Any(m => m != null))
-                    {
 
-                        TempData["message"] = $"That PO already exists. Please validate.";
-                        TempData["alert"] = $"alert-danger";
-                        multiEditViewModel.CurrentTab = "Main";
-                        return View(multiEditViewModel);
+                            TempData["message"] = $"That PO already exists. Please validate.";
+                            TempData["alert"] = $"alert-danger";
+                            multiEditViewModel.CurrentTab = "Main";
+                            return View(multiEditViewModel);
+                        }
+                        else repository.SaveEngElementTractionJobView(multiEditViewModel);
                     }
-                    else repository.SaveEngElementTractionJobView(multiEditViewModel);
-                }
-                catch (ArgumentOutOfRangeException) { }
-                JobElementTractionViewModel CopyJobViewModel = new JobElementTractionViewModel();
+                    catch (ArgumentOutOfRangeException) { }
+                    JobElementTractionViewModel CopyJobViewModel = new JobElementTractionViewModel();
                     if (StatusAux == "Copied")
                     {
 
@@ -1336,17 +1376,25 @@ namespace ProdFloor.Controllers
                     }
 
 
-                multiEditViewModel.CurrentTab = "Main";
-                TempData["message"] = $"{multiEditViewModel.CurrentJob.JobNum} ID has been saved...{multiEditViewModel.CurrentJob.JobID}";
-                return View(multiEditViewModel);
+                    multiEditViewModel.CurrentTab = "Main";
+                    TempData["message"] = $"{multiEditViewModel.CurrentJob.JobNum} ID has been saved...{multiEditViewModel.CurrentJob.JobID}";
+                    return View(multiEditViewModel);
+                }
+                else
+                {
+                    // there is something wrong with the data values
+                    TempData["message"] = $"There seems to be errors in the form. Please validate.";
+                    TempData["alert"] = $"alert-danger";
+                    return View(multiEditViewModel);
+                }
             }
             else
             {
-                // there is something wrong with the data values
-                TempData["message"] = $"There seems to be errors in the form. Please validate.";
+                TempData["message"] = $"You are not assigned to this job.";
                 TempData["alert"] = $"alert-danger";
-                return View(multiEditViewModel);
+                return RedirectToAction("Edit", new { ID = multiEditViewModel.CurrentJob.JobID, buttonAction = "" });
             }
+
         }
 
         [HttpPost]
