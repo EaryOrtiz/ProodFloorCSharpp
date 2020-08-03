@@ -64,8 +64,7 @@
         <div class="form-group row" style="margin-bottom:0.5em;">
             <label asp-for="Element.DoorGate" class="col-sm-4 col-form-label"></label>
             <div>
-                <door-operator-style-select id="Style" asp-for="Element.DoorGate" is-element="true" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" selected-value="@Model.Element.DoorOperatorID" class="form-control form-control-sm">
-                </door-operator-style-select>
+                <input id="Style" asp-for="Element.DoorGate" value="Automatic"  readonly="true" class="form-control col-sm-8" />
                 <span asp-validation-for="Element.DoorGate" class="text-danger"></span>
             </div>
         </div>

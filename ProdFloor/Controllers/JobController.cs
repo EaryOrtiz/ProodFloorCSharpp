@@ -1955,11 +1955,12 @@ namespace ProdFloor.Controllers
                 if (nextViewModel.CurrentJob.JobID == 0 && nextViewModel.CurrentJob.Status == "Incomplete") nextViewModel.CurrentJob.JobID = nextViewModel.CurrentJobExtension.JobID;
                 if (nextViewModel.buttonAction == "AddSF")
                 {
+                    Job jobForStatus = repository.Jobs.FirstOrDefault(m => m.JobID == nextViewModel.CurrentJob.JobID);
                     if (nextViewModel.SpecialFeatureslist != null)
                     {
                         if (!string.IsNullOrWhiteSpace(nextViewModel.SpecialFeatureslist.Last().Description))
                         {
-                            nextViewModel.SpecialFeatureslist.Add(new SpecialFeatures { JobID = nextViewModel.CurrentJob.JobID, SpecialFeaturesID = 0 });
+                            nextViewModel.SpecialFeatureslist.Add(new SpecialFeatures { JobID = jobForStatus.JobID, SpecialFeaturesID = 0 });
                             nextViewModel.CurrentTab = "SpecialFeatures";
                         }
                         else
@@ -1991,7 +1992,8 @@ namespace ProdFloor.Controllers
                                         {
                                             if (nextViewModel.SpecialFeatureslist != null)
                                             {
-                                                nextViewModel.CurrentJob.Status = "Working on it";
+                                                Job jobForStatus = repository.Jobs.FirstOrDefault(m => m.JobID == nextViewModel.CurrentJob.JobID);
+                                                if(jobForStatus.Status == "Incomplete")  nextViewModel.CurrentJob.Status = "Working on it";
                                                 repository.SaveEngJobView(nextViewModel);
                                                 nextViewModel.CurrentTab = "Main";
                                                 TempData["message"] = $"everything was saved";
@@ -2187,7 +2189,8 @@ namespace ProdFloor.Controllers
 
                                 if (nextViewModel.SpecialFeatureslist != null)
                                 {
-                                    nextViewModel.CurrentJob.Status = "Cross Approval Complete";
+                                    Job jobForStatus = repository.Jobs.FirstOrDefault(m => m.JobID == nextViewModel.CurrentJob.JobID);
+                                    if (jobForStatus.Status == "Incomplete") nextViewModel.CurrentJob.Status = "Cross Approval Complete";
                                     repository.SaveEngElementHydroJobView(nextViewModel);
                                     nextViewModel.CurrentTab = "Main";
                                     TempData["message"] = $"everything was saved";
@@ -2308,7 +2311,8 @@ namespace ProdFloor.Controllers
                                 if (nextViewModel.Element.ElementID == 0 && nextViewModel.CurrentJob.Status == "Incomplete") nextViewModel.Element.ElementID = repository.Elements.FirstOrDefault(m => m.JobID == nextViewModel.CurrentJob.JobID).ElementID;
                                 if (nextViewModel.SpecialFeatureslist != null)
                                 {
-                                    nextViewModel.CurrentJob.Status = "Cross Approval Complete";
+                                    Job jobForStatus = repository.Jobs.FirstOrDefault(m => m.JobID == nextViewModel.CurrentJob.JobID);
+                                    if (jobForStatus.Status == "Incomplete") nextViewModel.CurrentJob.Status = "Cross Approval Complete";
                                     repository.SaveEngElementTractionJobView(nextViewModel);
                                     nextViewModel.CurrentTab = "Main";
                                     TempData["message"] = $"everything was saved";

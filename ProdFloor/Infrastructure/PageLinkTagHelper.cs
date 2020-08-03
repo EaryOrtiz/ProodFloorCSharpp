@@ -4170,7 +4170,7 @@ namespace ProdFloor.Infrastructure
             foreach (DoorOperator doors in door)
             {
                 TagBuilder tag = new TagBuilder("option");
-                tag.Attributes["value"] = doors.DoorOperatorID.ToString();
+                tag.Attributes["value"] = doors.Brand.ToString();
                 if (doors.Brand == doorBrand)
                 {
                     tag.Attributes["selected"] = "selected";
