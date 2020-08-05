@@ -4138,6 +4138,8 @@ namespace ProdFloor.Infrastructure
 
         public int SelectedValue { get; set; }
 
+        public bool isElememnt { get; set; }
+
         [HtmlAttributeName("asp-is-disabled")]
         public bool IsDisabled { set; get; }
 
@@ -4159,6 +4161,7 @@ namespace ProdFloor.Infrastructure
             IQueryable<DoorOperator> door = itemsrepository.DoorOperators.AsQueryable();
             int doorOperatorID = 0;
             string doorBrand = "";
+
             if (SelectedValue != 0)
             {
                 DoorOperator selectedDoor = itemsrepository.DoorOperators.FirstOrDefault(c => c.DoorOperatorID == SelectedValue);
@@ -4166,6 +4169,9 @@ namespace ProdFloor.Infrastructure
                 doorBrand = selectedDoor.Brand;
                 door = itemsrepository.DoorOperators.FromSql("select * from dbo.DoorOperators where Style = {0} AND dbo.DoorOperators.DoorOperatorID in " +
                 "(Select max(dbo.DoorOperators.DoorOperatorID) FROM dbo.DoorOperators group by dbo.DoorOperators.Brand)", selectedDoor.Style).OrderBy(s => s.Brand).AsQueryable();
+            }else if(isElememnt){
+                door = itemsrepository.DoorOperators.FromSql("select * from dbo.DoorOperators where Style = {0} AND dbo.DoorOperators.DoorOperatorID in " +
+                "(Select max(dbo.DoorOperators.DoorOperatorID) FROM dbo.DoorOperators group by dbo.DoorOperators.Brand)", "Automatic").OrderBy(s => s.Brand).AsQueryable();
             }
             foreach (DoorOperator doors in door)
             {

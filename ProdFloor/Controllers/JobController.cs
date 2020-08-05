@@ -1264,7 +1264,7 @@ namespace ProdFloor.Controllers
             Job job = repository.Jobs.FirstOrDefault(m => m.JobID == multiEditViewModel.CurrentJob.JobID);
             if (currentUser.EngID == job.EngID || Admin || multiEditViewModel.CurrentJob.Status == "Copied")
             {
-                string StatusAux = "Working on it";
+                string StatusAux = "Cross Approval Complete";
                 if (multiEditViewModel.CurrentJob.Status == "Copied") StatusAux = "Copied";
                 if (ModelState.IsValid)
                 {
@@ -1275,13 +1275,10 @@ namespace ProdFloor.Controllers
                         {
                             try
                             {
-                                if (multiEditViewModel.POList[0].PONumb != itemes.PONumb || multiEditViewModel.POList[0].POID == 0)
+                                if (!POsList.Any(m => m.PONumb == itemes.PONumb) || multiEditViewModel.POList[0].POID == 0)
                                 {
-                                    if (itemes.JobID == 0)
-                                    {
-                                        PO poUniqueAUx = repository.POs.FirstOrDefault(m => m.PONumb == itemes.PONumb);
-                                        PoAux.Add(poUniqueAUx);
-                                    }
+                                    PO poUniqueAUx = repository.POs.FirstOrDefault(m => m.PONumb == itemes.PONumb);
+                                    PoAux.Add(poUniqueAUx);
                                 }
                             }
                             catch (Exception)
@@ -1289,13 +1286,18 @@ namespace ProdFloor.Controllers
                                 continue;
                             }
                         }
-                        if (PoAux.Count > 1)
+                        try
                         {
-                            TempData["message"] = $"That PO already exists. Please validate.";
-                            TempData["alert"] = $"alert-danger";
-                            multiEditViewModel.CurrentTab = "Main";
-                            return View(multiEditViewModel);
+                            if (PoAux.Count > 0 && PoAux.Any(m => m != null))
+                            {
+
+                                TempData["message"] = $"That PO already exists. Please validate.";
+                                TempData["alert"] = $"alert-danger";
+                                multiEditViewModel.CurrentTab = "Main";
+                                return View(multiEditViewModel);
+                            }
                         }
+                        catch (ArgumentOutOfRangeException) { }
                         multiEditViewModel.CurrentJob.JobID = 0;
                         multiEditViewModel.CurrentJob.Status = "Cross Approval Complete";
                         repository.SaveJob(multiEditViewModel.CurrentJob);
@@ -1324,11 +1326,6 @@ namespace ProdFloor.Controllers
                             special.JobID = multiEditViewModel.CurrentJob.JobID;
                         }
                         multiEditViewModel.SpecialFeatureslist = multiEditViewModel.SpecialFeatureslist;
-                    }
-
-                    if (multiEditViewModel.CurrentJob.Status == "" || multiEditViewModel.CurrentJob.Status == null || multiEditViewModel.CurrentJob.Status == "Copied")
-                    {
-                        multiEditViewModel.CurrentJob.Status = "Working on it";
                     }
 
                     foreach (PO itemes in multiEditViewModel.POList)
@@ -1994,6 +1991,7 @@ namespace ProdFloor.Controllers
                                             {
                                                 Job jobForStatus = repository.Jobs.FirstOrDefault(m => m.JobID == nextViewModel.CurrentJob.JobID);
                                                 if(jobForStatus.Status == "Incomplete")  nextViewModel.CurrentJob.Status = "Working on it";
+
                                                 repository.SaveEngJobView(nextViewModel);
                                                 nextViewModel.CurrentTab = "Main";
                                                 TempData["message"] = $"everything was saved";
@@ -2191,6 +2189,7 @@ namespace ProdFloor.Controllers
                                 {
                                     Job jobForStatus = repository.Jobs.FirstOrDefault(m => m.JobID == nextViewModel.CurrentJob.JobID);
                                     if (jobForStatus.Status == "Incomplete") nextViewModel.CurrentJob.Status = "Cross Approval Complete";
+
                                     repository.SaveEngElementHydroJobView(nextViewModel);
                                     nextViewModel.CurrentTab = "Main";
                                     TempData["message"] = $"everything was saved";
@@ -2313,6 +2312,7 @@ namespace ProdFloor.Controllers
                                 {
                                     Job jobForStatus = repository.Jobs.FirstOrDefault(m => m.JobID == nextViewModel.CurrentJob.JobID);
                                     if (jobForStatus.Status == "Incomplete") nextViewModel.CurrentJob.Status = "Cross Approval Complete";
+
                                     repository.SaveEngElementTractionJobView(nextViewModel);
                                     nextViewModel.CurrentTab = "Main";
                                     TempData["message"] = $"everything was saved";

@@ -11,6 +11,11 @@
 <input type="hidden" asp-for="CurrentJob.CrossAppEngID" />
 <input type="hidden" asp-for="POList[0].JobID" />
 <input type="hidden" asp-for="POList[0].POID" />
+@for (int i = 1; i < Model.POList.Count; i++)
+{
+    <input type="hidden" asp-for="POList[i].POID" />
+    <input type="hidden" asp-for="POList[i].JobID" />
+}
 <input type="hidden" asp-for="CurrentJob.JobTypeID" />
 <div class="form-row col-sm-12" style="padding-bottom:15px">
     <div class="col-4 form-line border-right justify-content-md-center">

@@ -71,7 +71,7 @@
         <div class="form-group row" style="margin-bottom:0.5em;">
             <label asp-for="Element.DoorBrand" class="col-sm-4 col-form-label"></label>
             <div>
-                <door-operator-brand-select id="Brand" asp-for="Element.DoorBrand" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" selected-value="@Model.Element.DoorOperatorID" class="form-control form-control-sm">
+                <door-operator-brand-select id="Brand" is-elememnt="true" asp-for="Element.DoorBrand" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" selected-value="@Model.Element.DoorOperatorID" class="form-control form-control-sm">
                 </door-operator-brand-select>
                 <span asp-validation-for="Element.DoorBrand" class="text-danger"></span>
             </div>
