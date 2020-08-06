@@ -47,65 +47,73 @@
                 var j = Model.PendingJobs.FirstOrDefault(m => m.JobID == t.JobID);
                 string JobtypeName = Model.JobTypesList.First(s => s.JobTypeID == j.JobTypeID).Name;
 
-                <tr>
-                    <th scope="row">
-                        @if (t.Status == "Incomplete")
-                        {
-                            <a asp-action="ContinueForm"
-                               asp-controller="TestJob" asp-route-Id="@t.TestJobID">
-                                @j.JobNum
-                            </a>
-                        }
-                        else if (t.Status == "Working on it")
-                        {
-                            <a asp-action="EditTestJob"
-                               asp-controller="TestJob" asp-route-Id="@t.TestJobID">
-                                @j.JobNum
-                            </a>
-                        }
-                        else
-                        {
-                            @j.JobNum
-                        }
-                    </th>
-                    <td>@t.SinglePO</td>
-                    <td>@j.Name</td>
-                    <td>@JobtypeName</td>
-                    <td>@j.ShipDate</td>
-                    <td>@Model.StationList.FirstOrDefault(m => m.StationID == t.StationID).Label</td>
-                    <td>@t.Status</td>
-                    <td>
-                        @if (t.Status == "Stopped")
-                        {
-                            <a asp-action="WaitingForRestar" asp-controller="Stop"
-                               asp-route-id="@t.TestJobID" class="btn btn-warning btn-sm">
-                                Reiniciar Job
-                            </a>
-                        }
-                        else if (t.Status == "Reassignment")
-                        {
-                            <a asp-action="RestartReassignment" asp-controller="Stop"
-                               asp-route-id="@t.TestJobID" class="btn btn-warning btn-sm">
-                                Tomar el Job
-                            </a>
-                        }
-                        else if (t.Status == "Working on it")
-                        {
-                            <a asp-action="ContinueStep" asp-controller="TestJob"
-                               asp-route-id="@t.TestJobID" class="btn btn-info btn-sm">
-                                Continuar
-                            </a>
-                        }
-                        else
-                        {
-                            <a asp-action="ContinueForm" asp-controller="TestJob"
-                               asp-route-Id="@t.TestJobID" class="btn btn-info btn-sm">
-                                Continuar
-                            </a>
-                        }
+    <tr>
+        <th scope="row">
+            @if (t.Status == "Incomplete")
+            {
+                <a asp-action="ContinueForm"
+                   asp-controller="TestJob" asp-route-Id="@t.TestJobID">
+                    @j.JobNum
+                </a>
+            }
+            else if (t.Status == "Working on it")
+            {
+                <a asp-action="EditTestJob"
+                   asp-controller="TestJob" asp-route-Id="@t.TestJobID">
+                    @j.JobNum
+                </a>
+            }
+            else
+            {
+                @j.JobNum
+            }
+        </th>
+        <td>@t.SinglePO</td>
+        <td>@j.Name</td>
+        <td>@JobtypeName</td>
+        <td>@j.ShipDate</td>
+        @if (t.Status != "Incomplete")
+        {
+            <td>@Model.StationList.FirstOrDefault(m => m.StationID == t.StationID).Label</td>
+        }
+        else
+        {
+            <td>-</td>
+        }
 
-                    </td>
-                </tr>
+        <td>@t.Status</td>
+        <td>
+            @if (t.Status == "Stopped")
+            {
+                <a asp-action="WaitingForRestar" asp-controller="Stop"
+                   asp-route-id="@t.TestJobID" class="btn btn-warning btn-sm">
+                    Reiniciar Job
+                </a>
+            }
+            else if (t.Status == "Reassignment")
+            {
+                <a asp-action="RestartReassignment" asp-controller="Stop"
+                   asp-route-id="@t.TestJobID" class="btn btn-warning btn-sm">
+                    Tomar el Job
+                </a>
+            }
+            else if (t.Status == "Working on it")
+            {
+                <a asp-action="ContinueStep" asp-controller="TestJob"
+                   asp-route-id="@t.TestJobID" class="btn btn-info btn-sm">
+                    Continuar
+                </a>
+            }
+            else
+            {
+                <a asp-action="ContinueForm" asp-controller="TestJob"
+                   asp-route-Id="@t.TestJobID" class="btn btn-info btn-sm">
+                    Continuar
+                </a>
+            }
+
+        </td>
+    </tr>
             }
         }
     </tbody>

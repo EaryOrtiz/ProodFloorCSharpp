@@ -455,7 +455,7 @@ namespace ProdFloor.Controllers
                         ViewModel.SlowLimit = SlowdoenRegDown[0].SlowLimit;
                         ViewModel.MiniumFloorHeight = SlowdoenRegDown[0].MiniumFloorHeight;
 
-                        //For Down Speed
+                        //For Up Speed
                         var SlowdoenRegUP = SlowReferSearch.Where(m => m.CarSpeedFPM >= ViewModel.UpSpeed).OrderBy(o => o.CarSpeedFPM).Skip(0).Take(1).ToList();
                         ViewModel.CarUpSpeedFPM = ViewModel.UpSpeed;
                         ViewModel.UPDistance = SlowdoenRegUP[0].Distance;

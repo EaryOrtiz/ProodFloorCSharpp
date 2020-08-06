@@ -124,16 +124,16 @@ namespace ProdFloor.Controllers
             if (ModelState.IsValid)
             {
                 IEnumerable<AppUser> users = userManager.Users;
+                bool engineer = GetCurrentUserRole("EngAdmin").Result;
+                bool techAdmin = GetCurrentUserRole("TechAdmin").Result;
                 bool SameID = users.Any(m => m.EngID == model.EngineerID);
-                if(SameID == true)
+                if(SameID == true && !techAdmin)
                 {
                     TempData["alert"] = $"alert-danger";
                     TempData["message"] = $"That EngID is already in use, please contact to your admin";
                     return View(model);
                 }
                 IdentityResult result;
-                bool engineer = GetCurrentUserRole("EngAdmin").Result;
-                bool techAdmin = GetCurrentUserRole("TechAdmin").Result;
                 AppUser user = new AppUser
                 {
                     UserName = model.Name,

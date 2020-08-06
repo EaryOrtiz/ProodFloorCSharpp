@@ -307,10 +307,10 @@ namespace ProdFloor.Controllers
         [HttpPost]
         public IActionResult NextForm(TestJobViewModel nextViewModel)
         {
-
+           
             if (nextViewModel.TestFeature != null)
             {
-                TestJob testJob = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == nextViewModel.TestFeature.TestJobID);
+                TestJob testJob = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == nextViewModel.TestJob.TestJobID);
 
                 if (testJob != null)
                 {
@@ -411,8 +411,6 @@ namespace ProdFloor.Controllers
 
                         nextViewModel.HoistWayData.LandingSystemID = element2.LandingSystemID;
                         if (element2.DoorOperatorID == 7) nextViewModel.MOD = true;
-                        else nextViewModel.MOD = false;
-                        if (element2.DoorOperatorID == 2) nextViewModel.Manual = true;
                         else nextViewModel.Manual = false;
 
                         nextViewModel.HydroSpecific.BatteryBrand = element2.HAPS == true ? "HAPS" : "";
@@ -449,15 +447,18 @@ namespace ProdFloor.Controllers
 
                 if (isNotCompleted && (isSameEngineer || isAdmin || isTechAdmin))
                 {
-
+                    int jobtypeID = jobRepo.Jobs.First(m => m.JobID == CurrentJob.JobID).JobTypeID;
                     nextViewModel.PO = jobRepo.POs.FirstOrDefault(m => m.JobID == CurrentJob.JobID);
                     nextViewModel.TestJob = testJob;
                     nextViewModel.Job = CurrentJob;
-                    nextViewModel.TestFeature = testFeature;
+                    nextViewModel.TestFeature = testFeature != null ? testFeature : new TestFeature() { TestJobID = testJob.TestJobID };
                     nextViewModel.isNotDummy = CurrentJob.Contractor == "Fake" ? false : true;
                     nextViewModel.CurrentTab = "NewFeatures";
+                    nextViewModel.JobTypeName = JobTypeName(jobtypeID);
 
-                    int jobtypeID = jobRepo.Jobs.First(m => m.JobID == CurrentJob.JobID).JobTypeID;
+
+
+
                     switch (JobTypeName(jobtypeID))
                     {
                         case "M2000":
@@ -508,8 +509,6 @@ namespace ProdFloor.Controllers
                             break;
 
                     }
-
-                    nextViewModel.CurrentTab = "NewFeatures";
                     return View("NextForm", nextViewModel);
                 }
                 else
@@ -804,9 +803,7 @@ namespace ProdFloor.Controllers
                     //Save the dummy Job Generic Features
                     GenericFeatures currentGenericFeatures = jobRepo.GenericFeaturesList.FirstOrDefault(m => m.JobID == currentJob.JobID);
                     if (viewModel.IMonitor == true) currentGenericFeatures.Monitoring = "IMonitor Interface";
-                    else currentGenericFeatures.Monitoring = "Fake";
-                    jobRepo.SaveGenericFeatures(currentGenericFeatures);
-                    if (viewModel.MView == true) currentGenericFeatures.Monitoring = "MView Interface";
+                    else if (viewModel.MView == true) currentGenericFeatures.Monitoring = "MView Interface";
                     else currentGenericFeatures.Monitoring = "Fake";
                     jobRepo.SaveGenericFeatures(currentGenericFeatures);
 
@@ -817,8 +814,6 @@ namespace ProdFloor.Controllers
                     element.LandingSystemID = viewModel.HoistWayData.LandingSystemID;
                     element.HAPS = viewModel.HydroSpecific.BatteryBrand == "HAPS" ? true : false;
                     if (viewModel.MOD == true) element.DoorOperatorID = 7;
-                    else element.DoorOperatorID = 1;
-                    if (viewModel.Manual == true) element.DoorOperatorID = 2;
                     else element.DoorOperatorID = 1;
                     jobRepo.SaveElement(element);
                     break;
@@ -916,8 +911,6 @@ namespace ProdFloor.Controllers
                     };
                     if (viewModel.MOD == true) element.DoorOperatorID = 7;
                     else element.DoorOperatorID = 1;
-                    if (viewModel.Manual == true) element.DoorOperatorID = 2;
-                    else element.DoorOperatorID = 1;
 
                     jobRepo.SaveElement(element);
                     ElementHydro elementHydro = new ElementHydro
@@ -949,8 +942,6 @@ namespace ProdFloor.Controllers
                         DoorBrand = "fake",
                     };
                     if (viewModel.MOD == true) element2.DoorOperatorID = 7;
-                    else element2.DoorOperatorID = 1;
-                    if (viewModel.Manual == true) element2.DoorOperatorID = 2;
                     else element2.DoorOperatorID = 1;
 
                     jobRepo.SaveElement(element2);
@@ -2418,6 +2409,11 @@ namespace ProdFloor.Controllers
             };
             int Hours = (int)AuxTotalHours;
             int Minutes = (int)(Math.Round(AuxTotalMinutes * 60));
+            if (Minutes == 60)
+            {
+                Hours++;
+                Minutes = 0;
+            }
             int Days = 0;
             if (AuxDays > 1) Days = AuxDays - 1;
             else Days = 1;
