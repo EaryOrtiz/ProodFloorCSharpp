@@ -43,7 +43,7 @@ namespace ProdFloor.Controllers
         private async Task<AppUser> GetCurrentUser()
         {
             AppUser user = await userManager.GetUserAsync(HttpContext.User);
-
+  
             return user;
         }
 

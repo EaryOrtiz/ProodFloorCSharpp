@@ -11,6 +11,7 @@ using System;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using System.Threading.Tasks;
 
 namespace ProdFloor.Infrastructure
 {
@@ -5145,6 +5146,13 @@ namespace ProdFloor.Infrastructure
             itemsrepository = itemsrepo;
             userManager = userMrg;
         }
+        private async Task<bool> GetCurrentUserRole(AppUser user, string role)
+        {
+
+            bool isInRole = await userManager.IsInRoleAsync(user, role);
+
+            return isInRole;
+        }
 
         [ViewContext]
         [HtmlAttributeNotBound]
@@ -5172,31 +5180,66 @@ namespace ProdFloor.Infrastructure
             m_tag.InnerHtml.Append("Please select one");
             result.InnerHtml.AppendHtml(m_tag);
             IQueryable<AppUser> users = userManager.Users.AsQueryable();
+            List<AppUser> usersAux = new List<AppUser>();
+
             if (!string.IsNullOrEmpty(Roles))
             {
                 switch (Roles)
                 {
-                    case "SU":
-                        users = userManager.Users.Where(m => m.EngID == 0).AsQueryable();
+                    case "Admin":
+                        foreach(AppUser user in users)
+                        {
+                            bool IsInRole = GetCurrentUserRole(user, "Admin").Result;
+                            if (IsInRole) usersAux.Add(user);
+                        }
+                        users = usersAux.AsQueryable();
                         break;
-                    case "E":
-                        users = userManager.Users.Where(m => m.EngID > 0 && m.EngID <= 99).AsQueryable();
+                    case "EngAdmin":
+                        foreach (AppUser user in users)
+                        {
+                            bool IsInRole = GetCurrentUserRole(user, "EngAdmin").Result;
+                            if (IsInRole) usersAux.Add(user);
+                        }
+                        users = usersAux.AsQueryable();
                         break;
-                    case "T":
-                        users = userManager.Users.Where(m => m.EngID >= 100 && m.EngID <= 299).AsQueryable();
+                    case "Engineer":
+                        foreach (AppUser user in users)
+                        {
+                            bool IsInRole = GetCurrentUserRole(user, "Engineer").Result;
+                            if (IsInRole) usersAux.Add(user);
+                        }
+                        users = usersAux.AsQueryable();
                         break;
-                    case "W":
-                        users = userManager.Users.Where(m => m.EngID > 300 && m.EngID <= 599).AsQueryable();
+                    case "CrossApprover":
+                        foreach (AppUser user in users)
+                        {
+                            bool IsInRole = GetCurrentUserRole(user, "CrossApprover").Result;
+                            if (IsInRole) usersAux.Add(user);
+                        }
+                        users = usersAux.AsQueryable();
                         break;
-                    case "A":
-                        users = userManager.Users.Where(m => m.EngID > 800 && m.EngID <= 999).AsQueryable();
+                    case "TechAdmin":
+                        foreach (AppUser user in users)
+                        {
+                            bool IsInRole = GetCurrentUserRole(user, "TechAdmin").Result;
+                            if (IsInRole) usersAux.Add(user);
+                        }
+                        users = usersAux.AsQueryable();
+                        break;
+                    case "Technician":
+                        foreach (AppUser user in users)
+                        {
+                            bool IsInRole = GetCurrentUserRole(user, "Technician").Result;
+                            if (IsInRole) usersAux.Add(user);
+                        }
+                        users = usersAux.AsQueryable();
                         break;
                 }
             }
             foreach (AppUser user in users)
             {
                 TagBuilder tag = new TagBuilder("option");
-                tag.Attributes["value"] = user.EngID.ToString();
+                tag.Attributes["value"] =  user.EngID.ToString();
                 if (user.EngID == SelectedValue)
                 {
                     tag.Attributes["selected"] = "selected";

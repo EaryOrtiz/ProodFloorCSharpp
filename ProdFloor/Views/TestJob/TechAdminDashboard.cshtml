@@ -124,7 +124,7 @@
                                                     </thead>
                                                     <tbody>
                                                         <tr>
-                                                            <td><user-select selected-value="@j.TechnicianID" class="form-control form-control-sm" asp-for="@Model.NewTechnicianID" roles="T"></user-select></td>
+                                                            <td><user-select selected-value="@j.TechnicianID" class="form-control form-control-sm" asp-for="@Model.NewTechnicianID" roles="Technician"></user-select></td>
                                                             <td><station-select select-for="Model.JobList.FirstOrDefault(m => m.JobID == j.JobID).JobTypeID" selected-value="@j.StationID" class="form-control form-control-sm" asp-for="@Model.NewStationID"></station-select></td>
                                                         </tr>
                                                     </tbody>
