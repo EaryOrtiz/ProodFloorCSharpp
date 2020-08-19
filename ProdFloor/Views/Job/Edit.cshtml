@@ -37,9 +37,6 @@
             <form asp-action="SearchAux" asp-controller="Item" method="get">
                 <button asp-action="SearchAux" asp-controller="Item" type="submit" value="@Model.CurrentJob.JobID" name="JobID" class="btn dropdown-item">WorkSheet</button>
             </form>
-            <form asp-action="Delete" asp-controller="Job" method="post" asp-route-Id="@Model.CurrentJob.JobID">
-                <button type="submit" class="btn dropdown-item" asp-action="Delete" asp-controller="Job"  asp-route-id="@Model.CurrentJob.JobID">Delete</button>
-            </form>
             <input class="btn dropdown-item" value="Copy Location " onclick="myFunction()" />
             <input class="form-control form-control-sm col-sm-10 dropdown-item" style="margin-right:15px" type="text" id="copy" value="@Model.JobFolder" />
         </div>
