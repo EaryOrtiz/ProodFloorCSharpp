@@ -1,6 +1,6 @@
 ﻿@model DashboardIndexViewModel
 @{
-    ViewBag.Title = "Morning Dashboard";
+    ViewBag.Title = Model.isEngAdmin ? "Admin Morning Dashboard" : "Morning Dashboard";
     Layout = "_AdminLayoutWO";
 }
 <br />

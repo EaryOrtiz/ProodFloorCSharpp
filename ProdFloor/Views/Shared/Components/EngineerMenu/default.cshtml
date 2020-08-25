@@ -11,8 +11,14 @@
         </li>
     }
     <li class="nav-item nav">
-        <a class="nav-link  text-light" asp-controller="Home" asp-action="MorningDashBoard"><i class="fas fa-coffee"></i>&nbsp; Morning</a>
+        <a class="nav-link  text-light" asp-controller="Home" asp-action="MorningDashBoard"><i class="fas fa-mug-hot"></i>&nbsp; Morning</a>
     </li>
+    @if (User.IsInRole("EngAdmin"))
+    {
+        <li class="nav-item nav">
+            <a class="nav-link  text-light" asp-controller="Home" asp-action="MorningDashBoard" asp-route-isEngAdmin="true"><i class="fas fa-coffee"></i>&nbsp; Admin Morning</a>
+        </li>
+    }
     <li class="nav-item" role="tab" id="JobSearch">
         <a data-toggle="collapse" href="#collapseJobSearch" role="button" aria-expanded="false" aria-controls="collapseJobSearch"
            class="nav-link text-light"><i class="fas fa-briefcase"></i>&nbsp; Job Search</a>

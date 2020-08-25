@@ -11,16 +11,26 @@
         <thead style="background-color:#343a40!important;color:#fff;">
             @if (Model.MyJobAdditionals.Count() > 0)
             {
-                <tr>
-                    <th class="text-center" colspan="5">
-                        <h5>Morning Report</h5>
+            <tr>
+                    <th class="text-center" colspan="@(Model.isEngAdmin ? 7 : 5)">
+                        <h5>Morning Job’s</h5>
                     </th>
                     <th colspan="1">
                         <div class="row float-right" style="padding-right:20px">
                             <div class="text-center">
-                                <div class="btn-group text-center">
-                                    <button style="background-color:seagreen;color:white" class="btn btn-sm " value="Save" type="submit">Update</button>
-                                </div>
+                                @if (Model.isEngAdmin)
+                                {
+                                    <div class="btn-group text-center">
+                                        <a class="btn btn-sm bg-success btn-outline-dark" asp-controller="Home" asp-action="MorningDashBoard" asp-route-isEngAdmin="true"><i class="fas fa-sync"></i></a>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="btn-group text-center">
+                                        <button style="background-color:seagreen;color:white" class="btn btn-sm " value="Save" type="submit">Update</button>
+                                    </div>
+                                }
+
                             </div>
                         </div>
                     </th>
@@ -30,23 +40,29 @@
             {
                 <tr>
                     <th class="text-center" colspan="12">
-                        <h5>Morning Job(s</h5>
+                        <h5>Morning Job’s</h5>
                     </th>
                 </tr>
             }
 
-            <tr>
-                <th scope="col">
-                    Job#
-                </th>
-                <th scope="col">
-                    Name
-                </th>
-                <th scope="col">JobType</th>
-                <th scope="col">Expected Release Date </th>
-                <th scope="col">Status</th>
-                <th scope="col">Corrective Actions</th>
-            </tr>
+        <tr>
+            <th scope="col">
+                Job#
+            </th>
+            <th scope="col">
+                Name
+            </th>
+            <th scope="col">JobType</th>
+            @if (Model.isEngAdmin)
+            {
+                <th>Engineer</th>
+                <th>Latest Finish </th>
+            }
+
+            <th scope="col">Expected Release Date </th>
+            <th scope="col">Status</th>
+            <th scope="col">Corrective Actions</th>
+        </tr>
         </thead>
         <tbody class="align-content-center text-center">
             @if (Model.MyJobAdditionals.Count() == 0)
@@ -74,25 +90,31 @@
                     {
                         POsNumber += po.PONumb.ToString() + ", ";
                     }
-                    <tr>
-                        <th scope="row">@j.JobNum</th>
-                        <td>@j.Name</td>
-                        <td>@JobTypeName</td>
-                        <td>
-                            <input type="hidden" asp-for="@Model.MyJobAdditionals[i].JobAdditionalID" value="@Model.MyJobAdditionals[i].JobAdditionalID" />
-                            <input type="hidden" asp-for="@Model.MyJobAdditionals[i].JobID" />
-                            <input asp-for="@Model.MyJobAdditionals[i].ERDate" class="form-control fom form-control-sm" />
-                            <span asp-validation-for="@Model.MyJobAdditionals[i].ERDate" class="text-danger"></span>
-                        </td>
-                        <td>
-                            <custom-select select-for="MorningStatus" selected-value="@Model.MyJobAdditionals[i].Status" class="form-control form-control-sm" asp-for="@Model.MyJobAdditionals[i].Status"></custom-select>
-                            <span asp-validation-for="@Model.MyJobAdditionals[i].Status" class="text-danger"></span>
-                        </td>
-                        <td>
-                            <textarea asp-for="@Model.MyJobAdditionals[i].Action" class="form-control fom form-control-sm" rows="2"></textarea>
-                            <span asp-validation-for="@Model.MyJobAdditionals[i].Action" class="text-danger"></span>
-                        </td>
-                    </tr>
+        <tr>
+            <th scope="row">@j.JobNum</th>
+            <td>@j.Name</td>
+            <td>@JobTypeName</td>
+            @if (Model.isEngAdmin)
+            {
+                <td>E@(j.EngID)</td>
+                <td>@j.LatestFinishDate.ToShortDateString() </td>
+            }
+
+            <td>
+                <input type="hidden" asp-for="@Model.MyJobAdditionals[i].JobAdditionalID" value="@Model.MyJobAdditionals[i].JobAdditionalID" />
+                <input type="hidden" asp-for="@Model.MyJobAdditionals[i].JobID" />
+                <input asp-for="@Model.MyJobAdditionals[i].ERDate" disabled="@(Model.CurrentUserID == j.EngID && !Model.isEngAdmin ? false : true)" class="form-control fom form-control-sm" />
+                <span asp-validation-for="@Model.MyJobAdditionals[i].ERDate" class="text-danger"></span>
+            </td>
+            <td>
+                <custom-select select-for="MorningStatus" selected-value="@Model.MyJobAdditionals[i].Status" asp-is-disabled="@(Model.CurrentUserID == j.EngID && !Model.isEngAdmin ? false : true)" class="form-control form-control-sm" asp-for="@Model.MyJobAdditionals[i].Status"></custom-select>
+                <span asp-validation-for="@Model.MyJobAdditionals[i].Status" class="text-danger"></span>
+            </td>
+            <td>
+                <textarea asp-for="@Model.MyJobAdditionals[i].Action" disabled="@(Model.CurrentUserID == j.EngID && !Model.isEngAdmin  ? false : true)" class="form-control fom form-control-sm" rows="2"></textarea>
+                <span asp-validation-for="@Model.MyJobAdditionals[i].Action" class="text-danger"></span>
+            </td>
+        </tr>
                 }
             }
         </tbody>
@@ -100,7 +122,7 @@
 </div>
 @if (Model.MyJobAdditionals.Count() > 0)
 {
-    <cool-pagination-dash-board current-model="MyJobs" my-jobs-page-model="@Model.MyJobsPagingInfo" page-action="MorningDashBoard" page-classes-enabled="true"
+    <cool-pagination-dash-board current-model="MyJobs" my-jobs-page-model="@Model.MyJobsPagingInfo" page-action="MorningDashBoard" is-eng-admin="@Model.isEngAdmin"  page-classes-enabled="true"
                                 page-class="btn" page-class-normal="btn-secondary" on-cross-page-model="@Model.OnCrossJobsPagingInfo" pending-to-cross-page-model="@Model.PendingToCrossJobsPagingInfo"
                                 page-class-selected="btn-dark" my-jobs-url-value="MyJobsPage" on-cross-url-value="OnCrossJobPage"
                                 pending-to-cross-url-value="PendingToCrossJobPage" sort="Sort"

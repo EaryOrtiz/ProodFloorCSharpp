@@ -1374,6 +1374,8 @@ namespace ProdFloor.Infrastructure
         public string OnCrossUrlValue { get; set; }
         public string PendingToCrossUrlValue { get; set; }
         public string Sort { get; set; }
+
+        public string isEngAdmin { get; set; }
         public string CurrentModel { get; set; }
 
         public override void Process(TagHelperContext context,
@@ -1381,6 +1383,7 @@ namespace ProdFloor.Infrastructure
         {
             if (!string.IsNullOrEmpty(CurrentModel))
             {
+                PageUrlValues["isEngAdmin"] = isEngAdmin;
                 switch (CurrentModel)
                 {
                     case "MyJobs":

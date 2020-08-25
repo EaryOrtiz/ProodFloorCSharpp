@@ -40,5 +40,9 @@ namespace ProdFloor.Models.ViewModels
         public int jobnumber { get; set; }
 
         public List<Station> StationList { get; set; }
+
+        public bool isEngAdmin { get; set; }
+
+        public int CurrentUserID { get; set; }
     }
 }
