@@ -184,6 +184,7 @@ namespace ProdFloor.Models
                     dbEntry.CarCallRead = genericFeatures.CarCallRead;
                     dbEntry.HallCallRead = genericFeatures.HallCallRead;
                     dbEntry.CarKey = genericFeatures.CarKey;
+                    dbEntry.HallKey = genericFeatures.HallKey;
                     dbEntry.CRO = genericFeatures.CRO;
                     dbEntry.HCRO = genericFeatures.HCRO;
                     dbEntry.BSI = genericFeatures.BSI;
