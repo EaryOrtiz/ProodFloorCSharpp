@@ -169,7 +169,6 @@ namespace ProdFloor.Controllers
                     sort = Sort != "default" ? Sort : "default",
                     TotalItemsFromLastSearch = totalitemsfromlastsearch,
                     ItemsPerPage = PageSize,
-                    TotalItemsFromLastSearch = totalitemsfromlastsearch,
 
                     TotalItems = TotalItemsSearch
                 }

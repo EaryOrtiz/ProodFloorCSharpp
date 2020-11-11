@@ -983,18 +983,11 @@ namespace ProdFloor.Controllers
             List<PO> POsList = repository.POs.Where(j => j.JobID == multiEditViewModel.CurrentJob.JobID).ToList();
             multiEditViewModel.SpecialFeaturesTable = getSpecialFeaturesEX();
             multiEditViewModel.CurrentUserID = currentUser.EngID;
-/////se suone que esto es el customer
+            multiEditViewModel.CurrentJob.JobNum = getJobNumb(multiEditViewModel.CurrentJob.JobNumFirstDigits, multiEditViewModel.CurrentJob.JobNumLastDigits);
+
             bool Admin = GetCurrentUserRole("Admin").Result;
             Job job = repository.Jobs.FirstOrDefault(m => m.JobID == multiEditViewModel.CurrentJob.JobID);
             if (currentUser.EngID == job.EngID || Admin || multiEditViewModel.CurrentJob.Status == "Copied")
-//////////////////////////////y de aui el newjobnumb
-            multiEditViewModel.CurrentJob.JobNum = getJobNumb(multiEditViewModel.CurrentJob.JobNumFirstDigits, multiEditViewModel.CurrentJob.JobNumLastDigits);
-
-            string StatusAux = "Working on it";
-            if (multiEditViewModel.CurrentJob.Status == "Copied") StatusAux = "Copied";
-            List<PO> PoAux = new List<PO>();
-            if (ModelState.IsValid)
-/////////////////////aqui termina el nuevo job
             {
                 string StatusAux = "Working on it";
                 if (multiEditViewModel.CurrentJob.Status == "Copied") StatusAux = "Copied";
@@ -1157,16 +1150,11 @@ namespace ProdFloor.Controllers
             List<PO> PoAux = new List<PO>();
             multiEditViewModel.SpecialFeaturesTable = getSpecialFeaturesEX();
             multiEditViewModel.CurrentUserID = currentUser.EngID;
-//HE
+            multiEditViewModel.CurrentJob.JobNum = getJobNumb(multiEditViewModel.CurrentJob.JobNumFirstDigits, multiEditViewModel.CurrentJob.JobNumLastDigits);
+
             bool Admin = GetCurrentUserRole("Admin").Result;
             Job job = repository.Jobs.FirstOrDefault(m => m.JobID == multiEditViewModel.CurrentJob.JobID);
-            if (currentUser.EngID == job.EngID || Admin || multiEditViewModel.CurrentJob.Status == "Copied")
-//
-            multiEditViewModel.CurrentJob.JobNum = getJobNumb(multiEditViewModel.CurrentJob.JobNumFirstDigits, multiEditViewModel.CurrentJob.JobNumLastDigits);
-            string StatusAux = "Cross Approval Complete";
-            if (multiEditViewModel.CurrentJob.Status == "Copied") StatusAux = "Copied";
-            if (ModelState.IsValid)
-// obNumber
+            if (currentUser.EngID == job.EngID || Admin || multiEditViewModel.CurrentJob.Status == "Copied")        
             {
                 string StatusAux = "Cross Approval Complete";
                 if (multiEditViewModel.CurrentJob.Status == "Copied") StatusAux = "Copied";
@@ -1303,16 +1291,11 @@ namespace ProdFloor.Controllers
             List<PO> POsList = repository.POs.Where(j => j.JobID == multiEditViewModel.CurrentJob.JobID).ToList();
             List<PO> PoAux = new List<PO>();
             multiEditViewModel.CurrentUserID = currentUser.EngID;
-//< HEA
+            multiEditViewModel.CurrentJob.JobNum = getJobNumb(multiEditViewModel.CurrentJob.JobNumFirstDigits, multiEditViewModel.CurrentJob.JobNumLastDigits);
+
             bool Admin = GetCurrentUserRole("Admin").Result;
             Job job = repository.Jobs.FirstOrDefault(m => m.JobID == multiEditViewModel.CurrentJob.JobID);
             if (currentUser.EngID == job.EngID || Admin || multiEditViewModel.CurrentJob.Status == "Copied")
-//
-            multiEditViewModel.CurrentJob.JobNum = getJobNumb(multiEditViewModel.CurrentJob.JobNumFirstDigits, multiEditViewModel.CurrentJob.JobNumLastDigits);
-            string StatusAux = "Working on it";
-            if (multiEditViewModel.CurrentJob.Status == "Copied") StatusAux = "Copied";
-            if (ModelState.IsValid)
-//NewJobNumbe
             {
                 string StatusAux = "Cross Approval Complete";
                 if (multiEditViewModel.CurrentJob.Status == "Copied") StatusAux = "Copied";
