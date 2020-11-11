@@ -77,6 +77,7 @@ namespace ProdFloor.Models.ViewModels.TestJob
 
         public string JobTypeName { get; set; }
 
-
+        //Tables for Testjob Stats
+        public  List<TestStats> TestStatsList { get; set; }
     }
 }

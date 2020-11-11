@@ -167,6 +167,7 @@ namespace ProdFloor.Controllers
                 {
                     CurrentPage = page,
                     sort = Sort != "default" ? Sort : "default",
+                    TotalItemsFromLastSearch = totalitemsfromlastsearch,
                     ItemsPerPage = PageSize,
                     TotalItemsFromLastSearch = totalitemsfromlastsearch,
 
@@ -183,7 +184,9 @@ namespace ProdFloor.Controllers
 
             if (viewModel.Reason1ID > 0) reasons = reasons.Where(m => m.Reason1ID == viewModel.Reason1ID);
             if (!string.IsNullOrEmpty(viewModel.Description)) reasons = reasons.Where(m => m.Description.Contains(viewModel.Description));
-            viewModel.TotalItems = repository.Reasons2.Count();
+
+
+            viewModel.TotalItems = reasons.Count();
 
             int TotalItemsSearch = viewModel.TotalItems;
             if (page == 1)
@@ -220,9 +223,8 @@ namespace ProdFloor.Controllers
             if (viewModel.Reason2ID > 0) reasons3 = reasons3.Where(m => m.Reason2ID == viewModel.Reason2ID);
             if (!string.IsNullOrEmpty(viewModel.Description)) reasons3 = reasons3.Where(m => m.Description.Contains(viewModel.Description));
 
-            viewModel.TotalItems = repository.Reasons3.Count();
 
-            int TotalItemsSearch = viewModel.TotalItems;
+            int TotalItemsSearch = reasons3.Count();
             if (page == 1)
             {
                 totalitemsfromlastsearch = TotalItemsSearch;
@@ -266,9 +268,7 @@ namespace ProdFloor.Controllers
 
             if (!string.IsNullOrEmpty(viewModel.Description)) reasons4 = reasons4.Where(m => m.Description.Contains(viewModel.Description));
 
-            viewModel.TotalItems = repository.Reasons4.Count();
-
-            int TotalItemsSearch = viewModel.TotalItems;
+            int TotalItemsSearch = reasons4.Count();
             if (page == 1)
             {
                 totalitemsfromlastsearch = TotalItemsSearch;
@@ -319,9 +319,8 @@ namespace ProdFloor.Controllers
 
             if (!string.IsNullOrEmpty(viewModel.Description)) reasons4 = reasons4.Where(m => m.Description.Contains(viewModel.Description));
 
-            viewModel.TotalItems = repository.Reasons5.Count();
 
-            int TotalItemsSearch = viewModel.TotalItems;
+            int TotalItemsSearch = reasons5.Count();
             if (page == 1)
             {
                 totalitemsfromlastsearch = TotalItemsSearch;

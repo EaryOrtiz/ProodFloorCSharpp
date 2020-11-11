@@ -102,6 +102,7 @@
                     <tr>
                         <th scope="row" style="padding-bottom:0.1em;"><center>10</center></th>
                         <td><input asp-for="CurrentHoistWayData.FrontTenthServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)" class="form-control" /></td>
+
                         <td><input asp-for="CurrentHoistWayData.RearTenthServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control" /></td>
                     </tr>
                     <tr>
@@ -122,6 +123,7 @@
                     <tr>
                         <th scope="row" style="padding-bottom:0.1em;"><center>6</center></th>
                         <td><input asp-for="CurrentHoistWayData.FrontSexthServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control" /></td>
+
                         <td><input asp-for="CurrentHoistWayData.RearSexthServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control" /></td>
                     </tr>
                     <tr>
@@ -142,6 +144,7 @@
                     <tr>
                         <th scope="row" style="padding-bottom:0.1em;"><center>2</center></th>
                         <td><input asp-for="CurrentHoistWayData.FrontSecondServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control" /></td>
+
                         <td><input asp-for="CurrentHoistWayData.RearSecondServed" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control" /></td>
                     </tr>
                     <tr>

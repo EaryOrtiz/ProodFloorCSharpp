@@ -715,7 +715,7 @@ namespace ProdFloor.Controllers
                             SlowLimit = ViewModel.SlowLimit,
                             MiniumFloorHeight = ViewModel.MiniumFloorHeight,
 
-                            //For Down Speed
+                            //For up Speed
                             CarUpSpeedFPM = ViewModel.CarUpSpeedFPM,
                             UPDistance = ViewModel.UPDistance,
                             UPA = ViewModel.UPA,
@@ -1463,6 +1463,13 @@ namespace ProdFloor.Controllers
         public string JobTypeName(int ID)
         {
             return repository.JobTypes.FirstOrDefault(m => m.JobTypeID == ID).Name;
+        }
+
+        public String getJobNumb(string firstDigits, int lastDigits)
+        {
+            string JobNumb = firstDigits + lastDigits.ToString();
+
+            return JobNumb;
         }
     }
 }

@@ -1,0 +1,89 @@
+﻿@model ProdFloor.Models.ViewModels.Home.EngineerChartsViewModel
+@{
+    <script>
+        $(document).ready(function () {
+            $('[data-tooltip="tooltip"]').tooltip();
+        });
+    </script>
+}
+<table class="table table-striped  text-center table-sm" style="text-align:center">
+    <thead style="background-color:#343a40!important;color:#fff;">
+        <tr>
+            <th class="text-center" colspan="12">
+                <div class="btn-group" style="float:left">
+                    <button type="button" value="Back" style="border-color:transparent" class="btn btn-dark btn-sm" onclick="window.location.href = '/Home/JobChartsDashBoard/?ChartName=OnCrossM2000';">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                </div>
+                <h5>On Cross M2000</h5>
+            </th>
+        </tr>
+        <tr>
+            <th scope="col">
+                Job# &nbsp;
+            </th>
+            <th scope="col">
+                PO# &nbsp;
+            </th>
+            <th scope="col">
+                Name &nbsp;
+            </th>
+            <th scope="col">Engineer</th>
+            <th scope="col">CrossApprover</th>
+            <th scope="col">
+                Latest Finish&nbsp;
+            </th>
+            <th scope="col">Priority</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.JobsOnCrossM2000.Count() == 0)
+        {
+            <tr>
+                <td>No pending Jobs to Cross Aprroving!</td>
+            </tr>
+        }
+        else
+        {
+            @foreach (var j in Model.JobsOnCrossM2000)
+            {
+                JobAdditional jobAdditional = Model.MyJobAdditionals.FirstOrDefault(m => m.JobID == j.JobID);
+                string JobTypeName = Model.JobTypes.FirstOrDefault(m => m.JobTypeID == j.JobTypeID).Name;
+                var POForJobLlist = Model.POs.Where(m => m.JobID == j.JobID).ToList();
+                string POsNumber = "";
+
+                foreach (PO po in POForJobLlist)
+                {
+                    POsNumber += po.PONumb.ToString() + ", ";
+                }
+
+                <tr>
+                    <th scope="row">@j.JobNum</th>
+                    <td>@POsNumber</td>
+                    <td>@j.Name</td>
+                    <td>E@(j.EngID)</td>
+                    <td>E@(j.CrossAppEngID)</td>
+                    <td>@j.LatestFinishDate.ToShortDateString()</td>
+                    <td>
+                        @if (jobAdditional.Priority == 0)
+                        {<button type="button" title="Change Priority" class="btn btn-light" data-toggle="modal" data-target="#priority @j.JobID" style="float:left;background-color:transparent" data-tooltip="tooltip" data-placement="top"><i class="fas fa-flag text-success"></i></button>}
+                        @if (jobAdditional.Priority == 1)
+                        {<button type="button" title="Change Priority" class="btn btn-light" data-toggle="modal" data-target="#priority @j.JobID" style="float:left;background-color:transparent" data-tooltip="tooltip" data-placement="top"><i class="fas fa-flag text-warning"></i></button>}
+                        @if (jobAdditional.Priority == 2)
+                        {<button type="button" title="Change Priority" class="btn btn-light" data-toggle="modal" data-target="#priority @j.JobID" style="float:left;background-color:transparent" data-tooltip="tooltip" data-placement="top"><i class="fas fa-flag text-danger"></i></button>}
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+@if (Model.JobsOnCrossM2000.Count() > 0)
+{
+    <cool-pagination-dash-board4d current-model="OnCross" active-page-model="@Model.PagingInfoCrossCompleteM2000" my-jobs-page-model="@Model.PagingInfoWorkingOnItM2000" page-action="EngineerListDashBoard" page-classes-enabled="true"
+                                  page-class="btn" page-class-normal="btn-secondary" on-cross-page-model="@Model.PagingInfoOnCrossM2000" pending-to-cross-page-model="@Model.PagingInfoCrossPendingM2000"
+                                  page-class-selected="btn-dark" active-url-value="CompleteM2000Page" my-jobs-url-value="WorkingOnItM2000Page" on-cross-url-value="OnCrossM2000Page"
+                                  pending-to-cross-url-value="PendingM2000Page" sort="Sort"
+                                  class="btn-group pull-right m-1">
+    </cool-pagination-dash-board4d>
+}

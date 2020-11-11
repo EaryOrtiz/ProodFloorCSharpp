@@ -14,7 +14,7 @@
 <form asp-controller="Home" asp-action="SuperUserDashBoard" method="get">
     <div class="input-group" style="padding-top:15px;padding-bottom:5px">
 
-        <input type="text" class="form-control form-control-sm col-5" name="jobNumber" id="jobnumb" value="0" placeholder=" Please enter a Job Number">
+        <input type="text" class="form-control form-control-sm col-5" name="jobNumber" value="@Model.MyJobsPagingInfo.JobNumb" id="jobnumb" placeholder=" Please enter a Job Number">
         <div class="input-group-append">
             <div class="btn-group">
                 <button class="btn btn-dark" type="submit" value="Search" data-tooltip="tooltip" data-placement="top" title="Search">

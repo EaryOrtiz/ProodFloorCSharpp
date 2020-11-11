@@ -1,0 +1,53 @@
+﻿@model ProdFloor.Models.ViewModels.Home.EngineerChartsViewModel
+@{
+    ViewBag.Title = "Enginneer List Charts";
+    Layout = "_AdminLayoutWO";
+
+}
+    @if (Model.JobsWorkingOnItM2000 != null && Model.PagingInfoWorkingOnItM2000.sort == "OngoingM2000")
+    {
+        @Html.Partial("OngoingJobsM2000", Model)
+    }
+
+
+    @if (Model.JobsCrossPendingM2000 != null && Model.PagingInfoCrossPendingM2000.sort == "PendingCrossM2000")
+    {
+        @Html.Partial("PendingJobsM2000", Model)
+    }
+
+
+    @if (Model.JobsOnCrossM2000 != null && Model.PagingInfoOnCrossM2000.sort == "OnCrossM2000")
+    {
+        @Html.Partial("OnCrossJobsM2000", Model)
+    }
+
+
+    @if (Model.JobsCrossCompleteM2000 != null && Model.PagingInfoCrossCompleteM2000.sort == "CrossCompleteM2000")
+    {
+        @Html.Partial("CompleteJobsM2000", Model)
+    }
+
+
+    @if (Model.JobsWorkingOnItHydro != null && Model.PagingInfoWorkingOnItHydro.sort == "OngoingHydro")
+    {
+        @Html.Partial("OngoingJobsHydro", Model)
+    }
+
+
+    @if (Model.PagingInfoCrossCompleteHydro != null && Model.PagingInfoCrossCompleteHydro.sort == "CrossCompleteHydro")
+    {
+        @Html.Partial("CompleteJobsHydro", Model)
+    }
+
+
+    @if (Model.JobsWorkingOnItTraction != null && Model.PagingInfoWorkingOnItTraction.sort == "OngoingTraction")
+    {
+        @Html.Partial("OngoingJobsTraction", Model)
+    }
+
+
+    @if (Model.JobsCrossCompleteTraction != null && Model.PagingInfoCrossCompleteTraction.sort == "CrossCompleteTraction")
+    {
+        @Html.Partial("CompleteJobsTraction", Model)
+    }
+

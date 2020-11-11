@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using ProdFloor.Models;
 using ProdFloor.Models.ViewModels;
 using ProdFloor.Models.ViewModels.TestJob;
@@ -62,16 +64,22 @@ namespace ProdFloor.Controllers
         }
 
 
-        public IActionResult SearchTestJob(string Clean, int jobNumber, string jobnumb = "0", int MyJobsPage = 1, int PendingToCrossJobPage = 1, int OnCrossJobPage = 1)
+        public IActionResult SearchTestJob(string Clean, string jobNumber, string jobnumb = "", int MyJobsPage = 1, int PendingToCrossJobPage = 1, int OnCrossJobPage = 1)
         {
             bool admin = GetCurrentUserRole("Admin").Result;
-            if (jobnumb != "0") jobNumber = Int32.Parse(jobnumb);
-            if (jobNumber != 0) jobnumb = jobNumber.ToString();
+            if (!string.IsNullOrEmpty(jobnumb)) jobNumber = jobnumb;
+            if (!string.IsNullOrEmpty(jobNumber)) jobnumb = jobNumber;
+
+            if (!string.IsNullOrEmpty(Clean))
+            {
+                RedirectToAction("SearchTestJob", "TestJob");
+                jobnumb = "";
+            }
 
             List<TestJob> testJobsInCompleted = new List<TestJob>();
             List<TestJob> testJobsCompleted = new List<TestJob>();
             List<TestJob> testJobsList = new List<TestJob>();
-            List<Job> jobList = jobRepo.Jobs.Where(m => m.JobNum == jobNumber).ToList();
+            List<Job> jobList = jobRepo.Jobs.Where(m => m.JobNum.Contains(jobnumb)).ToList();
 
 
             foreach (Job job in jobList)
@@ -92,16 +100,16 @@ namespace ProdFloor.Controllers
             if (!admin)
             {
 
-                if (testJobsInCompleted == null || jobnumb == "0") testJobsInCompleted = testingRepo.TestJobs.Where(m => m.Status != "Completed" && m.Status != "Deleted").ToList();
-                if (testJobsCompleted == null || jobnumb == "0") testJobsCompleted = testingRepo.TestJobs.Where(m => m.Status == "Completed").ToList();
+                if (testJobsInCompleted == null || string.IsNullOrEmpty(jobnumb)) testJobsInCompleted = testingRepo.TestJobs.Where(m => m.Status != "Completed" && m.Status != "Deleted").ToList();
+                if (testJobsCompleted == null || string.IsNullOrEmpty(jobnumb)) testJobsCompleted = testingRepo.TestJobs.Where(m => m.Status == "Completed").ToList();
             }
             else
             {
-                if (testJobsInCompleted == null || jobnumb == "0") testJobsInCompleted = testingRepo.TestJobs.Where(m => m.Status != "Completed" && m.Status != "Deleted").ToList();
-                if (testJobsCompleted == null || jobnumb == "0") testJobsCompleted = testingRepo.TestJobs.Where(m => m.Status == "Completed" || m.Status == "Deleted").ToList();
+                if (testJobsInCompleted == null || string.IsNullOrEmpty(jobnumb)) testJobsInCompleted = testingRepo.TestJobs.Where(m => m.Status != "Completed" && m.Status != "Deleted").ToList();
+                if (testJobsCompleted == null || string.IsNullOrEmpty(jobnumb)) testJobsCompleted = testingRepo.TestJobs.Where(m => m.Status == "Completed" || m.Status == "Deleted").ToList();
             }
 
-            if (Clean == "true") RedirectToAction("SearchTestJob", "TestJob");
+           
 
 
             TestJobViewModel testJobView = new TestJobViewModel
@@ -145,7 +153,7 @@ namespace ProdFloor.Controllers
                 },
 
             };
-            if (jobNumber == 0) return View(testJobView);
+            if (string.IsNullOrEmpty(jobNumber)) return View(testJobView);
             if (testJobsList.Count > 0 && testJobsList[0] != null) return View(testJobView);
             TempData["message"] = $"Does not exist any job with the JobNum #{jobNumber}, please try again.";
             TempData["alert"] = $"alert-danger";
@@ -205,6 +213,8 @@ namespace ProdFloor.Controllers
                             NewtestJobView.TestFeature = new TestFeature();
                             NewtestJobView.TestFeature.TestJobID = testJob.TestJobID;
                             NewtestJobView.CurrentTab = "NewFeatures";
+                            NewtestJobView.Job.JobNumFirstDigits = getJobNumbDivided(_jobSearch.JobNum).firstDigits;
+                            NewtestJobView.Job.JobNumLastDigits = getJobNumbDivided(_jobSearch.JobNum).lastDigits;
 
                             int jobtypeID = jobRepo.Jobs.First(m => m.JobID == _jobSearch.JobID).JobTypeID;
                             switch (JobTypeName(jobtypeID))
@@ -307,10 +317,11 @@ namespace ProdFloor.Controllers
         [HttpPost]
         public IActionResult NextForm(TestJobViewModel nextViewModel)
         {
-           
+
+            TestJob testJob = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == nextViewModel.TestFeature.TestJobID);
+            nextViewModel.Job.JobNum = getJobNumb(nextViewModel.Job.JobNumFirstDigits, nextViewModel.Job.JobNumLastDigits);
             if (nextViewModel.TestFeature != null)
             {
-                TestJob testJob = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == nextViewModel.TestJob.TestJobID);
 
                 if (testJob != null)
                 {
@@ -357,7 +368,7 @@ namespace ProdFloor.Controllers
             else
             {
 
-                if (nextViewModel.isNotDummy == false)
+                if (nextViewModel.isNotDummy == false && testJob.TestJobID == 0)
                 {
                     nextViewModel = NewDummyJob(nextViewModel);
                     TempData["message"] = $"Job was saved";
@@ -451,13 +462,16 @@ namespace ProdFloor.Controllers
                     nextViewModel.PO = jobRepo.POs.FirstOrDefault(m => m.JobID == CurrentJob.JobID);
                     nextViewModel.TestJob = testJob;
                     nextViewModel.Job = CurrentJob;
-                    nextViewModel.TestFeature = testFeature != null ? testFeature : new TestFeature() { TestJobID = testJob.TestJobID };
+
+                    nextViewModel.TestFeature = testFeature != null ? testFeature : new TestFeature() { TestJobID = testJob.TestJobID}; 
                     nextViewModel.isNotDummy = CurrentJob.Contractor == "Fake" ? false : true;
                     nextViewModel.CurrentTab = "NewFeatures";
                     nextViewModel.JobTypeName = JobTypeName(jobtypeID);
 
+                    nextViewModel.Job.JobNumFirstDigits = getJobNumbDivided(nextViewModel.Job.JobNum).firstDigits;
+                    nextViewModel.Job.JobNumLastDigits = getJobNumbDivided(nextViewModel.Job.JobNum).lastDigits;
 
-
+                    
 
                     switch (JobTypeName(jobtypeID))
                     {
@@ -509,6 +523,7 @@ namespace ProdFloor.Controllers
                             break;
 
                     }
+
                     return View("NextForm", nextViewModel);
                 }
                 else
@@ -553,6 +568,9 @@ namespace ProdFloor.Controllers
                     nextViewModel.TestFeature = testFeature;
                     nextViewModel.isNotDummy = CurrentJob.Contractor == "Fake" ? false : true;
                     nextViewModel.CurrentTab = "DummyJob";
+
+                    nextViewModel.Job.JobNumFirstDigits = getJobNumbDivided(nextViewModel.Job.JobNum).firstDigits;
+                    nextViewModel.Job.JobNumLastDigits = getJobNumbDivided(nextViewModel.Job.JobNum).lastDigits;
 
                     if (CurrentJob.CityID == 10) nextViewModel.Canada = true;
                     if (CurrentJob.CityID == 11) nextViewModel.Ontario = true;
@@ -635,6 +653,7 @@ namespace ProdFloor.Controllers
         [HttpPost]
         public ViewResult EditTestJob(TestJobViewModel viewModel)
         {
+            viewModel.Job.JobNum = getJobNumb(viewModel.Job.JobNumFirstDigits, viewModel.Job.JobNumLastDigits);
             testingRepo.SaveTestFeature(viewModel.TestFeature);
             UpdateTestFeatures(viewModel);
             if (viewModel.isNotDummy == false) UpdateDummyJob(viewModel);
@@ -991,6 +1010,8 @@ namespace ProdFloor.Controllers
                 TestJob = currentTestJob,
                 Job = currentJob
             };
+            testJobView.Job.JobNumFirstDigits = viewModel.Job.JobNumFirstDigits;
+            testJobView.Job.JobNumLastDigits = viewModel.Job.JobNumLastDigits;
 
             return testJobView;
         }
@@ -2376,7 +2397,7 @@ namespace ProdFloor.Controllers
                 string term = HttpContext.Request.Query["term"].ToString();
                 var names = jobRepo.Jobs.Where(p => p.JobNum.ToString().Contains(term)).Select(p => p.JobNum).Distinct().ToList();
                 List<string> numbers = new List<string>();
-                foreach (int number in names)
+                foreach (string number in names)
                 {
                     numbers.Add(number.ToString());
                 }
@@ -2472,9 +2493,9 @@ namespace ProdFloor.Controllers
             #endregion
 
             #region JobFromTestJobInfo
-            if (searchViewModel.JobNum >= 2015000000 && searchViewModel.JobNum <= 2021000000)
+            if (!string.IsNullOrEmpty(searchViewModel.JobNum))
             {
-                jobSearchRepo = jobSearchRepo.Where(s => s.JobNum == searchViewModel.JobNum); anyFeatureFromJob = true;
+                jobSearchRepo = jobSearchRepo.Where(s => s.JobNum.Contains(searchViewModel.JobNum)); anyFeatureFromJob = true;
             }
 
             if (!string.IsNullOrEmpty(searchViewModel.JobName))
@@ -2662,5 +2683,186 @@ namespace ProdFloor.Controllers
 
             return View(searchViewModel);
         }
+
+        public String getJobNumb(string firstDigits, int lastDigits)
+        {
+            string JobNumb = firstDigits + lastDigits.ToString();
+
+            return JobNumb;
+        }
+
+        public JobNumber getJobNumbDivided(string JobNumber)
+        {
+            JobNumber jobNum = new JobNumber();
+
+            jobNum.firstDigits = JobNumber.Remove(5, 5);
+            jobNum.lastDigits = int.Parse(JobNumber.Remove(0, 5));
+
+            return jobNum;
+        }
+
+        [AllowAnonymous]
+        public ViewResult TestStats(TestJobViewModel viewModel, string JobType)
+        {
+            viewModel.TestStatsList = new List<TestStats>();
+            List<TestJob> ActiveTestJobs = testingRepo.TestJobs.Where(m => m.Status != "Completed" && m.Status != "Deleted").ToList();
+            int JobTypeID = (JobType == "M2000") ? 2 : 4;
+            if(JobTypeID == 2)
+            {
+                viewModel.StationsList = testingRepo.Stations.Where(m => m.JobTypeID == JobTypeID).OrderBy(n => n.Label).ToList();
+                viewModel.StationsList.AddRange(testingRepo.Stations.Where(m => m.JobTypeID == 5).OrderBy(n => n.Label).ToList());
+            }
+            else
+            {
+                viewModel.StationsList = testingRepo.Stations.Where(m => m.JobTypeID == JobTypeID).OrderBy(n => n.Label).ToList();
+                viewModel.StationsList.AddRange(testingRepo.Stations.Where(m => m.JobTypeID == 1).OrderBy(n => n.Label).ToList());
+            }
+            List<Job> JobsFilteredByJobtype = jobRepo.Jobs.Where(m => ActiveTestJobs.Any(n => n.JobID == m.JobID) && m.JobTypeID == JobTypeID).ToList();
+            ActiveTestJobs = ActiveTestJobs.Where(m => JobsFilteredByJobtype.Any(n => n.JobID == m.JobID)).ToList();
+            
+
+            List<AppUser> Users = userManager.Users.Where(m => m.EngID >= 100 && m.EngID <= 299).ToList();
+            IQueryable<Job> JobsinTest = jobRepo.Jobs.Where(m => ActiveTestJobs.Any(n => n.JobID == m.JobID));
+            List<Station> StationFromTestJobs= testingRepo.Stations.Where(m => ActiveTestJobs.Any(n => n.StationID == m.StationID)).ToList();
+            List<Step> StepsListInfo = testingRepo.Steps.ToList();
+
+            List<StepsForJob> stepsForJobCompleted = new List<StepsForJob>();
+            List<StepsForJob> stepsForJobNotCompleted = new List<StepsForJob>();
+            int counter = 1;
+
+            //Auxiliares
+            
+
+            foreach (TestJob testjob in ActiveTestJobs)
+            {
+                TestFeature FeaturesFromTestJob = testingRepo.TestFeatures.First(m => m.TestJobID == testjob.TestJobID);
+                Job FeaturesFromJob = JobsinTest.Include(m => m._jobExtension).Include(m => m._HydroSpecific).Include(m => m._HoistWayData).Include(m => m._GenericFeatures).FirstOrDefault(m => m.JobID == testjob.JobID);
+                City UniqueCity = itemRepository.Cities.FirstOrDefault(m => m.CityID == FeaturesFromJob.CityID);
+                State StateFromCity = itemRepository.States.FirstOrDefault(m => m.StateID == UniqueCity.StateID);
+                List<StepsForJob> AllSteps = testingRepo.StepsForJobs.Where(m => m.TestJobID == testjob.TestJobID && m.Obsolete == false).OrderBy(n => n.Consecutivo).ToList();
+
+                string JobNum = FeaturesFromJob.JobNum.Remove(0, 5);
+                string TechName = Users.FirstOrDefault(m => m.EngID == testjob.TechnicianID).FullName;
+                string StationName = StationFromTestJobs.FirstOrDefault(m => m.StationID == testjob.StationID).Label;
+                string Stage = "";
+                string Status = "";
+                string EfficiencyColor = "green";
+                string StatusColor = "green";
+                string Category = "";
+                double Efficiency = 0;
+                double ExpectedTimeSUM = 0;
+                double RealTimeSUM = 0;
+                double TTCAux = 0;
+                DateTime TTC = new DateTime();
+
+
+                //Logic for TTC
+                stepsForJobNotCompleted = AllSteps.Where(m => m.TestJobID == testjob.TestJobID && m.Complete == false && m.Obsolete == false).OrderBy(n => n.Consecutivo).ToList();
+                StepsForJob LastStepsForJob = stepsForJobNotCompleted.FirstOrDefault(m => m.Complete == false);
+                Step LastStepInfo = StepsListInfo.FirstOrDefault(m => m.StepID == LastStepsForJob.StepID);
+
+                foreach (StepsForJob step in stepsForJobNotCompleted)
+                {
+                    TTCAux += ToHours(StepsListInfo.FirstOrDefault(m => m.StepID == step.StepID).ExpectedTime);
+                }
+
+                TTC = ToDateTime(TTCAux);
+
+                stepsForJobCompleted = AllSteps.Where(m => m.TestJobID == testjob.TestJobID && m.Complete == true).OrderBy(n => n.Consecutivo).ToList();
+                
+                //a simple query to get the stage
+                Stage = LastStepInfo.Stage;
+
+                //if to get efficiency or status(stopped)
+                if(testjob.Status == "Working on it")
+                {
+                    foreach (StepsForJob step in stepsForJobCompleted)
+                    {
+                        ExpectedTimeSUM += ToHours(StepsListInfo.FirstOrDefault(m => m.StepID == step.StepID).ExpectedTime);
+
+                        RealTimeSUM += ToHours(step.Elapsed);
+                    }
+                    ExpectedTimeSUM += ToHours(LastStepInfo.ExpectedTime);
+                    RealTimeSUM += ToHours(LastStepsForJob.Elapsed);
+
+                    Efficiency = Math.Round((ExpectedTimeSUM / RealTimeSUM) * 100);
+
+                    if (Efficiency > 99) Efficiency = 99;
+                    if (Efficiency < 82) EfficiencyColor = "Orange";
+                    else if (Efficiency < 69) EfficiencyColor = "#ffc107!important";
+
+                }
+                else
+                {
+                    Efficiency = 99;
+
+                    Stop stop = testingRepo.Stops.Where(m => m.TestJobID == testjob.TestJobID).Last();
+                    Reason1 reason = testingRepo.Reasons1.FirstOrDefault(m => m.Reason1ID == stop.Reason1);
+                    Status = "Stopped: " + reason.Description;
+
+                    if (stop.Critical) StatusColor = "Red";
+                    if (stop.Reason1 == 980 || stop.Reason1 == 981 || stop.Reason1 == 982) StatusColor = "Gray";
+                    
+
+                }
+
+                //logic to get the cat(difficulty)
+                if (JobType == "M2000")
+                {
+                    if (FeaturesFromJob.CityID == 11) Category = "6";
+                    else if (FeaturesFromTestJob.Custom || FeaturesFromTestJob.MRL) Category = "5";
+                    else if (FeaturesFromJob._jobExtension.DoorOperatorID == 2 || FeaturesFromTestJob.Overlay) Category = "4";
+                    else if (FeaturesFromJob._GenericFeatures.Monitoring.Contains("MView") || FeaturesFromJob._GenericFeatures.Monitoring.Contains("IMonitor") || FeaturesFromTestJob.Local) Category = "3";
+                    else if (FeaturesFromJob._HoistWayData.AnyRear || FeaturesFromJob._jobExtension.JobTypeMain == "Duplex" || (FeaturesFromJob._jobExtension.DoorOperatorID == 7 || FeaturesFromJob._jobExtension.DoorOperatorID == 8)
+                        || FeaturesFromJob._HydroSpecific.MotorsNum >= 2 || FeaturesFromJob._jobExtension.SHC || FeaturesFromTestJob.EMCO || FeaturesFromTestJob.R6) Category = "2";
+                    else Category = "1";
+
+                }
+                else if (JobType == "M4000")
+                {
+                    if (FeaturesFromJob.CityID == 11) Category = "6";
+                    else if (FeaturesFromTestJob.Custom) Category = "5";
+                    else if (FeaturesFromJob._jobExtension.DoorOperatorID == 2 || FeaturesFromTestJob.Overlay) Category = "4";
+                    else if (FeaturesFromJob._GenericFeatures.Monitoring.Contains("MView") || FeaturesFromJob._GenericFeatures.Monitoring.Contains("IMonitor") || FeaturesFromTestJob.Local || FeaturesFromTestJob.ShortFloor) Category = "3";
+                    else if (FeaturesFromJob._HoistWayData.AnyRear || FeaturesFromJob._jobExtension.JobTypeMain == "Duplex" || (FeaturesFromJob._jobExtension.DoorOperatorID == 7 || FeaturesFromJob._jobExtension.DoorOperatorID == 8)
+                        || FeaturesFromJob._HydroSpecific.MotorsNum >= 2) Category = "2";
+                    else Category = "1";
+                }else Category = "Indefinida";
+
+                //JobProgress
+                double JobProgress = (stepsForJobCompleted.Count() * 100)/ AllSteps.Count();
+
+                //Stage Progress
+                List<Step> stepsPerStage = StepsListInfo.Where(m => m.Stage == Stage && AllSteps.Any(n => n.StepID == m.StepID)).ToList();
+                int stepsPerJobCompleted = AllSteps.Where(m => stepsPerStage.Any(s => s.StepID == m.StepID)).Where(m => m.Complete == true).Count();
+
+                double StagePogress = (stepsPerJobCompleted * 100) / stepsPerStage.Count(); 
+
+                TestStats testStats = new TestStats()
+                {
+                    JobNumer = JobNum,
+                    StationID = testjob.StationID,
+                    TechName = TechName,
+                    Stage = Stage,
+                    Efficiency = Efficiency,
+                    StatusColor = StatusColor,
+                    Status = Status,
+                    Category = Category,
+                    Station = StationName,
+                    TTC = TTC,
+                    JobProgress = JobProgress,
+                    StageProgress = StagePogress,
+                    EfficiencyColor = EfficiencyColor,
+
+                };
+
+                ViewBag.Jobtype = JobType;
+                ViewData["TV"] = "Simontl";
+                viewModel.TestStatsList.Add(testStats);
+            }
+
+            return View(viewModel);
+        }
+
     }
 }

@@ -14,7 +14,10 @@ namespace ProdFloor.Models.ViewModels
         public IEnumerable<Models.Job> ActiveJobs { get; set; }
         public PagingInfo ActiveJobsPagingInfo { get; set; }
         public List<JobType> JobTypesList { get; set; }
-        
+
+        public List<AppUser> users { get; set; }
+
+
         public IEnumerable<Models.Job> MyJobs { get; set; }
         public PagingInfo MyJobsPagingInfo { get; set; }
         public IEnumerable<Models.Job> OnCrossJobs { get; set; }

@@ -13,7 +13,7 @@
     <div class="row">
         <div class="col justify-content-md-center">
             <div class="btn-group">
-                <button asp-action="NextFormTraction" type="submit" value="AddSF" name="buttonAction" class="btn btn-success btn-sm ">
+                <button asp-action="NextFormTraction" type="submit" value="AddSF" name="buttonAction" class="btn btn-success btn-sm " disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)">
                     <i class="fa fa-plus"></i>&nbsp; Special Feature
                 </button>
                 <button id="btnAllSteps" class="btn btn-dark" type="button" title="Special Feature List" data-toggle="collapse" data-target="#collapseCustom" aria-expanded="false" aria-controls="collapseCustom" style="float:left">

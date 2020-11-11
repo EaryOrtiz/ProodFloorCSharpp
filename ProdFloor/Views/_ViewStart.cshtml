@@ -1,3 +1,11 @@
 ﻿@{
-    Layout = "_AdminLayoutWO";
+
+    if (ViewData["TV"] != null && !string.IsNullOrWhiteSpace(ViewData["TV"].ToString()))
+    {
+        Layout = "_LayoutTV";
+    }
+    else
+    {
+        Layout = "_AdminLayoutWO";
+    }
 }

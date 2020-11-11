@@ -1,9 +1,10 @@
 ﻿@model JobViewModel
 @{
     <script src="~/Scripts/CascadingCountryStateCity.js" type="text/javascript"></script>
+
     <script src="~/Scripts/CascadingCityFireCode.js" type="text/javascript"></script>
 }
-<form asp-action="DeletePOs" method="post">
+<form id="myform" asp-action="DeletePOs" method="post">
     <input type="hidden" asp-for="CurrentJob.JobTypeID" />
     <div class="form-row col-sm-12" style="padding-bottom:15px">
         <div class="col-4 form-line border-right justify-content-md-center">
@@ -30,8 +31,12 @@
             <div class="form-group row @(Model.CurrentUserID != Model.CurrentJob.EngID ? "disabled" : "disabled")">
                 <label asp-for="CurrentJob.JobNum" class="col-sm-3 col-form-label"></label>
                 <div>
-                    <input asp-for="CurrentJob.JobNum" class="form-control" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" style="width:auto" />
-                    <span asp-validation-for="CurrentJob.JobNum" class="text-danger"></span>
+                    <div class="form-inline">
+                        <custom-select selected-value="@Model.CurrentJob.JobNumFirstDigits" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)"
+                                       class="form-control-sm form-control" asp-for="CurrentJob.JobNumFirstDigits" select-for="JobNumber"></custom-select>
+                        <input asp-for="CurrentJob.JobNumLastDigits" class="form-control form-control-sm col-6" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" />
+                    </div>
+                    <span asp-validation-for="CurrentJob.JobNumLastDigits" class="text-danger"></span>
                 </div>
             </div>
             <div class="form-group row">

@@ -242,4 +242,23 @@ namespace ProdFloor.Models
         public int JobTypeID { get; set; }
     }
 
+    [NotMapped]
+    public class TestStats
+    {
+        public string JobNumer { get; set; }
+        public double JobProgress { get; set; }
+        public double StageProgress { get; set; }
+        public int StationID { get; set; }
+        public string TechName { get; set; }
+        public string Stage { get; set; }
+        public double Efficiency { get; set; }
+        public string Status { get; set; }
+        public string Category { get; set; }
+        public string Station { get; set; }
+        public DateTime TTC { get; set; }
+
+        public string StatusColor { get; set; }
+        public string EfficiencyColor { get; set; }
+    }
+
 }

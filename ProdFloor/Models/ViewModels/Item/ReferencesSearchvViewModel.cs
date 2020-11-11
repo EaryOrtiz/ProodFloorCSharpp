@@ -16,10 +16,15 @@ namespace ProdFloor.Models.ViewModels.Item
         public List<CustomSoftware> CustomSoftList { get; set; }
         public bool RefernceData { get; set; }
 
-        //Atributos de Job
-        [Range(2015000000, 3030000000, ErrorMessage = "Job number is out of range")]
+
         [Required(ErrorMessage = "Please enter a Job Num")]
-        public int NumJobSearch { get; set; }
+        public string NumJobSearch { get; set; }
+        //Aux fields for New JobNumber
+        public string JobNumFirstDigits { get; set; }
+        public int JobNumLastDigits { get; set; }
+
+
+
         public string status { get; set; }
 
         public int JobID { get; set; }

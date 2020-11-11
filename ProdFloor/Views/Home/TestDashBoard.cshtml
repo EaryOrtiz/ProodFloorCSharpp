@@ -1,0 +1,34 @@
+﻿@model ProdFloor.Models.ViewModels.Home.EngineerChartsViewModel
+@{
+    ViewBag.Title = "ProdFloor";
+    ViewBag.Brand = "ProdFloor";
+    Layout = "_AdminLayoutWO";
+}
+<script src="~/lib/Chart.js/dist/Chart.js"></script>
+<script src="~/Scripts/RefreshPages.js"></script>
+<div>
+    <!--Genral-->
+    <div id="General" class="card" style="margin-bottom:50px">
+        <div class="card-header bg-dark text-center">
+            <div class="btn-group" style="float:left">
+                <button type="button" value="Back" style="border-color:transparent" class="btn btn-dark btn-sm" onclick="window.location.reload()">
+                    <i class="fas fa-sync"></i>
+                </button>
+            </div>
+            <div class="btn-group">
+                <!--Header Info-->
+                <button type="button" id="headingJobInfo" class="btn btn-dark" style="border-color:transparent" data-toggle="collapse" data-target="#collapseJobInfo" aria-expanded="true" aria-controls="collapseJobInfo">
+                    <h6 class="mb-0 text-left">General Information</h6>
+                </button>
+            </div>
+        </div>
+        <div class="row " style="padding-bottom:15px;">
+            <div class="col-6 border-right">
+                <h4 class="text-center">Jobs</h4>
+                <canvas id="JobTypePieChart"></canvas>
+                @{ChartJSCore.Models.Chart JobTypePieChart = (ChartJSCore.Models.Chart)ViewData["JobTypePieChart"]; }
+                <script>@Html.Raw(JobTypePieChart.CreateChartCode("JobTypePieChart"));</script>
+            </div>
+        </div>
+    </div>
+</div>

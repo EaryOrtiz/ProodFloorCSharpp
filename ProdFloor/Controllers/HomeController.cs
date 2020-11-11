@@ -10,6 +10,9 @@ using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 using ProdFloor.Models.ViewModels.Home;
 using System.Collections.Generic;
+using ChartJSCore.Models;
+using System;
+using ChartJSCore.Helpers;
 
 namespace ProdFloor.Controllers
 {
@@ -316,16 +319,16 @@ namespace ProdFloor.Controllers
             return NotFound();
         }
 
-        public IActionResult SuperUserDashBoard(string Clean, int jobNumber, string jobnumb = "0", int MyJobsPage = 1, int PendingToCrossJobPage = 1, int OnCrossJobPage = 1)
+        public IActionResult SuperUserDashBoard(string Clean, string jobNumber, string jobnumb = "", int MyJobsPage = 1, int PendingToCrossJobPage = 1, int OnCrossJobPage = 1)
         {
-            if (jobnumb != "0") jobNumber = int.Parse(jobnumb);
-            if (jobNumber != 0) jobnumb = jobNumber.ToString();
+            if (!string.IsNullOrEmpty(jobnumb)) jobNumber = jobnumb;
+            if (!string.IsNullOrEmpty(jobNumber)) jobnumb = jobNumber;
 
             List<JobType> JobTyPeList = itemRepo.JobTypes.ToList();
             List<PO> POsList = repository.POs.ToList();
             List<JobAdditional> MyJobAdditionalList = repository.JobAdditionals.ToList();
             List<Job> MyjobsList = new List<Job>();
-            List<Job> jobList = repository.Jobs.Where(m => m.JobNum == jobNumber).ToList();
+            List<Job> jobList = repository.Jobs.Where(m => m.JobNum.Contains(jobNumber)).ToList();
             List<Job> OnCrossJobsList = repository.Jobs
                        .Where(j => j.Status == "On Cross Approval").OrderByDescending(m => m._JobAdditional.Priority).ThenBy(n => n.LatestFinishDate).ToList();
             
@@ -339,9 +342,11 @@ namespace ProdFloor.Controllers
                     .OrderByDescending(m => m._JobAdditional.Priority).ThenBy(n => n.LatestFinishDate).ToList();
             }
 
-            if (Clean == "true" || jobnumb == "0") MyjobsList = repository.Jobs
-                    .OrderByDescending(m => m._JobAdditional.Priority).ThenBy(n => n.LatestFinishDate).ToList();
-
+            if (Clean == "true" || string.IsNullOrEmpty(jobnumb))
+            {
+                MyjobsList = repository.Jobs.OrderByDescending(m => m._JobAdditional.Priority).ThenBy(n => n.LatestFinishDate).ToList();
+                jobnumb = "";
+            }
 
             DashboardIndexViewModel dashboard = new DashboardIndexViewModel()
             {
@@ -375,9 +380,9 @@ namespace ProdFloor.Controllers
 
             };
 
-            if (jobNumber == 0) return View(dashboard);
+            if (string.IsNullOrEmpty(jobNumber)) return View(dashboard);
             if (MyjobsList.Count > 0 && MyjobsList[0] != null) return View(dashboard);
-            TempData["message"] = $"Does not exist any job with the JobNum #{jobNumber}, please try again.";
+            TempData["message"] = $"Does not exist any job with the JobNum #{jobNumber} or with the status 'On Cross Approval' or 'Cross Approval Pending', please try again.";
             TempData["alert"] = $"alert-danger";
             return View(dashboard);
         }
@@ -795,6 +800,496 @@ namespace ProdFloor.Controllers
             TempData["message"] = $"There was an error with your request";
             return RedirectToAction(nameof(EngineerAdminDashBoard));
 
+        }
+
+        public IActionResult JobChartsDashBoard(string ChartName)
+        {
+            #region JobTypePieChartByJobType
+
+            int M2000Count = repository.Jobs.Where(j => j.JobTypeID == 2 && j.EngID > 0 && j.EngID < 100
+                                                   && (j.Status == "Working on it" || j.Status == "Cross Approval Pending"
+                                                   || j.Status == "On Cross Approval" || j.Status == "Cross Approval Complete")).Count();
+
+            int ElementHydroListCount = repository.Jobs.Where(j => j.JobTypeID == 1 && j.EngID > 0 && j.EngID < 100
+                                                   && (j.Status == "Working on it" || j.Status == "Cross Approval Pending"
+                                                   || j.Status == "On Cross Approval" || j.Status == "Cross Approval Complete")).Count();
+
+            int ElementTractionCount = repository.Jobs.Where(j => j.JobTypeID == 5 && j.EngID > 0 && j.EngID < 100
+                                                   && (j.Status == "Working on it" || j.Status == "Cross Approval Pending"
+                                                   || j.Status == "On Cross Approval" || j.Status == "Cross Approval Complete")).Count();
+
+
+            List<double?> DataPieChart = new List<double?> { M2000Count, ElementHydroListCount, ElementTractionCount };
+            List<string> LabelsPiechart = new List<string> { "M2000", "Element Hydro", "Element Traction" };
+
+            var JobTypePieChart = new Chart { Type = Enums.ChartType.Pie };
+
+            var data = new Data { Labels = LabelsPiechart };
+
+            var dataset = new PieDataset
+            {
+                Label = "My dataset",
+                BackgroundColor = new List<ChartColor>
+                {
+                    ChartColor.FromHexString("#FF6384"),
+                    ChartColor.FromHexString("#36A2EB"),
+                    ChartColor.FromHexString("#FFCE56")
+                },
+                HoverBackgroundColor = new List<ChartColor>
+                {
+                    ChartColor.FromHexString("#FF6384"),
+                    ChartColor.FromHexString("#36A2EB"),
+                    ChartColor.FromHexString("#FFCE56")
+                },
+                Data = DataPieChart
+            };
+
+            data.Datasets = new List<Dataset> { dataset };
+
+            JobTypePieChart.Data = data;
+            ViewData["JobTypePieChart"] = JobTypePieChart;
+
+
+            #endregion
+
+            #region PriorityPieChartByJobType
+
+            List<Job> AllJobs = repository.Jobs.Where(j => (j.JobTypeID == 2 || j.JobTypeID == 1 || j.JobTypeID == 5) && j.EngID > 0 && j.EngID < 100
+                                                   && (j.Status == "Working on it" || j.Status == "Cross Approval Pending"
+                                                   || j.Status == "On Cross Approval" || j.Status == "Cross Approval Complete")).ToList();
+
+            List<JobAdditional> MyJobAdditionalList = repository.JobAdditionals.Where(m => AllJobs.Any(n => n.JobID == m.JobID)).ToList();
+
+            int NormalPriority = MyJobAdditionalList.Where(m => m.Priority == 0).Count();
+            int HighPriority = MyJobAdditionalList.Where(m => m.Priority == 1).Count();
+            int ShortLeadPriority = MyJobAdditionalList.Where(m => m.Priority == 2).Count();
+
+
+            List<double?> DataPieChartPriority = new List<double?> { NormalPriority, HighPriority, ShortLeadPriority };
+            List<string> PriorityLabelsPiechart = new List<string> { "Normal", "High", "Short Lead" };
+
+            var PieChartPriority = new Chart { Type = Enums.ChartType.Pie };
+
+            var dataPriority = new Data { Labels = PriorityLabelsPiechart };
+
+            var datasetPriority = new PieDataset
+            {
+                Label = "My dataset",
+                BackgroundColor = new List<ChartColor>
+                {
+                    ChartColor.FromHexString("#6ADE4E"),
+                    ChartColor.FromHexString("#FCF927"),
+                    ChartColor.FromHexString("#F54242")
+                },
+                HoverBackgroundColor = new List<ChartColor>
+                {
+                    ChartColor.FromHexString("#6ADE4E"),
+                    ChartColor.FromHexString("#FCF927"),
+                    ChartColor.FromHexString("#F54242")
+                },
+                Data = DataPieChartPriority
+            };
+
+            dataPriority.Datasets = new List<Dataset> { datasetPriority };
+
+            PieChartPriority.Data = dataPriority;
+            ViewData["PieChartPriority"] = PieChartPriority;
+            #endregion
+
+            #region JobTypePieChartM200ByStatus
+
+            int WorkinOnItCountM2000 = repository.Jobs.Where(j => j.JobTypeID == 2 && j.EngID > 0 && j.EngID < 100 && j.Status == "Working on it").Count();
+            int CrossPendingListCountM2000 = repository.Jobs.Where(j => j.JobTypeID == 2 && j.EngID > 0 && j.EngID < 100 && j.Status == "Cross Approval Pending").Count();
+            int OnCrossCountM2000 = repository.Jobs.Where(j => j.JobTypeID == 2 && j.EngID > 0 && j.EngID < 100 && j.Status == "On Cross Approval").Count();
+            int CrossCompleteCountM2000 = repository.Jobs.Where(j => j.JobTypeID == 2 && j.EngID > 0 && j.EngID < 100 && j.Status == "Cross Approval Complete").Count();
+
+            List<double?> DataPieChartM2000 = new List<double?> { WorkinOnItCountM2000, CrossPendingListCountM2000, OnCrossCountM2000, CrossCompleteCountM2000 };
+            List<string> LabelsPiechartM2000 = new List<string> { "Working on it", "Cross Approval Pending", "On Cross Approval" , "Cross Approval Complete" };
+
+            var JobTypePieChartM2000 = new Chart { Type = Enums.ChartType.Pie };
+
+            var dataM2000 = new Data { Labels = LabelsPiechartM2000 };
+
+            var datasetM2000 = new PieDataset
+            {
+                Label = "My dataset",
+                BackgroundColor = new List<ChartColor>
+                {
+                    ChartColor.FromHexString("#FF6384"),
+                    ChartColor.FromHexString("#36A2EB"),
+                    ChartColor.FromHexString("#FFCE56"),
+                    ChartColor.FromHexString("#7cf233")
+                },
+                HoverBackgroundColor = new List<ChartColor>
+                {
+                    ChartColor.FromHexString("#FF6384"),
+                    ChartColor.FromHexString("#36A2EB"),
+                    ChartColor.FromHexString("#FFCE56"),
+                    ChartColor.FromHexString("#7cf233")
+                },
+                Data = DataPieChartM2000
+            };
+
+            dataM2000.Datasets = new List<Dataset> { datasetM2000 };
+
+            JobTypePieChartM2000.Data = dataM2000;
+            ViewData["JobTypePieChartM2000"] = JobTypePieChartM2000;
+
+
+            #endregion
+
+            #region PriorityPieChartByM2000
+
+            List<Job> JobsM2000 = repository.Jobs.Where(j => j.JobTypeID == 2 && j.EngID > 0 && j.EngID < 100
+                                                   && (j.Status == "Working on it" || j.Status == "Cross Approval Pending"
+                                                   || j.Status == "On Cross Approval" || j.Status == "Cross Approval Complete")).ToList();
+
+            List<JobAdditional> MyJobAdditionalListM2000 = repository.JobAdditionals.Where(m => JobsM2000.Any(n => n.JobID == m.JobID)).ToList();
+
+            int NormalPriorityM2000 = MyJobAdditionalListM2000.Where(m => m.Priority == 0).Count();
+            int HighPriorityM2000 = MyJobAdditionalListM2000.Where(m => m.Priority == 1).Count();
+            int ShortLeadPriorityM2000 = MyJobAdditionalListM2000.Where(m => m.Priority == 2).Count();
+
+
+            List<double?> DataPieChartPriorityM2000 = new List<double?> { NormalPriorityM2000, HighPriorityM2000, ShortLeadPriorityM2000 };
+            List<string> PriorityLabelsPiechartM2000 = new List<string> { "Normal", "High", "Short Lead" };
+
+            var PieChartPriorityM2000 = new Chart { Type = Enums.ChartType.Pie };
+
+            var dataPriorityM2000 = new Data { Labels = PriorityLabelsPiechartM2000 };
+
+            var datasetPriorityM2000 = new PieDataset
+            {
+                Label = "My dataset",
+                BackgroundColor = new List<ChartColor>
+                {
+                    ChartColor.FromHexString("#6ADE4E"),
+                    ChartColor.FromHexString("#FCF927"),
+                    ChartColor.FromHexString("#F54242")
+                },
+                HoverBackgroundColor = new List<ChartColor>
+                {
+                    ChartColor.FromHexString("#6ADE4E"),
+                    ChartColor.FromHexString("#FCF927"),
+                    ChartColor.FromHexString("#F54242")
+                },
+                Data = DataPieChartPriorityM2000
+            };
+
+            dataPriorityM2000.Datasets = new List<Dataset> { datasetPriorityM2000 };
+
+            PieChartPriorityM2000.Data = dataPriorityM2000;
+            ViewData["PieChartPriorityM2000"] = PieChartPriorityM2000;
+            #endregion
+
+            #region JobTypePieChartHydroByStatus
+
+            int WorkinOnItCountHydro = repository.Jobs.Where(j => j.JobTypeID == 1 && j.EngID > 0 && j.EngID < 100 && j.Status == "Working on it").Count();
+            int CrossCompleteCountHydro = repository.Jobs.Where(j => j.JobTypeID == 1 && j.EngID > 0 && j.EngID < 100 && j.Status == "Cross Approval Complete").Count();
+
+            List<double?> DataPieChartHydro = new List<double?> { WorkinOnItCountHydro,  CrossCompleteCountHydro };
+            List<string> LabelsPiechartHydro = new List<string> { "Working on it", "Cross Approval Complete" };
+
+            var JobTypePieChartHydro = new Chart { Type = Enums.ChartType.Pie };
+
+            var dataHydro = new Data { Labels = LabelsPiechartHydro };
+
+            var datasetHydro = new PieDataset
+            {
+                Label = "My dataset",
+                BackgroundColor = new List<ChartColor>
+                {
+                    ChartColor.FromHexString("#FF6384"),
+                    ChartColor.FromHexString("#36A2EB"),
+                },
+                HoverBackgroundColor = new List<ChartColor>
+                {
+                    ChartColor.FromHexString("#FF6384"),
+                    ChartColor.FromHexString("#36A2EB"),
+                },
+                Data = DataPieChartHydro
+            };
+
+            dataHydro.Datasets = new List<Dataset> { datasetHydro };
+
+            JobTypePieChartHydro.Data = dataHydro;
+            ViewData["JobTypePieChartHydro"] = JobTypePieChartHydro;
+
+
+            #endregion
+
+            #region PriorityPieChartByHydro
+
+            List<Job> JobsHydro = repository.Jobs.Where(j => j.JobTypeID == 1 && j.EngID > 0 && j.EngID < 100
+                                                   && (j.Status == "Working on it" || j.Status == "Cross Approval Pending"
+                                                   || j.Status == "On Cross Approval" || j.Status == "Cross Approval Complete")).ToList();
+
+            List<JobAdditional> MyJobAdditionalListHydro = repository.JobAdditionals.Where(m => JobsHydro.Any(n => n.JobID == m.JobID)).ToList();
+
+            int NormalPriorityHydro = MyJobAdditionalListHydro.Where(m => m.Priority == 0).Count();
+            int HighPriorityHydro = MyJobAdditionalListHydro.Where(m => m.Priority == 1).Count();
+            int ShortLeadPriorityHydro = MyJobAdditionalListHydro.Where(m => m.Priority == 2).Count();
+
+
+            List<double?> DataPieChartPriorityHydro = new List<double?> { NormalPriorityHydro, HighPriorityHydro, ShortLeadPriorityHydro };
+            List<string> PriorityLabelsPiechartHydro = new List<string> { "Normal", "High", "Short Lead" };
+
+            var PieChartPriorityHydro = new Chart { Type = Enums.ChartType.Pie };
+
+            var dataPriorityHydro = new Data { Labels = PriorityLabelsPiechartHydro };
+
+            var datasetPriorityHydro = new PieDataset
+            {
+                Label = "My dataset",
+                BackgroundColor = new List<ChartColor>
+                {
+                    ChartColor.FromHexString("#6ADE4E"),
+                    ChartColor.FromHexString("#FCF927"),
+                    ChartColor.FromHexString("#F54242")
+                },
+                HoverBackgroundColor = new List<ChartColor>
+                {
+                    ChartColor.FromHexString("#6ADE4E"),
+                    ChartColor.FromHexString("#FCF927"),
+                    ChartColor.FromHexString("#F54242")
+                },
+                Data = DataPieChartPriorityHydro
+            };
+
+            dataPriorityHydro.Datasets = new List<Dataset> { datasetPriorityHydro };
+
+            PieChartPriorityHydro.Data = dataPriorityHydro;
+            ViewData["PieChartPriorityHydro"] = PieChartPriorityHydro;
+            #endregion
+
+            #region JobTypePieChartTractionByStatus
+
+            int WorkinOnItCountTraction = repository.Jobs.Where(j => j.JobTypeID == 5 && j.EngID > 0 && j.EngID < 100 && j.Status == "Working on it").Count();
+            int CrossCompleteCountTraction = repository.Jobs.Where(j => j.JobTypeID == 5 && j.EngID > 0 && j.EngID < 100 && j.Status == "Cross Approval Complete").Count();
+
+            List<double?> DataPieChartTraction = new List<double?> { WorkinOnItCountTraction, CrossCompleteCountTraction };
+            List<string> LabelsPiechartTraction = new List<string> { "Working on it", "Cross Approval Complete" };
+
+            var JobTypePieChartTraction = new Chart { Type = Enums.ChartType.Pie };
+
+            var dataTraction = new Data { Labels = LabelsPiechartTraction };
+
+            var datasetTraction = new PieDataset
+            {
+                Label = "My dataset",
+                BackgroundColor = new List<ChartColor>
+                {
+                    ChartColor.FromHexString("#FF6384"),
+                    ChartColor.FromHexString("#36A2EB"),
+                },
+                HoverBackgroundColor = new List<ChartColor>
+                {
+                    ChartColor.FromHexString("#FF6384"),
+                    ChartColor.FromHexString("#36A2EB"),
+                },
+                Data = DataPieChartTraction
+            };
+
+            dataTraction.Datasets = new List<Dataset> { datasetTraction };
+
+            JobTypePieChartTraction.Data = dataTraction;
+            ViewData["JobTypePieChartTraction"] = JobTypePieChartTraction;
+
+
+            #endregion
+
+            #region PriorityPieChartByTraction
+
+            List<Job> JobsTraction = repository.Jobs.Where(j => j.JobTypeID == 5 && j.EngID > 0 && j.EngID < 100
+                                                   && (j.Status == "Working on it" || j.Status == "Cross Approval Pending"
+                                                   || j.Status == "On Cross Approval" || j.Status == "Cross Approval Complete")).ToList();
+
+            List<JobAdditional> MyJobAdditionalListTraction = repository.JobAdditionals.Where(m => JobsTraction.Any(n => n.JobID == m.JobID)).ToList();
+
+            int NormalPriorityTraction = MyJobAdditionalListTraction.Where(m => m.Priority == 0).Count();
+            int HighPriorityTraction = MyJobAdditionalListTraction.Where(m => m.Priority == 1).Count();
+            int ShortLeadPriorityTraction = MyJobAdditionalListTraction.Where(m => m.Priority == 2).Count();
+
+
+            List<double?> DataPieChartPriorityTraction = new List<double?> { NormalPriorityTraction, HighPriorityTraction, ShortLeadPriorityTraction };
+            List<string> PriorityLabelsPiechartTraction = new List<string> { "Normal", "High", "Short Lead" };
+
+            var PieChartPriorityTraction = new Chart { Type = Enums.ChartType.Pie };
+
+            var dataPriorityTraction = new Data { Labels = PriorityLabelsPiechartTraction };
+
+            var datasetPriorityTraction = new PieDataset
+            {
+                Label = "My dataset",
+                BackgroundColor = new List<ChartColor>
+                {
+                    ChartColor.FromHexString("#6ADE4E"),
+                    ChartColor.FromHexString("#FCF927"),
+                    ChartColor.FromHexString("#F54242")
+                },
+                HoverBackgroundColor = new List<ChartColor>
+                {
+                    ChartColor.FromHexString("#6ADE4E"),
+                    ChartColor.FromHexString("#FCF927"),
+                    ChartColor.FromHexString("#F54242")
+                },
+                Data = DataPieChartPriorityTraction
+            };
+
+            dataPriorityTraction.Datasets = new List<Dataset> { datasetPriorityTraction };
+
+            PieChartPriorityTraction.Data = dataPriorityTraction;
+            ViewData["PieChartPriorityTraction"] = PieChartPriorityTraction;
+            #endregion
+
+            #region OtherInfo
+            EngineerChartsViewModel dashboard = new EngineerChartsViewModel();
+
+
+            #endregion
+
+           
+
+            return View("AdminDashBoard", dashboard);
+        }
+
+        public ActionResult EngineerListDashBoard(string ChartName, string Sort = "default", int WorkingOnItM2000Page = 1, int PendingM2000Page = 1, int OnCrossM2000Page = 1, int CompleteM2000Page = 1,
+                                                                                            int WorkingOnItHydroPage = 1, int CompleteHydroPage = 1, int WorkingOnItTractionPage = 1, int CompleteTractionPage = 1)
+        {
+            int PageSize = 12;
+            AppUser currentUser = GetCurrentUser().Result;
+            bool engineer = GetCurrentUserRole("EngAdmin").Result;
+            if (ChartName != null) Sort = ChartName;
+
+
+            List<JobType> JobTyPeList = itemRepo.JobTypes.ToList();
+             List<JobAdditional> MyJobAdditionalList = repository.JobAdditionals.ToList();
+             List<PO> POsList = repository.POs.ToList();
+
+
+             //M2000
+             List<Job> JobsWorkingOnItM2000 = repository.Jobs.Where(j => j.Status == "Working on it" && j.JobTypeID == 2  && j.EngID > 0 && j.EngID < 100)
+                                                                .OrderByDescending(m => m._JobAdditional.Priority).ThenBy(n => n.LatestFinishDate).ToList();
+
+             List<Job> JobsCrossPendingM2000 = repository.Jobs.Where(j => j.Status == "Cross Approval Pending" && j.JobTypeID == 2 && j.EngID > 0 && j.EngID < 100)
+                                                                .OrderByDescending(m => m._JobAdditional.Priority).ThenBy(n => n.LatestFinishDate).ToList();
+
+            List<Job> JobsOnCrossM2000 = repository.Jobs.Where(j => j.Status == "On Cross Approval" && j.JobTypeID == 2 && j.EngID > 0 && j.EngID < 100)
+                                                                .OrderByDescending(m => m._JobAdditional.Priority).ThenBy(n => n.LatestFinishDate).ToList();
+
+            List<Job> JobsCrossCompleteM2000 = repository.Jobs.Where(j => j.Status == "Cross Approval Complete" && j.JobTypeID == 2 && j.EngID > 0 && j.EngID < 100)
+                                                                .OrderByDescending(m => m._JobAdditional.Priority).ThenBy(n => n.LatestFinishDate).ToList();
+
+
+            //Hydro
+            List<Job> JobsWorkingOnItHydro = repository.Jobs.Where(j => j.Status == "Working on it" &&  j.JobTypeID == 1  && j.EngID > 0 && j.EngID < 100)
+                                                                .OrderByDescending(m => m._JobAdditional.Priority).ThenBy(n => n.LatestFinishDate).ToList();
+
+            List<Job> JobsCrossCompleteHydro = repository.Jobs.Where(j => j.Status == "Cross Approval Complete" && j.JobTypeID == 1 && j.EngID > 0 && j.EngID < 100)
+                                                                .OrderByDescending(m => m._JobAdditional.Priority).ThenBy(n => n.LatestFinishDate).ToList();
+
+
+            //Traction
+            List<Job> JobsWorkingOnItTraction = repository.Jobs.Where(j => j.Status == "Working on it" &&  j.JobTypeID == 5 && j.EngID > 0 && j.EngID < 100)
+                                                                .OrderByDescending(m => m._JobAdditional.Priority).ThenBy(n => n.LatestFinishDate).ToList();
+
+            List<Job> JobsCrossCompleteTraction = repository.Jobs.Where(j => j.Status == "Cross Approval Complete" && j.JobTypeID == 5 && j.EngID > 0 && j.EngID < 100)
+                                                                .OrderByDescending(m => m._JobAdditional.Priority).ThenBy(n => n.LatestFinishDate).ToList();
+
+
+
+
+            EngineerChartsViewModel dashboard = new EngineerChartsViewModel()
+                {
+                    JobTypes = JobTyPeList,
+                    POs = POsList,
+                    MyJobAdditionals = MyJobAdditionalList,
+                    ChartName = ChartName,
+
+                    JobsWorkingOnItM2000 = JobsWorkingOnItM2000.Skip((WorkingOnItM2000Page - 1) * PageSize).Take(PageSize),
+                    PagingInfoWorkingOnItM2000 = new PagingInfo
+                    {
+                        CurrentPage = WorkingOnItM2000Page,
+                        ItemsPerPage = PageSize,
+                        TotalItems = JobsWorkingOnItM2000.Count(),
+                        sort = Sort != "default" ? Sort : "deafult"
+
+                    },
+                    JobsCrossPendingM2000 = JobsCrossPendingM2000.Skip((PendingM2000Page - 1) * PageSize).Take(PageSize),
+                    PagingInfoCrossPendingM2000 = new PagingInfo
+                    {
+                        CurrentPage = PendingM2000Page,
+                        ItemsPerPage = PageSize,
+                        TotalItems = JobsCrossPendingM2000.Count(),
+                        sort = Sort != "default" ? Sort : "deafult"
+
+                    },
+
+                    JobsOnCrossM2000 = JobsOnCrossM2000.Skip((OnCrossM2000Page - 1) * PageSize).Take(PageSize),
+                    PagingInfoOnCrossM2000 = new PagingInfo
+                    {
+                        CurrentPage = OnCrossM2000Page,
+                        ItemsPerPage = PageSize,
+                        TotalItems = JobsOnCrossM2000.Count(),
+                        sort = Sort != "default" ? Sort : "deafult"
+
+                    },
+
+                    JobsCrossCompleteM2000 = JobsCrossCompleteM2000.Skip((CompleteM2000Page - 1) * PageSize).Take(PageSize),
+                    PagingInfoCrossCompleteM2000 = new PagingInfo
+                    {
+                        CurrentPage = CompleteM2000Page,
+                        ItemsPerPage = PageSize,
+                        TotalItems = JobsCrossCompleteM2000.Count(),
+                        sort = Sort != "default" ? Sort : "deafult"
+
+                    },
+
+                    JobsWorkingOnItHydro = JobsWorkingOnItHydro.Skip((WorkingOnItHydroPage - 1) * PageSize).Take(PageSize),
+                    PagingInfoWorkingOnItHydro = new PagingInfo
+                    {
+                        CurrentPage = WorkingOnItHydroPage,
+                        ItemsPerPage = PageSize,
+                        TotalItems = JobsWorkingOnItHydro.Count(),
+                        sort = Sort != "default" ? Sort : "deafult"
+
+                    },
+
+                    JobsCrossCompleteHydro = JobsCrossCompleteHydro.Skip((CompleteHydroPage - 1) * PageSize).Take(PageSize),
+                    PagingInfoCrossCompleteHydro = new PagingInfo
+                    {
+                        CurrentPage = CompleteHydroPage,
+                        ItemsPerPage = PageSize,
+                        TotalItems = JobsCrossCompleteHydro.Count(),
+                        sort = Sort != "default" ? Sort : "deafult"
+
+                    },
+
+
+                    JobsWorkingOnItTraction = JobsWorkingOnItTraction.Skip((WorkingOnItTractionPage - 1) * PageSize).Take(PageSize),
+                    PagingInfoWorkingOnItTraction = new PagingInfo
+                    {
+                        CurrentPage = WorkingOnItTractionPage,
+                        ItemsPerPage = PageSize,
+                        TotalItems = JobsWorkingOnItTraction.Count(),
+                        sort = Sort != "default" ? Sort : "deafult"
+
+                    },
+
+                    JobsCrossCompleteTraction = JobsCrossCompleteTraction.Skip((CompleteTractionPage - 1) * PageSize).Take(PageSize),
+                    PagingInfoCrossCompleteTraction = new PagingInfo
+                    {
+                        CurrentPage = CompleteTractionPage,
+                        ItemsPerPage = PageSize,
+                        TotalItems = JobsCrossCompleteTraction.Count(),
+                        sort = Sort != "default" ? Sort : "deafult"
+
+                    },
+
+
+                };
+
+                return View("EngineerListsChart", dashboard);
         }
 
         public string JobTypeName(int ID)

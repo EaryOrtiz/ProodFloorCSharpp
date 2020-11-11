@@ -31,8 +31,15 @@ namespace ProdFloor.Models.ViewModels.Job
         //Atributos de Job
         [Display(Name ="Job Name")]
         public string NameJobSearch { get; set; }
+
         [Display(Name = "Job Number")]
-        public int NumJobSearch { get; set; }
+        public string NumJobSearch { get; set; }
+
+        //Aux fields for New JobNumber
+        public string JobNumFirstDigits { get; set; }
+        public int JobNumLastDigits { get; set; }
+
+
         [Display(Name = "PO Number")]
         public int POJobSearch { get; set; }
         [Display(Name = "Cust Number")]

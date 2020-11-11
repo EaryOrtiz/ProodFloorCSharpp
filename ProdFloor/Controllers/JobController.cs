@@ -90,13 +90,8 @@ namespace ProdFloor.Controllers
             #endregion
 
             #region JobModelSearch
-            if (searchViewModel.NumJobSearch >= 2015000000 && searchViewModel.NumJobSearch <= 2021000000) jobSearchRepo = jobSearchRepo.Where(s => s.JobNum == searchViewModel.NumJobSearch);
-            else if (searchViewModel.NumJobSearch != 0)
-            {
-                TempData["alert"] = $"alert-danger";
-                TempData["message"] = $"Job number is out of range, ";
+            if (!string.IsNullOrEmpty(searchViewModel.NumJobSearch)) jobSearchRepo = jobSearchRepo.Where(s => s.JobNum.Contains(searchViewModel.NumJobSearch));
 
-            }
             if (searchViewModel.EngID > 0) jobSearchRepo = jobSearchRepo.Where(s => s.EngID == searchViewModel.EngID);
             if (searchViewModel.CrossAppEngID > 0) jobSearchRepo = jobSearchRepo.Where(s => s.CrossAppEngID == searchViewModel.CrossAppEngID);
             if (searchViewModel.CityID > 0) jobSearchRepo = jobSearchRepo.Where(s => s.CityID == searchViewModel.CityID);
@@ -321,6 +316,7 @@ namespace ProdFloor.Controllers
             searchViewModel.JobTotalCount = repository.Jobs.Count();
             searchViewModel.JobsSearchList = jobSearchRepo.OrderByDescending(p => p.JobNum).Skip((page - 1) * 5).Take(5).ToList();
 
+
             if (TempData["message"] != null)
             {
                 TempData["alert"] = $"alert-danger";
@@ -376,9 +372,8 @@ namespace ProdFloor.Controllers
             */
             //Opciones de busqueda para el modelo principal de job
             #endregion
-
             #region JobModelSearch
-            if (searchViewModel.NumJobSearch >= 2015000000 && searchViewModel.NumJobSearch <= 2021000000) jobSearchRepo = jobSearchRepo.Where(s => s.JobNum == searchViewModel.NumJobSearch);
+            if (!string.IsNullOrEmpty(searchViewModel.NumJobSearch)) jobSearchRepo = jobSearchRepo = jobSearchRepo.Where(s => s.JobNum.Contains(searchViewModel.NumJobSearch));
             if (searchViewModel.EngID > 0) jobSearchRepo = jobSearchRepo.Where(s => s.EngID == searchViewModel.EngID);
             if (searchViewModel.CrossAppEngID > 0) jobSearchRepo = jobSearchRepo.Where(s => s.CrossAppEngID == searchViewModel.CrossAppEngID);
             if (searchViewModel.CityID > 0) jobSearchRepo = jobSearchRepo.Where(s => s.CityID == searchViewModel.CityID);
@@ -511,6 +506,7 @@ namespace ProdFloor.Controllers
             searchViewModel.ElementList = repository.Elements.ToList();
             searchViewModel.Landinglist = itemsrepository.LandingSystems.ToList();
             searchViewModel.SpecialFeaturesTable = getSpecialFeaturesEX();
+
             searchViewModel.JobsSearchList = jobSearchRepo.OrderBy(p => p.JobID).Skip((page - 1) * 5).Take(5).ToList();
             searchViewModel.PagingInfo = new PagingInfo
             {
@@ -660,6 +656,7 @@ namespace ProdFloor.Controllers
                 if (PoAux.Count <= 0 || PoAux[0] == null)
                 {
                     //y esta esta tambien y poner denuevo el {currenuser.engId} en Los TempDatas cuando terminen los test 
+                    newJob.CurrentJob.JobNum = getJobNumb(newJob.CurrentJob.JobNumFirstDigits, newJob.CurrentJob.JobNumLastDigits);
                     newJob.CurrentJob.EngID = currentUser.EngID;
                     newJob.CurrentJob.CrossAppEngID = 0;
                     newJob.CurrentJob.Status = "Incomplete";
@@ -786,6 +783,9 @@ namespace ProdFloor.Controllers
                     hydroViewModel.JobTypeName = JobTypeName(job.JobTypeID);
                     hydroViewModel.SpecialFeaturesTable = getSpecialFeaturesEX();
 
+                    hydroViewModel.CurrentJob.JobNumFirstDigits = getJobNumbDivided(job.JobNum).firstDigits;
+                    hydroViewModel.CurrentJob.JobNumLastDigits = getJobNumbDivided(job.JobNum).lastDigits;
+
                     return View("EditHydro", hydroViewModel);
                 }
                 else if (JobTypeName(job.JobTypeID) == "ElmTract")
@@ -807,6 +807,9 @@ namespace ProdFloor.Controllers
                     jobElementTractionView.CurrentTab = "Main";
                     jobElementTractionView.JobTypeName = JobTypeName(job.JobTypeID);
                     jobElementTractionView.SpecialFeaturesTable = getSpecialFeaturesEX();
+
+                    jobElementTractionView.CurrentJob.JobNumFirstDigits = getJobNumbDivided(job.JobNum).firstDigits;
+                    jobElementTractionView.CurrentJob.JobNumLastDigits = getJobNumbDivided(job.JobNum).lastDigits;
 
                     return View("EditTraction", jobElementTractionView);
                 }
@@ -832,6 +835,10 @@ namespace ProdFloor.Controllers
                     viewModel.CurrentTab = "Main";
                     viewModel.JobTypeName = JobTypeName(viewModel.CurrentJob.JobTypeID);
                     viewModel.SpecialFeaturesTable = getSpecialFeaturesEX();
+
+                    viewModel.CurrentJob.JobNumFirstDigits = getJobNumbDivided(job.JobNum).firstDigits;
+                    viewModel.CurrentJob.JobNumLastDigits = getJobNumbDivided(job.JobNum).lastDigits;
+
                     return View(viewModel);
                 }
 
@@ -861,17 +868,24 @@ namespace ProdFloor.Controllers
                 viewModel.CurrentIndicator = repository.Indicators.FirstOrDefault(j => j.JobID == ID);
                 viewModel.CurrentHoistWayData = repository.HoistWayDatas.FirstOrDefault(j => j.JobID == ID);
 
+                
                 viewModel.SpecialFeatureslist = SfList;
-                int jobNumAux = viewModel.CurrentJob.JobNum;
+                string jobNumAux = viewModel.CurrentJob.JobNum;
+
+                viewModel.CurrentJob.JobNumFirstDigits = getJobNumbDivided(viewModel.CurrentJob.JobNum).firstDigits;
+                viewModel.CurrentJob.JobNumLastDigits = getJobNumbDivided(viewModel.CurrentJob.JobNum).lastDigits;
                 viewModel.SpecialFeaturesTable = getSpecialFeaturesEX();
 
-                viewModel.CurrentJob.JobNum = 0;
+                viewModel.CurrentJob.JobNum = "";
+
                 viewModel.CurrentJob.Status = "Copied";
                 viewModel.POList = new List<PO> { new PO { JobID = viewModel.CurrentJob.JobID } };
                 viewModel.CurrentUserID = currentUser.EngID;
                 viewModel.CurrentJob.CrossAppEngID = 0;
                 viewModel.CurrentJob.EngID = currentUser.EngID;
                 viewModel.JobTypeName = JobTypeName(jobToCopy.JobTypeID);
+
+                
 
                 TempData["message"] = $"You have copied the job #{jobNumAux} succesfully, please change the name, Job number & PO";
                 return View("Edit", viewModel);
@@ -896,9 +910,15 @@ namespace ProdFloor.Controllers
                 viewModel.Element = repository.Elements.FirstOrDefault(j => j.JobID == ID);
                 viewModel.ElementHydro = repository.ElementHydros.FirstOrDefault(j => j.JobID == ID);
                 viewModel.SpecialFeatureslist = SfList;
-                int jobNumAux = viewModel.CurrentJob.JobNum;
+
+                string jobNumAux = viewModel.CurrentJob.JobNum;
+
+                viewModel.CurrentJob.JobNumFirstDigits = getJobNumbDivided(viewModel.CurrentJob.JobNum).firstDigits;
+                viewModel.CurrentJob.JobNumLastDigits = getJobNumbDivided(viewModel.CurrentJob.JobNum).lastDigits;
                 viewModel.SpecialFeaturesTable = getSpecialFeaturesEX();
-                viewModel.CurrentJob.JobNum = 0;
+
+                viewModel.CurrentJob.JobNum = "";
+
                 viewModel.CurrentUserID = currentUser.EngID;
                 viewModel.CurrentJob.CrossAppEngID = 0;
                 viewModel.CurrentJob.CrossAppEngID = 0;
@@ -930,8 +950,13 @@ namespace ProdFloor.Controllers
                 viewModel.Element = repository.Elements.FirstOrDefault(j => j.JobID == ID);
                 viewModel.ElementTraction = repository.ElementTractions.FirstOrDefault(j => j.JobID == ID);
                 viewModel.SpecialFeatureslist = SfList;
-                int jobNumAux = viewModel.CurrentJob.JobNum;
-                viewModel.CurrentJob.JobNum = 0;
+                string jobNumAux = viewModel.CurrentJob.JobNum;
+
+                viewModel.CurrentJob.JobNumFirstDigits = getJobNumbDivided(viewModel.CurrentJob.JobNum).firstDigits;
+                viewModel.CurrentJob.JobNumLastDigits = getJobNumbDivided(viewModel.CurrentJob.JobNum).lastDigits;
+                viewModel.SpecialFeaturesTable = getSpecialFeaturesEX();
+
+                viewModel.CurrentJob.JobNum = "";
                 viewModel.JobTypeName = JobTypeName(jobToCopy.JobTypeID);
                 viewModel.SpecialFeaturesTable = getSpecialFeaturesEX();
                 viewModel.CurrentUserID = currentUser.EngID;
@@ -939,6 +964,7 @@ namespace ProdFloor.Controllers
                 viewModel.CurrentJob.Status = "Copied";
                 viewModel.POList = new List<PO> { new PO { JobID = viewModel.CurrentJob.JobID } };
                 viewModel.CurrentJob.EngID = currentUser.EngID;
+
 
                 TempData["message"] = $"You have copied the job #{jobNumAux} succesfully, please change the name, Job number & PO";
                 return View("EditTraction", viewModel);
@@ -957,9 +983,18 @@ namespace ProdFloor.Controllers
             List<PO> POsList = repository.POs.Where(j => j.JobID == multiEditViewModel.CurrentJob.JobID).ToList();
             multiEditViewModel.SpecialFeaturesTable = getSpecialFeaturesEX();
             multiEditViewModel.CurrentUserID = currentUser.EngID;
+/////se suone que esto es el customer
             bool Admin = GetCurrentUserRole("Admin").Result;
             Job job = repository.Jobs.FirstOrDefault(m => m.JobID == multiEditViewModel.CurrentJob.JobID);
             if (currentUser.EngID == job.EngID || Admin || multiEditViewModel.CurrentJob.Status == "Copied")
+//////////////////////////////y de aui el newjobnumb
+            multiEditViewModel.CurrentJob.JobNum = getJobNumb(multiEditViewModel.CurrentJob.JobNumFirstDigits, multiEditViewModel.CurrentJob.JobNumLastDigits);
+
+            string StatusAux = "Working on it";
+            if (multiEditViewModel.CurrentJob.Status == "Copied") StatusAux = "Copied";
+            List<PO> PoAux = new List<PO>();
+            if (ModelState.IsValid)
+/////////////////////aqui termina el nuevo job
             {
                 string StatusAux = "Working on it";
                 if (multiEditViewModel.CurrentJob.Status == "Copied") StatusAux = "Copied";
@@ -1085,6 +1120,7 @@ namespace ProdFloor.Controllers
                         CopyJobViewModel.POList = PoList;
                         CopyJobViewModel.JobTypeName = JobTypeName(CopyJobViewModel.CurrentJob.JobTypeID);
                         CopyJobViewModel.CurrentTab = "Main";
+
                         TempData["message"] = $"{CopyJobViewModel.CurrentJob.JobNum} ID has been saved...{CopyJobViewModel.CurrentJob.JobID}";
                         return RedirectToAction("Edit", new { id = multiEditViewModel.CurrentJob.JobID });
                     }
@@ -1121,9 +1157,16 @@ namespace ProdFloor.Controllers
             List<PO> PoAux = new List<PO>();
             multiEditViewModel.SpecialFeaturesTable = getSpecialFeaturesEX();
             multiEditViewModel.CurrentUserID = currentUser.EngID;
+//HE
             bool Admin = GetCurrentUserRole("Admin").Result;
             Job job = repository.Jobs.FirstOrDefault(m => m.JobID == multiEditViewModel.CurrentJob.JobID);
             if (currentUser.EngID == job.EngID || Admin || multiEditViewModel.CurrentJob.Status == "Copied")
+//
+            multiEditViewModel.CurrentJob.JobNum = getJobNumb(multiEditViewModel.CurrentJob.JobNumFirstDigits, multiEditViewModel.CurrentJob.JobNumLastDigits);
+            string StatusAux = "Cross Approval Complete";
+            if (multiEditViewModel.CurrentJob.Status == "Copied") StatusAux = "Copied";
+            if (ModelState.IsValid)
+// obNumber
             {
                 string StatusAux = "Cross Approval Complete";
                 if (multiEditViewModel.CurrentJob.Status == "Copied") StatusAux = "Copied";
@@ -1260,9 +1303,16 @@ namespace ProdFloor.Controllers
             List<PO> POsList = repository.POs.Where(j => j.JobID == multiEditViewModel.CurrentJob.JobID).ToList();
             List<PO> PoAux = new List<PO>();
             multiEditViewModel.CurrentUserID = currentUser.EngID;
+//< HEA
             bool Admin = GetCurrentUserRole("Admin").Result;
             Job job = repository.Jobs.FirstOrDefault(m => m.JobID == multiEditViewModel.CurrentJob.JobID);
             if (currentUser.EngID == job.EngID || Admin || multiEditViewModel.CurrentJob.Status == "Copied")
+//
+            multiEditViewModel.CurrentJob.JobNum = getJobNumb(multiEditViewModel.CurrentJob.JobNumFirstDigits, multiEditViewModel.CurrentJob.JobNumLastDigits);
+            string StatusAux = "Working on it";
+            if (multiEditViewModel.CurrentJob.Status == "Copied") StatusAux = "Copied";
+            if (ModelState.IsValid)
+//NewJobNumbe
             {
                 string StatusAux = "Cross Approval Complete";
                 if (multiEditViewModel.CurrentJob.Status == "Copied") StatusAux = "Copied";
@@ -1399,6 +1449,7 @@ namespace ProdFloor.Controllers
         {
             AppUser currentUser = GetCurrentUser().Result;
             jobView.SpecialFeaturesTable = getSpecialFeaturesEX();
+            jobView.CurrentJob.JobNum = getJobNumb(jobView.CurrentJob.JobNumFirstDigits, jobView.CurrentJob.JobNumLastDigits);
 
             if (jobView.CurrentJob.Status == null)
             {
@@ -1451,6 +1502,7 @@ namespace ProdFloor.Controllers
         {
             AppUser currentUser = GetCurrentUser().Result;
             jobView.SpecialFeaturesTable = getSpecialFeaturesEX();
+            jobView.CurrentJob.JobNum = getJobNumb(jobView.CurrentJob.JobNumFirstDigits, jobView.CurrentJob.JobNumLastDigits);
             if (jobView.CurrentJob.Status == "Incomplete")
             {
                 jobView.CurrentUserID = currentUser.EngID;
@@ -1488,6 +1540,7 @@ namespace ProdFloor.Controllers
         {
             AppUser currentUser = GetCurrentUser().Result;
             jobView.SpecialFeaturesTable = getSpecialFeaturesEX();
+            jobView.CurrentJob.JobNum = getJobNumb(jobView.CurrentJob.JobNumFirstDigits, jobView.CurrentJob.JobNumLastDigits);
             if (jobView.CurrentJob.Status == "Incomplete")
             {
                 jobView.CurrentUserID = currentUser.EngID;
@@ -1572,6 +1625,11 @@ namespace ProdFloor.Controllers
                 CurrentTab = "SpecialFeatures",
                 CurrentUserID = currentUser.EngID
             };
+
+            EditViewModel.CurrentJob.JobNumFirstDigits = getJobNumbDivided(job.JobNum).firstDigits;
+            EditViewModel.CurrentJob.JobNumLastDigits = getJobNumbDivided(job.JobNum).lastDigits;
+
+
             List<SpecialFeatures> specialFeaturesList = repository.SpecialFeatures.Where(j => j.JobID == job.JobID).ToList();
             if (specialFeaturesList.Count <= 1)
             {
@@ -1637,6 +1695,10 @@ namespace ProdFloor.Controllers
                 CurrentTab = "SpecialFeatures",
                 CurrentUserID = currentUser.EngID
             };
+
+            EditViewModel.CurrentJob.JobNumFirstDigits = getJobNumbDivided(job.JobNum).firstDigits;
+            EditViewModel.CurrentJob.JobNumLastDigits = getJobNumbDivided(job.JobNum).lastDigits;
+
             EditViewModel.SpecialFeaturesTable = getSpecialFeaturesEX();
             List<SpecialFeatures> specialFeaturesList = repository.SpecialFeatures.Where(j => j.JobID == job.JobID).ToList();
             if (specialFeaturesList.Count <= 1)
@@ -1703,6 +1765,10 @@ namespace ProdFloor.Controllers
                 CurrentTab = "SpecialFeatures",
                 CurrentUserID = currentUser.EngID
             };
+
+            EditViewModel.CurrentJob.JobNumFirstDigits = getJobNumbDivided(job.JobNum).firstDigits;
+            EditViewModel.CurrentJob.JobNumLastDigits = getJobNumbDivided(job.JobNum).lastDigits;
+
             EditViewModel.SpecialFeaturesTable = getSpecialFeaturesEX();
             List<SpecialFeatures> specialFeaturesList = repository.SpecialFeatures.Where(j => j.JobID == job.JobID).ToList();
             if (specialFeaturesList.Count <= 1)
@@ -1833,6 +1899,9 @@ namespace ProdFloor.Controllers
                     continueJobViewModel.JobTypeName = JobTypeName(Job.JobTypeID);
                     continueJobViewModel.SpecialFeaturesTable = getSpecialFeaturesEX();
 
+                    continueJobViewModel.CurrentJob.JobNumFirstDigits = getJobNumbDivided(Job.JobNum).firstDigits;
+                    continueJobViewModel.CurrentJob.JobNumLastDigits = getJobNumbDivided(Job.JobNum).lastDigits;
+
                     return View("NextFormHydro", continueJobViewModel);
                 }
                 else if (JobTypeName(Job.JobTypeID) == "ElmTract")
@@ -1855,6 +1924,9 @@ namespace ProdFloor.Controllers
                     else continueJobViewModel.SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures() };
                     continueJobViewModel.JobTypeName = JobTypeName(Job.JobTypeID);
                     continueJobViewModel.SpecialFeaturesTable = getSpecialFeaturesEX();
+
+                    continueJobViewModel.CurrentJob.JobNumFirstDigits = getJobNumbDivided(Job.JobNum).firstDigits;
+                    continueJobViewModel.CurrentJob.JobNumLastDigits = getJobNumbDivided(Job.JobNum).lastDigits;
 
                     return View("NextFormTraction", continueJobViewModel);
                 }
@@ -1881,6 +1953,9 @@ namespace ProdFloor.Controllers
                     else continueJobViewModel.SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures() };
                     continueJobViewModel.JobTypeName = JobTypeName(Job.JobTypeID);
                     continueJobViewModel.SpecialFeaturesTable = getSpecialFeaturesEX();
+
+                    continueJobViewModel.CurrentJob.JobNumFirstDigits = getJobNumbDivided(Job.JobNum).firstDigits;
+                    continueJobViewModel.CurrentJob.JobNumLastDigits = getJobNumbDivided(Job.JobNum).lastDigits;
 
                     return View("NextForm", continueJobViewModel);
                 }
@@ -1912,8 +1987,11 @@ namespace ProdFloor.Controllers
             AppUser currentUser = GetCurrentUser().Result;
             nextViewModel.CurrentUserID = currentUser.EngID;
             nextViewModel.SpecialFeaturesTable = getSpecialFeaturesEX();
+
             List<PO> POsList = repository.POs.Where(j => j.JobID == nextViewModel.CurrentJob.JobID).ToList();
+            nextViewModel.CurrentJob.JobNum = getJobNumb(nextViewModel.CurrentJob.JobNumFirstDigits, nextViewModel.CurrentJob.JobNumLastDigits);
             List<PO> PoAux = new List<PO>();
+
             foreach (PO itemes in nextViewModel.POList)
             {
                 try
@@ -2128,7 +2206,9 @@ namespace ProdFloor.Controllers
             AppUser currentUser = GetCurrentUser().Result;
             nextViewModel.CurrentUserID = currentUser.EngID;
             nextViewModel.SpecialFeaturesTable = getSpecialFeaturesEX();
+
             List<PO> POsList = repository.POs.Where(j => j.JobID == nextViewModel.CurrentJob.JobID).ToList();
+            nextViewModel.CurrentJob.JobNum = getJobNumb(nextViewModel.CurrentJob.JobNumFirstDigits, nextViewModel.CurrentJob.JobNumLastDigits);
             List<PO> PoAux = new List<PO>();
             foreach (PO itemes in nextViewModel.POList)
             {
@@ -2187,6 +2267,7 @@ namespace ProdFloor.Controllers
 
                                 if (nextViewModel.SpecialFeatureslist != null)
                                 {
+
                                     Job jobForStatus = repository.Jobs.FirstOrDefault(m => m.JobID == nextViewModel.CurrentJob.JobID);
                                     if (jobForStatus.Status == "Incomplete") nextViewModel.CurrentJob.Status = "Cross Approval Complete";
 
@@ -2251,7 +2332,9 @@ namespace ProdFloor.Controllers
             AppUser currentUser = GetCurrentUser().Result;
             nextViewModel.CurrentUserID = currentUser.EngID;
             nextViewModel.SpecialFeaturesTable = getSpecialFeaturesEX();
+
             List<PO> POsList = repository.POs.Where(j => j.JobID == nextViewModel.CurrentJob.JobID).ToList();
+            nextViewModel.CurrentJob.JobNum = getJobNumb(nextViewModel.CurrentJob.JobNumFirstDigits, nextViewModel.CurrentJob.JobNumLastDigits);
             List<PO> PoAux = new List<PO>();
             foreach (PO itemes in nextViewModel.POList)
             {
@@ -2312,7 +2395,6 @@ namespace ProdFloor.Controllers
                                 {
                                     Job jobForStatus = repository.Jobs.FirstOrDefault(m => m.JobID == nextViewModel.CurrentJob.JobID);
                                     if (jobForStatus.Status == "Incomplete") nextViewModel.CurrentJob.Status = "Cross Approval Complete";
-
                                     repository.SaveEngElementTractionJobView(nextViewModel);
                                     nextViewModel.CurrentTab = "Main";
                                     TempData["message"] = $"everything was saved";
@@ -2380,7 +2462,8 @@ namespace ProdFloor.Controllers
         }
 
 
-        public async Task<IActionResult> JobSearchList(JobSearchViewModel searchViewModel, int page = 1)
+        
+      /* public async Task<IActionResult> JobSearchList(JobSearchViewModel searchViewModel, int page = 1)
         {
             if (searchViewModel.CleanFields) return RedirectToAction("JobSearchList");
 
@@ -2389,8 +2472,8 @@ namespace ProdFloor.Controllers
                 .Include(i => i._Indicator).Include(ho => ho._HoistWayData).Include(sp => sp._SpecialFeatureslist).Include(po => po._PO).Where(y => y.Status != "Pending").AsQueryable();
             IQueryable<string> statusQuery = from s in repository.Jobs orderby s.Status select s.Status;
             #region comments
-            /*
-             * 
+            
+             
             **Campos de tipo Numerico: Primero checa que el valor introoducido este en el rango adecuado y/o mayor a cero,
               despues regresa los trabajos que son iguales  a el valor introducido
             
@@ -2400,7 +2483,7 @@ namespace ProdFloor.Controllers
             **Campos de tipo Caracter-Booleanos: Primero checa que la variable no este nula y despues dependiendo si 
               selecciono si o no sera los trabajos que tienen o no ese campo
 
-            */
+            
             //Opciones de busqueda para el modelo principal de job
             #endregion
 
@@ -2585,6 +2668,7 @@ namespace ProdFloor.Controllers
 
             return View(searchViewModel);
         }
+        */
 
         //Funciones para el llenado de los dropdowns en casacada
         public JsonResult GetJobState(int CountryID)
@@ -4122,7 +4206,7 @@ namespace ProdFloor.Controllers
                         CrossAppEngID = Int32.Parse(crossappengid),
                         Name = name,
                         Name2 = name2,
-                        JobNum = Int32.Parse(jobnum),
+                        JobNum = jobnum,
                         ShipDate = DateTime.Parse(shipdate),
                         LatestFinishDate = DateTime.Parse(latestfinishdate),
                         Cust = cust,
@@ -4876,6 +4960,31 @@ namespace ProdFloor.Controllers
 
             return specialFeaturesTable;
         }
+
+        public String getJobNumb(string firstDigits, int lastDigits)
+        {
+            string JobNumb = firstDigits + lastDigits.ToString();
+
+            return JobNumb;
+        }
+
+        public JobNumber getJobNumbDivided(string JobNumber)
+        {
+            JobNumber jobNum = new JobNumber();
+
+            jobNum.firstDigits = JobNumber.Remove(5, 5);
+            jobNum.lastDigits = int.Parse(JobNumber.Remove(0,5));
+
+            return jobNum;
+        }
+
+        /*
+         NewtestJobView.Job.JobNumFirstDigits = getJobNumbDivided(_jobSearch.JobNum).firstDigits;
+         NewtestJobView.Job.JobNumLastDigits = getJobNumbDivided(_jobSearch.JobNum).lastDigits;
+
+         nextViewModel.Job.JobNum = getJobNumb(nextViewModel.Job.JobNumFirstDigits, nextViewModel.Job.JobNumLastDigits);
+         * 
+         * **/
 
 
     }
