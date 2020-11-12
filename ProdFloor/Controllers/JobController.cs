@@ -2221,7 +2221,7 @@ namespace ProdFloor.Controllers
             }
             else
             {
-                
+
                 if (nextViewModel.CurrentJob.JobID == 0 && nextViewModel.CurrentJob.Status == "Incomplete") nextViewModel.CurrentJob.JobID = nextViewModel.Element.JobID;
                 if (nextViewModel.buttonAction == "AddSF")
                 {
@@ -2250,7 +2250,6 @@ namespace ProdFloor.Controllers
 
                                 if (nextViewModel.SpecialFeatureslist != null)
                                 {
-
                                     Job jobForStatus = repository.Jobs.FirstOrDefault(m => m.JobID == nextViewModel.CurrentJob.JobID);
                                     if (jobForStatus.Status == "Incomplete") nextViewModel.CurrentJob.Status = "Cross Approval Complete";
 

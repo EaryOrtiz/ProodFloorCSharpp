@@ -41,9 +41,11 @@
             </div>
             <div class="form-group row @(Model.CurrentUserID != Model.CurrentJob.EngID ? "disabled" : "disabled")">
                 <label asp-for="CurrentJob.JobNum" class="col-sm-3 col-form-label"></label>
-                <div>
-                    <input asp-for="CurrentJob.JobNum" class="form-control" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" style="width:auto" />
-                    <span asp-validation-for="CurrentJob.JobNum" class="text-danger"></span>
+                <div class="form-inline">
+                    <custom-select selected-value="@Model.CurrentJob.JobNumFirstDigits" asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)"
+                                   class="form-control-sm form-control" asp-for="CurrentJob.JobNumFirstDigits" select-for="JobNumber"></custom-select>
+                    <input asp-for="CurrentJob.JobNumLastDigits" class="form-control form-control-sm col-6" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")  ? false : true)" />
+                    <span asp-validation-for="CurrentJob.JobNumLastDigits" class="text-danger"></span>
                 </div>
             </div>
             <div class="form-group row">
