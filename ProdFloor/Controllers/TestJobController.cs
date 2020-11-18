@@ -77,6 +77,7 @@ namespace ProdFloor.Controllers
             }
 
             List<TestJob> testJobsInCompleted = new List<TestJob>();
+            List<TestJob> testJobsWorkingOnIt= new List<TestJob>();
             List<TestJob> testJobsCompleted = new List<TestJob>();
             List<TestJob> testJobsList = new List<TestJob>();
             List<Job> jobList = jobRepo.Jobs.Where(m => m.JobNum.Contains(jobnumb)).ToList();
@@ -91,26 +92,36 @@ namespace ProdFloor.Controllers
             if (testJobsList != null && testJobsList.Count > 0)
             {
                 testJobsInCompleted = testJobsList
-                 .Where(m => m.Status != "Completed").ToList();
+                 .Where(m => m.Status != "Completed" && m.Status != "Deleted" && m.Status != "Working on it").ToList();
+
+                testJobsWorkingOnIt = testJobsList
+                    .Where(m => m.Status == "Working on it").OrderBy(s => s.StationID).ToList();
 
                 testJobsCompleted = testJobsList
-                    .Where(m => m.Status == "Completed").ToList();
+                    .Where(m => m.Status == "Completed"
+                    && (m.CompletedDate.AddDays(2) > (DateTime.Now))).OrderBy(s => s.CompletedDate).ToList();
             }
 
             if (!admin)
             {
 
-                if (testJobsInCompleted == null || string.IsNullOrEmpty(jobnumb)) testJobsInCompleted = testingRepo.TestJobs.Where(m => m.Status != "Completed" && m.Status != "Deleted").ToList();
-                if (testJobsCompleted == null || string.IsNullOrEmpty(jobnumb)) testJobsCompleted = testingRepo.TestJobs.Where(m => m.Status == "Completed").ToList();
+                if (testJobsInCompleted == null || string.IsNullOrEmpty(jobnumb)) 
+                    testJobsInCompleted = testingRepo.TestJobs.Where(m => m.Status != "Completed" && m.Status != "Deleted" && m.Status != "Working on it").ToList();
+
+                if (testJobsWorkingOnIt == null || string.IsNullOrEmpty(jobnumb)) testJobsWorkingOnIt = testingRepo.TestJobs.Where(m => m.Status == "Working on it").OrderBy(s => s.StationID).ToList();
+
+                if (testJobsCompleted == null || string.IsNullOrEmpty(jobnumb)) testJobsCompleted = testingRepo.TestJobs.Where(m => m.Status == "Completed"
+                    && (m.CompletedDate.AddDays(2) > (DateTime.Now))).OrderBy(s => s.CompletedDate).ToList();
             }
             else
             {
-                if (testJobsInCompleted == null || string.IsNullOrEmpty(jobnumb)) testJobsInCompleted = testingRepo.TestJobs.Where(m => m.Status != "Completed" && m.Status != "Deleted").ToList();
-                if (testJobsCompleted == null || string.IsNullOrEmpty(jobnumb)) testJobsCompleted = testingRepo.TestJobs.Where(m => m.Status == "Completed" || m.Status == "Deleted").ToList();
+                if (testJobsInCompleted == null || string.IsNullOrEmpty(jobnumb)) testJobsInCompleted = testingRepo.TestJobs.Where(m => m.Status != "Completed" && m.Status != "Deleted" && m.Status != "Working on it").ToList();
+
+                if (testJobsCompleted == null || string.IsNullOrEmpty(jobnumb)) testJobsCompleted = testingRepo.TestJobs.Where(m => m.Status == "Working on it").OrderBy(s => s.StationID).ToList();
+
+                if (testJobsCompleted == null || string.IsNullOrEmpty(jobnumb)) testJobsCompleted = testingRepo.TestJobs.Where(m => m.Status == "Completed" || m.Status == "Deleted"
+                    && (m.CompletedDate.AddDays(2) > (DateTime.Now))).OrderBy(s => s.CompletedDate).ToList();
             }
-
-           
-
 
             TestJobViewModel testJobView = new TestJobViewModel
             {
@@ -122,6 +133,10 @@ namespace ProdFloor.Controllers
                     .OrderBy(p => p.TechnicianID)
                     .Skip((OnCrossJobPage - 1) * 5)
                     .Take(5).ToList(),
+                TestWorkingOnItList = testJobsWorkingOnIt
+                    .OrderBy(p => p.TechnicianID)
+                    .Skip((PendingToCrossJobPage - 1) * 5)
+                    .Take(5).ToList(),
 
                 JobList = jobRepo.Jobs.ToList(),
                 JobTypeList = itemRepository.JobTypes.ToList(),
@@ -129,12 +144,12 @@ namespace ProdFloor.Controllers
                 StepList = testingRepo.Steps.ToList(),
                 StepsForJobList = testingRepo.StepsForJobs.ToList(),
                 StopList = testingRepo.Stops.Where(m => m.StopID != 980 & m.StopID != 981 && m.Reason2 == 0).ToList(),
-                PagingInfo = new PagingInfo
+                PagingInfoWorkingOnIt = new PagingInfo
                 {
-                    CurrentPage = OnCrossJobPage,
+                    CurrentPage = PendingToCrossJobPage,
                     JobNumb = jobnumb,
                     ItemsPerPage = 5,
-                    TotalItems = testJobsList.Count()
+                    TotalItems = testJobsWorkingOnIt.Count()
                 },
 
                 PagingInfoIncompleted = new PagingInfo
@@ -313,15 +328,15 @@ namespace ProdFloor.Controllers
 
             return View("NewTestJob", testJobSearchAux);
         }
-
+       
         [HttpPost]
         public IActionResult NextForm(TestJobViewModel nextViewModel)
         {
-
-            TestJob testJob = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == nextViewModel.TestFeature.TestJobID);
             nextViewModel.Job.JobNum = getJobNumb(nextViewModel.Job.JobNumFirstDigits, nextViewModel.Job.JobNumLastDigits);
+
             if (nextViewModel.TestFeature != null)
             {
+                TestJob testJob = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == nextViewModel.TestJob.TestJobID);
 
                 if (testJob != null)
                 {
@@ -368,7 +383,7 @@ namespace ProdFloor.Controllers
             else
             {
 
-                if (nextViewModel.isNotDummy == false && testJob.TestJobID == 0)
+                if (nextViewModel.isNotDummy == false)
                 {
                     nextViewModel = NewDummyJob(nextViewModel);
                     TempData["message"] = $"Job was saved";
@@ -731,7 +746,6 @@ namespace ProdFloor.Controllers
             TestJob testJobToUpdate = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == testJobView.TestFeature.TestJobID);
             TestJob StationAuxTestJob = testingRepo.TestJobs.FirstOrDefault(m => m.StationID == testJobView.TestJob.StationID && m.Status == "Working on it");
 
-            testJobToUpdate.StationID = testJobView.TestJob.StationID;
             testJobToUpdate.JobLabel = testJobView.TestJob.JobLabel;
             testingRepo.SaveTestJob(testJobToUpdate);
             //Checa que la lista de features no este vacia o nula
@@ -2043,9 +2057,9 @@ namespace ProdFloor.Controllers
 
         }
 
-        public IActionResult ReturnFromComplete(TestJobViewModel testJobView)
+        public IActionResult ReturnFromComplete(int Id)
         {
-            TestJob testJob = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == testJobView.TestJob.TestJobID);
+            TestJob testJob = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == Id);
 
             if (testJob != null)
             {

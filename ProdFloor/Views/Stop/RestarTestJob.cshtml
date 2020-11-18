@@ -1,10 +1,10 @@
 ﻿@model ProdFloor.Models.ViewModels.TestJob.TestJobViewModel
 @{
-    ViewBag.Title = "Restar TestJob";
+    ViewBag.Title = "Restart TestJob";
     Layout = "_AdminLayoutWO";
     <script src="~/Scripts/CascadingR1R2R3R4R5.js" type="text/javascript"></script>
 }
-<div class="m-1 p-1" style="background-color:#1B2831;"><h4 style="color:white">Restar Job</h4></div>
+<div class="m-1 p-1" style="background-color:#1B2831;"><h4 style="color:white">Restart Job</h4></div>
 <form asp-action="RestarTestJob" method="post">
     <input type="hidden" asp-for="Stop.StopID" />
     <input type="hidden" asp-for="Stop.TestJobID" />

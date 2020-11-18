@@ -3,7 +3,7 @@
     <thead style="background-color:#343a40!important;color:#fff;">
         <tr>
             <th class="text-center" colspan="7">
-                <h5>Complete TestJob(s)</h5>
+                <h5>Working On TestJob(s)</h5>
             </th>
         </tr>
         <tr>
@@ -31,7 +31,7 @@
         </tr>
     </thead>
     <tbody>
-        @if (Model.TestJobCompletedList.Count() == 0)
+        @if (Model.TestWorkingOnItList.Count() == 0)
         {
             <tr>
                 <td>No Test Jobs!</td>
@@ -39,7 +39,7 @@
         }
         else
         {
-            @foreach (var j in Model.TestJobCompletedList.Where(m => m.Status == "Completed" || m.Status == "Deleted"))
+            @foreach (var j in Model.TestWorkingOnItList)
             {
                 AppUser CurrentUser = UserManager.Users.FirstOrDefault(m => m.EngID == j.TechnicianID);
                 Job MyJob = Model.JobList.FirstOrDefault(m => m.JobID == j.JobID);
@@ -81,8 +81,7 @@
                         </form>
 
                         @if (j.Status != "Deleted")
-                        { 
-
+                        {
                             <!-- Delete Button trigger modal -->
                             <button type="button" class="btn btn-light" style="float:left;background-color:transparent" data-toggle="modal" data-target="#delete @j.TestJobID" data-tooltip="tooltip" data-placement="top" title="Delete TestJob">
                                 <i class="fas fa-trash-alt"></i>
@@ -150,9 +149,9 @@
         }
     </tbody>
 </table>
-@if (Model.TestJobCompletedList.Count() > 0)
+@if (Model.TestWorkingOnItList.Count() > 0)
 {
-    <cool-pagination-dash-board-job-num current-model="OncrossJobs" my-jobs-page-model="@Model.PagingInfoIncompleted" page-action="SearchTestJob" page-classes-enabled="true"
+    <cool-pagination-dash-board-job-num current-model="PendingJobs" my-jobs-page-model="@Model.PagingInfoIncompleted" page-action="SearchTestJob" page-classes-enabled="true"
                                         page-class="btn" page-class-normal="btn-secondary" on-cross-page-model="@Model.PagingInfoCompleted" pending-to-cross-page-model="@Model.PagingInfoWorkingOnIt"
                                         page-class-selected="btn-dark" my-jobs-url-value="MyJobsPage" on-cross-url-value="OnCrossJobPage"
                                         pending-to-cross-url-value="PendingToCrossJobPage" job-numb="JobNumb"

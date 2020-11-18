@@ -70,8 +70,12 @@ namespace ProdFloor.Models.ViewModels.TestJob
         public PagingInfo PagingInfoIncompleted { get; set; }
         public PagingInfo PagingInfoCompleted { get; set; }
 
+        public PagingInfo PagingInfoWorkingOnIt { get; set; }
+
         public List<Models.TestJob> TestJobIncompletedList { get; set; }
         public List<Models.TestJob> TestJobCompletedList { get; set; }
+
+        public List<Models.TestJob> TestWorkingOnItList { get; set; }
 
         public bool isNotDummy { get; set; }
 

@@ -13,14 +13,14 @@
 <form asp-controller="TestJob" asp-action="SearchTestJob" method="get">
     <div class="input-group" style="padding-top:20px">
 
-        <input type="text" class="form-control form-control-sm col-5" name="jobNumber" id="JobNum" value="@Model.PagingInfo.JobNumb" placeholder=" Please enter a Job Number">
+        <input type="text" class="form-control form-control-sm col-5" name="jobNumber" id="JobNum" value="@Model.PagingInfoWorkingOnIt.JobNumb" placeholder=" Please enter a Job Number">
         <div class="input-group-append">
             <div class="btn-group">
                 <button class="btn btn-dark" type="submit" value="Search" data-tooltip="tooltip" data-placement="top" title="Search">
                     <i class="fa fa-search" aria-hidden="true"></i>
                 </button>
-                <button class="btn btn-dark"  type="submit" name="Clean" value="true" data-tooltip="tooltip" data-placement="top" title="Search">
-                    <i class="fas fa-undo"aria-hidden="true"></i>
+                <button class="btn btn-dark" type="submit" name="Clean" value="true" data-tooltip="tooltip" data-placement="top" title="Search">
+                    <i class="fas fa-undo" aria-hidden="true"></i>
                 </button>
             </div>
         </div>
@@ -31,13 +31,14 @@
     <span asp-validation-for="Job.JobNum" class="text-danger"></span><br />
 </div>
 <!--incomplete, working on it and stops-->
-@Html.Partial("TechAdminDashBoard", Model)
+@Html.Partial("TechAdminDashBoard3", Model)
 <br />
 <br />
 <!--Completed-->
 @Html.Partial("TechAdminDashBoard2", Model)
 <br />
 <br />
+@Html.Partial("TechAdminDashBoard", Model)
 <br />
 
 
