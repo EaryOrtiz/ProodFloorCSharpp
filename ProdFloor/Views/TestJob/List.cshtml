@@ -25,7 +25,7 @@
 
 @Html.Partial("TestJobSummary", Model)
 
-@if (Model.TestJobList.Count > 3)
+@if (Model.TestJobList.Count > 0)
 {
     <coool-pagination-all page-model="@Model.PagingInfo" page-action="List" page-classes-enabled="true"
                           page-class="btn" page-class-normal="btn-secondary"

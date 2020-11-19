@@ -52,7 +52,7 @@ namespace ProdFloor.Controllers
                 {
                     CurrentPage = page,
                     ItemsPerPage = PageSize,
-                    TotalItems = testingRepo.TestJobs.Count()
+                    TotalItems = testJobList.Count()
                 }
             };
             return View(testJobView);

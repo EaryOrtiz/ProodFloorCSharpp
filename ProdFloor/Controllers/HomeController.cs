@@ -66,14 +66,17 @@ namespace ProdFloor.Controllers
 
                 List<Job> MyjobsList = repository.Jobs.Include(s => s._JobAdditional)
                     .Where(j => j.EngID == currentUser.EngID)
+                    .Where(s => s.Status != "Pending")
                     .Where(j => j.Status == "Incomplete" || j.Status == "Not Reviewed" || j.Status == "Working on it" || j.Status == "Cross Approval Complete").OrderByDescending(m => m._JobAdditional.Priority).ThenBy(n => n.LatestFinishDate).ToList();
 
                 List<Job> OnCrossJobsList = repository.Jobs.Include(s => s._JobAdditional)
                         .Where(j => j.CrossAppEngID == currentUser.EngID)
+                        .Where(s => s.Status != "Pending")
                         .Where(j => j.Status == "On Cross Approval").OrderByDescending(m => m._JobAdditional.Priority).ThenBy(n => n.LatestFinishDate).ToList();
 
                 List<Job> PendingToCrossJobList = repository.Jobs.Include(s => s._JobAdditional)
                         .Where(j => j.EngID != currentUser.EngID)
+                        .Where(s => s.Status != "Pending")
                         .Where(j => j.Status == "Cross Approval Pending").OrderByDescending(m => m._JobAdditional.Priority).ThenBy(n => n.LatestFinishDate).ToList();
 
                 List<JobAdditional> MyJobAdditionalList = repository.JobAdditionals.Where(m => MyjobsList.Any(n => n.JobID == m.JobID)).ToList();
@@ -213,16 +216,20 @@ namespace ProdFloor.Controllers
                 List<PO> POsList = repository.POs.ToList();
 
                 List<Job> MyjobsList = repository.Jobs
+                    .Where(s => s.Status != "Pending")
                     .Where(j => j.Status == "Cross Approval Complete")
                     .OrderByDescending(m => m._JobAdditional.Priority).ThenBy(n => n.LatestFinishDate).ToList();
 
                 List<Job> OnCrossJobsList = repository.Jobs
+                        .Where(s => s.Status != "Pending")
                         .Where(j => j.Status == "On Cross Approval").OrderByDescending(m => m._JobAdditional.Priority).ThenBy(n => n.LatestFinishDate).ToList();
 
                 List<Job> PendingToCrossJobList = repository.Jobs
+                        .Where(s => s.Status != "Pending")
                         .Where(j => j.Status == "Cross Approval Pending").OrderByDescending(m => m._JobAdditional.Priority).ThenBy(n => n.LatestFinishDate).ToList();
 
                 List<Job> ActiveJobList = repository.Jobs
+                        .Where(s => s.Status != "Pending")
                         .Where(j => j.Status == "Working on it").OrderByDescending(m => m._JobAdditional.Priority).ThenBy(n => n.LatestFinishDate).ToList();
 
                 List<JobAdditional> MyJobAdditionalList = repository.JobAdditionals.Where(m => MyjobsList.Any(n => n.JobID == m.JobID)).ToList();
@@ -328,13 +335,23 @@ namespace ProdFloor.Controllers
             List<PO> POsList = repository.POs.ToList();
             List<JobAdditional> MyJobAdditionalList = repository.JobAdditionals.ToList();
             List<Job> MyjobsList = new List<Job>();
-            List<Job> jobList = repository.Jobs.Where(m => m.JobNum.Contains(jobNumber)).ToList();
+
+            List<Job> jobList = repository.Jobs
+                .Where(s => s.Status != "Pending")
+                .Where(m => m.JobNum.Contains(jobNumber)).ToList();
+
             List<Job> OnCrossJobsList = repository.Jobs
-                       .Where(j => j.Status == "On Cross Approval").OrderByDescending(m => m._JobAdditional.Priority).ThenBy(n => n.LatestFinishDate).ToList();
+                .Where(s => s.Status != "Pending")
+                .Where(j => j.Status == "On Cross Approval")
+                .OrderByDescending(m => m._JobAdditional.Priority)
+                 .ThenBy(n => n.LatestFinishDate).ToList();
             
 
             List<Job> PendingToCrossJobList = repository.Jobs
-                    .Where(j => j.Status == "Cross Approval Pending").OrderByDescending(m => m._JobAdditional.Priority).ThenBy(n => n.LatestFinishDate).ToList();
+                .Where(s => s.Status != "Pending")
+                .Where(j => j.Status == "Cross Approval Pending")
+                .OrderByDescending(m => m._JobAdditional.Priority)
+                .ThenBy(n => n.LatestFinishDate).ToList();
 
             if (jobList != null && jobList.Count > 0)
             {
@@ -399,14 +416,19 @@ namespace ProdFloor.Controllers
                 List<PO> POsList = repository.POs.ToList();
 
                 List<Job> MyjobsList = repository.Jobs
+                    .Where(s => s.Status != "Pending")
                     .Where(m => m.Status != "Cross Approval Complete" && m.Status != "Test" && m.Status != "Completed")
                     .OrderByDescending(m => m._JobAdditional.Priority).ThenBy(n => n.LatestFinishDate).ToList();
 
                 List<Job> OnCrossJobsList = repository.Jobs
-                        .Where(j => j.Status == "On Cross Approval").OrderByDescending(m => m._JobAdditional.Priority).ThenBy(n => n.LatestFinishDate).ToList();
+                    .Where(s => s.Status != "Pending")
+                    .Where(j => j.Status == "On Cross Approval")
+                    .OrderByDescending(m => m._JobAdditional.Priority).ThenBy(n => n.LatestFinishDate).ToList();
 
                 List<Job> PendingToCrossJobList = repository.Jobs
-                        .Where(j => j.Status == "Cross Approval Pending").OrderByDescending(m => m._JobAdditional.Priority).ThenBy(n => n.LatestFinishDate).ToList();
+                    .Where(s => s.Status != "Pending")
+                    .Where(j => j.Status == "Cross Approval Pending")
+                    .OrderByDescending(m => m._JobAdditional.Priority).ThenBy(n => n.LatestFinishDate).ToList();
 
                 List<JobAdditional> MyJobAdditionalList = repository.JobAdditionals.Where(m => MyjobsList.Any(n => n.JobID == m.JobID)).OrderBy(m => m.ERDate).ToList();
                 List<JobAdditional> OnCrossJobAdditionalList = repository.JobAdditionals.Where(m => OnCrossJobsList.Any(n => n.JobID == m.JobID)).ToList();
