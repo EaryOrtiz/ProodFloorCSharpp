@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using ProdFloor.Controllers;
 using ProdFloor.Services;
+using Microsoft.AspNetCore.Hosting.Internal;
 
 namespace ProdFloor
 {
@@ -57,6 +58,7 @@ namespace ProdFloor
             services.AddTransient<ItemController>();
             services.AddTransient<AccountController>();
             services.AddTransient<JobController>();
+            //services.AddSingleton<IHostingEnvironment>(new HostingEnvironment());
             services.AddTransient<TestJobController>();
             services.AddTransient<Microsoft.Extensions.Hosting.IHostedService, DailyJobsBackupHostedService>();
            // services.AddTransient<Microsoft.Extensions.Hosting.IHostedService, ShiftEndHostedService>();
