@@ -261,4 +261,18 @@ namespace ProdFloor.Models
         public string EfficiencyColor { get; set; }
     }
 
+    [NotMapped]
+    public class DailyReport
+    {
+        public string JobTypeName { get; set; }
+
+        public int TestJobsCounted { get; set; }
+
+        public double TotalEfficiency { get; set; }
+
+        public string EfficiencyColor { get; set; }
+
+        public DateTime TodayDate { get; set; } = DateTime.Today;
+    }
+
 }

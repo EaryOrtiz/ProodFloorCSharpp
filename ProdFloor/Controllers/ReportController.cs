@@ -39,7 +39,7 @@ namespace ProdFloor.Controllers
 
         }
 
-        public IActionResult Index(TestStatsForReportViewModel viewModel)
+        public IActionResult Index(ReportsViewModel viewModel)
         {
             viewModel.TestStatsList = new List<TestStats>();
             List<TestJob> ActiveTestJobs = testingRepo.TestJobs.Where(m => m.Status != "Completed" && m.Status != "Deleted").ToList();
@@ -241,6 +241,149 @@ namespace ProdFloor.Controllers
                     index++;
                 }
 
+
+                workbook.Write(fs);
+            }
+            using (var fileStream = new FileStream(Path.Combine(webRootPath, fileName), FileMode.Open))
+            {
+                await fileStream.CopyToAsync(memoryStream);
+            }
+            memoryStream.Position = 0;
+            return File(memoryStream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+        }
+
+        public async Task<IActionResult> DailyReport(DateTime startDate)
+        {
+            if (startDate == null) startDate = DateTime.Now.AddDays(-1);
+
+            string webRootPath = _env.WebRootPath;
+            string fileName = @"DailyReport-" + startDate.ToString("yyyy-MM-dd") + ".xlsx";
+            string URL = string.Format("{0}://{1}/{2}", Request.Scheme, Request.Host, fileName);
+            FileInfo file = new FileInfo(Path.Combine(webRootPath, fileName));
+            var memoryStream = new MemoryStream();
+
+            //-- Filtering the data with query params 
+
+            string efficiencyColor = "green";
+            int testJobsCounted = 0;
+            double TotalEfficiency = 0;
+            double totalEfficiency = 0;
+
+            List<DailyReport> dailyReports = new List<DailyReport>();
+            List<TestStats> testStatsM2000 = new List<TestStats>();
+            List<TestStats> testStatsM4000 = new List<TestStats>();
+            List<TestStats> testStatsTraction = new List<TestStats>();
+            List<TestStats> testStatsHydro = new List<TestStats>();
+            List<Step> StepsListInfo = testingRepo.Steps.ToList();
+            List<Station> Stations = testingRepo.Stations.ToList();
+            List<JobType> jobTypes = itemRepository.JobTypes.Where(m => m.Name != "M3000").ToList();
+            IQueryable<AppUser> users = userManager.Users;
+            IQueryable<TestJob> testjobsCompleted = testingRepo.TestJobs.Where(m => m.Status == "Completed" && m.CompletedDate == startDate);
+            IQueryable<Job> jobsForTestJobs = jobRepo.Jobs.Where(m => testjobsCompleted.Any(n => n.JobID == m.JobID));
+
+
+            //Filling gaily and textsts list by jobtype
+            foreach(JobType jobtype in jobTypes)
+            {
+                IQueryable<Job> jobs = jobsForTestJobs.Where(m => m.JobTypeID == jobtype.JobTypeID);
+                IQueryable<TestJob> testjobs = testjobsCompleted.Where(m => jobs.Any(n => n.JobID == m.JobID));
+
+                foreach (TestJob testjob in testjobs)
+                {
+                    Job FeaturesFromJob = jobs.FirstOrDefault(m => m.JobID == testjob.JobID);
+                    List<StepsForJob> stepsForJob = testingRepo.StepsForJobs.Where(m => m.TestJobID == testjob.TestJobID && m.Obsolete == false)
+                                                                         .Where(m => m.Complete == true)
+                                                                         .OrderBy(n => n.Consecutivo).ToList();
+
+                    string jobNum = FeaturesFromJob.JobNum.Remove(0, 5);
+                    string techName = users.FirstOrDefault(m => m.EngID == testjob.TechnicianID).FullName;
+                    string stationName = Stations.FirstOrDefault(m => m.StationID == testjob.StationID).Label;
+                    double expectedTimeSUM = 0;
+                    double realTimeSUM = 0;
+                    double efficiency = 0;
+
+                    foreach (StepsForJob step in stepsForJob)
+                    {
+                        expectedTimeSUM += ToHours(StepsListInfo.FirstOrDefault(m => m.StepID == step.StepID).ExpectedTime);
+
+                        realTimeSUM += ToHours(step.Elapsed);
+                    }
+
+                    efficiency = Math.Round((expectedTimeSUM / realTimeSUM) * 100);
+                    totalEfficiency = totalEfficiency + efficiency;
+                    testJobsCounted++;
+
+
+                    TestStats testStat = new TestStats
+                    {
+                        JobNumer = jobNum,
+                        TechName = techName,
+                        Station = stationName,
+                        Efficiency = efficiency
+                    };
+
+                    testStatsM2000.Add(testStat);
+
+                    switch (jobtype.Name)
+                    {
+                        case "M2000": testStatsM2000.Add(testStat);
+                            break;
+                        case "M4000":
+                            testStatsM4000.Add(testStat);
+                            break;
+                        case "ElmHydro":
+                            testStatsHydro.Add(testStat);
+                            break;
+                        case "ElmTract":
+                            testStatsTraction.Add(testStat);
+                            break;
+                    }
+                }
+
+                totalEfficiency = totalEfficiency / testJobsCounted;
+
+                if (totalEfficiency > 99) totalEfficiency = 99;
+                if (totalEfficiency >= 80) efficiencyColor = "green";
+                else if (totalEfficiency >= 60) efficiencyColor = "yellow";
+                else efficiencyColor = "red";
+
+                DailyReport daily = new DailyReport
+                {
+                    JobTypeName = jobtype.Name,
+                    TestJobsCounted = testJobsCounted,
+                    TotalEfficiency = TotalEfficiency,
+                    EfficiencyColor = efficiencyColor,
+                };
+
+                dailyReports.Add(daily);
+            }
+
+
+            // --- Below code would create excel file with dummy data----  
+            using (var fs = new FileStream(Path.Combine(webRootPath, fileName), FileMode.Create, FileAccess.Write))
+            {
+                IWorkbook workbook = new XSSFWorkbook();
+                ISheet excelSheet = workbook.CreateSheet("Testingdummy");
+                /*
+                IRow row = excelSheet.CreateRow(0);
+                row.CreateCell(0).SetCellValue("PO");
+                row.CreateCell(1).SetCellValue("Station");
+                row.CreateCell(2).SetCellValue("Technican");
+
+                int index = 1;
+                foreach (TestJob  in testjobs)
+                {
+                    string station = stations.FirstOrDefault(m => m.StationID == testjob.StationID).Label;
+                    string userName = users.FirstOrDefault(m => m.EngID == testjob.TechnicianID).FullName;
+
+                    row = excelSheet.CreateRow(index);
+                    row.CreateCell(0).SetCellValue(testjob.SinglePO);
+                    row.CreateCell(1).SetCellValue(station);
+                    row.CreateCell(2).SetCellValue(userName);
+
+                    index++;
+                }
+                */
 
                 workbook.Write(fs);
             }
