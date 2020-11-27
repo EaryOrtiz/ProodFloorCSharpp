@@ -175,6 +175,32 @@
             </div>
         </div>
 
+        <!--Daily report Modal -->
+        <div class="modal fade" id="DailyModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Daily Report</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form action="DailyReport" method="post">
+                        <div class="container mb-2 mt-2">
+                            <div class="form-inline">
+                                <label class="col-3">Start Date: </label>
+                                <input class="form-control col-8" type="date" name="startDate" value="@DateTime.Now" />
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
+                            <button class="btn btn-warning btn-sm" type="submit" >Generate</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
 
     </div>
 

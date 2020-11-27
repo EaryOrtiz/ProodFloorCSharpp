@@ -252,6 +252,8 @@ namespace ProdFloor.Controllers
             return File(memoryStream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
         }
 
+
+        [HttpPost]
         public async Task<IActionResult> DailyReport(DateTime startDate)
         {
             if (startDate == null) startDate = DateTime.Now.AddDays(-1);
@@ -263,12 +265,6 @@ namespace ProdFloor.Controllers
             var memoryStream = new MemoryStream();
 
             //-- Filtering the data with query params 
-
-            string efficiencyColor = "green";
-            int testJobsCounted = 0;
-            double TotalEfficiency = 0;
-            double totalEfficiency = 0;
-
             List<DailyReport> dailyReports = new List<DailyReport>();
             List<TestStats> testStatsM2000 = new List<TestStats>();
             List<TestStats> testStatsM4000 = new List<TestStats>();
@@ -278,13 +274,17 @@ namespace ProdFloor.Controllers
             List<Station> Stations = testingRepo.Stations.ToList();
             List<JobType> jobTypes = itemRepository.JobTypes.Where(m => m.Name != "M3000").ToList();
             IQueryable<AppUser> users = userManager.Users;
-            IQueryable<TestJob> testjobsCompleted = testingRepo.TestJobs.Where(m => m.Status == "Completed" && m.CompletedDate == startDate);
+            IQueryable<TestJob> testjobsCompleted = testingRepo.TestJobs.Where(m => m.Status == "Completed" && m.CompletedDate.ToShortDateString() == startDate.ToShortDateString());
             IQueryable<Job> jobsForTestJobs = jobRepo.Jobs.Where(m => testjobsCompleted.Any(n => n.JobID == m.JobID));
 
 
-            //Filling gaily and textsts list by jobtype
+            //Filling daily and textsts list by jobtype
             foreach(JobType jobtype in jobTypes)
             {
+                string efficiencyColor = "grey";
+                int testJobsCounted = 0;
+                int totalEfficiency = 0;
+
                 IQueryable<Job> jobs = jobsForTestJobs.Where(m => m.JobTypeID == jobtype.JobTypeID);
                 IQueryable<TestJob> testjobs = testjobsCompleted.Where(m => jobs.Any(n => n.JobID == m.JobID));
 
@@ -310,7 +310,8 @@ namespace ProdFloor.Controllers
                     }
 
                     efficiency = Math.Round((expectedTimeSUM / realTimeSUM) * 100);
-                    totalEfficiency = totalEfficiency + efficiency;
+                    if (efficiency > 99) efficiency = 99;
+                    totalEfficiency =  (int) (totalEfficiency + efficiency);
                     testJobsCounted++;
 
 
@@ -321,8 +322,6 @@ namespace ProdFloor.Controllers
                         Station = stationName,
                         Efficiency = efficiency
                     };
-
-                    testStatsM2000.Add(testStat);
 
                     switch (jobtype.Name)
                     {
@@ -340,18 +339,18 @@ namespace ProdFloor.Controllers
                     }
                 }
 
-                totalEfficiency = totalEfficiency / testJobsCounted;
+                if(testJobsCounted > 0) totalEfficiency = totalEfficiency / testJobsCounted;
 
                 if (totalEfficiency > 99) totalEfficiency = 99;
                 if (totalEfficiency >= 80) efficiencyColor = "green";
                 else if (totalEfficiency >= 60) efficiencyColor = "yellow";
-                else efficiencyColor = "red";
+                else if (totalEfficiency > 0) efficiencyColor = "red";
 
                 DailyReport daily = new DailyReport
                 {
                     JobTypeName = jobtype.Name,
                     TestJobsCounted = testJobsCounted,
-                    TotalEfficiency = TotalEfficiency,
+                    TotalEfficiency = totalEfficiency,
                     EfficiencyColor = efficiencyColor,
                 };
 
@@ -363,7 +362,64 @@ namespace ProdFloor.Controllers
             using (var fs = new FileStream(Path.Combine(webRootPath, fileName), FileMode.Create, FileAccess.Write))
             {
                 IWorkbook workbook = new XSSFWorkbook();
-                ISheet excelSheet = workbook.CreateSheet("Testingdummy");
+                ISheet excelSheet = workbook.CreateSheet("DailyReport-" + startDate.ToString("yyyy-MM-dd"));
+                List<TestStats> testStats = new List<TestStats>();
+                int i =  0;
+                foreach(JobType jobtype in jobTypes)
+                {
+                    DailyReport daily = dailyReports.First(m => m.JobTypeName == jobtype.Name);
+
+                    IRow row = excelSheet.CreateRow(i);
+                    row.CreateCell(0).SetCellValue("JobTypeName: " + daily.JobTypeName);
+                    row.CreateCell(1).SetCellValue("Date: " + startDate.ToString("yyyy-MM-dd"));
+                    row.CreateCell(2).SetCellValue("Completed: " + daily.TestJobsCounted.ToString());
+                    row.CreateCell(3).SetCellValue("TotalEfficiency: " + daily.TotalEfficiency.ToString());
+                    i++;
+
+                    switch (jobtype.Name)
+                    {
+                        case "M2000":
+                            testStats = testStatsM2000;
+                            break;
+                        case "M4000":
+                            testStats = testStatsM4000;
+                            break;
+                        case "ElmHydro":
+                            testStats = testStatsHydro;
+                            break;
+                        case "ElmTract":
+                            testStats = testStatsTraction;
+                            break;
+                    }
+
+                    row = excelSheet.CreateRow(i);
+                    row.CreateCell(0).SetCellValue("JobNumer");
+                    row.CreateCell(1).SetCellValue("TechName");
+                    row.CreateCell(2).SetCellValue("Station");
+                    row.CreateCell(3).SetCellValue("Efficiency");
+
+                    i++;
+
+                    foreach (TestStats stats in testStats)
+                    {
+                        row = excelSheet.CreateRow(i);
+                        row.CreateCell(0).SetCellValue(stats.JobNumer);
+                        row.CreateCell(1).SetCellValue(stats.TechName);
+                        row.CreateCell(2).SetCellValue(stats.Station);
+                        row.CreateCell(3).SetCellValue(stats.Efficiency);
+
+                        i++;
+                    }
+
+                    row = excelSheet.CreateRow(i);
+                    row.CreateCell(0).SetCellValue("");
+                    row.CreateCell(1).SetCellValue("");
+                    row.CreateCell(2).SetCellValue("");
+                    row.CreateCell(3).SetCellValue("");
+                    i++;
+
+                }
+
                 /*
                 IRow row = excelSheet.CreateRow(0);
                 row.CreateCell(0).SetCellValue("PO");
@@ -399,7 +455,7 @@ namespace ProdFloor.Controllers
         {
             double totalTime = 0;
             totalTime += date.Hour;
-            totalTime += (date.Minute * .01);
+            totalTime += (date.Minute * 0.01666666666666666666666666666667);
             return totalTime;
         }
 
