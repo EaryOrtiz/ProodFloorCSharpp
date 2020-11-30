@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using NPOI.HSSF.Util;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
 using ProdFloor.Models;
@@ -329,6 +330,15 @@ namespace ProdFloor.Controllers
                 IWorkbook workbook = new XSSFWorkbook();
                 ISheet excelSheet = workbook.CreateSheet("Stops_" + startDate.ToString("yyyy-MM-dd") + "_"+ endDate.ToString("yyyy-MM-dd"));
                 int i = 0;
+
+                XSSFCellStyle myStyleGrey = (XSSFCellStyle)workbook.CreateCellStyle();
+                myStyleGrey.BorderBottom = BorderStyle.Medium;
+                myStyleGrey.BorderTop = BorderStyle.Medium;
+                myStyleGrey.BorderLeft = BorderStyle.Medium;
+                myStyleGrey.BorderRight = BorderStyle.Medium;
+                myStyleGrey.FillForegroundColor = HSSFColor.Grey25Percent.Index;
+                myStyleGrey.FillPattern = FillPattern.SolidForeground;
+
                 IRow row = excelSheet.CreateRow(i);
                 row.CreateCell(0).SetCellValue("Job #");
                 row.CreateCell(1).SetCellValue("PO");
@@ -348,6 +358,11 @@ namespace ProdFloor.Controllers
                 row.CreateCell(15).SetCellValue("IsCompleted?");
                 row.CreateCell(16).SetCellValue("Technician");
                 i++;
+
+                for (int j = 0; j < 17; j++)
+                {
+                    workbook.GetSheetAt(0).GetRow(0).GetCell(j).CellStyle = myStyleGrey;
+                }
 
                 foreach (StopsReport report in stopsReport)
                 {
