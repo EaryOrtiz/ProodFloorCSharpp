@@ -196,10 +196,11 @@ namespace ProdFloor.Controllers
             return View(viewModel);
         }
 
-        public async Task<IActionResult> DummyExcel(DateTime? startDate , DateTime? endDate)
+        [HttpPost]
+        public async Task<IActionResult> TestDummy(DateTime startDate , DateTime endDate)
         {
             string webRootPath = _env.WebRootPath;
-            string fileName = @"Testingdummy.xlsx";
+            string fileName = @"Stops_"+startDate.ToShortDateString()+"_"+startDate.ToShortDateString()+"+.xlsx";
             string URL = string.Format("{0}://{1}/{2}", Request.Scheme, Request.Host, fileName);
             FileInfo file = new FileInfo(Path.Combine(webRootPath, fileName));
             var memoryStream = new MemoryStream();
@@ -252,17 +253,141 @@ namespace ProdFloor.Controllers
             return File(memoryStream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> StopsReport(DateTime startDate, DateTime endDate)
+        {
+            if (startDate == null) startDate = DateTime.Now;
+            if (endDate == null) endDate = DateTime.Now;
+
+            //-- Filtering the data with query params 
+            List<StopsReport> stopsReport = new List<StopsReport>();
+            List<Station> stations = testingRepo.Stations.ToList();
+            List<JobType> jobTypes = itemRepository.JobTypes.Where(m => m.Name != "M3000").ToList();
+            IQueryable<Stop> stops = testingRepo.Stops.Where(m => m.StartDate >= startDate && m.StopDate <= endDate).OrderBy(m => m.StartDate);
+            IQueryable<TestJob> testjobs = testingRepo.TestJobs.Where(m => stops.Any(n => n.TestJobID == m.TestJobID));
+            IQueryable<Job> jobsForTestJobs = jobRepo.Jobs.Where(m => testjobs.Any(n => n.JobID == m.JobID));
+            IQueryable<AppUser> users = userManager.Users;
+            IQueryable<Reason1> reasons1 = testingRepo.Reasons1;
+            IQueryable<Reason2> reasons2 = testingRepo.Reasons2;
+            IQueryable<Reason3> reasons3 = testingRepo.Reasons3;
+            IQueryable<Reason4> reasons4 = testingRepo.Reasons4;
+            IQueryable<Reason5> reasons5 = testingRepo.Reasons5;
+
+            //Filling the StopsRpeort List
+
+            foreach (Stop stop in stops)
+            {
+
+                string technician = users.FirstOrDefault(m => m.EngID == stop.AuxTechnicianID).FullName;
+                Station station = stations.FirstOrDefault(m => m.StationID == stop.AuxStationID);
+                TestJob testJob = testjobs.FirstOrDefault(m => m.TestJobID == stop.TestJobID);
+                Job featuresFromJob = jobsForTestJobs.FirstOrDefault(m => m.JobID == testJob.JobID);
+                JobType jobType = jobTypes.FirstOrDefault(m => m.JobTypeID == featuresFromJob.JobTypeID);
+                string reason1 = reasons1.FirstOrDefault(m => m.Reason1ID == stop.Reason1).Description;
+                string reason2 = stop.Reason2 == 0 ? "N/A" : reasons2.FirstOrDefault(m => m.Reason2ID == stop.Reason2).Description;
+                string reason3 = stop.Reason3 == 0 ? "N/A" : reasons3.FirstOrDefault(m => m.Reason3ID == stop.Reason3).Description;
+                string reason4 = stop.Reason4 == 0 ? "N/A" : reasons4.FirstOrDefault(m => m.Reason4ID == stop.Reason4).Description;
+                string reason5 = stop.Reason5ID == 0 ? "N/A" : reasons5.FirstOrDefault(m => m.Reason5ID == stop.Reason5ID).Description;
+                bool isStopFinished = stop.Reason5ID == 0 ? false : true;
+                string elapsed = (stop.Elapsed.Day - 1 ).ToString() + ":" + stop.Elapsed.Hour.ToString() + ":" + stop.Elapsed.Minute.ToString() + ":" + stop.Elapsed.Second.ToString();
+
+                StopsReport report = new StopsReport
+                {
+                    JobNumer = featuresFromJob.JobNum.Remove(0, 5),
+                    PO = testJob.SinglePO,
+                    JobTypeName = jobType.Name,
+                    WeekNumber = stop.GetWeekOfYear,
+                    StartDate = stop.StartDate.ToString(),
+                    StopDate = stop.StopDate.ToString(),
+                    Reason1 = reason1,
+                    Reason2 = reason2,
+                    Reason3 = reason3,
+                    Reason4 = reason4,
+                    Reason5 = reason5,
+                    Description = stop.Description,
+                    Critical = stop.Critical,
+                    StationName = station.Label,
+                    Elapsed = elapsed,
+                    isFinished = isStopFinished,
+                    TechFullName = technician
+                };
+
+                stopsReport.Add(report);
+            }
+
+
+            string webRootPath = _env.WebRootPath;
+            string fileName = @"Stops_" + startDate.ToString("yyyy-MM-dd") + "_" + endDate.ToString("yyyy-MM-dd") + "+.xlsx";
+            string URL = string.Format("{0}://{1}/{2}", Request.Scheme, Request.Host, fileName);
+            FileInfo file = new FileInfo(Path.Combine(webRootPath, fileName));
+            var memoryStream = new MemoryStream();
+
+            // --- Below code would create excel file with dummy data----  
+            using (var fs = new FileStream(Path.Combine(webRootPath, fileName), FileMode.Create, FileAccess.Write))
+            {
+                stopsReport = stopsReport.OrderBy(m => m.JobNumer).ToList();
+                IWorkbook workbook = new XSSFWorkbook();
+                ISheet excelSheet = workbook.CreateSheet("Stops_" + startDate.ToString("yyyy-MM-dd") + "_"+ endDate.ToString("yyyy-MM-dd"));
+                int i = 0;
+                IRow row = excelSheet.CreateRow(i);
+                row.CreateCell(0).SetCellValue("Job #");
+                row.CreateCell(1).SetCellValue("PO");
+                row.CreateCell(2).SetCellValue("JobType");
+                row.CreateCell(3).SetCellValue("Week");
+                row.CreateCell(4).SetCellValue("Start");
+                row.CreateCell(5).SetCellValue("Stop");
+                row.CreateCell(6).SetCellValue("Reason1");
+                row.CreateCell(7).SetCellValue("Reason2");
+                row.CreateCell(8).SetCellValue("Reason3");
+                row.CreateCell(9).SetCellValue("Reason4");
+                row.CreateCell(10).SetCellValue("Reason5");
+                row.CreateCell(11).SetCellValue("Description");
+                row.CreateCell(12).SetCellValue("Critical");
+                row.CreateCell(13).SetCellValue("Station");
+                row.CreateCell(14).SetCellValue("Time on Stop");
+                row.CreateCell(15).SetCellValue("IsCompleted?");
+                row.CreateCell(16).SetCellValue("Technician");
+                i++;
+
+                foreach (StopsReport report in stopsReport)
+                {
+                    row = excelSheet.CreateRow(i);
+                    row.CreateCell(0).SetCellValue(report.JobNumer);
+                    row.CreateCell(1).SetCellValue(report.PO);
+                    row.CreateCell(2).SetCellValue(report.JobTypeName);
+                    row.CreateCell(3).SetCellValue(report.WeekNumber);
+                    row.CreateCell(4).SetCellValue(report.StartDate.ToString());
+                    row.CreateCell(5).SetCellValue(report.StopDate.ToString());
+                    row.CreateCell(6).SetCellValue(report.Reason1);
+                    row.CreateCell(7).SetCellValue(report.Reason2);
+                    row.CreateCell(8).SetCellValue(report.Reason3);
+                    row.CreateCell(9).SetCellValue(report.Reason4);
+                    row.CreateCell(10).SetCellValue(report.Reason5);
+                    row.CreateCell(11).SetCellValue(report.Description);
+                    row.CreateCell(12).SetCellValue(report.Critical);
+                    row.CreateCell(13).SetCellValue(report.StationName);
+                    row.CreateCell(14).SetCellValue(report.Elapsed);
+                    row.CreateCell(15).SetCellValue(report.isFinished);
+                    row.CreateCell(16).SetCellValue(report.TechFullName);
+
+                    i++;
+
+                }
+                workbook.Write(fs);
+            }
+            using (var fileStream = new FileStream(Path.Combine(webRootPath, fileName), FileMode.Open))
+            {
+                await fileStream.CopyToAsync(memoryStream);
+            }
+            memoryStream.Position = 0;
+            return File(memoryStream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+        }
+
 
         [HttpPost]
         public async Task<IActionResult> DailyReport(DateTime startDate)
         {
             if (startDate == null) startDate = DateTime.Now.AddDays(-1);
-
-            string webRootPath = _env.WebRootPath;
-            string fileName = @"DailyReport-" + startDate.ToString("yyyy-MM-dd") + ".xlsx";
-            string URL = string.Format("{0}://{1}/{2}", Request.Scheme, Request.Host, fileName);
-            FileInfo file = new FileInfo(Path.Combine(webRootPath, fileName));
-            var memoryStream = new MemoryStream();
 
             //-- Filtering the data with query params 
             List<DailyReport> dailyReports = new List<DailyReport>();
@@ -357,6 +482,11 @@ namespace ProdFloor.Controllers
                 dailyReports.Add(daily);
             }
 
+            string webRootPath = _env.WebRootPath;
+            string fileName = @"DailyReport-" + startDate.ToString("yyyy-MM-dd") + ".xlsx";
+            string URL = string.Format("{0}://{1}/{2}", Request.Scheme, Request.Host, fileName);
+            FileInfo file = new FileInfo(Path.Combine(webRootPath, fileName));
+            var memoryStream = new MemoryStream();
 
             // --- Below code would create excel file with dummy data----  
             using (var fs = new FileStream(Path.Combine(webRootPath, fileName), FileMode.Create, FileAccess.Write))
@@ -419,27 +549,6 @@ namespace ProdFloor.Controllers
                     i++;
 
                 }
-
-                /*
-                IRow row = excelSheet.CreateRow(0);
-                row.CreateCell(0).SetCellValue("PO");
-                row.CreateCell(1).SetCellValue("Station");
-                row.CreateCell(2).SetCellValue("Technican");
-
-                int index = 1;
-                foreach (TestJob  in testjobs)
-                {
-                    string station = stations.FirstOrDefault(m => m.StationID == testjob.StationID).Label;
-                    string userName = users.FirstOrDefault(m => m.EngID == testjob.TechnicianID).FullName;
-
-                    row = excelSheet.CreateRow(index);
-                    row.CreateCell(0).SetCellValue(testjob.SinglePO);
-                    row.CreateCell(1).SetCellValue(station);
-                    row.CreateCell(2).SetCellValue(userName);
-
-                    index++;
-                }
-                */
 
                 workbook.Write(fs);
             }

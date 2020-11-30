@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -232,6 +233,29 @@ namespace ProdFloor.Models
         //Auxiliaries fields
         public int AuxTechnicianID { get; set; }
         public int AuxStationID { get; set; }
+
+        // This presumes that weeks start with Monday.
+        // Week 1 is the 1st week of the year with a Thursday in it.
+
+        [NotMapped]
+        public int GetWeekOfYear
+        {
+            get {
+                // Seriously cheat.  If its Monday, Tuesday or Wednesday, then it'll 
+                // be the same week# as whatever Thursday, Friday or Saturday are,
+                // and we always get those right
+                DayOfWeek day = CultureInfo.InvariantCulture.Calendar.GetDayOfWeek(StartDate);
+                if (day >= DayOfWeek.Monday && day <= DayOfWeek.Wednesday)
+                {
+                    StartDate = StartDate.AddDays(3);
+                }
+
+                // Return the week of our adjusted day
+                return CultureInfo.InvariantCulture.Calendar.GetWeekOfYear(StartDate, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
+            }
+            
+        }
+
     }
 
     public class Station
@@ -273,6 +297,34 @@ namespace ProdFloor.Models
         public string EfficiencyColor { get; set; }
 
         public DateTime TodayDate { get; set; } = DateTime.Today;
+    }
+
+    [NotMapped]
+    public class StopsReport
+    {
+        public string Reason1 { get; set; }
+        public string Reason2 { get; set; }
+        public string Reason3 { get; set; }
+        public string Reason4 { get; set; }
+        public string Reason5 { get; set; }
+        public string StartDate { get; set; }
+        public string StopDate { get; set; }
+        public string Elapsed { get; set; }
+        public string Description { get; set; }
+        public bool Critical { get; set; }
+
+        //From other classes
+        public string StationName { get; set; }
+        public string TechFullName { get; set; }
+        public string JobTypeName { get; set; }
+        public int PO { get; set; }
+
+        public string JobNumer { get; set; }
+
+        //New Auxiliares
+        public int WeekNumber { get; set; }
+        public bool isFinished { get; set; }
+
     }
 
 }
