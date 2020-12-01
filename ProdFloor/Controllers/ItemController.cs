@@ -641,12 +641,13 @@ namespace ProdFloor.Controllers
                         //Overload Table
                         if (ViewModel.OverloadTable != null && ViewModel.OverloadTable != "N/A")
                         {
-                            if(ViewModel.StarterType == "YD")
+                            float FLAModified = 0;
+                            if (ViewModel.StarterType == "YD")
                             {
-                                ViewModel.FLA = (float)(ViewModel.FLA * 0.58);
+                                FLAModified = (float)(ViewModel.FLA * 0.58);
                             }
                             var OverLoadReg = OverloadReferSearch.FirstOrDefault(m => m.OverTableNum == Int32.Parse(ViewModel.OverloadTable)
-                            && m.AMPMin <= ViewModel.FLA && m.AMPMax >= ViewModel.FLA);
+                            && m.AMPMin <= FLAModified && m.AMPMax >= FLAModified);
                             ViewModel.MCPartOver = OverLoadReg.MCPart;
                             ViewModel.SiemensPart = OverLoadReg.SiemensPart;
                         }

@@ -93,12 +93,21 @@ namespace ProdFloor.Controllers
 
         public ViewResult Index(int page = 1)
         {
-            bool engineer = GetCurrentUserRole("EngAdmin").Result;
-            bool techAdmin = GetCurrentUserRole("TechAdmin").Result;
+            string roleName = "";
+            if (GetCurrentUserRole("EngAdmin").Result)
+                roleName = "Engineer";
+            else if (GetCurrentUserRole("TechAdmin").Result)
+                roleName = "Technician";
 
-            IEnumerable<AppUser> users = userManager.Users;
-            if (engineer) users = users.Where(m => m.EngID >= 1 && m.EngID <= 99);
-            if(techAdmin) users = users.Where(m => m.EngID >= 100 && m.EngID <= 299);
+            List<AppUser> users = new List<AppUser>();
+            foreach (var user in userManager.Users)
+            {
+                if (user != null
+                && GetCurrentUserRole(user, roleName).Result)
+                {
+                    users.Add(user);
+                }
+            }
 
             UsersListViewModel usersList = new UsersListViewModel
             {
@@ -127,7 +136,7 @@ namespace ProdFloor.Controllers
                 bool engineer = GetCurrentUserRole("EngAdmin").Result;
                 bool techAdmin = GetCurrentUserRole("TechAdmin").Result;
                 bool SameID = users.Any(m => m.EngID == model.EngineerID);
-                if(SameID == true && !techAdmin)
+                if (SameID == true && !techAdmin)
                 {
                     TempData["alert"] = $"alert-danger";
                     TempData["message"] = $"That EngID is already in use, please contact to your admin";
@@ -146,10 +155,11 @@ namespace ProdFloor.Controllers
                 {
                     if (engineer)
                     {
-                        result = await userManager.AddToRoleAsync(user,"Engineer");
+                        result = await userManager.AddToRoleAsync(user, "Engineer");
                         return RedirectToAction("EngineerAdminDashBoard", "Home");
 
-                    }else if (techAdmin)
+                    }
+                    else if (techAdmin)
                     {
                         IEnumerable<AppUser> technicians = userManager.Users;
                         technicians = technicians.Where(m => m.EngID >= 100 && m.EngID <= 299);
@@ -392,6 +402,14 @@ namespace ProdFloor.Controllers
         private async Task<bool> GetCurrentUserRole(string role)
         {
             AppUser user = await userManager.GetUserAsync(HttpContext.User);
+
+            bool isInRole = await userManager.IsInRoleAsync(user, role);
+
+            return isInRole;
+        }
+
+        private async Task<bool> GetCurrentUserRole(AppUser user, string role)
+        {
 
             bool isInRole = await userManager.IsInRoleAsync(user, role);
 
