@@ -1839,29 +1839,6 @@ namespace ProdFloor.Models
                     }
                 }
 
-            if (context.Jobs.Any() && !context.SpecialFeatures.Any())
-            {
-                List<Job> JobList = context.Jobs.ToList();
-                foreach (Job job in JobList)
-                {
-                    SpecialFeatures special = context.SpecialFeatures.FirstOrDefault(m => m.JobID == job.JobID);
-                    if (special == null)
-                    {
-                        context.SpecialFeatures.Add(new SpecialFeatures
-                        {
-                            JobID = job.JobID,
-                            Description = "Nulo"
-
-                        });
-                        context.SaveChanges();
-                    }
-                    else
-                    {
-                        continue;
-                    }
-                }
-            }
-
             if (context.Jobs.Any())
             {
                 List<Job> JobList = context.Jobs.ToList();
@@ -1877,6 +1854,25 @@ namespace ProdFloor.Models
                             Action = "",
                             Priority = 0,
                             ERDate = job.LatestFinishDate
+
+                        });
+                        context.SaveChanges();
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
+
+                foreach (Job job in JobList)
+                {
+                    SpecialFeatures special = context.SpecialFeatures.FirstOrDefault(m => m.JobID == job.JobID);
+                    if (special == null)
+                    {
+                        context.SpecialFeatures.Add(new SpecialFeatures
+                        {
+                            JobID = job.JobID,
+                            Description = "Nulo"
 
                         });
                         context.SaveChanges();

@@ -4859,16 +4859,6 @@ namespace ProdFloor.Controllers
                             }
                         }
                     }
-                    else
-                    {
-                        context.SpecialFeatures.Add(new SpecialFeatures
-                        {
-                            JobID = Int32.Parse(id),
-                            Description = null
-
-                        });
-                        context.SaveChanges();
-                    }
                 }
 
             }

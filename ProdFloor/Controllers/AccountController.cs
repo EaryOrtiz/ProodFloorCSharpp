@@ -93,20 +93,28 @@ namespace ProdFloor.Controllers
 
         public ViewResult Index(int page = 1)
         {
-            string roleName = "";
-            if (GetCurrentUserRole("EngAdmin").Result)
-                roleName = "Engineer";
-            else if (GetCurrentUserRole("TechAdmin").Result)
-                roleName = "Technician";
-
             List<AppUser> users = new List<AppUser>();
-            foreach (var user in userManager.Users)
+            string roleName = "";
+            if (GetCurrentUserRole("EngAdmin").Result
+                || GetCurrentUserRole("TechAdmin").Result)
             {
-                if (user != null
-                && GetCurrentUserRole(user, roleName).Result)
+                if (GetCurrentUserRole("EngAdmin").Result)
+                    roleName = "Engineer";
+                else if (GetCurrentUserRole("TechAdmin").Result)
+                    roleName = "Technician";
+
+                foreach (var user in userManager.Users)
                 {
-                    users.Add(user);
+                    if (user != null
+                    && GetCurrentUserRole(user, roleName).Result)
+                    {
+                        users.Add(user);
+                    }
                 }
+            }
+            else
+            {
+                users = userManager.Users.ToList();
             }
 
             UsersListViewModel usersList = new UsersListViewModel
