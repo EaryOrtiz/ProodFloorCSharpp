@@ -158,6 +158,21 @@ namespace ProdFloor.Controllers
                     EngID = model.EngineerID
                 };
 
+                if (techAdmin)
+                {
+                    IEnumerable<AppUser> technicians = userManager.Users;
+                    technicians = technicians.Where(m => m.EngID >= 100 && m.EngID <= 299);
+                    int MaxEngId = technicians.Select(m => m.EngID).Max();
+                    if (MaxEngId == 299)
+                    {
+                        TempData["alert"] = $"alert-danger";
+                        TempData["message"] = $"No EngId availables, please contact to your admin";
+                        return View(model);
+                    }
+                    else MaxEngId++;
+                    user.EngID = MaxEngId;
+                }
+
                 result = await userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -169,21 +184,10 @@ namespace ProdFloor.Controllers
                     }
                     else if (techAdmin)
                     {
-                        IEnumerable<AppUser> technicians = userManager.Users;
-                        technicians = technicians.Where(m => m.EngID >= 100 && m.EngID <= 299);
-                        int MaxEngId = technicians.Select(m => m.EngID).Max();
-                        if (MaxEngId == 299)
-                        {
-                            TempData["alert"] = $"alert-danger";
-                            TempData["message"] = $"No EngId availables, please contact to your admin";
-                            return View(model);
-                        }
-                        else MaxEngId++;
-                        user.EngID = MaxEngId;
                         result = await userManager.AddToRoleAsync(user, "Technician");
                         return RedirectToAction("Index", "Home");
                     }
-                    else return RedirectToAction("Index");
+                    return RedirectToAction("Index");
                 }
                 else
                 {

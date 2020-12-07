@@ -510,7 +510,16 @@ namespace ProdFloor.Controllers
                 ISheet excelSheet = workbook.CreateSheet("DailyReport-" + startDate.ToString("yyyy-MM-dd"));
                 List<TestStats> testStats = new List<TestStats>();
                 int i =  0;
-                foreach(JobType jobtype in jobTypes)
+
+                XSSFCellStyle myStyleGrey = (XSSFCellStyle)workbook.CreateCellStyle();
+                myStyleGrey.BorderBottom = BorderStyle.Medium;
+                myStyleGrey.BorderTop = BorderStyle.Medium;
+                myStyleGrey.BorderLeft = BorderStyle.Medium;
+                myStyleGrey.BorderRight = BorderStyle.Medium;
+                myStyleGrey.FillForegroundColor = HSSFColor.Grey25Percent.Index;
+                myStyleGrey.FillPattern = FillPattern.SolidForeground;
+
+                foreach (JobType jobtype in jobTypes)
                 {
                     DailyReport daily = dailyReports.First(m => m.JobTypeName == jobtype.Name);
 
@@ -574,6 +583,232 @@ namespace ProdFloor.Controllers
             memoryStream.Position = 0;
             return File(memoryStream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> EfficiencyReport(DateTime startDate, DateTime endDate)
+        {
+            if (startDate == null) startDate = DateTime.Now;
+            if (endDate == null) endDate = DateTime.Now;
+
+            //-- Filtering the data with query params 
+            List<EfficiencyReport> efficiencyReports = new List<EfficiencyReport>();
+            List<Station> stations = testingRepo.Stations.ToList();
+            List<JobType> jobTypes = itemRepository.JobTypes.Where(m => m.Name != "M3000").ToList();
+            IQueryable<Stop> stops = testingRepo.Stops;
+            IQueryable<TestJob> testjobsCompleted = testingRepo.TestJobs.Where(m => m.Status == "Completed" && m.StartDate >= startDate && m.CompletedDate <= endDate).OrderBy(m => m.StartDate);
+            List<Step> StepsListInfo = testingRepo.Steps.ToList();
+            IQueryable<Job> jobsForTestJobs = jobRepo.Jobs;
+            IQueryable<Reason1> reasons1 = testingRepo.Reasons1;
+            List<AppUser> users = new List<AppUser>();
+            foreach (var user in userManager.Users)
+            {
+                if (user != null
+                && GetCurrentUserRole(user, "Technician").Result)
+                {
+                    users.Add(user);
+                }
+            }
+            List<TestJob> testJobs = testjobsCompleted
+                .Where(m => users.Any(n => n.EngID == m.TechnicianID) ).ToList();
+
+            //Filling the EffiencyReport
+            foreach (AppUser user in users)
+            {
+                List<TestJobEfficiency> testJobEfficiencies = new List<TestJobEfficiency>(); 
+                EfficiencyReport efficiencyReport = new EfficiencyReport();
+                efficiencyReport.TechName = user.FullName;
+                double AvgEffSUM = 0;
+                int percentageMoreThan50 = 0;
+
+                foreach (TestJob testJob in testJobs)
+                {
+                    TestJobEfficiency testJobEff = new TestJobEfficiency();
+                    List<StepsForJob> stepsForJobByUser = testingRepo.StepsForJobs
+                        .Where(m => m.AuxTechnicianID == user.EngID)
+                        .Where(m => m.TestJobID == testJob.TestJobID)
+                        .ToList();
+
+                    int stepsCounted = stepsForJobByUser.Count();
+
+                    if (stepsCounted == 0)
+                        continue;
+
+                    double totalTimeOnJob = 0;
+                    double effPerStepSUM = 0;
+                    List<StepsForJob> totalStepsForJob = testingRepo.StepsForJobs
+                        .Where(m => m.TestJobID == testJob.TestJobID)
+                        .ToList();
+
+                    foreach(StepsForJob step in totalStepsForJob)
+                    {
+                        totalTimeOnJob += ToHours(step.Elapsed);
+                    }
+
+                    foreach (StepsForJob step in stepsForJobByUser)
+                    {
+                        testJobEff.ElapsedTimePerTech += ToHours(step.Elapsed);
+
+                        double elapsed = ToHours(step.Elapsed);
+                        double expected = ToHours(StepsListInfo.First(m => m.StepID == step.StepID).ExpectedTime);
+
+                        double effPerStep = (elapsed / expected) * 100;
+
+                        effPerStepSUM *= effPerStep <= 100 ? effPerStep : 100;
+                    }
+
+                    Job featuresFromJob = jobsForTestJobs.FirstOrDefault(m => m.JobID == testJob.JobID);
+                    List<Stop> stopsForTestjob = stops
+                        .Where(m => m.TestJobID == testJob.TestJobID)
+                        .Where(m => m.AuxTechnicianID == user.EngID)
+                        .ToList();
+
+                    foreach(Stop stop in stopsForTestjob)
+                    {
+                        string R1 = reasons1.First(m => m.Reason1ID == stop.Reason1).Description;
+                        string elapsed = "Time: " + (stop.Elapsed.Day - 1).ToString() + ":" + stop.Elapsed.Hour.ToString() + ":" + stop.Elapsed.Minute.ToString() + ":" + stop.Elapsed.Second.ToString();
+
+                        testJobEff.StopsReasons.Concat(R1 + elapsed + ", ");
+                        testJobEff.TimeAtStops += ToHours(stop.Elapsed);
+                    }
+
+                    testJobEff.StationName = stations.FirstOrDefault(m => m.StationID == testJob.StationID).Label;
+                    testJobEff.JobTypeName = jobTypes.FirstOrDefault(m => m.JobTypeID == featuresFromJob.JobTypeID).Name;
+                    testJobEff.JobNumer  = featuresFromJob.JobNum.Remove(0, 5);
+                    testJobEff.PO = testJob.SinglePO;
+                    testJobEff.StopsCounted = stopsForTestjob.Count();
+                    testJobEff.PercentagePerTech = (testJobEff.ElapsedTimePerTech / totalTimeOnJob) * 100;
+                    testJobEff.EfficiencyPerTech = (effPerStepSUM / stepsCounted);
+
+                    testJobEfficiencies.Add(testJobEff);
+
+                    if(testJobEff.PercentagePerTech > 50)
+                    {
+                        AvgEffSUM += testJobEff.EfficiencyPerTech;
+                        percentageMoreThan50++;
+                    }
+                }
+
+
+                efficiencyReport.AverageEff = percentageMoreThan50 > 0 ? (AvgEffSUM / percentageMoreThan50) : percentageMoreThan50;
+                efficiencyReports.Add(efficiencyReport);
+            }
+
+
+            string webRootPath = _env.WebRootPath;
+            string fileName = @"Stops_" + startDate.ToString("yyyy-MM-dd") + "_" + endDate.ToString("yyyy-MM-dd") + "+.xlsx";
+            string URL = string.Format("{0}://{1}/{2}", Request.Scheme, Request.Host, fileName);
+            FileInfo file = new FileInfo(Path.Combine(webRootPath, fileName));
+            var memoryStream = new MemoryStream();
+
+            // --- Below code would create excel file with dummy data----  
+            using (var fs = new FileStream(Path.Combine(webRootPath, fileName), FileMode.Create, FileAccess.Write))
+            {
+                efficiencyReports = efficiencyReports.OrderBy(m => m.TechName).ToList();
+                IWorkbook workbook = new XSSFWorkbook();
+                ISheet excelSheet = workbook.CreateSheet("Stops_" + startDate.ToString("yyyy-MM-dd") + "_" + endDate.ToString("yyyy-MM-dd"));
+                int i = 0;
+
+                foreach(EfficiencyReport report in efficiencyReports)
+                {
+                    IRow row = excelSheet.CreateRow(i);
+                    row.CreateCell(0).SetCellValue("Tech: ");
+                    row.CreateCell(1).SetCellValue(report.TechName);
+                    row.CreateCell(2).SetCellValue("");
+                    row.CreateCell(3).SetCellValue("");
+                    row.CreateCell(4).SetCellValue("");
+                    row.CreateCell(5).SetCellValue("");
+                    row.CreateCell(6).SetCellValue("");
+                    row.CreateCell(7).SetCellValue("");
+                    row.CreateCell(8).SetCellValue("Average Eff: ");
+                    row.CreateCell(9).SetCellValue(report.AverageEff);
+                    i++;
+
+                    row = excelSheet.CreateRow(i);
+                    row.CreateCell(0).SetCellValue("Job No.");
+                    row.CreateCell(1).SetCellValue("Job Type");
+                    row.CreateCell(2).SetCellValue("PO");
+                    row.CreateCell(3).SetCellValue("Percentage");
+                    row.CreateCell(4).SetCellValue("Elapsed Time");
+                    row.CreateCell(5).SetCellValue("Effiency");
+                    row.CreateCell(6).SetCellValue("Station");
+                    row.CreateCell(7).SetCellValue("No. Stops");
+                    row.CreateCell(8).SetCellValue("Time At Stops");
+                    row.CreateCell(9).SetCellValue("Stop(s) Reason(s)");
+                    i++;
+
+                    try
+                    {
+                        if (report.testJobEfficiencies == null)
+                        {
+                            row = excelSheet.CreateRow(i);
+                            row.CreateCell(0).SetCellValue("");
+                            row.CreateCell(1).SetCellValue("");
+                            row.CreateCell(2).SetCellValue("");
+                            row.CreateCell(3).SetCellValue("");
+                            row.CreateCell(4).SetCellValue("");
+                            row.CreateCell(5).SetCellValue("");
+                            row.CreateCell(6).SetCellValue("");
+                            row.CreateCell(7).SetCellValue("");
+                            row.CreateCell(8).SetCellValue("");
+                            row.CreateCell(9).SetCellValue("");
+                            i++;
+                            continue;
+                        }
+
+                    }
+                    catch { }
+
+
+                    foreach (TestJobEfficiency reportDetails in report.testJobEfficiencies)
+                    {
+                        row = excelSheet.CreateRow(i);
+                        row.CreateCell(0).SetCellValue(reportDetails.JobNumer);
+                        row.CreateCell(1).SetCellValue(reportDetails.PO);
+                        row.CreateCell(2).SetCellValue(reportDetails.JobTypeName);
+                        row.CreateCell(3).SetCellValue(reportDetails.PercentagePerTech);
+                        row.CreateCell(4).SetCellValue(reportDetails.ElapsedTimePerTech);
+                        row.CreateCell(5).SetCellValue(reportDetails.EfficiencyPerTech);
+                        row.CreateCell(6).SetCellValue(reportDetails.StationName);
+                        row.CreateCell(7).SetCellValue(reportDetails.StopsCounted);
+                        row.CreateCell(8).SetCellValue(reportDetails.TimeAtStops);
+                        row.CreateCell(9).SetCellValue(reportDetails.StopsReasons);
+
+                        i++;
+
+                    }
+
+                    row = excelSheet.CreateRow(i);
+                    row.CreateCell(0).SetCellValue("");
+                    row.CreateCell(1).SetCellValue("");
+                    row.CreateCell(2).SetCellValue("");
+                    row.CreateCell(3).SetCellValue("");
+                    row.CreateCell(4).SetCellValue("");
+                    row.CreateCell(5).SetCellValue("");
+                    row.CreateCell(6).SetCellValue("");
+                    row.CreateCell(7).SetCellValue("");
+                    row.CreateCell(8).SetCellValue("");
+                    row.CreateCell(9).SetCellValue("");
+                    i++;
+                }
+
+                workbook.Write(fs);
+            }
+            using (var fileStream = new FileStream(Path.Combine(webRootPath, fileName), FileMode.Open))
+            {
+                await fileStream.CopyToAsync(memoryStream);
+            }
+            memoryStream.Position = 0;
+            return File(memoryStream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+        }
+
+        private async Task<bool> GetCurrentUserRole(AppUser user, string role)
+        {
+
+            bool isInRole = await userManager.IsInRoleAsync(user, role);
+
+            return isInRole;
+        }
+
 
         public double ToHours(DateTime date)
         {

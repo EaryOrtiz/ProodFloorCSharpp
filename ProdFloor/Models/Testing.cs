@@ -327,4 +327,38 @@ namespace ProdFloor.Models
 
     }
 
+    [NotMapped]
+    public class TestJobEfficiency
+    {
+       
+        public string JobNumer { get; set; }
+
+        public string JobTypeName { get; set; }
+
+        public int PO { get; set; }
+
+        public double PercentagePerTech { get; set; }
+
+        public double ElapsedTimePerTech { get; set; }
+
+        public double EfficiencyPerTech { get; set; }
+
+        public string StationName { get; set; }
+
+        public int StopsCounted  { get; set; }
+
+        public double TimeAtStops { get; set; }
+
+        public string StopsReasons { get; set; }
+    }
+
+    [NotMapped]
+    public class EfficiencyReport
+    {
+        public string TechName { get; set; }
+        public double AverageEff { get; set; }
+
+        public List<TestJobEfficiency> testJobEfficiencies { get; set; }
+    }
+
 }
