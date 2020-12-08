@@ -196,7 +196,7 @@ namespace ProdFloor.Controllers
 
                         if (_jobSearch != null && _jobSearch.Status != "Incomplete")
                         {
-                            TestJob testJobAu = testingRepo.TestJobs.FirstOrDefault(m => m.JobID == onePO.JobID);
+                            TestJob testJobAu = testingRepo.TestJobs.FirstOrDefault(m => m.SinglePO == onePO.PONumb);
                             if (testJobAu != null || _jobSearch.Contractor == "Fake")
                             {
                                 TempData["alert"] = $"alert-danger";

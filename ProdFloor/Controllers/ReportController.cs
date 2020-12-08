@@ -42,6 +42,7 @@ namespace ProdFloor.Controllers
 
         public IActionResult Index(ReportsViewModel viewModel)
         {
+            #region TestStats
             viewModel.TestStatsList = new List<TestStats>();
             List<TestJob> ActiveTestJobs = testingRepo.TestJobs.Where(m => m.Status != "Completed" && m.Status != "Deleted").ToList();
 
@@ -193,6 +194,11 @@ namespace ProdFloor.Controllers
                 ViewData["TV"] = "Simontl";
                 viewModel.TestStatsList.Add(testStats);
             }
+            #endregion
+
+            #region DailyReports
+            viewModel.dailyReports = GetDailyReports(DateTime.Now.AddDays(-1));
+            #endregion
 
             return View(viewModel);
         }
@@ -809,7 +815,106 @@ namespace ProdFloor.Controllers
             return isInRole;
         }
 
+        public List<DailyReport> GetDailyReports(DateTime startDate)
+        {
+            if (startDate == null || startDate.Day == DateTime.Now.Day) startDate = DateTime.Now.AddDays(-1);
 
+            //-- Filtering the data with query params 
+            List<DailyReport> dailyReports = new List<DailyReport>();
+            List<TestStats> testStatsM2000 = new List<TestStats>();
+            List<TestStats> testStatsM4000 = new List<TestStats>();
+            List<TestStats> testStatsTraction = new List<TestStats>();
+            List<TestStats> testStatsHydro = new List<TestStats>();
+            List<Step> StepsListInfo = testingRepo.Steps.ToList();
+            List<Station> Stations = testingRepo.Stations.ToList();
+            List<JobType> jobTypes = itemRepository.JobTypes.Where(m => m.Name != "M3000").ToList();
+            IQueryable<AppUser> users = userManager.Users;
+            IQueryable<TestJob> testjobsCompleted = testingRepo.TestJobs.Where(m => m.Status == "Completed" && m.CompletedDate.ToShortDateString() == startDate.ToShortDateString());
+            IQueryable<Job> jobsForTestJobs = jobRepo.Jobs.Where(m => testjobsCompleted.Any(n => n.JobID == m.JobID));
+
+
+            //Filling daily and textsts list by jobtype
+            foreach (JobType jobtype in jobTypes)
+            {
+                string efficiencyColor = "grey";
+                int testJobsCounted = 0;
+                int totalEfficiency = 0;
+
+                IQueryable<Job> jobs = jobsForTestJobs.Where(m => m.JobTypeID == jobtype.JobTypeID);
+                IQueryable<TestJob> testjobs = testjobsCompleted.Where(m => jobs.Any(n => n.JobID == m.JobID));
+
+                foreach (TestJob testjob in testjobs)
+                {
+                    Job FeaturesFromJob = jobs.FirstOrDefault(m => m.JobID == testjob.JobID);
+                    List<StepsForJob> stepsForJob = testingRepo.StepsForJobs.Where(m => m.TestJobID == testjob.TestJobID && m.Obsolete == false)
+                                                                         .Where(m => m.Complete == true)
+                                                                         .OrderBy(n => n.Consecutivo).ToList();
+
+                    string jobNum = FeaturesFromJob.JobNum.Remove(0, 5);
+                    string techName = users.FirstOrDefault(m => m.EngID == testjob.TechnicianID).FullName;
+                    string stationName = Stations.FirstOrDefault(m => m.StationID == testjob.StationID).Label;
+                    double expectedTimeSUM = 0;
+                    double realTimeSUM = 0;
+                    double efficiency = 0;
+
+                    foreach (StepsForJob step in stepsForJob)
+                    {
+                        expectedTimeSUM += ToHours(StepsListInfo.FirstOrDefault(m => m.StepID == step.StepID).ExpectedTime);
+
+                        realTimeSUM += ToHours(step.Elapsed);
+                    }
+
+                    efficiency = Math.Round((expectedTimeSUM / realTimeSUM) * 100);
+                    if (efficiency > 99) efficiency = 99;
+                    totalEfficiency = (int)(totalEfficiency + efficiency);
+                    testJobsCounted++;
+
+
+                    TestStats testStat = new TestStats
+                    {
+                        JobNumer = jobNum,
+                        TechName = techName,
+                        Station = stationName,
+                        Efficiency = efficiency
+                    };
+
+                    switch (jobtype.Name)
+                    {
+                        case "M2000":
+                            testStatsM2000.Add(testStat);
+                            break;
+                        case "M4000":
+                            testStatsM4000.Add(testStat);
+                            break;
+                        case "ElmHydro":
+                            testStatsHydro.Add(testStat);
+                            break;
+                        case "ElmTract":
+                            testStatsTraction.Add(testStat);
+                            break;
+                    }
+                }
+
+                if (testJobsCounted > 0) totalEfficiency = totalEfficiency / testJobsCounted;
+
+                if (totalEfficiency > 99) totalEfficiency = 99;
+                if (totalEfficiency >= 80) efficiencyColor = "green";
+                else if (totalEfficiency >= 60) efficiencyColor = "yellow";
+                else if (totalEfficiency > 0) efficiencyColor = "red";
+
+                DailyReport daily = new DailyReport
+                {
+                    JobTypeName = jobtype.Name,
+                    TestJobsCounted = testJobsCounted,
+                    TotalEfficiency = totalEfficiency,
+                    EfficiencyColor = efficiencyColor,
+                };
+
+                dailyReports.Add(daily);
+            }
+
+            return dailyReports;
+        }
         public double ToHours(DateTime date)
         {
             double totalTime = 0;
