@@ -269,7 +269,7 @@ namespace ProdFloor.Controllers
 
 
             string webRootPath = _env.WebRootPath;
-            string fileName = @"Stops_" + startDate.ToString("yyyy-MM-dd") + "_" + endDate.ToString("yyyy-MM-dd") + "+.xlsx";
+            string fileName = @"Stops_" + startDate.ToString("yyyy-MM-dd") + "_" + endDate.ToString("yyyy-MM-dd") + ".xlsx";
             string URL = string.Format("{0}://{1}/{2}", Request.Scheme, Request.Host, fileName);
             FileInfo file = new FileInfo(Path.Combine(webRootPath, fileName));
             var memoryStream = new MemoryStream();
@@ -346,6 +346,9 @@ namespace ProdFloor.Controllers
                 await fileStream.CopyToAsync(memoryStream);
             }
             memoryStream.Position = 0;
+            if (System.IO.File.Exists(Path.Combine(webRootPath, fileName)))
+                System.IO.File.Delete(Path.Combine(webRootPath, fileName));
+
             return File(memoryStream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
         }
 
@@ -443,6 +446,9 @@ namespace ProdFloor.Controllers
                 await fileStream.CopyToAsync(memoryStream);
             }
             memoryStream.Position = 0;
+            if (System.IO.File.Exists(Path.Combine(webRootPath, fileName)))
+                System.IO.File.Delete(Path.Combine(webRootPath, fileName));
+
             return File(memoryStream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
         }
 
@@ -453,7 +459,7 @@ namespace ProdFloor.Controllers
             List<EfficiencyReport> efficiencyReports = GetEfficiencyReports(startDate, endDate);
 
             string webRootPath = _env.WebRootPath;
-            string fileName = @"Stops_" + startDate.ToString("yyyy-MM-dd") + "_" + endDate.ToString("yyyy-MM-dd") + ".xlsx";
+            string fileName = @"Efficiency_" + startDate.ToString("yyyy-MM-dd") + "_" + endDate.ToString("yyyy-MM-dd") + ".xlsx";
             string URL = string.Format("{0}://{1}/{2}", Request.Scheme, Request.Host, fileName);
             FileInfo file = new FileInfo(Path.Combine(webRootPath, fileName));
             var memoryStream = new MemoryStream();
@@ -463,7 +469,7 @@ namespace ProdFloor.Controllers
             {
                 efficiencyReports = efficiencyReports.OrderBy(m => m.TechName).ToList();
                 IWorkbook workbook = new XSSFWorkbook();
-                ISheet excelSheet = workbook.CreateSheet("Stops_" + startDate.ToString("yyyy-MM-dd") + "_" + endDate.ToString("yyyy-MM-dd"));
+                ISheet excelSheet = workbook.CreateSheet("Efficiency_" + startDate.ToString("yyyy-MM-dd") + "_" + endDate.ToString("yyyy-MM-dd"));
                 int i = 0;
 
                 foreach(EfficiencyReport report in efficiencyReports)
@@ -556,6 +562,10 @@ namespace ProdFloor.Controllers
                 await fileStream.CopyToAsync(memoryStream);
             }
             memoryStream.Position = 0;
+
+            if (System.IO.File.Exists(Path.Combine(webRootPath, fileName)))
+                System.IO.File.Delete(Path.Combine(webRootPath, fileName));
+
             return File(memoryStream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
         }
 
