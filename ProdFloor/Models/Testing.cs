@@ -297,6 +297,8 @@ namespace ProdFloor.Models
         public string EfficiencyColor { get; set; }
 
         public DateTime TodayDate { get; set; } = DateTime.Today;
+
+        public List<TestStats> TestStats { get; set; }
     }
 
     [NotMapped]

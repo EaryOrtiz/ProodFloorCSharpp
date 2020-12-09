@@ -263,64 +263,9 @@ namespace ProdFloor.Controllers
         [HttpPost]
         public async Task<IActionResult> StopsReport(DateTime startDate, DateTime endDate)
         {
-            if (startDate == null) startDate = DateTime.Now;
-            if (endDate == null) endDate = DateTime.Now;
 
             //-- Filtering the data with query params 
-            List<StopsReport> stopsReport = new List<StopsReport>();
-            List<Station> stations = testingRepo.Stations.ToList();
-            List<JobType> jobTypes = itemRepository.JobTypes.Where(m => m.Name != "M3000").ToList();
-            IQueryable<Stop> stops = testingRepo.Stops.Where(m => m.StartDate >= startDate && m.StopDate <= endDate).OrderBy(m => m.StartDate);
-            IQueryable<TestJob> testjobs = testingRepo.TestJobs.Where(m => stops.Any(n => n.TestJobID == m.TestJobID));
-            IQueryable<Job> jobsForTestJobs = jobRepo.Jobs.Where(m => testjobs.Any(n => n.JobID == m.JobID));
-            IQueryable<AppUser> users = userManager.Users;
-            IQueryable<Reason1> reasons1 = testingRepo.Reasons1;
-            IQueryable<Reason2> reasons2 = testingRepo.Reasons2;
-            IQueryable<Reason3> reasons3 = testingRepo.Reasons3;
-            IQueryable<Reason4> reasons4 = testingRepo.Reasons4;
-            IQueryable<Reason5> reasons5 = testingRepo.Reasons5;
-
-            //Filling the StopsRpeort List
-
-            foreach (Stop stop in stops)
-            {
-
-                string technician = users.FirstOrDefault(m => m.EngID == stop.AuxTechnicianID).FullName;
-                Station station = stations.FirstOrDefault(m => m.StationID == stop.AuxStationID);
-                TestJob testJob = testjobs.FirstOrDefault(m => m.TestJobID == stop.TestJobID);
-                Job featuresFromJob = jobsForTestJobs.FirstOrDefault(m => m.JobID == testJob.JobID);
-                JobType jobType = jobTypes.FirstOrDefault(m => m.JobTypeID == featuresFromJob.JobTypeID);
-                string reason1 = reasons1.FirstOrDefault(m => m.Reason1ID == stop.Reason1).Description;
-                string reason2 = stop.Reason2 == 0 ? "N/A" : reasons2.FirstOrDefault(m => m.Reason2ID == stop.Reason2).Description;
-                string reason3 = stop.Reason3 == 0 ? "N/A" : reasons3.FirstOrDefault(m => m.Reason3ID == stop.Reason3).Description;
-                string reason4 = stop.Reason4 == 0 ? "N/A" : reasons4.FirstOrDefault(m => m.Reason4ID == stop.Reason4).Description;
-                string reason5 = stop.Reason5ID == 0 ? "N/A" : reasons5.FirstOrDefault(m => m.Reason5ID == stop.Reason5ID).Description;
-                bool isStopFinished = stop.Reason5ID == 0 ? false : true;
-                string elapsed = (stop.Elapsed.Day - 1 ).ToString() + ":" + stop.Elapsed.Hour.ToString() + ":" + stop.Elapsed.Minute.ToString() + ":" + stop.Elapsed.Second.ToString();
-
-                StopsReport report = new StopsReport
-                {
-                    JobNumer = featuresFromJob.JobNum.Remove(0, 5),
-                    PO = testJob.SinglePO,
-                    JobTypeName = jobType.Name,
-                    WeekNumber = stop.GetWeekOfYear,
-                    StartDate = stop.StartDate.ToString(),
-                    StopDate = stop.StopDate.ToString(),
-                    Reason1 = reason1,
-                    Reason2 = reason2,
-                    Reason3 = reason3,
-                    Reason4 = reason4,
-                    Reason5 = reason5,
-                    Description = stop.Description,
-                    Critical = stop.Critical,
-                    StationName = station.Label,
-                    Elapsed = elapsed,
-                    isFinished = isStopFinished,
-                    TechFullName = technician
-                };
-
-                stopsReport.Add(report);
-            }
+            List<StopsReport> stopsReport = GetStopsReport(startDate, endDate);
 
 
             string webRootPath = _env.WebRootPath;
@@ -411,97 +356,7 @@ namespace ProdFloor.Controllers
             if (startDate == null) startDate = DateTime.Now.AddDays(-1);
 
             //-- Filtering the data with query params 
-            List<DailyReport> dailyReports = new List<DailyReport>();
-            List<TestStats> testStatsM2000 = new List<TestStats>();
-            List<TestStats> testStatsM4000 = new List<TestStats>();
-            List<TestStats> testStatsTraction = new List<TestStats>();
-            List<TestStats> testStatsHydro = new List<TestStats>();
-            List<Step> StepsListInfo = testingRepo.Steps.ToList();
-            List<Station> Stations = testingRepo.Stations.ToList();
-            List<JobType> jobTypes = itemRepository.JobTypes.Where(m => m.Name != "M3000").ToList();
-            IQueryable<AppUser> users = userManager.Users;
-            IQueryable<TestJob> testjobsCompleted = testingRepo.TestJobs.Where(m => m.Status == "Completed" && m.CompletedDate.ToShortDateString() == startDate.ToShortDateString());
-            IQueryable<Job> jobsForTestJobs = jobRepo.Jobs.Where(m => testjobsCompleted.Any(n => n.JobID == m.JobID));
-
-
-            //Filling daily and textsts list by jobtype
-            foreach(JobType jobtype in jobTypes)
-            {
-                string efficiencyColor = "grey";
-                int testJobsCounted = 0;
-                int totalEfficiency = 0;
-
-                IQueryable<Job> jobs = jobsForTestJobs.Where(m => m.JobTypeID == jobtype.JobTypeID);
-                IQueryable<TestJob> testjobs = testjobsCompleted.Where(m => jobs.Any(n => n.JobID == m.JobID));
-
-                foreach (TestJob testjob in testjobs)
-                {
-                    Job FeaturesFromJob = jobs.FirstOrDefault(m => m.JobID == testjob.JobID);
-                    List<StepsForJob> stepsForJob = testingRepo.StepsForJobs.Where(m => m.TestJobID == testjob.TestJobID && m.Obsolete == false)
-                                                                         .Where(m => m.Complete == true)
-                                                                         .OrderBy(n => n.Consecutivo).ToList();
-
-                    string jobNum = FeaturesFromJob.JobNum.Remove(0, 5);
-                    string techName = users.FirstOrDefault(m => m.EngID == testjob.TechnicianID).FullName;
-                    string stationName = Stations.FirstOrDefault(m => m.StationID == testjob.StationID).Label;
-                    double expectedTimeSUM = 0;
-                    double realTimeSUM = 0;
-                    double efficiency = 0;
-
-                    foreach (StepsForJob step in stepsForJob)
-                    {
-                        expectedTimeSUM += ToHours(StepsListInfo.FirstOrDefault(m => m.StepID == step.StepID).ExpectedTime);
-
-                        realTimeSUM += ToHours(step.Elapsed);
-                    }
-
-                    efficiency = Math.Round((expectedTimeSUM / realTimeSUM) * 100);
-                    if (efficiency > 99) efficiency = 99;
-                    totalEfficiency =  (int) (totalEfficiency + efficiency);
-                    testJobsCounted++;
-
-
-                    TestStats testStat = new TestStats
-                    {
-                        JobNumer = jobNum,
-                        TechName = techName,
-                        Station = stationName,
-                        Efficiency = efficiency
-                    };
-
-                    switch (jobtype.Name)
-                    {
-                        case "M2000": testStatsM2000.Add(testStat);
-                            break;
-                        case "M4000":
-                            testStatsM4000.Add(testStat);
-                            break;
-                        case "ElmHydro":
-                            testStatsHydro.Add(testStat);
-                            break;
-                        case "ElmTract":
-                            testStatsTraction.Add(testStat);
-                            break;
-                    }
-                }
-
-                if(testJobsCounted > 0) totalEfficiency = totalEfficiency / testJobsCounted;
-
-                if (totalEfficiency > 99) totalEfficiency = 99;
-                if (totalEfficiency >= 80) efficiencyColor = "green";
-                else if (totalEfficiency >= 60) efficiencyColor = "yellow";
-                else if (totalEfficiency > 0) efficiencyColor = "red";
-
-                DailyReport daily = new DailyReport
-                {
-                    JobTypeName = jobtype.Name,
-                    TestJobsCounted = testJobsCounted,
-                    TotalEfficiency = totalEfficiency,
-                    EfficiencyColor = efficiencyColor,
-                };
-
-                dailyReports.Add(daily);
-            }
+            List<DailyReport> dailyReports = GetDailyReports(startDate);
 
             string webRootPath = _env.WebRootPath;
             string fileName = @"DailyReport-" + startDate.ToString("yyyy-MM-dd") + ".xlsx";
@@ -525,9 +380,8 @@ namespace ProdFloor.Controllers
                 myStyleGrey.FillForegroundColor = HSSFColor.Grey25Percent.Index;
                 myStyleGrey.FillPattern = FillPattern.SolidForeground;
 
-                foreach (JobType jobtype in jobTypes)
+                foreach (DailyReport daily in dailyReports)
                 {
-                    DailyReport daily = dailyReports.First(m => m.JobTypeName == jobtype.Name);
 
                     IRow row = excelSheet.CreateRow(i);
                     row.CreateCell(0).SetCellValue("JobTypeName: " + daily.JobTypeName);
@@ -536,21 +390,7 @@ namespace ProdFloor.Controllers
                     row.CreateCell(3).SetCellValue("TotalEfficiency: " + daily.TotalEfficiency.ToString());
                     i++;
 
-                    switch (jobtype.Name)
-                    {
-                        case "M2000":
-                            testStats = testStatsM2000;
-                            break;
-                        case "M4000":
-                            testStats = testStatsM4000;
-                            break;
-                        case "ElmHydro":
-                            testStats = testStatsHydro;
-                            break;
-                        case "ElmTract":
-                            testStats = testStatsTraction;
-                            break;
-                    }
+             
 
                     row = excelSheet.CreateRow(i);
                     row.CreateCell(0).SetCellValue("JobNumer");
@@ -560,7 +400,23 @@ namespace ProdFloor.Controllers
 
                     i++;
 
-                    foreach (TestStats stats in testStats)
+                    try
+                    {
+                        if (daily.TestStats == null)
+                        {
+                            row = excelSheet.CreateRow(i);
+                            row.CreateCell(0).SetCellValue("");
+                            row.CreateCell(1).SetCellValue("");
+                            row.CreateCell(2).SetCellValue("");
+                            row.CreateCell(3).SetCellValue("");
+                            i++;
+                            continue;
+                        }
+
+                    }
+                    catch { }
+
+                    foreach (TestStats stats in daily.TestStats)
                     {
                         row = excelSheet.CreateRow(i);
                         row.CreateCell(0).SetCellValue(stats.JobNumer);
@@ -593,115 +449,11 @@ namespace ProdFloor.Controllers
         [HttpPost]
         public async Task<IActionResult> EfficiencyReport(DateTime startDate, DateTime endDate)
         {
-            if (startDate == null) startDate = DateTime.Now;
-            if (endDate == null) endDate = DateTime.Now;
-
             //-- Filtering the data with query params 
-            List<EfficiencyReport> efficiencyReports = new List<EfficiencyReport>();
-            List<Station> stations = testingRepo.Stations.ToList();
-            List<JobType> jobTypes = itemRepository.JobTypes.Where(m => m.Name != "M3000").ToList();
-            IQueryable<Stop> stops = testingRepo.Stops;
-            IQueryable<TestJob> testjobsCompleted = testingRepo.TestJobs.Where(m => m.Status == "Completed" && m.StartDate >= startDate && m.CompletedDate <= endDate).OrderBy(m => m.StartDate);
-            List<Step> StepsListInfo = testingRepo.Steps.ToList();
-            IQueryable<Job> jobsForTestJobs = jobRepo.Jobs;
-            IQueryable<Reason1> reasons1 = testingRepo.Reasons1;
-            List<AppUser> users = new List<AppUser>();
-            foreach (var user in userManager.Users)
-            {
-                if (user != null
-                && GetCurrentUserRole(user, "Technician").Result)
-                {
-                    users.Add(user);
-                }
-            }
-            List<TestJob> testJobs = testjobsCompleted
-                .Where(m => users.Any(n => n.EngID == m.TechnicianID) ).ToList();
-
-            //Filling the EffiencyReport
-            foreach (AppUser user in users)
-            {
-                List<TestJobEfficiency> testJobEfficiencies = new List<TestJobEfficiency>(); 
-                EfficiencyReport efficiencyReport = new EfficiencyReport();
-                efficiencyReport.TechName = user.FullName;
-                double AvgEffSUM = 0;
-                int percentageMoreThan50 = 0;
-
-                foreach (TestJob testJob in testJobs)
-                {
-                    TestJobEfficiency testJobEff = new TestJobEfficiency();
-                    List<StepsForJob> stepsForJobByUser = testingRepo.StepsForJobs
-                        .Where(m => m.AuxTechnicianID == user.EngID)
-                        .Where(m => m.TestJobID == testJob.TestJobID)
-                        .ToList();
-
-                    int stepsCounted = stepsForJobByUser.Count();
-
-                    if (stepsCounted == 0)
-                        continue;
-
-                    double totalTimeOnJob = 0;
-                    double effPerStepSUM = 0;
-                    List<StepsForJob> totalStepsForJob = testingRepo.StepsForJobs
-                        .Where(m => m.TestJobID == testJob.TestJobID)
-                        .ToList();
-
-                    foreach(StepsForJob step in totalStepsForJob)
-                    {
-                        totalTimeOnJob += ToHours(step.Elapsed);
-                    }
-
-                    foreach (StepsForJob step in stepsForJobByUser)
-                    {
-                        testJobEff.ElapsedTimePerTech += ToHours(step.Elapsed);
-
-                        double elapsed = ToHours(step.Elapsed);
-                        double expected = ToHours(StepsListInfo.First(m => m.StepID == step.StepID).ExpectedTime);
-
-                        double effPerStep = (elapsed / expected) * 100;
-
-                        effPerStepSUM *= effPerStep <= 100 ? effPerStep : 100;
-                    }
-
-                    Job featuresFromJob = jobsForTestJobs.FirstOrDefault(m => m.JobID == testJob.JobID);
-                    List<Stop> stopsForTestjob = stops
-                        .Where(m => m.TestJobID == testJob.TestJobID)
-                        .Where(m => m.AuxTechnicianID == user.EngID)
-                        .ToList();
-
-                    foreach(Stop stop in stopsForTestjob)
-                    {
-                        string R1 = reasons1.First(m => m.Reason1ID == stop.Reason1).Description;
-                        string elapsed = "Time: " + (stop.Elapsed.Day - 1).ToString() + ":" + stop.Elapsed.Hour.ToString() + ":" + stop.Elapsed.Minute.ToString() + ":" + stop.Elapsed.Second.ToString();
-
-                        testJobEff.StopsReasons.Concat(R1 + elapsed + ", ");
-                        testJobEff.TimeAtStops += ToHours(stop.Elapsed);
-                    }
-
-                    testJobEff.StationName = stations.FirstOrDefault(m => m.StationID == testJob.StationID).Label;
-                    testJobEff.JobTypeName = jobTypes.FirstOrDefault(m => m.JobTypeID == featuresFromJob.JobTypeID).Name;
-                    testJobEff.JobNumer  = featuresFromJob.JobNum.Remove(0, 5);
-                    testJobEff.PO = testJob.SinglePO;
-                    testJobEff.StopsCounted = stopsForTestjob.Count();
-                    testJobEff.PercentagePerTech = (testJobEff.ElapsedTimePerTech / totalTimeOnJob) * 100;
-                    testJobEff.EfficiencyPerTech = (effPerStepSUM / stepsCounted);
-
-                    testJobEfficiencies.Add(testJobEff);
-
-                    if(testJobEff.PercentagePerTech > 50)
-                    {
-                        AvgEffSUM += testJobEff.EfficiencyPerTech;
-                        percentageMoreThan50++;
-                    }
-                }
-
-
-                efficiencyReport.AverageEff = percentageMoreThan50 > 0 ? (AvgEffSUM / percentageMoreThan50) : percentageMoreThan50;
-                efficiencyReports.Add(efficiencyReport);
-            }
-
+            List<EfficiencyReport> efficiencyReports = GetEfficiencyReports(startDate, endDate);
 
             string webRootPath = _env.WebRootPath;
-            string fileName = @"Stops_" + startDate.ToString("yyyy-MM-dd") + "_" + endDate.ToString("yyyy-MM-dd") + "+.xlsx";
+            string fileName = @"Stops_" + startDate.ToString("yyyy-MM-dd") + "_" + endDate.ToString("yyyy-MM-dd") + ".xlsx";
             string URL = string.Format("{0}://{1}/{2}", Request.Scheme, Request.Host, fileName);
             FileInfo file = new FileInfo(Path.Combine(webRootPath, fileName));
             var memoryStream = new MemoryStream();
@@ -815,16 +567,123 @@ namespace ProdFloor.Controllers
             return isInRole;
         }
 
+        public List<EfficiencyReport> GetEfficiencyReports(DateTime startDate, DateTime endDate)
+        {
+            if (startDate == null) startDate = DateTime.Now;
+            if (endDate == null) endDate = DateTime.Now;
+
+            //-- Filtering the data with query params 
+            List<EfficiencyReport> efficiencyReports = new List<EfficiencyReport>();
+            List<Station> stations = testingRepo.Stations.ToList();
+            List<JobType> jobTypes = itemRepository.JobTypes.Where(m => m.Name != "M3000").ToList();
+            IQueryable<Stop> stops = testingRepo.Stops;
+            IQueryable<TestJob> testjobsCompleted = testingRepo.TestJobs.Where(m => m.Status == "Completed" && m.StartDate >= startDate && m.CompletedDate <= endDate).OrderBy(m => m.StartDate);
+            List<Step> StepsListInfo = testingRepo.Steps.ToList();
+            IQueryable<Job> jobsForTestJobs = jobRepo.Jobs;
+            IQueryable<Reason1> reasons1 = testingRepo.Reasons1;
+            List<AppUser> users = new List<AppUser>();
+            foreach (var user in userManager.Users)
+            {
+                if (user != null
+                && GetCurrentUserRole(user, "Technician").Result)
+                {
+                    users.Add(user);
+                }
+            }
+            List<TestJob> testJobs = testjobsCompleted
+                .Where(m => users.Any(n => n.EngID == m.TechnicianID)).ToList();
+
+            //Filling the EffiencyReport
+            foreach (AppUser user in users)
+            {
+                List<TestJobEfficiency> testJobEfficiencies = new List<TestJobEfficiency>();
+                EfficiencyReport efficiencyReport = new EfficiencyReport();
+                efficiencyReport.TechName = user.FullName;
+                double AvgEffSUM = 0;
+                int percentageMoreThan50 = 0;
+
+                foreach (TestJob testJob in testJobs)
+                {
+                    TestJobEfficiency testJobEff = new TestJobEfficiency();
+                    List<StepsForJob> stepsForJobByUser = testingRepo.StepsForJobs
+                        .Where(m => m.AuxTechnicianID == user.EngID)
+                        .Where(m => m.TestJobID == testJob.TestJobID)
+                        .ToList();
+
+                    int stepsCounted = stepsForJobByUser.Count();
+
+                    if (stepsCounted == 0)
+                        continue;
+
+                    double totalTimeOnJob = 0;
+                    double effPerStepSUM = 0;
+                    List<StepsForJob> totalStepsForJob = testingRepo.StepsForJobs
+                        .Where(m => m.TestJobID == testJob.TestJobID)
+                        .ToList();
+
+                    foreach (StepsForJob step in totalStepsForJob)
+                    {
+                        totalTimeOnJob += ToHours(step.Elapsed);
+                    }
+
+                    foreach (StepsForJob step in stepsForJobByUser)
+                    {
+                        testJobEff.ElapsedTimePerTech += ToHours(step.Elapsed);
+
+                        double elapsed = ToHours(step.Elapsed);
+                        double expected = ToHours(StepsListInfo.First(m => m.StepID == step.StepID).ExpectedTime);
+
+                        double effPerStep = (elapsed / expected) * 100;
+
+                        effPerStepSUM *= effPerStep <= 100 ? effPerStep : 100;
+                    }
+
+                    Job featuresFromJob = jobsForTestJobs.FirstOrDefault(m => m.JobID == testJob.JobID);
+                    List<Stop> stopsForTestjob = stops
+                        .Where(m => m.TestJobID == testJob.TestJobID)
+                        .Where(m => m.AuxTechnicianID == user.EngID)
+                        .ToList();
+
+                    foreach (Stop stop in stopsForTestjob)
+                    {
+                        string R1 = reasons1.First(m => m.Reason1ID == stop.Reason1).Description;
+                        string elapsed = "Time: " + (stop.Elapsed.Day - 1).ToString() + ":" + stop.Elapsed.Hour.ToString() + ":" + stop.Elapsed.Minute.ToString() + ":" + stop.Elapsed.Second.ToString();
+
+                        testJobEff.StopsReasons.Concat(R1 + elapsed + ", ");
+                        testJobEff.TimeAtStops += ToHours(stop.Elapsed);
+                    }
+
+                    testJobEff.StationName = stations.FirstOrDefault(m => m.StationID == testJob.StationID).Label;
+                    testJobEff.JobTypeName = jobTypes.FirstOrDefault(m => m.JobTypeID == featuresFromJob.JobTypeID).Name;
+                    testJobEff.JobNumer = featuresFromJob.JobNum.Remove(0, 5);
+                    testJobEff.PO = testJob.SinglePO;
+                    testJobEff.StopsCounted = stopsForTestjob.Count();
+                    testJobEff.PercentagePerTech = (testJobEff.ElapsedTimePerTech / totalTimeOnJob) * 100;
+                    testJobEff.EfficiencyPerTech = (effPerStepSUM / stepsCounted);
+
+                    testJobEfficiencies.Add(testJobEff);
+
+                    if (testJobEff.PercentagePerTech > 50)
+                    {
+                        AvgEffSUM += testJobEff.EfficiencyPerTech;
+                        percentageMoreThan50++;
+                    }
+                }
+
+
+                efficiencyReport.AverageEff = percentageMoreThan50 > 0 ? (AvgEffSUM / percentageMoreThan50) : percentageMoreThan50;
+                efficiencyReports.Add(efficiencyReport);
+            }
+
+            return efficiencyReports;
+        }
+
         public List<DailyReport> GetDailyReports(DateTime startDate)
         {
             if (startDate == null || startDate.Day == DateTime.Now.Day) startDate = DateTime.Now.AddDays(-1);
 
             //-- Filtering the data with query params 
             List<DailyReport> dailyReports = new List<DailyReport>();
-            List<TestStats> testStatsM2000 = new List<TestStats>();
-            List<TestStats> testStatsM4000 = new List<TestStats>();
-            List<TestStats> testStatsTraction = new List<TestStats>();
-            List<TestStats> testStatsHydro = new List<TestStats>();
             List<Step> StepsListInfo = testingRepo.Steps.ToList();
             List<Station> Stations = testingRepo.Stations.ToList();
             List<JobType> jobTypes = itemRepository.JobTypes.Where(m => m.Name != "M3000").ToList();
@@ -839,7 +698,7 @@ namespace ProdFloor.Controllers
                 string efficiencyColor = "grey";
                 int testJobsCounted = 0;
                 int totalEfficiency = 0;
-
+                DailyReport daily = new DailyReport();
                 IQueryable<Job> jobs = jobsForTestJobs.Where(m => m.JobTypeID == jobtype.JobTypeID);
                 IQueryable<TestJob> testjobs = testjobsCompleted.Where(m => jobs.Any(n => n.JobID == m.JobID));
 
@@ -878,21 +737,7 @@ namespace ProdFloor.Controllers
                         Efficiency = efficiency
                     };
 
-                    switch (jobtype.Name)
-                    {
-                        case "M2000":
-                            testStatsM2000.Add(testStat);
-                            break;
-                        case "M4000":
-                            testStatsM4000.Add(testStat);
-                            break;
-                        case "ElmHydro":
-                            testStatsHydro.Add(testStat);
-                            break;
-                        case "ElmTract":
-                            testStatsTraction.Add(testStat);
-                            break;
-                    }
+                    daily.TestStats.Add(testStat);
                 }
 
                 if (testJobsCounted > 0) totalEfficiency = totalEfficiency / testJobsCounted;
@@ -902,19 +747,81 @@ namespace ProdFloor.Controllers
                 else if (totalEfficiency >= 60) efficiencyColor = "yellow";
                 else if (totalEfficiency > 0) efficiencyColor = "red";
 
-                DailyReport daily = new DailyReport
-                {
-                    JobTypeName = jobtype.Name,
-                    TestJobsCounted = testJobsCounted,
-                    TotalEfficiency = totalEfficiency,
-                    EfficiencyColor = efficiencyColor,
-                };
+                daily.JobTypeName = jobtype.Name;
+                daily.TestJobsCounted = testJobsCounted;
+                daily.TotalEfficiency = totalEfficiency;
+                daily.EfficiencyColor = efficiencyColor;
 
                 dailyReports.Add(daily);
             }
 
             return dailyReports;
         }
+
+        public List<StopsReport> GetStopsReport(DateTime startDate, DateTime endDate)
+        {
+            if (startDate == null) startDate = DateTime.Now;
+            if (endDate == null) endDate = DateTime.Now;
+
+            //-- Filtering the data with query params 
+            List<StopsReport> stopsReport = new List<StopsReport>();
+            List<Station> stations = testingRepo.Stations.ToList();
+            List<JobType> jobTypes = itemRepository.JobTypes.Where(m => m.Name != "M3000").ToList();
+            IQueryable<Stop> stops = testingRepo.Stops.Where(m => m.StartDate >= startDate && m.StopDate <= endDate).OrderBy(m => m.StartDate);
+            IQueryable<TestJob> testjobs = testingRepo.TestJobs.Where(m => stops.Any(n => n.TestJobID == m.TestJobID));
+            IQueryable<Job> jobsForTestJobs = jobRepo.Jobs.Where(m => testjobs.Any(n => n.JobID == m.JobID));
+            IQueryable<AppUser> users = userManager.Users;
+            IQueryable<Reason1> reasons1 = testingRepo.Reasons1;
+            IQueryable<Reason2> reasons2 = testingRepo.Reasons2;
+            IQueryable<Reason3> reasons3 = testingRepo.Reasons3;
+            IQueryable<Reason4> reasons4 = testingRepo.Reasons4;
+            IQueryable<Reason5> reasons5 = testingRepo.Reasons5;
+
+            //Filling the StopsRpeort List
+
+            foreach (Stop stop in stops)
+            {
+
+                string technician = users.FirstOrDefault(m => m.EngID == stop.AuxTechnicianID).FullName;
+                Station station = stations.FirstOrDefault(m => m.StationID == stop.AuxStationID);
+                TestJob testJob = testjobs.FirstOrDefault(m => m.TestJobID == stop.TestJobID);
+                Job featuresFromJob = jobsForTestJobs.FirstOrDefault(m => m.JobID == testJob.JobID);
+                JobType jobType = jobTypes.FirstOrDefault(m => m.JobTypeID == featuresFromJob.JobTypeID);
+                string reason1 = reasons1.FirstOrDefault(m => m.Reason1ID == stop.Reason1).Description;
+                string reason2 = stop.Reason2 == 0 ? "N/A" : reasons2.FirstOrDefault(m => m.Reason2ID == stop.Reason2).Description;
+                string reason3 = stop.Reason3 == 0 ? "N/A" : reasons3.FirstOrDefault(m => m.Reason3ID == stop.Reason3).Description;
+                string reason4 = stop.Reason4 == 0 ? "N/A" : reasons4.FirstOrDefault(m => m.Reason4ID == stop.Reason4).Description;
+                string reason5 = stop.Reason5ID == 0 ? "N/A" : reasons5.FirstOrDefault(m => m.Reason5ID == stop.Reason5ID).Description;
+                bool isStopFinished = stop.Reason5ID == 0 ? false : true;
+                string elapsed = (stop.Elapsed.Day - 1).ToString() + ":" + stop.Elapsed.Hour.ToString() + ":" + stop.Elapsed.Minute.ToString() + ":" + stop.Elapsed.Second.ToString();
+
+                StopsReport report = new StopsReport
+                {
+                    JobNumer = featuresFromJob.JobNum.Remove(0, 5),
+                    PO = testJob.SinglePO,
+                    JobTypeName = jobType.Name,
+                    WeekNumber = stop.GetWeekOfYear,
+                    StartDate = stop.StartDate.ToString(),
+                    StopDate = stop.StopDate.ToString(),
+                    Reason1 = reason1,
+                    Reason2 = reason2,
+                    Reason3 = reason3,
+                    Reason4 = reason4,
+                    Reason5 = reason5,
+                    Description = stop.Description,
+                    Critical = stop.Critical,
+                    StationName = station.Label,
+                    Elapsed = elapsed,
+                    isFinished = isStopFinished,
+                    TechFullName = technician
+                };
+
+                stopsReport.Add(report);
+            }
+
+            return stopsReport;
+        }
+
         public double ToHours(DateTime date)
         {
             double totalTime = 0;
