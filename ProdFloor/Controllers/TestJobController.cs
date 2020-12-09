@@ -1,14 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
+using Microsoft.Extensions.DependencyInjection;
 using ProdFloor.Models;
 using ProdFloor.Models.ViewModels;
 using ProdFloor.Models.ViewModels.TestJob;
@@ -2427,7 +2430,7 @@ namespace ProdFloor.Controllers
         {
             double totalTime = 0;
             totalTime += date.Hour;
-            totalTime += (date.Minute * .01);
+            totalTime += (date.Minute * 0.01666666666666666666666666666667);
             return totalTime;
         }
 
@@ -2876,6 +2879,264 @@ namespace ProdFloor.Controllers
             }
 
             return View(viewModel);
+        }
+
+        [HttpPost]
+        public FileStreamResult ExportToXML()
+        {
+            MemoryStream ms = new MemoryStream();
+            XmlWriterSettings xws = new XmlWriterSettings();
+            xws.OmitXmlDeclaration = true;
+            xws.Indent = true;
+            IQueryable<TestJob> testjobsCompleted = testingRepo.TestJobs.Where(m => m.Status == "Completed");
+
+            using (XmlWriter xw = XmlWriter.Create(ms, xws))
+            {
+                xw.WriteStartDocument();
+                xw.WriteStartElement("TestJobs-TestFeatures-StepsForJob");
+
+                foreach (TestJob testjob in testjobsCompleted)
+                {
+                    TestFeature testFeature = testingRepo.TestFeatures
+                        .FirstOrDefault(m => m.TestJobID == testjob.TestJobID);
+
+                    IQueryable<StepsForJob> stepsForJob = testingRepo.StepsForJobs.Where(m => m.TestJobID == testjob.TestJobID)
+                                                                         .Where(m => m.Complete == true)
+                                                                         .OrderBy(n => n.Consecutivo);
+                    xw.WriteStartElement("TestJob");
+
+                    xw.WriteElementString("TestJobID", testjob.TestJobID.ToString());
+                    xw.WriteElementString("JobID", testjob.JobID.ToString());
+                    xw.WriteElementString("TechnicianID", testjob.TechnicianID.ToString());
+                    xw.WriteElementString("Status", testjob.Status);
+                    xw.WriteElementString("SinglePO", testjob.SinglePO.ToString());
+                    xw.WriteElementString("JobLabel", testjob.JobLabel);
+                    xw.WriteElementString("StartDate", testjob.StartDate.ToString());
+                    xw.WriteElementString("CompletedDate", testjob.CompletedDate.ToString());
+                    xw.WriteElementString("StationID", testjob.StationID.ToString());
+
+                    
+
+                    xw.WriteStartElement("TestFeature");
+
+                    xw.WriteElementString("TestFeatureID", testFeature.TestFeatureID.ToString());
+                    xw.WriteElementString("TestJobID", testFeature.TestJobID.ToString());
+                    xw.WriteElementString("Overlay", testFeature.Overlay.ToString());
+                    xw.WriteElementString("Group", testFeature.Group.ToString());
+                    xw.WriteElementString("PC", testFeature.PC.ToString());
+                    xw.WriteElementString("BrakeCoilVoltageMoreThan10", testFeature.BrakeCoilVoltageMoreThan10.ToString());
+                    xw.WriteElementString("EMBrake", testFeature.EMBrake.ToString());
+                    xw.WriteElementString("EMCO", testFeature.EMCO.ToString());
+                    xw.WriteElementString("R6", testFeature.R6.ToString());
+                    xw.WriteElementString("Local", testFeature.Local.ToString());
+                    xw.WriteElementString("ShortFloor", testFeature.ShortFloor.ToString());
+                    xw.WriteElementString("Custom", testFeature.Custom.ToString());
+                    xw.WriteElementString("MRL", testFeature.MRL.ToString());
+                    xw.WriteElementString("CTL2", testFeature.CTL2.ToString());
+                    xw.WriteElementString("TrajetaCPI", testFeature.TrajetaCPI.ToString());
+                    xw.WriteElementString("Cartop", testFeature.Cartop.ToString());
+
+                    xw.WriteEndElement();
+
+                    xw.WriteStartElement("StepsForJob");
+
+                    foreach (StepsForJob step in stepsForJob)
+                    {
+                        xw.WriteStartElement("StepForJob");
+
+                        xw.WriteElementString("StepsForJobID", step.StepsForJobID.ToString());
+                        xw.WriteElementString("StepID", step.StepID.ToString());
+                        xw.WriteElementString("TestJobID", step.TestJobID.ToString());
+                        xw.WriteElementString("Start", step.Start.ToString());
+                        xw.WriteElementString("Stop", step.Stop.ToString());
+                        xw.WriteElementString("Elapsed", step.Elapsed.ToString());
+                        xw.WriteElementString("Complete", step.Complete.ToString());
+                        xw.WriteElementString("Consecutivo", step.Consecutivo.ToString());
+                        xw.WriteElementString("Obsolete", step.Obsolete.ToString());
+                        xw.WriteElementString("AuxTechnicianID", step.AuxTechnicianID.ToString());
+                        xw.WriteElementString("AuxStationID", step.AuxStationID.ToString());
+
+                        xw.WriteEndElement();
+                    }
+
+                    xw.WriteEndElement();
+
+
+                    xw.WriteEndElement();
+                }
+                xw.WriteEndElement();
+               
+                xw.WriteEndDocument();
+            }
+
+            ms.Position = 0;
+            return File(ms, "text/xml", "TestJobs-TestFeatures-StepsForJob.xml");
+        }
+
+        public static void ImportXML(IServiceProvider services)
+        {
+            ApplicationDbContext context = services.GetRequiredService<ApplicationDbContext>();
+            XmlDocument doc = new XmlDocument();
+            doc.Load(@"C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\TestJobs-TestFeatures-StepsForJob.xml");
+
+            var XMLobs = doc.DocumentElement.SelectSingleNode("//Stops");
+
+
+            var XMLMain = doc.DocumentElement.SelectSingleNode("//TestJobs-TestFeatures-StepsForJob");
+
+            var XMLTestJobs = XMLMain.SelectNodes(".//TestJob");
+
+            if (XMLTestJobs != null && context.Steps.Any() && context.Jobs.Any() 
+                && context.Stations.Any() )
+            {
+                foreach (XmlElement testjob in XMLTestJobs)
+                {
+                    //saving TestJob
+                    var TestJobID = testjob.SelectSingleNode(".//TestJobID").InnerText;
+                    var JobID = testjob.SelectSingleNode(".//JobID").InnerText;
+                    var TechnicianID = testjob.SelectSingleNode(".//TechnicianID").InnerText;
+                    var Status = testjob.SelectSingleNode(".//Status").InnerText;
+                    var SinglePO = testjob.SelectSingleNode(".//SinglePO").InnerText;
+                    var JobLabel = testjob.SelectSingleNode(".//JobLabel").InnerText;
+                    var StartDate = testjob.SelectSingleNode(".//StartDate").InnerText;
+                    var CompletedDate = testjob.SelectSingleNode(".//CompletedDate").InnerText;
+                    var StationID = testjob.SelectSingleNode(".//StationID").InnerText;
+
+                    context.TestJobs.Add(new TestJob
+                    {
+                        TestJobID = Int32.Parse(TestJobID),
+                        JobID = Int32.Parse(JobID),
+                        TechnicianID = Int32.Parse(TechnicianID),
+                        Status = Status,
+                        SinglePO = Int32.Parse(SinglePO),
+                        JobLabel = JobLabel,
+                        StartDate = DateTime.Parse(StartDate),
+                        CompletedDate = DateTime.Parse(CompletedDate),
+                        StationID = Int32.Parse(StationID),
+
+                    });
+                    context.Database.OpenConnection();
+                    try
+                    {
+                        context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.TestJobs ON");
+                        context.SaveChanges();
+                        context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.TestJobs OFF");
+                    }
+                    finally
+                    {
+                        context.Database.CloseConnection();
+                    }
+
+                    //Saving TestFeature
+                    var XMLTestFeatures = testjob.SelectSingleNode("//TestFeature");
+
+                    var TestFeatureID = XMLTestFeatures.SelectSingleNode(".//TestFeatureID").InnerText;
+                    var Overlay = XMLTestFeatures.SelectSingleNode(".//Overlay").InnerText;
+                    var Group = XMLTestFeatures.SelectSingleNode(".//Group").InnerText;
+                    var PC = XMLTestFeatures.SelectSingleNode(".//PC").InnerText;
+                    var BrakeCoilVoltageMoreThan10 = XMLTestFeatures.SelectSingleNode(".//BrakeCoilVoltageMoreThan10").InnerText;
+                    var EMBrake = XMLTestFeatures.SelectSingleNode(".//EMBrake").InnerText;
+                    var EMCO = XMLTestFeatures.SelectSingleNode(".//EMCO").InnerText;
+                    var R6 = XMLTestFeatures.SelectSingleNode(".//R6").InnerText;
+                    var Local = XMLTestFeatures.SelectSingleNode(".//Local").InnerText;
+                    var ShortFloor = XMLTestFeatures.SelectSingleNode(".//ShortFloor").InnerText;
+                    var Custom = XMLTestFeatures.SelectSingleNode(".//Custom").InnerText;
+                    var MRL = XMLTestFeatures.SelectSingleNode(".//MRL").InnerText;
+                    var CTL2 = XMLTestFeatures.SelectSingleNode(".//CTL2").InnerText;
+                    var TrajetaCPI = XMLTestFeatures.SelectSingleNode(".//TrajetaCPI").InnerText;
+                    var Cartop = XMLTestFeatures.SelectSingleNode(".//Cartop").InnerText;
+
+                    context.TestFeatures.Add(new TestFeature
+                    {
+                        TestFeatureID = Int32.Parse(TestFeatureID),
+                        TestJobID = Int32.Parse(TestJobID),
+                        Overlay = Boolean.Parse(Overlay),
+                        Group = Boolean.Parse(Group),
+                        PC = Boolean.Parse(PC),
+                        BrakeCoilVoltageMoreThan10 = Boolean.Parse(BrakeCoilVoltageMoreThan10),
+                        EMBrake = Boolean.Parse(EMBrake),
+                        EMCO = Boolean.Parse(EMCO),
+                        R6 = Boolean.Parse(R6),
+                        Local = Boolean.Parse(Local),
+                        ShortFloor = Boolean.Parse(ShortFloor),
+                        Custom = Boolean.Parse(Custom),
+                        MRL = Boolean.Parse(MRL),
+                        CTL2 = Boolean.Parse(CTL2),
+                        TrajetaCPI = Boolean.Parse(TrajetaCPI),
+                        Cartop = Boolean.Parse(Cartop),
+
+                    });
+                    context.Database.OpenConnection();
+                    try
+                    {
+                        context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.TestFeatures ON");
+                        context.SaveChanges();
+                        context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.TestFeatures OFF");
+                    }
+                    finally
+                    {
+                        context.Database.CloseConnection();
+                    }
+
+                    ///////////Savin all StepsForJob
+
+                    var XMLStepsForJob = XMLMain.SelectNodes(".//StepsForJob");
+
+                    foreach(XmlElement stepForJob in XMLStepsForJob)
+                    {
+                        var XMLStepForJob = testjob.SelectSingleNode("//StepForJob");
+
+                        var StepsForJobID = XMLTestFeatures.SelectSingleNode(".//StepsForJobID").InnerText;
+                        var StepID = XMLTestFeatures.SelectSingleNode(".//StepID").InnerText;
+                        var Start = XMLTestFeatures.SelectSingleNode(".//Start").InnerText;
+                        var Stop = XMLTestFeatures.SelectSingleNode(".//Stop").InnerText;
+                        var Elapsed = XMLTestFeatures.SelectSingleNode(".//Elapsed").InnerText;
+                        var Complete = XMLTestFeatures.SelectSingleNode(".//Complete").InnerText;
+                        var Consecutivo = XMLTestFeatures.SelectSingleNode(".//Consecutivo").InnerText;
+                        var Obsolete = XMLTestFeatures.SelectSingleNode(".//Obsolete").InnerText;
+                        var AuxTechnicianID = XMLTestFeatures.SelectSingleNode(".//AuxTechnicianID").InnerText;
+                        var AuxStationID = XMLTestFeatures.SelectSingleNode(".//AuxStationID").InnerText;
+
+                        context.StepsForJobs.Add(new StepsForJob
+                        {
+                            StepsForJobID = Int32.Parse(StepsForJobID),
+                            StepID = Int32.Parse(StepID),
+                            TestJobID = Int32.Parse(TestJobID),
+                            Start = DateTime.Parse(Start),
+                            Stop = DateTime.Parse(Stop),
+                            Elapsed = DateTime.Parse(Elapsed),
+                            Complete = Boolean.Parse(Complete),
+                            Consecutivo = Int32.Parse(Consecutivo),
+                            Obsolete = Boolean.Parse(Obsolete),
+                            AuxTechnicianID = Int32.Parse(AuxTechnicianID),
+                            AuxStationID = Int32.Parse(AuxStationID),
+
+                        });
+                        context.Database.OpenConnection();
+                        try
+                        {
+                            context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.StepsForJobs ON");
+                            context.SaveChanges();
+                            context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.StepsForJobs OFF");
+                        }
+                        finally
+                        {
+                            context.Database.CloseConnection();
+                        }
+
+                    }
+
+                }
+
+            }
+
+        }
+
+        [HttpPost]
+        public IActionResult SeedXML()
+        {
+            ImportXML(HttpContext.RequestServices);
+            return RedirectToAction(nameof(List));
         }
 
     }

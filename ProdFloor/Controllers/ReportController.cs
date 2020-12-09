@@ -715,7 +715,7 @@ namespace ProdFloor.Controllers
                 foreach (TestJob testjob in testjobs)
                 {
                     Job FeaturesFromJob = jobs.FirstOrDefault(m => m.JobID == testjob.JobID);
-                    List<StepsForJob> stepsForJob = testingRepo.StepsForJobs.Where(m => m.TestJobID == testjob.TestJobID && m.Obsolete == false)
+                    List<StepsForJob> stepsForJob = testingRepo.StepsForJobs.Where(m => m.TestJobID == testjob.TestJobID)
                                                                          .Where(m => m.Complete == true)
                                                                          .OrderBy(n => n.Consecutivo).ToList();
 

@@ -471,7 +471,7 @@ namespace ProdFloor.Controllers
         {
             ApplicationDbContext context = services.GetRequiredService<ApplicationDbContext>();
             XmlDocument doc = new XmlDocument();
-            doc.Load(@"C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\Stops.xml");
+            doc.Load(@"C:\ProdFloorNew90\wwwroot\AppData\Stops.xml");
 
             var XMLobs = doc.DocumentElement.SelectSingleNode("//Stops");
 

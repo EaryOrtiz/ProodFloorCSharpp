@@ -342,25 +342,25 @@ namespace ProdFloor.Controllers
             ApplicationDbContext context = services.GetRequiredService<ApplicationDbContext>();
 
 
-            HtmlDocument doc = new HtmlDocument();
+            XmlDocument doc = new XmlDocument();
             doc.Load(@"C:\ProdFloorNew90\wwwroot\AppData\Steps.xml");
 
-            var ALLSteps = doc.DocumentNode.SelectSingleNode("//allsteps");
+            var ALLSteps = doc.DocumentElement.SelectSingleNode("//AllSteps");
 
-            var ALLXMLobs = ALLSteps.SelectSingleNode("//steps");
-            var XMLobs = ALLXMLobs.SelectNodes("//step");
+            var ALLXMLobs = ALLSteps.SelectSingleNode("//Steps");
+            var XMLobs = ALLXMLobs.SelectNodes("//Step");
 
-            var ALLtriggers = ALLSteps.SelectSingleNode("//triggerfeatures");
-            var triggers = ALLtriggers.SelectNodes("//triggerfeature");
+            var ALLtriggers = ALLSteps.SelectSingleNode("//TriggerFeatures");
+            var triggers = ALLtriggers.SelectNodes("//TriggerFeature");
 
-            foreach (var XMLob in XMLobs)
+            foreach (XmlElement XMLob in XMLobs)
             {
-                var stepid = XMLob.SelectSingleNode(".//stepid").InnerText;
-                var jobtypeid = XMLob.SelectSingleNode(".//jobtypeid").InnerText;
-                var stage = XMLob.SelectSingleNode(".//stage").InnerText;
-                var expectedtime = XMLob.SelectSingleNode(".//expectedtime").InnerText;
-                var description = XMLob.SelectSingleNode(".//description").InnerText;
-                var order = XMLob.SelectSingleNode(".//order").InnerText;
+                var stepid = XMLob.SelectSingleNode(".//StepID").InnerText;
+                var jobtypeid = XMLob.SelectSingleNode(".//JobTypeID").InnerText;
+                var stage = XMLob.SelectSingleNode(".//Stage").InnerText;
+                var expectedtime = XMLob.SelectSingleNode(".//ExpectedTime").InnerText;
+                var description = XMLob.SelectSingleNode(".//Description").InnerText;
+                var order = XMLob.SelectSingleNode(".//Order").InnerText;
 
                 context.Steps.Add(new Step
                 {
@@ -383,12 +383,13 @@ namespace ProdFloor.Controllers
                     context.Database.CloseConnection();
                 }
             }
-            foreach (var po in triggers)
+
+            foreach (XmlElement po in triggers)
             {
-                var id = po.SelectSingleNode(".//id").InnerText;
-                var sttepid = po.SelectSingleNode(".//stepid").InnerText;
-                var name = po.SelectSingleNode(".//name").InnerText;
-                var isselected = po.SelectSingleNode(".//isselected").InnerText;
+                var id = po.SelectSingleNode(".//ID").InnerText;
+                var sttepid = po.SelectSingleNode(".//StepID").InnerText;
+                var name = po.SelectSingleNode(".//Name").InnerText;
+                var isselected = po.SelectSingleNode(".//IsSelected").InnerText;
                 context.TriggeringFeatures.Add(new TriggeringFeature
                 {
                     TriggeringFeatureID = Int32.Parse(id),
