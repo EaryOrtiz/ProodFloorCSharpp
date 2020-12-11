@@ -2431,6 +2431,7 @@ namespace ProdFloor.Controllers
             double totalTime = 0;
             totalTime += date.Hour;
             totalTime += (date.Minute * 0.01666666666666666666666666666667);
+            totalTime += (date.Second * 0.0002777777777777777777777777777778);
             return totalTime;
         }
 
