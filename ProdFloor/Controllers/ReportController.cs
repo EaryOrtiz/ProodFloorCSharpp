@@ -645,6 +645,8 @@ namespace ProdFloor.Controllers
                 {
                     TestJobEfficiency testJobEff = new TestJobEfficiency();
                     testJobEff.StopsReasons = "";
+                    double elapsedTimePerTech = 0;
+                    double timeAtStops = 0;
                     List<StepsForJob> stepsForJobByUser = testingRepo.StepsForJobs
                         .Where(m => m.AuxTechnicianID == user.EngID)
                         .Where(m => m.TestJobID == testJob.TestJobID)
@@ -668,7 +670,7 @@ namespace ProdFloor.Controllers
 
                     foreach (StepsForJob step in stepsForJobByUser)
                     {
-                        testJobEff.ElapsedTimePerTech += ToHours(step.Elapsed);
+                        elapsedTimePerTech += ToHours(step.Elapsed);
 
                         double elapsed = ToHours(step.Elapsed);
                         double expected = ToHours(StepsListInfo.First(m => m.StepID == step.StepID).ExpectedTime);
@@ -687,10 +689,10 @@ namespace ProdFloor.Controllers
                     foreach (Stop stop in stopsForTestjob)
                     {
                         string R1 = reasons1.First(m => m.Reason1ID == stop.Reason1).Description;
-                        string elapsed = "Time: " + (stop.Elapsed.Day - 1).ToString() + ":" + stop.Elapsed.Hour.ToString() + ":" + stop.Elapsed.Minute.ToString() + ":" + stop.Elapsed.Second.ToString();
+                        string elapsed = ToClockDateString(stop.Elapsed);
 
-                        testJobEff.StopsReasons += (R1 + elapsed + ", ");
-                        testJobEff.TimeAtStops += ToHours(stop.Elapsed);
+                        testJobEff.StopsReasons += (R1 + " (" +elapsed + "), ");
+                        timeAtStops += ToHours(stop.Elapsed);
                     }
 
                     testJobEff.StationName = stations.FirstOrDefault(m => m.StationID == testJob.StationID).Label;
@@ -698,8 +700,15 @@ namespace ProdFloor.Controllers
                     testJobEff.JobNumer = featuresFromJob.JobNum.Remove(0, 5);
                     testJobEff.PO = testJob.SinglePO;
                     testJobEff.StopsCounted = stopsForTestjob.Count();
-                    testJobEff.PercentagePerTech = (testJobEff.ElapsedTimePerTech / totalTimeOnJob) * 100;
+                    testJobEff.PercentagePerTech = (elapsedTimePerTech / totalTimeOnJob) * 100;
                     testJobEff.EfficiencyPerTech = (effPerStepSUM / stepsCounted);
+
+                    //conversiones de horas a timpeo de reloj
+                    DateTime auxDate = ToDateTime(elapsedTimePerTech);
+                    testJobEff.ElapsedTimePerTech = ToClockDateString(auxDate);
+
+                    auxDate = ToDateTime(timeAtStops);
+                    testJobEff.TimeAtStops = ToClockDateString(auxDate);
 
                     efficiencyReport.testJobEfficiencies.Add(testJobEff);
 
@@ -868,6 +877,7 @@ namespace ProdFloor.Controllers
             double totalTime = 0;
             totalTime += date.Hour;
             totalTime += (date.Minute * 0.01666666666666666666666666666667);
+            totalTime += (date.Second * 0.0002777777777777777777777777777778);
             return totalTime;
         }
 
@@ -894,6 +904,13 @@ namespace ProdFloor.Controllers
             else Days = 1;
 
             return new DateTime(1, 1, Days, Hours, Minutes, 0);
+        }
+
+        public string ToClockDateString(DateTime time)
+        {
+            string elapsed = (time.Day - 1).ToString() + ":" + time.Hour.ToString() + ":" + time.Minute.ToString() + ":" + time.Second.ToString();
+
+            return elapsed;
         }
     }
 }

@@ -341,7 +341,7 @@ namespace ProdFloor.Models
 
         public double PercentagePerTech { get; set; }
 
-        public double ElapsedTimePerTech { get; set; }
+        public string ElapsedTimePerTech { get; set; }
 
         public double EfficiencyPerTech { get; set; }
 
@@ -349,7 +349,7 @@ namespace ProdFloor.Models
 
         public int StopsCounted  { get; set; }
 
-        public double TimeAtStops { get; set; }
+        public string TimeAtStops { get; set; }
 
         public string StopsReasons { get; set; }
     }
