@@ -2723,24 +2723,22 @@ namespace ProdFloor.Controllers
         {
             viewModel.TestStatsList = new List<TestStats>();
             List<TestJob> ActiveTestJobs = testingRepo.TestJobs.Where(m => m.Status != "Completed" && m.Status != "Deleted").ToList();
+            IQueryable<Station> stations = testingRepo.Stations.Where(m => m.Label != "-");
             int JobTypeID = (JobType == "M2000") ? 2 : 4;
             if(JobTypeID == 2)
             {
-                viewModel.StationsList = testingRepo.Stations.Where(m => m.JobTypeID == JobTypeID).OrderBy(n => n.Label).ToList();
-                viewModel.StationsList.AddRange(testingRepo.Stations.Where(m => m.JobTypeID == 5).OrderBy(n => n.Label).ToList());
+                viewModel.StationsList = stations.Where(m => m.JobTypeID == JobTypeID).OrderBy(n => n.Label).ToList();
+                viewModel.StationsList.AddRange(stations.Where(m => m.JobTypeID == 5).OrderBy(n => n.Label).ToList());
             }
             else
             {
-                viewModel.StationsList = testingRepo.Stations.Where(m => m.JobTypeID == JobTypeID).OrderBy(n => n.Label).ToList();
-                viewModel.StationsList.AddRange(testingRepo.Stations.Where(m => m.JobTypeID == 1).OrderBy(n => n.Label).ToList());
+                viewModel.StationsList = stations.Where(m => m.JobTypeID == JobTypeID).OrderBy(n => n.Label).ToList();
+                viewModel.StationsList.AddRange(stations.Where(m => m.JobTypeID == 1).OrderBy(n => n.Label).ToList());
             }
-            List<Job> JobsFilteredByJobtype = jobRepo.Jobs.Where(m => ActiveTestJobs.Any(n => n.JobID == m.JobID) && m.JobTypeID == JobTypeID).ToList();
-            ActiveTestJobs = ActiveTestJobs.Where(m => JobsFilteredByJobtype.Any(n => n.JobID == m.JobID)).ToList();
-            
 
             List<AppUser> Users = userManager.Users.Where(m => m.EngID >= 100 && m.EngID <= 299).ToList();
             IQueryable<Job> JobsinTest = jobRepo.Jobs.Where(m => ActiveTestJobs.Any(n => n.JobID == m.JobID));
-            List<Station> StationFromTestJobs= testingRepo.Stations.Where(m => ActiveTestJobs.Any(n => n.StationID == m.StationID)).ToList();
+            List<Station> StationFromTestJobs = testingRepo.Stations.Where(m => ActiveTestJobs.Any(n => n.StationID == m.StationID)).ToList();
             List<Step> StepsListInfo = testingRepo.Steps.ToList();
 
             List<StepsForJob> stepsForJobCompleted = new List<StepsForJob>();
@@ -2824,7 +2822,7 @@ namespace ProdFloor.Controllers
                 }
 
                 //logic to get the cat(difficulty)
-                if (JobType == "M2000")
+                if (FeaturesFromJob.JobTypeID == 2)
                 {
                     if (FeaturesFromJob.CityID == 11) Category = "6";
                     else if (FeaturesFromTestJob.Custom || FeaturesFromTestJob.MRL) Category = "5";
@@ -2835,7 +2833,7 @@ namespace ProdFloor.Controllers
                     else Category = "1";
 
                 }
-                else if (JobType == "M4000")
+                else if (FeaturesFromJob.JobTypeID == 4)
                 {
                     if (FeaturesFromJob.CityID == 11) Category = "6";
                     else if (FeaturesFromTestJob.Custom) Category = "5";
@@ -2847,13 +2845,15 @@ namespace ProdFloor.Controllers
                 }else Category = "Indefinida";
 
                 //JobProgress
-                double JobProgress = (stepsForJobCompleted.Count() * 100)/ AllSteps.Count();
+                double JobProgress = (stepsForJobCompleted.Count() * 100) / AllSteps.Count();
 
                 //Stage Progress
                 List<Step> stepsPerStage = StepsListInfo.Where(m => m.Stage == Stage && AllSteps.Any(n => n.StepID == m.StepID)).ToList();
                 int stepsPerJobCompleted = AllSteps.Where(m => stepsPerStage.Any(s => s.StepID == m.StepID)).Where(m => m.Complete == true).Count();
 
-                double StagePogress = (stepsPerJobCompleted * 100) / stepsPerStage.Count(); 
+                double StagePogress = (stepsPerJobCompleted * 100) / stepsPerStage.Count();
+
+                if (stepsPerStage.Count == 1 && StagePogress == 0) StagePogress = 50;
 
                 TestStats testStats = new TestStats()
                 {

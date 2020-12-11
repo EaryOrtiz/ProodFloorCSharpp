@@ -401,7 +401,18 @@ namespace ProdFloor.Controllers
                     row.CreateCell(2).SetCellValue("Station");
                     row.CreateCell(3).SetCellValue("Efficiency");
 
+                    for (int k = i - 1; k <= i; k++)
+                    {
+                        for (int j = 0; j < 4; j++)
+                        {
+                            workbook.GetSheetAt(0).GetRow(k).GetCell(j).CellStyle = myStyleGrey;
+                        }
+                    }
+
+
+
                     i++;
+
 
                     try
                     {
@@ -472,7 +483,15 @@ namespace ProdFloor.Controllers
                 ISheet excelSheet = workbook.CreateSheet("Efficiency_" + startDate.ToString("yyyy-MM-dd") + "_" + endDate.ToString("yyyy-MM-dd"));
                 int i = 0;
 
-                foreach(EfficiencyReport report in efficiencyReports)
+                XSSFCellStyle myStyleGrey = (XSSFCellStyle)workbook.CreateCellStyle();
+                myStyleGrey.BorderBottom = BorderStyle.Medium;
+                myStyleGrey.BorderTop = BorderStyle.Medium;
+                myStyleGrey.BorderLeft = BorderStyle.Medium;
+                myStyleGrey.BorderRight = BorderStyle.Medium;
+                myStyleGrey.FillForegroundColor = HSSFColor.Grey25Percent.Index;
+                myStyleGrey.FillPattern = FillPattern.SolidForeground;
+
+                foreach (EfficiencyReport report in efficiencyReports)
                 {
                     IRow row = excelSheet.CreateRow(i);
                     row.CreateCell(0).SetCellValue("Tech: ");
@@ -498,6 +517,16 @@ namespace ProdFloor.Controllers
                     row.CreateCell(7).SetCellValue("No. Stops");
                     row.CreateCell(8).SetCellValue("Time At Stops");
                     row.CreateCell(9).SetCellValue("Stop(s) Reason(s)");
+
+                    for(int k = i-1; k <= i; k++)
+                    {
+                        for (int j = 0; j < 10; j++)
+                        {
+                            workbook.GetSheetAt(0).GetRow(k).GetCell(j).CellStyle = myStyleGrey;
+                        }
+                    }
+                   
+
                     i++;
 
                     try
@@ -606,8 +635,8 @@ namespace ProdFloor.Controllers
             //Filling the EffiencyReport
             foreach (AppUser user in users)
             {
-                List<TestJobEfficiency> testJobEfficiencies = new List<TestJobEfficiency>();
                 EfficiencyReport efficiencyReport = new EfficiencyReport();
+                efficiencyReport.testJobEfficiencies = new List<TestJobEfficiency>();
                 efficiencyReport.TechName = user.FullName;
                 double AvgEffSUM = 0;
                 int percentageMoreThan50 = 0;
@@ -615,6 +644,7 @@ namespace ProdFloor.Controllers
                 foreach (TestJob testJob in testJobs)
                 {
                     TestJobEfficiency testJobEff = new TestJobEfficiency();
+                    testJobEff.StopsReasons = "";
                     List<StepsForJob> stepsForJobByUser = testingRepo.StepsForJobs
                         .Where(m => m.AuxTechnicianID == user.EngID)
                         .Where(m => m.TestJobID == testJob.TestJobID)
@@ -645,7 +675,7 @@ namespace ProdFloor.Controllers
 
                         double effPerStep = (elapsed / expected) * 100;
 
-                        effPerStepSUM *= effPerStep <= 100 ? effPerStep : 100;
+                        effPerStepSUM += effPerStep <= 100 ? effPerStep : 100;
                     }
 
                     Job featuresFromJob = jobsForTestJobs.FirstOrDefault(m => m.JobID == testJob.JobID);
@@ -659,7 +689,7 @@ namespace ProdFloor.Controllers
                         string R1 = reasons1.First(m => m.Reason1ID == stop.Reason1).Description;
                         string elapsed = "Time: " + (stop.Elapsed.Day - 1).ToString() + ":" + stop.Elapsed.Hour.ToString() + ":" + stop.Elapsed.Minute.ToString() + ":" + stop.Elapsed.Second.ToString();
 
-                        testJobEff.StopsReasons.Concat(R1 + elapsed + ", ");
+                        testJobEff.StopsReasons += (R1 + elapsed + ", ");
                         testJobEff.TimeAtStops += ToHours(stop.Elapsed);
                     }
 
@@ -671,7 +701,7 @@ namespace ProdFloor.Controllers
                     testJobEff.PercentagePerTech = (testJobEff.ElapsedTimePerTech / totalTimeOnJob) * 100;
                     testJobEff.EfficiencyPerTech = (effPerStepSUM / stepsCounted);
 
-                    testJobEfficiencies.Add(testJobEff);
+                    efficiencyReport.testJobEfficiencies.Add(testJobEff);
 
                     if (testJobEff.PercentagePerTech > 50)
                     {
@@ -709,6 +739,7 @@ namespace ProdFloor.Controllers
                 int testJobsCounted = 0;
                 int totalEfficiency = 0;
                 DailyReport daily = new DailyReport();
+                daily.TestStats = new List<TestStats>();
                 IQueryable<Job> jobs = jobsForTestJobs.Where(m => m.JobTypeID == jobtype.JobTypeID);
                 IQueryable<TestJob> testjobs = testjobsCompleted.Where(m => jobs.Any(n => n.JobID == m.JobID));
 

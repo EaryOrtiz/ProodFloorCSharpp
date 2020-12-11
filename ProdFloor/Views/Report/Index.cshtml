@@ -246,14 +246,15 @@
             <div class="col-3">
                 <div class="card mb-3" style="max-width: 18rem;">
                     <div class="card-header text-center">
-                        <h3>M4000</h3>
-                        <h6>09/01/2017</h6>
+                        <h3>@daily.JobTypeName</h3>
+                        <h6>@daily.TodayDate.ToShortDateString()</h6>
                     </div>
                     <div class="card-body text-center">
-                        <h4 class="card-title text-left">Completados: &nbsp;&nbsp;1</h4>
-                        <input data-skin="tron" value="72" data-min="0" cursor="false" data-fgColor="#ffc107" data-max="100" class="m400Chart" data-readonly="true" readonly="readonly">
+                        <h4 class="card-title text-left">Completados: &nbsp;&nbsp;@daily.TestJobsCounted</h4>
+                        <input data-skin="tron"  data-width="180" value="@daily.TotalEfficiency" data-min="0" cursor="false" data-fgColor="@daily.EfficiencyColor" 
+                               data-max="100" data-thickness=".2" class="m400Chart" data-readonly="true" readonly="readonly">
                     </div>
-                    <div class="card-footer text-center "><h5>Eficiencia:  72%</h5></div>
+                    <div class="card-footer text-center "><h5>Eficiencia:  @daily.TotalEfficiency%</h5></div>
                 </div>
             </div>
                 
