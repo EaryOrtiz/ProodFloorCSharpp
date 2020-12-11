@@ -2980,12 +2980,10 @@ namespace ProdFloor.Controllers
             XmlDocument doc = new XmlDocument();
             doc.Load(@"C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\TestJobs-TestFeatures-StepsForJob.xml");
 
-            var XMLobs = doc.DocumentElement.SelectSingleNode("//Stops");
-
 
             var XMLMain = doc.DocumentElement.SelectSingleNode("//TestJobs-TestFeatures-StepsForJob");
 
-            var XMLTestJobs = XMLMain.SelectNodes(".//TestJob");
+            var XMLTestJobs = XMLMain.SelectNodes("//TestJob");
 
             if (XMLTestJobs != null && context.Steps.Any() && context.Jobs.Any() 
                 && context.Stations.Any() )
@@ -3029,7 +3027,7 @@ namespace ProdFloor.Controllers
                     }
 
                     //Saving TestFeature
-                    var XMLTestFeatures = testjob.SelectSingleNode("//TestFeature");
+                    var XMLTestFeatures = testjob.SelectSingleNode(".//TestFeature");
 
                     var TestFeatureID = XMLTestFeatures.SelectSingleNode(".//TestFeatureID").InnerText;
                     var Overlay = XMLTestFeatures.SelectSingleNode(".//Overlay").InnerText;
@@ -3081,22 +3079,23 @@ namespace ProdFloor.Controllers
 
                     ///////////Savin all StepsForJob
 
-                    var XMLStepsForJob = XMLMain.SelectNodes(".//StepsForJob");
+                    var XMLStepsForJob = testjob.SelectSingleNode(".//StepsForJob");
 
-                    foreach(XmlElement stepForJob in XMLStepsForJob)
+                    var XMLStepForJob = XMLStepsForJob.SelectNodes(".//StepForJob");
+
+                    foreach (XmlElement stepForJob in XMLStepForJob)
                     {
-                        var XMLStepForJob = testjob.SelectSingleNode("//StepForJob");
 
-                        var StepsForJobID = XMLTestFeatures.SelectSingleNode(".//StepsForJobID").InnerText;
-                        var StepID = XMLTestFeatures.SelectSingleNode(".//StepID").InnerText;
-                        var Start = XMLTestFeatures.SelectSingleNode(".//Start").InnerText;
-                        var Stop = XMLTestFeatures.SelectSingleNode(".//Stop").InnerText;
-                        var Elapsed = XMLTestFeatures.SelectSingleNode(".//Elapsed").InnerText;
-                        var Complete = XMLTestFeatures.SelectSingleNode(".//Complete").InnerText;
-                        var Consecutivo = XMLTestFeatures.SelectSingleNode(".//Consecutivo").InnerText;
-                        var Obsolete = XMLTestFeatures.SelectSingleNode(".//Obsolete").InnerText;
-                        var AuxTechnicianID = XMLTestFeatures.SelectSingleNode(".//AuxTechnicianID").InnerText;
-                        var AuxStationID = XMLTestFeatures.SelectSingleNode(".//AuxStationID").InnerText;
+                        var StepsForJobID = stepForJob.SelectSingleNode(".//StepsForJobID").InnerText;
+                        var StepID = stepForJob.SelectSingleNode(".//StepID").InnerText;
+                        var Start = stepForJob.SelectSingleNode(".//Start").InnerText;
+                        var Stop = stepForJob.SelectSingleNode(".//Stop").InnerText;
+                        var Elapsed = stepForJob.SelectSingleNode(".//Elapsed").InnerText;
+                        var Complete = stepForJob.SelectSingleNode(".//Complete").InnerText;
+                        var Consecutivo = stepForJob.SelectSingleNode(".//Consecutivo").InnerText;
+                        var Obsolete = stepForJob.SelectSingleNode(".//Obsolete").InnerText;
+                        var AuxTechnicianID = stepForJob.SelectSingleNode(".//AuxTechnicianID").InnerText;
+                        var AuxStationID = stepForJob.SelectSingleNode(".//AuxStationID").InnerText;
 
                         context.StepsForJobs.Add(new StepsForJob
                         {

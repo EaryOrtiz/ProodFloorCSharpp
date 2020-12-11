@@ -6,6 +6,12 @@
     <script src="~/Scripts/CascadingR1R2R3R4R5Edit.js" type="text/javascript"></script>
 }
 <br />
+<form asp-action="SeedXML" asp-controller="TestJob" method="post">
+    @if (Model.TestJobsSearchList.Count() == 0)
+    {
+        <button type="submit" name="buttonImportXML" value="All" class="btn btn-danger btn-sm">Import TestJobs from XML <i class="fas fa-file-alt"></i></button>
+    }
+</form>
 <form asp-controller="TestJob" asp-action="TestJobSearchList" method="get">
 
     @Html.Partial("TestJobSearchForm", Model)
@@ -14,11 +20,16 @@
 <br />
 @if (Model.TestJobsSearchList.Count > 0)
 {
-     @Html.Partial("SearchTestJobSummary", Model)
+    @Html.Partial("SearchTestJobSummary", Model)
 
     <coool-pagination-search page-model="@Model.PagingInfo" page-action="TestJobSearchList" page-classes-enabled="true"
-                          page-class="btn" page-class-normal="btn-secondary"
-                          page-class-selected="btn-dark"
-                          class="btn-group pull-right m-1">
+                             page-class="btn" page-class-normal="btn-secondary"
+                             page-class-selected="btn-dark"
+                             class="btn-group pull-right m-1">
     </coool-pagination-search>
+    <div>
+        <form asp-controller="TestJob" asp-action="ExportToXML" method="post">
+            <button class="btn btn-sm " name="buttonXML" style="background-color:steelblue;color:white;margin-bottom:30px">Export Table to an XML File</button>
+        </form>
+    </div>
 }

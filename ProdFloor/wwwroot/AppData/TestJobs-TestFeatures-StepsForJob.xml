@@ -1,0 +1,2510 @@
+﻿<TestJobs-TestFeatures-StepsForJob>
+  <TestJob>
+    <TestJobID>4180</TestJobID>
+    <JobID>8306</JobID>
+    <TechnicianID>115</TechnicianID>
+    <Status>Completed</Status>
+    <SinglePO>3698741</SinglePO>
+    <JobLabel>A</JobLabel>
+    <StartDate>12/10/2020 8:54:10 AM</StartDate>
+    <CompletedDate>12/10/2020 2:50:47 PM</CompletedDate>
+    <StationID>5</StationID>
+    <TestFeature>
+      <TestFeatureID>2167</TestFeatureID>
+      <TestJobID>4180</TestJobID>
+      <Overlay>False</Overlay>
+      <Group>False</Group>
+      <PC>False</PC>
+      <BrakeCoilVoltageMoreThan10>False</BrakeCoilVoltageMoreThan10>
+      <EMBrake>False</EMBrake>
+      <EMCO>False</EMCO>
+      <R6>False</R6>
+      <Local>False</Local>
+      <ShortFloor>False</ShortFloor>
+      <Custom>False</Custom>
+      <MRL>False</MRL>
+      <CTL2>False</CTL2>
+      <TrajetaCPI>False</TrajetaCPI>
+      <Cartop>False</Cartop>
+    </TestFeature>
+    <StepsForJob>
+      <StepForJob>
+        <StepsForJobID>7049</StepsForJobID>
+        <StepID>73</StepID>
+        <TestJobID>4180</TestJobID>
+        <Start>12/10/2020 8:54:10 AM</Start>
+        <Stop>12/10/2020 8:57:31 AM</Stop>
+        <Elapsed>1/1/0001 12:03:21 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>1</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>115</AuxTechnicianID>
+        <AuxStationID>5</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7050</StepsForJobID>
+        <StepID>74</StepID>
+        <TestJobID>4180</TestJobID>
+        <Start>12/10/2020 8:57:32 AM</Start>
+        <Stop>12/10/2020 8:58:02 AM</Stop>
+        <Elapsed>1/1/0001 12:00:30 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>2</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>115</AuxTechnicianID>
+        <AuxStationID>5</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7051</StepsForJobID>
+        <StepID>75</StepID>
+        <TestJobID>4180</TestJobID>
+        <Start>12/10/2020 8:58:02 AM</Start>
+        <Stop>12/10/2020 9:02:21 AM</Stop>
+        <Elapsed>1/1/0001 12:04:18 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>3</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>115</AuxTechnicianID>
+        <AuxStationID>5</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7052</StepsForJobID>
+        <StepID>76</StepID>
+        <TestJobID>4180</TestJobID>
+        <Start>12/10/2020 9:02:21 AM</Start>
+        <Stop>12/10/2020 9:05:45 AM</Stop>
+        <Elapsed>1/1/0001 12:03:24 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>4</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>115</AuxTechnicianID>
+        <AuxStationID>5</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7053</StepsForJobID>
+        <StepID>77</StepID>
+        <TestJobID>4180</TestJobID>
+        <Start>12/10/2020 9:05:45 AM</Start>
+        <Stop>12/10/2020 9:06:55 AM</Stop>
+        <Elapsed>1/1/0001 12:01:09 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>5</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>115</AuxTechnicianID>
+        <AuxStationID>5</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7054</StepsForJobID>
+        <StepID>78</StepID>
+        <TestJobID>4180</TestJobID>
+        <Start>12/10/2020 9:06:55 AM</Start>
+        <Stop>12/10/2020 9:08:52 AM</Stop>
+        <Elapsed>1/1/0001 12:01:57 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>6</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>115</AuxTechnicianID>
+        <AuxStationID>5</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7055</StepsForJobID>
+        <StepID>79</StepID>
+        <TestJobID>4180</TestJobID>
+        <Start>12/10/2020 9:08:52 AM</Start>
+        <Stop>12/10/2020 9:17:13 AM</Stop>
+        <Elapsed>1/1/0001 12:08:20 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>7</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>115</AuxTechnicianID>
+        <AuxStationID>5</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7056</StepsForJobID>
+        <StepID>80</StepID>
+        <TestJobID>4180</TestJobID>
+        <Start>12/10/2020 9:17:13 AM</Start>
+        <Stop>12/10/2020 9:21:01 AM</Stop>
+        <Elapsed>1/1/0001 12:03:48 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>8</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>115</AuxTechnicianID>
+        <AuxStationID>5</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7057</StepsForJobID>
+        <StepID>81</StepID>
+        <TestJobID>4180</TestJobID>
+        <Start>12/10/2020 9:21:01 AM</Start>
+        <Stop>12/10/2020 9:29:09 AM</Stop>
+        <Elapsed>1/1/0001 12:08:07 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>9</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>115</AuxTechnicianID>
+        <AuxStationID>5</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7058</StepsForJobID>
+        <StepID>83</StepID>
+        <TestJobID>4180</TestJobID>
+        <Start>12/10/2020 9:29:09 AM</Start>
+        <Stop>12/10/2020 9:37:52 AM</Stop>
+        <Elapsed>1/1/0001 12:08:42 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>10</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>115</AuxTechnicianID>
+        <AuxStationID>5</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7059</StepsForJobID>
+        <StepID>84</StepID>
+        <TestJobID>4180</TestJobID>
+        <Start>12/10/2020 9:37:52 AM</Start>
+        <Stop>12/10/2020 9:42:06 AM</Stop>
+        <Elapsed>1/1/0001 12:04:13 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>11</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>115</AuxTechnicianID>
+        <AuxStationID>5</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7060</StepsForJobID>
+        <StepID>85</StepID>
+        <TestJobID>4180</TestJobID>
+        <Start>12/10/2020 9:42:06 AM</Start>
+        <Stop>12/10/2020 9:46:32 AM</Stop>
+        <Elapsed>1/1/0001 12:04:26 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>12</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>115</AuxTechnicianID>
+        <AuxStationID>5</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7061</StepsForJobID>
+        <StepID>86</StepID>
+        <TestJobID>4180</TestJobID>
+        <Start>12/10/2020 9:46:32 AM</Start>
+        <Stop>12/10/2020 9:54:52 AM</Stop>
+        <Elapsed>1/1/0001 12:08:19 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>13</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>115</AuxTechnicianID>
+        <AuxStationID>5</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7062</StepsForJobID>
+        <StepID>87</StepID>
+        <TestJobID>4180</TestJobID>
+        <Start>12/10/2020 9:54:52 AM</Start>
+        <Stop>12/10/2020 10:01:31 AM</Stop>
+        <Elapsed>1/1/0001 12:06:39 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>14</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>115</AuxTechnicianID>
+        <AuxStationID>5</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7063</StepsForJobID>
+        <StepID>88</StepID>
+        <TestJobID>4180</TestJobID>
+        <Start>12/10/2020 10:01:31 AM</Start>
+        <Stop>12/10/2020 10:07:38 AM</Stop>
+        <Elapsed>1/1/0001 12:06:06 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>15</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>115</AuxTechnicianID>
+        <AuxStationID>5</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7064</StepsForJobID>
+        <StepID>89</StepID>
+        <TestJobID>4180</TestJobID>
+        <Start>12/10/2020 10:07:38 AM</Start>
+        <Stop>12/10/2020 10:36:01 AM</Stop>
+        <Elapsed>1/1/0001 12:28:23 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>16</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>115</AuxTechnicianID>
+        <AuxStationID>5</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7065</StepsForJobID>
+        <StepID>90</StepID>
+        <TestJobID>4180</TestJobID>
+        <Start>12/10/2020 10:36:01 AM</Start>
+        <Stop>12/10/2020 10:52:31 AM</Stop>
+        <Elapsed>1/1/0001 12:16:30 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>17</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>115</AuxTechnicianID>
+        <AuxStationID>5</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7066</StepsForJobID>
+        <StepID>91</StepID>
+        <TestJobID>4180</TestJobID>
+        <Start>12/10/2020 10:52:31 AM</Start>
+        <Stop>12/10/2020 11:03:53 AM</Stop>
+        <Elapsed>1/1/0001 12:11:21 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>18</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>115</AuxTechnicianID>
+        <AuxStationID>5</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7067</StepsForJobID>
+        <StepID>92</StepID>
+        <TestJobID>4180</TestJobID>
+        <Start>12/10/2020 11:03:53 AM</Start>
+        <Stop>12/10/2020 11:09:45 AM</Stop>
+        <Elapsed>1/1/0001 12:05:52 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>19</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>115</AuxTechnicianID>
+        <AuxStationID>5</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7068</StepsForJobID>
+        <StepID>93</StepID>
+        <TestJobID>4180</TestJobID>
+        <Start>12/10/2020 11:09:45 AM</Start>
+        <Stop>12/10/2020 11:15:02 AM</Stop>
+        <Elapsed>1/1/0001 12:05:16 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>20</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>115</AuxTechnicianID>
+        <AuxStationID>5</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7069</StepsForJobID>
+        <StepID>94</StepID>
+        <TestJobID>4180</TestJobID>
+        <Start>12/10/2020 11:15:02 AM</Start>
+        <Stop>12/10/2020 11:20:33 AM</Stop>
+        <Elapsed>1/1/0001 12:05:31 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>21</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>115</AuxTechnicianID>
+        <AuxStationID>5</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7070</StepsForJobID>
+        <StepID>95</StepID>
+        <TestJobID>4180</TestJobID>
+        <Start>12/10/2020 11:20:33 AM</Start>
+        <Stop>12/10/2020 11:29:26 AM</Stop>
+        <Elapsed>1/1/0001 12:08:53 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>22</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>115</AuxTechnicianID>
+        <AuxStationID>5</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7071</StepsForJobID>
+        <StepID>96</StepID>
+        <TestJobID>4180</TestJobID>
+        <Start>12/10/2020 11:29:26 AM</Start>
+        <Stop>12/10/2020 11:33:32 AM</Stop>
+        <Elapsed>1/1/0001 12:04:05 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>23</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>115</AuxTechnicianID>
+        <AuxStationID>5</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7072</StepsForJobID>
+        <StepID>99</StepID>
+        <TestJobID>4180</TestJobID>
+        <Start>12/10/2020 11:33:32 AM</Start>
+        <Stop>12/10/2020 11:39:09 AM</Stop>
+        <Elapsed>1/1/0001 12:05:36 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>24</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>115</AuxTechnicianID>
+        <AuxStationID>5</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7073</StepsForJobID>
+        <StepID>100</StepID>
+        <TestJobID>4180</TestJobID>
+        <Start>12/10/2020 11:39:09 AM</Start>
+        <Stop>12/10/2020 12:22:29 PM</Stop>
+        <Elapsed>1/1/0001 12:43:20 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>25</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>115</AuxTechnicianID>
+        <AuxStationID>5</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7074</StepsForJobID>
+        <StepID>101</StepID>
+        <TestJobID>4180</TestJobID>
+        <Start>12/10/2020 12:22:29 PM</Start>
+        <Stop>12/10/2020 12:29:52 PM</Stop>
+        <Elapsed>1/1/0001 12:07:22 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>26</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>115</AuxTechnicianID>
+        <AuxStationID>5</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7075</StepsForJobID>
+        <StepID>105</StepID>
+        <TestJobID>4180</TestJobID>
+        <Start>12/10/2020 12:29:52 PM</Start>
+        <Stop>12/10/2020 12:37:13 PM</Stop>
+        <Elapsed>1/1/0001 12:07:21 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>27</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>115</AuxTechnicianID>
+        <AuxStationID>5</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7076</StepsForJobID>
+        <StepID>107</StepID>
+        <TestJobID>4180</TestJobID>
+        <Start>12/10/2020 12:37:13 PM</Start>
+        <Stop>12/10/2020 12:46:49 PM</Stop>
+        <Elapsed>1/1/0001 12:09:35 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>28</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>115</AuxTechnicianID>
+        <AuxStationID>5</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7077</StepsForJobID>
+        <StepID>110</StepID>
+        <TestJobID>4180</TestJobID>
+        <Start>12/10/2020 12:46:49 PM</Start>
+        <Stop>12/10/2020 1:10:53 PM</Stop>
+        <Elapsed>1/1/0001 12:24:03 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>29</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>115</AuxTechnicianID>
+        <AuxStationID>5</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7078</StepsForJobID>
+        <StepID>117</StepID>
+        <TestJobID>4180</TestJobID>
+        <Start>12/10/2020 1:10:53 PM</Start>
+        <Stop>12/10/2020 1:26:58 PM</Stop>
+        <Elapsed>1/1/0001 12:16:05 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>30</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>115</AuxTechnicianID>
+        <AuxStationID>5</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7079</StepsForJobID>
+        <StepID>118</StepID>
+        <TestJobID>4180</TestJobID>
+        <Start>12/10/2020 1:26:58 PM</Start>
+        <Stop>12/10/2020 1:28:57 PM</Stop>
+        <Elapsed>1/1/0001 12:01:58 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>31</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>115</AuxTechnicianID>
+        <AuxStationID>5</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7080</StepsForJobID>
+        <StepID>119</StepID>
+        <TestJobID>4180</TestJobID>
+        <Start>12/10/2020 1:28:57 PM</Start>
+        <Stop>12/10/2020 2:30:57 PM</Stop>
+        <Elapsed>1/1/0001 1:02:00 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>32</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>115</AuxTechnicianID>
+        <AuxStationID>5</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7081</StepsForJobID>
+        <StepID>120</StepID>
+        <TestJobID>4180</TestJobID>
+        <Start>12/10/2020 2:30:57 PM</Start>
+        <Stop>12/10/2020 2:33:40 PM</Stop>
+        <Elapsed>1/1/0001 12:02:42 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>33</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>115</AuxTechnicianID>
+        <AuxStationID>5</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7082</StepsForJobID>
+        <StepID>121</StepID>
+        <TestJobID>4180</TestJobID>
+        <Start>12/10/2020 2:33:40 PM</Start>
+        <Stop>12/10/2020 2:37:53 PM</Stop>
+        <Elapsed>1/1/0001 12:04:12 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>34</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>115</AuxTechnicianID>
+        <AuxStationID>5</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7083</StepsForJobID>
+        <StepID>122</StepID>
+        <TestJobID>4180</TestJobID>
+        <Start>12/10/2020 2:37:53 PM</Start>
+        <Stop>12/10/2020 2:42:47 PM</Stop>
+        <Elapsed>1/1/0001 12:04:54 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>35</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>115</AuxTechnicianID>
+        <AuxStationID>5</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7084</StepsForJobID>
+        <StepID>123</StepID>
+        <TestJobID>4180</TestJobID>
+        <Start>12/10/2020 2:42:47 PM</Start>
+        <Stop>12/10/2020 2:47:56 PM</Stop>
+        <Elapsed>1/1/0001 12:05:08 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>36</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>115</AuxTechnicianID>
+        <AuxStationID>5</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7085</StepsForJobID>
+        <StepID>124</StepID>
+        <TestJobID>4180</TestJobID>
+        <Start>12/10/2020 2:47:56 PM</Start>
+        <Stop>12/10/2020 2:50:01 PM</Stop>
+        <Elapsed>1/1/0001 12:02:05 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>37</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>115</AuxTechnicianID>
+        <AuxStationID>5</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7086</StepsForJobID>
+        <StepID>125</StepID>
+        <TestJobID>4180</TestJobID>
+        <Start>12/10/2020 2:50:01 PM</Start>
+        <Stop>12/10/2020 2:50:37 PM</Stop>
+        <Elapsed>1/1/0001 12:00:36 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>38</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>115</AuxTechnicianID>
+        <AuxStationID>5</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7087</StepsForJobID>
+        <StepID>126</StepID>
+        <TestJobID>4180</TestJobID>
+        <Start>12/10/2020 2:50:37 PM</Start>
+        <Stop>12/10/2020 2:50:47 PM</Stop>
+        <Elapsed>1/1/0001 12:00:09 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>39</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>115</AuxTechnicianID>
+        <AuxStationID>5</AuxStationID>
+      </StepForJob>
+    </StepsForJob>
+  </TestJob>
+  <TestJob>
+    <TestJobID>4181</TestJobID>
+    <JobID>8299</JobID>
+    <TechnicianID>100</TechnicianID>
+    <Status>Completed</Status>
+    <SinglePO>3111112</SinglePO>
+    <JobLabel>B</JobLabel>
+    <StartDate>12/10/2020 8:55:25 AM</StartDate>
+    <CompletedDate>12/10/2020 1:25:43 PM</CompletedDate>
+    <StationID>6</StationID>
+    <TestFeature>
+      <TestFeatureID>2168</TestFeatureID>
+      <TestJobID>4181</TestJobID>
+      <Overlay>False</Overlay>
+      <Group>False</Group>
+      <PC>False</PC>
+      <BrakeCoilVoltageMoreThan10>False</BrakeCoilVoltageMoreThan10>
+      <EMBrake>False</EMBrake>
+      <EMCO>False</EMCO>
+      <R6>False</R6>
+      <Local>False</Local>
+      <ShortFloor>False</ShortFloor>
+      <Custom>False</Custom>
+      <MRL>False</MRL>
+      <CTL2>False</CTL2>
+      <TrajetaCPI>False</TrajetaCPI>
+      <Cartop>False</Cartop>
+    </TestFeature>
+    <StepsForJob>
+      <StepForJob>
+        <StepsForJobID>7088</StepsForJobID>
+        <StepID>73</StepID>
+        <TestJobID>4181</TestJobID>
+        <Start>12/10/2020 8:55:25 AM</Start>
+        <Stop>12/10/2020 8:59:39 AM</Stop>
+        <Elapsed>1/1/0001 12:04:13 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>1</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>100</AuxTechnicianID>
+        <AuxStationID>6</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7089</StepsForJobID>
+        <StepID>74</StepID>
+        <TestJobID>4181</TestJobID>
+        <Start>12/10/2020 8:59:39 AM</Start>
+        <Stop>12/10/2020 9:00:48 AM</Stop>
+        <Elapsed>1/1/0001 12:01:09 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>2</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>100</AuxTechnicianID>
+        <AuxStationID>6</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7090</StepsForJobID>
+        <StepID>75</StepID>
+        <TestJobID>4181</TestJobID>
+        <Start>12/10/2020 9:00:48 AM</Start>
+        <Stop>12/10/2020 9:05:43 AM</Stop>
+        <Elapsed>1/1/0001 12:04:54 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>3</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>100</AuxTechnicianID>
+        <AuxStationID>6</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7091</StepsForJobID>
+        <StepID>76</StepID>
+        <TestJobID>4181</TestJobID>
+        <Start>12/10/2020 9:05:43 AM</Start>
+        <Stop>12/10/2020 9:10:19 AM</Stop>
+        <Elapsed>1/1/0001 12:04:36 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>4</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>100</AuxTechnicianID>
+        <AuxStationID>6</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7092</StepsForJobID>
+        <StepID>77</StepID>
+        <TestJobID>4181</TestJobID>
+        <Start>12/10/2020 9:10:19 AM</Start>
+        <Stop>12/10/2020 9:14:29 AM</Stop>
+        <Elapsed>1/1/0001 12:04:09 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>5</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>100</AuxTechnicianID>
+        <AuxStationID>6</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7093</StepsForJobID>
+        <StepID>78</StepID>
+        <TestJobID>4181</TestJobID>
+        <Start>12/10/2020 9:14:29 AM</Start>
+        <Stop>12/10/2020 9:21:04 AM</Stop>
+        <Elapsed>1/1/0001 12:06:35 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>6</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>100</AuxTechnicianID>
+        <AuxStationID>6</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7094</StepsForJobID>
+        <StepID>79</StepID>
+        <TestJobID>4181</TestJobID>
+        <Start>12/10/2020 9:21:04 AM</Start>
+        <Stop>12/10/2020 9:24:49 AM</Stop>
+        <Elapsed>1/1/0001 12:03:44 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>7</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>100</AuxTechnicianID>
+        <AuxStationID>6</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7095</StepsForJobID>
+        <StepID>80</StepID>
+        <TestJobID>4181</TestJobID>
+        <Start>12/10/2020 9:24:49 AM</Start>
+        <Stop>12/10/2020 9:53:54 AM</Stop>
+        <Elapsed>1/1/0001 12:29:05 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>8</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>100</AuxTechnicianID>
+        <AuxStationID>6</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7096</StepsForJobID>
+        <StepID>81</StepID>
+        <TestJobID>4181</TestJobID>
+        <Start>12/10/2020 9:53:54 AM</Start>
+        <Stop>12/10/2020 10:01:35 AM</Stop>
+        <Elapsed>1/1/0001 12:07:41 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>9</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>100</AuxTechnicianID>
+        <AuxStationID>6</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7097</StepsForJobID>
+        <StepID>83</StepID>
+        <TestJobID>4181</TestJobID>
+        <Start>12/10/2020 10:01:35 AM</Start>
+        <Stop>12/10/2020 10:13:03 AM</Stop>
+        <Elapsed>1/1/0001 12:11:27 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>10</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>100</AuxTechnicianID>
+        <AuxStationID>6</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7098</StepsForJobID>
+        <StepID>84</StepID>
+        <TestJobID>4181</TestJobID>
+        <Start>12/10/2020 10:13:03 AM</Start>
+        <Stop>12/10/2020 10:20:30 AM</Stop>
+        <Elapsed>1/1/0001 12:07:27 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>11</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>100</AuxTechnicianID>
+        <AuxStationID>6</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7099</StepsForJobID>
+        <StepID>85</StepID>
+        <TestJobID>4181</TestJobID>
+        <Start>12/10/2020 10:20:30 AM</Start>
+        <Stop>12/10/2020 10:23:28 AM</Stop>
+        <Elapsed>1/1/0001 12:02:57 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>12</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>100</AuxTechnicianID>
+        <AuxStationID>6</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7100</StepsForJobID>
+        <StepID>86</StepID>
+        <TestJobID>4181</TestJobID>
+        <Start>12/10/2020 10:23:28 AM</Start>
+        <Stop>12/10/2020 10:24:19 AM</Stop>
+        <Elapsed>1/1/0001 12:00:51 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>13</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>100</AuxTechnicianID>
+        <AuxStationID>6</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7101</StepsForJobID>
+        <StepID>87</StepID>
+        <TestJobID>4181</TestJobID>
+        <Start>12/10/2020 10:24:19 AM</Start>
+        <Stop>12/10/2020 10:26:12 AM</Stop>
+        <Elapsed>1/1/0001 12:01:52 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>14</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>100</AuxTechnicianID>
+        <AuxStationID>6</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7102</StepsForJobID>
+        <StepID>88</StepID>
+        <TestJobID>4181</TestJobID>
+        <Start>12/10/2020 10:26:12 AM</Start>
+        <Stop>12/10/2020 10:35:57 AM</Stop>
+        <Elapsed>1/1/0001 12:09:45 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>15</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>100</AuxTechnicianID>
+        <AuxStationID>6</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7103</StepsForJobID>
+        <StepID>89</StepID>
+        <TestJobID>4181</TestJobID>
+        <Start>12/10/2020 10:35:57 AM</Start>
+        <Stop>12/10/2020 10:45:05 AM</Stop>
+        <Elapsed>1/1/0001 12:09:08 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>16</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>100</AuxTechnicianID>
+        <AuxStationID>6</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7104</StepsForJobID>
+        <StepID>90</StepID>
+        <TestJobID>4181</TestJobID>
+        <Start>12/10/2020 10:45:05 AM</Start>
+        <Stop>12/10/2020 10:45:55 AM</Stop>
+        <Elapsed>1/1/0001 12:00:49 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>17</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>100</AuxTechnicianID>
+        <AuxStationID>6</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7105</StepsForJobID>
+        <StepID>91</StepID>
+        <TestJobID>4181</TestJobID>
+        <Start>12/10/2020 10:45:55 AM</Start>
+        <Stop>12/10/2020 10:52:34 AM</Stop>
+        <Elapsed>1/1/0001 12:06:38 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>18</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>100</AuxTechnicianID>
+        <AuxStationID>6</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7106</StepsForJobID>
+        <StepID>92</StepID>
+        <TestJobID>4181</TestJobID>
+        <Start>12/10/2020 10:52:34 AM</Start>
+        <Stop>12/10/2020 10:56:09 AM</Stop>
+        <Elapsed>1/1/0001 12:03:35 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>19</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>100</AuxTechnicianID>
+        <AuxStationID>6</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7107</StepsForJobID>
+        <StepID>93</StepID>
+        <TestJobID>4181</TestJobID>
+        <Start>12/10/2020 10:56:09 AM</Start>
+        <Stop>12/10/2020 10:59:56 AM</Stop>
+        <Elapsed>1/1/0001 12:03:46 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>20</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>100</AuxTechnicianID>
+        <AuxStationID>6</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7108</StepsForJobID>
+        <StepID>94</StepID>
+        <TestJobID>4181</TestJobID>
+        <Start>12/10/2020 10:59:56 AM</Start>
+        <Stop>12/10/2020 11:04:01 AM</Stop>
+        <Elapsed>1/1/0001 12:04:04 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>21</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>100</AuxTechnicianID>
+        <AuxStationID>6</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7109</StepsForJobID>
+        <StepID>95</StepID>
+        <TestJobID>4181</TestJobID>
+        <Start>12/10/2020 11:04:01 AM</Start>
+        <Stop>12/10/2020 11:09:51 AM</Stop>
+        <Elapsed>1/1/0001 12:05:50 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>22</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>100</AuxTechnicianID>
+        <AuxStationID>6</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7110</StepsForJobID>
+        <StepID>96</StepID>
+        <TestJobID>4181</TestJobID>
+        <Start>12/10/2020 11:09:51 AM</Start>
+        <Stop>12/10/2020 11:15:05 AM</Stop>
+        <Elapsed>1/1/0001 12:05:14 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>23</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>100</AuxTechnicianID>
+        <AuxStationID>6</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7111</StepsForJobID>
+        <StepID>99</StepID>
+        <TestJobID>4181</TestJobID>
+        <Start>12/10/2020 11:15:05 AM</Start>
+        <Stop>12/10/2020 11:20:41 AM</Stop>
+        <Elapsed>1/1/0001 12:05:35 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>24</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>100</AuxTechnicianID>
+        <AuxStationID>6</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7112</StepsForJobID>
+        <StepID>100</StepID>
+        <TestJobID>4181</TestJobID>
+        <Start>12/10/2020 11:20:41 AM</Start>
+        <Stop>12/10/2020 11:24:06 AM</Stop>
+        <Elapsed>1/1/0001 12:03:25 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>25</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>100</AuxTechnicianID>
+        <AuxStationID>6</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7113</StepsForJobID>
+        <StepID>101</StepID>
+        <TestJobID>4181</TestJobID>
+        <Start>12/10/2020 11:24:06 AM</Start>
+        <Stop>12/10/2020 11:33:36 AM</Stop>
+        <Elapsed>1/1/0001 12:09:30 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>26</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>100</AuxTechnicianID>
+        <AuxStationID>6</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7114</StepsForJobID>
+        <StepID>105</StepID>
+        <TestJobID>4181</TestJobID>
+        <Start>12/10/2020 11:33:36 AM</Start>
+        <Stop>12/10/2020 11:39:11 AM</Stop>
+        <Elapsed>1/1/0001 12:05:34 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>27</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>100</AuxTechnicianID>
+        <AuxStationID>6</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7115</StepsForJobID>
+        <StepID>106</StepID>
+        <TestJobID>4181</TestJobID>
+        <Start>12/10/2020 11:39:11 AM</Start>
+        <Stop>12/10/2020 11:42:06 AM</Stop>
+        <Elapsed>1/1/0001 12:02:54 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>28</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>100</AuxTechnicianID>
+        <AuxStationID>6</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7116</StepsForJobID>
+        <StepID>107</StepID>
+        <TestJobID>4181</TestJobID>
+        <Start>12/10/2020 11:42:06 AM</Start>
+        <Stop>12/10/2020 12:11:29 PM</Stop>
+        <Elapsed>1/1/0001 12:29:23 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>29</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>100</AuxTechnicianID>
+        <AuxStationID>6</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7117</StepsForJobID>
+        <StepID>110</StepID>
+        <TestJobID>4181</TestJobID>
+        <Start>12/10/2020 12:11:30 PM</Start>
+        <Stop>12/10/2020 12:29:41 PM</Stop>
+        <Elapsed>1/1/0001 12:18:11 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>30</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>100</AuxTechnicianID>
+        <AuxStationID>6</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7118</StepsForJobID>
+        <StepID>117</StepID>
+        <TestJobID>4181</TestJobID>
+        <Start>12/10/2020 12:29:41 PM</Start>
+        <Stop>12/10/2020 12:37:15 PM</Stop>
+        <Elapsed>1/1/0001 12:07:33 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>31</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>100</AuxTechnicianID>
+        <AuxStationID>6</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7119</StepsForJobID>
+        <StepID>118</StepID>
+        <TestJobID>4181</TestJobID>
+        <Start>12/10/2020 12:37:15 PM</Start>
+        <Stop>12/10/2020 12:40:39 PM</Stop>
+        <Elapsed>1/1/0001 12:03:24 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>32</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>100</AuxTechnicianID>
+        <AuxStationID>6</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7120</StepsForJobID>
+        <StepID>119</StepID>
+        <TestJobID>4181</TestJobID>
+        <Start>12/10/2020 12:40:39 PM</Start>
+        <Stop>12/10/2020 12:46:42 PM</Stop>
+        <Elapsed>1/1/0001 12:06:03 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>33</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>100</AuxTechnicianID>
+        <AuxStationID>6</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7121</StepsForJobID>
+        <StepID>120</StepID>
+        <TestJobID>4181</TestJobID>
+        <Start>12/10/2020 12:46:42 PM</Start>
+        <Stop>12/10/2020 12:51:23 PM</Stop>
+        <Elapsed>1/1/0001 12:04:40 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>34</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>100</AuxTechnicianID>
+        <AuxStationID>6</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7122</StepsForJobID>
+        <StepID>121</StepID>
+        <TestJobID>4181</TestJobID>
+        <Start>12/10/2020 12:51:23 PM</Start>
+        <Stop>12/10/2020 12:56:28 PM</Stop>
+        <Elapsed>1/1/0001 12:05:05 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>35</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>100</AuxTechnicianID>
+        <AuxStationID>6</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7123</StepsForJobID>
+        <StepID>122</StepID>
+        <TestJobID>4181</TestJobID>
+        <Start>12/10/2020 12:56:28 PM</Start>
+        <Stop>12/10/2020 12:59:16 PM</Stop>
+        <Elapsed>1/1/0001 12:02:47 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>36</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>100</AuxTechnicianID>
+        <AuxStationID>6</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7124</StepsForJobID>
+        <StepID>123</StepID>
+        <TestJobID>4181</TestJobID>
+        <Start>12/10/2020 12:59:16 PM</Start>
+        <Stop>12/10/2020 1:10:56 PM</Stop>
+        <Elapsed>1/1/0001 12:11:39 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>37</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>100</AuxTechnicianID>
+        <AuxStationID>6</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7125</StepsForJobID>
+        <StepID>124</StepID>
+        <TestJobID>4181</TestJobID>
+        <Start>12/10/2020 1:10:56 PM</Start>
+        <Stop>12/10/2020 1:12:01 PM</Stop>
+        <Elapsed>1/1/0001 12:01:05 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>38</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>100</AuxTechnicianID>
+        <AuxStationID>6</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7126</StepsForJobID>
+        <StepID>125</StepID>
+        <TestJobID>4181</TestJobID>
+        <Start>12/10/2020 1:12:01 PM</Start>
+        <Stop>12/10/2020 1:16:15 PM</Stop>
+        <Elapsed>1/1/0001 12:04:14 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>39</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>100</AuxTechnicianID>
+        <AuxStationID>6</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7127</StepsForJobID>
+        <StepID>126</StepID>
+        <TestJobID>4181</TestJobID>
+        <Start>12/10/2020 1:16:15 PM</Start>
+        <Stop>12/10/2020 1:25:43 PM</Stop>
+        <Elapsed>1/1/0001 12:09:27 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>40</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>100</AuxTechnicianID>
+        <AuxStationID>6</AuxStationID>
+      </StepForJob>
+    </StepsForJob>
+  </TestJob>
+  <TestJob>
+    <TestJobID>4182</TestJobID>
+    <JobID>8323</JobID>
+    <TechnicianID>118</TechnicianID>
+    <Status>Completed</Status>
+    <SinglePO>3777775</SinglePO>
+    <JobLabel>D</JobLabel>
+    <StartDate>12/10/2020 8:57:27 AM</StartDate>
+    <CompletedDate>12/10/2020 12:46:18 PM</CompletedDate>
+    <StationID>3</StationID>
+    <TestFeature>
+      <TestFeatureID>2169</TestFeatureID>
+      <TestJobID>4182</TestJobID>
+      <Overlay>False</Overlay>
+      <Group>False</Group>
+      <PC>False</PC>
+      <BrakeCoilVoltageMoreThan10>False</BrakeCoilVoltageMoreThan10>
+      <EMBrake>False</EMBrake>
+      <EMCO>False</EMCO>
+      <R6>False</R6>
+      <Local>False</Local>
+      <ShortFloor>False</ShortFloor>
+      <Custom>False</Custom>
+      <MRL>False</MRL>
+      <CTL2>False</CTL2>
+      <TrajetaCPI>False</TrajetaCPI>
+      <Cartop>False</Cartop>
+    </TestFeature>
+    <StepsForJob>
+      <StepForJob>
+        <StepsForJobID>7128</StepsForJobID>
+        <StepID>7</StepID>
+        <TestJobID>4182</TestJobID>
+        <Start>12/10/2020 8:57:27 AM</Start>
+        <Stop>12/10/2020 8:58:18 AM</Stop>
+        <Elapsed>1/1/0001 12:00:50 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>1</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>118</AuxTechnicianID>
+        <AuxStationID>3</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7129</StepsForJobID>
+        <StepID>8</StepID>
+        <TestJobID>4182</TestJobID>
+        <Start>12/10/2020 8:58:18 AM</Start>
+        <Stop>12/10/2020 9:00:43 AM</Stop>
+        <Elapsed>1/1/0001 12:02:25 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>2</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>118</AuxTechnicianID>
+        <AuxStationID>3</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7130</StepsForJobID>
+        <StepID>9</StepID>
+        <TestJobID>4182</TestJobID>
+        <Start>12/10/2020 9:00:43 AM</Start>
+        <Stop>12/10/2020 9:04:00 AM</Stop>
+        <Elapsed>1/1/0001 12:03:17 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>3</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>118</AuxTechnicianID>
+        <AuxStationID>3</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7131</StepsForJobID>
+        <StepID>10</StepID>
+        <TestJobID>4182</TestJobID>
+        <Start>12/10/2020 9:04:00 AM</Start>
+        <Stop>12/10/2020 9:06:43 AM</Stop>
+        <Elapsed>1/1/0001 12:02:43 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>4</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>118</AuxTechnicianID>
+        <AuxStationID>3</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7132</StepsForJobID>
+        <StepID>11</StepID>
+        <TestJobID>4182</TestJobID>
+        <Start>12/10/2020 9:06:43 AM</Start>
+        <Stop>12/10/2020 9:14:33 AM</Stop>
+        <Elapsed>1/1/0001 12:07:49 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>5</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>118</AuxTechnicianID>
+        <AuxStationID>3</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7133</StepsForJobID>
+        <StepID>12</StepID>
+        <TestJobID>4182</TestJobID>
+        <Start>12/10/2020 9:14:33 AM</Start>
+        <Stop>12/10/2020 9:24:11 AM</Stop>
+        <Elapsed>1/1/0001 12:09:38 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>6</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>118</AuxTechnicianID>
+        <AuxStationID>3</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7134</StepsForJobID>
+        <StepID>13</StepID>
+        <TestJobID>4182</TestJobID>
+        <Start>12/10/2020 9:24:11 AM</Start>
+        <Stop>12/10/2020 9:29:17 AM</Stop>
+        <Elapsed>1/1/0001 12:05:05 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>7</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>118</AuxTechnicianID>
+        <AuxStationID>3</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7135</StepsForJobID>
+        <StepID>14</StepID>
+        <TestJobID>4182</TestJobID>
+        <Start>12/10/2020 9:29:17 AM</Start>
+        <Stop>12/10/2020 9:30:52 AM</Stop>
+        <Elapsed>1/1/0001 12:01:34 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>8</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>118</AuxTechnicianID>
+        <AuxStationID>3</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7136</StepsForJobID>
+        <StepID>44</StepID>
+        <TestJobID>4182</TestJobID>
+        <Start>12/10/2020 9:30:52 AM</Start>
+        <Stop>12/10/2020 9:36:01 AM</Stop>
+        <Elapsed>1/1/0001 12:05:08 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>9</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>118</AuxTechnicianID>
+        <AuxStationID>3</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7137</StepsForJobID>
+        <StepID>15</StepID>
+        <TestJobID>4182</TestJobID>
+        <Start>12/10/2020 9:36:01 AM</Start>
+        <Stop>12/10/2020 9:43:05 AM</Stop>
+        <Elapsed>1/1/0001 12:07:04 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>10</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>118</AuxTechnicianID>
+        <AuxStationID>3</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7138</StepsForJobID>
+        <StepID>16</StepID>
+        <TestJobID>4182</TestJobID>
+        <Start>12/10/2020 9:43:05 AM</Start>
+        <Stop>12/10/2020 9:47:50 AM</Stop>
+        <Elapsed>1/1/0001 12:04:44 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>11</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>118</AuxTechnicianID>
+        <AuxStationID>3</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7139</StepsForJobID>
+        <StepID>17</StepID>
+        <TestJobID>4182</TestJobID>
+        <Start>12/10/2020 9:47:50 AM</Start>
+        <Stop>12/10/2020 9:55:59 AM</Stop>
+        <Elapsed>1/1/0001 12:08:09 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>12</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>118</AuxTechnicianID>
+        <AuxStationID>3</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7140</StepsForJobID>
+        <StepID>18</StepID>
+        <TestJobID>4182</TestJobID>
+        <Start>12/10/2020 9:55:59 AM</Start>
+        <Stop>12/10/2020 10:01:28 AM</Stop>
+        <Elapsed>1/1/0001 12:05:29 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>13</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>118</AuxTechnicianID>
+        <AuxStationID>3</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7141</StepsForJobID>
+        <StepID>19</StepID>
+        <TestJobID>4182</TestJobID>
+        <Start>12/10/2020 10:01:28 AM</Start>
+        <Stop>12/10/2020 10:13:06 AM</Stop>
+        <Elapsed>1/1/0001 12:11:37 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>14</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>118</AuxTechnicianID>
+        <AuxStationID>3</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7142</StepsForJobID>
+        <StepID>20</StepID>
+        <TestJobID>4182</TestJobID>
+        <Start>12/10/2020 10:13:06 AM</Start>
+        <Stop>12/10/2020 10:20:36 AM</Stop>
+        <Elapsed>1/1/0001 12:07:29 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>15</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>118</AuxTechnicianID>
+        <AuxStationID>3</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7143</StepsForJobID>
+        <StepID>21</StepID>
+        <TestJobID>4182</TestJobID>
+        <Start>12/10/2020 10:20:36 AM</Start>
+        <Stop>12/10/2020 10:36:05 AM</Stop>
+        <Elapsed>1/1/0001 12:15:29 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>16</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>118</AuxTechnicianID>
+        <AuxStationID>3</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7144</StepsForJobID>
+        <StepID>22</StepID>
+        <TestJobID>4182</TestJobID>
+        <Start>12/10/2020 10:36:05 AM</Start>
+        <Stop>12/10/2020 10:39:42 AM</Stop>
+        <Elapsed>1/1/0001 12:03:36 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>17</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>118</AuxTechnicianID>
+        <AuxStationID>3</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7145</StepsForJobID>
+        <StepID>23</StepID>
+        <TestJobID>4182</TestJobID>
+        <Start>12/10/2020 10:39:42 AM</Start>
+        <Stop>12/10/2020 10:45:02 AM</Stop>
+        <Elapsed>1/1/0001 12:05:19 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>18</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>118</AuxTechnicianID>
+        <AuxStationID>3</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7146</StepsForJobID>
+        <StepID>24</StepID>
+        <TestJobID>4182</TestJobID>
+        <Start>12/10/2020 10:45:02 AM</Start>
+        <Stop>12/10/2020 10:52:36 AM</Stop>
+        <Elapsed>1/1/0001 12:07:33 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>19</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>118</AuxTechnicianID>
+        <AuxStationID>3</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7147</StepsForJobID>
+        <StepID>25</StepID>
+        <TestJobID>4182</TestJobID>
+        <Start>12/10/2020 10:52:36 AM</Start>
+        <Stop>12/10/2020 10:55:37 AM</Stop>
+        <Elapsed>1/1/0001 12:03:00 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>20</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>118</AuxTechnicianID>
+        <AuxStationID>3</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7148</StepsForJobID>
+        <StepID>26</StepID>
+        <TestJobID>4182</TestJobID>
+        <Start>12/10/2020 10:55:37 AM</Start>
+        <Stop>12/10/2020 10:59:47 AM</Stop>
+        <Elapsed>1/1/0001 12:04:09 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>21</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>118</AuxTechnicianID>
+        <AuxStationID>3</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7149</StepsForJobID>
+        <StepID>46</StepID>
+        <TestJobID>4182</TestJobID>
+        <Start>12/10/2020 10:59:47 AM</Start>
+        <Stop>12/10/2020 11:04:03 AM</Stop>
+        <Elapsed>1/1/0001 12:04:16 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>22</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>118</AuxTechnicianID>
+        <AuxStationID>3</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7150</StepsForJobID>
+        <StepID>27</StepID>
+        <TestJobID>4182</TestJobID>
+        <Start>12/10/2020 11:04:03 AM</Start>
+        <Stop>12/10/2020 11:09:49 AM</Stop>
+        <Elapsed>1/1/0001 12:05:45 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>23</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>118</AuxTechnicianID>
+        <AuxStationID>3</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7151</StepsForJobID>
+        <StepID>28</StepID>
+        <TestJobID>4182</TestJobID>
+        <Start>12/10/2020 11:09:49 AM</Start>
+        <Stop>12/10/2020 11:13:33 AM</Stop>
+        <Elapsed>1/1/0001 12:03:44 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>24</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>118</AuxTechnicianID>
+        <AuxStationID>3</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7152</StepsForJobID>
+        <StepID>29</StepID>
+        <TestJobID>4182</TestJobID>
+        <Start>12/10/2020 11:13:33 AM</Start>
+        <Stop>12/10/2020 11:23:57 AM</Stop>
+        <Elapsed>1/1/0001 12:10:23 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>25</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>118</AuxTechnicianID>
+        <AuxStationID>3</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7153</StepsForJobID>
+        <StepID>30</StepID>
+        <TestJobID>4182</TestJobID>
+        <Start>12/10/2020 11:23:57 AM</Start>
+        <Stop>12/10/2020 11:29:21 AM</Stop>
+        <Elapsed>1/1/0001 12:05:24 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>26</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>118</AuxTechnicianID>
+        <AuxStationID>3</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7154</StepsForJobID>
+        <StepID>31</StepID>
+        <TestJobID>4182</TestJobID>
+        <Start>12/10/2020 11:29:21 AM</Start>
+        <Stop>12/10/2020 11:38:57 AM</Stop>
+        <Elapsed>1/1/0001 12:09:36 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>27</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>118</AuxTechnicianID>
+        <AuxStationID>3</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7155</StepsForJobID>
+        <StepID>32</StepID>
+        <TestJobID>4182</TestJobID>
+        <Start>12/10/2020 11:38:57 AM</Start>
+        <Stop>12/10/2020 11:41:39 AM</Stop>
+        <Elapsed>1/1/0001 12:02:42 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>28</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>118</AuxTechnicianID>
+        <AuxStationID>3</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7156</StepsForJobID>
+        <StepID>33</StepID>
+        <TestJobID>4182</TestJobID>
+        <Start>12/10/2020 11:41:39 AM</Start>
+        <Stop>12/10/2020 12:11:27 PM</Stop>
+        <Elapsed>1/1/0001 12:29:47 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>29</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>118</AuxTechnicianID>
+        <AuxStationID>3</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7157</StepsForJobID>
+        <StepID>34</StepID>
+        <TestJobID>4182</TestJobID>
+        <Start>12/10/2020 12:11:27 PM</Start>
+        <Stop>12/10/2020 12:18:50 PM</Stop>
+        <Elapsed>1/1/0001 12:07:23 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>30</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>118</AuxTechnicianID>
+        <AuxStationID>3</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7158</StepsForJobID>
+        <StepID>35</StepID>
+        <TestJobID>4182</TestJobID>
+        <Start>12/10/2020 12:18:50 PM</Start>
+        <Stop>12/10/2020 12:22:41 PM</Stop>
+        <Elapsed>1/1/0001 12:03:50 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>31</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>118</AuxTechnicianID>
+        <AuxStationID>3</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7159</StepsForJobID>
+        <StepID>36</StepID>
+        <TestJobID>4182</TestJobID>
+        <Start>12/10/2020 12:22:41 PM</Start>
+        <Stop>12/10/2020 12:23:50 PM</Stop>
+        <Elapsed>1/1/0001 12:01:09 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>32</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>118</AuxTechnicianID>
+        <AuxStationID>3</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7160</StepsForJobID>
+        <StepID>37</StepID>
+        <TestJobID>4182</TestJobID>
+        <Start>12/10/2020 12:23:50 PM</Start>
+        <Stop>12/10/2020 12:29:56 PM</Stop>
+        <Elapsed>1/1/0001 12:06:05 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>33</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>118</AuxTechnicianID>
+        <AuxStationID>3</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7161</StepsForJobID>
+        <StepID>38</StepID>
+        <TestJobID>4182</TestJobID>
+        <Start>12/10/2020 12:29:56 PM</Start>
+        <Stop>12/10/2020 12:37:11 PM</Stop>
+        <Elapsed>1/1/0001 12:07:15 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>34</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>118</AuxTechnicianID>
+        <AuxStationID>3</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7162</StepsForJobID>
+        <StepID>45</StepID>
+        <TestJobID>4182</TestJobID>
+        <Start>12/10/2020 12:37:11 PM</Start>
+        <Stop>12/10/2020 12:40:33 PM</Stop>
+        <Elapsed>1/1/0001 12:03:21 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>35</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>118</AuxTechnicianID>
+        <AuxStationID>3</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7163</StepsForJobID>
+        <StepID>39</StepID>
+        <TestJobID>4182</TestJobID>
+        <Start>12/10/2020 12:40:33 PM</Start>
+        <Stop>12/10/2020 12:43:10 PM</Stop>
+        <Elapsed>1/1/0001 12:02:37 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>36</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>118</AuxTechnicianID>
+        <AuxStationID>3</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7164</StepsForJobID>
+        <StepID>197</StepID>
+        <TestJobID>4182</TestJobID>
+        <Start>12/10/2020 12:43:10 PM</Start>
+        <Stop>12/10/2020 12:45:41 PM</Stop>
+        <Elapsed>1/1/0001 12:02:31 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>37</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>118</AuxTechnicianID>
+        <AuxStationID>3</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7165</StepsForJobID>
+        <StepID>40</StepID>
+        <TestJobID>4182</TestJobID>
+        <Start>12/10/2020 12:45:41 PM</Start>
+        <Stop>12/10/2020 12:46:18 PM</Stop>
+        <Elapsed>1/1/0001 12:00:36 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>38</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>118</AuxTechnicianID>
+        <AuxStationID>3</AuxStationID>
+      </StepForJob>
+    </StepsForJob>
+  </TestJob>
+  <TestJob>
+    <TestJobID>4183</TestJobID>
+    <JobID>8324</JobID>
+    <TechnicianID>118</TechnicianID>
+    <Status>Completed</Status>
+    <SinglePO>3777773</SinglePO>
+    <JobLabel>A</JobLabel>
+    <StartDate>12/10/2020 12:50:08 PM</StartDate>
+    <CompletedDate>12/11/2020 10:10:41 AM</CompletedDate>
+    <StationID>3</StationID>
+    <TestFeature>
+      <TestFeatureID>2170</TestFeatureID>
+      <TestJobID>4183</TestJobID>
+      <Overlay>False</Overlay>
+      <Group>False</Group>
+      <PC>False</PC>
+      <BrakeCoilVoltageMoreThan10>False</BrakeCoilVoltageMoreThan10>
+      <EMBrake>False</EMBrake>
+      <EMCO>False</EMCO>
+      <R6>False</R6>
+      <Local>False</Local>
+      <ShortFloor>False</ShortFloor>
+      <Custom>False</Custom>
+      <MRL>False</MRL>
+      <CTL2>False</CTL2>
+      <TrajetaCPI>False</TrajetaCPI>
+      <Cartop>False</Cartop>
+    </TestFeature>
+    <StepsForJob>
+      <StepForJob>
+        <StepsForJobID>7166</StepsForJobID>
+        <StepID>7</StepID>
+        <TestJobID>4183</TestJobID>
+        <Start>12/10/2020 12:50:08 PM</Start>
+        <Stop>12/10/2020 12:51:25 PM</Stop>
+        <Elapsed>1/1/0001 12:01:16 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>1</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>118</AuxTechnicianID>
+        <AuxStationID>3</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7167</StepsForJobID>
+        <StepID>8</StepID>
+        <TestJobID>4183</TestJobID>
+        <Start>12/10/2020 12:51:25 PM</Start>
+        <Stop>12/10/2020 12:59:18 PM</Stop>
+        <Elapsed>1/1/0001 12:07:53 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>2</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>118</AuxTechnicianID>
+        <AuxStationID>3</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7168</StepsForJobID>
+        <StepID>9</StepID>
+        <TestJobID>4183</TestJobID>
+        <Start>12/10/2020 12:59:18 PM</Start>
+        <Stop>12/10/2020 1:10:59 PM</Stop>
+        <Elapsed>1/1/0001 12:11:40 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>3</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>118</AuxTechnicianID>
+        <AuxStationID>3</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7169</StepsForJobID>
+        <StepID>10</StepID>
+        <TestJobID>4183</TestJobID>
+        <Start>12/10/2020 1:10:59 PM</Start>
+        <Stop>12/10/2020 1:27:10 PM</Stop>
+        <Elapsed>1/1/0001 12:16:11 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>4</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>118</AuxTechnicianID>
+        <AuxStationID>3</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7170</StepsForJobID>
+        <StepID>11</StepID>
+        <TestJobID>4183</TestJobID>
+        <Start>12/10/2020 1:27:10 PM</Start>
+        <Stop>12/10/2020 2:37:55 PM</Stop>
+        <Elapsed>1/1/0001 1:10:44 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>5</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>118</AuxTechnicianID>
+        <AuxStationID>3</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7171</StepsForJobID>
+        <StepID>12</StepID>
+        <TestJobID>4183</TestJobID>
+        <Start>12/10/2020 2:37:55 PM</Start>
+        <Stop>12/10/2020 2:42:51 PM</Stop>
+        <Elapsed>1/1/0001 12:04:55 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>6</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>118</AuxTechnicianID>
+        <AuxStationID>3</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7172</StepsForJobID>
+        <StepID>13</StepID>
+        <TestJobID>4183</TestJobID>
+        <Start>12/10/2020 2:42:51 PM</Start>
+        <Stop>12/10/2020 2:47:15 PM</Stop>
+        <Elapsed>1/1/0001 12:04:24 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>7</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>118</AuxTechnicianID>
+        <AuxStationID>3</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7173</StepsForJobID>
+        <StepID>14</StepID>
+        <TestJobID>4183</TestJobID>
+        <Start>12/10/2020 2:47:15 PM</Start>
+        <Stop>12/10/2020 2:49:20 PM</Stop>
+        <Elapsed>1/1/0001 12:02:04 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>8</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>118</AuxTechnicianID>
+        <AuxStationID>3</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7174</StepsForJobID>
+        <StepID>44</StepID>
+        <TestJobID>4183</TestJobID>
+        <Start>12/10/2020 2:49:20 PM</Start>
+        <Stop>12/10/2020 2:53:08 PM</Stop>
+        <Elapsed>1/1/0001 12:03:47 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>9</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>118</AuxTechnicianID>
+        <AuxStationID>3</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7175</StepsForJobID>
+        <StepID>15</StepID>
+        <TestJobID>4183</TestJobID>
+        <Start>12/10/2020 2:53:08 PM</Start>
+        <Stop>12/10/2020 2:57:58 PM</Stop>
+        <Elapsed>1/1/0001 12:04:50 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>10</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>118</AuxTechnicianID>
+        <AuxStationID>3</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7176</StepsForJobID>
+        <StepID>16</StepID>
+        <TestJobID>4183</TestJobID>
+        <Start>12/10/2020 2:57:58 PM</Start>
+        <Stop>12/10/2020 2:58:58 PM</Stop>
+        <Elapsed>1/1/0001 12:00:59 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>11</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>118</AuxTechnicianID>
+        <AuxStationID>3</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7177</StepsForJobID>
+        <StepID>17</StepID>
+        <TestJobID>4183</TestJobID>
+        <Start>12/10/2020 2:58:58 PM</Start>
+        <Stop>12/10/2020 3:39:24 PM</Stop>
+        <Elapsed>1/1/0001 12:40:26 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>12</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>118</AuxTechnicianID>
+        <AuxStationID>3</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7178</StepsForJobID>
+        <StepID>18</StepID>
+        <TestJobID>4183</TestJobID>
+        <Start>12/10/2020 3:39:24 PM</Start>
+        <Stop>12/10/2020 3:45:40 PM</Stop>
+        <Elapsed>1/1/0001 12:06:15 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>13</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>118</AuxTechnicianID>
+        <AuxStationID>3</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7179</StepsForJobID>
+        <StepID>19</StepID>
+        <TestJobID>4183</TestJobID>
+        <Start>12/10/2020 3:45:40 PM</Start>
+        <Stop>12/10/2020 3:51:42 PM</Stop>
+        <Elapsed>1/1/0001 12:06:01 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>14</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>118</AuxTechnicianID>
+        <AuxStationID>3</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7180</StepsForJobID>
+        <StepID>20</StepID>
+        <TestJobID>4183</TestJobID>
+        <Start>12/10/2020 3:51:42 PM</Start>
+        <Stop>12/10/2020 3:54:26 PM</Stop>
+        <Elapsed>1/1/0001 12:02:43 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>15</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>118</AuxTechnicianID>
+        <AuxStationID>3</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7181</StepsForJobID>
+        <StepID>21</StepID>
+        <TestJobID>4183</TestJobID>
+        <Start>12/10/2020 3:54:26 PM</Start>
+        <Stop>12/10/2020 3:58:43 PM</Stop>
+        <Elapsed>1/1/0001 12:04:17 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>16</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>118</AuxTechnicianID>
+        <AuxStationID>3</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7182</StepsForJobID>
+        <StepID>22</StepID>
+        <TestJobID>4183</TestJobID>
+        <Start>12/10/2020 3:58:43 PM</Start>
+        <Stop>12/10/2020 4:05:54 PM</Stop>
+        <Elapsed>1/1/0001 12:07:10 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>17</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>118</AuxTechnicianID>
+        <AuxStationID>3</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7183</StepsForJobID>
+        <StepID>23</StepID>
+        <TestJobID>4183</TestJobID>
+        <Start>12/10/2020 4:05:54 PM</Start>
+        <Stop>12/10/2020 4:09:00 PM</Stop>
+        <Elapsed>1/1/0001 12:03:06 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>18</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>118</AuxTechnicianID>
+        <AuxStationID>3</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7184</StepsForJobID>
+        <StepID>24</StepID>
+        <TestJobID>4183</TestJobID>
+        <Start>12/10/2020 4:09:00 PM</Start>
+        <Stop>12/10/2020 4:20:38 PM</Stop>
+        <Elapsed>1/1/0001 12:11:37 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>19</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>118</AuxTechnicianID>
+        <AuxStationID>3</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7185</StepsForJobID>
+        <StepID>25</StepID>
+        <TestJobID>4183</TestJobID>
+        <Start>12/10/2020 4:20:38 PM</Start>
+        <Stop>12/10/2020 4:31:15 PM</Stop>
+        <Elapsed>1/1/0001 12:10:36 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>20</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>118</AuxTechnicianID>
+        <AuxStationID>3</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7186</StepsForJobID>
+        <StepID>26</StepID>
+        <TestJobID>4183</TestJobID>
+        <Start>12/10/2020 4:31:15 PM</Start>
+        <Stop>12/10/2020 4:37:08 PM</Stop>
+        <Elapsed>1/1/0001 12:05:53 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>21</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>118</AuxTechnicianID>
+        <AuxStationID>3</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7187</StepsForJobID>
+        <StepID>46</StepID>
+        <TestJobID>4183</TestJobID>
+        <Start>12/10/2020 4:37:08 PM</Start>
+        <Stop>12/11/2020 7:24:06 AM</Stop>
+        <Elapsed>1/1/0001 2:46:58 PM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>22</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>118</AuxTechnicianID>
+        <AuxStationID>3</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7188</StepsForJobID>
+        <StepID>27</StepID>
+        <TestJobID>4183</TestJobID>
+        <Start>12/11/2020 7:24:06 AM</Start>
+        <Stop>12/11/2020 7:49:13 AM</Stop>
+        <Elapsed>1/1/0001 12:25:06 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>23</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>118</AuxTechnicianID>
+        <AuxStationID>3</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7189</StepsForJobID>
+        <StepID>28</StepID>
+        <TestJobID>4183</TestJobID>
+        <Start>12/11/2020 7:49:13 AM</Start>
+        <Stop>12/11/2020 8:32:15 AM</Stop>
+        <Elapsed>1/1/0001 12:43:01 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>24</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>118</AuxTechnicianID>
+        <AuxStationID>3</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7190</StepsForJobID>
+        <StepID>29</StepID>
+        <TestJobID>4183</TestJobID>
+        <Start>12/11/2020 8:32:15 AM</Start>
+        <Stop>12/11/2020 8:49:57 AM</Stop>
+        <Elapsed>1/1/0001 12:17:41 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>25</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>118</AuxTechnicianID>
+        <AuxStationID>3</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7191</StepsForJobID>
+        <StepID>30</StepID>
+        <TestJobID>4183</TestJobID>
+        <Start>12/11/2020 8:49:57 AM</Start>
+        <Stop>12/11/2020 9:05:31 AM</Stop>
+        <Elapsed>1/1/0001 12:15:34 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>26</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>118</AuxTechnicianID>
+        <AuxStationID>3</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7192</StepsForJobID>
+        <StepID>31</StepID>
+        <TestJobID>4183</TestJobID>
+        <Start>12/11/2020 9:05:31 AM</Start>
+        <Stop>12/11/2020 9:22:10 AM</Stop>
+        <Elapsed>1/1/0001 12:16:38 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>27</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>118</AuxTechnicianID>
+        <AuxStationID>3</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7193</StepsForJobID>
+        <StepID>32</StepID>
+        <TestJobID>4183</TestJobID>
+        <Start>12/11/2020 9:22:10 AM</Start>
+        <Stop>12/11/2020 9:30:43 AM</Stop>
+        <Elapsed>1/1/0001 12:08:33 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>28</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>118</AuxTechnicianID>
+        <AuxStationID>3</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7194</StepsForJobID>
+        <StepID>33</StepID>
+        <TestJobID>4183</TestJobID>
+        <Start>12/11/2020 9:30:43 AM</Start>
+        <Stop>12/11/2020 9:37:51 AM</Stop>
+        <Elapsed>1/1/0001 12:07:07 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>29</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>118</AuxTechnicianID>
+        <AuxStationID>3</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7195</StepsForJobID>
+        <StepID>34</StepID>
+        <TestJobID>4183</TestJobID>
+        <Start>12/11/2020 9:37:51 AM</Start>
+        <Stop>12/11/2020 9:45:19 AM</Stop>
+        <Elapsed>1/1/0001 12:07:27 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>30</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>118</AuxTechnicianID>
+        <AuxStationID>3</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7196</StepsForJobID>
+        <StepID>35</StepID>
+        <TestJobID>4183</TestJobID>
+        <Start>12/11/2020 9:45:19 AM</Start>
+        <Stop>12/11/2020 9:45:57 AM</Stop>
+        <Elapsed>1/1/0001 12:00:37 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>31</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>118</AuxTechnicianID>
+        <AuxStationID>3</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7197</StepsForJobID>
+        <StepID>36</StepID>
+        <TestJobID>4183</TestJobID>
+        <Start>12/11/2020 9:45:57 AM</Start>
+        <Stop>12/11/2020 9:51:16 AM</Stop>
+        <Elapsed>1/1/0001 12:05:18 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>32</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>118</AuxTechnicianID>
+        <AuxStationID>3</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7198</StepsForJobID>
+        <StepID>37</StepID>
+        <TestJobID>4183</TestJobID>
+        <Start>12/11/2020 9:51:16 AM</Start>
+        <Stop>12/11/2020 9:56:40 AM</Stop>
+        <Elapsed>1/1/0001 12:05:24 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>33</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>118</AuxTechnicianID>
+        <AuxStationID>3</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7199</StepsForJobID>
+        <StepID>38</StepID>
+        <TestJobID>4183</TestJobID>
+        <Start>12/11/2020 9:56:40 AM</Start>
+        <Stop>12/11/2020 10:03:47 AM</Stop>
+        <Elapsed>1/1/0001 12:07:07 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>34</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>118</AuxTechnicianID>
+        <AuxStationID>3</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7200</StepsForJobID>
+        <StepID>45</StepID>
+        <TestJobID>4183</TestJobID>
+        <Start>12/11/2020 10:03:47 AM</Start>
+        <Stop>12/11/2020 10:08:28 AM</Stop>
+        <Elapsed>1/1/0001 12:04:40 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>35</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>118</AuxTechnicianID>
+        <AuxStationID>3</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7201</StepsForJobID>
+        <StepID>39</StepID>
+        <TestJobID>4183</TestJobID>
+        <Start>12/11/2020 10:08:28 AM</Start>
+        <Stop>12/11/2020 10:09:55 AM</Stop>
+        <Elapsed>1/1/0001 12:01:26 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>36</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>118</AuxTechnicianID>
+        <AuxStationID>3</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7202</StepsForJobID>
+        <StepID>197</StepID>
+        <TestJobID>4183</TestJobID>
+        <Start>12/11/2020 10:09:55 AM</Start>
+        <Stop>12/11/2020 10:10:13 AM</Stop>
+        <Elapsed>1/1/0001 12:00:18 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>37</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>118</AuxTechnicianID>
+        <AuxStationID>3</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7203</StepsForJobID>
+        <StepID>40</StepID>
+        <TestJobID>4183</TestJobID>
+        <Start>12/11/2020 10:10:13 AM</Start>
+        <Stop>12/11/2020 10:10:41 AM</Stop>
+        <Elapsed>1/1/0001 12:00:28 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>38</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>118</AuxTechnicianID>
+        <AuxStationID>3</AuxStationID>
+      </StepForJob>
+    </StepsForJob>
+  </TestJob>
+  <TestJob>
+    <TestJobID>4184</TestJobID>
+    <JobID>2211</JobID>
+    <TechnicianID>100</TechnicianID>
+    <Status>Completed</Status>
+    <SinglePO>3434033</SinglePO>
+    <JobLabel>B</JobLabel>
+    <StartDate>12/10/2020 1:26:52 PM</StartDate>
+    <CompletedDate>12/10/2020 4:53:23 PM</CompletedDate>
+    <StationID>17</StationID>
+    <TestFeature>
+      <TestFeatureID>2171</TestFeatureID>
+      <TestJobID>4184</TestJobID>
+      <Overlay>False</Overlay>
+      <Group>False</Group>
+      <PC>False</PC>
+      <BrakeCoilVoltageMoreThan10>False</BrakeCoilVoltageMoreThan10>
+      <EMBrake>False</EMBrake>
+      <EMCO>False</EMCO>
+      <R6>False</R6>
+      <Local>False</Local>
+      <ShortFloor>False</ShortFloor>
+      <Custom>False</Custom>
+      <MRL>False</MRL>
+      <CTL2>False</CTL2>
+      <TrajetaCPI>False</TrajetaCPI>
+      <Cartop>False</Cartop>
+    </TestFeature>
+    <StepsForJob>
+      <StepForJob>
+        <StepsForJobID>7204</StepsForJobID>
+        <StepID>41</StepID>
+        <TestJobID>4184</TestJobID>
+        <Start>12/10/2020 1:26:52 PM</Start>
+        <Stop>12/10/2020 1:27:20 PM</Stop>
+        <Elapsed>1/1/0001 12:00:27 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>1</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>100</AuxTechnicianID>
+        <AuxStationID>17</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7205</StepsForJobID>
+        <StepID>42</StepID>
+        <TestJobID>4184</TestJobID>
+        <Start>12/10/2020 1:27:20 PM</Start>
+        <Stop>12/10/2020 1:29:07 PM</Stop>
+        <Elapsed>1/1/0001 12:01:47 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>2</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>100</AuxTechnicianID>
+        <AuxStationID>17</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7206</StepsForJobID>
+        <StepID>43</StepID>
+        <TestJobID>4184</TestJobID>
+        <Start>12/10/2020 1:29:07 PM</Start>
+        <Stop>12/10/2020 2:33:44 PM</Stop>
+        <Elapsed>1/1/0001 1:04:37 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>3</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>100</AuxTechnicianID>
+        <AuxStationID>17</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7207</StepsForJobID>
+        <StepID>47</StepID>
+        <TestJobID>4184</TestJobID>
+        <Start>12/10/2020 2:33:44 PM</Start>
+        <Stop>12/10/2020 2:42:54 PM</Stop>
+        <Elapsed>1/1/0001 12:09:10 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>4</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>100</AuxTechnicianID>
+        <AuxStationID>17</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7208</StepsForJobID>
+        <StepID>48</StepID>
+        <TestJobID>4184</TestJobID>
+        <Start>12/10/2020 2:42:54 PM</Start>
+        <Stop>12/10/2020 2:47:12 PM</Stop>
+        <Elapsed>1/1/0001 12:04:18 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>5</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>100</AuxTechnicianID>
+        <AuxStationID>17</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7209</StepsForJobID>
+        <StepID>49</StepID>
+        <TestJobID>4184</TestJobID>
+        <Start>12/10/2020 2:47:12 PM</Start>
+        <Stop>12/10/2020 2:50:07 PM</Stop>
+        <Elapsed>1/1/0001 12:02:54 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>6</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>100</AuxTechnicianID>
+        <AuxStationID>17</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7210</StepsForJobID>
+        <StepID>50</StepID>
+        <TestJobID>4184</TestJobID>
+        <Start>12/10/2020 2:50:07 PM</Start>
+        <Stop>12/10/2020 2:53:22 PM</Stop>
+        <Elapsed>1/1/0001 12:03:14 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>7</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>100</AuxTechnicianID>
+        <AuxStationID>17</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7211</StepsForJobID>
+        <StepID>51</StepID>
+        <TestJobID>4184</TestJobID>
+        <Start>12/10/2020 2:53:22 PM</Start>
+        <Stop>12/10/2020 2:57:56 PM</Stop>
+        <Elapsed>1/1/0001 12:04:33 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>8</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>100</AuxTechnicianID>
+        <AuxStationID>17</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7212</StepsForJobID>
+        <StepID>52</StepID>
+        <TestJobID>4184</TestJobID>
+        <Start>12/10/2020 2:57:56 PM</Start>
+        <Stop>12/10/2020 3:39:22 PM</Stop>
+        <Elapsed>1/1/0001 12:41:26 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>9</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>100</AuxTechnicianID>
+        <AuxStationID>17</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7213</StepsForJobID>
+        <StepID>54</StepID>
+        <TestJobID>4184</TestJobID>
+        <Start>12/10/2020 3:39:22 PM</Start>
+        <Stop>12/10/2020 3:45:42 PM</Stop>
+        <Elapsed>1/1/0001 12:06:20 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>10</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>100</AuxTechnicianID>
+        <AuxStationID>17</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7214</StepsForJobID>
+        <StepID>55</StepID>
+        <TestJobID>4184</TestJobID>
+        <Start>12/10/2020 3:45:42 PM</Start>
+        <Stop>12/10/2020 3:51:44 PM</Stop>
+        <Elapsed>1/1/0001 12:06:01 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>11</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>100</AuxTechnicianID>
+        <AuxStationID>17</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7215</StepsForJobID>
+        <StepID>56</StepID>
+        <TestJobID>4184</TestJobID>
+        <Start>12/10/2020 3:51:44 PM</Start>
+        <Stop>12/10/2020 3:54:24 PM</Stop>
+        <Elapsed>1/1/0001 12:02:39 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>12</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>100</AuxTechnicianID>
+        <AuxStationID>17</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7216</StepsForJobID>
+        <StepID>58</StepID>
+        <TestJobID>4184</TestJobID>
+        <Start>12/10/2020 3:54:24 PM</Start>
+        <Stop>12/10/2020 3:58:46 PM</Stop>
+        <Elapsed>1/1/0001 12:04:21 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>13</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>100</AuxTechnicianID>
+        <AuxStationID>17</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7217</StepsForJobID>
+        <StepID>59</StepID>
+        <TestJobID>4184</TestJobID>
+        <Start>12/10/2020 3:58:46 PM</Start>
+        <Stop>12/10/2020 4:13:43 PM</Stop>
+        <Elapsed>1/1/0001 12:14:57 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>14</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>100</AuxTechnicianID>
+        <AuxStationID>17</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7218</StepsForJobID>
+        <StepID>60</StepID>
+        <TestJobID>4184</TestJobID>
+        <Start>12/10/2020 4:13:43 PM</Start>
+        <Stop>12/10/2020 4:14:53 PM</Stop>
+        <Elapsed>1/1/0001 12:01:09 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>15</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>100</AuxTechnicianID>
+        <AuxStationID>17</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7219</StepsForJobID>
+        <StepID>61</StepID>
+        <TestJobID>4184</TestJobID>
+        <Start>12/10/2020 4:14:53 PM</Start>
+        <Stop>12/10/2020 4:20:36 PM</Stop>
+        <Elapsed>1/1/0001 12:05:43 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>16</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>100</AuxTechnicianID>
+        <AuxStationID>17</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7220</StepsForJobID>
+        <StepID>62</StepID>
+        <TestJobID>4184</TestJobID>
+        <Start>12/10/2020 4:20:36 PM</Start>
+        <Stop>12/10/2020 4:24:48 PM</Stop>
+        <Elapsed>1/1/0001 12:04:11 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>17</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>100</AuxTechnicianID>
+        <AuxStationID>17</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7221</StepsForJobID>
+        <StepID>64</StepID>
+        <TestJobID>4184</TestJobID>
+        <Start>12/10/2020 4:24:48 PM</Start>
+        <Stop>12/10/2020 4:31:07 PM</Stop>
+        <Elapsed>1/1/0001 12:06:18 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>18</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>100</AuxTechnicianID>
+        <AuxStationID>17</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7222</StepsForJobID>
+        <StepID>65</StepID>
+        <TestJobID>4184</TestJobID>
+        <Start>12/10/2020 4:31:07 PM</Start>
+        <Stop>12/10/2020 4:34:06 PM</Stop>
+        <Elapsed>1/1/0001 12:02:59 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>19</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>100</AuxTechnicianID>
+        <AuxStationID>17</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7223</StepsForJobID>
+        <StepID>66</StepID>
+        <TestJobID>4184</TestJobID>
+        <Start>12/10/2020 4:34:06 PM</Start>
+        <Stop>12/10/2020 4:37:50 PM</Stop>
+        <Elapsed>1/1/0001 12:03:43 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>20</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>100</AuxTechnicianID>
+        <AuxStationID>17</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7224</StepsForJobID>
+        <StepID>67</StepID>
+        <TestJobID>4184</TestJobID>
+        <Start>12/10/2020 4:37:50 PM</Start>
+        <Stop>12/10/2020 4:39:05 PM</Stop>
+        <Elapsed>1/1/0001 12:01:15 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>21</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>100</AuxTechnicianID>
+        <AuxStationID>17</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7225</StepsForJobID>
+        <StepID>68</StepID>
+        <TestJobID>4184</TestJobID>
+        <Start>12/10/2020 4:39:05 PM</Start>
+        <Stop>12/10/2020 4:42:31 PM</Stop>
+        <Elapsed>1/1/0001 12:03:25 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>22</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>100</AuxTechnicianID>
+        <AuxStationID>17</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7226</StepsForJobID>
+        <StepID>69</StepID>
+        <TestJobID>4184</TestJobID>
+        <Start>12/10/2020 4:42:31 PM</Start>
+        <Stop>12/10/2020 4:46:14 PM</Stop>
+        <Elapsed>1/1/0001 12:03:42 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>23</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>100</AuxTechnicianID>
+        <AuxStationID>17</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7227</StepsForJobID>
+        <StepID>70</StepID>
+        <TestJobID>4184</TestJobID>
+        <Start>12/10/2020 4:46:14 PM</Start>
+        <Stop>12/10/2020 4:52:33 PM</Stop>
+        <Elapsed>1/1/0001 12:06:19 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>24</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>100</AuxTechnicianID>
+        <AuxStationID>17</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7228</StepsForJobID>
+        <StepID>71</StepID>
+        <TestJobID>4184</TestJobID>
+        <Start>12/10/2020 4:52:33 PM</Start>
+        <Stop>12/10/2020 4:52:57 PM</Stop>
+        <Elapsed>1/1/0001 12:00:23 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>25</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>100</AuxTechnicianID>
+        <AuxStationID>17</AuxStationID>
+      </StepForJob>
+      <StepForJob>
+        <StepsForJobID>7229</StepsForJobID>
+        <StepID>72</StepID>
+        <TestJobID>4184</TestJobID>
+        <Start>12/10/2020 4:52:57 PM</Start>
+        <Stop>12/10/2020 4:53:23 PM</Stop>
+        <Elapsed>1/1/0001 12:00:26 AM</Elapsed>
+        <Complete>True</Complete>
+        <Consecutivo>26</Consecutivo>
+        <Obsolete>False</Obsolete>
+        <AuxTechnicianID>100</AuxTechnicianID>
+        <AuxStationID>17</AuxStationID>
+      </StepForJob>
+    </StepsForJob>
+  </TestJob>
+</TestJobs-TestFeatures-StepsForJob>
