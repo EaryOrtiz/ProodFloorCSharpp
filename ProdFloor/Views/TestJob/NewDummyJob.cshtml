@@ -2,7 +2,6 @@
 @model ProdFloor.Models.ViewModels.TestJob.TestJobViewModel
 @{
     ViewBag.Title = "New Job";
-    Layout = "_AdminLayoutWO";
 }
 <form asp-controller="TestJob" asp-action="NewDummyJob" method="post">
     <input type="hidden" asp-for="@Model.Indicator.IndicatorID">

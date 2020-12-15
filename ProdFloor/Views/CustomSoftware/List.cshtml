@@ -1,7 +1,6 @@
 ﻿@model ProdFloor.Models.ViewModels.Job.CustomSoftwareViewModel
 @{
     ViewBag.Title = "Customs Software";
-    Layout = "_AdminLayoutWO";
 }
 <form asp-action="SeedXML" asp-controller="CustomSoftware" method="post">
     @if (Model.CustomSoftwareList.Count() == 0)

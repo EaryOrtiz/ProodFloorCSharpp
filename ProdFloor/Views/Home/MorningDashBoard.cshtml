@@ -1,7 +1,6 @@
 ﻿@model DashboardIndexViewModel
 @{
     ViewBag.Title = Model.isEngAdmin ? "Admin Morning Dashboard" : "Morning Dashboard";
-    Layout = "_AdminLayoutWO";
 }
 <br />
 <form asp-action="MorningReport" method="post">

@@ -1,0 +1,134 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script>$(document).ready(function () { $('[data-tooltip="tooltip"]').tooltip(); });</script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+    <link href="~/lib/fontawesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/lib/fontawesome/css/all.min.css" rel="stylesheet" />
+    <link href="~/css/DashBoard.css" rel="stylesheet" />
+    <link href="~/css/simple-sidebar.css" rel="stylesheet"/>
+    <title>@ViewBag.Title</title>
+</head>
+
+<body class="pt-0">
+
+    <div class="d-flex" id="wrapper">
+
+        <!-- Sidebar -->
+        <div class="border-right" id="sidebar-wrapper" style="background-color:#263B49">
+            <div class="sidebar-heading">
+                <a class="navbar-brand" href="\">
+                    <img src="~/Images/nidec.png" class="img-fluid" style="width:120px;height:30px;margin-left:36px;margin-right:27px;" alt="Responsive image">
+                </a>
+
+            </div>
+            <div class="list-group list-group-flush">
+                @if (User.IsInRole("Admin"))
+                {
+                    @await Component.InvokeAsync("AdminMenu")
+                }
+                else if (User.IsInRole("TechAdmin"))
+                {
+                    @await Component.InvokeAsync("AdminTechMenu")
+                }
+                else if (User.IsInRole("Engineer"))
+                {
+                    @await Component.InvokeAsync("EngineerMenu")
+                }
+                else if (User.IsInRole("Technician"))
+                {
+                    @await Component.InvokeAsync("TechMenu")
+                }
+                else
+                {
+                    @await Component.InvokeAsync("NavigationMenu")
+                }
+            </div>
+        </div>
+        <!-- /#sidebar-wrapper -->
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+
+            <nav class="navbar navbar-expand-lg navbar-dark border-bottom" style="background-color:#1B2831">
+                <button class="btn btn-dark" style="background-color:#1B2831" id="menu-toggle"><i class="fas fa-arrows-alt-h"></i></button>
+
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ml-sm-1 ml-auto mt-2 mt-lg-0">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="\">ProdFloor</a>
+                        </li>
+                        @if (!(User.IsInRole("Technician")) && !(User.IsInRole("TechAdmin")))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Job" asp-action="List">All Jobs</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Job" asp-action="List" asp-route-EngID=" @UserManager.GetUserAsync(User).Result.EngID">My Jobs</a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+                <div class="nav navbar-nav navbar-right">
+                    <ul class="navbar-nav">
+                        @if (!User.Identity.IsAuthenticated)
+                        {
+
+                            <li class="nav-item">
+                                <a href="\Account\LogIn">
+                                    Login <i class="fa fa-sign-in"></i>
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item"><a title="Edit Profile" class="nav-link" asp-controller="Account" asp-action="Edit" asp-route-Id="@UserManager.GetUserId(User)">Hello, @UserManager.GetUserAsync(User).Result.FullName</a></li>
+                            <li class="nav-item"><a class="nav-link" href="\Account\LogOut"> Log out <span class="fas fa-sign-out-alt"></span></a></li>
+                        }
+                    </ul>
+                </div>
+            </nav>
+
+            <div class="container-fluid">
+                <main role="main" class="ml-sm-auto pt-3 px-4">
+                    @if (TempData["message"] != null)
+                    {
+                        <div class="alert @(TempData["alert"] == null ? "alert-success" : TempData["alert"]) alert-dismissible fade show">
+                            @TempData["message"]
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    }
+                    @RenderBody()
+                </main>
+            </div>
+        </div>
+        <!-- /#page-content-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+    <!-- Bootstrap core JavaScript -->
+    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="~/lib/bootstrap/assets/js/vendor/popper.min.js"></script>
+    <!-- Menu Toggle Script -->
+    <script>
+        $("#menu-toggle").click(function (e) {
+            e.preventDefault();
+            $("#wrapper").toggleClass("toggled");
+        });
+    </script>
+
+</body>
+
+</html>

@@ -1,38 +1,20 @@
 ﻿@model AdminNavMenuViewModel
     <ul class="nav nav-pills flex-column" id="accordion" role="tablist">
-        <li class="nav-item" role="tab" id="Steps">
-            <a data-toggle="collapse" href="#collapseSteps" role="button" aria-expanded="false" aria-controls="collapseSteps"
-               class="nav-link text-light"><i class="fas fa-charging-station"></i>&nbsp; Testing</a>
-            <ul id="collapseSteps" class="collapse" role="tabpanel" aria-labelledby="collapseSteps" data-parent="#accordion">
-                <li class="nav-link"
-                    style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue">
-                    <a style="color:white" asp-action="SearchTestJob"
-                       asp-controller="TestJob">Test Job</a>
-                </li>
-                <li class="nav-link"
-                    style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue">
-                    <a style="color:white" asp-action="TestJobSearchList" asp-controller="TestJob" asp-route-page="1">
-                        Search
-                    </a>
-                </li>
-                <li class="nav-link"
-                    style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue">
-                    <a style="color:white" asp-action="List" asp-route-ElmHydroPage="1" asp-route-M2000Page="1" asp-route-ElmTractionPage="1" asp-route-M4000Page="1"
-                       asp-controller="Step" asp-route-JobTypeName="Traction">Steps</a>
-                </li>
-                <li class="nav-link"
-                    style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue">
-                    <a style="color:white" asp-action="List"
-                       asp-controller="Station"
-                       asp-route-Page="1">Stations</a>
-                </li>
-                <li class="nav-link"
-                    style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue">
-                    <a style="color:white"
-                       asp-controller="Stop"
-                       asp-route-stop=""
-                       asp-route-Page="1" asp-action="List">Stops</a>
-            </ul>
+        <li class="nav-item">
+            <a class="nav-link text-light" asp-controller="TestJob" asp-action="SearchTestJob"><i class="fas fa-user-tie"></i>&nbsp;Admin Dashboard</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-light" asp-controller="TestJob" asp-action="TestJobSearchList"><i class="fas fa-briefcase"></i>&nbsp;Testjob Search</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-light" asp-action="List" asp-route-ElmHydroPage="1" asp-route-M2000Page="1" asp-route-ElmTractionPage="1" asp-route-M4000Page="1"
+               asp-controller="Step" asp-route-JobTypeName="Traction"><i class="fas fa-shoe-prints"></i>&nbsp;Steps</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-light" asp-action="List" asp-controller="Station" asp-route-Page="1">&nbsp;<i class="fas fa-charging-station"></i>&nbsp;Stations</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-light" asp-controller="Stop" asp-route-stop="" asp-route-Page="1" asp-action="List"><i class="fas fa-hourglass-half"></i>&nbsp;Stops</a>
         </li>
         <li class="nav-item" role="tab" id="Reasons">
             <a data-toggle="collapse" href="#collapseReasons" role="button" aria-expanded="false" aria-controls="collapseReasons"
@@ -68,7 +50,7 @@
             <ul id="collapseTestStats" class="collapse" role="tabpanel" aria-labelledby="collapseTestStats" data-parent="#accordion">
                 <li class="nav-link"
                     style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue">
-                    <a style="color:white" asp-action="TestStats" asp-controller="TestJob"  asp-route-JobType="M2000">
+                    <a style="color:white" asp-action="TestStats" asp-controller="TestJob" asp-route-JobType="M2000">
                         M2000
                     </a>
                 </li>
