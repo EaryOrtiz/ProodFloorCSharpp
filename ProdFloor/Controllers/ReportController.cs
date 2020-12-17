@@ -419,10 +419,6 @@ namespace ProdFloor.Controllers
                         if (daily.TestStats == null)
                         {
                             row = excelSheet.CreateRow(i);
-                            row.CreateCell(0).SetCellValue("");
-                            row.CreateCell(1).SetCellValue("");
-                            row.CreateCell(2).SetCellValue("");
-                            row.CreateCell(3).SetCellValue("");
                             i++;
                             continue;
                         }
@@ -442,10 +438,6 @@ namespace ProdFloor.Controllers
                     }
 
                     row = excelSheet.CreateRow(i);
-                    row.CreateCell(0).SetCellValue("");
-                    row.CreateCell(1).SetCellValue("");
-                    row.CreateCell(2).SetCellValue("");
-                    row.CreateCell(3).SetCellValue("");
                     i++;
 
                 }
@@ -491,9 +483,23 @@ namespace ProdFloor.Controllers
                 myStyleGrey.FillForegroundColor = HSSFColor.Grey25Percent.Index;
                 myStyleGrey.FillPattern = FillPattern.SolidForeground;
 
+                IRow row = excelSheet.CreateRow(i);
+                row.CreateCell(1).SetCellValue("Dates");
+
+                i++;
+
+                row = excelSheet.CreateRow(i);
+                row.CreateCell(0).SetCellValue(startDate.ToString("yyyy-MM-dd"));
+                row.CreateCell(2).SetCellValue(endDate.ToString("yyyy-MM-dd"));
+
+                i++;
+
+                row = excelSheet.CreateRow(i);
+                i++;
+
                 foreach (EfficiencyReport report in efficiencyReports)
                 {
-                    IRow row = excelSheet.CreateRow(i);
+                    row = excelSheet.CreateRow(i);
                     row.CreateCell(0).SetCellValue("Tech: ");
                     row.CreateCell(1).SetCellValue(report.TechName);
                     row.CreateCell(2).SetCellValue("");
@@ -534,16 +540,6 @@ namespace ProdFloor.Controllers
                         if (report.testJobEfficiencies == null)
                         {
                             row = excelSheet.CreateRow(i);
-                            row.CreateCell(0).SetCellValue("");
-                            row.CreateCell(1).SetCellValue("");
-                            row.CreateCell(2).SetCellValue("");
-                            row.CreateCell(3).SetCellValue("");
-                            row.CreateCell(4).SetCellValue("");
-                            row.CreateCell(5).SetCellValue("");
-                            row.CreateCell(6).SetCellValue("");
-                            row.CreateCell(7).SetCellValue("");
-                            row.CreateCell(8).SetCellValue("");
-                            row.CreateCell(9).SetCellValue("");
                             i++;
                             continue;
                         }
@@ -571,16 +567,6 @@ namespace ProdFloor.Controllers
                     }
 
                     row = excelSheet.CreateRow(i);
-                    row.CreateCell(0).SetCellValue("");
-                    row.CreateCell(1).SetCellValue("");
-                    row.CreateCell(2).SetCellValue("");
-                    row.CreateCell(3).SetCellValue("");
-                    row.CreateCell(4).SetCellValue("");
-                    row.CreateCell(5).SetCellValue("");
-                    row.CreateCell(6).SetCellValue("");
-                    row.CreateCell(7).SetCellValue("");
-                    row.CreateCell(8).SetCellValue("");
-                    row.CreateCell(9).SetCellValue("");
                     i++;
                 }
 

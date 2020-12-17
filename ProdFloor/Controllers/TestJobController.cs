@@ -340,11 +340,31 @@ namespace ProdFloor.Controllers
             if (nextViewModel.TestFeature != null)
             {
                 TestJob testJob = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == nextViewModel.TestJob.TestJobID);
+               
 
                 if (testJob != null)
                 {
                     Job CurrentJob = jobRepo.Jobs.FirstOrDefault(m => m.JobID == testJob.JobID);
+                    JobExtension jobExtension = jobRepo.JobsExtensions.FirstOrDefault(m => m.JobID == testJob.JobID);
+
+                    try
+                    {
+                        if (jobExtension != null)
+                            nextViewModel.JobExtension = jobExtension;
+                    }
+                    catch { }
+                    
+
                     TestFeature testFeature = testingRepo.TestFeatures.FirstOrDefault(m => m.TestJobID == testJob.TestJobID);
+
+                    TestJob StationAuxTestJob = testingRepo.TestJobs.FirstOrDefault(m => m.StationID == nextViewModel.TestJob.StationID && m.Status == "Working on it");
+                    if (StationAuxTestJob != null || nextViewModel.TestJob.StationID == 0)
+                    {
+                        TempData["alert"] = $"alert-danger";
+                        TempData["message"] = $"Error en la estacion, seleccione otra e intente de nuevo o contacte al Admin";
+                        nextViewModel.TestJob.StationID = 0;
+                        return View("NextForm", nextViewModel);
+                    }
 
                     AppUser currentUser = GetCurrentUser().Result;
                     bool isTechAdmin = GetCurrentUserRole("TechAdmin").Result;
@@ -669,9 +689,24 @@ namespace ProdFloor.Controllers
         }
 
         [HttpPost]
-        public ViewResult EditTestJob(TestJobViewModel viewModel)
+        public IActionResult EditTestJob(TestJobViewModel viewModel)
         {
             viewModel.Job.JobNum = getJobNumb(viewModel.Job.JobNumFirstDigits, viewModel.Job.JobNumLastDigits);
+
+            bool techAdmin = GetCurrentUserRole("TechAdmin").Result;
+            int TechnicianID = GetCurrentUser().Result.EngID;
+
+            TestJob testJobToUpdate = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == viewModel.TestJob.TestJobID);
+            TestJob StationAuxTestJob = testingRepo.TestJobs.FirstOrDefault(m => m.StationID == viewModel.TestJob.StationID && m.Status == "Working on it");
+
+            if (testJobToUpdate.TechnicianID != TechnicianID && techAdmin == false) return RedirectToAction("Index", "Home");
+            if (StationAuxTestJob != null || (techAdmin == false && TechnicianID != testJobToUpdate.TechnicianID))
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"Error la estacion esta ocupada, seleccione otra e intente de nuevo o contacte al Admin";
+                return EditTestJob(testJobToUpdate.TestJobID);
+            }
+
             testingRepo.SaveTestFeature(viewModel.TestFeature);
             UpdateTestFeatures(viewModel);
             if (viewModel.isNotDummy == false) UpdateDummyJob(viewModel);
@@ -750,6 +785,7 @@ namespace ProdFloor.Controllers
             TestJob StationAuxTestJob = testingRepo.TestJobs.FirstOrDefault(m => m.StationID == testJobView.TestJob.StationID && m.Status == "Working on it");
 
             testJobToUpdate.JobLabel = testJobView.TestJob.JobLabel;
+            if(testJobView.TestJob.StationID != 0 || testJobToUpdate.StationID == 0) testJobToUpdate.StationID = testJobView.TestJob.StationID;
             testingRepo.SaveTestJob(testJobToUpdate);
             //Checa que la lista de features no este vacia o nula
             if (testJobView.TestFeature != null)
@@ -1055,14 +1091,13 @@ namespace ProdFloor.Controllers
             int TechnicianID = GetCurrentUser().Result.EngID;
 
             TestJob testJobToUpdate = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == testJobView.TestJob.TestJobID);
-            TestJob StationAuxTestJob = testingRepo.TestJobs.FirstOrDefault(m => m.StationID == testJobView.TestJob.StationID && m.Status == "Working on it");
 
             if (testJobToUpdate.TechnicianID != TechnicianID && techAdmin == false) return RedirectToAction("Index", "Home");
-            if (StationAuxTestJob != null && techAdmin == false && TechnicianID != testJobToUpdate.TechnicianID)
+            if (testJobView.TestJob.StationID == 0 && techAdmin == false && TechnicianID == testJobToUpdate.TechnicianID)
             {
                 TempData["alert"] = $"alert-danger";
-                TempData["message"] = $"Error, la estacion esta ocupada, seleccione otra e intente de nuevo o contacte al Admin";
-                return View("NewTestFeatures", testJobView);
+                TempData["message"] = $"Error, en la estacion, seleccione otra e intente de nuevo o contacte al Admin";
+                return View("NextForm", testJobView);
             }
             else
             {

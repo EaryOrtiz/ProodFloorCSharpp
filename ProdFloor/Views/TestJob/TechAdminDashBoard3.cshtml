@@ -25,7 +25,7 @@
             <th scope="col">
                 Station
             </th>
-            <th scope="col">
+            <th width="15%">
                 Options
             </th>
         </tr>
@@ -67,6 +67,13 @@
                         @Model.StationsList.FirstOrDefault(m => m.StationID == j.StationID).Label
                     </td>
                     <td>
+
+                        <form asp-action="EditTestJob" asp-controller="TestJob" method="get">
+                            <button type="submit" value="@j.TestJobID" name="ID" class="btn btn-light" data-tooltip="tooltip" data-placement="top" title="Edit"
+                                    style="float:left;background-color:transparent">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                        </form>
                         <form asp-action="AllStepsForJob" asp-controller="TestJob" method="get">
                             <button type="submit" value="@j.TestJobID" name="ID" class="btn btn-light" data-tooltip="tooltip" data-placement="top" title="Steps from Testjob"
                                     style="float:left;background-color:transparent">

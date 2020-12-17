@@ -42,7 +42,7 @@
                 <label asp-for="JobExtension.JobTypeMain" class="col-sm-4 col-form-label"></label>
                 <div>
                     <indicators select-for="JobType" selected-value="@Model.JobExtension.JobTypeMain" class="form-control-sm form-control col-sm-15" 
-                                asp-for="JobExtension.JobTypeMain" required="@(Model.isNotDummy == false)" asp-is-disabled="@Model.isNotDummy"></indicators>
+                                asp-for="JobExtension.JobTypeMain" required="@(!Model.isNotDummy)" readonly="@Model.isNotDummy"></indicators>
 
                     <span asp-validation-for="JobExtension.JobTypeMain" class="text-danger"></span>
                 </div>
