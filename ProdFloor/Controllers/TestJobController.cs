@@ -102,7 +102,7 @@ namespace ProdFloor.Controllers
 
                 testJobsCompleted = testJobsList
                     .Where(m => m.Status == "Completed"
-                    && (m.CompletedDate.AddDays(2) > (DateTime.Now))).OrderBy(s => s.CompletedDate).ToList();
+                    && (m.CompletedDate.AddDays(-2) < (DateTime.Now))).OrderBy(s => s.CompletedDate).ToList();
             }
 
             if (!admin)
@@ -2413,7 +2413,7 @@ namespace ProdFloor.Controllers
 
             }
 
-            testJob.CompletedDate = jobCompletion.FinishDate;
+            testJob.CompletedDate = DateTime.Now;
             testJob.Status = "Completed";
             testingRepo.SaveTestJob(testJob);
             TempData["message"] = $"You have completed the TestJob PO# {testJob.SinglePO}";

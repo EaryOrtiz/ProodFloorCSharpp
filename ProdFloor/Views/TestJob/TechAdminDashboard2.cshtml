@@ -52,16 +52,7 @@
                     <td>@Model.JobTypeList.FirstOrDefault(m => m.JobTypeID == MyJob.JobTypeID).Name</td>
                     <td>@CurrentUser.FullName</td>
                     <td>
-                        @if (j.Status == "Working on it")
-                        {
-                            StepsForJob stepIncomplete = Model.StepsForJobList.FirstOrDefault(m => m.TestJobID == j.TestJobID && m.Complete == false);
-                            string StageName = Model.StepList.FirstOrDefault(m => m.StepID == stepIncomplete.StepID).Stage;
-                            @j.Status <span>| Stage: @StageName</span>
-                        }
-                        else
-                        {
                             @j.Status
-                        }
                     </td>
                     <td>
                         @Model.StationsList.FirstOrDefault(m => m.StationID == j.StationID).Label

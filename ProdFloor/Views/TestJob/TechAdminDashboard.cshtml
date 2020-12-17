@@ -46,144 +46,19 @@
 
                 <tr>
                     <th scope="row">
-                        @if (j.Status != "Incomplete")
-                        {
-                            <a asp-action="EditTestJob"
-                               asp-route-Id="@j.TestJobID">
-                                @Model.JobList.FirstOrDefault(m => m.JobID == j.JobID).JobNum
-                            </a>
-                        }
-                        else
-                        {
+
                             @Model.JobList.FirstOrDefault(m => m.JobID == j.JobID).JobNum
-                        }
                     </th>
                     <td>@j.SinglePO</td>
                     <td>@Model.JobTypeList.FirstOrDefault(m => m.JobTypeID == MyJob.JobTypeID).Name</td>
                     <td>@CurrentUser.FullName</td>
                     <td>
-                        @if (j.Status == "Working on it")
-                        {
-                            StepsForJob stepIncomplete = Model.StepsForJobList.FirstOrDefault(m => m.TestJobID == j.TestJobID && m.Complete == false);
-                            string StageName = Model.StepList.FirstOrDefault(m => m.StepID == stepIncomplete.StepID).Stage;
-                            @j.Status <span>| Stage: @StageName</span>
-                        }
-                        else
-                        {
-                            @j.Status
-                        }
+                        @j.Status
                     </td>
                     <td>
                         @Model.StationsList.FirstOrDefault(m => m.StationID == j.StationID).Label
                     </td>
                     <td>
-
-                        <form asp-action="AllStepsForJob" asp-controller="TestJob" method="get">
-                            <button type="submit" value="@j.TestJobID" name="ID" class="btn btn-light" data-tooltip="tooltip" data-placement="top" title="Steps from Testjob"
-                                    style="float:left;background-color:transparent">
-                                <i class="fas fa-shoe-prints"></i>
-                            </button>
-                        </form>
-                        <form asp-action="StopsFromTestJob" asp-controller="TestJob" method="get">
-                            <button type="submit" value="@j.TestJobID" name="ID" class="btn btn-light" data-tooltip="tooltip" data-placement="top" title="Stops from TestJob"
-                                    style="float:left;background-color:transparent">
-                                <i class="fas fa-hourglass-half"></i>
-                            </button>
-                        </form>
-
-                        @if (j.Status != "Incomplete")
-                        {
-                            <!-- Button trigger to  reassign-->
-                            <button type="button" class="btn btn-light" data-toggle="modal" data-target="#exampleModalreassign @j.TestJobID" style="float:left;background-color:transparent" data-tooltip="tooltip" data-placement="top" title="Reassign TestJob">
-                                <i class="fas fa-user-edit"></i>
-                            </button>
-                            <!-- Modal -->
-                            <div class="modal fade" id="exampleModalreassign @j.TestJobID" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLongTitle">Are you sure you want to reassign the Test Job with PO #@j.SinglePO?</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <form asp-action="Reassignment" asp-controller="TestJob" method="get">
-                                            <div class="modal-body">
-                                                <table class="table text-center align-content-center">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Current Technician</th>
-                                                            <th>Current Station</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td><user-select selected-value="@j.TechnicianID" class="form-control form-control-sm" asp-for="@Model.NewTechnicianID" roles="Technician"></user-select></td>
-                                                            <td><station-select select-for="Model.JobList.FirstOrDefault(m => m.JobID == j.JobID).JobTypeID" selected-value="@j.StationID" class="form-control form-control-sm" asp-for="@Model.NewStationID"></station-select></td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
-                                                <input type="hidden" asp-for="@Model.TestJob.TestJobID" value="@j.TestJobID" />
-                                                <button type="submit" value="Completed" name="buttonAction" class="btn btn-warning btn-sm">
-                                                    Reassign it!
-                                                </button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Button trigger to complete-->
-                            <button type="button" class="btn btn-light" data-toggle="modal" data-target="#exampleModalReturn @j.TestJobID" style="float:left;background-color:transparent" data-tooltip="tooltip" data-placement="top" title="Send To Completed">
-                                <i class="fas fa-forward"></i>
-                            </button>
-                            <!-- Modal -->
-                            <div class="modal fade" id="exampleModalReturn @j.TestJobID" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLongTitle">Are you sure you want to complete the Test Job with PO #@j.SinglePO?</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        @if (Model.StopList.Where(m => m.TestJobID == j.TestJobID).Count() > 0)
-                                        {
-                                            <div class="modal-body text-center">
-                                                <h5><i class="fas fa-exclamation-triangle"></i>&nbsp; This TestJob have pending stops &nbsp;<i class="fas fa-exclamation-triangle"></i></h5>
-                                            </div>
-                                            <form asp-action="FinishPendingStops" asp-controller="Stop" method="get">
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
-                                                    <input type="hidden" id="TestJobID" name="TestJobID" value="@j.TestJobID" />
-                                                    <button type="submit" value="Completed" name="buttonAction" class="btn btn-danger btn-sm">
-                                                        Finish the stops first!
-                                                    </button>
-                                                </div>
-                                            </form>
-                                        }
-                                        else
-                                        {
-                                            <form asp-action="JobCompletion" asp-controller="TestJob" method="get">
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
-                                                    <input type="hidden" id="TestJobID" name="TestJobID" asp-for="@Model.TestJob.TestJobID" value="@j.TestJobID" />
-                                                    <button type="submit" value="Completed" name="buttonAction" class="btn btn-danger btn-sm">
-                                                        To complete!
-                                                    </button>
-                                                </div>
-                                            </form>
-                                        }
-
-                                    </div>
-                                </div>
-                            </div>
-
-
-                        }
                         <!-- Button trigger modal -->
                         <button type="button" class="btn btn-light" style="float:left;background-color:transparent" data-toggle="modal" data-target="#delete @j.TestJobID" data-tooltip="tooltip" data-placement="top" title="Delete TestJob">
                             <i class="fas fa-trash-alt"></i>
