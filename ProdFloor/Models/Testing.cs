@@ -296,7 +296,7 @@ namespace ProdFloor.Models
 
         public string EfficiencyColor { get; set; }
 
-        public DateTime TodayDate { get; set; } = DateTime.Today;
+        public string TodayDate { get; set; } = DateTime.Today.ToShortDateString();
 
         public List<TestStats> TestStats { get; set; }
     }

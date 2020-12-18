@@ -383,61 +383,38 @@ namespace ProdFloor.Controllers
                 myStyleGrey.FillForegroundColor = HSSFColor.Grey25Percent.Index;
                 myStyleGrey.FillPattern = FillPattern.SolidForeground;
 
+                IRow row = excelSheet.CreateRow(i);
+                row.CreateCell(0).SetCellValue("Date: ");
+                row.CreateCell(1).SetCellValue(startDate.ToShortDateString());
+
+                for (int j = 0; j < 2; j++)
+                {
+                    workbook.GetSheetAt(0).GetRow(i).GetCell(j).CellStyle = myStyleGrey;
+                }
+
+                i++;
+
+                row = excelSheet.CreateRow(i);
+                row.CreateCell(0).SetCellValue("JobType");
+                row.CreateCell(1).SetCellValue("Completed");
+                row.CreateCell(2).SetCellValue("TotalEfficiency");
+
+
+                for (int j = 0; j < 3; j++)
+                    {
+                        workbook.GetSheetAt(0).GetRow(i).GetCell(j).CellStyle = myStyleGrey;
+                    }
+
+                i++;
+
                 foreach (DailyReport daily in dailyReports)
                 {
 
-                    IRow row = excelSheet.CreateRow(i);
-                    row.CreateCell(0).SetCellValue("JobTypeName: " + daily.JobTypeName);
-                    row.CreateCell(1).SetCellValue("Date: " + startDate.ToString("yyyy-MM-dd"));
-                    row.CreateCell(2).SetCellValue("Completed: " + daily.TestJobsCounted.ToString());
-                    row.CreateCell(3).SetCellValue("TotalEfficiency: " + daily.TotalEfficiency.ToString());
-                    i++;
-
-             
-
                     row = excelSheet.CreateRow(i);
-                    row.CreateCell(0).SetCellValue("JobNumer");
-                    row.CreateCell(1).SetCellValue("TechName");
-                    row.CreateCell(2).SetCellValue("Station");
-                    row.CreateCell(3).SetCellValue("Efficiency");
+                    row.CreateCell(0).SetCellValue(daily.JobTypeName);
+                    row.CreateCell(1).SetCellValue(daily.TestJobsCounted);
+                    row.CreateCell(2).SetCellValue(daily.TotalEfficiency);
 
-                    for (int k = i - 1; k <= i; k++)
-                    {
-                        for (int j = 0; j < 4; j++)
-                        {
-                            workbook.GetSheetAt(0).GetRow(k).GetCell(j).CellStyle = myStyleGrey;
-                        }
-                    }
-
-
-
-                    i++;
-
-
-                    try
-                    {
-                        if (daily.TestStats == null)
-                        {
-                            row = excelSheet.CreateRow(i);
-                            i++;
-                            continue;
-                        }
-
-                    }
-                    catch { }
-
-                    foreach (TestStats stats in daily.TestStats)
-                    {
-                        row = excelSheet.CreateRow(i);
-                        row.CreateCell(0).SetCellValue(stats.JobNumer);
-                        row.CreateCell(1).SetCellValue(stats.TechName);
-                        row.CreateCell(2).SetCellValue(stats.Station);
-                        row.CreateCell(3).SetCellValue(stats.Efficiency);
-
-                        i++;
-                    }
-
-                    row = excelSheet.CreateRow(i);
                     i++;
 
                 }
@@ -602,7 +579,7 @@ namespace ProdFloor.Controllers
             List<Station> stations = testingRepo.Stations.ToList();
             List<JobType> jobTypes = itemRepository.JobTypes.Where(m => m.Name != "M3000").ToList();
             IQueryable<Stop> stops = testingRepo.Stops;
-            IQueryable<TestJob> testjobsCompleted = testingRepo.TestJobs.Where(m => m.Status == "Completed" && m.StartDate >= startDate && m.CompletedDate <= endDate).OrderBy(m => m.StartDate);
+            IQueryable<TestJob> testjobsCompleted = testingRepo.TestJobs.Where(m => m.Status == "Completed" && m.CompletedDate >= startDate && m.CompletedDate <= endDate).OrderBy(m => m.StartDate);
             List<Step> StepsListInfo = testingRepo.Steps.ToList();
             IQueryable<Job> jobsForTestJobs = jobRepo.Jobs;
             IQueryable<Reason1> reasons1 = testingRepo.Reasons1;
@@ -787,6 +764,7 @@ namespace ProdFloor.Controllers
                 daily.TestJobsCounted = testJobsCounted;
                 daily.TotalEfficiency = totalEfficiency;
                 daily.EfficiencyColor = efficiencyColor;
+                daily.TodayDate = startDate.ToShortDateString();
 
                 dailyReports.Add(daily);
             }
