@@ -48,6 +48,7 @@ namespace ProdFloor.Controllers
                 totalitemsfromlastsearch = TotalItemsSearch;
                 page = 1;
             }
+            viewModel.Stations = new List<Station>();
             viewModel.Stations = stations.OrderBy(p => p.Label).Skip((page - 1) * 5).Take(5).ToList();
             viewModel.PagingInfo = new PagingInfo
             {

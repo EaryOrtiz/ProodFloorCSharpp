@@ -314,6 +314,7 @@ namespace ProdFloor.Controllers
             searchViewModel.HoistWayDataList = repository.HoistWayDatas.ToList();
             searchViewModel.SpecialFeaturesTable = getSpecialFeaturesEX();
             searchViewModel.JobTotalCount = repository.Jobs.Count();
+            searchViewModel.JobsSearchList = new List<Job>();
             searchViewModel.JobsSearchList = jobSearchRepo.OrderByDescending(p => p.JobNum).Skip((page - 1) * 5).Take(5).ToList();
 
 

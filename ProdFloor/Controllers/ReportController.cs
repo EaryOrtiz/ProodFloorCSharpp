@@ -282,13 +282,19 @@ namespace ProdFloor.Controllers
                 ISheet excelSheet = workbook.CreateSheet("Stops_" + startDate.ToString("yyyy-MM-dd") + "_"+ endDate.ToString("yyyy-MM-dd"));
                 int i = 0;
 
-                XSSFCellStyle myStyleGrey = (XSSFCellStyle)workbook.CreateCellStyle();
-                myStyleGrey.BorderBottom = BorderStyle.Medium;
-                myStyleGrey.BorderTop = BorderStyle.Medium;
-                myStyleGrey.BorderLeft = BorderStyle.Medium;
-                myStyleGrey.BorderRight = BorderStyle.Medium;
-                myStyleGrey.FillForegroundColor = HSSFColor.Grey25Percent.Index;
-                myStyleGrey.FillPattern = FillPattern.SolidForeground;
+                XSSFCellStyle TitleGrey = (XSSFCellStyle)workbook.CreateCellStyle();
+                TitleGrey.BorderBottom = BorderStyle.Medium;
+                TitleGrey.BorderTop = BorderStyle.Medium;
+                TitleGrey.BorderLeft = BorderStyle.Medium;
+                TitleGrey.BorderRight = BorderStyle.Medium;
+                TitleGrey.FillForegroundColor = HSSFColor.Grey25Percent.Index;
+                TitleGrey.FillPattern = FillPattern.SolidForeground;
+
+                XSSFCellStyle Ttable = (XSSFCellStyle)workbook.CreateCellStyle();
+                TitleGrey.BorderBottom = BorderStyle.Medium;
+                TitleGrey.BorderTop = BorderStyle.Medium;
+                TitleGrey.BorderLeft = BorderStyle.Medium;
+                TitleGrey.BorderRight = BorderStyle.Medium;
 
                 IRow row = excelSheet.CreateRow(i);
                 row.CreateCell(0).SetCellValue("Job #");
@@ -308,12 +314,16 @@ namespace ProdFloor.Controllers
                 row.CreateCell(14).SetCellValue("Time on Stop");
                 row.CreateCell(15).SetCellValue("IsCompleted?");
                 row.CreateCell(16).SetCellValue("Technician");
-                i++;
 
                 for (int j = 0; j < 17; j++)
                 {
-                    workbook.GetSheetAt(0).GetRow(0).GetCell(j).CellStyle = myStyleGrey;
+                    workbook.GetSheetAt(0).GetRow(i).GetCell(j).CellStyle = TitleGrey;
+                    excelSheet.AutoSizeColumn(j);
                 }
+
+                i++;
+
+                
 
                 foreach (StopsReport report in stopsReport)
                 {
@@ -335,6 +345,12 @@ namespace ProdFloor.Controllers
                     row.CreateCell(14).SetCellValue(report.Elapsed);
                     row.CreateCell(15).SetCellValue(report.isFinished);
                     row.CreateCell(16).SetCellValue(report.TechFullName);
+
+                    for (int j = 0; j < 17; j++)
+                    {
+                        workbook.GetSheetAt(0).GetRow(i).GetCell(j).CellStyle = Ttable; 
+                        excelSheet.AutoSizeColumn(j);
+                    }
 
                     i++;
 
@@ -375,13 +391,19 @@ namespace ProdFloor.Controllers
                 List<TestStats> testStats = new List<TestStats>();
                 int i =  0;
 
-                XSSFCellStyle myStyleGrey = (XSSFCellStyle)workbook.CreateCellStyle();
-                myStyleGrey.BorderBottom = BorderStyle.Medium;
-                myStyleGrey.BorderTop = BorderStyle.Medium;
-                myStyleGrey.BorderLeft = BorderStyle.Medium;
-                myStyleGrey.BorderRight = BorderStyle.Medium;
-                myStyleGrey.FillForegroundColor = HSSFColor.Grey25Percent.Index;
-                myStyleGrey.FillPattern = FillPattern.SolidForeground;
+                XSSFCellStyle titleGreyStyle = (XSSFCellStyle)workbook.CreateCellStyle();
+                titleGreyStyle.BorderBottom = BorderStyle.Medium;
+                titleGreyStyle.BorderTop = BorderStyle.Medium;
+                titleGreyStyle.BorderLeft = BorderStyle.Medium;
+                titleGreyStyle.BorderRight = BorderStyle.Medium;
+                titleGreyStyle.FillForegroundColor = HSSFColor.Grey25Percent.Index;
+                titleGreyStyle.FillPattern = FillPattern.SolidForeground;
+
+                XSSFCellStyle tableStyle = (XSSFCellStyle)workbook.CreateCellStyle();
+                tableStyle.BorderBottom = BorderStyle.Thin;
+                tableStyle.BorderTop = BorderStyle.Thin;
+                tableStyle.BorderLeft = BorderStyle.Thin;
+                tableStyle.BorderRight = BorderStyle.Thin;
 
                 IRow row = excelSheet.CreateRow(i);
                 row.CreateCell(0).SetCellValue("Date: ");
@@ -389,7 +411,7 @@ namespace ProdFloor.Controllers
 
                 for (int j = 0; j < 2; j++)
                 {
-                    workbook.GetSheetAt(0).GetRow(i).GetCell(j).CellStyle = myStyleGrey;
+                    workbook.GetSheetAt(0).GetRow(i).GetCell(j).CellStyle = titleGreyStyle;
                 }
 
                 i++;
@@ -402,7 +424,8 @@ namespace ProdFloor.Controllers
 
                 for (int j = 0; j < 3; j++)
                     {
-                        workbook.GetSheetAt(0).GetRow(i).GetCell(j).CellStyle = myStyleGrey;
+                        workbook.GetSheetAt(0).GetRow(i).GetCell(j).CellStyle = titleGreyStyle;
+                        excelSheet.AutoSizeColumn(j);
                     }
 
                 i++;
@@ -414,6 +437,12 @@ namespace ProdFloor.Controllers
                     row.CreateCell(0).SetCellValue(daily.JobTypeName);
                     row.CreateCell(1).SetCellValue(daily.TestJobsCounted);
                     row.CreateCell(2).SetCellValue(daily.TotalEfficiency);
+
+                    for (int j = 0; j < 3; j++)
+                    {
+                        workbook.GetSheetAt(0).GetRow(i).GetCell(j).CellStyle = tableStyle;
+                        excelSheet.AutoSizeColumn(j);
+                    }
 
                     i++;
 
@@ -452,13 +481,19 @@ namespace ProdFloor.Controllers
                 ISheet excelSheet = workbook.CreateSheet("Efficiency_" + startDate.ToString("yyyy-MM-dd") + "_" + endDate.ToString("yyyy-MM-dd"));
                 int i = 0;
 
-                XSSFCellStyle myStyleGrey = (XSSFCellStyle)workbook.CreateCellStyle();
-                myStyleGrey.BorderBottom = BorderStyle.Medium;
-                myStyleGrey.BorderTop = BorderStyle.Medium;
-                myStyleGrey.BorderLeft = BorderStyle.Medium;
-                myStyleGrey.BorderRight = BorderStyle.Medium;
-                myStyleGrey.FillForegroundColor = HSSFColor.Grey25Percent.Index;
-                myStyleGrey.FillPattern = FillPattern.SolidForeground;
+                XSSFCellStyle titleGreyStyle = (XSSFCellStyle)workbook.CreateCellStyle();
+                titleGreyStyle.BorderBottom = BorderStyle.Medium;
+                titleGreyStyle.BorderTop = BorderStyle.Medium;
+                titleGreyStyle.BorderLeft = BorderStyle.Medium;
+                titleGreyStyle.BorderRight = BorderStyle.Medium;
+                titleGreyStyle.FillForegroundColor = HSSFColor.Grey25Percent.Index;
+                titleGreyStyle.FillPattern = FillPattern.SolidForeground;
+
+                XSSFCellStyle tableStyle = (XSSFCellStyle)workbook.CreateCellStyle();
+                tableStyle.BorderBottom = BorderStyle.Thin;
+                tableStyle.BorderTop = BorderStyle.Thin;
+                tableStyle.BorderLeft = BorderStyle.Thin;
+                tableStyle.BorderRight = BorderStyle.Thin;
 
                 IRow row = excelSheet.CreateRow(i);
                 row.CreateCell(1).SetCellValue("Dates");
@@ -505,7 +540,9 @@ namespace ProdFloor.Controllers
                     {
                         for (int j = 0; j < 10; j++)
                         {
-                            workbook.GetSheetAt(0).GetRow(k).GetCell(j).CellStyle = myStyleGrey;
+                            workbook.GetSheetAt(0).GetRow(k).GetCell(j).CellStyle = titleGreyStyle;
+
+                            excelSheet.AutoSizeColumn(j);
                         }
                     }
                    
@@ -538,6 +575,12 @@ namespace ProdFloor.Controllers
                         row.CreateCell(7).SetCellValue(reportDetails.StopsCounted);
                         row.CreateCell(8).SetCellValue(reportDetails.TimeAtStops);
                         row.CreateCell(9).SetCellValue(reportDetails.StopsReasons);
+
+                        for (int j = 0; j < 10; j++)
+                        {
+                            workbook.GetSheetAt(0).GetRow(i).GetCell(j).CellStyle = tableStyle;
+                            excelSheet.AutoSizeColumn(j);
+                        }
 
                         i++;
 

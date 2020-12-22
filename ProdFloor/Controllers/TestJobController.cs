@@ -286,8 +286,14 @@ namespace ProdFloor.Controllers
 
                             }
 
-
                             return View("NextForm", NewtestJobView);
+
+                        }
+                        else
+                        {
+                            TempData["alert"] = $"alert-danger";
+                            TempData["message"] = $"Error, tarbajo aun en ingenieria, intente de nuevo o contacte al Admin";
+                            return View("NewTestJob", testJobSearchAux);
 
                         }
                     }
@@ -328,8 +334,6 @@ namespace ProdFloor.Controllers
                 return View("NewTestJob", testJobSearchAux);
 
             }
-
-            return View("NewTestJob", testJobSearchAux);
         }
        
         [HttpPost]
@@ -476,6 +480,118 @@ namespace ProdFloor.Controllers
                 return View(nextViewModel);
             }
 
+        }
+
+        [HttpPost]
+        public IActionResult NewTestFeatures(TestJobViewModel testJobView)
+        {
+            bool techAdmin = GetCurrentUserRole("TechAdmin").Result;
+            int TechnicianID = GetCurrentUser().Result.EngID;
+
+            TestJob testJobToUpdate = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == testJobView.TestJob.TestJobID);
+
+            if (testJobToUpdate.TechnicianID != TechnicianID && techAdmin == false) return RedirectToAction("Index", "Home");
+            if (testJobView.TestJob.StationID == 0 && techAdmin == false && TechnicianID == testJobToUpdate.TechnicianID)
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"Error, en la estacion, seleccione otra e intente de nuevo o contacte al Admin";
+                return View("NextForm", testJobView);
+            }
+            else
+            {
+                testJobToUpdate.StationID = testJobView.TestJob.StationID;
+                testJobToUpdate.JobLabel = testJobView.TestJob.JobLabel;
+                testingRepo.SaveTestJob(testJobToUpdate);
+                //Checa que la lista de features no este vacia o nula
+                if (testJobView.TestFeature != null)
+                {
+                    List<StepsForJob> OldStepsForJob = testingRepo.StepsForJobs.Where(m => m.TestJobID == testJobView.TestJob.TestJobID).ToList();
+                    if (OldStepsForJob.Count > 0)
+                    {
+                        List<StepsForJob> NewStepsForJob = MakeStepsForJobList(testJobView);
+
+                        foreach (StepsForJob OldStep in OldStepsForJob)
+                        {
+                            if (!(NewStepsForJob.Any(s => s.StepID == OldStep.StepID)))
+                            {
+                                OldStep.Obsolete = true;
+                                testingRepo.SaveStepsForJob(OldStep);
+                            }
+                        }
+
+                        foreach (StepsForJob Newstep in NewStepsForJob)
+                        {
+                            if (!(OldStepsForJob.Any(s => s.StepID == Newstep.StepID)))
+                            {
+                                testingRepo.SaveStepsForJob(Newstep);
+                            }
+                        }
+
+                    }
+                    else
+                    {
+                        foreach (StepsForJob step in MakeStepsForJobList(testJobView))
+                        {
+                            if (step != null) testingRepo.SaveStepsForJob(step);
+                        }
+                    }
+                    //Nuevos consecutivos
+                    var AllStepsForJob = testingRepo.StepsForJobs.Where(m => m.TestJobID == testJobView.TestFeature.TestJobID && m.Obsolete == false).OrderBy(m => m.Consecutivo).ToList();
+
+                    int PreviusStepNumber = 1;
+                    foreach (StepsForJob step in AllStepsForJob)
+                    {
+                        step.Consecutivo = PreviusStepNumber;
+                        testingRepo.SaveStepsForJob(step);
+                        PreviusStepNumber++;
+                    }
+
+
+                    //Despues de terminar de hacer la lista de steps para job se manda el primero a la siguiente vista
+                    var stepsForAUX = testingRepo.StepsForJobs.FirstOrDefault(m => m.TestJobID == testJobView.TestFeature.TestJobID && m.Consecutivo == 1); stepsForAUX.Start = DateTime.Now;
+                    testingRepo.SaveStepsForJob(stepsForAUX);
+
+
+                    var stepsFor = AllStepsForJob.FirstOrDefault(m => (m.TestJobID == testJobView.TestFeature.TestJobID && m.Consecutivo == 1 && m.Complete == false) || (m.Complete == false));
+
+                    var AllStepsForJobInfo = testingRepo.Steps.Where(m => AllStepsForJob.Any(s => s.StepID == m.StepID)).ToList();
+                    var stepInfo = AllStepsForJobInfo.FirstOrDefault(m => m.StepID == stepsFor.StepID);
+
+                    var testjobinfo = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == testJobView.TestJob.TestJobID);
+                    testjobinfo.StartDate = DateTime.Now;
+                    testingRepo.SaveTestJob(testjobinfo);
+
+                    var job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == testjobinfo.JobID);
+
+                    List<Stop> StopsFromTestJob = testingRepo.Stops.Where(m => m.TestJobID == testJobView.TestJob.TestJobID && m.Critical == false).ToList(); bool StopNC = false;
+                    if (StopsFromTestJob.Count > 0 && StopsFromTestJob[0] != null) StopNC = true;
+
+                    var auxtStepsPerStageInfo = AllStepsForJobInfo.Where(m => m.Stage == stepInfo.Stage).ToList();
+                    int StepsPerStage = auxtStepsPerStageInfo.Count();
+                    int auxtStepsPerStage = AllStepsForJob.Where(m => auxtStepsPerStageInfo.Any(s => s.StepID == m.StepID)).Where(m => m.Complete == true).Count() + 1;
+
+
+                    if (techAdmin) return RedirectToAction("Index", "Home");
+
+                    return View("StepsForJob", new TestJobViewModel
+                    {
+                        StepsForJob = stepsFor,
+                        Step = stepInfo,
+                        Job = job,
+                        TestJob = testjobinfo,
+                        StepList = AllStepsForJobInfo,
+                        StepsForJobList = AllStepsForJob,
+                        CurrentStep = auxtStepsPerStage,
+                        TotalStepsPerStage = StepsPerStage,
+                        StopNC = StopNC,
+                        StopList = StopsFromTestJob
+                    });
+                }
+            }
+
+
+
+            return View(NotFound());
         }
 
         public IActionResult ContinueForm(int ID)
@@ -1084,117 +1200,7 @@ namespace ProdFloor.Controllers
             return View("NewTestFeatures", viewModel);
         }
 
-        [HttpPost]
-        public IActionResult NewTestFeatures(TestJobViewModel testJobView)
-        {
-            bool techAdmin = GetCurrentUserRole("TechAdmin").Result;
-            int TechnicianID = GetCurrentUser().Result.EngID;
 
-            TestJob testJobToUpdate = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == testJobView.TestJob.TestJobID);
-
-            if (testJobToUpdate.TechnicianID != TechnicianID && techAdmin == false) return RedirectToAction("Index", "Home");
-            if (testJobView.TestJob.StationID == 0 && techAdmin == false && TechnicianID == testJobToUpdate.TechnicianID)
-            {
-                TempData["alert"] = $"alert-danger";
-                TempData["message"] = $"Error, en la estacion, seleccione otra e intente de nuevo o contacte al Admin";
-                return View("NextForm", testJobView);
-            }
-            else
-            {
-                testJobToUpdate.StationID = testJobView.TestJob.StationID;
-                testJobToUpdate.JobLabel = testJobView.TestJob.JobLabel;
-                testingRepo.SaveTestJob(testJobToUpdate);
-                //Checa que la lista de features no este vacia o nula
-                if (testJobView.TestFeature != null)
-                {
-                    List<StepsForJob> OldStepsForJob = testingRepo.StepsForJobs.Where(m => m.TestJobID == testJobView.TestJob.TestJobID).ToList();
-                    if (OldStepsForJob.Count > 0)
-                    {
-                        List<StepsForJob> NewStepsForJob = MakeStepsForJobList(testJobView);
-
-                        foreach (StepsForJob OldStep in OldStepsForJob)
-                        {
-                            if (!(NewStepsForJob.Any(s => s.StepID == OldStep.StepID)))
-                            {
-                                OldStep.Obsolete = true;
-                                testingRepo.SaveStepsForJob(OldStep);
-                            }
-                        }
-
-                        foreach (StepsForJob Newstep in NewStepsForJob)
-                        {
-                            if (!(OldStepsForJob.Any(s => s.StepID == Newstep.StepID)))
-                            {
-                                testingRepo.SaveStepsForJob(Newstep);
-                            }
-                        }
-
-                    }
-                    else
-                    {
-                        foreach (StepsForJob step in MakeStepsForJobList(testJobView))
-                        {
-                            if (step != null) testingRepo.SaveStepsForJob(step);
-                        }
-                    }
-                    //Nuevos consecutivos
-                    var AllStepsForJob = testingRepo.StepsForJobs.Where(m => m.TestJobID == testJobView.TestFeature.TestJobID && m.Obsolete == false).OrderBy(m => m.Consecutivo).ToList();
-
-                    int PreviusStepNumber = 1;
-                    foreach (StepsForJob step in AllStepsForJob)
-                    {
-                        step.Consecutivo = PreviusStepNumber;
-                        testingRepo.SaveStepsForJob(step);
-                        PreviusStepNumber++;
-                    }
-
-
-                    //Despues de terminar de hacer la lista de steps para job se manda el primero a la siguiente vista
-                    var stepsForAUX = testingRepo.StepsForJobs.FirstOrDefault(m => m.TestJobID == testJobView.TestFeature.TestJobID && m.Consecutivo == 1); stepsForAUX.Start = DateTime.Now;
-                    testingRepo.SaveStepsForJob(stepsForAUX);
-
-
-                    var stepsFor = AllStepsForJob.FirstOrDefault(m => (m.TestJobID == testJobView.TestFeature.TestJobID && m.Consecutivo == 1 && m.Complete == false) || (m.Complete == false));
-
-                    var AllStepsForJobInfo = testingRepo.Steps.Where(m => AllStepsForJob.Any(s => s.StepID == m.StepID)).ToList();
-                    var stepInfo = AllStepsForJobInfo.FirstOrDefault(m => m.StepID == stepsFor.StepID);
-
-                    var testjobinfo = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == testJobView.TestJob.TestJobID);
-                    testjobinfo.StartDate = DateTime.Now;
-                    testingRepo.SaveTestJob(testjobinfo);
-
-                    var job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == testjobinfo.JobID);
-
-                    List<Stop> StopsFromTestJob = testingRepo.Stops.Where(m => m.TestJobID == testJobView.TestJob.TestJobID && m.Critical == false).ToList(); bool StopNC = false;
-                    if (StopsFromTestJob.Count > 0 && StopsFromTestJob[0] != null) StopNC = true;
-
-                    var auxtStepsPerStageInfo = AllStepsForJobInfo.Where(m => m.Stage == stepInfo.Stage).ToList();
-                    int StepsPerStage = auxtStepsPerStageInfo.Count();
-                    int auxtStepsPerStage = AllStepsForJob.Where(m => auxtStepsPerStageInfo.Any(s => s.StepID == m.StepID)).Where(m => m.Complete == true).Count() + 1;
-
-
-                    if (techAdmin) return RedirectToAction("Index", "Home");
-
-                    return View("StepsForJob", new TestJobViewModel
-                    {
-                        StepsForJob = stepsFor,
-                        Step = stepInfo,
-                        Job = job,
-                        TestJob = testjobinfo,
-                        StepList = AllStepsForJobInfo,
-                        StepsForJobList = AllStepsForJob,
-                        CurrentStep = auxtStepsPerStage,
-                        TotalStepsPerStage = StepsPerStage,
-                        StopNC = StopNC,
-                        StopList = StopsFromTestJob
-                    });
-                }
-            }
-
-
-
-            return View(NotFound());
-        }
 
         [HttpPost]
         public IActionResult StepsForJob(TestJobViewModel viewModel, string movement)
