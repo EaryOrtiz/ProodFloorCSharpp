@@ -621,8 +621,10 @@ namespace ProdFloor.Controllers
             List<EfficiencyReport> efficiencyReports = new List<EfficiencyReport>();
             List<Station> stations = testingRepo.Stations.ToList();
             List<JobType> jobTypes = itemRepository.JobTypes.Where(m => m.Name != "M3000").ToList();
-            IQueryable<Stop> stops = testingRepo.Stops;
-            IQueryable<TestJob> testjobsCompleted = testingRepo.TestJobs.Where(m => m.Status == "Completed" && m.CompletedDate >= startDate && m.CompletedDate <= endDate).OrderBy(m => m.StartDate);
+            IQueryable<Stop> stops = testingRepo.Stops.Where(m => m.Reason1 != 981);
+            IQueryable<TestJob> testjobsCompleted = testingRepo.TestJobs.Where(m => m.Status == "Completed" && m.CompletedDate >= startDate)
+                                                                        .Where(m =>  m.CompletedDate <= endDate.AddHours(23))
+                                                                        .OrderBy(m => m.StartDate);
             List<Step> StepsListInfo = testingRepo.Steps.ToList();
             IQueryable<Job> jobsForTestJobs = jobRepo.Jobs;
             IQueryable<Reason1> reasons1 = testingRepo.Reasons1;
@@ -824,7 +826,10 @@ namespace ProdFloor.Controllers
             List<StopsReport> stopsReport = new List<StopsReport>();
             List<Station> stations = testingRepo.Stations.ToList();
             List<JobType> jobTypes = itemRepository.JobTypes.Where(m => m.Name != "M3000").ToList();
-            IQueryable<Stop> stops = testingRepo.Stops.Where(m => m.StartDate >= startDate && m.StopDate <= endDate).OrderBy(m => m.StartDate);
+            IQueryable<Stop> stops = testingRepo.Stops.Where(m => m.StopDate >= startDate && m.StopDate <= endDate.AddHours(23))
+                                                      .Where(m => m.Reason1 != 981)
+                                                      .OrderBy(m => m.StartDate);
+
             IQueryable<TestJob> testjobs = testingRepo.TestJobs.Where(m => stops.Any(n => n.TestJobID == m.TestJobID));
             IQueryable<Job> jobsForTestJobs = jobRepo.Jobs.Where(m => testjobs.Any(n => n.JobID == m.JobID));
             IQueryable<AppUser> users = userManager.Users;
