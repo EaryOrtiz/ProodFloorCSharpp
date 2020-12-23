@@ -457,6 +457,8 @@ namespace ProdFloor.Controllers
                     xw.WriteElementString("StopDate", stop.StopDate.ToString());
                     xw.WriteElementString("Elapsed", stop.Elapsed.ToString());
                     xw.WriteElementString("Description", stop.Description.ToString());
+                    xw.WriteElementString("AuxTechnicianID", stop.AuxTechnicianID.ToString());
+                    xw.WriteElementString("AuxStationID", stop.AuxStationID.ToString());
                     xw.WriteEndElement();
                 }
 
@@ -492,6 +494,8 @@ namespace ProdFloor.Controllers
                     var StopDate = stop.SelectSingleNode(".//StopDate").InnerText;
                     var Elapsed = stop.SelectSingleNode(".//Elapsed").InnerText;
                     var Description = stop.SelectSingleNode(".//Description").InnerText;
+                    var AuxTechnicianID = stop.SelectSingleNode(".//AuxTechnicianID").InnerText;
+                    var AuxStationID = stop.SelectSingleNode(".//AuxStationID").InnerText;
                     context.Stops.Add(new Stop
                     {
                         StopID = Int32.Parse(StopID),
@@ -505,6 +509,8 @@ namespace ProdFloor.Controllers
                         StopDate = DateTime.Parse(StopDate),
                         Elapsed = DateTime.Parse(Elapsed),
                         Description = Description,
+                        AuxStationID = Int32.Parse(AuxTechnicianID),
+                        AuxTechnicianID = Int32.Parse(AuxStationID),
 
                     });
                     context.Database.OpenConnection();
