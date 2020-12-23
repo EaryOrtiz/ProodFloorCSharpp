@@ -526,8 +526,8 @@ namespace ProdFloor.Controllers
 
                     row = excelSheet.CreateRow(i);
                     row.CreateCell(0).SetCellValue("Job No.");
-                    row.CreateCell(2).SetCellValue("PO");
-                    row.CreateCell(1).SetCellValue("Job Type");
+                    row.CreateCell(1).SetCellValue("PO");
+                    row.CreateCell(2).SetCellValue("Job Type");
                     row.CreateCell(3).SetCellValue("Percentage");
                     row.CreateCell(4).SetCellValue("Elapsed Time");
                     row.CreateCell(5).SetCellValue("Effiency");

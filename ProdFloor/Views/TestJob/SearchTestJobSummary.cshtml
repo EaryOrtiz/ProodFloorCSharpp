@@ -25,12 +25,24 @@
         </div>
         <div class="card-text p-1">
             <form asp-action="Delete" method="post" asp-route-Id="@j.TestJobID">
-                @if (User.IsInRole("TechAdmin") || User.IsInRole("Admin"))
+                @if (j.Status != "Incomplete" && (User.IsInRole("TechAdmin") || User.IsInRole("Admin")))
                 {
-                    <a asp-action="EditTestJob" class="btn btn-sm btn-success"
-                       asp-route-Id="@j.TestJobID">
-                        Edit
-                    </a>
+
+                    @if (j.Status == "Completed")
+                    {
+                        <a asp-action="EditTestJob" class="btn btn-sm btn-info"
+                           asp-route-Id="@j.TestJobID">
+                            Details
+                        </a>
+                    }
+                    else
+                    {
+                        <a asp-action="EditTestJob" class="btn btn-sm btn-success"
+                           asp-route-Id="@j.TestJobID">
+                            Edit
+                        </a>
+                    }
+
                     <a asp-action="AllStepsForJob" class="btn btn-sm btn-primary"
                        asp-route-Id="@j.TestJobID">
                         Steps

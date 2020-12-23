@@ -80,7 +80,7 @@ namespace ProdFloor.Controllers
             }
 
             List<TestJob> testJobsInCompleted = new List<TestJob>();
-            List<TestJob> testJobsWorkingOnIt= new List<TestJob>();
+            List<TestJob> testJobsWorkingOnIt = new List<TestJob>();
             List<TestJob> testJobsCompleted = new List<TestJob>();
             List<TestJob> testJobsList = new List<TestJob>();
             List<Job> jobList = jobRepo.Jobs.Where(m => m.JobNum.Contains(jobnumb)).ToList();
@@ -108,7 +108,7 @@ namespace ProdFloor.Controllers
             if (!admin)
             {
 
-                if (testJobsInCompleted == null || string.IsNullOrEmpty(jobnumb)) 
+                if (testJobsInCompleted == null || string.IsNullOrEmpty(jobnumb))
                     testJobsInCompleted = testingRepo.TestJobs.Where(m => m.Status != "Completed" && m.Status != "Deleted" && m.Status != "Working on it").ToList();
 
                 if (testJobsWorkingOnIt == null || string.IsNullOrEmpty(jobnumb)) testJobsWorkingOnIt = testingRepo.TestJobs.Where(m => m.Status == "Working on it").OrderBy(s => s.StationID).ToList();
@@ -335,7 +335,7 @@ namespace ProdFloor.Controllers
 
             }
         }
-       
+
         [HttpPost]
         public IActionResult NextForm(TestJobViewModel nextViewModel)
         {
@@ -344,7 +344,7 @@ namespace ProdFloor.Controllers
             if (nextViewModel.TestFeature != null)
             {
                 TestJob testJob = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == nextViewModel.TestJob.TestJobID);
-               
+
 
                 if (testJob != null)
                 {
@@ -357,7 +357,7 @@ namespace ProdFloor.Controllers
                             nextViewModel.JobExtension = jobExtension;
                     }
                     catch { }
-                    
+
 
                     TestFeature testFeature = testingRepo.TestFeatures.FirstOrDefault(m => m.TestJobID == testJob.TestJobID);
 
@@ -617,7 +617,7 @@ namespace ProdFloor.Controllers
                     nextViewModel.TestJob = testJob;
                     nextViewModel.Job = CurrentJob;
 
-                    nextViewModel.TestFeature = testFeature != null ? testFeature : new TestFeature() { TestJobID = testJob.TestJobID}; 
+                    nextViewModel.TestFeature = testFeature != null ? testFeature : new TestFeature() { TestJobID = testJob.TestJobID };
                     nextViewModel.isNotDummy = CurrentJob.Contractor == "Fake" ? false : true;
                     nextViewModel.CurrentTab = "NewFeatures";
                     nextViewModel.JobTypeName = JobTypeName(jobtypeID);
@@ -625,7 +625,7 @@ namespace ProdFloor.Controllers
                     nextViewModel.Job.JobNumFirstDigits = getJobNumbDivided(nextViewModel.Job.JobNum).firstDigits;
                     nextViewModel.Job.JobNumLastDigits = getJobNumbDivided(nextViewModel.Job.JobNum).lastDigits;
 
-                    
+
 
                     switch (JobTypeName(jobtypeID))
                     {
@@ -713,8 +713,24 @@ namespace ProdFloor.Controllers
                 bool isAdmin = GetCurrentUserRole("Admin").Result;
                 bool isSameEngineer = currentUser.EngID == testJob.TechnicianID;
                 bool isNotCompleted = testJob.Status != "Completed";
+                bool isIncomplete = testJob.Status == "Incomplete";
 
-                if (isNotCompleted && (isSameEngineer || isAdmin || isTechAdmin))
+                if (isIncomplete && (isAdmin || isTechAdmin))
+                {
+                    TempData["alert"] = $"alert-danger";
+                    TempData["message"] = $"Error, El Testjob no esta completo";
+
+                    return RedirectToAction("Index", "Home");
+                }
+
+                if (!isNotCompleted && !(isAdmin || isTechAdmin))
+                {
+                    TempData["alert"] = $"alert-danger";
+                    TempData["message"] = $"Error, El Testjob ya ha sido completado, intente de nuevo o contacte al Admin";
+                    return RedirectToAction("Index", "Home");
+                }
+
+                if (isSameEngineer || isAdmin || isTechAdmin)
                 {
                     nextViewModel.PO = jobRepo.POs.FirstOrDefault(m => m.JobID == CurrentJob.JobID);
                     nextViewModel.TestJob = testJob;
@@ -781,13 +797,18 @@ namespace ProdFloor.Controllers
 
                     }
                     nextViewModel.JobTypeName = itemRepository.JobTypes.FirstOrDefault(m => m.JobTypeID == CurrentJob.JobTypeID).Name;
+
+
+                    if (!isNotCompleted && (isAdmin || isTechAdmin))
+                        nextViewModel.isNotDummy = true;
+
                     return View(nextViewModel);
                 }
                 else
                 {
                     TempData["alert"] = $"alert-danger";
-                    if (isNotCompleted == false) TempData["message"] = $"Error, El Testjob ya ha sido completado, intente de nuevo o contacte al Admin";
-                    else TempData["message"] = $"Error, El Testjob a sido reasignado, intente de nuevo o contacte al Admin";
+                    TempData["message"] = $"Error, El Testjob ya ha sido reasignado, intente de nuevo o contacte al Admin";
+
 
                     return RedirectToAction("Index", "Home");
                 }
@@ -901,7 +922,7 @@ namespace ProdFloor.Controllers
             TestJob StationAuxTestJob = testingRepo.TestJobs.FirstOrDefault(m => m.StationID == testJobView.TestJob.StationID && m.Status == "Working on it");
 
             testJobToUpdate.JobLabel = testJobView.TestJob.JobLabel;
-            if(testJobView.TestJob.StationID != 0 || testJobToUpdate.StationID == 0) testJobToUpdate.StationID = testJobView.TestJob.StationID;
+            if (testJobView.TestJob.StationID != 0 || testJobToUpdate.StationID == 0) testJobToUpdate.StationID = testJobView.TestJob.StationID;
             testingRepo.SaveTestJob(testJobToUpdate);
             //Checa que la lista de features no este vacia o nula
             if (testJobView.TestFeature != null)
@@ -2767,7 +2788,7 @@ namespace ProdFloor.Controllers
             List<TestJob> ActiveTestJobs = testingRepo.TestJobs.Where(m => m.Status != "Completed" && m.Status != "Deleted").ToList();
             IQueryable<Station> stations = testingRepo.Stations.Where(m => m.Label != "-");
             int JobTypeID = (JobType == "M2000") ? 2 : 4;
-            if(JobTypeID == 2)
+            if (JobTypeID == 2)
             {
                 viewModel.StationsList = stations.Where(m => m.JobTypeID == JobTypeID).OrderBy(n => n.Label).ToList();
                 viewModel.StationsList.AddRange(stations.Where(m => m.JobTypeID == 5).OrderBy(n => n.Label).ToList());
@@ -2788,7 +2809,7 @@ namespace ProdFloor.Controllers
             int counter = 1;
 
             //Auxiliares
-            
+
 
             foreach (TestJob testjob in ActiveTestJobs)
             {
@@ -2826,12 +2847,12 @@ namespace ProdFloor.Controllers
                 TTC = ToDateTime(TTCAux);
 
                 stepsForJobCompleted = AllSteps.Where(m => m.TestJobID == testjob.TestJobID && m.Complete == true).OrderBy(n => n.Consecutivo).ToList();
-                
+
                 //a simple query to get the stage
                 Stage = LastStepInfo.Stage;
 
                 //if to get efficiency or status(stopped)
-                if(testjob.Status == "Working on it")
+                if (testjob.Status == "Working on it")
                 {
                     foreach (StepsForJob step in stepsForJobCompleted)
                     {
@@ -2859,7 +2880,7 @@ namespace ProdFloor.Controllers
 
                     if (stop.Critical) StatusColor = "Red";
                     if (stop.Reason1 == 980 || stop.Reason1 == 981 || stop.Reason1 == 982) StatusColor = "Gray";
-                    
+
 
                 }
 
@@ -2884,7 +2905,8 @@ namespace ProdFloor.Controllers
                     else if (FeaturesFromJob._HoistWayData.AnyRear || FeaturesFromJob._jobExtension.JobTypeMain == "Duplex" || (FeaturesFromJob._jobExtension.DoorOperatorID == 7 || FeaturesFromJob._jobExtension.DoorOperatorID == 8)
                         || FeaturesFromJob._HydroSpecific.MotorsNum >= 2) Category = "2";
                     else Category = "1";
-                }else Category = "Indefinida";
+                }
+                else Category = "Indefinida";
 
                 //JobProgress
                 double JobProgress = (stepsForJobCompleted.Count() * 100) / AllSteps.Count();
@@ -2957,7 +2979,7 @@ namespace ProdFloor.Controllers
                     xw.WriteElementString("CompletedDate", testjob.CompletedDate.ToString());
                     xw.WriteElementString("StationID", testjob.StationID.ToString());
 
-                    
+
 
                     xw.WriteStartElement("TestFeature");
 
@@ -3007,7 +3029,7 @@ namespace ProdFloor.Controllers
                     xw.WriteEndElement();
                 }
                 xw.WriteEndElement();
-               
+
                 xw.WriteEndDocument();
             }
 
@@ -3026,8 +3048,8 @@ namespace ProdFloor.Controllers
 
             var XMLTestJobs = XMLMain.SelectNodes("//TestJob");
 
-            if (XMLTestJobs != null && context.Steps.Any() && context.Jobs.Any() 
-                && context.Stations.Any() )
+            if (XMLTestJobs != null && context.Steps.Any() && context.Jobs.Any()
+                && context.Stations.Any())
             {
                 foreach (XmlElement testjob in XMLTestJobs)
                 {

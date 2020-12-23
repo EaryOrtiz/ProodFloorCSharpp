@@ -24,13 +24,16 @@
             }
         </div>
         <div class="text-center">
-            <button class="btn btn-primary" value="Nel" type="submit">Guardar cambios</button>
-            @if (TempData["message"] != null && User.IsInRole("Technician"))
+            @if (Model.TestJob.Status != "Completed")
             {
-                <a asp-action="ContinueStep" asp-controller="TestJob"
-                   asp-route-id="@Model.TestJob.TestJobID" class="btn btn-info">
-                    Continuar
-                </a>
+                <button class="btn btn-primary" value="Nel" type="submit">Guardar cambios</button>
+                @if (TempData["message"] != null && User.IsInRole("Technician"))
+                {
+                    <a asp-action="ContinueStep" asp-controller="TestJob"
+                       asp-route-id="@Model.TestJob.TestJobID" class="btn btn-info">
+                        Continuar
+                    </a>
+                }
             }
             <a asp-action="Index" asp-controller="Home" class="btn btn-secondary">Regresar</a>
         </div>
