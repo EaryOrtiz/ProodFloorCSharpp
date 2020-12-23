@@ -2786,7 +2786,7 @@ namespace ProdFloor.Controllers
         {
             viewModel.TestStatsList = new List<TestStats>();
             List<TestJob> ActiveTestJobs = testingRepo.TestJobs.Where(m => m.Status != "Completed" && m.Status != "Deleted").ToList();
-            IQueryable<Station> stations = testingRepo.Stations.Where(m => m.Label != "-");
+            IQueryable<Station> stations = testingRepo.Stations.Where(m => m.StationID != 0);
             int JobTypeID = (JobType == "M2000") ? 2 : 4;
             if (JobTypeID == 2)
             {
@@ -3041,7 +3041,7 @@ namespace ProdFloor.Controllers
         {
             ApplicationDbContext context = services.GetRequiredService<ApplicationDbContext>();
             XmlDocument doc = new XmlDocument();
-            doc.Load(@"C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\AppData\TestJobs-TestFeatures-StepsForJob.xml");
+            doc.Load(@"C:\ProdFloorNew90\wwwroot\AppData\TestJobs-TestFeatures-StepsForJob.xml");
 
 
             var XMLMain = doc.DocumentElement.SelectSingleNode("//TestJobs-TestFeatures-StepsForJob");
