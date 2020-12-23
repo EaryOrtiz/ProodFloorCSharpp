@@ -435,7 +435,7 @@ namespace ProdFloor.Controllers
             xws.OmitXmlDeclaration = true;
             xws.Indent = true;
 
-            List<Stop> stops = testingRepo.Stops.ToList();
+            List<Stop> stops = testingRepo.Stops.Where(m => m.Reason5ID != 0).ToList();
 
             using (XmlWriter xw = XmlWriter.Create(ms, xws))
             {
