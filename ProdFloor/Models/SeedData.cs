@@ -1845,6 +1845,7 @@ namespace ProdFloor.Models
                 foreach (Job job in JobList)
                 {
                     JobAdditional jobAdditional = context.JobAdditionals.FirstOrDefault(m => m.JobID == job.JobID);
+                    SpecialFeatures special = context.SpecialFeatures.FirstOrDefault(m => m.JobID == job.JobID);
                     if (jobAdditional == null)
                     {
                         context.JobAdditionals.Add(new JobAdditional
@@ -1858,15 +1859,6 @@ namespace ProdFloor.Models
                         });
                         context.SaveChanges();
                     }
-                    else
-                    {
-                        continue;
-                    }
-                }
-
-                foreach (Job job in JobList)
-                {
-                    SpecialFeatures special = context.SpecialFeatures.FirstOrDefault(m => m.JobID == job.JobID);
                     if (special == null)
                     {
                         context.SpecialFeatures.Add(new SpecialFeatures
@@ -1881,6 +1873,26 @@ namespace ProdFloor.Models
                     {
                         continue;
                     }
+                }
+
+                foreach (Job job in JobList)
+                {
+                    if (!string.IsNullOrEmpty(job.JobNum))
+                    {
+                        string yearDigits = job.JobNum.Remove(5, 5);
+                        string baseDigits = job.JobNum.Remove(0, 5);
+                        string newJobNumber = "";
+
+                        if (yearDigits == "21200")
+                            newJobNumber = "C2000" + baseDigits;
+                        else if (yearDigits == "21190")
+                            newJobNumber = "C1900" + baseDigits;
+                        else continue;
+
+                        job.JobNum = newJobNumber;
+                        context.SaveChanges();
+                    }
+                   
                 }
             }
         }
