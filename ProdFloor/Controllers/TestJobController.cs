@@ -1241,7 +1241,9 @@ namespace ProdFloor.Controllers
 
                     var AllStepsForJob = testingRepo.StepsForJobs.Where(m => m.TestJobID == viewModel.TestJob.TestJobID && m.Obsolete == false).OrderBy(m => m.Consecutivo).ToList();
                     var AllStepsForJobInfo = testingRepo.Steps.Where(m => AllStepsForJob.Any(s => s.StepID == m.StepID)).ToList();
-                    List<Stop> StopsFromTestJob = testingRepo.Stops.Where(m => m.TestJobID == viewModel.TestJob.TestJobID && m.Critical == false).ToList(); bool StopNC = false;
+                    List<Stop> StopsFromTestJob = testingRepo.Stops.Where(m => m.TestJobID == viewModel.TestJob.TestJobID && m.Critical == false)
+                                                                    .Where(m => m.StopID != 980 & m.StopID != 981 && m.Reason2 == 0).ToList();
+                    bool StopNC = false;
                     List<Reason1> reason1s = testingRepo.Reasons1.ToList();
                     if (StopsFromTestJob.Count > 0 && StopsFromTestJob[0] != null) StopNC = true;
 
@@ -1561,13 +1563,29 @@ namespace ProdFloor.Controllers
 
                 if (isNotCompleted && (isAdmin || isTechAdmin))
                 {
-                    TestJob deletedItem = testingRepo.DeleteTestJob(ID);
+                    Job job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == testJob.JobID);
 
-
-                    if (deletedItem != null)
+                    if (job.Contractor == "Fake")
                     {
-                        TempData["message"] = $"Testjob with #PO {deletedItem.SinglePO} was deleted";
+                        Job deletDummy = jobRepo.DeleteEngJob(job.JobID);
+
+                        if (deletDummy != null)
+                        {
+                            TempData["message"] = $"Job with #JobNum {deletDummy.JobNum} and all its depenencies were deleted";
+                        }
                     }
+                    else
+                    {
+                        TestJob deletedItem = testingRepo.DeleteTestJob(ID);
+
+                        if (deletedItem != null)
+                        {
+                            TempData["message"] = $"Testjob with #PO {deletedItem.SinglePO} was deleted";
+                        }
+                    }
+                       
+
+                   
                     if (isAdmin) return RedirectToAction("SearchTestJob", "TestJob");
                     return RedirectToAction("Index", "Home");
 

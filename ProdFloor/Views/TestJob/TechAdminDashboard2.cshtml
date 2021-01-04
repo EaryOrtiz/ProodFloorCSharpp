@@ -25,7 +25,7 @@
             <th scope="col">
                 Station
             </th>
-            <th scope="col">
+            <th width="22%">
                 Options
             </th>
         </tr>
@@ -58,6 +58,12 @@
                         @Model.StationsList.FirstOrDefault(m => m.StationID == j.StationID).Label
                     </td>
                     <td>
+                        <form asp-action="EditTestJob" asp-controller="TestJob" method="get">
+                            <button type="submit" value="@j.TestJobID" name="ID" class="btn btn-light" data-tooltip="tooltip" data-placement="top" title="Details"
+                                    style="float:left;background-color:transparent">
+                                <i class="fas fa-list"></i>
+                            </button>
+                        </form>
                         <form asp-action="AllStepsForJob" asp-controller="TestJob" method="get">
                             <button type="submit" value="@j.TestJobID" name="ID" class="btn btn-light" data-tooltip="tooltip" data-placement="top" title="Steps from Testjob"
                                     style="float:left;background-color:transparent">
@@ -72,7 +78,7 @@
                         </form>
 
                         @if (j.Status != "Deleted")
-                        { 
+                        {
 
                             <!-- Delete Button trigger modal -->
                             <button type="button" class="btn btn-light" style="float:left;background-color:transparent" data-toggle="modal" data-target="#delete @j.TestJobID" data-tooltip="tooltip" data-placement="top" title="Delete TestJob">
@@ -103,7 +109,7 @@
                                 </div>
                             </form>
                         }
-                        else if (User.IsInRole("Admin"))
+                        else if (User.IsInRole("Admin") || User.IsInRole("TechAdmin"))
                         {
                             <!-- Restore TestJob Button trigger modal -->
                             <button type="button" class="btn btn-light" style="float:left;background-color:transparent" data-toggle="modal" data-target="#restore @j.TestJobID" data-tooltip="tooltip" data-placement="top" title="Restore TestJob">

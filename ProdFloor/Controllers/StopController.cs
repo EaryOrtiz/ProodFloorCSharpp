@@ -372,7 +372,8 @@ namespace ProdFloor.Controllers
 
                 if (isNotCompleted && (isAdmin || isTechAdmin))
                 {
-                    Stop CurrentStop = testingRepo.Stops.FirstOrDefault(p => p.TestJobID == testJob.TestJobID);
+                    Stop CurrentStop = testingRepo.Stops.Where(m => m.StopID != 980 & m.StopID != 981 && m.Reason2 == 0)
+                                                        .FirstOrDefault(p => p.TestJobID == testJob.TestJobID);
 
                     Job job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == testJob.JobID);
                     return View(new TestJobViewModel { Job = job, Stop = CurrentStop, TestJob = testJob });
@@ -408,7 +409,7 @@ namespace ProdFloor.Controllers
 
             if (stop != null)
             {
-                testJobView.TestJob = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == stop.TestJobID); ;
+                testJobView.TestJob = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == stop.TestJobID);
                 testJobView.Job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == testJobView.TestJob.JobID);
                 testJobView.Stop = stop;
                 return FinishPendingStops(testJobView.TestJob.TestJobID);
