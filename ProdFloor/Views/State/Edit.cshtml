@@ -5,19 +5,19 @@
 <div class="bg-dark m-1 p-1"><h4 style="color:white">Edit State: @Model.Name</h4></div>
 <form asp-controller="State" asp-action="Edit" method="post">
     <input type="hidden" asp-for="StateID" />
-    <div class="form-group">
+    <div class="form-group col-6">
         <label asp-for="CountryID" class="col-sm-2 col-form-label"></label>
         <div>
-            <country-select selected-default-value="@Model.CountryID" class="form-control-sm" asp-for="CountryID"></country-select>
+            <country-select selected-default-value="@Model.CountryID" class="form-control form-control-sm" asp-for="CountryID"></country-select>
             <span asp-validation-for="CountryID" class="text-danger"></span>
         </div>
     </div>
-    <div class="form-group">
+    <div class="form-group col-6">
         <label asp-for="Name"></label>
         <div><span asp-validation-for="Name" class="text-danger"></span></div>
         <input asp-for="Name" class="form-control" />
     </div>
-    <div class="text-center">
+    <div class="text-center col-4">
         <button class="btn btn-primary" type="submit">Save</button>
         <a asp-action="List" class="btn btn-secondary">Cancel</a>
     </div>

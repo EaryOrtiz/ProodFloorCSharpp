@@ -7,25 +7,25 @@
 <br />
 <form asp-controller="City" asp-action="Edit" method="post">
     <input type="hidden" asp-for="CityID" />
-    <div class="form-group">
-        <label asp-for="CountryID" class="col-sm-1 col-form-label"></label>
-        <country-select class="form-control-sm" asp-for="CountryID" selected-value="Model.CityID"></country-select>
+    <div class="form-group col-6">
+        <label asp-for="CountryID" class="col-form-label"></label>
+        <country-select class="form-control form-control-sm" asp-for="CountryID" selected-value="Model.CityID"></country-select>
     </div>
-    <div class="form-group">
-        <label asp-for="StateID" class="col-sm-1 col-form-label"></label>
-        <state-select class="form-control-sm" asp-for="StateID" selected-value="Model.CityID"></state-select>
+    <div class="form-group col-6">
+        <label asp-for="StateID" class="col-form-label"></label>
+        <state-select class="form-control form-control-sm" asp-for="StateID" selected-value="Model.CityID"></state-select>
     </div>
-    <div class="form-group ">
-        <label asp-for="Name" class="col-sm-1 col-form-label"></label>
-        <input asp-for="Name" class="form-control-sm col-sm-2" />
+    <div class="form-group  col-6">
+        <label asp-for="Name" class="col-form-label"></label>
+        <input asp-for="Name" class="form-control form-control-sm" />
         <span asp-validation-for="Name" class="text-danger"></span>
     </div>
-    <div class="form-group">
-        <label asp-for="FirecodeID" class="col-sm-1 col-form-label"></label>
-        <fire-code-select selected-value="@Model.FirecodeID" class="form-control-sm" asp-for="FirecodeID"></fire-code-select>
+    <div class="form-group col-6">
+        <label asp-for="FirecodeID" class="col-form-label"></label>
+        <fire-code-select selected-value="@Model.FirecodeID" class="form-control form-control-sm" asp-for="FirecodeID"></fire-code-select>
         <span asp-validation-for="FirecodeID" class="text-danger"></span>
     </div>
-    <div class=" text-center">
+    <div class=" text-center col-6">
         <button class="btn btn-primary" type="submit">Save</button>
         <a asp-action="List" class="btn btn-secondary">Cancel</a>
     </div>
