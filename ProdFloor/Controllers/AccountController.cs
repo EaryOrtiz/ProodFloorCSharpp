@@ -203,8 +203,12 @@ namespace ProdFloor.Controllers
         [HttpPost]
         public async Task<IActionResult> Delete(string id)
         {
+            bool engAdmin = GetCurrentUserRole("EngAdmin").Result;
+            bool techAdmin = GetCurrentUserRole("TechAdmin").Result;
+            bool Admin = GetCurrentUserRole("Admin").Result;
+
             AppUser user = await userManager.FindByIdAsync(id);
-            if (user != null)
+            if (user != null && ( engAdmin || techAdmin || Admin ))
             {
                 IdentityResult result = await userManager.DeleteAsync(user);
                 if (result.Succeeded)
@@ -282,9 +286,16 @@ namespace ProdFloor.Controllers
                     IdentityResult result = await userManager.UpdateAsync(user);
                     if (result.Succeeded)
                     {
-                        bool engineer = GetCurrentUserRole("Engineer").Result;
-                        if (engineer) return RedirectToAction("Index", "Home");
-                        return RedirectToAction("Index");
+                        TempData["message"] = $"You have changed the password correctly.";
+
+                        bool engAdmin = GetCurrentUserRole("EngAdmin").Result;
+                        bool techAdmin = GetCurrentUserRole("TechAdmin").Result;
+                        bool Admin = GetCurrentUserRole("Admin").Result;
+
+                        if (engAdmin || techAdmin || Admin)
+                            return RedirectToAction("Index");
+
+                        return RedirectToAction("Index", "Home");
                     }
                     else
                     {
