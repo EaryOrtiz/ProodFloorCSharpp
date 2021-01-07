@@ -235,7 +235,6 @@
     </div>
 
     <!---Esta parte de de los charts de Daily-->
-    
     <div id="collapseDailyCharts" class="collapse" aria-labelledby="dailyCharts" data-parent="#dailyCharts">
         <div class="row ml-4 mb-2">
             @foreach (DailyReport daily in Model.dailyReports)
@@ -248,7 +247,7 @@
                     </div>
                     <div class="card-body text-center">
                         <h4 class="card-title text-left">Completados: &nbsp;&nbsp;@daily.TestJobsCounted</h4>
-                        <input data-skin="tron"  data-width="180" value="@daily.TotalEfficiency" data-min="0" cursor="false" data-fgColor="@daily.EfficiencyColor" 
+                        <input data-skin="tron" style="position: fixed"  data-width="180" value="@daily.TotalEfficiency" data-min="0" cursor="false" data-fgColor="@daily.EfficiencyColor" 
                                data-max="100" data-thickness=".2" class="m400Chart" data-readonly="true" readonly="readonly">
                     </div>
                     <div class="card-footer text-center "><h5>Eficiencia:  @daily.TotalEfficiency%</h5></div>
