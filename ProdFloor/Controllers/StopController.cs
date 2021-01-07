@@ -169,9 +169,8 @@ namespace ProdFloor.Controllers
                     }
                     else if (ReturnedFromCompleteStop.Reason1 == 982)
                     {
-                        TimeSpan auxTime = (DateTime.Now - ReturnedFromCompleteStop.StartDate);
-                        ReturnedFromCompleteStop.Elapsed += auxTime;
                         ReturnedFromCompleteStop.StopDate = DateTime.Now;
+                        ReturnedFromCompleteStop.Elapsed = GetElapsed(ReturnedFromCompleteStop.StartDate, ReturnedFromCompleteStop.StopDate);
                         testingRepo.SaveStop(ReturnedFromCompleteStop);
 
                         testJob.Status = "Working on it";
@@ -228,9 +227,9 @@ namespace ProdFloor.Controllers
                     }
                     else if (PreviusStop != null)
                     {
-                        TimeSpan auxTime = (DateTime.Now - ReassignmentStop.StartDate);
-                        ReassignmentStop.Elapsed += auxTime;
                         ReassignmentStop.StopDate = DateTime.Now;
+                        ReassignmentStop.Elapsed = GetElapsed(ReassignmentStop.StartDate, ReassignmentStop.StopDate);
+
                         testingRepo.SaveStop(ReassignmentStop);
 
 
@@ -244,9 +243,9 @@ namespace ProdFloor.Controllers
                     }
                     else
                     {
-                        TimeSpan auxTime = (DateTime.Now - ReassignmentStop.StartDate);
-                        ReassignmentStop.Elapsed += auxTime;
                         ReassignmentStop.StopDate = DateTime.Now;
+                        ReassignmentStop.Elapsed = GetElapsed(ReassignmentStop.StartDate, ReassignmentStop.StopDate);
+
                         testingRepo.SaveStop(ReassignmentStop);
 
                         testJob.Status = "Working on it";
@@ -301,9 +300,8 @@ namespace ProdFloor.Controllers
         {
 
             Stop UpdatedStop = testingRepo.Stops.FirstOrDefault(m => m.StopID == viewModel.Stop.StopID);
-            TimeSpan auxTime = (DateTime.Now - UpdatedStop.StartDate);
-            UpdatedStop.Elapsed += auxTime;
             UpdatedStop.StopDate = DateTime.Now;
+            UpdatedStop.Elapsed = GetElapsed(UpdatedStop.StartDate, UpdatedStop.StopDate);
             UpdatedStop.Reason1 = viewModel.Stop.Reason1;
             UpdatedStop.Reason2 = viewModel.Stop.Reason2;
             UpdatedStop.Reason3 = viewModel.Stop.Reason3;
@@ -400,9 +398,17 @@ namespace ProdFloor.Controllers
         [HttpPost]
         public IActionResult FinishPendingStops(TestJobViewModel testJobView)
         {
-            TimeSpan auxTime = (DateTime.Now - testJobView.Stop.StartDate);
-            testJobView.Stop.Elapsed += auxTime;
-            testingRepo.SaveStop(testJobView.Stop);
+            Stop UpdatedStop = testingRepo.Stops.FirstOrDefault(m => m.StopID == testJobView.Stop.StopID);
+            UpdatedStop.StopDate = DateTime.Now;
+            UpdatedStop.Elapsed = GetElapsed(UpdatedStop.StartDate, UpdatedStop.StopDate);
+            UpdatedStop.Reason1 = testJobView.Stop.Reason1;
+            UpdatedStop.Reason2 = testJobView.Stop.Reason2;
+            UpdatedStop.Reason3 = testJobView.Stop.Reason3;
+            UpdatedStop.Reason4 = testJobView.Stop.Reason4;
+            UpdatedStop.Reason5ID = testJobView.Stop.Reason5ID;
+            UpdatedStop.Description = testJobView.Stop.Description;
+
+            testingRepo.SaveStop(UpdatedStop);
             TempData["message"] = $"{testJobView.Stop.Description} has been saved..";
 
             Stop stop = testingRepo.Stops.FirstOrDefault(m => m.StopID != 980 & m.StopID != 981 && m.Reason2 == 0 && m.TestJobID == testJobView.Stop.TestJobID);
@@ -539,6 +545,40 @@ namespace ProdFloor.Controllers
             return RedirectToAction(nameof(List));
         }
 
+        public double ToHours(DateTime date)
+        {
+            double totalTime = 0;
+            totalTime += date.Hour;
+            totalTime += (date.Minute * 0.01666666666666666666666666666667);
+            totalTime += (date.Second * 0.0002777777777777777777777777777778);
+            return totalTime;
+        }
+
+        public DateTime ToDateTime(double TotalHours)
+        {
+            DateTime Date = new DateTime(1, 1, 1, 0, 0, 0);
+            double AuxTotalHours = Math.Truncate(TotalHours);
+            double AuxTotalMinutes = TotalHours - AuxTotalHours;
+            int AuxDays = 0;
+            while (AuxTotalHours > 24)
+            {
+                AuxTotalHours -= 24;
+                AuxDays++;
+            };
+            int Hours = (int)AuxTotalHours;
+            int Minutes = (int)(Math.Round(AuxTotalMinutes * 60));
+            if (Minutes == 60)
+            {
+                Hours++;
+                Minutes = 0;
+            }
+            int Days = 0;
+            if (AuxDays > 1) Days = AuxDays - 1;
+            else Days = 1;
+
+            return new DateTime(1, 1, Days, Hours, Minutes, 0);
+        }
+
         public ViewResult ContinueStep(int ID)
         {
             var AllStepsForJob = testingRepo.StepsForJobs.Where(m => m.TestJobID == ID && m.Obsolete == false).OrderBy(m => m.Consecutivo).ToList();
@@ -572,6 +612,13 @@ namespace ProdFloor.Controllers
                 StopList = StopsFromTestJob,
                 Reasons1List = reason1s,
             });
+        }
+
+        public DateTime GetElapsed(DateTime startDate, DateTime endDate)
+        {
+            Double elapsedTime = ToHours(endDate) - ToHours(startDate);
+
+            return ToDateTime(elapsedTime);
         }
 
         public async Task<IActionResult> StopSearchList(TestJobSearchViewModel searchViewModel, int page = 1, int totalitemsfromlastsearch = 0)
