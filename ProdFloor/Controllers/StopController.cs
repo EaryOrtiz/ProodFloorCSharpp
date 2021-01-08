@@ -616,7 +616,17 @@ namespace ProdFloor.Controllers
 
         public DateTime GetElapsed(DateTime startDate, DateTime endDate)
         {
-            Double elapsedTime = ToHours(endDate) - ToHours(startDate);
+            double endDateHours = ToHours(endDate);
+            double startDateHours = ToHours(startDate);
+            double extraHours = 0;
+
+            if(endDate.Day > startDate.Day)
+            {
+                int extraDays = endDate.Day - startDate.Day;
+                extraHours = extraDays * 24;
+            }
+
+            double elapsedTime = endDateHours - startDateHours + extraHours;
 
             return ToDateTime(elapsedTime);
         }
