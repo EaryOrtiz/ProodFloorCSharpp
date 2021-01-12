@@ -450,24 +450,52 @@ namespace ProdFloor.Controllers
                         //For Down Speed
                         var SlowdoenRegDown = SlowReferSearch.Where(m => m.CarSpeedFPM >= ViewModel.DownSpeed).OrderBy(o => o.CarSpeedFPM).Skip(0).Take(1).ToList();
                         ViewModel.CarSpeedFPM = ViewModel.DownSpeed;
-                        ViewModel.Distance = SlowdoenRegDown[0].Distance;
-                        ViewModel.A = SlowdoenRegDown[0].A;
-                        ViewModel.SlowLimit = SlowdoenRegDown[0].SlowLimit;
-                        ViewModel.MiniumFloorHeight = SlowdoenRegDown[0].MiniumFloorHeight;
+                        if (SlowdoenRegDown != null)
+                        {
+                            ViewModel.Distance = SlowdoenRegDown[0].Distance;
+                            ViewModel.A = SlowdoenRegDown[0].A;
+                            ViewModel.SlowLimit = SlowdoenRegDown[0].SlowLimit;
+                            ViewModel.MiniumFloorHeight = SlowdoenRegDown[0].MiniumFloorHeight;
+                        }
+                        else
+                        {
+                            ViewModel.Distance = 0;
+                            ViewModel.A = 0;
+                            ViewModel.SlowLimit = 0;
+                            ViewModel.MiniumFloorHeight = 0;
+                        }
 
                         //For Up Speed
                         var SlowdoenRegUP = SlowReferSearch.Where(m => m.CarSpeedFPM >= ViewModel.UpSpeed).OrderBy(o => o.CarSpeedFPM).Skip(0).Take(1).ToList();
                         ViewModel.CarUpSpeedFPM = ViewModel.UpSpeed;
-                        ViewModel.UPDistance = SlowdoenRegUP[0].Distance;
-                        ViewModel.UPA = SlowdoenRegUP[0].A;
-                        ViewModel.UPSlowLimit = SlowdoenRegUP[0].SlowLimit;
-                        ViewModel.UPMiniumFloorHeight = SlowdoenRegUP[0].MiniumFloorHeight;
+                        if (SlowdoenRegUP != null)
+                        {
+                            ViewModel.UPDistance = SlowdoenRegUP[0].Distance;
+                            ViewModel.UPA = SlowdoenRegUP[0].A;
+                            ViewModel.UPSlowLimit = SlowdoenRegUP[0].SlowLimit;
+                            ViewModel.UPMiniumFloorHeight = SlowdoenRegUP[0].MiniumFloorHeight;
+                        }
+                        else
+                        {
+                            ViewModel.UPDistance = 0;
+                            ViewModel.UPA = 0;
+                            ViewModel.UPSlowLimit = 0;
+                            ViewModel.UPMiniumFloorHeight = 0;
+                        }
 
                         //WireTypeSizes
                         var WireTypeReg = WireReferSearch.Where(m => m.AMPRating >= ViewModel.FLA && m.Type == "125°C PTL").OrderBy(o => o.AMPRating).Skip(0).Take(1).ToList();
                         ViewModel.AMPRating = WireTypeReg[0].AMPRating;
-                        ViewModel.Size = WireTypeReg[0].Size;
-                        ViewModel.Type = WireTypeReg[0].Type;
+                        if (WireTypeReg != null)
+                        {
+                            ViewModel.Size = WireTypeReg[0].Size;
+                            ViewModel.Type = WireTypeReg[0].Type;
+                        }
+                        else
+                        {
+                            ViewModel.Size = "---Error---";
+                            ViewModel.Type = "---Error---";
+                        }
                         #endregion
 
                         #region CustomSoftWare
@@ -646,10 +674,25 @@ namespace ProdFloor.Controllers
                             {
                                 FLAModified = (float)(ViewModel.FLA * 0.58);
                             }
+                            else
+                            {
+                                FLAModified = ViewModel.FLA;
+                            }
+
                             var OverLoadReg = OverloadReferSearch.FirstOrDefault(m => m.OverTableNum == Int32.Parse(ViewModel.OverloadTable)
                             && m.AMPMin <= FLAModified && m.AMPMax >= FLAModified);
-                            ViewModel.MCPartOver = OverLoadReg.MCPart;
-                            ViewModel.SiemensPart = OverLoadReg.SiemensPart;
+
+                            if (OverLoadReg != null)
+                            {
+                                ViewModel.MCPartOver = OverLoadReg.MCPart;
+                                ViewModel.SiemensPart = OverLoadReg.SiemensPart;
+                            }
+                            else
+                            {
+                                ViewModel.MCPartOver = "N/A";
+                                ViewModel.SiemensPart = "N/A";
+                            }
+
                         }
                         else
                         {
