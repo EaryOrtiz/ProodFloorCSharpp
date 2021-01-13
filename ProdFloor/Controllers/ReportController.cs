@@ -44,7 +44,7 @@ namespace ProdFloor.Controllers
         {
             #region TestStats
             viewModel.TestStatsList = new List<TestStats>();
-            List<TestJob> ActiveTestJobs = testingRepo.TestJobs.Where(m => m.Status != "Completed" && m.Status != "Deleted").ToList();
+            List<TestJob> ActiveTestJobs = testingRepo.TestJobs.Where(m => m.Status != "Completed" && m.Status != "Deleted" && m.Status != "Incomplete").ToList();
 
             viewModel.StationsM2000List = testingRepo.Stations.Where(m => m.JobTypeID == 2).OrderBy(n => n.Label).ToList();
             viewModel.StationsM2000List.AddRange(testingRepo.Stations.Where(m => m.JobTypeID == 5).OrderBy(n => n.Label).ToList());
