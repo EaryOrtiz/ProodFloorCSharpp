@@ -197,10 +197,10 @@ namespace ProdFloor.Controllers
                     {
                         var _jobSearch = jobSearch.FirstOrDefault(m => m.JobID == onePO.JobID);
 
-                        if (_jobSearch != null && _jobSearch.Status != "Incomplete")
+                        if (_jobSearch != null && _jobSearch.Status != "Incomplete" && _jobSearch.Contractor != "Fake")
                         {
                             TestJob testJobAu = testingRepo.TestJobs.FirstOrDefault(m => m.SinglePO == onePO.PONumb);
-                            if (testJobAu != null || _jobSearch.Contractor == "Fake")
+                            if (testJobAu != null)
                             {
                                 TempData["alert"] = $"alert-danger";
                                 TempData["message"] = $"Error, Ya existe un TestJob con ese PO, intente de nuevo o contacte al Admin";
@@ -292,7 +292,7 @@ namespace ProdFloor.Controllers
                         else
                         {
                             TempData["alert"] = $"alert-danger";
-                            TempData["message"] = $"Error, tarbajo aun en ingenieria, intente de nuevo o contacte al Admin";
+                            TempData["message"] = $"Error,Job aun en ingenieria o duplicado, intente de nuevo o contacte al Admin";
                             return View("NewTestJob", testJobSearchAux);
 
                         }
