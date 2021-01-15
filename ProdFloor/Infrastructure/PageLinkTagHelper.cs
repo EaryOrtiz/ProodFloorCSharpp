@@ -3237,6 +3237,8 @@ namespace ProdFloor.Infrastructure
 
         private IQueryable<string> CaseFor(string value)
         {
+            int YearNow = DateTime.Now.Year;
+            string YearNowCanada = "C" + YearNow.ToString().Remove(0, 2) + "00";
             switch (value)
             {
                 case "JobType":
@@ -3293,13 +3295,25 @@ namespace ProdFloor.Infrastructure
 
                     return BatteryList.Distinct().AsQueryable();
                 case "JobNumber":
-                    int YearNow = DateTime.Now.Year;
                     int YearPast = YearNow - 1;
 
-                    string YearNowCanada = "C" + YearNow.ToString().Remove(0, 2) + "00";
                     string YearPastCanada = "C" + YearPast.ToString().Remove(0, 2) + "00";
 
                     return new List<string> { YearNowCanada, YearPast.ToString() + "0", YearPastCanada }.AsQueryable();
+                case "JobNumberTest":
+                    int YearPast1 = YearNow - 1;
+                    int YearPast2 = YearNow - 2;
+                    int YearPast3 = YearNow - 3;
+                    int YearPast4 = YearNow - 4;
+
+                    string YearPast1Canada = "C" + YearPast1.ToString().Remove(0, 2) + "00";
+                    string YearPast2Canada = "C" + YearPast2.ToString().Remove(0, 2) + "00";
+                    string YearPast3Canada = "C" + YearPast3.ToString().Remove(0, 2) + "00";
+                    string YearPast4Canada = "C" + YearPast4.ToString().Remove(0, 2) + "00";
+
+                    return new List<string> { YearNowCanada, YearPast1.ToString() + "0", YearPast1Canada,
+                            YearPast2.ToString() + "0", YearPast2Canada , YearPast3.ToString() + "0", 
+                            YearPast3Canada , YearPast4.ToString() + "0" , YearPast4Canada}.AsQueryable();
                 default:
                     return new List<string> { "Beginning", "Program", "Logic", "Ending", "Complete" }.AsQueryable();
             }
@@ -3334,7 +3348,7 @@ namespace ProdFloor.Infrastructure
                 m_tag.Attributes["value"] = "";
                 m_tag.InnerHtml.Append("N/C");
             }
-            else if (SelectFor == "JobNumber")
+            else if (SelectFor == "JobNumber" || SelectFor == "JobNumberTest")
             {
                 m_tag.Attributes["value"] = (DateTime.Now.Year.ToString() + "0");
                 m_tag.InnerHtml.Append((DateTime.Now.Year.ToString() + "0"));

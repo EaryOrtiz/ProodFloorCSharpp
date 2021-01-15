@@ -171,8 +171,12 @@ namespace ProdFloor.Controllers
                 },
 
             };
-            if (string.IsNullOrEmpty(jobNumber)) return View(testJobView);
-            if (testJobsList.Count > 0 && testJobsList[0] != null) return View(testJobView);
+
+            if (string.IsNullOrEmpty(jobNumber)) 
+                    return View(testJobView);
+            if (testJobsList.Count > 0 && testJobsList[0] != null) 
+                    return View(testJobView);
+
             TempData["message"] = $"Does not exist any job with the JobNum #{jobNumber}, please try again.";
             TempData["alert"] = $"alert-danger";
             return View(testJobView);
@@ -2560,6 +2564,7 @@ namespace ProdFloor.Controllers
             IQueryable<City> citiesInCanada = itemRepository.Cities.Where(m => statesInCanada.Any(s => s.StateID == m.StateID));
             IQueryable<LandingSystem> landingSystemsEdge = itemRepository.LandingSystems.Where(m => m.Name == "LS-EDGE");
             IQueryable<LandingSystem> landingSystemsRails = itemRepository.LandingSystems.Where(m => m.Name == "LS-Rail");
+            searchViewModel.TotalOnDB = testJobSearchList.Count();
             bool anyFeatureFromJob = false;
 
 
@@ -2761,7 +2766,7 @@ namespace ProdFloor.Controllers
             searchViewModel.JobTypeList = itemRepository.JobTypes.ToList();
             searchViewModel.StationsList = testingRepo.Stations.ToList();
 
-            int TotalItemsSearch = testJobSearchList.Count();
+            int TotalItemsSearch = testJobSearchList.Count();  
             if (page == 1)
             {
                 totalitemsfromlastsearch = TotalItemsSearch;

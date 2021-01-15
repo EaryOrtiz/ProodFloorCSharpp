@@ -89,5 +89,7 @@ namespace ProdFloor.Models.ViewModels.TestJob
         [Display(Name = "Returned From Complete ")]
         public bool WithReturnedFromComplete { get; set; }
 
+        public int TotalOnDB { get; set; }
+
     }
 }

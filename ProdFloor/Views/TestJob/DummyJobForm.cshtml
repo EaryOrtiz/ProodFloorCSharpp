@@ -19,7 +19,7 @@
             <div class="form-group row">
                 <label asp-for="Job.JobNum" class="col-sm-4 col-form-label"></label>
                 <div class="form-inline">
-                    <custom-select selected-value="@Model.Job.JobNumFirstDigits" class="form-control-sm form-control" asp-for="Job.JobNumFirstDigits" select-for="JobNumber"  asp-is-disabled="@Model.isNotDummy"></custom-select>
+                    <custom-select selected-value="@Model.Job.JobNumFirstDigits" class="form-control-sm form-control" asp-for="Job.JobNumFirstDigits" select-for="JobNumberTest"  asp-is-disabled="@Model.isNotDummy"></custom-select>
                     <input asp-for="Job.JobNumLastDigits" class="form-control form-control-sm col-5" readonly="@Model.isNotDummy"  />
                     <span asp-validation-for="Job.JobNumLastDigits" class="text-danger"></span>
                 </div>
