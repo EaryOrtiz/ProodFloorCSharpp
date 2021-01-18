@@ -1,22 +1,24 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="~/lib/jquery/dist/jquery.js"></script>
     <script>$(document).ready(function () { $('[data-tooltip="tooltip"]').tooltip(); });</script>
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
     <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+    <!-- Bootstrap core JavaScript -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/jQuery-Knob/dist/jquery.knob.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
     <link href="~/lib/fontawesome/css/font-awesome.min.css" rel="stylesheet" />
     <link href="~/lib/fontawesome/css/all.min.css" rel="stylesheet" />
     <link href="~/css/DashBoard.min.css" rel="stylesheet" />
     <title>@ViewBag.Title</title>
 </head>
 <body style="padding-top:0px !important">
-    <h2 class="text-center" style="margin-bottom:10px;">@ViewBag.JobType</h2>
+    <h2 class="text-center" style="margin-bottom:10px;"></h2>
     <div class="container-fluid">
         @RenderBody()
     </div>

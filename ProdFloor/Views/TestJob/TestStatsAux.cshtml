@@ -1,0 +1,212 @@
+﻿@model ProdFloor.Models.ViewModels.TestJob.TestJobViewModel
+@{
+    ViewData["Title"] = "TestStats";
+    <script>
+        $(document).ready(function () {
+            setInterval(function () {
+                location.reload(true);
+            }, 120000);
+        });
+    </script>
+}
+    <div class="row">
+        <table class="table table-striped  text-center table-sm" style="text-align:center">
+            <thead style="background-color:#343a40!important;color:#fff;">
+                <tr>
+                    <th class="text-center" colspan="7">
+                        <h5>@ViewBag.JobType</h5>
+                    </th>
+                </tr>
+                <tr>
+                    <th scope="col">
+                        Station
+                    </th>
+                    <th scope="col">
+                        JOb#
+                    </th>
+                    <th scope="col">
+                        Tech
+                    </th>
+                    <th scope="col">
+                        CAT
+                    </th>
+                    <th scope="col">
+                        Effiency
+                    </th>
+                    <th scope="col">
+                        Job Progress
+                    </th>
+                    <th width="22%">
+                        Stage Progress
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.TestStatsList.Where(m => !string.IsNullOrEmpty(m.JobNumer)).Count() == 0)
+                {
+                    <tr>
+                        <td>No Test Jobs!</td>
+                    </tr>
+                }
+                else
+                {
+                    @foreach (TestStats testStat in Model.TestStatsList)
+                    {
+
+                        <tr>
+                            <th scope="row">
+                                @testStat.Station
+                            </th>
+                            <td>@testStat.JobNumer</td>
+                            <td>@testStat.TechName</td>
+                            <td>@testStat.Category</td>
+                            <td>
+                                @testStat.Efficiency%
+                            </td>
+                            <td>
+                                @testStat.JobProgress%
+                            </td>
+                            <td>
+                                @testStat.StageProgress%
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+        }
+
+    </div>
+
+
+
+@*
+    <!-----------------------------D1-------------------------------------------->
+    <div class="col-3">
+        <div class="card text-center  mb-6" style="max-width: 20rem;">
+            <div class="card-header" style="border-top-color:forestgreen !important;border-top: solid;border-top-width:10px;background-color:transparent"><h4>S1</h4></div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="form-group col-6">
+                        <label class="font-weight-bold" style="font-size: 20px;">Completion</label>
+                        <input type="text" value="90" class="knob" data-width="100" data-height="120" data-readOnly=true data-fgColor="green" data-skin="tron" data-thickness=".2">
+                    </div>
+                    <div class="form-group col-6">
+                        <label class="font-weight-bold" style="font-size: 20px;">Efficiency</label>
+                        <input type="text" value="60" class="knob" data-width="100" data-height="120" data-readOnly=true data-fgColor="DarkOrange" data-skin="tron" data-thickness=".2">
+                    </div>
+                </div>
+
+            </div>
+            <div class="card-footer bg-white p-0">
+                <ul class="nav nav-pills flex-column" style=" font-size: 20px;">
+                    <li class="nav-item border-bottom " style="padding-bottom:8px; padding-top:8px;padding-left:10px; padding-right: 10px;">
+                        <span class=" float-left font-weight-bold">
+                            <i class="fa fa-briefcase"></i>&nbsp;&nbsp;Job#
+                        </span>
+                        <span class="float-right text-secondary font-weight-bold">
+                            95213
+                        </span>
+                    </li>
+                    <li class="nav-item border-bottom " style="padding-bottom:8px; padding-top:8px;padding-left:10px; padding-right: 10px;">
+                        <span class=" float-left font-weight-bold">
+                            <i class="fas fa-user-tie"></i>&nbsp;&nbsp;Tech Name
+                        </span>
+                        <span class="float-right text-secondary font-weight-bold">
+                            Adriana Barron
+                        </span>
+                    </li>
+                    <li class="nav-item border-bottom " style="padding-bottom:8px; padding-top:8px;padding-left:10px; padding-right: 10px;">
+                        <span class=" float-left font-weight-bold">
+                            <i class="fas fa-exclamation-circle"></i>&nbsp;&nbsp; Category
+                        </span>
+                        <span class="float-right text-secondary font-weight-bold">
+                            6
+                        </span>
+                    </li>
+                    <li class="nav-item border-bottom " style="padding-bottom:8px; padding-top:8px;padding-left:10px; padding-right: 10px;">
+                        <span class=" float-left font-weight-bold">
+                            <i class="fas fa-map-marker-alt"></i>&nbsp;&nbsp;Stage
+                        </span>
+                        <span class="float-right text-secondary font-weight-bold">
+                            Ending
+                        </span>
+                    </li>
+                    <li class="nav-item border-bottom " style="padding-bottom:8px; padding-top:8px;padding-left:10px; padding-right: 10px;">
+                        <span class=" float-left font-weight-bold">
+                            <i class="fas fa-clock"></i>&nbsp;&nbsp;Time To Complete
+                        </span>
+                        <span class="float-right text-secondary font-weight-bold">
+                            00:32
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-----------------------------D1-------------------------------------------->
+
+    <table class="table table-striped  text-center " style="text-align:center">
+        <thead style="background-color:#343a40!important;color:#fff;">
+            <tr>
+                <th class="text-center" colspan="12">
+                    <h5 style="font-size:25px">Production Floor @ViewBag.JobType</h5>
+                </th>
+            </tr>
+            <tr style="font-size:22px">
+                <th style="width:10%" colspan="1">
+                    Job#
+                </th>
+                <th style="width:10%"  colspan="1">
+                    Tech
+                </th>
+                <th style="width:10%" colspan="1">
+                    Stage
+                </th>
+                <th colspan="6">
+                    Status
+                </th>
+                <th style="width:5%" colspan="1">
+                    Cat
+                </th>
+                <th style="width:5%" colspan="1">
+                    ST
+                </th>
+                <th style="width:5%" colspan="1">
+                    TTC
+                </th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.TestStatsList.Count() == 0)
+            {
+                <tr>
+                    <td colspan="12" style="font-size:20px">No active TestJobs!</td>
+                </tr>
+            }
+            else
+            {
+                @foreach (var j in Model.TestStatsList)
+                {
+
+        <tr style="font-size:20px">
+            <td style="width:10%" colspan="1" >@j.JobNumer</td>
+            <td style="width:10%" colspan="1">@j.TechName</td>
+            <td style="width:10%" colspan="1">@j.Stage</td>
+            <td colspan="6">
+                <div  style="height: 20px;" class="progress">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated " role="progressbar" style="width: @j.Efficiency.ToString()%; background-color: @j.Color;color:  @j.TextColor;font-size:20px;"
+                         aria-valuenow="@j.Efficiency.ToString()" aria-valuemin="0" aria-valuemax="99">@j.Status</div>
+                </div>
+            </td>
+            <td style="width:5%" colspan="1">@j.Category</td>
+            <td style="width:5%" colspan="1">@j.Station</td>
+            <td style="width:5%" colspan="1">@j.TTC.Hour.ToString().PadLeft(2, '0'):@j.TTC.Minute.ToString().PadLeft(2, '0')</td>
+
+        </tr>
+                }
+            }
+        </tbody>
+    </table>
+*@

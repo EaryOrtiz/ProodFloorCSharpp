@@ -1,6 +1,13 @@
 ﻿@model ProdFloor.Models.ViewModels.TestJob.TestJobViewModel
 @{
     ViewData["Title"] = "TestStats";
+    <script>
+        $(document).ready(function () {
+            setInterval(function () {
+                location.reload(true);
+            }, 120000);
+        });
+    </script>
 }
     <div class="row">
         @foreach (Station station in Model.StationsList)
