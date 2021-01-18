@@ -2809,18 +2809,13 @@ namespace ProdFloor.Controllers
         {
             viewModel.TestStatsList = new List<TestStats>();
             List<TestJob> ActiveTestJobs = testingRepo.TestJobs.Where(m => m.Status != "Completed" && m.Status != "Deleted" && m.Status != "Incomplete").ToList();
-            IQueryable<Station> stations = testingRepo.Stations.Where(m => m.StationID != 0);
-            int JobTypeID = (JobType == "M2000") ? 2 : 4;
-            if (JobTypeID == 2)
-            {
-                viewModel.StationsList = stations.Where(m => m.JobTypeID == JobTypeID).OrderBy(n => n.Label).ToList();
-                viewModel.StationsList.AddRange(stations.Where(m => m.JobTypeID == 5).OrderBy(n => n.Label).ToList());
-            }
-            else
-            {
-                viewModel.StationsList = stations.Where(m => m.JobTypeID == JobTypeID).OrderBy(n => n.Label).ToList();
-                viewModel.StationsList.AddRange(stations.Where(m => m.JobTypeID == 1).OrderBy(n => n.Label).ToList());
-            }
+
+            viewModel.StationsM2000List = testingRepo.Stations.Where(m => m.JobTypeID == 2).OrderBy(n => n.Label).ToList();
+            viewModel.StationsM2000List.AddRange(testingRepo.Stations.Where(m => m.JobTypeID == 5).OrderBy(n => n.Label).ToList());
+
+            viewModel.StationsM4000List = testingRepo.Stations.Where(m => m.JobTypeID == 4).OrderBy(n => n.Label).ToList();
+            viewModel.StationsM4000List.AddRange(testingRepo.Stations.Where(m => m.JobTypeID == 1).OrderBy(n => n.Label).ToList());
+
 
             List<AppUser> Users = userManager.Users.Where(m => m.EngID >= 100 && m.EngID <= 299).ToList();
             IQueryable<Job> JobsinTest = jobRepo.Jobs.Where(m => ActiveTestJobs.Any(n => n.JobID == m.JobID));

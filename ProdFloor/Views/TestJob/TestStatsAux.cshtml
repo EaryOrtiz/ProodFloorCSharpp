@@ -10,7 +10,7 @@
     </script>
 }
     <div class="row">
-        <table class="table table-striped  text-center table-sm" style="text-align:center">
+        <table class="table table-striped  text-center table-sm" style="text-align:center;font-size:32px">
             <thead style="background-color:#343a40!important;color:#fff;">
                 <tr>
                     <th class="text-center" colspan="7">
@@ -50,31 +50,34 @@
                 }
                 else
                 {
-                    @foreach (TestStats testStat in Model.TestStatsList)
+                    @foreach (Station station in Model.StationsList)
                     {
-
-                        <tr>
-                            <th scope="row">
-                                @testStat.Station
-                            </th>
-                            <td>@testStat.JobNumer</td>
-                            <td>@testStat.TechName</td>
-                            <td>@testStat.Category</td>
-                            <td>
-                                @testStat.Efficiency%
-                            </td>
-                            <td>
-                                @testStat.JobProgress%
-                            </td>
-                            <td>
-                                @testStat.StageProgress%
-                            </td>
-                        </tr>
+                        if (Model.TestStatsList.Any(m => m.StationID == station.StationID))
+                        {
+                            TestStats testStat = Model.TestStatsList.FirstOrDefault(m => m.StationID == station.StationID);
+                            <tr>
+                                <th scope="row">
+                                    @testStat.Station
+                                </th>
+                                <td>@testStat.JobNumer</td>
+                                <td>@testStat.TechName</td>
+                                <td>@testStat.Category</td>
+                                <td>
+                                    @testStat.Efficiency%
+                                </td>
+                                <td>
+                                    @testStat.JobProgress%
+                                </td>
+                                <td>
+                                    @testStat.StageProgress%
+                                </td>
+                            </tr>
+                        }
                     }
+
                 }
             </tbody>
         </table>
-        }
 
     </div>
 

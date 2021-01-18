@@ -83,5 +83,8 @@ namespace ProdFloor.Models.ViewModels.TestJob
 
         //Tables for Testjob Stats
         public  List<TestStats> TestStatsList { get; set; }
+
+        public List<Station> StationsM2000List { get; set; }
+        public List<Station> StationsM4000List { get; set; }
     }
 }
