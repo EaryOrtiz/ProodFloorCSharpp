@@ -285,8 +285,9 @@ namespace ProdFloor.Controllers
             AppUser currentUser = GetCurrentUser().Result;
             bool isSameEngineer = currentUser.EngID == testJob.TechnicianID;
             bool isNotCompleted = testJob.Status != "Completed";
+            bool isNotOnReassigment = testJob.Status != "Reassignment";
 
-            if (isNotCompleted && isSameEngineer)
+            if (isNotCompleted && isSameEngineer && isNotOnReassigment)
             {
                 if (Critical == true)
                 {
