@@ -2075,6 +2075,7 @@ namespace ProdFloor.Controllers
                         {
                             bool wasOnShiftEnd = CheckShiftEnd(testJob.TestJobID);
                             CurrentStops = testingRepo.Stops.Where(p => testJob.TestJobID == p.TestJobID && p.Reason2 == 0 && p.Reason3 == 0).ToList();
+                            Stop ReassignmentStop = testingRepo.Stops.LastOrDefault(p => p.TestJobID == testJob.TestJobID && p.Reason1 == 980 && p.Reason2 == 0 && p.Reason3 == 0);
 
                             foreach (Stop CurrentStop in CurrentStops)
                             {
@@ -2101,7 +2102,7 @@ namespace ProdFloor.Controllers
                                 }
 
                                 //then close the older stop
-                                if (!wasOnShiftEnd || (CurrentStop.Reason1 == 980 && CurrentStop.Reason2 == 0))
+                                if ((!wasOnShiftEnd && ReassignmentStop == null) || (CurrentStop.Reason1 == 980 && CurrentStop.Reason2 == 0))
                                 {
                                     TimeSpan auxTime = (DateTime.Now - CurrentStop.StartDate);
                                     CurrentStop.Elapsed += auxTime;
