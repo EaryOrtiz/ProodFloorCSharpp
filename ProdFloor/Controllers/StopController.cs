@@ -160,14 +160,14 @@ namespace ProdFloor.Controllers
                 if (isNotCompleted && (isSameEngineer || isAdmin || isTechAdmin))
                 {
                     TestJob OnGoingtestJob = testingRepo.TestJobs.FirstOrDefault(m => m.TechnicianID == testJob.TechnicianID && m.Status == "Working on it");
-                    Stop ReturnedFromCompleteStop = testingRepo.Stops.LastOrDefault(p => p.TestJobID == testJob.TestJobID);
+                    Stop ReturnedFromCompleteStop = testingRepo.Stops.LastOrDefault(p => p.TestJobID == testJob.TestJobID && p.Reason1 == 982 && p.Reason2 == 0);
                     if (OnGoingtestJob != null)
                     {
                         TempData["alert"] = $"alert-danger";
                         TempData["message"] = $"Error, Tiene un trabajo activo, intente de nuevo o contacte al admin";
                         return RedirectToAction("Index", "Home");
                     }
-                    else if (ReturnedFromCompleteStop.Reason1 == 982)
+                    else if (ReturnedFromCompleteStop != null)
                     {
                         ReturnedFromCompleteStop.StopDate = DateTime.Now;
                         ReturnedFromCompleteStop.Elapsed += GetElapsed(ReturnedFromCompleteStop.StartDate, ReturnedFromCompleteStop.StopDate);
@@ -383,8 +383,9 @@ namespace ProdFloor.Controllers
         {
 
             TestJob testJob = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == TestJobID);
+            List<Stop> stops = testingRepo.Stops.Where(p => testJob.TestJobID == p.TestJobID && p.Reason1 != 980 && p.Reason1 != 981 && p.Reason2 == 0).ToList();
 
-            if (testJob != null)
+            if (testJob != null && stops.Count > 0)
             {
 
                 bool isTechAdmin = GetCurrentUserRole("TechAdmin").Result;
@@ -393,7 +394,7 @@ namespace ProdFloor.Controllers
 
                 if (isNotCompleted && (isAdmin || isTechAdmin))
                 {
-                    Stop CurrentStop = testingRepo.Stops.Where(m => m.StopID != 980 & m.StopID != 981 && m.Reason2 == 0)
+                    Stop CurrentStop = testingRepo.Stops.Where(m => m.Reason1 != 980 & m.Reason1 != 981 && m.Reason2 == 0)
                                                         .FirstOrDefault(p => p.TestJobID == testJob.TestJobID);
 
                     Job job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == testJob.JobID);
@@ -413,7 +414,11 @@ namespace ProdFloor.Controllers
             else
             {
                 TempData["alert"] = $"alert-danger";
-                TempData["message"] = $"Error, El Testjob no existe o a sido eliminado, intente de nuevo o contacte al Admin";
+                if (stops.Count == 0)
+                    return RedirectToAction("JobCompletion", "TestJob", new { TestJobID = testJob.TestJobID });
+                else
+                    TempData["message"] = $"Error, El Testjob no existe o a sido eliminado, intente de nuevo o contacte al Admin";
+
                 return RedirectToAction("Index", "Home");
             }
         }
@@ -434,14 +439,11 @@ namespace ProdFloor.Controllers
             testingRepo.SaveStop(UpdatedStop);
             TempData["message"] = $"{testJobView.Stop.Description} has been saved..";
 
-            Stop stop = testingRepo.Stops.FirstOrDefault(m => m.StopID != 980 & m.StopID != 981 && m.Reason2 == 0 && m.TestJobID == testJobView.Stop.TestJobID);
+            Stop stop = testingRepo.Stops.FirstOrDefault(m => m.Reason1 != 980 & m.Reason1 != 981 && m.Reason2 == 0 && m.TestJobID == testJobView.Stop.TestJobID);
 
             if (stop != null)
             {
-                testJobView.TestJob = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == stop.TestJobID);
-                testJobView.Job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == testJobView.TestJob.JobID);
-                testJobView.Stop = stop;
-                return FinishPendingStops(testJobView.TestJob.TestJobID);
+                return RedirectToAction("FinishPendingStops", "Stop", new { TestJobID = testJobView.TestJob.TestJobID }); ;
             }
             return RedirectToAction("JobCompletion", "TestJob", new { TestJobID = testJobView.TestJob.TestJobID });
 

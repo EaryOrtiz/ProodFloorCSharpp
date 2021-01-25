@@ -146,7 +146,7 @@ namespace ProdFloor.Controllers
                 StationsList = testingRepo.Stations.ToList(),
                 StepList = testingRepo.Steps.ToList(),
                 StepsForJobList = testingRepo.StepsForJobs.ToList(),
-                StopList = testingRepo.Stops.Where(m => m.StopID != 980 & m.StopID != 981 && m.Reason2 == 0).ToList(),
+                StopList = testingRepo.Stops.Where(m => m.Reason1 != 980 && m.Reason1 != 981 && m.Reason2 == 0).ToList(),
                 PagingInfoWorkingOnIt = new PagingInfo
                 {
                     CurrentPage = PendingToCrossJobPage,
@@ -1248,7 +1248,7 @@ namespace ProdFloor.Controllers
                     var AllStepsForJobInfo = testingRepo.Steps.Where(m => AllStepsForJob.Any(s => s.StepID == m.StepID)).ToList();
 
                     List<Stop> StopsFromTestJob = testingRepo.Stops.Where(m => m.TestJobID == viewModel.TestJob.TestJobID && m.Critical == false)
-                                                                    .Where(m => m.StopID != 980 & m.StopID != 981 && m.Reason2 == 0).ToList();
+                                                                    .Where(m => m.Reason1 != 980 & m.Reason1 != 981 && m.Reason2 == 0).ToList();
                     bool StopNC = false;
                     List<Reason1> reason1s = testingRepo.Reasons1.ToList();
                     if (StopsFromTestJob.Count > 0 && StopsFromTestJob[0] != null) StopNC = true;
@@ -1508,7 +1508,7 @@ namespace ProdFloor.Controllers
                     var AllStepsForJobInfo = testingRepo.Steps.Where(m => AllStepsForJob.Any(s => s.StepID == m.StepID)).ToList();
 
                     List<Stop> StopsFromTestJob = testingRepo.Stops.Where(m => m.TestJobID == ID && m.Critical == false)
-                                                                   .Where(m => m.StopID != 980 & m.StopID != 981 && m.Reason2 == 0).ToList();
+                                                                   .Where(m => m.Reason1 != 980 & m.Reason1 != 981 && m.Reason2 == 0).ToList();
                     bool StopNC = false;
                     if (StopsFromTestJob.Count > 0 && StopsFromTestJob[0] != null) StopNC = true;
 
@@ -2504,6 +2504,27 @@ namespace ProdFloor.Controllers
         {
 
             TestJob testJob = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == jobCompletion.TestJob.TestJobID);
+            List<Stop> otherStops = testingRepo.Stops.Where(p => testJob.TestJobID == p.TestJobID && (p.Reason1 == 980 || p.Reason1 == 981))
+                                                     .Where(p =>  p.Reason2 == 0 && p.Reason3 == 0).ToList();
+
+            if(otherStops.Count > 0)
+            {
+                foreach (Stop otherStop in otherStops)
+                {
+                    TimeSpan auxTime = (DateTime.Now - otherStop.StartDate);
+                    otherStop.Elapsed += auxTime;
+                    otherStop.StopDate = DateTime.Now;
+                    otherStop.StartDate = DateTime.Now;
+                    otherStop.Reason2 = 982;
+                    otherStop.Reason3 = 982;
+                    otherStop.Reason4 = 982;
+                    otherStop.Reason5ID = 982;
+                    otherStop.Description = "Job was send to complete";
+                    testingRepo.SaveStop(otherStop);
+
+                }
+            }
+            
             List<StepsForJob> IncompleteStepsForJob = testingRepo.StepsForJobs.Where(m => m.TestJobID == testJob.TestJobID && m.Obsolete == false && m.Complete == false).OrderBy(m => m.Consecutivo).ToList();
             List<Step> IncompleteStepsForJobInfo = testingRepo.Steps.Where(m => IncompleteStepsForJob.Any(s => s.StepID == m.StepID)).ToList();
             double ExpectecTimeSUM = 0;
