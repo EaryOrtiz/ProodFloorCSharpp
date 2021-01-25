@@ -3067,13 +3067,15 @@ namespace ProdFloor.Controllers
             if (JobTypeID == 2)
             {
                 viewModel.StationsList = stations.Where(m => m.JobTypeID == JobTypeID).OrderBy(n => n.Label).ToList();
-                viewModel.StationsList.AddRange(stations.Where(m => m.JobTypeID == 5).OrderBy(n => n.Label).ToList());
+                viewModel.StationsList.AddRange(stations.Where(m => m.JobTypeID == 5).OrderBy(n => n.Label));
+                
             }
             else
             {
                 viewModel.StationsList = stations.Where(m => m.JobTypeID == JobTypeID).OrderBy(n => n.Label).ToList();
                 viewModel.StationsList.AddRange(stations.Where(m => m.JobTypeID == 1).OrderBy(n => n.Label).ToList());
             }
+            viewModel.StationsList = viewModel.StationsList.OrderBy(m => m.Label).ToList();
 
             List<AppUser> Users = userManager.Users.Where(m => m.EngID >= 100 && m.EngID <= 299).ToList();
             IQueryable<Job> JobsinTest = jobRepo.Jobs.Where(m => ActiveTestJobs.Any(n => n.JobID == m.JobID));
@@ -3095,8 +3097,8 @@ namespace ProdFloor.Controllers
                 State StateFromCity = itemRepository.States.FirstOrDefault(m => m.StateID == UniqueCity.StateID);
                 List<StepsForJob> AllSteps = testingRepo.StepsForJobs.Where(m => m.TestJobID == testjob.TestJobID && m.Obsolete == false).OrderBy(n => n.Consecutivo).ToList();
 
-                string JobNum = FeaturesFromJob.JobNum.Remove(0, 5);
-                string TechName = Users.FirstOrDefault(m => m.EngID == testjob.TechnicianID).FullName;
+                string JobNum = FeaturesFromJob.JobNum;
+                string TechName = Users.FirstOrDefault(m => m.EngID == testjob.TechnicianID).ShortFullName;
                 string StationName = StationFromTestJobs.FirstOrDefault(m => m.StationID == testjob.StationID).Label;
                 string Stage = "";
                 string Status = "";

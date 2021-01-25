@@ -39,6 +39,31 @@ namespace ProdFloor.Models
                 }
                 
 
-        }   }
+            }
+        
+        }
+
+        [NotMapped]
+        public string ShortFullName
+        {
+            get
+            {
+                string[] FullNameArray = UserName.Split('.');
+                if (FullNameArray.Length == 2)
+                {
+                    string FirstName = FullNameArray[0].Substring(0, 1).ToUpper() + FullNameArray[0].Substring(1);
+                    string LastName = FullNameArray[1].Substring(0, 1).ToUpper() + FullNameArray[1].Substring(1);
+                    string FullNameAux = FirstName + " " + LastName.Remove(1);
+                    return FullNameAux;
+                }
+                else
+                {
+                    return "Default User";
+                }
+
+
+            }
+
+        }
     }
 }

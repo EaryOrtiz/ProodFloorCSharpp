@@ -14,7 +14,7 @@
             <thead style="background-color:#343a40!important;color:#fff;">
                 <tr>
                     <th class="text-center" colspan="7">
-                        <h5>@ViewBag.JobType</h5>
+                        <h2>@ViewBag.JobType</h2>
                     </th>
                 </tr>
                 <tr>
@@ -22,7 +22,7 @@
                         Station
                     </th>
                     <th scope="col">
-                        JOb#
+                        Job#
                     </th>
                     <th scope="col">
                         Tech
@@ -31,7 +31,7 @@
                         CAT
                     </th>
                     <th scope="col">
-                        Effiency
+                        Efficiency
                     </th>
                     <th scope="col">
                         Job Progress
@@ -59,11 +59,11 @@
                                 <th scope="row">
                                     @testStat.Station
                                 </th>
-                                <td>@testStat.JobNumer</td>
+                                <td>@testStat.JobNumer &nbsp;<i class="fas fa-lightbulb fa-1x" style="color: @testStat.StatusColor"></i></td>
                                 <td>@testStat.TechName</td>
                                 <td>@testStat.Category</td>
                                 <td>
-                                    @testStat.Efficiency%
+                                    @testStat.Efficiency% &nbsp;<i class="fas fa-lightbulb fa-1x" style="color: @testStat.EfficiencyColor"></i>
                                 </td>
                                 <td>
                                     @testStat.JobProgress%
