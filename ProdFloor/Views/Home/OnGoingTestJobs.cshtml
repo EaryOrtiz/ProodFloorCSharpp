@@ -104,6 +104,13 @@
                     Continuar
                 </a>
             }
+            else if (t.Status == "Shift End")
+            {
+                <a asp-action="RestarShiftEndOnDash" asp-controller="TestJob"
+                   asp-route-id="@t.TestJobID" class="btn btn-warning btn-sm">
+                    Continuar
+                </a>
+            }
             else
             {
                 <a asp-action="ContinueForm" asp-controller="TestJob"

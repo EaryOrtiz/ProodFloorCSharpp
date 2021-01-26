@@ -152,8 +152,8 @@ namespace ProdFloor.Controllers
             {
                 var CurrentTestJobs = testingRepo.TestJobs
                     .Where(j => j.TechnicianID == currentUser.EngID)
-                    .Where(j => j.Status == "Stopped" || j.Status == "Working on it" || j.Status == "Incomplete" || j.Status == "Reassignment")
-                  .OrderBy(p => p.TestJobID).ToList();
+                    .Where(j => j.Status != "Completed")
+                    .OrderBy(p => p.TestJobID).ToList();
                   
 
                 List<Job> DummyOnCrossJobsList = repository.Jobs

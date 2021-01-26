@@ -2458,6 +2458,72 @@ namespace ProdFloor.Controllers
 
         }
 
+        public IActionResult RestarShiftEndOnDash(int ID)
+        {
+            TestJob testJob = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == ID);
+
+            Stop ShiftEndStop = new Stop();
+            try
+            {
+                ShiftEndStop = testingRepo.Stops.LastOrDefault(p => p.TestJobID == testJob.TestJobID && p.Reason1 == 981 && p.Reason2 == 0 && p.Reason3 == 0);
+                List<Stop> stops = new List<Stop>();
+                stops = testingRepo.Stops.Where(p => testJob.TestJobID == p.TestJobID && p.Reason1 != 981 && p.Reason2 == 0).ToList();
+
+                if (ShiftEndStop != null)
+                {
+
+                    TimeSpan auxTime = (DateTime.Now - ShiftEndStop.StartDate);
+                    ShiftEndStop.Elapsed += auxTime;
+                    ShiftEndStop.StopDate = DateTime.Now;
+                    ShiftEndStop.Reason2 = 981;
+                    ShiftEndStop.Reason3 = 981;
+                    ShiftEndStop.Reason4 = 981;
+                    ShiftEndStop.Reason5ID = 981;
+                    testingRepo.SaveStop(ShiftEndStop);
+
+                    if (stops.Count > 0)
+                    {
+                        foreach (Stop stop in stops)
+                        {
+                            stop.StartDate = DateTime.Now;
+                            stop.StopDate = DateTime.Now;
+                            testingRepo.SaveStop(stop);
+                        }
+
+                    }
+                }
+
+               
+
+                if (stops.Any(m => m.Reason1 == 980))
+                {
+                    testJob.Status = "Reassignment";
+                }
+                else if (stops.Any(m => m.Critical == true))
+                {
+                    testJob.Status = "Stopped";
+                }
+                else
+                {
+                    testJob.Status = "Working on it";
+                    return ContinueStep(testJob.TestJobID);
+                }
+
+
+                testingRepo.SaveTestJob(testJob);
+
+                TempData["message"] = $"Tiene una parada pendiente, pulse el boton de nuevo";
+                TempData["alert"] = $"alert-danger";
+                return RedirectToAction("Index", "Home");
+            }
+            catch
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+
+        }
+
         public IActionResult JobCompletion(int TestJobID)
         {
             TestJob testJob = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == TestJobID);

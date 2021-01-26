@@ -439,8 +439,8 @@ namespace ProdFloor.Controllers
                         if (volts > 220 && volts <= 240 && (ViewModel.StarterType == "ATL" || ViewModel.StarterType == "YD" || ViewModel.StarterType == "Sprecher SS : 6/12" || ViewModel.StarterType == "Sprecher SS : 3/9" || ViewModel.StarterType == "Siemens SS : 6/12" || ViewModel.StarterType == "Siemens SS : 3/9")) ViewModel.Volts = "240";
                         if (volts >= 380 && volts <= 480 && (ViewModel.StarterType == "ATL" || ViewModel.StarterType == "YD" || ViewModel.StarterType == "Sprecher SS : 6/12" || ViewModel.StarterType == "Sprecher SS : 3/9")) ViewModel.Volts = "480";
                         if (volts > 480 && volts <= 600 && (ViewModel.StarterType == "ATL" || ViewModel.StarterType == "YD" || ViewModel.StarterType == "Sprecher SS : 6/12" || ViewModel.StarterType == "Sprecher SS : 3/9" || ViewModel.StarterType == "Siemens SS : 6/12" || ViewModel.StarterType == "Siemens SS : 3/9")) ViewModel.Volts = "575";
-                        if (volts > 380 && volts <= 480 && (ViewModel.StarterType == "Siemens SS : 6/12" || ViewModel.StarterType == "Siemens SS : 3/9")) ViewModel.Volts = "460";
-                        if (volts >= 300 && volts <= 380 && (ViewModel.StarterType == "Siemens SS : 6/12" || ViewModel.StarterType == "Siemens SS : 3/9")) ViewModel.Volts = "380/415";
+                        if (volts > 430 && volts <= 480 && (ViewModel.StarterType == "Siemens SS : 6/12" || ViewModel.StarterType == "Siemens SS : 3/9")) ViewModel.Volts = "460";
+                        if (volts >= 300 && volts <= 430 && (ViewModel.StarterType == "Siemens SS : 6/12" || ViewModel.StarterType == "Siemens SS : 3/9")) ViewModel.Volts = "380/415";
 
                         #endregion
 
