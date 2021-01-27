@@ -3133,13 +3133,13 @@ namespace ProdFloor.Controllers
             if (JobTypeID == 2)
             {
                 viewModel.StationsList = stations.Where(m => m.JobTypeID == JobTypeID).OrderBy(n => n.Label).ToList();
-                viewModel.StationsList.AddRange(stations.Where(m => m.JobTypeID == 5).OrderBy(n => n.Label));
+                viewModel.StationsList.AddRange(stations.Where(m => m.JobTypeID == 1).OrderBy(n => n.Label));
                 
             }
             else
             {
                 viewModel.StationsList = stations.Where(m => m.JobTypeID == JobTypeID).OrderBy(n => n.Label).ToList();
-                viewModel.StationsList.AddRange(stations.Where(m => m.JobTypeID == 1).OrderBy(n => n.Label).ToList());
+                viewModel.StationsList.AddRange(stations.Where(m => m.JobTypeID == 5).OrderBy(n => n.Label).ToList());
             }
             viewModel.StationsList = viewModel.StationsList.OrderBy(m => m.Label).ToList();
 

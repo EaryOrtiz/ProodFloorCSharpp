@@ -12,7 +12,6 @@
 
 <div class="row">
     <div class="mr-auto" style="margin-left: 8rem">
-        <h2 class="text-center">@ViewBag.Jobtype</h2>
 
         @if (ViewBag.Jobtype == "M4000")
         {
@@ -51,11 +50,15 @@
                                                 <div class="row" style="padding-bottom:5px">
                                                     <div class="col-12">
                                                         <label class="font-weight-bold float-left" style="        font-size: 32px;">Job Progress</label>
-                                                        <label class="font-weight-bold float-right text-secondary" style="font-size: 26px;">@testStat.TTC.Hour.ToString().PadLeft(2, '0'):@testStat.TTC.Minute.ToString().PadLeft(2, '0')</label>
+                                                        <label class="font-weight-bold float-right text-secondary" 
+                                                               style="font-size: 26px;">@testStat.TTC.Hour.ToString().PadLeft(2, '0'):@testStat.TTC.Minute.ToString().PadLeft(2, '0')
+                                                        </label>
                                                     </div>
                                                     <div class="col-12">
                                                         <div class="progress ">
-                                                            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: @testStat.JobProgress%;background-color: @testStat.EfficiencyColor;" aria-valuenow="@testStat.JobProgress" aria-valuemin="0" aria-valuemax="100"></div>
+                                                            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" 
+                                                                 style="width: @testStat.JobProgress%;background-color: @testStat.EfficiencyColor;" aria-valuenow="@testStat.JobProgress" aria-valuemin="0" aria-valuemax="100">
+                                                            </div>
                                                         </div>
                                                     </div>
 
@@ -67,14 +70,16 @@
                                                     </div>
                                                     <div class="col-12">
                                                         <div class="progress ">
-                                                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-info" role="progressbar" style="width:@testStat.StageProgress%;" aria-valuenow="@testStat.StageProgress" aria-valuemin="0" aria-valuemax="100"></div>
+                                                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-info" role="progressbar" 
+                                                                 style="width:@testStat.StageProgress%;" aria-valuenow="@testStat.StageProgress" aria-valuemin="0" aria-valuemax="100">
+                                                            </div>
                                                         </div>
                                                     </div>
 
                                                 </div>
                                             </div>
                                             <div class="card-footer bg-white p-0">
-                                                <ul class="nav nav-pills flex-column" style="font-size: 32px;">
+                                                <ul class="nav nav-pills flex-column" style="font-size: 32px;white-space:nowrap;">
                                                     <li class="nav-item border-bottom" style="padding-bottom:5px; padding-top:8px;margin-left:10px; margin-right: 10px;">
                                                         <span class=" float-left font-weight-bold">
                                                             Job#
@@ -212,8 +217,8 @@
         else
         {
 
-            <div id="carouselM2000" class="carousel slide" data-ride="carousel" style="width: 1081px;">
-                <div class="carousel-inner" style="align-content:center">
+            <div id="carouselM2000" class="carousel slide" data-ride="carousel" >
+                <div class="carousel-inner" style="align-content:center; width: 1280px;">
 
                     <!----Esta parte de una escena-->
 
@@ -229,7 +234,7 @@
                         string carrusel = "carousel-item";
                         string carruselActive = "carousel-item active";
 
-                        <div class="@(i == 0 ? carruselActive : carrusel )">
+                        <div class="@(i == 0 ? carruselActive : carrusel ) ">
                             <div class="row mt-3 mb-5">
 
                                 @foreach (Station station in filteredStations)
@@ -248,11 +253,16 @@
                                                 <div class="row" style="padding-bottom:5px">
                                                     <div class="col-12">
                                                         <label class="font-weight-bold float-left" style="        font-size: 32px;">Job Progress</label>
-                                                        <label class="font-weight-bold float-right text-secondary" style="font-size: 26px;">@testStat.TTC.Hour.ToString().PadLeft(2, '0'):@testStat.TTC.Minute.ToString().PadLeft(2, '0')</label>
+                                                        <label class="font-weight-bold float-right text-secondary"
+                                                               style="font-size: 26px;">
+                                                            @testStat.TTC.Hour.ToString().PadLeft(2, '0'):@testStat.TTC.Minute.ToString().PadLeft(2, '0')
+                                                        </label>
                                                     </div>
                                                     <div class="col-12">
                                                         <div class="progress ">
-                                                            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: @testStat.JobProgress%;background-color: @testStat.EfficiencyColor;" aria-valuenow="@testStat.JobProgress" aria-valuemin="0" aria-valuemax="100"></div>
+                                                            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
+                                                                 style="width: @testStat.JobProgress%;background-color: @testStat.EfficiencyColor;" aria-valuenow="@testStat.JobProgress" aria-valuemin="0" aria-valuemax="100">
+                                                            </div>
                                                         </div>
                                                     </div>
 
@@ -264,14 +274,16 @@
                                                     </div>
                                                     <div class="col-12">
                                                         <div class="progress ">
-                                                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-info" role="progressbar" style="width:@testStat.StageProgress%;" aria-valuenow="@testStat.StageProgress" aria-valuemin="0" aria-valuemax="100"></div>
+                                                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-info" role="progressbar"
+                                                                 style="width:@testStat.StageProgress%;" aria-valuenow="@testStat.StageProgress" aria-valuemin="0" aria-valuemax="100">
+                                                            </div>
                                                         </div>
                                                     </div>
 
                                                 </div>
                                             </div>
                                             <div class="card-footer bg-white p-0">
-                                                <ul class="nav nav-pills flex-column" style="font-size: 32px;">
+                                                <ul class="nav nav-pills flex-column" style="font-size: 32px;white-space:nowrap;">
                                                     <li class="nav-item border-bottom" style="padding-bottom:5px; padding-top:8px;margin-left:10px; margin-right: 10px;">
                                                         <span class=" float-left font-weight-bold">
                                                             Job#

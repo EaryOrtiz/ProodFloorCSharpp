@@ -14,7 +14,18 @@
             <thead style="background-color:#343a40!important;color:#fff;">
                 <tr>
                     <th class="text-center" colspan="7">
-                        <h2>@ViewBag.JobType</h2>
+                        @if (ViewBag.JobType == "M2000")
+                        {
+                            <h2>
+                                Hydro
+                            </h2>
+                        }
+                        else
+                        {
+                            <h2>
+                                Traction
+                            </h2>
+                        }
                     </th>
                 </tr>
                 <tr>
@@ -34,10 +45,10 @@
                         Efficiency
                     </th>
                     <th scope="col">
-                        Job Progress
+                        Job %
                     </th>
                     <th width="22%">
-                        Stage Progress
+                        Stage %
                     </th>
                 </tr>
             </thead>
