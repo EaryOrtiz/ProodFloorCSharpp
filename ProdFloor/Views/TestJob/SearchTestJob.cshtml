@@ -29,6 +29,11 @@
 <div>
     <span asp-validation-for="Job.JobNum" class="text-danger"></span><br />
 </div>
+<div>
+    <a class="btn btn-sm btn-secondary float-right" asp-action="AutomaticShiftEnd" asp-controller="TestJob">
+       Shift End
+    </a>
+</div>
 <!--incomplete, working on it and stops-->
 @Html.Partial("TechAdminDashBoard3", Model)
 <br />

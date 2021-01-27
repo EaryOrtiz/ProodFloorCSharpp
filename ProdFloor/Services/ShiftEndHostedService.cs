@@ -13,6 +13,7 @@ namespace ProdFloor.Services
         private TestJobController testController;
         private readonly IHostingEnvironment environment;
         private Timer timer;
+        private int count = 0;
 
         public ShiftEndHostedService(TestJobController testCtrl, IHostingEnvironment environment)
         {
@@ -22,14 +23,18 @@ namespace ProdFloor.Services
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            timer = new Timer(DoWork, null, TimeSpan.FromHours(4), TimeSpan.FromHours(10));
+            timer = new Timer(DoWork, null, TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(1));
             return Task.CompletedTask;
         }
 
         private void DoWork(object state)
         {
+            if (count == 0)
+                timer.Change(TimeSpan.FromMilliseconds(0), TimeSpan.FromMinutes(1));
+
             testController.AutomaticShiftEnd();
             Console.WriteLine("ShiftEnd completed");
+            count++;
         }
 
         public Task StopAsync(CancellationToken cancellationToken)

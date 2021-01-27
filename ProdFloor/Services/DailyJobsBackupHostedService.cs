@@ -13,6 +13,7 @@ namespace ProdFloor.Services
         private JobController jobController;
         private readonly IHostingEnvironment environment;
         private Timer timer;
+        private int count = 0;
 
         public DailyJobsBackupHostedService(JobController jobCtrl, IHostingEnvironment environment)
         {
@@ -28,8 +29,12 @@ namespace ProdFloor.Services
 
         private void DoWork(object state)
         {
-           jobController.ExportJobsToXML();
+            if (count == 0)
+                timer.Change(TimeSpan.FromMilliseconds(0), TimeSpan.FromDays(7)); 
+
+            jobController.ExportJobsToXML();
             Console.WriteLine("Jobs Saved");
+            count++;
         }
 
         public Task StopAsync(CancellationToken cancellationToken)
