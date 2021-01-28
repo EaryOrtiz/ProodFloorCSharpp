@@ -289,7 +289,7 @@ namespace ProdFloor.Controllers
             bool isNotOnShiftEnd = testJob.Status != "Shift End";
             bool isOnWorkingOnIt = testJob.Status == "Working on it";
 
-            if (isOnWorkingOnIt && isSameEngineer)
+            if (isNotOnShiftEnd && isNotOnReassigment && isNotCompleted && isSameEngineer)
             {
                 if (Critical == true)
                 {
@@ -311,7 +311,7 @@ namespace ProdFloor.Controllers
             {
                 TempData["alert"] = $"alert-danger";
                 if (isNotCompleted == false) TempData["message"] = $"Error, El Testjob ya ha sido completado, intente de nuevo o contacte al Admin";
-                else if (isNotOnShiftEnd) TempData["message"] = $"Error, El Testjob esta en shift end, pilse el boton de continuar";
+                else if (!isNotOnShiftEnd) TempData["message"] = $"Error, El Testjob esta en shift end, pilse el boton de continuar";
                 else TempData["message"] = $"Error, El Testjob a sido reasignado, intente de nuevo o contacte al Admin";
 
                 return RedirectToAction("Index", "Home");
