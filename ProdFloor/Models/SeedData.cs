@@ -1885,6 +1885,8 @@ namespace ProdFloor.Models
 
                         if (yearDigits == "21200")
                             newJobNumber = "C2000" + baseDigits;
+                        else if (yearDigits == "21210")
+                            newJobNumber = "C2100" + baseDigits;
                         else if (yearDigits == "21190")
                             newJobNumber = "C1900" + baseDigits;
                         else continue;

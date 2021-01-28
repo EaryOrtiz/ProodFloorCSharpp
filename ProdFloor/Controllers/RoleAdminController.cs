@@ -7,6 +7,11 @@ using ProdFloor.Models;
 using ProdFloor.Models.ViewModels;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
+using System.IO;
+using System.Xml;
+using System.Linq;
+using System;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ProdFloor.Controllers
 {
@@ -136,6 +141,81 @@ namespace ProdFloor.Controllers
             {
                 ModelState.AddModelError("", error.Description);
             }
+        }
+
+        [HttpPost]
+        public FileStreamResult ExportToXML()
+        {
+            MemoryStream ms = new MemoryStream();
+            XmlWriterSettings xws = new XmlWriterSettings();
+            xws.OmitXmlDeclaration = true;
+            xws.Indent = true;
+
+            IQueryable<IdentityRole> roles = roleManager.Roles;
+
+            using (XmlWriter xw = XmlWriter.Create(ms, xws))
+            {
+                xw.WriteStartDocument();
+                xw.WriteStartElement("Roles");
+
+                foreach (IdentityRole role in roles)
+                {
+                    xw.WriteStartElement("Role");
+                    xw.WriteElementString("Name", role.Name);
+                    xw.WriteEndElement();
+                }
+
+                xw.WriteEndElement();
+                xw.WriteEndDocument();
+            }
+            ms.Position = 0;
+            return File(ms, "text/xml", "Roles.xml");
+        }
+
+        public async Task<IActionResult> ImportXML()
+        {
+            List<string> duplicatedRolesList = new List<string>();
+            string duplicatedRoles = "";
+
+            XmlDocument doc = new XmlDocument();
+            doc.Load(@"C:\ProdFloorNew90\wwwroot\AppData\Roles.xml");
+
+            var XMLobs = doc.DocumentElement.SelectSingleNode("//Roles");
+            var XMLRoles = XMLobs.SelectNodes(".//Role");
+
+            if (XMLobs != null)
+            {
+                foreach (XmlElement role in XMLRoles)
+                {
+                    var name = role.SelectSingleNode(".//Name").InnerText;
+
+                    IdentityResult result = await roleManager.CreateAsync(new IdentityRole(name));
+                    if (!result.Succeeded)
+                    {
+                        duplicatedRolesList.Add(name);
+                    }
+
+                }
+
+            }
+
+            if(duplicatedRolesList.Count() > 0)
+            {
+                foreach(string role in duplicatedRolesList)
+                {
+                    duplicatedRoles = duplicatedRoles + ", " + role;
+                }
+
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"The following roles are duplicated: " + duplicatedRoles;
+            }
+            else
+            {
+                TempData["message"] = $"Roles imported succesfully";
+            }
+
+            return RedirectToAction(nameof(Index));
+
         }
     }
 }

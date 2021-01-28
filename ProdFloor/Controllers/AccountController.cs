@@ -7,6 +7,8 @@ using ProdFloor.Models.ViewModels;
 using ProdFloor.Models;
 using System.Collections.Generic;
 using System;
+using System.Xml;
+using System.IO;
 
 namespace ProdFloor.Controllers
 {
@@ -17,6 +19,7 @@ namespace ProdFloor.Controllers
         private UserManager<AppUser> userManager;
         private SignInManager<AppUser> signInManager;
         private ITestingRepository testingRepo;
+        private RoleManager<IdentityRole> roleManager;
         public int PageSize = 7;
 
         private IUserValidator<AppUser> userValidator;
@@ -30,6 +33,7 @@ namespace ProdFloor.Controllers
         IUserValidator<AppUser> userValid,
         IPasswordValidator<AppUser> passValid,
         IPasswordHasher<AppUser> passwordHash,
+        RoleManager<IdentityRole> roleMgr,
         SignInManager<AppUser> signInMgr,
         ITestingRepository repo)
         {
@@ -38,6 +42,7 @@ namespace ProdFloor.Controllers
             passwordValidator = passValid;
             passwordHasher = passwordHash;
             testingRepo = repo;
+            roleManager = roleMgr;
 
             signInManager = signInMgr;
         }
@@ -444,5 +449,192 @@ namespace ProdFloor.Controllers
 
             return user;
         }
+
+        [HttpPost]
+        public async Task<FileStreamResult> ExportToXML()
+        {
+            MemoryStream ms = new MemoryStream();
+            XmlWriterSettings xws = new XmlWriterSettings();
+            xws.OmitXmlDeclaration = true;
+            xws.Indent = true;
+
+            List<AppUser> users = userManager.Users.Where(m => m.UserName != "Admin").ToList();
+
+            using (XmlWriter xw = XmlWriter.Create(ms, xws))
+            {
+                xw.WriteStartDocument();
+                xw.WriteStartElement("Users");
+
+                foreach (AppUser user in users)
+                {
+                    xw.WriteStartElement("User");
+
+                    xw.WriteElementString("UserName", user.UserName);
+                    xw.WriteElementString("Email", user.Email);
+                    xw.WriteElementString("EngID", user.EngID.ToString());
+                    xw.WriteStartElement("Roles");
+                    foreach (IdentityRole role in roleManager.Roles)
+                    {
+                        if (await userManager.IsInRoleAsync(user, role.Name))
+                            xw.WriteElementString("RoleName", role.Name);
+                    }
+
+                    xw.WriteEndElement();
+                    xw.WriteEndElement();
+                }
+
+                xw.WriteEndElement();
+                xw.WriteEndDocument();
+            }
+            ms.Position = 0;
+            return File(ms, "text/xml", "Users.xml");
+        }
+
+        public async Task<IActionResult> ImportXML()
+        {
+            List<AppUser> users = userManager.Users.ToList();
+            List<string> duplicatedUserList = new List<string>();
+            List<string> duplicatedUserNameList = new List<string>();
+            List<string> duplicatedEngIdList = new List<string>();
+            string duplicatedAux = "";
+            string password = "Welcome01$";
+
+            XmlDocument doc = new XmlDocument();
+            doc.Load(@"C:\ProdFloorNew90\wwwroot\AppData\Users.xml");
+
+            var XMLobs = doc.DocumentElement.SelectSingleNode("//Users");
+            var XMLUsers = XMLobs.SelectNodes(".//User");
+
+            try
+            {
+                if (XMLobs != null)
+                {
+                    foreach (XmlElement user in XMLUsers)
+                    {
+                        List<string> roleNamesList = new List<string>();
+                        var name = user.SelectSingleNode(".//UserName").InnerText;
+                        var email = user.SelectSingleNode(".//Email").InnerText;
+                        var engId = user.SelectSingleNode(".//EngID").InnerText;
+                        var XMRoles = user.SelectSingleNode(".//Roles");
+                        var XMLRoleNames = XMRoles.SelectNodes(".//RoleName");
+                        foreach (XmlElement roleName in XMLRoleNames)
+                        {
+                            roleNamesList.Add(roleName.InnerText);
+                        }
+
+                        bool isUserDuplicated = users.Any(m => m.UserName == name && m.EngID == Int32.Parse(engId));
+                        bool isUserNameDuplicated = users.Any(m => m.UserName == name && m.EngID != Int32.Parse(engId));
+                        bool isEngDuplicated = users.Any(m => m.EngID == Int32.Parse(engId) && m.UserName != name);
+
+                        if (isUserDuplicated)
+                        {
+                            duplicatedAux = "UserName: " + name + ", EngID: " + engId;
+                            duplicatedUserList.Add(duplicatedAux);
+
+                        }
+                        else if (isUserNameDuplicated)
+                        {
+                            AppUser userAux = users.FirstOrDefault(m => m.UserName == name);
+                            duplicatedAux = "UserFromDB: " + userAux.UserName + ", EngID: " + userAux.EngID.ToString();
+                            duplicatedAux = duplicatedAux + ", UserFromXML: " + name + ", EngID: " + engId + ".";
+
+                            duplicatedUserNameList.Add(duplicatedAux);
+                        }
+                        else if (isEngDuplicated)
+                        {
+                            AppUser userAux = users.FirstOrDefault(m => m.EngID == Int32.Parse(engId));
+                            duplicatedAux = "UserFromDB: " + userAux.UserName + ", EngID: " + userAux.EngID.ToString();
+                            duplicatedAux = duplicatedAux + ", UserFromXML: " + name + ", EngID: " + engId + ".";
+
+                            duplicatedEngIdList.Add(duplicatedAux);
+                        }
+                        else
+                        {
+                            IdentityResult result;
+                            AppUser userToImport = new AppUser
+                            {
+                                UserName = name,
+                                Email = email,
+                                EngID = Int32.Parse(engId)
+                            };
+
+                            result = await userManager.CreateAsync(userToImport, password);
+                            if (result.Succeeded)
+                            {
+                                foreach (string roleName in roleNamesList)
+                                {
+                                    result = await userManager.AddToRoleAsync(userToImport, roleName);
+                                }
+
+                            }
+                        }
+
+
+                    }
+
+                }
+            }
+            catch
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"Error while reading xml";
+                return RedirectToAction(nameof(Index));
+            }
+
+            
+
+            if(duplicatedUserList.Count() > 0 || 
+               duplicatedUserNameList.Count() > 0 ||
+               duplicatedEngIdList.Count() > 0)
+            {
+                GenerateImportErrorLog(duplicatedUserList, duplicatedUserNameList, duplicatedEngIdList);
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"Errors founded on users import, check log to read more";
+                return RedirectToAction(nameof(Index));
+            }
+
+            TempData["message"] = $"Users imported succesfully: ";
+            return RedirectToAction(nameof(Index));
+
+        }
+
+        public static void GenerateImportErrorLog(List<string> Users, List<string> UserNames, List<string> EngIds)
+        {
+            string fileName = @"C:\ProdFloorNew90\wwwroot\AppData\ImportErrorsLog.txt";
+
+            try
+            {
+                // Check if file already exists. If yes, delete it.     
+                if (System.IO.File.Exists(fileName))
+                {
+                    System.IO.File.Delete(fileName);
+                }
+
+                // Create a new file     
+                using (StreamWriter sw = System.IO.File.CreateText(fileName))
+                {
+                    sw.WriteLine("New Import Errors log created: {0}", DateTime.Now.ToString());
+                    sw.WriteLine("Duplicated users: ");
+                    foreach(string item in Users)
+                    {
+                        sw.WriteLine(item);
+                    }
+                    sw.WriteLine("Duplicated UserNames: ");
+                    foreach (string item in UserNames)
+                    {
+                        sw.WriteLine(item);
+                    }
+                    sw.WriteLine("Duplicated EngIds: ");
+                    foreach (string item in EngIds)
+                    {
+                        sw.WriteLine(item);
+                    }
+                }
+            }
+            catch (Exception Ex)
+            {
+                Console.WriteLine(Ex.ToString());
+            }
+        } 
     }
 }
