@@ -3,34 +3,38 @@
     ViewBag.Title = "Roles";
 }
 <br />
-<div class="text-right m-2">
-    <!-- Button trigger modal -->
-    <button class="btn btn-danger" data-toggle="modal" data-target="#ImportModal">Import roles from XML <i class="fas fa-file-alt"></i></button>
-    <!-- Modal -->
-    <form asp-action="ImportXML" method="post">
-        <div class="modal fade  text-center" id="ImportModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content  text-center">
-                    <div class="modal-header bg-danger  text-center align-content-center justify-content-center">
-                        <h5 class="modal-title" style="margin-left: 5rem;color:white" id="exampleModalLongTitle"><i class="fas fa-skull-crossbones"></i>&nbsp;&nbsp;&nbsp;Import roles from XML&nbsp;&nbsp;&nbsp;<i class="fas fa-skull-crossbones"></i></h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body  text-left">
-                        Are you sure want to import roles from the XML?
-                    </div>
-                    <div class="modal-footer border-top text-center">
-                        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-danger btn-sm">
-                            Import
-                        </button>
+@if (User.IsInRole("Admin"))
+{
+    <div class="text-right m-2">
+        <!-- Button trigger modal -->
+        <button class="btn btn-danger" data-toggle="modal" data-target="#ImportModal">Import roles from XML <i class="fas fa-file-alt"></i></button>
+        <!-- Modal -->
+        <form asp-action="ImportXML" method="post">
+            <div class="modal fade  text-center" id="ImportModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content  text-center">
+                        <div class="modal-header bg-danger  text-center align-content-center justify-content-center">
+                            <h5 class="modal-title" style="margin-left: 5rem;color:white" id="exampleModalLongTitle"><i class="fas fa-skull-crossbones"></i>&nbsp;&nbsp;&nbsp;Import roles from XML&nbsp;&nbsp;&nbsp;<i class="fas fa-skull-crossbones"></i></h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body  text-left">
+                            Are you sure want to import roles from the XML?
+                        </div>
+                        <div class="modal-footer border-top text-center">
+                            <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-danger btn-sm">
+                                Import
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </form>
-</div>
+        </form>
+    </div>
+}
+
 <div class="text-danger" asp-validation-summary="ModelOnly"></div>
 <table class="table table-striped  text-center table-sm" style="text-align:center">
     <thead style="background-color:#343a40!important;color:#fff;">
