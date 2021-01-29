@@ -1881,7 +1881,7 @@ namespace ProdFloor.Models
                     {
                         string yearDigits = job.JobNum.Remove(5, 5);
                         string baseDigits = job.JobNum.Remove(0, 5);
-                        string newJobNumber = "";
+                        string newJobNumber = job.JobNum;
 
                         if (yearDigits == "21200")
                             newJobNumber = "C2000" + baseDigits;
@@ -1895,6 +1895,33 @@ namespace ProdFloor.Models
                         context.SaveChanges();
                     }
                    
+                }
+            }
+
+            if (context.Jobs.Any())
+            {
+                List<Job> JobList = context.Jobs.ToList();
+
+                foreach (Job job in JobList)
+                {
+                    if (!string.IsNullOrEmpty(job.JobNum))
+                    {
+                        string yearDigits = job.JobNum.Remove(5, 5);
+                        string baseDigits = job.JobNum.Remove(0, 5);
+                        string newJobNumber = job.JobNum;
+
+                        if (yearDigits == "21200")
+                            newJobNumber = "C2000" + baseDigits;
+                        else if (yearDigits == "21210")
+                            newJobNumber = "C2100" + baseDigits;
+                        else if (yearDigits == "21190")
+                            newJobNumber = "C1900" + baseDigits;
+                        else continue;
+
+                        job.JobNum = newJobNumber;
+                        context.SaveChanges();
+                    }
+
                 }
             }
         }
