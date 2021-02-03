@@ -491,7 +491,7 @@ namespace ProdFloor.Controllers
                     xw.WriteElementString("StartDate", stop.StartDate.ToString());
                     xw.WriteElementString("StopDate", stop.StopDate.ToString());
                     xw.WriteElementString("Elapsed", stop.Elapsed.ToString());
-                    xw.WriteElementString("Description", stop.Description.ToString());
+                    xw.WriteElementString("Description", stop.Description != null ? stop.Description : "Nulo");
                     xw.WriteElementString("AuxTechnicianID", stop.AuxTechnicianID.ToString());
                     xw.WriteElementString("AuxStationID", stop.AuxStationID.ToString());
                     xw.WriteEndElement();

@@ -804,7 +804,7 @@ namespace ProdFloor.Controllers
 
 
                     if (!isNotCompleted && (isAdmin || isTechAdmin))
-                        nextViewModel.isNotDummy = true;
+                        nextViewModel.isNotDummy = false;
 
                     return View(nextViewModel);
                 }
@@ -835,13 +835,14 @@ namespace ProdFloor.Controllers
             viewModel.Job.JobNum = getJobNumb(viewModel.Job.JobNumFirstDigits, viewModel.Job.JobNumLastDigits);
 
             bool techAdmin = GetCurrentUserRole("TechAdmin").Result;
+            bool Admin = GetCurrentUserRole("Admin").Result;
             int TechnicianID = GetCurrentUser().Result.EngID;
 
             TestJob testJobToUpdate = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == viewModel.TestJob.TestJobID);
             TestJob StationAuxTestJob = testingRepo.TestJobs.FirstOrDefault(m => m.StationID == viewModel.TestJob.StationID && m.Status == "Working on it");
 
-            if (testJobToUpdate.TechnicianID != TechnicianID && techAdmin == false) return RedirectToAction("Index", "Home");
-            if (StationAuxTestJob != null || (techAdmin == false && TechnicianID != testJobToUpdate.TechnicianID))
+            if (testJobToUpdate.TechnicianID != TechnicianID && !techAdmin && !Admin ) return RedirectToAction("Index", "Home");
+            if (StationAuxTestJob != null || (!techAdmin && !Admin && TechnicianID != testJobToUpdate.TechnicianID))
             {
                 TempData["alert"] = $"alert-danger";
                 TempData["message"] = $"Error la estacion esta ocupada, seleccione otra e intente de nuevo o contacte al Admin";
@@ -991,7 +992,6 @@ namespace ProdFloor.Controllers
             else if (viewModel.Ontario == true) currentJob.CityID = 11;
             else currentJob.CityID = 40;
             jobRepo.SaveJob(currentJob);
-            currentJob = jobRepo.Jobs.FirstOrDefault(m => m.JobID == poUniqueAUx.JobID);
 
             int jobtypeID = jobRepo.Jobs.First(m => m.JobID == currentJob.JobID).JobTypeID;
             switch (JobTypeName(jobtypeID))

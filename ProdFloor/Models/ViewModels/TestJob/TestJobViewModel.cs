@@ -86,5 +86,7 @@ namespace ProdFloor.Models.ViewModels.TestJob
 
         public List<Station> StationsM2000List { get; set; }
         public List<Station> StationsM4000List { get; set; }
+
+        public List<DailyReport> dailyReports { get; set; }
     }
 }

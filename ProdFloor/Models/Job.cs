@@ -35,6 +35,7 @@ namespace ProdFloor.Models
         //Aux fields for New JobNumber
         [NotMapped]
         [Required(ErrorMessage = "Please enter the first digits")]
+        [StringLength(5, MinimumLength = 5, ErrorMessage = "First digits is out of range")]
         public string JobNumFirstDigits { get; set; }
 
         [NotMapped]
