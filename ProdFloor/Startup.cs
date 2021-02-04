@@ -159,7 +159,7 @@ namespace ProdFloor
                 routes.MapRoute(
                     name: null,
                     template: "TestStats/{JobType}",
-                    defaults: new { controller = "TestJob", action = "TestStats" });
+                    defaults: new { controller = "Report", action = "TestStats" });
 
 
                 routes.MapRoute(

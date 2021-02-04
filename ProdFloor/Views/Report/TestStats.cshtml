@@ -1,0 +1,655 @@
+﻿@model ProdFloor.Models.ViewModels.Report.ReportsViewModel
+@{
+    ViewData["Title"] = "TestStats";
+    Layout = "_LayoutTV";
+    <script>
+        $(document).ready(function () {
+            setInterval(function () {
+                location.reload(true);
+            }, 60000);
+        });
+    </script>
+    DailyReport dailyM2000 = Model.dailyReports.FirstOrDefault(m => m.JobTypeName == "M2000");
+    DailyReport dailyHydro = Model.dailyReports.FirstOrDefault(m => m.JobTypeName == "ElmHydro");
+    DailyReport dailyM4000 = Model.dailyReports.FirstOrDefault(m => m.JobTypeName == "M4000");
+    DailyReport dailyTraction = Model.dailyReports.FirstOrDefault(m => m.JobTypeName == "ElmTract");
+}
+
+<div class="row">
+    <div class="col-7 mr-auto">
+
+        @if (ViewBag.Jobtype == "M4000")
+        {
+            <div id="carouselM4000" class="carousel slide" data-ride="carousel" style="width: 1080px;">
+                <div class="carousel-inner">
+                    <!----Esta parte de una escena-->
+
+                    @for (int i = 0; i < 4; i++)
+                    {
+                        List<Station> filteredStations = new List<Station>();
+
+                        if (i == 0) { filteredStations = Model.StationsM4000List.Where(m => m.Label == "S7" || m.Label == "S8").ToList(); }
+                        else if (i == 1) { filteredStations = Model.StationsM4000List.Where(m => m.Label == "S9" || m.Label == "S10").ToList(); }
+                        else if (i == 2) { filteredStations = Model.StationsM4000List.Where(m => m.Label == "S11" || m.Label == "S12").ToList(); }
+                        else if (i == 3) { filteredStations = Model.StationsM4000List.Where(m => m.Label == "ELEM1" || m.Label == "ELEM2").ToList(); }
+
+                        string carrusel = "carousel-item";
+                        string carruselActive = "carousel-item active";
+
+                        <div class="@(i == 0 ? carruselActive : carrusel )">
+                            <div class="row mt-3 mb-5">
+
+                                @foreach (Station station in filteredStations)
+                                {
+
+                                    if (Model.TestStatsList.Any(m => m.StationID == station.StationID))
+                                    {
+                                        TestStats testStat = Model.TestStatsList.FirstOrDefault(m => m.StationID == station.StationID);
+
+                                        <div class="card text-center ml-5" style="max-height: 40rem; width: 30rem; box-shadow: 0 17px 17px 0 rgba(0,0,0,0.15),0 27px 55px 0 rgba(0,0,0,0.3)">
+                                            <div class="card-header" style="border-top-color:@testStat.StatusColor !important;border-top: solid;border-top-width:12px;background-color:transparent;max-height:60px;">
+                                                <h3>@station.Label</h3>
+                                            </div>
+                                            <div class="card-body">
+
+                                                <div class="row" style="padding-bottom:5px">
+                                                    <div class="col-12">
+                                                        <label class="font-weight-bold float-left" style="        font-size: 32px;">Job Progress</label>
+                                                        <label class="font-weight-bold float-right text-secondary"
+                                                               style="font-size: 26px;">
+                                                            @testStat.TTC.Hour.ToString().PadLeft(2, '0'):@testStat.TTC.Minute.ToString().PadLeft(2, '0')
+                                                        </label>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <div class="progress ">
+                                                            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
+                                                                 style="width: @testStat.JobProgress%;background-color: @testStat.EfficiencyColor;" aria-valuenow="@testStat.JobProgress" aria-valuemin="0" aria-valuemax="100">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <label class="font-weight-bold float-left" style="font-size: 32px;">Stage Progress</label>
+                                                        <label class="font-weight-bold float-right text-secondary" style="font-size: 26px;">@testStat.Stage</label>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <div class="progress ">
+                                                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-info" role="progressbar"
+                                                                 style="width:@testStat.StageProgress%;" aria-valuenow="@testStat.StageProgress" aria-valuemin="0" aria-valuemax="100">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <div class="card-footer bg-white p-0">
+                                                <ul class="nav nav-pills flex-column" style="font-size: 32px;white-space:nowrap;">
+                                                    <li class="nav-item border-bottom" style="padding-bottom:5px; padding-top:8px;margin-left:10px; margin-right: 10px;">
+                                                        <span class=" float-left font-weight-bold">
+                                                            Job#
+                                                        </span>
+                                                        <span class="float-right text-secondary font-weight-bold">
+                                                            @testStat.JobNumer
+                                                        </span>
+                                                    </li>
+                                                    <li class="nav-item border-bottom" style="padding-bottom:5px; padding-top:8px;margin-left:10px; margin-right: 10px;">
+                                                        <span class=" float-left font-weight-bold">
+                                                            Tech Name
+                                                        </span>
+                                                        <span class="float-right text-secondary font-weight-bold">
+                                                            @testStat.TechName
+                                                        </span>
+                                                    </li>
+                                                    <li class="nav-item border-bottom" style="padding-bottom:5px; padding-top:8px;margin-left:10px; margin-right: 10px;">
+                                                        <span class=" float-left font-weight-bold">
+                                                            Stage
+                                                        </span>
+                                                        <span class="float-right text-secondary font-weight-bold">
+                                                            @testStat.Stage
+                                                        </span>
+                                                    </li>
+                                                    <li class="nav-item border-bottom" style="padding-bottom:5px; padding-top:8px;margin-left:10px; margin-right: 10px;">
+                                                        <span class=" float-left font-weight-bold">
+                                                            CAT
+                                                        </span>
+                                                        <span class="float-right text-secondary font-weight-bold">
+                                                            @testStat.Category
+                                                        </span>
+                                                    </li>
+                                                    <li class="nav-item border-bottom" style="padding-bottom:5px; padding-top:8px;margin-left:10px; margin-right: 10px;">
+                                                        <span class=" float-left font-weight-bold">
+                                                            Efficiency
+                                                        </span>
+                                                        <span class="float-right text-secondary font-weight-bold">
+                                                            @testStat.Efficiency%
+                                                        </span>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    }
+                                    else
+                                    {
+
+                                        <div class="card text-center ml-5" style="max-height: 36rem;max-width: 30rem;box-shadow: 0 17px 17px 0 rgba(0,0,0,0.15),0 27px 55px 0 rgba(0,0,0,0.3)">
+                                            <div class="card-header" style="border-top-color:gray !important;border-top: solid;border-top-width:12px;background-color:transparent;max-height:60px;">
+                                                <h3>@station.Label</h3>
+                                            </div>
+                                            <div class="card-body">
+
+                                                <div class="row" style="padding-bottom:5px">
+                                                    <div class="col-12">
+                                                        <label class="font-weight-bold float-left" style="        font-size: 32px;">Job Progress</label>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <div class="progress ">
+                                                            <div class="progress-bar" role="progressbar" style="width: 100%;background-color: gray;" aria-valuenow="99" aria-valuemin="0" aria-valuemax="100"></div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <label class="font-weight-bold float-left" style="        font-size: 32px;">Stage Progress</label>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <div class="progress ">
+                                                            <div class="progress-bar" role="progressbar" style="width: 100%;background-color: gray;" aria-valuenow="99" aria-valuemin="0" aria-valuemax="100"></div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <div class="card-footer bg-white p-0">
+                                                <ul class="nav nav-pills flex-column" style="font-size: 32px;">
+                                                    <li class="nav-item border-bottom" style="padding-bottom:5px; padding-top:8px;margin-left:10px; margin-right: 10px;">
+                                                        <span class=" float-left font-weight-bold">
+                                                            Job#
+                                                        </span>
+                                                        <span class="float-right text-secondary font-weight-bold">
+                                                            ...
+                                                        </span>
+                                                    </li>
+                                                    <li class="nav-item border-bottom" style="padding-bottom:5px; padding-top:8px;margin-left:10px; margin-right: 10px;">
+                                                        <span class=" float-left font-weight-bold">
+                                                            Tech Name
+                                                        </span>
+                                                        <span class="float-right text-secondary font-weight-bold">
+                                                            ...
+                                                        </span>
+                                                    </li>
+                                                    <li class="nav-item border-bottom" style="padding-bottom:5px; padding-top:8px;margin-left:10px; margin-right: 10px;">
+                                                        <span class=" float-left font-weight-bold">
+                                                            Stage
+                                                        </span>
+                                                        <span class="float-right text-secondary font-weight-bold">
+                                                            ...
+                                                        </span>
+                                                    </li>
+                                                    <li class="nav-item border-bottom" style="padding-bottom:5px; padding-top:8px;margin-left:10px; margin-right: 10px;">
+                                                        <span class=" float-left font-weight-bold">
+                                                            CAT
+                                                        </span>
+                                                        <span class="float-right text-secondary font-weight-bold">
+                                                            ...
+                                                        </span>
+                                                    </li>
+                                                    <li class="nav-item border-bottom" style="padding-bottom:5px; padding-top:8px;margin-left:10px; margin-right: 10px;">
+                                                        <span class=" float-left font-weight-bold">
+                                                            Efficiency
+                                                        </span>
+                                                        <span class="float-right text-secondary font-weight-bold">
+                                                            ...
+                                                        </span>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+
+                                    }
+
+
+                                }
+                            </div>
+                        </div>
+                    }
+
+                    <!----Esta parte de una escena-->
+                </div>
+            </div>
+        }
+        else
+        {
+
+            <div id="carouselM2000" class="carousel slide" data-ride="carousel">
+                <div class="carousel-inner" style="align-content:center; width: 1080px;">
+
+                    <!----Esta parte de una escena-->
+
+                    @for (int i = 0; i < 4; i++)
+                    {
+                        List<Station> filteredStations = new List<Station>();
+
+                        if (i == 0) { filteredStations = Model.StationsM2000List.Where(m => m.Label == "S1" || m.Label == "S2").ToList(); }
+                        else if (i == 1) { filteredStations = Model.StationsM2000List.Where(m => m.Label == "S3" || m.Label == "S4").ToList(); }
+                        else if (i == 2) { filteredStations = Model.StationsM2000List.Where(m => m.Label == "S5" || m.Label == "S6").ToList(); }
+                        else if (i == 3) { filteredStations = Model.StationsM2000List.Where(m => m.Label == "ELEM1" || m.Label == "ELEM2").ToList(); }
+
+                        string carrusel = "carousel-item";
+                        string carruselActive = "carousel-item active";
+
+                        <div class="@(i == 0 ? carruselActive : carrusel ) ">
+                            <div class="row mt-3 mb-5">
+
+                                @foreach (Station station in filteredStations)
+                                {
+
+                                    if (Model.TestStatsList.Any(m => m.StationID == station.StationID))
+                                    {
+                                        TestStats testStat = Model.TestStatsList.FirstOrDefault(m => m.StationID == station.StationID);
+
+                                        <div class="card text-center ml-5" style="max-height: 40rem; width: 30rem; box-shadow: 0 17px 17px 0 rgba(0,0,0,0.15),0 27px 55px 0 rgba(0,0,0,0.3)">
+                                            <div class="card-header" style="border-top-color:@testStat.StatusColor !important;border-top: solid;border-top-width:12px;background-color:transparent;max-height:60px;">
+                                                <h3>@station.Label</h3>
+                                            </div>
+                                            <div class="card-body">
+
+                                                <div class="row" style="padding-bottom:5px">
+                                                    <div class="col-12">
+                                                        <label class="font-weight-bold float-left" style="        font-size: 32px;">Job Progress</label>
+                                                        <label class="font-weight-bold float-right text-secondary"
+                                                               style="font-size: 26px;">
+                                                            @testStat.TTC.Hour.ToString().PadLeft(2, '0'):@testStat.TTC.Minute.ToString().PadLeft(2, '0')
+                                                        </label>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <div class="progress ">
+                                                            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
+                                                                 style="width: @testStat.JobProgress%;background-color: @testStat.EfficiencyColor;" aria-valuenow="@testStat.JobProgress" aria-valuemin="0" aria-valuemax="100">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <label class="font-weight-bold float-left" style="font-size: 32px;">Stage Progress</label>
+                                                        <label class="font-weight-bold float-right text-secondary" style="font-size: 26px;">@testStat.Stage</label>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <div class="progress ">
+                                                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-info" role="progressbar"
+                                                                 style="width:@testStat.StageProgress%;" aria-valuenow="@testStat.StageProgress" aria-valuemin="0" aria-valuemax="100">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <div class="card-footer bg-white p-0">
+                                                <ul class="nav nav-pills flex-column" style="font-size: 32px;white-space:nowrap;">
+                                                    <li class="nav-item border-bottom" style="padding-bottom:5px; padding-top:8px;margin-left:10px; margin-right: 10px;">
+                                                        <span class=" float-left font-weight-bold">
+                                                            Job#
+                                                        </span>
+                                                        <span class="float-right text-secondary font-weight-bold">
+                                                            @testStat.JobNumer
+                                                        </span>
+                                                    </li>
+                                                    <li class="nav-item border-bottom" style="padding-bottom:5px; padding-top:8px;margin-left:10px; margin-right: 10px;">
+                                                        <span class=" float-left font-weight-bold">
+                                                            Tech Name
+                                                        </span>
+                                                        <span class="float-right text-secondary font-weight-bold">
+                                                            @testStat.TechName
+                                                        </span>
+                                                    </li>
+                                                    <li class="nav-item border-bottom" style="padding-bottom:5px; padding-top:8px;margin-left:10px; margin-right: 10px;">
+                                                        <span class=" float-left font-weight-bold">
+                                                            Stage
+                                                        </span>
+                                                        <span class="float-right text-secondary font-weight-bold">
+                                                            @testStat.Stage
+                                                        </span>
+                                                    </li>
+                                                    <li class="nav-item border-bottom" style="padding-bottom:5px; padding-top:8px;margin-left:10px; margin-right: 10px;">
+                                                        <span class=" float-left font-weight-bold">
+                                                            CAT
+                                                        </span>
+                                                        <span class="float-right text-secondary font-weight-bold">
+                                                            @testStat.Category
+                                                        </span>
+                                                    </li>
+                                                    <li class="nav-item border-bottom" style="padding-bottom:5px; padding-top:8px;margin-left:10px; margin-right: 10px;">
+                                                        <span class=" float-left font-weight-bold">
+                                                            Efficiency
+                                                        </span>
+                                                        <span class="float-right text-secondary font-weight-bold">
+                                                            @testStat.Efficiency%
+                                                        </span>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    }
+                                    else
+                                    {
+
+                                        <div class="card text-center ml-5" style="max-height: 36rem;max-width: 30rem;box-shadow: 0 17px 17px 0 rgba(0,0,0,0.15),0 27px 55px 0 rgba(0,0,0,0.3)">
+                                            <div class="card-header" style="border-top-color:gray !important;border-top: solid;border-top-width:12px;background-color:transparent;max-height:60px;">
+                                                <h3>@station.Label</h3>
+                                            </div>
+                                            <div class="card-body">
+
+                                                <div class="row" style="padding-bottom:5px">
+                                                    <div class="col-12">
+                                                        <label class="font-weight-bold float-left" style="        font-size: 32px;">Job Progress</label>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <div class="progress ">
+                                                            <div class="progress-bar" role="progressbar" style="width: 100%;background-color: gray;" aria-valuenow="99" aria-valuemin="0" aria-valuemax="100"></div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <label class="font-weight-bold float-left" style="        font-size: 32px;">Stage Progress</label>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <div class="progress ">
+                                                            <div class="progress-bar" role="progressbar" style="width: 100%;background-color: gray;" aria-valuenow="99" aria-valuemin="0" aria-valuemax="100"></div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <div class="card-footer bg-white p-0">
+                                                <ul class="nav nav-pills flex-column" style="font-size: 32px;">
+                                                    <li class="nav-item border-bottom" style="padding-bottom:5px; padding-top:8px;margin-left:10px; margin-right: 10px;">
+                                                        <span class=" float-left font-weight-bold">
+                                                            Job#
+                                                        </span>
+                                                        <span class="float-right text-secondary font-weight-bold">
+                                                            ...
+                                                        </span>
+                                                    </li>
+                                                    <li class="nav-item border-bottom" style="padding-bottom:5px; padding-top:8px;margin-left:10px; margin-right: 10px;">
+                                                        <span class=" float-left font-weight-bold">
+                                                            Tech Name
+                                                        </span>
+                                                        <span class="float-right text-secondary font-weight-bold">
+                                                            ...
+                                                        </span>
+                                                    </li>
+                                                    <li class="nav-item border-bottom" style="padding-bottom:5px; padding-top:8px;margin-left:10px; margin-right: 10px;">
+                                                        <span class=" float-left font-weight-bold">
+                                                            Stage
+                                                        </span>
+                                                        <span class="float-right text-secondary font-weight-bold">
+                                                            ...
+                                                        </span>
+                                                    </li>
+                                                    <li class="nav-item border-bottom" style="padding-bottom:5px; padding-top:8px;margin-left:10px; margin-right: 10px;">
+                                                        <span class=" float-left font-weight-bold">
+                                                            CAT
+                                                        </span>
+                                                        <span class="float-right text-secondary font-weight-bold">
+                                                            ...
+                                                        </span>
+                                                    </li>
+                                                    <li class="nav-item border-bottom" style="padding-bottom:5px; padding-top:8px;margin-left:10px; margin-right: 10px;">
+                                                        <span class=" float-left font-weight-bold">
+                                                            Efficiency
+                                                        </span>
+                                                        <span class="float-right text-secondary font-weight-bold">
+                                                            ...
+                                                        </span>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+
+                                    }
+
+
+                                }
+                            </div>
+                        </div>
+                    }
+
+                    <!----Esta parte de una escena-->
+
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="col-3" >
+
+        <div class="card text-white bg-warning col-12 mt-2" style="box-shadow: 0 17px 17px 0 rgba(0,0,0,0.15),0 27px 55px 0 rgba(0,0,0,0.3) ">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-2 pl-0">
+                        <i class="fas fa-chart-line fa-4x"></i>
+                    </div>
+                    <div class="col-10 font-weight-bold" style="font-size: 18px">
+                        <span>@dailyM2000.JobTypeName</span>
+                        <br />
+                        <span>Eficiencia:  @dailyM2000.TotalEfficiency%</span>
+                        <div class="progress bg-secondary" style="height: 0.2rem;max-width: 16rem">
+                            <div class="progress-bar bg-white" role="progressbar" style="width: @dailyM2000.TotalEfficiency%;"
+                                 aria-valuenow="@dailyM2000.TotalEfficiency" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        <span>@dailyM2000.TestJobsCounted Testjobs completados en @dailyM2000.TodayDate</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="card text-white bg-danger col-12 mt-4" style="box-shadow: 0 17px 17px 0 rgba(0,0,0,0.15),0 27px 55px 0 rgba(0,0,0,0.3) ">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-2 pl-0">
+                        <i class="fas fa-chart-line fa-4x"></i>
+                    </div>
+                    <div class="col-10 font-weight-bold" style="font-size: 18px">
+                        <span>Traction</span>
+                        <br />
+                        <span>Eficiencia:  @dailyTraction.TotalEfficiency%</span>
+                        <div class="progress bg-secondary" style="height: 0.2rem;max-width: 16rem">
+                            <div class="progress-bar bg-white" role="progressbar" style="width: @dailyTraction.TotalEfficiency%;"
+                                 aria-valuenow="@dailyTraction.TotalEfficiency" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        <span>@dailyTraction.TestJobsCounted Testjobs completados en @dailyTraction.TodayDate</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="card text-white bg-success col-12 mt-4" style="box-shadow: 0 17px 17px 0 rgba(0,0,0,0.15),0 27px 55px 0 rgba(0,0,0,0.3) ">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-2 pl-0">
+                        <i class="fas fa-chart-line fa-4x"></i>
+                    </div>
+                    <div class="col-10 font-weight-bold" style="font-size: 18px">
+                        <span>@dailyM2000.JobTypeName</span>
+                        <br />
+                        <span>Eficiencia:  @dailyM2000.TotalEfficiency%</span>
+                        <div class="progress bg-secondary" style="height: 0.2rem;max-width: 16rem">
+                            <div class="progress-bar bg-white" role="progressbar" style="width: @dailyM2000.TotalEfficiency%;"
+                                 aria-valuenow="@dailyM2000.TotalEfficiency" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        <span>@dailyM2000.TestJobsCounted Testjobs completados en @dailyM2000.TodayDate</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="card text-white bg-info col-12 mt-4" style="box-shadow: 0 17px 17px 0 rgba(0,0,0,0.15),0 27px 55px 0 rgba(0,0,0,0.3) ">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-2 pl-0">
+                        <i class="fas fa-chart-line fa-4x"></i>
+                    </div>
+                    <div class="col-10 font-weight-bold" style="font-size: 18px">
+                        <span>Hydro</span>
+                        <br />
+                        <span>Eficiencia:  @dailyHydro.TotalEfficiency%</span>
+                        <div class="progress bg-secondary" style="height: 0.2rem;max-width: 16rem">
+                            <div class="progress-bar bg-white" role="progressbar" style="width: @dailyHydro.TotalEfficiency%;"
+                                 aria-valuenow="@dailyHydro.TotalEfficiency" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        <span>@dailyHydro.TestJobsCounted Testjobs completados en @dailyHydro.TodayDate</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+
+    </div>
+
+    <div class="col-2">
+    </div>
+</div>
+
+
+
+@*
+    <!-----------------------------D1-------------------------------------------->
+    <div class="col-3">
+        <div class="card text-center  mb-6" style="max-width: 20rem;">
+            <div class="card-header" style="border-top-color:forestgreen !important;border-top: solid;border-top-width:10px;background-color:transparent"><h4>S1</h4></div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="form-group col-6">
+                        <label class="font-weight-bold" style="font-size: 20px;">Completion</label>
+                        <input type="text" value="90" class="knob" data-width="100" data-height="120" data-readOnly=true data-fgColor="green" data-skin="tron" data-thickness=".2">
+                    </div>
+                    <div class="form-group col-6">
+                        <label class="font-weight-bold" style="font-size: 20px;">Efficiency</label>
+                        <input type="text" value="60" class="knob" data-width="100" data-height="120" data-readOnly=true data-fgColor="DarkOrange" data-skin="tron" data-thickness=".2">
+                    </div>
+                </div>
+
+            </div>
+            <div class="card-footer bg-white p-0">
+                <ul class="nav nav-pills flex-column" style=" font-size: 20px;">
+                    <li class="nav-item border-bottom " style="padding-bottom:8px; padding-top:8px;padding-left:10px; padding-right: 10px;">
+                        <span class=" float-left font-weight-bold">
+                            <i class="fa fa-briefcase"></i>&nbsp;&nbsp;Job#
+                        </span>
+                        <span class="float-right text-secondary font-weight-bold">
+                            95213
+                        </span>
+                    </li>
+                    <li class="nav-item border-bottom " style="padding-bottom:8px; padding-top:8px;padding-left:10px; padding-right: 10px;">
+                        <span class=" float-left font-weight-bold">
+                            <i class="fas fa-user-tie"></i>&nbsp;&nbsp;Tech Name
+                        </span>
+                        <span class="float-right text-secondary font-weight-bold">
+                            Adriana Barron
+                        </span>
+                    </li>
+                    <li class="nav-item border-bottom " style="padding-bottom:8px; padding-top:8px;padding-left:10px; padding-right: 10px;">
+                        <span class=" float-left font-weight-bold">
+                            <i class="fas fa-exclamation-circle"></i>&nbsp;&nbsp; Category
+                        </span>
+                        <span class="float-right text-secondary font-weight-bold">
+                            6
+                        </span>
+                    </li>
+                    <li class="nav-item border-bottom " style="padding-bottom:8px; padding-top:8px;padding-left:10px; padding-right: 10px;">
+                        <span class=" float-left font-weight-bold">
+                            <i class="fas fa-map-marker-alt"></i>&nbsp;&nbsp;Stage
+                        </span>
+                        <span class="float-right text-secondary font-weight-bold">
+                            Ending
+                        </span>
+                    </li>
+                    <li class="nav-item border-bottom " style="padding-bottom:8px; padding-top:8px;padding-left:10px; padding-right: 10px;">
+                        <span class=" float-left font-weight-bold">
+                            <i class="fas fa-clock"></i>&nbsp;&nbsp;Time To Complete
+                        </span>
+                        <span class="float-right text-secondary font-weight-bold">
+                            00:32
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-----------------------------D1-------------------------------------------->
+
+    <table class="table table-striped  text-center " style="text-align:center">
+        <thead style="background-color:#343a40!important;color:#fff;">
+            <tr>
+                <th class="text-center" colspan="12">
+                    <h5 style="font-size:25px">Production Floor @ViewBag.JobType</h5>
+                </th>
+            </tr>
+            <tr style="font-size:22px">
+                <th style="width:10%" colspan="1">
+                    Job#
+                </th>
+                <th style="width:10%"  colspan="1">
+                    Tech
+                </th>
+                <th style="width:10%" colspan="1">
+                    Stage
+                </th>
+                <th colspan="6">
+                    Status
+                </th>
+                <th style="width:5%" colspan="1">
+                    Cat
+                </th>
+                <th style="width:5%" colspan="1">
+                    ST
+                </th>
+                <th style="width:5%" colspan="1">
+                    TTC
+                </th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.TestStatsList.Count() == 0)
+            {
+                <tr>
+                    <td colspan="12" style="font-size:20px">No active TestJobs!</td>
+                </tr>
+            }
+            else
+            {
+                @foreach (var j in Model.TestStatsList)
+                {
+
+        <tr style="font-size:20px">
+            <td style="width:10%" colspan="1" >@j.JobNumer</td>
+            <td style="width:10%" colspan="1">@j.TechName</td>
+            <td style="width:10%" colspan="1">@j.Stage</td>
+            <td colspan="6">
+                <div  style="height: 20px;" class="progress">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated " role="progressbar" style="width: @j.Efficiency.ToString()%; background-color: @j.Color;color:  @j.TextColor;font-size:20px;"
+                         aria-valuenow="@j.Efficiency.ToString()" aria-valuemin="0" aria-valuemax="99">@j.Status</div>
+                </div>
+            </td>
+            <td style="width:5%" colspan="1">@j.Category</td>
+            <td style="width:5%" colspan="1">@j.Station</td>
+            <td style="width:5%" colspan="1">@j.TTC.Hour.ToString().PadLeft(2, '0'):@j.TTC.Minute.ToString().PadLeft(2, '0')</td>
+
+        </tr>
+                }
+            }
+        </tbody>
+    </table>
+*@
