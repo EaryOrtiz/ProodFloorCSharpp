@@ -7,6 +7,7 @@
             setInterval(function () {
                 location.reload(true);
             }, 60000);
+
         });
     </script>
     DailyReport dailyM2000 = Model.dailyReports.FirstOrDefault(m => m.JobTypeName == "M2000");
@@ -223,8 +224,8 @@
         else
         {
 
-            <div id="carouselM2000" class="carousel slide" data-ride="carousel">
-                <div class="carousel-inner" style="align-content:center; width: 1080px;">
+            <div id="carouselM2000" class="carousel slide" data-ride="carousel" data-interval="15000">
+                <div class="carousel-inner" style="align-content:center; width: 1080px;" >
 
                     <!----Esta parte de una escena-->
 
@@ -240,7 +241,7 @@
                         string carrusel = "carousel-item";
                         string carruselActive = "carousel-item active";
 
-                        <div class="@(i == 0 ? carruselActive : carrusel ) ">
+                        <div class="@(i == 0 ? carruselActive : carrusel ) " >
                             <div class="row mt-3 mb-5">
 
                                 @foreach (Station station in filteredStations)
@@ -427,23 +428,23 @@
         }
     </div>
 
-    <div class="col-3" >
+    <div class="col-3">
 
-        <div class="card text-white bg-warning col-12 mt-2" style="box-shadow: 0 17px 17px 0 rgba(0,0,0,0.15),0 27px 55px 0 rgba(0,0,0,0.3) ">
+        <div class="card text-white bg-success col-12 mt-4" style="box-shadow: 0 17px 17px 0 rgba(0,0,0,0.15),0 27px 55px 0 rgba(0,0,0,0.3) ">
             <div class="card-body">
                 <div class="row">
                     <div class="col-2 pl-0">
                         <i class="fas fa-chart-line fa-4x"></i>
                     </div>
                     <div class="col-10 font-weight-bold" style="font-size: 18px">
-                        <span>@dailyM2000.JobTypeName</span>
+                        <span>@dailyM4000.JobTypeName</span>
                         <br />
-                        <span>Eficiencia:  @dailyM2000.TotalEfficiency%</span>
+                        <span>Eficiencia:  @dailyM4000.TotalEfficiency%</span>
                         <div class="progress bg-secondary" style="height: 0.2rem;max-width: 16rem">
-                            <div class="progress-bar bg-white" role="progressbar" style="width: @dailyM2000.TotalEfficiency%;"
-                                 aria-valuenow="@dailyM2000.TotalEfficiency" aria-valuemin="0" aria-valuemax="100"></div>
+                            <div class="progress-bar bg-white" role="progressbar" style="width: @dailyM4000.TotalEfficiency%;"
+                                 aria-valuenow="@dailyM4000.TotalEfficiency" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
-                        <span>@dailyM2000.TestJobsCounted Testjobs completados en @dailyM2000.TodayDate</span>
+                        <span>@dailyM4000.TestJobsCounted Testjobs completados en @dailyM4000.TodayDate</span>
                     </div>
                 </div>
 
@@ -471,7 +472,8 @@
             </div>
         </div>
 
-        <div class="card text-white bg-success col-12 mt-4" style="box-shadow: 0 17px 17px 0 rgba(0,0,0,0.15),0 27px 55px 0 rgba(0,0,0,0.3) ">
+
+        <div class="card text-white bg-warning col-12 mt-2" style="box-shadow: 0 17px 17px 0 rgba(0,0,0,0.15),0 27px 55px 0 rgba(0,0,0,0.3) ">
             <div class="card-body">
                 <div class="row">
                     <div class="col-2 pl-0">
