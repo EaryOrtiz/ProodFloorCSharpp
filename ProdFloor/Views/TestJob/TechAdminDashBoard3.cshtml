@@ -74,6 +74,12 @@
                                 <i class="fas fa-edit"></i>
                             </button>
                         </form>
+                        <form asp-action="TestJobWorkSheet" asp-controller="TestJob" method="get">
+                            <button type="submit" value="@j.TestJobID" name="ID" class="btn btn-light" data-tooltip="tooltip" data-placement="top" title="Resume"
+                                    style="float:left;background-color:transparent">
+                                <i class="fas fa-file-word"></i>
+                            </button>
+                        </form>
 
                         <!-- Button trigger to  reassign-->
                         <button type="button" class="btn btn-light" data-toggle="modal" data-target="#exampleModalreassign @j.TestJobID" style="float:left;background-color:transparent" data-tooltip="tooltip" data-placement="top" title="Reassign TestJob">

@@ -1,0 +1,67 @@
+﻿@model ProdFloor.Models.ViewModels.TestJob.TestJobWorkSheetViewModel
+@{
+    ViewData["Title"] = "TestStats";
+
+}
+<div class="row" style="padding-right:20px">
+    <h2 class="col-sm-10">Resume for TestJob: @Model.JobNumber</h2>
+</div>
+<ul class="nav nav-tabs " role="tablist">
+    <li class="nav-item">
+        <a class="nav-link active" data-toggle="tab" href="#general" role="tab">General</a>
+    </li>
+</ul>
+<div class="tab-content" style="padding:20px">
+    <div class="tab-pane active" id="general" role="tabpanel">
+        <div class="container float-left">
+            <div class="form-group row" style="margin-bottom:0em;">
+                <label class="col-4 col-form-label">PO:</label>
+                <div class="col-5">
+                    <input type="text" value="@Model.PO" class="form-control form-control-sm col-12" disabled asp-for="PO">
+                </div>
+            </div>
+            <div class="form-group row" style="margin-bottom:0em;">
+                <label class="col-4 col-form-label">ShippingDate:</label>
+                <div class="col-5">
+                    <input type="text" value="@Model.ShippingDate" class="form-control form-control-sm col-12" disabled asp-for="ShippingDate">
+                </div>
+            </div>
+            <div class="form-group row" style="margin-bottom:0em;">
+                <label class="col-4 col-form-label">Elapsed Time: &nbsp;</label>
+                <div class="col-5">
+                    <input type="text" value="@Model.ElapsedTimeSteps" class="form-control form-control-sm col-sm-12" disabled asp-for="ElapsedTimeSteps">
+                </div>
+            </div>
+            <div class="form-group row" style="margin-bottom:0em;">
+                <label class="col-4 col-form-label">Stops counted: &nbsp;</label>
+                <div class="col-5">
+                    <input type="text" value="@Model.StopsNumber" class="form-control form-control-sm col-sm-12" disabled asp-for="StopsNumber">
+                </div>
+            </div>
+            <div class="form-group row" style="margin-bottom:0em;">
+                <label class="col-4 col-form-label">Elapsed Stop Time: &nbsp;</label>
+                <div class="col-5">
+                    <input type="text" value="@Model.ElapsedTimeStop" class="form-control form-control-sm col-sm-12" disabled asp-for="ElapsedTimeStop">
+                </div>
+            </div>
+            <div class="form-group row" style="margin-bottom:0em;">
+                <label class="col-4 col-form-label">Reassignments counted: &nbsp;</label>
+                <div class="col-5">
+                    <input type="text" value="@Model.ReassignsNumber" class="form-control form-control-sm col-sm-12" disabled asp-for="ElapsedTimeStop">
+                </div>
+            </div>
+            <div class="form-group row" style="margin-bottom:0em;">
+                <label class="col-4 col-form-label">Techs: &nbsp;</label>
+                <div class="col-5">
+                    <input type="text" value="@Model.TechsInThisTestJob" class="form-control form-control-sm col-sm-12" disabled asp-for="ElapsedTimeStop">
+                </div>
+            </div>
+            <div class="form-group row" style="margin-bottom:0em;">
+                <label class="col-4 col-form-label">Stations: &nbsp;</label>
+                <div class="col-5">
+                    <input type="text" value="@Model.StationsInThisJob" class="form-control form-control-sm col-sm-12" disabled asp-for="ElapsedTimeStop">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

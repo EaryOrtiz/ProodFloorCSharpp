@@ -2982,7 +2982,14 @@ namespace ProdFloor.Controllers
             return jobNum;
         }
 
-        
+        public string ToClockDateString(DateTime time)
+        {
+            string elapsed = (time.Day - 1).ToString() + ":" + time.Hour.ToString() + ":" + time.Minute.ToString() + ":" + time.Second.ToString();
+
+            return elapsed;
+        }
+
+
 
         [AllowAnonymous]
         public ViewResult TestStatsAux(TestJobViewModel viewModel, string JobType)
@@ -3146,6 +3153,92 @@ namespace ProdFloor.Controllers
                 ViewData["TV"] = "Simontl";
                 viewModel.TestStatsList.Add(testStats);
             }
+
+            return View(viewModel);
+        }
+
+        public IActionResult TestJobWorkSheet(int Id)
+        {
+            TestJobWorkSheetViewModel viewModel = new TestJobWorkSheetViewModel();
+            double elapsedHoursSteps = 0;
+            double elapsedHoursStops = 0;
+            string techNames = "";
+            string stationsNames = "";
+            try
+            {
+                TestJob testJob = testingRepo.TestJobs.Include(q => q._StepsForJobs)
+                                      .Include(w => w._Stops)
+                                      .FirstOrDefault(m => m.TestJobID == Id);
+
+                if(testJob == null)
+                {
+                    TempData["alert"] = $"alert-danger";
+                    TempData["message"] = $"El trabajo no existe";
+                    return RedirectToAction("SearchTestJob");
+                }
+
+                Job job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == testJob.JobID);
+                List<StepsForJob> stepsCompleted = testJob._StepsForJobs.Where(m => m.Complete == true).ToList();
+                List<Stop> stopsReassigned = testJob._Stops.Where(m => m.Reason5ID == 980).ToList();
+                List<int> techsId = stopsReassigned.Where(n => n.AuxTechnicianID != testJob.TechnicianID).Select(m => m.AuxTechnicianID).Distinct().ToList();
+                List<int> stationsId = stopsReassigned.Where(n => n.AuxStationID != testJob.StationID).Select(m => m.AuxStationID).Distinct().ToList();
+                List<Stop> stopsCompleted = testJob._Stops.Where(m => m.Reason5ID !=0)
+                                                          .Where(m => m.Reason5ID != 980 && m.Reason5ID != 981 && m.Reason5ID != 982)
+                                                          .ToList();
+
+                techNames = userManager.Users.FirstOrDefault(m => m.EngID == testJob.TechnicianID).FullName + ", ";
+                stationsNames = testingRepo.Stations.FirstOrDefault(m => m.StationID == testJob.StationID).Label + ", ";
+
+                if (stopsReassigned.Count > 0)
+                {
+                    foreach (int techId in techsId)
+                    {
+                        string techName = userManager.Users.FirstOrDefault(m => m.EngID == techId).FullName;
+
+                        techNames = techNames + techName + ", ";
+                    }
+
+                    foreach (int stationId in stationsId)
+                    {
+                        string stationName = testingRepo.Stations.FirstOrDefault(m => m.StationID == stationId).Label;
+
+                        stationsNames = stationsNames + stationName + ", ";
+                    }
+                }
+
+                
+
+                foreach (StepsForJob step in stepsCompleted)
+                {
+                    elapsedHoursSteps += ToHours(step.Elapsed);
+                }
+                DateTime elapsedDateTimeSteps = ToDateTime(elapsedHoursSteps);
+
+
+                foreach (Stop stop in stopsCompleted)
+                {
+                    elapsedHoursStops += ToHours(stop.Elapsed);
+                }
+                DateTime elapsedDateTimeStops = ToDateTime(elapsedHoursStops);
+
+                viewModel.JobNumber = job.JobNum;
+                viewModel.ShippingDate = job.ShipDate.ToLongDateString();
+                viewModel.ElapsedTimeSteps = ToClockDateString(elapsedDateTimeSteps);
+                viewModel.StopsNumber = stopsCompleted.Count();
+                viewModel.ElapsedTimeStop = ToClockDateString(elapsedDateTimeStops);
+                viewModel.ReassignsNumber = stopsReassigned.Count();
+                viewModel.TechsInThisTestJob = techNames;
+                viewModel.StationsInThisJob = stationsNames;
+                viewModel.PO = testJob.SinglePO;
+
+            }
+            catch
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"Algo ocurrio mal";
+                return RedirectToAction("SearchTestJob");
+            }
+
 
             return View(viewModel);
         }
