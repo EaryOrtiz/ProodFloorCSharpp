@@ -383,7 +383,10 @@ namespace ProdFloor.Controllers
                     if (isNotCompleted && (isSameEngineer || isAdmin || isTechAdmin))
                     {
                         testingRepo.SaveTestFeature(nextViewModel.TestFeature);
-                        if (nextViewModel.isNotDummy == false) UpdateDummyJob(nextViewModel);
+                        if (nextViewModel.isNotDummy == false)
+                        {
+                            UpdateDummyJob(nextViewModel);
+                        }
                         testJob.Status = "Working on it";
                         testJob.StationID = nextViewModel.TestJob.StationID;
                         testJob.JobLabel = nextViewModel.TestJob.JobLabel;
@@ -436,6 +439,28 @@ namespace ProdFloor.Controllers
                         nextViewModel.GenericFeatures = jobRepo.GenericFeaturesList.FirstOrDefault(m => m.JobID == nextViewModel.Job.JobID);
                         nextViewModel.Indicator = jobRepo.Indicators.FirstOrDefault(m => m.JobID == nextViewModel.Job.JobID);
                         nextViewModel.HoistWayData = jobRepo.HoistWayDatas.FirstOrDefault(m => m.JobID == nextViewModel.Job.JobID);
+
+                        //Job info
+                        if (nextViewModel.Job.CityID == 10) nextViewModel.Canada = true;
+                        else if (nextViewModel.Job.CityID == 11) nextViewModel.Ontario = true;
+
+                        //JobExtensions
+                        if (nextViewModel.JobExtension.DoorOperatorID == 7)
+                            nextViewModel.MOD = true;
+
+                        if (nextViewModel.JobExtension.DoorOperatorID == 2)
+                            nextViewModel.Manual = true;
+
+                        //Hrydrospecific
+                        if (nextViewModel.HydroSpecific.MotorsNum == 3) nextViewModel.TwosStarters = true;
+
+                        //Gneric
+                        if (nextViewModel.GenericFeatures.Monitoring == "IMonitor Interface")
+                            nextViewModel.IMonitor = true;
+
+                        if (nextViewModel.GenericFeatures.Monitoring == "MView Interface")
+                            nextViewModel.MView = true;
+
                         break;
                     case "ElmHydro":
                         Element element = jobRepo.Elements.FirstOrDefault(m => m.JobID == nextViewModel.Job.JobID);
@@ -759,6 +784,28 @@ namespace ProdFloor.Controllers
                             nextViewModel.GenericFeatures = jobRepo.GenericFeaturesList.FirstOrDefault(m => m.JobID == nextViewModel.Job.JobID);
                             nextViewModel.Indicator = jobRepo.Indicators.FirstOrDefault(m => m.JobID == nextViewModel.Job.JobID);
                             nextViewModel.HoistWayData = jobRepo.HoistWayDatas.FirstOrDefault(m => m.JobID == nextViewModel.Job.JobID);
+
+                            //Job info
+                            if (nextViewModel.Job.CityID == 10) nextViewModel.Canada = true;
+                            else if (nextViewModel.Job.CityID == 11) nextViewModel.Ontario = true;
+
+                            //JobExtensions
+                            if (nextViewModel.JobExtension.DoorOperatorID == 7)
+                                nextViewModel.MOD = true;
+
+                            if (nextViewModel.JobExtension.DoorOperatorID == 2)
+                                nextViewModel.Manual = true;
+
+                            //Hrydrospecific
+                            if (nextViewModel.HydroSpecific.MotorsNum == 3) nextViewModel.TwosStarters = true;
+
+                            //Gneric
+                            if (nextViewModel.GenericFeatures.Monitoring == "IMonitor Interface")
+                                nextViewModel.IMonitor = true;
+
+                            if (nextViewModel.GenericFeatures.Monitoring == "MView Interface")
+                                nextViewModel.MView = true;
+
                             break;
                         case "ElmHydro":
                             Element element = jobRepo.Elements.FirstOrDefault(m => m.JobID == nextViewModel.Job.JobID);
@@ -876,6 +923,28 @@ namespace ProdFloor.Controllers
                     nextViewModel.GenericFeatures = jobRepo.GenericFeaturesList.FirstOrDefault(m => m.JobID == nextViewModel.Job.JobID);
                     nextViewModel.Indicator = jobRepo.Indicators.FirstOrDefault(m => m.JobID == nextViewModel.Job.JobID);
                     nextViewModel.HoistWayData = jobRepo.HoistWayDatas.FirstOrDefault(m => m.JobID == nextViewModel.Job.JobID);
+
+                    //Job info
+                    if (nextViewModel.Job.CityID == 10) nextViewModel.Canada = true;
+                    else if (nextViewModel.Job.CityID == 11) nextViewModel.Ontario = true;
+
+                    //JobExtensions
+                    if (nextViewModel.JobExtension.DoorOperatorID == 7)
+                        nextViewModel.MOD = true;
+
+                    if (nextViewModel.JobExtension.DoorOperatorID == 2)
+                        nextViewModel.Manual = true;
+
+                    //Hrydrospecific
+                    if (nextViewModel.HydroSpecific.MotorsNum == 3)  nextViewModel.TwosStarters = true;
+
+                    //Gneric
+                    if (nextViewModel.GenericFeatures.Monitoring == "IMonitor Interface")
+                        nextViewModel.IMonitor = true;
+
+                    if (nextViewModel.GenericFeatures.Monitoring == "MView Interface")
+                        nextViewModel.MView = true;
+
                     break;
                 case "ElmHydro":
                     Element element = jobRepo.Elements.FirstOrDefault(m => m.JobID == nextViewModel.Job.JobID);
@@ -2020,7 +2089,7 @@ namespace ProdFloor.Controllers
 
 
 
-        //==========================================================================
+        //==========================================================================.
 
         public ViewResult StopsFromTestJob(int ID, int page = 1)
         {
