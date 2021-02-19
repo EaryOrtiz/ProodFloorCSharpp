@@ -13,5 +13,8 @@ namespace ProdFloor.Models.ViewModels.Report
         public List<TestStats> TestStatsList { get; set; }
 
         public List<DailyReport> dailyReports { get;  set; }
+        public List<DailyReport> WeekReports { get;  set; }
+        public List<DailyReport> PastMonthReports { get;  set; }
+        public List<DailyReport> MonthReports { get;  set; }
     }
 }

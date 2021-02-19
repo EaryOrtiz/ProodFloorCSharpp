@@ -43,6 +43,7 @@
             {
                 AppUser CurrentUser = UserManager.Users.FirstOrDefault(m => m.EngID == j.TechnicianID);
                 Job MyJob = Model.JobList.FirstOrDefault(m => m.JobID == j.JobID);
+                StepsForJob stepIncomplete = Model.StepsForJobList.FirstOrDefault(m => m.TestJobID == j.TestJobID && m.Complete == false);
 
                 <tr>
                     <th scope="row">
@@ -55,9 +56,9 @@
                     <td>@Model.JobTypeList.FirstOrDefault(m => m.JobTypeID == MyJob.JobTypeID).Name</td>
                     <td>@CurrentUser.FullName</td>
                     <td>
-                        @if (j.Status == "Working on it")
+                        @if (j.Status == "Working on it" && stepIncomplete != null)
                         {
-                            StepsForJob stepIncomplete = Model.StepsForJobList.FirstOrDefault(m => m.TestJobID == j.TestJobID && m.Complete == false);
+                            
                             string StageName = Model.StepList.FirstOrDefault(m => m.StepID == stepIncomplete.StepID).Stage;
                             @j.Status <span>| Stage: @StageName</span>
                         }

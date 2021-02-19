@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -86,93 +87,115 @@ namespace ProdFloor.Controllers
                 double ExpectedTimeSUM = 0;
                 double RealTimeSUM = 0;
                 double TTCAux = 0;
+                double JobProgress = 0;
+                double StageProgress = 0;
                 DateTime TTC = new DateTime();
 
 
                 //Logic for TTC
                 stepsForJobNotCompleted = AllSteps.Where(m => m.TestJobID == testjob.TestJobID && m.Complete == false && m.Obsolete == false).OrderBy(n => n.Consecutivo).ToList();
-                StepsForJob LastStepsForJob = stepsForJobNotCompleted.FirstOrDefault(m => m.Complete == false);
-                Step LastStepInfo = StepsListInfo.FirstOrDefault(m => m.StepID == LastStepsForJob.StepID);
+                StepsForJob LastStepsForJob = new StepsForJob();
+                Step LastStepInfo = new Step();
 
-                foreach (StepsForJob step in stepsForJobNotCompleted)
+                try
                 {
-                    TTCAux += ToHours(StepsListInfo.FirstOrDefault(m => m.StepID == step.StepID).ExpectedTime);
-                }
-
-                TTC = ToDateTime(TTCAux);
-
-                stepsForJobCompleted = AllSteps.Where(m => m.TestJobID == testjob.TestJobID && m.Complete == true).OrderBy(n => n.Consecutivo).ToList();
-
-                //a simple query to get the stage
-                Stage = LastStepInfo.Stage;
-
-                //if to get efficiency or status(stopped)
-                if (testjob.Status == "Working on it")
-                {
-                    foreach (StepsForJob step in stepsForJobCompleted)
+                    if (stepsForJobNotCompleted.Count > 0)
                     {
-                        ExpectedTimeSUM += ToHours(StepsListInfo.FirstOrDefault(m => m.StepID == step.StepID).ExpectedTime);
+                        LastStepsForJob = stepsForJobNotCompleted.FirstOrDefault(m => m.Complete == false);
+                        LastStepInfo = StepsListInfo.FirstOrDefault(m => m.StepID == LastStepsForJob.StepID);
 
-                        RealTimeSUM += ToHours(step.Elapsed);
+                        foreach (StepsForJob step in stepsForJobNotCompleted)
+                        {
+                            TTCAux += ToHours(StepsListInfo.FirstOrDefault(m => m.StepID == step.StepID).ExpectedTime);
+                        }
+
+                        TTC = ToDateTime(TTCAux);
+
+                        stepsForJobCompleted = AllSteps.Where(m => m.TestJobID == testjob.TestJobID && m.Complete == true).OrderBy(n => n.Consecutivo).ToList();
+
+                        //a simple query to get the stage
+                        Stage = LastStepInfo.Stage;
+
+                        //if to get efficiency or status(stopped)
+                        if (testjob.Status == "Working on it")
+                        {
+                            foreach (StepsForJob step in stepsForJobCompleted)
+                            {
+                                ExpectedTimeSUM += ToHours(StepsListInfo.FirstOrDefault(m => m.StepID == step.StepID).ExpectedTime);
+
+                                RealTimeSUM += ToHours(step.Elapsed);
+                            }
+                            ExpectedTimeSUM += ToHours(LastStepInfo.ExpectedTime);
+                            RealTimeSUM += ToHours(LastStepsForJob.Elapsed);
+
+                            Efficiency = Math.Round((ExpectedTimeSUM / RealTimeSUM) * 100);
+
+                            if (Efficiency > 99) Efficiency = 99;
+                            if (Efficiency < 82) EfficiencyColor = "Orange";
+                            else if (Efficiency < 69) EfficiencyColor = "#ffc107!important";
+
+                        }
+                        else
+                        {
+                            Efficiency = 99;
+
+                            Stop stop = testingRepo.Stops.Where(m => m.TestJobID == testjob.TestJobID).Last();
+                            Reason1 reason = testingRepo.Reasons1.FirstOrDefault(m => m.Reason1ID == stop.Reason1);
+                            Status = "Stopped: " + reason.Description;
+
+                            if (stop.Critical) StatusColor = "Red";
+                            if (stop.Reason1 == 980 || stop.Reason1 == 981 || stop.Reason1 == 982) StatusColor = "Gray";
+
+
+                        }
                     }
-                    ExpectedTimeSUM += ToHours(LastStepInfo.ExpectedTime);
-                    RealTimeSUM += ToHours(LastStepsForJob.Elapsed);
 
-                    Efficiency = Math.Round((ExpectedTimeSUM / RealTimeSUM) * 100);
+                    //JobProgress
+                    JobProgress = (stepsForJobCompleted.Count() * 100) / AllSteps.Count();
 
-                    if (Efficiency > 99) Efficiency = 99;
-                    if (Efficiency < 82) EfficiencyColor = "Orange";
-                    else if (Efficiency < 69) EfficiencyColor = "#ffc107!important";
+                    //Stage Progress
+                    List<Step> stepsPerStage = StepsListInfo.Where(m => m.Stage == Stage && AllSteps.Any(n => n.StepID == m.StepID)).ToList();
+                    int stepsPerJobCompleted = AllSteps.Where(m => stepsPerStage.Any(s => s.StepID == m.StepID)).Where(m => m.Complete == true).Count();
 
+                    StageProgress = (stepsPerJobCompleted * 100) / stepsPerStage.Count();
+
+                    if (stepsPerStage.Count == 1 && StageProgress == 0) StageProgress = 50;
                 }
-                else
+                catch
                 {
-                    Efficiency = 99;
-
-                    Stop stop = testingRepo.Stops.Where(m => m.TestJobID == testjob.TestJobID).Last();
-                    Reason1 reason = testingRepo.Reasons1.FirstOrDefault(m => m.Reason1ID == stop.Reason1);
-                    Status = "Stopped: " + reason.Description;
-
-                    if (stop.Critical) StatusColor = "Red";
-                    if (stop.Reason1 == 980 || stop.Reason1 == 981 || stop.Reason1 == 982) StatusColor = "Gray";
-
 
                 }
 
-                //logic to get the cat(difficulty)
-                if (FeaturesFromJob.JobTypeID == 2)
+                try
                 {
-                    if (FeaturesFromJob.CityID == 11) Category = "6";
-                    else if (FeaturesFromTestJob.Custom || FeaturesFromTestJob.MRL) Category = "5";
-                    else if (FeaturesFromJob._jobExtension.DoorOperatorID == 2 || FeaturesFromTestJob.Overlay) Category = "4";
-                    else if (FeaturesFromJob._GenericFeatures.Monitoring.Contains("MView") || FeaturesFromJob._GenericFeatures.Monitoring.Contains("IMonitor") || FeaturesFromTestJob.Local) Category = "3";
-                    else if (FeaturesFromJob._HoistWayData.AnyRear || FeaturesFromJob._jobExtension.JobTypeMain == "Duplex" || (FeaturesFromJob._jobExtension.DoorOperatorID == 7 || FeaturesFromJob._jobExtension.DoorOperatorID == 8)
-                        || FeaturesFromJob._HydroSpecific.MotorsNum >= 2 || FeaturesFromJob._jobExtension.SHC || FeaturesFromTestJob.EMCO || FeaturesFromTestJob.R6) Category = "2";
-                    else Category = "1";
+                    //logic to get the cat(difficulty)
+                    if (FeaturesFromJob.JobTypeID == 2)
+                    {
+                        if (FeaturesFromJob.CityID == 11) Category = "6";
+                        else if (FeaturesFromTestJob.Custom || FeaturesFromTestJob.MRL) Category = "5";
+                        else if (FeaturesFromJob._jobExtension.DoorOperatorID == 2 || FeaturesFromTestJob.Overlay) Category = "4";
+                        else if (FeaturesFromJob._GenericFeatures.Monitoring.Contains("MView") || FeaturesFromJob._GenericFeatures.Monitoring.Contains("IMonitor") || FeaturesFromTestJob.Local) Category = "3";
+                        else if (FeaturesFromJob._HoistWayData.AnyRear || FeaturesFromJob._jobExtension.JobTypeMain == "Duplex" || (FeaturesFromJob._jobExtension.DoorOperatorID == 7 || FeaturesFromJob._jobExtension.DoorOperatorID == 8)
+                            || FeaturesFromJob._HydroSpecific.MotorsNum >= 2 || FeaturesFromJob._jobExtension.SHC || FeaturesFromTestJob.EMCO || FeaturesFromTestJob.R6) Category = "2";
+                        else Category = "1";
 
+                    }
+                    else if (FeaturesFromJob.JobTypeID == 4)
+                    {
+                        if (FeaturesFromJob.CityID == 11) Category = "6";
+                        else if (FeaturesFromTestJob.Custom) Category = "5";
+                        else if (FeaturesFromJob._jobExtension.DoorOperatorID == 2 || FeaturesFromTestJob.Overlay) Category = "4";
+                        else if (FeaturesFromJob._GenericFeatures.Monitoring.Contains("MView") || FeaturesFromJob._GenericFeatures.Monitoring.Contains("IMonitor") || FeaturesFromTestJob.Local || FeaturesFromTestJob.ShortFloor) Category = "3";
+                        else if (FeaturesFromJob._HoistWayData.AnyRear || FeaturesFromJob._jobExtension.JobTypeMain == "Duplex" || (FeaturesFromJob._jobExtension.DoorOperatorID == 7 || FeaturesFromJob._jobExtension.DoorOperatorID == 8)
+                            || FeaturesFromJob._HydroSpecific.MotorsNum >= 2) Category = "2";
+                        else Category = "1";
+                    }
+                    else Category = "Indefinida";
                 }
-                else if (FeaturesFromJob.JobTypeID == 4)
+                catch
                 {
-                    if (FeaturesFromJob.CityID == 11) Category = "6";
-                    else if (FeaturesFromTestJob.Custom) Category = "5";
-                    else if (FeaturesFromJob._jobExtension.DoorOperatorID == 2 || FeaturesFromTestJob.Overlay) Category = "4";
-                    else if (FeaturesFromJob._GenericFeatures.Monitoring.Contains("MView") || FeaturesFromJob._GenericFeatures.Monitoring.Contains("IMonitor") || FeaturesFromTestJob.Local || FeaturesFromTestJob.ShortFloor) Category = "3";
-                    else if (FeaturesFromJob._HoistWayData.AnyRear || FeaturesFromJob._jobExtension.JobTypeMain == "Duplex" || (FeaturesFromJob._jobExtension.DoorOperatorID == 7 || FeaturesFromJob._jobExtension.DoorOperatorID == 8)
-                        || FeaturesFromJob._HydroSpecific.MotorsNum >= 2) Category = "2";
-                    else Category = "1";
+                    Category = "Indefinida";
                 }
-                else Category = "Indefinida";
-
-                //JobProgress
-                double JobProgress = (stepsForJobCompleted.Count() * 100) / AllSteps.Count();
-
-                //Stage Progress
-                List<Step> stepsPerStage = StepsListInfo.Where(m => m.Stage == Stage && AllSteps.Any(n => n.StepID == m.StepID)).ToList();
-                int stepsPerJobCompleted = AllSteps.Where(m => stepsPerStage.Any(s => s.StepID == m.StepID)).Where(m => m.Complete == true).Count();
-
-                double StagePogress = (stepsPerJobCompleted * 100) / stepsPerStage.Count();
-
-                if (stepsPerStage.Count == 1 && StagePogress == 0) StagePogress = 50;
 
                 TestStats testStats = new TestStats()
                 {
@@ -187,7 +210,7 @@ namespace ProdFloor.Controllers
                     Station = StationName,
                     TTC = TTC,
                     JobProgress = JobProgress,
-                    StageProgress = StagePogress,
+                    StageProgress = StageProgress,
                     EfficiencyColor = EfficiencyColor,
 
                 };
@@ -608,7 +631,11 @@ namespace ProdFloor.Controllers
         [AllowAnonymous]
         public ViewResult TestStats(ReportsViewModel viewModel, string JobType)
         {
-            viewModel.dailyReports = GetDailyReports(DateTime.Now.AddDays(-1));
+            viewModel.dailyReports = GetDailyReports(DateTime.Now);
+            viewModel.WeekReports = GetDailyReports(DateTime.Now, "week");
+            viewModel.MonthReports = GetDailyReports(DateTime.Now, "month");
+            viewModel.PastMonthReports = GetDailyReports(DateTime.Now, "lastMonth");
+
             viewModel.TestStatsList = new List<TestStats>();
             List<TestJob> ActiveTestJobs = testingRepo.TestJobs.Where(m => m.Status != "Completed" && m.Status != "Deleted" && m.Status != "Incomplete").ToList();
 
@@ -642,7 +669,7 @@ namespace ProdFloor.Controllers
                 string JobNum = FeaturesFromJob.JobNum.Remove(0, 5);
                 string TechName = Users.FirstOrDefault(m => m.EngID == testjob.TechnicianID).FullName;
                 string StationName = StationFromTestJobs.FirstOrDefault(m => m.StationID == testjob.StationID).Label;
-                string Stage = "";
+                string Stage = "Error";
                 string Status = "";
                 string EfficiencyColor = "green";
                 string StatusColor = "green";
@@ -651,93 +678,115 @@ namespace ProdFloor.Controllers
                 double ExpectedTimeSUM = 0;
                 double RealTimeSUM = 0;
                 double TTCAux = 0;
+                double JobProgress = 0;
+                double StageProgress = 0;
                 DateTime TTC = new DateTime();
 
 
                 //Logic for TTC
                 stepsForJobNotCompleted = AllSteps.Where(m => m.TestJobID == testjob.TestJobID && m.Complete == false && m.Obsolete == false).OrderBy(n => n.Consecutivo).ToList();
-                StepsForJob LastStepsForJob = stepsForJobNotCompleted.FirstOrDefault(m => m.Complete == false);
-                Step LastStepInfo = StepsListInfo.FirstOrDefault(m => m.StepID == LastStepsForJob.StepID);
+                StepsForJob LastStepsForJob = new StepsForJob();
+                Step LastStepInfo = new Step();
 
-                foreach (StepsForJob step in stepsForJobNotCompleted)
+                try
                 {
-                    TTCAux += ToHours(StepsListInfo.FirstOrDefault(m => m.StepID == step.StepID).ExpectedTime);
-                }
-
-                TTC = ToDateTime(TTCAux);
-
-                stepsForJobCompleted = AllSteps.Where(m => m.TestJobID == testjob.TestJobID && m.Complete == true).OrderBy(n => n.Consecutivo).ToList();
-
-                //a simple query to get the stage
-                Stage = LastStepInfo.Stage;
-
-                //if to get efficiency or status(stopped)
-                if (testjob.Status == "Working on it")
-                {
-                    foreach (StepsForJob step in stepsForJobCompleted)
+                    if (stepsForJobNotCompleted.Count > 0)
                     {
-                        ExpectedTimeSUM += ToHours(StepsListInfo.FirstOrDefault(m => m.StepID == step.StepID).ExpectedTime);
+                        LastStepsForJob = stepsForJobNotCompleted.FirstOrDefault(m => m.Complete == false);
+                        LastStepInfo = StepsListInfo.FirstOrDefault(m => m.StepID == LastStepsForJob.StepID);
 
-                        RealTimeSUM += ToHours(step.Elapsed);
+                        foreach (StepsForJob step in stepsForJobNotCompleted)
+                        {
+                            TTCAux += ToHours(StepsListInfo.FirstOrDefault(m => m.StepID == step.StepID).ExpectedTime);
+                        }
+
+                        TTC = ToDateTime(TTCAux);
+
+                        stepsForJobCompleted = AllSteps.Where(m => m.TestJobID == testjob.TestJobID && m.Complete == true).OrderBy(n => n.Consecutivo).ToList();
+
+                        //a simple query to get the stage
+                        Stage = LastStepInfo.Stage;
+
+                        //if to get efficiency or status(stopped)
+                        if (testjob.Status == "Working on it")
+                        {
+                            foreach (StepsForJob step in stepsForJobCompleted)
+                            {
+                                ExpectedTimeSUM += ToHours(StepsListInfo.FirstOrDefault(m => m.StepID == step.StepID).ExpectedTime);
+
+                                RealTimeSUM += ToHours(step.Elapsed);
+                            }
+                            ExpectedTimeSUM += ToHours(LastStepInfo.ExpectedTime);
+                            RealTimeSUM += ToHours(LastStepsForJob.Elapsed);
+
+                            Efficiency = Math.Round((ExpectedTimeSUM / RealTimeSUM) * 100);
+
+                            if (Efficiency > 99) Efficiency = 99;
+                            if (Efficiency < 82) EfficiencyColor = "Orange";
+                            else if (Efficiency < 69) EfficiencyColor = "#ffc107!important";
+
+                        }
+                        else
+                        {
+                            Efficiency = 99;
+
+                            Stop stop = testingRepo.Stops.Where(m => m.TestJobID == testjob.TestJobID).Last();
+                            Reason1 reason = testingRepo.Reasons1.FirstOrDefault(m => m.Reason1ID == stop.Reason1);
+                            Status = "Stopped: " + reason.Description;
+
+                            if (stop.Critical) StatusColor = "Red";
+                            if (stop.Reason1 == 980 || stop.Reason1 == 981 || stop.Reason1 == 982) StatusColor = "Gray";
+
+
+                        }
                     }
-                    ExpectedTimeSUM += ToHours(LastStepInfo.ExpectedTime);
-                    RealTimeSUM += ToHours(LastStepsForJob.Elapsed);
 
-                    Efficiency = Math.Round((ExpectedTimeSUM / RealTimeSUM) * 100);
+                    //JobProgress
+                    JobProgress = (stepsForJobCompleted.Count() * 100) / AllSteps.Count();
 
-                    if (Efficiency > 99) Efficiency = 99;
-                    if (Efficiency < 82) EfficiencyColor = "Orange";
-                    else if (Efficiency < 69) EfficiencyColor = "#ffc107!important";
+                    //Stage Progress
+                    List<Step> stepsPerStage = StepsListInfo.Where(m => m.Stage == Stage && AllSteps.Any(n => n.StepID == m.StepID)).ToList();
+                    int stepsPerJobCompleted = AllSteps.Where(m => stepsPerStage.Any(s => s.StepID == m.StepID)).Where(m => m.Complete == true).Count();
 
+                    StageProgress = (stepsPerJobCompleted * 100) / stepsPerStage.Count();
+
+                    if (stepsPerStage.Count == 1 && StageProgress == 0) StageProgress = 50;
                 }
-                else
+                catch
                 {
-                    Efficiency = 99;
-
-                    Stop stop = testingRepo.Stops.Where(m => m.TestJobID == testjob.TestJobID).Last();
-                    Reason1 reason = testingRepo.Reasons1.FirstOrDefault(m => m.Reason1ID == stop.Reason1);
-                    Status = "Stopped: " + reason.Description;
-
-                    if (stop.Critical) StatusColor = "Red";
-                    if (stop.Reason1 == 980 || stop.Reason1 == 981 || stop.Reason1 == 982) StatusColor = "Gray";
-
 
                 }
 
-                //logic to get the cat(difficulty)
-                if (FeaturesFromJob.JobTypeID == 2)
+                try
                 {
-                    if (FeaturesFromJob.CityID == 11) Category = "6";
-                    else if (FeaturesFromTestJob.Custom || FeaturesFromTestJob.MRL) Category = "5";
-                    else if (FeaturesFromJob._jobExtension.DoorOperatorID == 2 || FeaturesFromTestJob.Overlay) Category = "4";
-                    else if (FeaturesFromJob._GenericFeatures.Monitoring.Contains("MView") || FeaturesFromJob._GenericFeatures.Monitoring.Contains("IMonitor") || FeaturesFromTestJob.Local) Category = "3";
-                    else if (FeaturesFromJob._HoistWayData.AnyRear || FeaturesFromJob._jobExtension.JobTypeMain == "Duplex" || (FeaturesFromJob._jobExtension.DoorOperatorID == 7 || FeaturesFromJob._jobExtension.DoorOperatorID == 8)
-                        || FeaturesFromJob._HydroSpecific.MotorsNum >= 2 || FeaturesFromJob._jobExtension.SHC || FeaturesFromTestJob.EMCO || FeaturesFromTestJob.R6) Category = "2";
-                    else Category = "1";
+                    //logic to get the cat(difficulty)
+                    if (FeaturesFromJob.JobTypeID == 2)
+                    {
+                        if (FeaturesFromJob.CityID == 11) Category = "6";
+                        else if (FeaturesFromTestJob.Custom || FeaturesFromTestJob.MRL) Category = "5";
+                        else if (FeaturesFromJob._jobExtension.DoorOperatorID == 2 || FeaturesFromTestJob.Overlay) Category = "4";
+                        else if (FeaturesFromJob._GenericFeatures.Monitoring.Contains("MView") || FeaturesFromJob._GenericFeatures.Monitoring.Contains("IMonitor") || FeaturesFromTestJob.Local) Category = "3";
+                        else if (FeaturesFromJob._HoistWayData.AnyRear || FeaturesFromJob._jobExtension.JobTypeMain == "Duplex" || (FeaturesFromJob._jobExtension.DoorOperatorID == 7 || FeaturesFromJob._jobExtension.DoorOperatorID == 8)
+                            || FeaturesFromJob._HydroSpecific.MotorsNum >= 2 || FeaturesFromJob._jobExtension.SHC || FeaturesFromTestJob.EMCO || FeaturesFromTestJob.R6) Category = "2";
+                        else Category = "1";
 
+                    }
+                    else if (FeaturesFromJob.JobTypeID == 4)
+                    {
+                        if (FeaturesFromJob.CityID == 11) Category = "6";
+                        else if (FeaturesFromTestJob.Custom) Category = "5";
+                        else if (FeaturesFromJob._jobExtension.DoorOperatorID == 2 || FeaturesFromTestJob.Overlay) Category = "4";
+                        else if (FeaturesFromJob._GenericFeatures.Monitoring.Contains("MView") || FeaturesFromJob._GenericFeatures.Monitoring.Contains("IMonitor") || FeaturesFromTestJob.Local || FeaturesFromTestJob.ShortFloor) Category = "3";
+                        else if (FeaturesFromJob._HoistWayData.AnyRear || FeaturesFromJob._jobExtension.JobTypeMain == "Duplex" || (FeaturesFromJob._jobExtension.DoorOperatorID == 7 || FeaturesFromJob._jobExtension.DoorOperatorID == 8)
+                            || FeaturesFromJob._HydroSpecific.MotorsNum >= 2) Category = "2";
+                        else Category = "1";
+                    }
+                    else Category = "Indefinida";
                 }
-                else if (FeaturesFromJob.JobTypeID == 4)
+                catch
                 {
-                    if (FeaturesFromJob.CityID == 11) Category = "6";
-                    else if (FeaturesFromTestJob.Custom) Category = "5";
-                    else if (FeaturesFromJob._jobExtension.DoorOperatorID == 2 || FeaturesFromTestJob.Overlay) Category = "4";
-                    else if (FeaturesFromJob._GenericFeatures.Monitoring.Contains("MView") || FeaturesFromJob._GenericFeatures.Monitoring.Contains("IMonitor") || FeaturesFromTestJob.Local || FeaturesFromTestJob.ShortFloor) Category = "3";
-                    else if (FeaturesFromJob._HoistWayData.AnyRear || FeaturesFromJob._jobExtension.JobTypeMain == "Duplex" || (FeaturesFromJob._jobExtension.DoorOperatorID == 7 || FeaturesFromJob._jobExtension.DoorOperatorID == 8)
-                        || FeaturesFromJob._HydroSpecific.MotorsNum >= 2) Category = "2";
-                    else Category = "1";
+                    Category = "Indefinida";
                 }
-                else Category = "Indefinida";
-
-                //JobProgress
-                double JobProgress = (stepsForJobCompleted.Count() * 100) / AllSteps.Count();
-
-                //Stage Progress
-                List<Step> stepsPerStage = StepsListInfo.Where(m => m.Stage == Stage && AllSteps.Any(n => n.StepID == m.StepID)).ToList();
-                int stepsPerJobCompleted = AllSteps.Where(m => stepsPerStage.Any(s => s.StepID == m.StepID)).Where(m => m.Complete == true).Count();
-
-                double StagePogress = (stepsPerJobCompleted * 100) / stepsPerStage.Count();
-
-                if (stepsPerStage.Count == 1 && StagePogress == 0) StagePogress = 50;
 
                 TestStats testStats = new TestStats()
                 {
@@ -752,7 +801,7 @@ namespace ProdFloor.Controllers
                     Station = StationName,
                     TTC = TTC,
                     JobProgress = JobProgress,
-                    StageProgress = StagePogress,
+                    StageProgress = StageProgress,
                     EfficiencyColor = EfficiencyColor,
 
                 };
@@ -896,9 +945,9 @@ namespace ProdFloor.Controllers
             return efficiencyReports;
         }
 
-        public List<DailyReport> GetDailyReports(DateTime startDate)
+        public List<DailyReport> GetDailyReports(DateTime startDate, string period = "yesterday")
         {
-            if (startDate == null || startDate.Day == DateTime.Now.Day) startDate = DateTime.Now.AddDays(-1);
+            if (startDate == null) startDate = DateTime.Now;
 
             //-- Filtering the data with query params 
             List<DailyReport> dailyReports = new List<DailyReport>();
@@ -906,7 +955,24 @@ namespace ProdFloor.Controllers
             List<Station> Stations = testingRepo.Stations.ToList();
             List<JobType> jobTypes = itemRepository.JobTypes.Where(m => m.Name != "M3000").ToList();
             IQueryable<AppUser> users = userManager.Users;
-            IQueryable<TestJob> testjobsCompleted = testingRepo.TestJobs.Where(m => m.Status == "Completed" && m.CompletedDate.ToShortDateString() == startDate.ToShortDateString());
+            IQueryable<TestJob> testjobsCompleted = testingRepo.TestJobs.Where(m => m.Status == "Completed" && m.CompletedDate.ToShortDateString() == startDate.AddDays(-1).ToShortDateString());
+
+            if (period == "lastMonth")
+            {
+                testjobsCompleted = testingRepo.TestJobs.Where(m => m.Status == "Completed" && m.CompletedDate.Month == startDate.AddMonths(-1).Month);
+            }
+            else if(period == "month")
+            {
+                testjobsCompleted = testingRepo.TestJobs.Where(m => m.Status == "Completed" && m.CompletedDate.Month == startDate.Month);
+            } 
+            else if (period == "week")
+            {
+                testjobsCompleted = testingRepo.TestJobs.Where(m => m.Status == "Completed" && GetWeekOfYear(m.CompletedDate) == GetWeekOfYear(startDate) );
+            }
+
+
+
+
             IQueryable<Job> jobsForTestJobs = jobRepo.Jobs.Where(m => testjobsCompleted.Any(n => n.JobID == m.JobID));
 
 
@@ -977,6 +1043,7 @@ namespace ProdFloor.Controllers
 
             return dailyReports;
         }
+
 
         public List<StopsReport> GetStopsReport(DateTime startDate, DateTime endDate)
         {
@@ -1084,6 +1151,18 @@ namespace ProdFloor.Controllers
             string elapsed = (time.Day - 1).ToString() + ":" + time.Hour.ToString() + ":" + time.Minute.ToString() + ":" + time.Second.ToString();
 
             return elapsed;
+        }
+
+        public int GetWeekOfYear(DateTime startDate)
+        {
+            DayOfWeek day = CultureInfo.InvariantCulture.Calendar.GetDayOfWeek(startDate);
+            if (day >= DayOfWeek.Monday && day <= DayOfWeek.Wednesday)
+            {
+                startDate = startDate.AddDays(3);
+            }
+
+            // Return the week of our adjusted day
+            return CultureInfo.InvariantCulture.Calendar.GetWeekOfYear(startDate, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
         }
     }
 }

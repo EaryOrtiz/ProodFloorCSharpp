@@ -14,6 +14,21 @@
     DailyReport dailyHydro = Model.dailyReports.FirstOrDefault(m => m.JobTypeName == "ElmHydro");
     DailyReport dailyM4000 = Model.dailyReports.FirstOrDefault(m => m.JobTypeName == "M4000");
     DailyReport dailyTraction = Model.dailyReports.FirstOrDefault(m => m.JobTypeName == "ElmTract");
+
+    DailyReport weekM2000 = Model.WeekReports.FirstOrDefault(m => m.JobTypeName == "M2000");
+    DailyReport weekHydro = Model.WeekReports.FirstOrDefault(m => m.JobTypeName == "ElmHydro");
+    DailyReport weekM4000 = Model.WeekReports.FirstOrDefault(m => m.JobTypeName == "M4000");
+    DailyReport weekTraction = Model.WeekReports.FirstOrDefault(m => m.JobTypeName == "ElmTract");
+
+    DailyReport monthM2000 = Model.MonthReports.FirstOrDefault(m => m.JobTypeName == "M2000");
+    DailyReport monthHydro = Model.MonthReports.FirstOrDefault(m => m.JobTypeName == "ElmHydro");
+    DailyReport monthM4000 = Model.MonthReports.FirstOrDefault(m => m.JobTypeName == "M4000");
+    DailyReport monthTraction = Model.MonthReports.FirstOrDefault(m => m.JobTypeName == "ElmTract");
+
+    DailyReport lastMonthM2000 = Model.PastMonthReports.FirstOrDefault(m => m.JobTypeName == "M2000");
+    DailyReport lastMonthHydro = Model.PastMonthReports.FirstOrDefault(m => m.JobTypeName == "ElmHydro");
+    DailyReport lastMonthM4000 = Model.PastMonthReports.FirstOrDefault(m => m.JobTypeName == "M4000");
+    DailyReport lastMonthTraction = Model.PastMonthReports.FirstOrDefault(m => m.JobTypeName == "ElmTract");
 }
 
 
@@ -200,30 +215,30 @@
                                     </div>
                                     <div class="col font-weight-bold border-right" style="font-size: 18px">
                                         <span>En esta semana</span><br />
-                                        <span>Eficiencia:  @dailyM4000.TotalEfficiency%</span>
+                                        <span>Eficiencia:  @weekM4000.TotalEfficiency%</span>
                                         <div class="progress bg-secondary" style="height: 0.2rem;max-width: 16rem">
-                                            <div class="progress-bar bg-white" role="progressbar" style="width: @dailyM4000.TotalEfficiency%;"
-                                                 aria-valuenow="@dailyM4000.TotalEfficiency" aria-valuemin="0" aria-valuemax="100"></div>
+                                            <div class="progress-bar bg-white" role="progressbar" style="width: @weekM4000.TotalEfficiency%;"
+                                                 aria-valuenow="@weekM4000.TotalEfficiency" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
-                                        <span>Testjobs completados: @dailyM4000.TestJobsCounted </span>
+                                        <span>Testjobs completados: @weekM4000.TestJobsCounted </span>
                                     </div>
                                     <div class="col font-weight-bold border-right" style="font-size: 18px">
                                         <span>En este mes</span><br />
-                                        <span>Eficiencia:  @dailyM4000.TotalEfficiency%</span>
+                                        <span>Eficiencia:  @monthM4000.TotalEfficiency%</span>
                                         <div class="progress bg-secondary" style="height: 0.2rem;max-width: 16rem">
-                                            <div class="progress-bar bg-white" role="progressbar" style="width: @dailyM4000.TotalEfficiency%;"
-                                                 aria-valuenow="@dailyM4000.TotalEfficiency" aria-valuemin="0" aria-valuemax="100"></div>
+                                            <div class="progress-bar bg-white" role="progressbar" style="width: @monthM4000.TotalEfficiency%;"
+                                                 aria-valuenow="@monthM4000.TotalEfficiency" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
-                                        <span>Testjobs completados: @dailyM4000.TestJobsCounted </span>
+                                        <span>Testjobs completados: @monthM4000.TestJobsCounted </span>
                                     </div>
                                     <div class="col font-weight-bold" style="font-size: 18px">
                                         <span>En el mes pasado</span><br />
-                                        <span>Eficiencia:  @dailyM4000.TotalEfficiency%</span>
+                                        <span>Eficiencia:  @lastMonthM4000.TotalEfficiency%</span>
                                         <div class="progress bg-secondary" style="height: 0.2rem;max-width: 16rem">
-                                            <div class="progress-bar bg-white" role="progressbar" style="width: @dailyM4000.TotalEfficiency%;"
-                                                 aria-valuenow="@dailyM4000.TotalEfficiency" aria-valuemin="0" aria-valuemax="100"></div>
+                                            <div class="progress-bar bg-white" role="progressbar" style="width: @lastMonthM4000.TotalEfficiency%;"
+                                                 aria-valuenow="@lastMonthM4000.TotalEfficiency" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
-                                        <span>Testjobs completados: @dailyM4000.TestJobsCounted </span>
+                                        <span>Testjobs completados: @lastMonthM4000.TestJobsCounted </span>
                                     </div>
                                 </div>
 
@@ -247,34 +262,34 @@
                                             <div class="progress-bar bg-white" role="progressbar" style="width: @dailyTraction.TotalEfficiency%;"
                                                  aria-valuenow="@dailyTraction.TotalEfficiency" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
-                                        <span>Testjobs completados: @dailyM4000.TestJobsCounted </span>
+                                        <span>Testjobs completados: @dailyTraction.TestJobsCounted </span>
                                     </div>
                                     <div class="col font-weight-bold border-right" style="font-size: 18px">
                                         <span>En esta semana</span><br />
-                                        <span>Eficiencia:  @dailyTraction.TotalEfficiency%</span>
+                                        <span>Eficiencia:  @weekTraction.TotalEfficiency%</span>
                                         <div class="progress bg-secondary" style="height: 0.2rem;max-width: 16rem">
-                                            <div class="progress-bar bg-white" role="progressbar" style="width: @dailyTraction.TotalEfficiency%;"
-                                                 aria-valuenow="@dailyTraction.TotalEfficiency" aria-valuemin="0" aria-valuemax="100"></div>
+                                            <div class="progress-bar bg-white" role="progressbar" style="width: @weekTraction.TotalEfficiency%;"
+                                                 aria-valuenow="@weekTraction.TotalEfficiency" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
-                                        <span>Testjobs completados: @dailyTraction.TestJobsCounted </span>
+                                        <span>Testjobs completados: @weekTraction.TestJobsCounted </span>
                                     </div>
                                     <div class="col font-weight-bold border-right" style="font-size: 18px">
                                         <span>En este mes</span><br />
-                                        <span>Eficiencia:  @dailyTraction.TotalEfficiency%</span>
+                                        <span>Eficiencia:  @monthTraction.TotalEfficiency%</span>
                                         <div class="progress bg-secondary" style="height: 0.2rem;max-width: 16rem">
-                                            <div class="progress-bar bg-white" role="progressbar" style="width: @dailyTraction.TotalEfficiency%;"
-                                                 aria-valuenow="@dailyTraction.TotalEfficiency" aria-valuemin="0" aria-valuemax="100"></div>
+                                            <div class="progress-bar bg-white" role="progressbar" style="width: @monthTraction.TotalEfficiency%;"
+                                                 aria-valuenow="@monthTraction.TotalEfficiency" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
-                                        <span>Testjobs completados: @dailyTraction.TestJobsCounted </span>
+                                        <span>Testjobs completados: @monthTraction.TestJobsCounted </span>
                                     </div>
                                     <div class="col font-weight-bold" style="font-size: 18px">
                                         <span>En el mes pasado</span><br />
-                                        <span>Eficiencia:  @dailyTraction.TotalEfficiency%</span>
+                                        <span>Eficiencia:  @lastMonthTraction.TotalEfficiency%</span>
                                         <div class="progress bg-secondary" style="height: 0.2rem;max-width: 16rem">
-                                            <div class="progress-bar bg-white" role="progressbar" style="width: @dailyTraction.TotalEfficiency%;"
-                                                 aria-valuenow="@dailyTraction.TotalEfficiency" aria-valuemin="0" aria-valuemax="100"></div>
+                                            <div class="progress-bar bg-white" role="progressbar" style="width: @lastMonthTraction.TotalEfficiency%;"
+                                                 aria-valuenow="@lastMonthTraction.TotalEfficiency" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
-                                        <span>Testjobs completados: @dailyTraction.TestJobsCounted </span>
+                                        <span>Testjobs completados: @lastMonthTraction.TestJobsCounted </span>
                                     </div>
                                 </div>
 
@@ -477,30 +492,30 @@ else
                                     </div>
                                     <div class="col font-weight-bold border-right" style="font-size: 18px">
                                         <span>En esta semana</span><br />
-                                        <span>Eficiencia:  @dailyM2000.TotalEfficiency%</span>
+                                        <span>Eficiencia:  @weekM2000.TotalEfficiency%</span>
                                         <div class="progress bg-secondary" style="height: 0.2rem;max-width: 16rem">
-                                            <div class="progress-bar bg-white" role="progressbar" style="width: @dailyM2000.TotalEfficiency%;"
-                                                 aria-valuenow="@dailyM2000.TotalEfficiency" aria-valuemin="0" aria-valuemax="100"></div>
+                                            <div class="progress-bar bg-white" role="progressbar" style="width: @weekM2000.TotalEfficiency%;"
+                                                 aria-valuenow="@weekM2000.TotalEfficiency" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
-                                        <span>Testjobs completados: @dailyM2000.TestJobsCounted </span>
+                                        <span>Testjobs completados: @weekM2000.TestJobsCounted </span>
                                     </div>
                                     <div class="col font-weight-bold border-right" style="font-size: 18px">
                                         <span>En este mes</span><br />
-                                        <span>Eficiencia:  @dailyM2000.TotalEfficiency%</span>
+                                        <span>Eficiencia:  @monthM2000.TotalEfficiency%</span>
                                         <div class="progress bg-secondary" style="height: 0.2rem;max-width: 16rem">
-                                            <div class="progress-bar bg-white" role="progressbar" style="width: @dailyM2000.TotalEfficiency%;"
-                                                 aria-valuenow="@dailyM2000.TotalEfficiency" aria-valuemin="0" aria-valuemax="100"></div>
+                                            <div class="progress-bar bg-white" role="progressbar" style="width: @monthM2000.TotalEfficiency%;"
+                                                 aria-valuenow="@monthM2000.TotalEfficiency" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
-                                        <span>Testjobs completados: @dailyM2000.TestJobsCounted </span>
+                                        <span>Testjobs completados: @monthM2000.TestJobsCounted </span>
                                     </div>
                                     <div class="col font-weight-bold" style="font-size: 18px">
                                         <span>En el mes pasado</span><br />
-                                        <span>Eficiencia:  @dailyM2000.TotalEfficiency%</span>
+                                        <span>Eficiencia:  @lastMonthM2000.TotalEfficiency%</span>
                                         <div class="progress bg-secondary" style="height: 0.2rem;max-width: 16rem">
-                                            <div class="progress-bar bg-white" role="progressbar" style="width: @dailyM2000.TotalEfficiency%;"
-                                                 aria-valuenow="@dailyM2000.TotalEfficiency" aria-valuemin="0" aria-valuemax="100"></div>
+                                            <div class="progress-bar bg-white" role="progressbar" style="width: @lastMonthM2000.TotalEfficiency%;"
+                                                 aria-valuenow="@lastMonthM2000.TotalEfficiency" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
-                                        <span>Testjobs completados: @dailyM2000.TestJobsCounted </span>
+                                        <span>Testjobs completados: @lastMonthM2000.TestJobsCounted </span>
                                     </div>
                                 </div>
 
@@ -528,30 +543,30 @@ else
                                     </div>
                                     <div class="col font-weight-bold border-right" style="font-size: 18px">
                                         <span>En esta semana</span><br />
-                                        <span>Eficiencia:  @dailyHydro.TotalEfficiency%</span>
+                                        <span>Eficiencia:  @weekHydro.TotalEfficiency%</span>
                                         <div class="progress bg-secondary" style="height: 0.2rem;max-width: 16rem">
-                                            <div class="progress-bar bg-white" role="progressbar" style="width: @dailyHydro.TotalEfficiency%;"
-                                                 aria-valuenow="@dailyTraction.TotalEfficiency" aria-valuemin="0" aria-valuemax="100"></div>
+                                            <div class="progress-bar bg-white" role="progressbar" style="width: @weekHydro.TotalEfficiency%;"
+                                                 aria-valuenow="@weekHydro.TotalEfficiency" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
-                                        <span>Testjobs completados: @dailyHydro.TestJobsCounted </span>
+                                        <span>Testjobs completados: @weekHydro.TestJobsCounted </span>
                                     </div>
                                     <div class="col font-weight-bold border-right" style="font-size: 18px">
                                         <span>En este mes</span><br />
-                                        <span>Eficiencia:  @dailyHydro.TotalEfficiency%</span>
+                                        <span>Eficiencia:  @monthHydro.TotalEfficiency%</span>
                                         <div class="progress bg-secondary" style="height: 0.2rem;max-width: 16rem">
-                                            <div class="progress-bar bg-white" role="progressbar" style="width: @dailyHydro.TotalEfficiency%;"
-                                                 aria-valuenow="@dailyHydro.TotalEfficiency" aria-valuemin="0" aria-valuemax="100"></div>
+                                            <div class="progress-bar bg-white" role="progressbar" style="width: @monthHydro.TotalEfficiency%;"
+                                                 aria-valuenow="@monthHydro.TotalEfficiency" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
-                                        <span>Testjobs completados: @dailyHydro.TestJobsCounted </span>
+                                        <span>Testjobs completados: @monthHydro.TestJobsCounted </span>
                                     </div>
                                     <div class="col font-weight-bold" style="font-size: 18px">
                                         <span>En el mes pasado</span><br />
-                                        <span>Eficiencia:  @dailyHydro.TotalEfficiency%</span>
+                                        <span>Eficiencia:  @lastMonthHydro.TotalEfficiency%</span>
                                         <div class="progress bg-secondary" style="height: 0.2rem;max-width: 16rem">
-                                            <div class="progress-bar bg-white" role="progressbar" style="width: @dailyHydro.TotalEfficiency%;"
-                                                 aria-valuenow="@dailyHydro.TotalEfficiency" aria-valuemin="0" aria-valuemax="100"></div>
+                                            <div class="progress-bar bg-white" role="progressbar" style="width: @lastMonthHydro.TotalEfficiency%;"
+                                                 aria-valuenow="@lastMonthHydro.TotalEfficiency" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
-                                        <span>Testjobs completados: @dailyHydro.TestJobsCounted </span>
+                                        <span>Testjobs completados: @lastMonthHydro.TestJobsCounted </span>
                                     </div>
                                 </div>
 
