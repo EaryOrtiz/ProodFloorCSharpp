@@ -58,7 +58,7 @@
                     <td>
                         @if (j.Status == "Working on it" && stepIncomplete != null)
                         {
-                            
+
                             string StageName = Model.StepList.FirstOrDefault(m => m.StepID == stepIncomplete.StepID).Stage;
                             @j.Status <span>| Stage: @StageName</span>
                         }
