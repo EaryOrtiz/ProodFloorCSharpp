@@ -190,11 +190,11 @@ namespace ProdFloor.Controllers
                             || FeaturesFromJob._HydroSpecific.MotorsNum >= 2) Category = "2";
                         else Category = "1";
                     }
-                    else Category = "Indefinida";
+                    else Category = "1";
                 }
                 catch
                 {
-                    Category = "Indefinida";
+                    Category = "1";
                 }
 
                 TestStats testStats = new TestStats()
@@ -781,11 +781,11 @@ namespace ProdFloor.Controllers
                             || FeaturesFromJob._HydroSpecific.MotorsNum >= 2) Category = "2";
                         else Category = "1";
                     }
-                    else Category = "Indefinida";
+                    else Category = "1";
                 }
                 catch
                 {
-                    Category = "Indefinida";
+                    Category = "1";
                 }
 
                 TestStats testStats = new TestStats()
@@ -1036,7 +1036,7 @@ namespace ProdFloor.Controllers
                 daily.TestJobsCounted = testJobsCounted;
                 daily.TotalEfficiency = totalEfficiency;
                 daily.EfficiencyColor = efficiencyColor;
-                daily.TodayDate = startDate.ToShortDateString();
+                daily.TodayDate = startDate.AddDays(-1).ToShortDateString();
 
                 dailyReports.Add(daily);
             }

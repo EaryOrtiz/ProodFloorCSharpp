@@ -3215,11 +3215,11 @@ namespace ProdFloor.Controllers
                             || FeaturesFromJob._HydroSpecific.MotorsNum >= 2) Category = "2";
                         else Category = "1";
                     }
-                    else Category = "Indefinida";
+                    else Category = "1";
                 }
                 catch
                 {
-                    Category = "Indefinida";
+                    Category = "1";
                 }
 
                 
