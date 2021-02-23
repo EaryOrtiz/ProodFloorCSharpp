@@ -63,7 +63,7 @@
                                     {
                                         TestStats testStat = Model.TestStatsList.FirstOrDefault(m => m.StationID == station.StationID);
 
-                                        <div class="card text-center ml-5" style="max-height: 40rem; width: 34rem; box-shadow: 0 17px 17px 0 rgba(0,0,0,0.15),0 27px 55px 0 rgba(0,0,0,0.3)">
+                                        <div class="card text-center ml-5" style="height: 23rem; width: 34rem; box-shadow: 0 17px 17px 0 rgba(0,0,0,0.15),0 27px 55px 0 rgba(0,0,0,0.3)">
                                             <div class="card-header" style="border-top-color:@testStat.StatusColor !important;border-top: solid;border-top-width:12px;background-color:transparent;max-height:60px;">
                                                 <span class="float-left font-weight-bold" style="font-size: 24px;">@station.Label</span> <h3>JOB# <span class="text-secondary">@testStat.JobNumer </span></h3>
                                             </div>
@@ -126,7 +126,7 @@
                                     else
                                     {
 
-                                        <div class="card text-center ml-5" style="max-height: 40rem; width: 34rem; box-shadow: 0 17px 17px 0 rgba(0,0,0,0.15),0 27px 55px 0 rgba(0,0,0,0.3)">
+                                        <div class="card text-center ml-5" style="height: 23rem; width: 34rem; box-shadow: 0 17px 17px 0 rgba(0,0,0,0.15),0 27px 55px 0 rgba(0,0,0,0.3)">
                                             <div class="card-header" style="border-top-color:gray !important;border-top: solid;border-top-width:12px;background-color:transparent;max-height:60px;">
                                                 <span class="float-left font-weight-bold" style="font-size: 24px;">@station.Label</span> <h3><span class="text-secondary">Available </span></h3>
                                             </div>
@@ -336,7 +336,7 @@ else
                                     {
                                         TestStats testStat = Model.TestStatsList.FirstOrDefault(m => m.StationID == station.StationID);
 
-                                        <div class="card text-center ml-5" style="max-height: 40rem; width: 34rem; box-shadow: 0 17px 17px 0 rgba(0,0,0,0.15),0 27px 55px 0 rgba(0,0,0,0.3)">
+                                        <div class="card text-center ml-5" style="height: 23rem; width: 34rem; box-shadow: 0 17px 17px 0 rgba(0,0,0,0.15),0 27px 55px 0 rgba(0,0,0,0.3)">
                                             <div class="card-header" style="border-top-color:@testStat.StatusColor !important;border-top: solid;border-top-width:12px;background-color:transparent;max-height:60px;">
                                                 <span class="float-left font-weight-bold" style="font-size: 24px;">@station.Label</span> <h3>JOB# <span class="text-secondary">@testStat.JobNumer </span></h3>
                                             </div>
@@ -399,7 +399,7 @@ else
                                     else
                                     {
 
-                                        <div class="card text-center ml-5" style="max-height: 40rem; width: 34rem; box-shadow: 0 17px 17px 0 rgba(0,0,0,0.15),0 27px 55px 0 rgba(0,0,0,0.3)">
+                                        <div class="card text-center ml-5" style="height: 23rem; width: 34rem; box-shadow: 0 17px 17px 0 rgba(0,0,0,0.15),0 27px 55px 0 rgba(0,0,0,0.3)">
                                             <div class="card-header" style="border-top-color:gray !important;border-top: solid;border-top-width:12px;background-color:transparent;max-height:60px;">
                                                 <span class="float-left font-weight-bold" style="font-size: 24px;">@station.Label</span> <h3><span class="text-secondary">Available </span></h3>
                                             </div>
@@ -485,7 +485,7 @@ else
                                             <div class="progress-bar bg-white" role="progressbar" style="width: @dailyM2000.TotalEfficiency%;"
                                                  aria-valuenow="@dailyM2000.TotalEfficiency" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
-                                        <span>Completados @dailyM2000.TestJobsCounted </span>
+                                        <span>Completados: @dailyM2000.TestJobsCounted </span>
                                     </div>
                                     <div class="col font-weight-bold border-right" style="font-size: 22px">
                                         <span>En esta semana</span><br />
@@ -494,7 +494,7 @@ else
                                             <div class="progress-bar bg-white" role="progressbar" style="width: @weekM2000.TotalEfficiency%;"
                                                  aria-valuenow="@weekM2000.TotalEfficiency" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
-                                        <span>Completados @weekM2000.TestJobsCounted </span>
+                                        <span>Completados: @weekM2000.TestJobsCounted </span>
                                     </div>
                                     <div class="col font-weight-bold border-right" style="font-size: 22px">
                                         <span>En este mes</span><br />
@@ -503,7 +503,7 @@ else
                                             <div class="progress-bar bg-white" role="progressbar" style="width: @monthM2000.TotalEfficiency%;"
                                                  aria-valuenow="@monthM2000.TotalEfficiency" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
-                                        <span>Completados @monthM2000.TestJobsCounted </span>
+                                        <span>Completados: @monthM2000.TestJobsCounted </span>
                                     </div>
                                     <div class="col font-weight-bold" style="font-size: 22px">
                                         <span>En el mes pasado</span><br />
@@ -512,7 +512,7 @@ else
                                             <div class="progress-bar bg-white" role="progressbar" style="width: @lastMonthM2000.TotalEfficiency%;"
                                                  aria-valuenow="@lastMonthM2000.TotalEfficiency" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
-                                        <span>Completados @lastMonthM2000.TestJobsCounted </span>
+                                        <span>Completados: @lastMonthM2000.TestJobsCounted </span>
                                     </div>
                                 </div>
 
@@ -544,7 +544,7 @@ else
                                             <div class="progress-bar bg-white" role="progressbar" style="width: @weekHydro.TotalEfficiency%;"
                                                  aria-valuenow="@weekHydro.TotalEfficiency" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
-                                        <span>Completados @weekHydro.TestJobsCounted </span>
+                                        <span>Completados: @weekHydro.TestJobsCounted </span>
                                     </div>
                                     <div class="col font-weight-bold border-right" style="font-size: 22px">
                                         <span>En este mes</span><br />
