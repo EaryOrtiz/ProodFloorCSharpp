@@ -12,8 +12,11 @@ namespace ProdFloor.Models
         IQueryable<FireCode> FireCodes { get; }
         IQueryable<JobType> JobTypes { get; }
         IQueryable<LandingSystem> LandingSystems { get; }
+
+        /*
         IQueryable<PlanningReport> PlanningReports { get; }
         IQueryable<PlanningReportRow> PlanningReportRows { get; }
+        */
 
         void SaveCountry(Country country);
         void SaveState(State state);
@@ -22,9 +25,10 @@ namespace ProdFloor.Models
         void SaveFireCode(FireCode fireCode);
         void SaveJobType(JobType jobType);
         void SaveLandingSystem(LandingSystem landingSystem);
+        /*
         void SavePlanningReport(PlanningReport planningReport);
         void SavePlanningReportRow(PlanningReportRow planningReportRow);
-
+        */
         Country DeleteCountry(int CountryID);
         State DeleteState(int StateID);
         City DeleteCity(int CityID);
@@ -32,8 +36,11 @@ namespace ProdFloor.Models
         FireCode DeleteFireCode(int FireCodeID);
         JobType DeleteJobType(int JobTypeID);
         LandingSystem DeleteLandingSystem(int LandingSystemID);
+
+        /*
         PlanningReport DeletePlanningReport(int PlanningReportID);
         PlanningReportRow DeletePlanningReportRow(int PlanningReportRowID);
+        */
 
         //*********Enginner References Tables
 

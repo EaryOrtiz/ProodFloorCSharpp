@@ -19,6 +19,7 @@ namespace ProdFloor.Controllers
         {
             repository = repo;
         }
+        /*
 
         public ViewResult List(int page = 1)
             => View(new PlanningReportListViewModel
@@ -39,5 +40,7 @@ namespace ProdFloor.Controllers
         public ViewResult Edit(int ID) =>
             View(repository.PlanningReports
                 .FirstOrDefault(j => j.PlanningReportID == ID));
+
+        */
     }
 }

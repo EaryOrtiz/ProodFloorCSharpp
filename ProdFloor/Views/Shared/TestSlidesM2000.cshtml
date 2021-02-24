@@ -1,0 +1,155 @@
+﻿@model ProdFloor.Models.ViewModels.Report.ReportsViewModel
+
+<div id="carouselM000" class="carousel slide" data-ride="carousel" data-interval="15000" style="height: 27rem;width: 1210px;">
+    <div class="carousel-inner">
+        <!----Esta parte de una escena-->
+
+        @for (int i = 0; i < 4; i++)
+        {
+            List<Station> filteredStations = new List<Station>();
+
+            if (i == 0) { filteredStations = Model.StationsM2000List.Where(m => m.Label == "S1" || m.Label == "S2").ToList(); }
+            else if (i == 1) { filteredStations = Model.StationsM2000List.Where(m => m.Label == "S3" || m.Label == "S4").ToList(); }
+            else if (i == 2) { filteredStations = Model.StationsM2000List.Where(m => m.Label == "S5" || m.Label == "S6").ToList(); }
+            else if (i == 3) { filteredStations = Model.StationsM2000List.Where(m => m.Label == "ELEM1" || m.Label == "ELEM2").ToList(); }
+
+            string carrusel = "carousel-item";
+            string carruselActive = "carousel-item active";
+
+            <div class="@(i == 0 ? carruselActive : carrusel )">
+                <div class="row mt-3 mb-5">
+
+                    @foreach (Station station in filteredStations)
+                    {
+
+                        if (Model.TestStatsList.Any(m => m.StationID == station.StationID))
+                        {
+                            TestStats testStat = Model.TestStatsList.FirstOrDefault(m => m.StationID == station.StationID);
+
+                            <div class="card text-center ml-5" style="height: 23rem; width: 34rem; box-shadow: 0 17px 17px 0 rgba(0,0,0,0.15),0 27px 55px 0 rgba(0,0,0,0.3)">
+                                <div class="card-header" style="border-top-color:@testStat.StatusColor !important;border-top: solid;border-top-width:12px;background-color:transparent;max-height:60px;">
+                                    <span class="float-left font-weight-bold" style="font-size: 24px;">@station.Label</span> <h3>JOB# <span class="text-secondary">@testStat.JobNumer </span></h3>
+                                </div>
+                                <div class="card-body">
+
+                                    <div class="row" style="padding-bottom:5px">
+                                        <div class="col-12">
+                                            <label class="font-weight-bold float-left" style="        font-size: 32px;">Job progress</label>
+                                            <label class="font-weight-bold float-right text-secondary"
+                                                   style="font-size: 26px;">
+                                                @testStat.TTC.Hour.ToString().PadLeft(2, '0'):@testStat.TTC.Minute.ToString().PadLeft(2, '0')
+                                            </label>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="progress ">
+                                                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
+                                                     style="width: @testStat.JobProgress%;background-color: @testStat.EfficiencyColor;" aria-valuenow="@testStat.JobProgress" aria-valuemin="0" aria-valuemax="100">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <label class="font-weight-bold float-left" style="font-size: 32px;">Stage Progress</label>
+                                            <label class="font-weight-bold float-right text-secondary" style="font-size: 26px;">@testStat.Stage</label>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="progress ">
+                                                <div class="progress-bar progress-bar-striped progress-bar-animated bg-info" role="progressbar"
+                                                     style="width:@testStat.StageProgress%;" aria-valuenow="@testStat.StageProgress" aria-valuemin="0" aria-valuemax="100">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="card-footer bg-white p-0">
+                                    <ul class="nav nav-pills flex-column" style="font-size: 32px;white-space:nowrap;">
+                                        <li class="nav-item border-bottom" style="padding-bottom:5px; padding-top:8px;margin-left:10px; margin-right: 10px;">
+                                            <span class=" float-left font-weight-bold">
+                                                Tech Name
+                                            </span>
+                                            <span class="float-right text-secondary font-weight-bold">
+                                                @testStat.TechName
+                                            </span>
+                                        </li>
+                                        <li class="nav-item border-bottom" style="padding-bottom:5px; padding-top:8px;margin-left:10px; margin-right: 10px;">
+                                            <span class=" float-left font-weight-bold">
+                                                Efficiency | CAT
+                                            </span>
+                                            <span class="float-right text-secondary font-weight-bold">
+                                                @testStat.Efficiency% |  @testStat.Category
+                                            </span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+
+                            <div class="card text-center ml-5" style="height: 23rem; width: 34rem; box-shadow: 0 17px 17px 0 rgba(0,0,0,0.15),0 27px 55px 0 rgba(0,0,0,0.3)">
+                                <div class="card-header" style="border-top-color:gray !important;border-top: solid;border-top-width:12px;background-color:transparent;max-height:60px;">
+                                    <span class="float-left font-weight-bold" style="font-size: 24px;">@station.Label</span> <h3><span class="text-secondary">Available </span></h3>
+                                </div>
+                                <div class="card-body">
+
+                                    <div class="row" style="padding-bottom:5px">
+                                        <div class="col-12">
+                                            <label class="font-weight-bold float-left" style="        font-size: 32px;">Job Progress</label>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="progress ">
+                                                <div class="progress-bar" role="progressbar" style="width: 100%;background-color: gray;" aria-valuenow="99" aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <label class="font-weight-bold float-left" style="        font-size: 32px;">Stage Progress</label>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="progress ">
+                                                <div class="progress-bar" role="progressbar" style="width: 100%;background-color: gray;" aria-valuenow="99" aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="card-footer bg-white p-0">
+                                    <ul class="nav nav-pills flex-column" style="font-size: 32px;white-space:nowrap;">
+                                        <li class="nav-item border-bottom" style="padding-bottom:5px; padding-top:8px;margin-left:10px; margin-right: 10px;">
+                                            <span class=" float-left font-weight-bold">
+                                                Tech Name
+                                            </span>
+                                            <span class="float-right text-secondary font-weight-bold">
+                                                ...
+                                            </span>
+                                        </li>
+                                        <li class="nav-item border-bottom" style="padding-bottom:5px; padding-top:8px;margin-left:10px; margin-right: 10px;">
+                                            <span class=" float-left font-weight-bold">
+                                                Efficiency | CAT
+                                            </span>
+                                            <span class="float-right text-secondary font-weight-bold">
+                                                ... | ...
+                                            </span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                        }
+
+
+                    }
+                </div>
+            </div>
+        }
+
+        <!----Esta parte de una escena-->
+    </div>
+</div>
+
+

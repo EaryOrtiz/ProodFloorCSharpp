@@ -1,7 +1,6 @@
 ﻿@model ProdFloor.Models.ViewModels.Report.ReportsViewModel
 @{
-    ViewData["Title"] = "TestStats";
-    Layout = "_LayoutTV";
+    ViewData["Title"] = "ProdFloor Stats";
     <script>
         $(document).ready(function () {
             setInterval(function () {
@@ -31,19 +30,13 @@
     DailyReport lastMonthTraction = Model.PastMonthReports.FirstOrDefault(m => m.JobTypeName == "ElmTract");
 }
 
-
-@if (ViewBag.Jobtype == "M4000")
-{
-
-    <div class="row col-12 mb-1 pb-1">
-        <div class="col-8 mr-auto">
-            @Html.Partial("TestSlidesM4000", Model)
-        </div>
+<div>
+    <div class="row mb-1 pb-1">
+        @Html.Partial("TestSlidesDuo", Model)
     </div>
-
-    <div class="row col-12 mt-1 pt-1">
-        <div class="col-8 mr-auto">
-            <div id="carouselEFFData" class="carousel slide" data-ride="carousel" data-interval="15000" style="width: 1210px;">
+    <div class="row mt-1 pt-1">
+        <div class="col-12 mr-auto">
+            <div id="carouselEFFData" class="carousel slide" data-ride="carousel" data-interval="15000" style="width: 90rem;">
                 <div class="carousel-inner">
                     <div class="carousel-item active">
 
@@ -51,7 +44,7 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-2 pl-0 border-right text-center">
-                                        <h2 >@dailyM4000.JobTypeName</h2>
+                                        <h2>@dailyM4000.JobTypeName</h2>
                                     </div>
                                     <div class="col font-weight-bold border-right" style="font-size: 22px">
                                         <span>@dailyM4000.TodayDate</span><br />
@@ -146,35 +139,13 @@
 
 
                     </div>
-                </div>
-            </div>
-        </div>
-
-    </div>
-
-}
-else
-{
-
-    <div class="row col-12">
-        <div class="col-8 mr-auto">
-
-            @Html.Partial("TestSlidesM2000", Model)
-
-        </div>
-    </div>
-
-    <div class="row col-12 mt-1 pt-1">
-        <div class="col-8 mr-auto">
-            <div id="carouselEFFData" class="carousel slide" data-ride="carousel" data-interval="15000" style="width: 1210px;">
-                <div class="carousel-inner">
-                    <div class="carousel-item active">
+                    <div class="carousel-item">
 
                         <div class="card text-dark bg-warning" style="height: 8rem">
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-2 pl-0 border-right text-center">
-                                        <h2 >@dailyM2000.JobTypeName</h2>
+                                        <h2>@dailyM2000.JobTypeName</h2>
                                     </div>
                                     <div class="col font-weight-bold border-right" style="font-size: 22px">
                                         <span>@dailyM2000.TodayDate</span><br />
@@ -224,7 +195,7 @@ else
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-2 pl-0 border-right text-center">
-                                        <h3 >Element Hydro</h3>
+                                        <h3>Element Hydro</h3>
                                     </div>
                                     <div class="col font-weight-bold border-right" style="font-size: 22px">
                                         <span>@dailyHydro.TodayDate</span><br />
@@ -270,290 +241,22 @@ else
 
                     </div>
                 </div>
+                <a class="carousel-control-prev" href="#carouselEFFData" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#carouselEFFData" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
             </div>
         </div>
 
     </div>
-}
-
-
-@**
-    <div class="col-5">
-
-        <div class="card text-white bg-success  mt-4" style="box-shadow: 0 17px 17px 0 rgba(0,0,0,0.15),0 27px 55px 0 rgba(0,0,0,0.3) ">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-2 pl-0">
-                        <i class="fas fa-chart-line fa-4x"></i>
-                    </div>
-                    <div class="col-10 font-weight-bold" style="font-size: 18px">
-                        <span>@dailyM4000.JobTypeName</span>
-                        <br />
-                        <span>Eficiencia:  @dailyM4000.TotalEfficiency%</span>
-                        <div class="progress bg-secondary" style="height: 0.2rem;max-width: 16rem">
-                            <div class="progress-bar bg-white" role="progressbar" style="width: @dailyM4000.TotalEfficiency%;"
-                                 aria-valuenow="@dailyM4000.TotalEfficiency" aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
-                        <span>@dailyM4000.TestJobsCounted Testjobs completados en @dailyM4000.TodayDate</span>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-
-        <div class="card text-white bg-danger  mt-4" style="box-shadow: 0 17px 17px 0 rgba(0,0,0,0.15),0 27px 55px 0 rgba(0,0,0,0.3) ">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-2 pl-0">
-                        <i class="fas fa-chart-line fa-4x"></i>
-                    </div>
-                    <div class="col-10 font-weight-bold" style="font-size: 18px">
-                        <span>Traction</span>
-                        <br />
-                        <span>Eficiencia:  @dailyTraction.TotalEfficiency%</span>
-                        <div class="progress bg-secondary" style="height: 0.2rem;max-width: 16rem">
-                            <div class="progress-bar bg-white" role="progressbar" style="width: @dailyTraction.TotalEfficiency%;"
-                                 aria-valuenow="@dailyTraction.TotalEfficiency" aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
-                        <span>@dailyTraction.TestJobsCounted Testjobs completados en @dailyTraction.TodayDate</span>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-
-
-        <div class="card text-white bg-warning  mt-2" style="box-shadow: 0 17px 17px 0 rgba(0,0,0,0.15),0 27px 55px 0 rgba(0,0,0,0.3) ">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-2 pl-0">
-                        <i class="fas fa-chart-line fa-4x"></i>
-                    </div>
-                    <div class="col-10 font-weight-bold" style="font-size: 18px">
-                        <span>@dailyM2000.JobTypeName</span>
-                        <br />
-                        <span>Eficiencia:  @dailyM2000.TotalEfficiency%</span>
-                        <div class="progress bg-secondary" style="height: 0.2rem;max-width: 16rem">
-                            <div class="progress-bar bg-white" role="progressbar" style="width: @dailyM2000.TotalEfficiency%;"
-                                 aria-valuenow="@dailyM2000.TotalEfficiency" aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
-                        <span>@dailyM2000.TestJobsCounted Testjobs completados en @dailyM2000.TodayDate</span>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-
-        <div class="card text-white bg-info  mt-4" style="box-shadow: 0 17px 17px 0 rgba(0,0,0,0.15),0 27px 55px 0 rgba(0,0,0,0.3) ">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-2 pl-0">
-                        <i class="fas fa-chart-line fa-4x"></i>
-                    </div>
-                    <div class="col-10 font-weight-bold" style="font-size: 18px">
-                        <span>Hydro</span>
-                        <br />
-                        <span>Eficiencia:  @dailyHydro.TotalEfficiency%</span>
-                        <div class="progress bg-secondary" style="height: 0.2rem;max-width: 16rem">
-                            <div class="progress-bar bg-white" role="progressbar" style="width: @dailyHydro.TotalEfficiency%;"
-                                 aria-valuenow="@dailyHydro.TotalEfficiency" aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
-                        <span>@dailyHydro.TestJobsCounted Testjobs completados en @dailyHydro.TodayDate</span>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-
-
-
-    </div>
-
-
-         <div class="row col-12">
-        <div class="col-8">
-            <div class="card text-white bg-success" style="box-shadow: 0 17px 17px 0 rgba(0,0,0,0.15),0 27px 55px 0 rgba(0,0,0,0.3) ">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-1 pl-0 border-right text-center">
-                            <h4>@dailyM4000.JobTypeName</h4>
-                            <i class="fas fa-chart-line fa-4x"></i>
-                        </div>
-                        <div class="col font-weight-bold border-right" style="font-size: 18px">
-                            <span>@dailyM4000.TodayDate</span><br />
-                            <span>Eficiencia:  @dailyM4000.TotalEfficiency%</span>
-                            <div class="progress bg-secondary" style="height: 0.2rem;max-width: 16rem">
-                                <div class="progress-bar bg-white" role="progressbar" style="width: @dailyM4000.TotalEfficiency%;"
-                                     aria-valuenow="@dailyM4000.TotalEfficiency" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                            <span>Testjobs completados: @dailyM4000.TestJobsCounted </span>
-                        </div>
-                        <div class="col font-weight-bold border-right" style="font-size: 18px">
-                            <span>En esta semana</span><br />
-                            <span>Eficiencia:  @dailyM4000.TotalEfficiency%</span>
-                            <div class="progress bg-secondary" style="height: 0.2rem;max-width: 16rem">
-                                <div class="progress-bar bg-white" role="progressbar" style="width: @dailyM4000.TotalEfficiency%;"
-                                     aria-valuenow="@dailyM4000.TotalEfficiency" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                            <span>Testjobs completados: @dailyM4000.TestJobsCounted </span>
-                        </div>
-                        <div class="col font-weight-bold border-right" style="font-size: 18px">
-                            <span>En este mes</span><br />
-                            <span>Eficiencia:  @dailyM4000.TotalEfficiency%</span>
-                            <div class="progress bg-secondary" style="height: 0.2rem;max-width: 16rem">
-                                <div class="progress-bar bg-white" role="progressbar" style="width: @dailyM4000.TotalEfficiency%;"
-                                     aria-valuenow="@dailyM4000.TotalEfficiency" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                            <span>Testjobs completados: @dailyM4000.TestJobsCounted </span>
-                        </div>
-                        <div class="col font-weight-bold" style="font-size: 18px">
-                            <span>En el mes pasado</span><br />
-                            <span>Eficiencia:  @dailyM4000.TotalEfficiency%</span>
-                            <div class="progress bg-secondary" style="height: 0.2rem;max-width: 16rem">
-                                <div class="progress-bar bg-white" role="progressbar" style="width: @dailyM4000.TotalEfficiency%;"
-                                     aria-valuenow="@dailyM4000.TotalEfficiency" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                            <span>Testjobs completados: @dailyM4000.TestJobsCounted </span>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    </div>
-*@
+</div>
 
 
 
 
 
-@*
-    <!-----------------------------D1-------------------------------------------->
-    <div class="col-3">
-        <div class="card text-center  mb-6" style="max-width: 20rem;">
-            <div class="card-header" style="border-top-color:forestgreen !important;border-top: solid;border-top-width:10px;background-color:transparent"><h4>S1</h4></div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="form-group col-6">
-                        <label class="font-weight-bold" style="font-size: 20px;">Completion</label>
-                        <input type="text" value="90" class="knob" data-width="100" data-height="120" data-readOnly=true data-fgColor="green" data-skin="tron" data-thickness=".2">
-                    </div>
-                    <div class="form-group col-6">
-                        <label class="font-weight-bold" style="font-size: 20px;">Efficiency</label>
-                        <input type="text" value="60" class="knob" data-width="100" data-height="120" data-readOnly=true data-fgColor="DarkOrange" data-skin="tron" data-thickness=".2">
-                    </div>
-                </div>
 
-            </div>
-            <div class="card-footer bg-white p-0">
-                <ul class="nav nav-pills flex-column" style=" font-size: 20px;">
-                    <li class="nav-item border-bottom " style="padding-bottom:8px; padding-top:8px;padding-left:10px; padding-right: 10px;">
-                        <span class=" float-left font-weight-bold">
-                            <i class="fa fa-briefcase"></i>&nbsp;&nbsp;Job#
-                        </span>
-                        <span class="float-right text-secondary font-weight-bold">
-                            95213
-                        </span>
-                    </li>
-                    <li class="nav-item border-bottom " style="padding-bottom:8px; padding-top:8px;padding-left:10px; padding-right: 10px;">
-                        <span class=" float-left font-weight-bold">
-                            <i class="fas fa-user-tie"></i>&nbsp;&nbsp;Tech Name
-                        </span>
-                        <span class="float-right text-secondary font-weight-bold">
-                            Adriana Barron
-                        </span>
-                    </li>
-                    <li class="nav-item border-bottom " style="padding-bottom:8px; padding-top:8px;padding-left:10px; padding-right: 10px;">
-                        <span class=" float-left font-weight-bold">
-                            <i class="fas fa-exclamation-circle"></i>&nbsp;&nbsp; Category
-                        </span>
-                        <span class="float-right text-secondary font-weight-bold">
-                            6
-                        </span>
-                    </li>
-                    <li class="nav-item border-bottom " style="padding-bottom:8px; padding-top:8px;padding-left:10px; padding-right: 10px;">
-                        <span class=" float-left font-weight-bold">
-                            <i class="fas fa-map-marker-alt"></i>&nbsp;&nbsp;Stage
-                        </span>
-                        <span class="float-right text-secondary font-weight-bold">
-                            Ending
-                        </span>
-                    </li>
-                    <li class="nav-item border-bottom " style="padding-bottom:8px; padding-top:8px;padding-left:10px; padding-right: 10px;">
-                        <span class=" float-left font-weight-bold">
-                            <i class="fas fa-clock"></i>&nbsp;&nbsp;Time To Complete
-                        </span>
-                        <span class="float-right text-secondary font-weight-bold">
-                            00:32
-                        </span>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-    <!-----------------------------D1-------------------------------------------->
-
-    <table class="table table-striped  text-center " style="text-align:center">
-        <thead style="background-color:#343a40!important;color:#fff;">
-            <tr>
-                <th class="text-center" colspan="12">
-                    <h5 style="font-size:25px">Production Floor @ViewBag.JobType</h5>
-                </th>
-            </tr>
-            <tr style="font-size:22px">
-                <th style="width:10%" colspan="1">
-                    Job#
-                </th>
-                <th style="width:10%"  colspan="1">
-                    Tech
-                </th>
-                <th style="width:10%" colspan="1">
-                    Stage
-                </th>
-                <th colspan="6">
-                    Status
-                </th>
-                <th style="width:5%" colspan="1">
-                    Cat
-                </th>
-                <th style="width:5%" colspan="1">
-                    ST
-                </th>
-                <th style="width:5%" colspan="1">
-                    TTC
-                </th>
-
-            </tr>
-        </thead>
-        <tbody>
-            @if (Model.TestStatsList.Count() == 0)
-            {
-                <tr>
-                    <td colspan="12" style="font-size:20px">No active TestJobs!</td>
-                </tr>
-            }
-            else
-            {
-                @foreach (var j in Model.TestStatsList)
-                {
-
-        <tr style="font-size:20px">
-            <td style="width:10%" colspan="1" >@j.JobNumer</td>
-            <td style="width:10%" colspan="1">@j.TechName</td>
-            <td style="width:10%" colspan="1">@j.Stage</td>
-            <td colspan="6">
-                <div  style="height: 20px;" class="progress">
-                    <div class="progress-bar progress-bar-striped progress-bar-animated " role="progressbar" style="width: @j.Efficiency.ToString()%; background-color: @j.Color;color:  @j.TextColor;font-size:20px;"
-                         aria-valuenow="@j.Efficiency.ToString()" aria-valuemin="0" aria-valuemax="99">@j.Status</div>
-                </div>
-            </td>
-            <td style="width:5%" colspan="1">@j.Category</td>
-            <td style="width:5%" colspan="1">@j.Station</td>
-            <td style="width:5%" colspan="1">@j.TTC.Hour.ToString().PadLeft(2, '0'):@j.TTC.Minute.ToString().PadLeft(2, '0')</td>
-
-        </tr>
-                }
-            }
-        </tbody>
-    </table>
-*@

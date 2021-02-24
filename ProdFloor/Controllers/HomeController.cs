@@ -57,6 +57,7 @@ namespace ProdFloor.Controllers
             bool tech = GetCurrentUserRole("Technician").Result;
             bool admin = GetCurrentUserRole("Admin").Result;
             bool techAdmin = GetCurrentUserRole("TechAdmin").Result;
+            bool manager = GetCurrentUserRole("Manager").Result;
 
             if (filtrado != null) Sort = filtrado;
             if (engineer)
@@ -199,6 +200,8 @@ namespace ProdFloor.Controllers
             if(admin) return RedirectToAction("SuperUserDashBoard");
 
             if (techAdmin)  return RedirectToAction("SearchTestJob","TestJob");
+
+            if (manager) return RedirectToAction("ManagerDashboard", "Report");
 
             return NotFound();
         }

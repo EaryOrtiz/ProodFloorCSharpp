@@ -56,6 +56,7 @@ namespace ProdFloor
             services.AddTransient<IItemRepository, EFItemRepository>();
             services.AddTransient<ITestingRepository, EFTestingRepository>();
             services.AddTransient<ItemController>();
+            services.AddTransient<ReportController>();
             services.AddTransient<AccountController>();
             services.AddTransient<JobController>();
             //services.AddSingleton<IHostingEnvironment>(new HostingEnvironment());

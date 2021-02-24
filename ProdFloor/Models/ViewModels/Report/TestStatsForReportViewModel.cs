@@ -16,5 +16,8 @@ namespace ProdFloor.Models.ViewModels.Report
         public List<DailyReport> WeekReports { get;  set; }
         public List<DailyReport> PastMonthReports { get;  set; }
         public List<DailyReport> MonthReports { get;  set; }
+
+
+        public string CurrentTab { get; set; }
     }
 }
