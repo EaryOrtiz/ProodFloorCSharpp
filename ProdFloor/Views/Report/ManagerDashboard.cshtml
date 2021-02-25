@@ -7,7 +7,14 @@
         <li class="nav-item">
             <a class="nav-link disabled" data-toggle="tab" href="#Wiring" role="tab">Wiring</a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item dropdown table-hover">
+            <a class="nav-link" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-ellipsis-v"></i>
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <a asp-action="Index" asp-controller="Report" class="dropdown-item">Reports</a>
+            </div>
+        </li>
     </ul>
     <!-- Tab panes -->
     <div class="tab-content" style="padding:20px">

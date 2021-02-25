@@ -1577,13 +1577,40 @@ namespace ProdFloor.Controllers
                 {
 
                     var AllStepsForJob = testingRepo.StepsForJobs.Where(m => m.TestJobID == ID && m.Obsolete == false).OrderBy(m => m.Consecutivo).ToList();
-                    List<Reason1> reason1s = testingRepo.Reasons1.ToList();
-                    var AllStepsForJobInfo = testingRepo.Steps.Where(m => AllStepsForJob.Any(s => s.StepID == m.StepID)).ToList();
-
+                  
                     List<Stop> StopsFromTestJob = testingRepo.Stops.Where(m => m.TestJobID == ID && m.Critical == false)
                                                                    .Where(m => m.Reason1 != 980 & m.Reason1 != 981 && m.Reason2 == 0).ToList();
                     bool StopNC = false;
                     if (StopsFromTestJob.Count > 0 && StopsFromTestJob[0] != null) StopNC = true;
+
+                    //Chef if the testjob has pending steps
+                    if (AllStepsForJob.Where(m => m.Complete == false).Count() == 0)
+                    {
+
+                        if (StopsFromTestJob.Count > 0 && StopsFromTestJob[0] != null)
+                        {
+                            testJob.Status = "Stopped";
+                            testingRepo.SaveTestJob(testJob);
+
+                            TempData["alert"] = $"alert-danger";
+                            TempData["message"] = $"Error, tiene una parada pendiente por terminar, terminelo e intente de nuevo o contacte al Admin";
+                            return RedirectToAction("Index", "Home", 1);
+                        }
+                        else
+                        {
+                            testJob.Status = "Completed";
+                            testJob.CompletedDate = DateTime.Now;
+                            testingRepo.SaveTestJob(testJob);
+
+                            TempData["message"] = $"El Test Job {testJob.TestJobID} se ha completado con exito!";
+                            TempData["alert"] = $"alert-success";
+                            return RedirectToAction("Index", "Home", 1);
+                        }
+
+                    }
+
+                    List<Reason1> reason1s = testingRepo.Reasons1.ToList();
+                    var AllStepsForJobInfo = testingRepo.Steps.Where(m => AllStepsForJob.Any(s => s.StepID == m.StepID)).ToList();
 
                     StepsForJob CurrentStep = AllStepsForJob.FirstOrDefault(m => m.Complete == false);
                     testingRepo.SaveStepsForJob(CurrentStep);
@@ -2359,6 +2386,7 @@ namespace ProdFloor.Controllers
 
         }
 
+        [AllowAnonymous]
         public IActionResult AutomaticShiftEnd()
         {
             try
