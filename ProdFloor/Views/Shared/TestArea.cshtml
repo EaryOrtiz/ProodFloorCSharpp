@@ -34,19 +34,19 @@
     <div class="row mb-1 pb-1">
         @Html.Partial("TestSlidesDuo", Model)
     </div>
-    <div class="row mt-1 pt-1">
+    <div class="row mt-1 pt-1 pl-5">
         <div class="col-12 mr-auto">
             <div id="carouselEFFData" class="carousel slide" data-ride="carousel" data-interval="15000" style="width: 90rem;">
                 <div class="carousel-inner">
                     <div class="carousel-item active">
 
-                        <div class="card text-white bg-success" style="height: 8rem">
+                        <div class="card text-white bg-success" style="height: 7rem">
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-2 pl-0 border-right text-center">
                                         <h2>@dailyM4000.JobTypeName</h2>
                                     </div>
-                                    <div class="col font-weight-bold border-right" style="font-size: 22px">
+                                    <div class="col font-weight-bold border-right" style="font-size: 18px">
                                         <span>@dailyM4000.TodayDate</span><br />
                                         <span>Eficiencia:  @dailyM4000.TotalEfficiency%</span>
                                         <div class="progress bg-secondary" style="height: 0.2rem;width: 12rem">
@@ -55,7 +55,7 @@
                                         </div>
                                         <span>Completados: @dailyM4000.TestJobsCounted </span>
                                     </div>
-                                    <div class="col font-weight-bold border-right" style="font-size: 22px">
+                                    <div class="col font-weight-bold border-right" style="font-size: 18px">
                                         <span>En esta semana</span><br />
                                         <span>Eficiencia:  @weekM4000.TotalEfficiency%</span>
                                         <div class="progress bg-secondary" style="height: 0.2rem;width: 12rem">
@@ -64,7 +64,7 @@
                                         </div>
                                         <span>Completados: @weekM4000.TestJobsCounted </span>
                                     </div>
-                                    <div class="col font-weight-bold border-right" style="font-size: 22px">
+                                    <div class="col font-weight-bold border-right" style="font-size: 18px">
                                         <span>En este mes</span><br />
                                         <span>Eficiencia:  @monthM4000.TotalEfficiency%</span>
                                         <div class="progress bg-secondary" style="height: 0.2rem;width: 12rem">
@@ -73,7 +73,7 @@
                                         </div>
                                         <span>Completados: @monthM4000.TestJobsCounted </span>
                                     </div>
-                                    <div class="col font-weight-bold" style="font-size: 22px">
+                                    <div class="col font-weight-bold" style="font-size: 18px">
                                         <span>En el mes pasado</span><br />
                                         <span>Eficiencia:  @lastMonthM4000.TotalEfficiency%</span>
                                         <div class="progress bg-secondary" style="height: 0.2rem;width: 12rem">
@@ -90,13 +90,13 @@
                     </div>
                     <div class="carousel-item">
 
-                        <div class="card text-white bg-danger" style="height: 8rem">
+                        <div class="card text-white bg-danger" style="height: 7rem">
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-2 pl-0 border-right text-center">
                                         <h3>Element Traction</h3>
                                     </div>
-                                    <div class="col font-weight-bold border-right" style="font-size: 22px">
+                                    <div class="col font-weight-bold border-right" style="font-size: 18px">
                                         <span>@dailyTraction.TodayDate</span><br />
                                         <span>Eficiencia:  @dailyTraction.TotalEfficiency%</span>
                                         <div class="progress bg-secondary" style="height: 0.2rem;width: 12rem">
@@ -105,7 +105,7 @@
                                         </div>
                                         <span>Completados: @dailyTraction.TestJobsCounted </span>
                                     </div>
-                                    <div class="col font-weight-bold border-right" style="font-size: 22px">
+                                    <div class="col font-weight-bold border-right" style="font-size: 18px">
                                         <span>En esta semana</span><br />
                                         <span>Eficiencia:  @weekTraction.TotalEfficiency%</span>
                                         <div class="progress bg-secondary" style="height: 0.2rem;width: 12rem">
@@ -114,7 +114,7 @@
                                         </div>
                                         <span>Completados: @weekTraction.TestJobsCounted </span>
                                     </div>
-                                    <div class="col font-weight-bold border-right" style="font-size: 22px">
+                                    <div class="col font-weight-bold border-right" style="font-size: 18px">
                                         <span>En este mes</span><br />
                                         <span>Eficiencia:  @monthTraction.TotalEfficiency%</span>
                                         <div class="progress bg-secondary" style="height: 0.2rem;width: 12rem">
@@ -123,7 +123,7 @@
                                         </div>
                                         <span>Completados: @monthTraction.TestJobsCounted </span>
                                     </div>
-                                    <div class="col font-weight-bold" style="font-size: 22px">
+                                    <div class="col font-weight-bold" style="font-size: 18px">
                                         <span>En el mes pasado</span><br />
                                         <span>Eficiencia:  @lastMonthTraction.TotalEfficiency%</span>
                                         <div class="progress bg-secondary" style="height: 0.2rem;width: 12rem">
@@ -141,13 +141,13 @@
                     </div>
                     <div class="carousel-item">
 
-                        <div class="card text-dark bg-warning" style="height: 8rem">
+                        <div class="card text-dark bg-warning" style="height: 7rem">
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-2 pl-0 border-right text-center">
                                         <h2>@dailyM2000.JobTypeName</h2>
                                     </div>
-                                    <div class="col font-weight-bold border-right" style="font-size: 22px">
+                                    <div class="col font-weight-bold border-right" style="font-size: 18px">
                                         <span>@dailyM2000.TodayDate</span><br />
                                         <span>Eficiencia:  @dailyM2000.TotalEfficiency%</span>
                                         <div class="progress bg-secondary" style="height: 0.2rem;width: 12rem">
@@ -156,7 +156,7 @@
                                         </div>
                                         <span>Completados: @dailyM2000.TestJobsCounted </span>
                                     </div>
-                                    <div class="col font-weight-bold border-right" style="font-size: 22px">
+                                    <div class="col font-weight-bold border-right" style="font-size: 18px">
                                         <span>En esta semana</span><br />
                                         <span>Eficiencia:  @weekM2000.TotalEfficiency%</span>
                                         <div class="progress bg-secondary" style="height: 0.2rem;width: 12rem">
@@ -165,7 +165,7 @@
                                         </div>
                                         <span>Completados: @weekM2000.TestJobsCounted </span>
                                     </div>
-                                    <div class="col font-weight-bold border-right" style="font-size: 22px">
+                                    <div class="col font-weight-bold border-right" style="font-size: 18px">
                                         <span>En este mes</span><br />
                                         <span>Eficiencia:  @monthM2000.TotalEfficiency%</span>
                                         <div class="progress bg-secondary" style="height: 0.2rem;width: 12rem">
@@ -174,7 +174,7 @@
                                         </div>
                                         <span>Completados: @monthM2000.TestJobsCounted </span>
                                     </div>
-                                    <div class="col font-weight-bold" style="font-size: 22px">
+                                    <div class="col font-weight-bold" style="font-size: 18px">
                                         <span>En el mes pasado</span><br />
                                         <span>Eficiencia:  @lastMonthM2000.TotalEfficiency%</span>
                                         <div class="progress bg-secondary" style="height: 0.2rem;width: 12rem">
@@ -191,13 +191,13 @@
                     </div>
                     <div class="carousel-item">
 
-                        <div class="card text-white bg-info" style="height: 8rem">
+                        <div class="card text-white bg-info" style="height: 7rem">
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-2 pl-0 border-right text-center">
                                         <h3>Element Hydro</h3>
                                     </div>
-                                    <div class="col font-weight-bold border-right" style="font-size: 22px">
+                                    <div class="col font-weight-bold border-right" style="font-size: 18px">
                                         <span>@dailyHydro.TodayDate</span><br />
                                         <span>Eficiencia:  @dailyHydro.TotalEfficiency%</span>
                                         <div class="progress bg-secondary" style="height: 0.2rem;width: 12rem">
@@ -206,7 +206,7 @@
                                         </div>
                                         <span>Completados: @dailyHydro.TestJobsCounted </span>
                                     </div>
-                                    <div class="col font-weight-bold border-right" style="font-size: 22px">
+                                    <div class="col font-weight-bold border-right" style="font-size: 18px">
                                         <span>En esta semana</span><br />
                                         <span>Eficiencia:  @weekHydro.TotalEfficiency%</span>
                                         <div class="progress bg-secondary" style="height: 0.2rem;width: 12rem">
@@ -215,7 +215,7 @@
                                         </div>
                                         <span>Completados: @weekHydro.TestJobsCounted </span>
                                     </div>
-                                    <div class="col font-weight-bold border-right" style="font-size: 22px">
+                                    <div class="col font-weight-bold border-right" style="font-size: 18px">
                                         <span>En este mes</span><br />
                                         <span>Eficiencia:  @monthHydro.TotalEfficiency%</span>
                                         <div class="progress bg-secondary" style="height: 0.2rem;width: 12rem">
@@ -224,7 +224,7 @@
                                         </div>
                                         <span>Completados: @monthHydro.TestJobsCounted </span>
                                     </div>
-                                    <div class="col font-weight-bold" style="font-size: 22px">
+                                    <div class="col font-weight-bold" style="font-size: 18px">
                                         <span>En el mes pasado</span><br />
                                         <span>Eficiencia:  @lastMonthHydro.TotalEfficiency%</span>
                                         <div class="progress bg-secondary" style="height: 0.2rem;width: 12rem">

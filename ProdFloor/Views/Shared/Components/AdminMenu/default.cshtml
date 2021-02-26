@@ -8,15 +8,15 @@
            class="nav-link text-light"><i class="fas fa-briefcase"></i>&nbsp; Job Search</a>
         <ul id="collapseJobSearch" class="collapse" role="tabpanel" aria-labelledby="collapseJobSearch" data-parent="#accordion">
             <li class="nav-link"
-                style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue">
+                style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue; width: 90%">
                 <a style="color:white" asp-controller="Job" asp-action="List" asp-route-JobTypeName="M2000">M2000</a>
             </li>
             <li class="nav-link"
-                style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue">
+                style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue; width: 90%">
                 <a style="color:white" asp-controller="Job" asp-action="ElementList" asp-route-JobTypeName="ElmTract">Element Traction</a>
             </li>
             <li class="nav-link"
-                style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue">
+                style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue; width: 90%">
                 <a style="color:white" asp-controller="Job" asp-action="ElementList" asp-route-JobTypeName="ElmHydro">Element Hydro</a>
             </li>
         </ul>
@@ -51,25 +51,25 @@
            class="nav-link text-light"><i class="fas fa-book-reader"></i>&nbsp; Engineer Refererences</a>
         <ul id="collapseTables" class="collapse" role="tabpanel" aria-labelledby="collapseTables" data-parent="#accordion">
             <li class="nav-link"
-                style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue">
+                style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue; width: 90%">
                 <a style="color:white" asp-action="List"
                    asp-controller="SlowDown"
                    asp-route-Page="1">Slowdown Table</a>
             </li>
-            <li class="nav-link"
-                style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue">
+            <li class="nav-link" 
+                style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue; width: 90%">
                 <a style="color:white" asp-action="List"
                    asp-controller="WireTypesSize"
                    asp-route-Page="1">Wire Types Size Table</a>
             </li>
             <li class="nav-link"
-                style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue">
+                style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue; width: 90%">
                 <a style="color:white" asp-action="List"
                    asp-controller="Starter"
                    asp-route-Page="1">Starter Table</a>
             </li>
             <li class="nav-link"
-                style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue">
+                style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue; width: 90%">
                 <a style="color:white" asp-action="List"
                    asp-controller="Overload"
                    asp-route-Page="1">Overload Table</a>
@@ -81,28 +81,28 @@
            class="nav-link text-light"><i class="fas fa-charging-station"></i>&nbsp; Testing</a>
         <ul id="collapseSteps" class="collapse" role="tabpanel" aria-labelledby="collapseSteps" data-parent="#accordion">
             <li class="nav-link"
-                style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue">
+                style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue; width: 90%">
                 <a style="color:white" asp-action="SearchTestJob"
                    asp-controller="TestJob">Test Job</a>
             </li>
             <li class="nav-link"
-                style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue">
+                style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue; width: 90%">
                 <a style="color:white" asp-action="Index"
                    asp-controller="Report">Reports</a>
             </li>
             <li class="nav-link"
-                style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue">
+                style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue; width: 90%">
                 <a style="color:white" asp-action="List" asp-route-ElmHydroPage="1" asp-route-M2000Page="1" asp-route-ElmTractionPage="1" asp-route-M4000Page="1"
                    asp-controller="Step" asp-route-JobTypeName="Traction">Steps</a>
             </li>
             <li class="nav-link"
-                style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue">
+                style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue; width: 90%">
                 <a style="color:white" asp-action="List"
                    asp-controller="Station"
                    asp-route-Page="1">Stations</a>
             </li>
             <li class="nav-link"
-                style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue">
+                style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue; width: 90%">
                 <a style="color:white"
                    asp-controller="Stop"
                    asp-route-stop=""
@@ -116,30 +116,27 @@
         <form asp-controller="Reasons" asp-action="List" asp-route-Page="1" method="get">
             <ul id="collapseReasons" class="collapse" role="tabpanel" aria-labelledby="collapseReasons" data-parent="#accordion">
                 <li class="nav-link"
-                    style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue">
+                    style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue; width: 90%">
                     <button class="btn btn-sm btn-link" style="color:white" asp-action="Reason1List" asp-controller="Reasons" asp-route-Page="1" asp-route-ReasonNumber="1">Reasons 1</button>
                 </li>
                 <li class="nav-link"
-                    style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue">
+                    style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue; width: 90%">
                     <button class="btn btn-sm btn-link" style="color:white" asp-action="Reason2List" asp-controller="Reasons" asp-route-Page="1" asp-route-ReasonNumber="2">Reasons 2</button>
                 </li>
                 <li class="nav-link"
-                    style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue">
+                    style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue; width: 90%">
                     <button class="btn btn-sm btn-link" style="color:white" asp-action="Reason3List" asp-controller="Reasons" asp-route-Page="1" asp-route-ReasonNumber="3">Reasons 3</button>
                 </li>
                 <li class="nav-link"
-                    style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue">
+                    style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue; width: 90%">
                     <button class="btn btn-sm btn-link" style="color:white" asp-action="Reason4List" asp-controller="Reasons" asp-route-Page="1" asp-route-ReasonNumber="4">Reasons 4</button>
                 </li>
                 <li class="nav-link"
-                    style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue">
+                    style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue; width: 90%">
                     <button class="btn btn-sm btn-link" style="color:white" asp-action="Reason5List" asp-controller="Reasons" asp-route-Page="1" asp-route-ReasonNumber="5">Reasons 5</button>
                 </li>
             </ul>
         </form>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link text-light" asp-controller="Report" asp-action="ManagerDashboard"><i class="fas fa-user-tie"></i>&nbsp;ProdFloor Stats</a>
     </li>
     <li class="nav-item">
         <a class="nav-link text-light" asp-controller="Account" asp-action="Index"><i class="fas fa-user-tie"></i>&nbsp; Users</a>

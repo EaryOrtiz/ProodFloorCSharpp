@@ -14,6 +14,7 @@ using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.DependencyInjection;
 using ProdFloor.Models;
 using ProdFloor.Models.ViewModels;
+using ProdFloor.Models.ViewModels.Report;
 using ProdFloor.Models.ViewModels.TestJob;
 
 namespace ProdFloor.Controllers
@@ -24,15 +25,21 @@ namespace ProdFloor.Controllers
         private IJobRepository jobRepo;
         private ITestingRepository testingRepo;
         private IItemRepository itemRepository;
+        private ReportController reportController;
         private UserManager<AppUser> userManager;
         public int PageSize = 7;
 
-        public TestJobController(ITestingRepository repo, IJobRepository repo2, IItemRepository repo3, UserManager<AppUser> userMgr)
+        public TestJobController(ITestingRepository repo,
+            IJobRepository repo2,
+            IItemRepository repo3,
+            ReportController report,
+            UserManager<AppUser> userMgr)
         {
             jobRepo = repo2;
             testingRepo = repo;
             userManager = userMgr;
             itemRepository = repo3;
+            reportController = report;
         }
 
         public ViewResult List(int page = 1)
@@ -78,6 +85,20 @@ namespace ProdFloor.Controllers
                 RedirectToAction("SearchTestJob", "TestJob");
                 jobnumb = "";
             }
+
+            ReportsViewModel reportsViewModel = new ReportsViewModel();
+            ReportsViewModel reportsAuxViewModel = new ReportsViewModel();
+
+            reportsViewModel.dailyReports = reportController.GetDailyReports(DateTime.Now);
+            reportsViewModel.WeekReports = reportController.GetDailyReports(DateTime.Now, "week");
+            reportsViewModel.MonthReports = reportController.GetDailyReports(DateTime.Now, "month");
+            reportsViewModel.PastMonthReports = reportController.GetDailyReports(DateTime.Now, "lastMonth");
+            reportsViewModel.TestStatsList = reportController.GetTestStats(reportsAuxViewModel);
+            reportsViewModel.StationsM2000List = testingRepo.Stations.Where(m => m.JobTypeID == 2).OrderBy(n => n.Label).ToList();
+            reportsViewModel.StationsM2000List.AddRange(testingRepo.Stations.Where(m => m.JobTypeID == 1).OrderBy(n => n.Label).ToList());
+            reportsViewModel.StationsM4000List = testingRepo.Stations.Where(m => m.JobTypeID == 4).OrderBy(n => n.Label).ToList();
+            reportsViewModel.StationsM4000List.AddRange(testingRepo.Stations.Where(m => m.JobTypeID == 5).OrderBy(n => n.Label).ToList());
+
 
             List<TestJob> testJobsInCompleted = new List<TestJob>();
             List<TestJob> testJobsWorkingOnIt = new List<TestJob>();
@@ -169,6 +190,7 @@ namespace ProdFloor.Controllers
                     JobNumb = jobnumb,
                     TotalItems = testJobsCompleted.Count()
                 },
+                ReportsViewModel = reportsViewModel,
 
             };
 
@@ -343,7 +365,16 @@ namespace ProdFloor.Controllers
         [HttpPost]
         public IActionResult NextForm(TestJobViewModel nextViewModel)
         {
-            nextViewModel.Job.JobNum = getJobNumb(nextViewModel.Job.JobNumFirstDigits, nextViewModel.Job.JobNumLastDigits);
+            if(nextViewModel.Job.JobNumFirstDigits != null && nextViewModel.Job.JobNumLastDigits != 0)
+            {
+                nextViewModel.Job.JobNum = getJobNumb(nextViewModel.Job.JobNumFirstDigits, nextViewModel.Job.JobNumLastDigits);
+            }
+            else
+            {
+                nextViewModel.Job.JobNumFirstDigits = getJobNumbDivided(nextViewModel.Job.JobNum).firstDigits;
+                nextViewModel.Job.JobNumLastDigits = getJobNumbDivided(nextViewModel.Job.JobNum).lastDigits;
+            }
+           
 
             if (nextViewModel.TestFeature != null)
             {

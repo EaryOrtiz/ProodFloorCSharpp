@@ -4,17 +4,26 @@
         <li class="nav-item">
             <a class="nav-link @(Model.CurrentTab == "Test" || Model.CurrentTab == "" || Model.CurrentTab == null ? "active" : " ")" data-toggle="tab" href="#Test" role="tab">Test</a>
         </li>
+        <li class="nav-item dropdown table-hover">
+            <a class="nav-link" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-file-excel"></i>
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <button type="button" class="dropdown-item" data-toggle="modal" data-target="#JobsModal" data-tooltip="tooltip" data-placement="top" title="Generate Daily Report">
+                    Daily
+                </button>
+                <button type="button" class="dropdown-item" data-toggle="modal" data-target="#EfficiencyModal" data-tooltip="tooltip" data-placement="top" title="Generate Efficency Report">
+                    Efficency
+                </button>
+                <button type="button" class="dropdown-item" data-toggle="modal" data-target="#StopsModal" data-tooltip="tooltip" data-placement="top" title="Generate Stops Report">
+                    Stops
+                </button>
+            </div>
+        </li>
         <li class="nav-item">
             <a class="nav-link disabled" data-toggle="tab" href="#Wiring" role="tab">Wiring</a>
         </li>
-        <li class="nav-item dropdown table-hover">
-            <a class="nav-link" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="fas fa-ellipsis-v"></i>
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                <a asp-action="Index" asp-controller="Report" class="dropdown-item">Reports</a>
-            </div>
-        </li>
+
     </ul>
     <!-- Tab panes -->
     <div class="tab-content" style="padding:20px">
@@ -25,5 +34,90 @@
 
         </div>
 
+    </div>
+    <!--TestJobs report Modal -->
+    <div class="modal fade" id="JobsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Daily Report</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form  action="DailyReport" method="post" >
+                    <div class="container mb-2 mt-2">
+                        <div class="form-inline">
+                            <label class="col-3">Start Date: </label>
+                            <input class="form-control col-8" type="date" name="startDate" value="@DateTime.Now" />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
+                        <button class="btn btn-warning btn-sm" type="submit">Generate</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!--Efficiency report Modal -->
+    <div class="modal fade" id="EfficiencyModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Efficiency Report</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="EfficiencyReport" method="post">
+                    <div class="container mb-2 mt-2">
+                        <div class="form-inline">
+                            <label class="col-3">Start Date: </label>
+                            <input class="form-control col-8" type="date" name="startDate" value="@DateTime.Now" />
+                        </div>
+                        <div class="form-inline">
+                            <label class="col-3">End Date: </label>
+                            <input class="form-control col-8" type="date" name="endDate" value="@DateTime.Now" />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
+                        <button class="btn btn-success btn-sm" type="submit">Generate</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!--Stops report Modal -->
+    <div class="modal fade" id="StopsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Stops Report</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="StopsReport" method="post">
+                    <div class="container mb-2 mt-2">
+                        <div class="form-inline">
+                            <label class="col-3">Start Date: </label>
+                            <input class="form-control col-8" type="date" name="startDate" value="@DateTime.Now" />
+                        </div>
+                        <div class="form-inline">
+                            <label class="col-3">End Date: </label>
+                            <input class="form-control col-8" type="date" name="endDate" value="@DateTime.Now" />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
+                        <button class="btn btn-danger btn-sm" type="submit">Generate</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 </div>

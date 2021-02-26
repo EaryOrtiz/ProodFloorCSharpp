@@ -17,7 +17,7 @@ using ChartJSCore.Helpers;
 namespace ProdFloor.Controllers
 {
 
-    [Authorize(Roles = "Admin,TechAdmin,Engineer,Technician,EngAdmin,CrossApprover")]
+    [Authorize(Roles = "Admin,TechAdmin,Engineer,Technician,EngAdmin,CrossApprover,Manager")]
     public class HomeController : Controller
     {
         private IJobRepository repository;

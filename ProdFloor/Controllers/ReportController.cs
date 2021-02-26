@@ -45,6 +45,10 @@ namespace ProdFloor.Controllers
         public IActionResult Index(ReportsViewModel viewModel)
         {
             viewModel.TestStatsList = GetTestStats(viewModel);
+            viewModel.StationsM2000List = testingRepo.Stations.Where(m => m.JobTypeID == 2).OrderBy(n => n.Label).ToList();
+            viewModel.StationsM2000List.AddRange(testingRepo.Stations.Where(m => m.JobTypeID == 1).OrderBy(n => n.Label).ToList());
+            viewModel.StationsM4000List = testingRepo.Stations.Where(m => m.JobTypeID == 4).OrderBy(n => n.Label).ToList();
+            viewModel.StationsM4000List.AddRange(testingRepo.Stations.Where(m => m.JobTypeID == 5).OrderBy(n => n.Label).ToList());
             viewModel.dailyReports = GetDailyReports(DateTime.Now.AddDays(-1));
 
 
@@ -476,7 +480,11 @@ namespace ProdFloor.Controllers
             viewModel.PastMonthReports = GetDailyReports(DateTime.Now, "lastMonth");
 
             viewModel.TestStatsList = GetTestStats(viewModel);
-           
+            viewModel.StationsM2000List = testingRepo.Stations.Where(m => m.JobTypeID == 2).OrderBy(n => n.Label).ToList();
+            viewModel.StationsM2000List.AddRange(testingRepo.Stations.Where(m => m.JobTypeID == 1).OrderBy(n => n.Label).ToList());
+            viewModel.StationsM4000List = testingRepo.Stations.Where(m => m.JobTypeID == 4).OrderBy(n => n.Label).ToList();
+            viewModel.StationsM4000List.AddRange(testingRepo.Stations.Where(m => m.JobTypeID == 5).OrderBy(n => n.Label).ToList());
+
             ViewData["TV"] = "Simontl";
             ViewBag.Jobtype = JobType;
             return View(viewModel);

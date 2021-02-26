@@ -6,8 +6,30 @@
     <li class="nav-item">
         <a class="nav-link text-light" asp-controller="TestJob" asp-action="TestJobSearchList"><i class="fas fa-search"></i>&nbsp; Testjob Search</a>
     </li>
-    <li class="nav-item nav">
-        <a class="nav-link  text-light" asp-controller="Report" asp-action="Index"><i class="fas fa-file-excel"></i>&nbsp; Reports</a>
+    <li class="nav-item" role="tab" id="Reports">
+        <a data-toggle="collapse" href="#collapseReports" role="button" aria-expanded="false" aria-controls="collapseReports"
+           class="nav-link text-light"><i class="fas fa-file-excel"></i>&nbsp; Reports</a>
+        <ul id="collapseReports" class="collapse" role="tabpanel" aria-labelledby="collapseReports" data-parent="#accordion">
+            <li class="nav-link"
+                style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue; width: 90%">
+                <button class="btn btn-sm btn-link" style="color:white" data-toggle="modal" data-target="#JobsModal"
+                        data-tooltip="tooltip" data-placement="top" title="Generate Daily Report">
+                    Daily
+                </button>
+            </li>
+            <li class="nav-link"
+                style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue; width: 90%">
+                <button class="btn btn-sm btn-link" style="color:white" data-toggle="modal" data-target="#EfficiencyModal" data-tooltip="tooltip" data-placement="top" title="Generate Efficency Report">
+                    Efficiency
+                </button>
+            </li>
+            <li class="nav-link"
+                style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue; width: 90%">
+                <button class="btn btn-sm btn-link" style="color:white" data-toggle="modal" data-target="#StopsModal" data-tooltip="tooltip" data-placement="top" title="Generate Stops Report">
+                    Stops
+                </button>
+            </li>
+        </ul>
     </li>
     <li class="nav-item">
         <a class="nav-link text-light" asp-action="List" asp-route-ElmHydroPage="1" asp-route-M2000Page="1" asp-route-ElmTractionPage="1" asp-route-M4000Page="1"
@@ -25,47 +47,116 @@
         <form asp-controller="Reasons" asp-action="List" asp-route-Page="1" method="get">
             <ul id="collapseReasons" class="collapse" role="tabpanel" aria-labelledby="collapseReasons" data-parent="#accordion">
                 <li class="nav-link"
-                    style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue">
+                    style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue; width: 90%">
                     <button class="btn btn-sm btn-link" style="color:white" asp-action="Reason1List" asp-controller="Reasons" asp-route-Page="1" asp-route-ReasonNumber="1">Reasons 1</button>
                 </li>
                 <li class="nav-link"
-                    style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue">
+                    style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue; width: 90%">
                     <button class="btn btn-sm btn-link" style="color:white" asp-action="Reason2List" asp-controller="Reasons" asp-route-Page="1" asp-route-ReasonNumber="2">Reasons 2</button>
                 </li>
                 <li class="nav-link"
-                    style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue">
+                    style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue; width: 90%">
                     <button class="btn btn-sm btn-link" style="color:white" asp-action="Reason3List" asp-controller="Reasons" asp-route-Page="1" asp-route-ReasonNumber="3">Reasons 3</button>
                 </li>
                 <li class="nav-link"
-                    style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue">
+                    style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue; width: 90%">
                     <button class="btn btn-sm btn-link" style="color:white" asp-action="Reason4List" asp-controller="Reasons" asp-route-Page="1" asp-route-ReasonNumber="4">Reasons 4</button>
                 </li>
                 <li class="nav-link"
-                    style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue">
+                    style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue; width: 90%">
                     <button class="btn btn-sm btn-link" style="color:white" asp-action="Reason5List" asp-controller="Reasons" asp-route-Page="1" asp-route-ReasonNumber="5">Reasons 5</button>
                 </li>
             </ul>
         </form>
     </li>
-    <li class="nav-item" role="tab" id="TestStats">
-        <a data-toggle="collapse" href="#collapseTestStats" role="button" aria-expanded="false" aria-controls="collapseTestStats"
-           class="nav-link text-light"><i class="far fa-chart-bar"></i>&nbsp; Test Stats</a>
-        <ul id="collapseTestStats" class="collapse" role="tabpanel" aria-labelledby="collapseTestStats" data-parent="#accordion">
-            <li class="nav-link"
-                style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue">
-                <a style="color:white" asp-action="TestStats" asp-controller="Report" asp-route-JobType="M2000">
-                    M2000
-                </a>
-            </li>
-            <li class="nav-link"
-                style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue">
-                <a style="color:white" asp-action="TestStats" asp-controller="Report" asp-route-JobType="M4000">
-                    M4000
-                </a>
-            </li>
-        </ul>
-    </li>
+
     <li class="nav-item">
         <a class="nav-link text-light" asp-controller="Account" asp-action="Index"><i class="fas fa-user-tie"></i>&nbsp; Technicians</a>
     </li>
 </ul>
+
+<!--TestJobs report Modal -->
+<div class="modal fade" id="JobsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Daily Report</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form  action="/Report/DailyReport" method="post">
+                <div class="container mb-2 mt-2">
+                    <div class="form-inline">
+                        <label class="col-3">Start Date: </label>
+                        <input class="form-control col-8" type="date" name="startDate" value="@DateTime.Now" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
+                    <button class="btn btn-warning btn-sm" type="submit">Generate</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!--Efficiency report Modal -->
+<div class="modal fade" id="EfficiencyModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Efficiency Report</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="/Report/EfficiencyReport" method="post">
+                <div class="container mb-2 mt-2">
+                    <div class="form-inline">
+                        <label class="col-3">Start Date: </label>
+                        <input class="form-control col-8" type="date" name="startDate" value="@DateTime.Now" />
+                    </div>
+                    <div class="form-inline">
+                        <label class="col-3">End Date: </label>
+                        <input class="form-control col-8" type="date" name="endDate" value="@DateTime.Now" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
+                    <button class="btn btn-success btn-sm" type="submit">Generate</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!--Stops report Modal -->
+<div class="modal fade" id="StopsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Stops Report</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="/Report/StopsReport" method="post">
+                <div class="container mb-2 mt-2">
+                    <div class="form-inline">
+                        <label class="col-3">Start Date: </label>
+                        <input class="form-control col-8" type="date" name="startDate" value="@DateTime.Now" />
+                    </div>
+                    <div class="form-inline">
+                        <label class="col-3">End Date: </label>
+                        <input class="form-control col-8" type="date" name="endDate" value="@DateTime.Now" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
+                    <button class="btn btn-danger btn-sm" type="submit">Generate</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
