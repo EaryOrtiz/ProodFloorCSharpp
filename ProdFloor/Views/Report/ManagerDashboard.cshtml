@@ -2,22 +2,22 @@
 <div class="container col-12">
     <ul class="nav nav-tabs col-sm-12" role="tablist">
         <li class="nav-item">
-            <a class="nav-link @(Model.CurrentTab == "Test" || Model.CurrentTab == "" || Model.CurrentTab == null ? "active" : " ")" data-toggle="tab" href="#Test" role="tab">Test</a>
-        </li>
-        <li class="nav-item dropdown table-hover">
-            <a class="nav-link" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="fas fa-file-excel"></i>
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                <button type="button" class="dropdown-item" data-toggle="modal" data-target="#JobsModal" data-tooltip="tooltip" data-placement="top" title="Generate Daily Report">
-                    Daily
+            <div class="btn-group">
+                <a class=" nav-link @(Model.CurrentTab == "Test" || Model.CurrentTab == "" || Model.CurrentTab == null ? "active" : " ")" data-toggle="tab" href="#Test" role="tab">Test</a>
+                <button type="button" class="btn btn-light dropdown-toggle dropdown-toggle-split active" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="sr-only">Toggle Dropdown</span>
                 </button>
-                <button type="button" class="dropdown-item" data-toggle="modal" data-target="#EfficiencyModal" data-tooltip="tooltip" data-placement="top" title="Generate Efficency Report">
-                    Efficency
-                </button>
-                <button type="button" class="dropdown-item" data-toggle="modal" data-target="#StopsModal" data-tooltip="tooltip" data-placement="top" title="Generate Stops Report">
-                    Stops
-                </button>
+                <div class="dropdown-menu">
+                    <button type="button" class="dropdown-item" data-toggle="modal" data-target="#JobsModal" data-tooltip="tooltip" data-placement="top" title="Generate Daily Report">
+                        Daily
+                    </button>
+                    <button type="button" class="dropdown-item" data-toggle="modal" data-target="#EfficiencyModal" data-tooltip="tooltip" data-placement="top" title="Generate Efficency Report">
+                        Efficency
+                    </button>
+                    <button type="button" class="dropdown-item" data-toggle="modal" data-target="#StopsModal" data-tooltip="tooltip" data-placement="top" title="Generate Stops Report">
+                        Stops
+                    </button>
+                </div>
             </div>
         </li>
         <li class="nav-item">
