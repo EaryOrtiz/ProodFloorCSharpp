@@ -557,52 +557,61 @@ namespace ProdFloor.Controllers
                         .Where(m => m.TestJobID == testJob.TestJobID)
                         .ToList();
 
-                    foreach (StepsForJob step in totalStepsForJob)
+                    try
                     {
-                        totalTimeOnJob += ToHours(step.Elapsed);
+                        foreach (StepsForJob step in totalStepsForJob)
+                        {
+                            totalTimeOnJob += ToHours(step.Elapsed);
+                        }
+
+                        foreach (StepsForJob step in stepsForJobByUser)
+                        {
+                            elapsedTimePerTech += ToHours(step.Elapsed);
+
+                            double elapsed = ToHours(step.Elapsed);
+                            double expected = ToHours(StepsListInfo.First(m => m.StepID == step.StepID).ExpectedTime);
+
+                            double effPerStep = (elapsed / expected) * 100;
+
+                            effPerStepSUM += effPerStep <= 100 ? effPerStep : 100;
+                        }
+
+                        Job featuresFromJob = jobsForTestJobs.FirstOrDefault(m => m.JobID == testJob.JobID);
+                        List<Stop> stopsForTestjob = stops
+                            .Where(m => m.TestJobID == testJob.TestJobID)
+                            .Where(m => m.AuxTechnicianID == user.EngID)
+                            .ToList();
+
+                        foreach (Stop stop in stopsForTestjob)
+                        {
+                            string R1 = reasons1.First(m => m.Reason1ID == stop.Reason1).Description;
+                            string elapsed = ToClockDateString(stop.Elapsed);
+
+                            testJobEff.StopsReasons += (R1 + " (" + elapsed + "), ");
+                            timeAtStops += ToHours(stop.Elapsed);
+                        }
+
+                        testJobEff.StationName = stations.FirstOrDefault(m => m.StationID == testJob.StationID).Label;
+                        testJobEff.JobTypeName = jobTypes.FirstOrDefault(m => m.JobTypeID == featuresFromJob.JobTypeID).Name;
+                        testJobEff.JobNumer = featuresFromJob.JobNum.Remove(0, 5);
+                        testJobEff.PO = testJob.SinglePO;
+                        testJobEff.StopsCounted = stopsForTestjob.Count();
+                        testJobEff.PercentagePerTech = (elapsedTimePerTech / totalTimeOnJob) * 100;
+                        testJobEff.EfficiencyPerTech = (effPerStepSUM / stepsCounted);
+
+                        //conversiones de horas a timpeo de reloj
+                        DateTime auxDate = ToDateTime(elapsedTimePerTech);
+                        testJobEff.ElapsedTimePerTech = ToClockDateString(auxDate);
+
+                        auxDate = ToDateTime(timeAtStops);
+                        testJobEff.TimeAtStops = ToClockDateString(auxDate);
+                    }
+                    catch
+                    {
+                        continue;
                     }
 
-                    foreach (StepsForJob step in stepsForJobByUser)
-                    {
-                        elapsedTimePerTech += ToHours(step.Elapsed);
-
-                        double elapsed = ToHours(step.Elapsed);
-                        double expected = ToHours(StepsListInfo.First(m => m.StepID == step.StepID).ExpectedTime);
-
-                        double effPerStep = (elapsed / expected) * 100;
-
-                        effPerStepSUM += effPerStep <= 100 ? effPerStep : 100;
-                    }
-
-                    Job featuresFromJob = jobsForTestJobs.FirstOrDefault(m => m.JobID == testJob.JobID);
-                    List<Stop> stopsForTestjob = stops
-                        .Where(m => m.TestJobID == testJob.TestJobID)
-                        .Where(m => m.AuxTechnicianID == user.EngID)
-                        .ToList();
-
-                    foreach (Stop stop in stopsForTestjob)
-                    {
-                        string R1 = reasons1.First(m => m.Reason1ID == stop.Reason1).Description;
-                        string elapsed = ToClockDateString(stop.Elapsed);
-
-                        testJobEff.StopsReasons += (R1 + " (" +elapsed + "), ");
-                        timeAtStops += ToHours(stop.Elapsed);
-                    }
-
-                    testJobEff.StationName = stations.FirstOrDefault(m => m.StationID == testJob.StationID).Label;
-                    testJobEff.JobTypeName = jobTypes.FirstOrDefault(m => m.JobTypeID == featuresFromJob.JobTypeID).Name;
-                    testJobEff.JobNumer = featuresFromJob.JobNum.Remove(0, 5);
-                    testJobEff.PO = testJob.SinglePO;
-                    testJobEff.StopsCounted = stopsForTestjob.Count();
-                    testJobEff.PercentagePerTech = (elapsedTimePerTech / totalTimeOnJob) * 100;
-                    testJobEff.EfficiencyPerTech = (effPerStepSUM / stepsCounted);
-
-                    //conversiones de horas a timpeo de reloj
-                    DateTime auxDate = ToDateTime(elapsedTimePerTech);
-                    testJobEff.ElapsedTimePerTech = ToClockDateString(auxDate);
-
-                    auxDate = ToDateTime(timeAtStops);
-                    testJobEff.TimeAtStops = ToClockDateString(auxDate);
+                   
 
                     efficiencyReport.testJobEfficiencies.Add(testJobEff);
 
@@ -677,17 +686,26 @@ namespace ProdFloor.Controllers
                     double realTimeSUM = 0;
                     double efficiency = 0;
 
-                    foreach (StepsForJob step in stepsForJob)
+                    try
                     {
-                        expectedTimeSUM += ToHours(StepsListInfo.FirstOrDefault(m => m.StepID == step.StepID).ExpectedTime);
+                        foreach (StepsForJob step in stepsForJob)
+                        {
+                            expectedTimeSUM += ToHours(StepsListInfo.FirstOrDefault(m => m.StepID == step.StepID).ExpectedTime);
 
-                        realTimeSUM += ToHours(step.Elapsed);
+                            realTimeSUM += ToHours(step.Elapsed);
+                        }
+
+                        efficiency = Math.Round((expectedTimeSUM / realTimeSUM) * 100);
+                        if (efficiency > 99) efficiency = 99;
+                        totalEfficiency = (int)(totalEfficiency + efficiency);
+                        testJobsCounted++;
+                    }
+                    catch
+                    {
+                        continue;
                     }
 
-                    efficiency = Math.Round((expectedTimeSUM / realTimeSUM) * 100);
-                    if (efficiency > 99) efficiency = 99;
-                    totalEfficiency = (int)(totalEfficiency + efficiency);
-                    testJobsCounted++;
+                   
 
 
                     TestStats testStat = new TestStats
