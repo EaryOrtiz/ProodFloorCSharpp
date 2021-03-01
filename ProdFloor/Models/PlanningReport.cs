@@ -19,12 +19,14 @@ namespace ProdFloor.Models
 
         public List<PlanningReportRow> Rows { get; set; }
 
+        /*
         public PlanningReport(DateTime planningDate, DateTime dateTimeLoad, bool busy)
         {
             PlanningDate = planningDate;
             DateTimeLoad = dateTimeLoad;
             Busy = busy;
         }
+        */
     }
 
     public class PlanningReportRow
@@ -55,6 +57,8 @@ namespace ProdFloor.Models
 
         public string SoldTo { get; set; }
 
+        /*
+
         public PlanningReportRow(int consecutive, string jobNumber, int pO, string jobName, string previousWorkCenter,
             string workCenter, string notes, string priority, string material, string mRP, string soldTo)
         {
@@ -70,6 +74,7 @@ namespace ProdFloor.Models
             MRP = mRP;
             SoldTo = soldTo;
         }
+        */
 
         [NotMapped]
         public bool WorkCenterChanged

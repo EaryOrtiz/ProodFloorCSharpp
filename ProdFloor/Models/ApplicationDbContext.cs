@@ -27,6 +27,8 @@ namespace ProdFloor.Models
         public DbSet<JobType> JobTypes { get; set; }
         public DbSet<LandingSystem> LandingSystems { get; set; }
         public DbSet<SpecialFeatures> SpecialFeatures { get; set; }
+        public DbSet<PlanningReport> PlanningReports { get; set; }
+        public DbSet<PlanningReportRow> PlanningReportRows { get; set; }
 
         //Enginner Refernces Tables
 

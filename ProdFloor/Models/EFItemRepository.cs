@@ -21,6 +21,8 @@ namespace ProdFloor.Models
         public IQueryable<FireCode> FireCodes => context.FireCodes;
         public IQueryable<JobType> JobTypes => context.JobTypes;
         public IQueryable<LandingSystem> LandingSystems => context.LandingSystems;
+        public IQueryable<PlanningReport> PlanningReports => context.PlanningReports;
+        public IQueryable<PlanningReportRow> PlanningReportRows => context.PlanningReportRows;
 
         public void SaveCountry(Country country)
         {
@@ -154,7 +156,57 @@ namespace ProdFloor.Models
             }
             context.SaveChanges();
         }
-        
+
+        public void SavePlanningReport(PlanningReport planningReport)
+        {
+            if (planningReport.PlanningReportID == 0)
+            {
+                context.PlanningReports.Add(planningReport);
+            }
+            else
+            {
+                PlanningReport dbEntry = context.PlanningReports
+                .FirstOrDefault(p => p.PlanningReportID == planningReport.PlanningReportID);
+                if (dbEntry != null)
+                {
+                    dbEntry.PlanningDate = planningReport.PlanningDate;
+                    dbEntry.DateTimeLoad = planningReport.DateTimeLoad;
+                    dbEntry.Busy = planningReport.Busy;
+
+                }
+            }
+            context.SaveChanges();
+        }
+
+        public void SavePlanningReportRow(PlanningReportRow planningReportRow)
+        {
+            if (planningReportRow.PlanningReportRowID == 0)
+            {
+                context.PlanningReportRows.Add(planningReportRow);
+            }
+            else
+            {
+                PlanningReportRow dbEntry = context.PlanningReportRows
+                .FirstOrDefault(p => p.PlanningReportID == planningReportRow.PlanningReportID);
+                if (dbEntry != null)
+                {
+                    dbEntry.PlanningReportID = planningReportRow.PlanningReportID;
+                    dbEntry.Consecutive = planningReportRow.Consecutive;
+                    dbEntry.JobNumber = planningReportRow.JobNumber;
+                    dbEntry.PO = planningReportRow.PO;
+                    dbEntry.JobName = planningReportRow.JobName;
+                    dbEntry.PreviousWorkCenter = planningReportRow.PreviousWorkCenter;
+                    dbEntry.WorkCenter = planningReportRow.WorkCenter;
+                    dbEntry.Notes = planningReportRow.Notes;
+                    dbEntry.Priority = planningReportRow.Priority;
+                    dbEntry.Material = planningReportRow.Material;
+                    dbEntry.MRP = planningReportRow.MRP;
+                    dbEntry.SoldTo = planningReportRow.SoldTo;
+
+                }
+            }
+            context.SaveChanges();
+        }
 
         public Country DeleteCountry(int CountryID)
         {
@@ -235,6 +287,30 @@ namespace ProdFloor.Models
             if (dbEntry != null)
             {
                 context.LandingSystems.Remove(dbEntry);
+                context.SaveChanges();
+            }
+            return dbEntry;
+        }
+
+        public PlanningReport DeletePlanningReport(int PlanningReportID)
+        {
+            PlanningReport dbEntry = context.PlanningReports
+                .FirstOrDefault(p => p.PlanningReportID == PlanningReportID);
+            if (dbEntry != null)
+            {
+                context.PlanningReports.Remove(dbEntry);
+                context.SaveChanges();
+            }
+            return dbEntry;
+        }
+
+        public PlanningReportRow DeletePlanningReportRow(int PlanningReportRowID)
+        {
+            PlanningReportRow dbEntry = context.PlanningReportRows
+                .FirstOrDefault(p => p.PlanningReportID == PlanningReportRowID);
+            if (dbEntry != null)
+            {
+                context.PlanningReportRows.Remove(dbEntry);
                 context.SaveChanges();
             }
             return dbEntry;
