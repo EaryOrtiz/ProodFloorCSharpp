@@ -10,6 +10,7 @@ using System.Xml.Linq;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
 using System;
+using Microsoft.AspNetCore.Hosting;
 
 namespace ProdFloor.Controllers
 {
@@ -24,8 +25,10 @@ namespace ProdFloor.Controllers
         }
         
 
-        public ViewResult Index(PlanningReportListViewModel viewModel)
+        public ViewResult Index()
         {
+            PlanningReportListViewModel viewModel = new PlanningReportListViewModel();
+
             bool isAnyPlanningInDb = itemRepository.PlanningReports.Any();
 
             if (isAnyPlanningInDb)
@@ -50,6 +53,14 @@ namespace ProdFloor.Controllers
             PlanningReport planningReport = itemRepository.PlanningReports.FirstOrDefault();
             List<PlanningReportRow> reportRows = GetPlanningReportTable();
 
+            if(reportRows.Count == 0)
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"Planning Schedule Report file doesnt exists or must be renamed";
+
+                return View();
+            }
+
             foreach (PlanningReportRow row in reportRows)
             {
                 row.PlanningReportID = planning.PlanningReportID;
@@ -71,14 +82,22 @@ namespace ProdFloor.Controllers
         public IActionResult Update()
         {
             PlanningReport planningReport = itemRepository.PlanningReports.FirstOrDefault();
+            planningReport.Busy = true;
+            itemRepository.SavePlanningReport(planningReport);
+
             List<PlanningReportRow> NewReportRows = GetPlanningReportTable();
+            if (NewReportRows.Count == 0)
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"Planning Schedule Report file doesnt exists or must be renamed";
+
+                return RedirectToAction(nameof(Index));
+            }
+
             List<PlanningReportRow> oldReportRows = itemRepository.PlanningReportRows
                                                          .Where(m => m.PlanningReportID == planningReport.PlanningReportID)
                                                          .Where(m => m.Custom == true)
                                                          .ToList();
-
-            planningReport.Busy = true;
-            itemRepository.SavePlanningReport(planningReport);
 
             foreach (PlanningReportRow row in NewReportRows)
             {
@@ -99,6 +118,8 @@ namespace ProdFloor.Controllers
             }
 
             planningReport.Busy = false;
+            planningReport.DateTimeLoad = DateTime.Now;
+            planningReport.PlanningDate = DateTime.Now;
             itemRepository.SavePlanningReport(planningReport);
 
             return RedirectToAction(nameof(Index));
@@ -122,9 +143,15 @@ namespace ProdFloor.Controllers
 
         public List<PlanningReportRow> GetPlanningReportTable()
         {
-            List<PlanningReportRow> planningReportRowTable = new List<PlanningReportRow>();
+            string fileName = @"wwwroot\resources\PlanningScheduleReport" + DateTime.Now.ToString("MM-dd-yyy") + ".xlsx";
+
+            if(!System.IO.File.Exists(Path.Combine(fileName)))
+            {
+                return new List<PlanningReportRow>();
+            }
+
+            List < PlanningReportRow > planningReportRowTable = new List<PlanningReportRow>();
             List<string> rowList = new List<string>();
-            string fileName = @"wwwroot\resources\PlanningReport"+ DateTime.Now.ToShortDateString() + ".xlsx";
             ISheet sheet;
             using (var stream = new FileStream(fileName, FileMode.Open))
             {
@@ -132,7 +159,7 @@ namespace ProdFloor.Controllers
                 XSSFWorkbook xssWorkbook = new XSSFWorkbook(stream);
                 sheet = xssWorkbook.GetSheetAt(3);
                 IRow headerRow = sheet.GetRow(0);
-                int cellCount = headerRow.LastCellNum;
+                int cellCount = /.LastCellNum;
                 for (int i = (sheet.FirstRowNum + 1); i <= sheet.LastRowNum; i++)
                 {
                     PlanningReportRow planningRow = new PlanningReportRow();
@@ -149,9 +176,10 @@ namespace ProdFloor.Controllers
                             }
                         }
                     }
-                    if (rowList.Count > 0)
-                        planningRow.JobNumber = rowList.ElementAt(0);
+                    if (rowList.ElementAt(3) == "MRP") continue;
 
+   
+                    planningRow.JobNumber = rowList.ElementAt(0);
                     planningRow.Material = rowList.ElementAt(2);
                     planningRow.MRP = rowList.ElementAt(3);
                     planningRow.PO = int.Parse(rowList.ElementAt(4));

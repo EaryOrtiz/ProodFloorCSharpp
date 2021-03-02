@@ -56,7 +56,7 @@
                    asp-controller="SlowDown"
                    asp-route-Page="1">Slowdown Table</a>
             </li>
-            <li class="nav-link" 
+            <li class="nav-link"
                 style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue; width: 90%">
                 <a style="color:white" asp-action="List"
                    asp-controller="WireTypesSize"
@@ -109,7 +109,7 @@
                    asp-route-Page="1" asp-action="List">Stops</a>
             </li>
         </ul>
-    </li>                 
+    </li>
     <li class="nav-item" role="tab" id="Reasons">
         <a data-toggle="collapse" href="#collapseReasons" role="button" aria-expanded="false" aria-controls="collapseReasons"
            class="nav-link text-light"><i class="fas fa-clipboard-list"></i>&nbsp; Reasons</a>
@@ -137,6 +137,9 @@
                 </li>
             </ul>
         </form>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-light" asp-controller="PlanningReport" asp-action="Index"><i class="fas fa-user-tie"></i>&nbsp; Planning</a>
     </li>
     <li class="nav-item">
         <a class="nav-link text-light" asp-controller="Account" asp-action="Index"><i class="fas fa-user-tie"></i>&nbsp; Users</a>
