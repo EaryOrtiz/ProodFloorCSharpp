@@ -57,6 +57,8 @@ namespace ProdFloor.Models
 
         public string SoldTo { get; set; }
 
+        public bool Custom { get; set; }
+
         /*
 
         public PlanningReportRow(int consecutive, string jobNumber, int pO, string jobName, string previousWorkCenter,

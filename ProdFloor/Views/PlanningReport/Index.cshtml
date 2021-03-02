@@ -1,0 +1,117 @@
+﻿@model ProdFloor.Models.ViewModels.PlanningReportListViewModel
+@{
+    ViewBag.Title = "Planning Report";
+    Layout = "_AdminLayout_PRO";
+}
+
+<h2 class="text-center mt-2">Planning Report</h2>
+<div class="container ml-0 mt-5 col-12">
+    <div class="col-10">
+        <div class="collapse" id="collapseCustom">
+            <div style="overflow-y:scroll;height:70vh;">
+                <div class="card card-body">
+                    <table class="table table-sm text-center align-content-center table-hover">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>
+                                    Planning Report @Model.planningReport.DateTimeLoad.ToShortTimeString()
+                                </th>
+                            </tr>
+                            <tr>
+                                <th>
+                                    Job Number
+                                </th>
+                                <th>
+                                    Material
+                                </th>
+                                <th>
+                                    MRP
+                                </th>
+                                <th>
+                                    Order
+                                </th>
+                                <th>
+                                    Sold-to pt
+                                </th>
+                                <th>
+                                    C
+                                </th>
+                                <th>
+                                    Job Name
+                                </th>
+                                <th>
+                                    Net Value
+                                </th>
+                                <th>
+                                    Work ctr
+                                </th>
+                                <th>
+                                    Notes
+                                </th>
+                                <th>
+                                    Priority
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.planningReport.Busy)
+                            {
+                                <tr>
+                                    <td>
+                                        Busy
+                                    </td>
+                                </tr>
+                            }
+                            else
+                            {
+                                @foreach (PlanningReportRow reportRow in Model.planningReportRows)
+                                {
+                                    <tr>
+                                        <td>
+                                            @reportRow.JobNumber
+                                        </td>
+                                        <td>
+                                            @reportRow.Material
+                                        </td>
+                                        <td>
+                                            @reportRow.MRP
+                                        </td>
+                                        <td>
+                                            @reportRow.PO
+                                        </td>
+                                        <td>
+                                            @reportRow.SoldTo
+                                        </td>
+                                        <td>
+                                            @reportRow.Consecutive
+                                        </td>
+                                        <td>
+                                            @reportRow.JobName
+                                        </td>
+                                        <td>
+                                            @reportRow.PreviousWorkCenter
+                                        </td>
+                                        <td>
+                                            @reportRow.WorkCenter
+                                        </td>
+                                        <td>
+                                            @reportRow.Notes
+                                        </td>
+                                        <td>
+                                            @reportRow.Priority
+                                        </td>
+                                    </tr>
+                                }
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+

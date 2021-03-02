@@ -316,6 +316,17 @@ namespace ProdFloor.Models
             return dbEntry;
         }
 
+        public bool DeleteAllPlanningRowsTable()
+        {
+            IQueryable<PlanningReportRow> dbEntries = context.PlanningReportRows;
+
+            context.PlanningReportRows.RemoveRange(dbEntries);
+
+            bool isTableDeleted = !context.PlanningReports.Any();
+
+            return isTableDeleted;
+        }
+
 
         //********Enginner Refernces Table
 

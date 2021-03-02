@@ -9,7 +9,7 @@ namespace ProdFloor.Models.ViewModels
     {
         public PlanningReport planningReport { get; set; }
 
-        public List<PlanningReportRow> PlanningReportRows { get; set; }
+        public List<PlanningReportRow> planningReportRows { get; set; }
 
         public PagingInfo PagingInfo { get; set; }
 
