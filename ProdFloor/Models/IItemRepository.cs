@@ -41,7 +41,7 @@ namespace ProdFloor.Models
         PlanningReport DeletePlanningReport(int PlanningReportID);
         PlanningReportRow DeletePlanningReportRow(int PlanningReportRowID);
 
-        bool DeleteAllPlanningRowsTable();
+        void DeleteAllPlanningRowsTable();
 
 
         //*********Enginner References Tables

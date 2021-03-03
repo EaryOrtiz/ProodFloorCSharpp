@@ -4,7 +4,9 @@
     Layout = "_AdminLayout_PRO";
 }
 <div class="container ml-0 mt-5 col-12">
-        <div class="row col-12">
+    <div class="row col-12">
+        <form class="col-12" asp-action="Update" method="post">
+            <input type="hidden" asp-for="planningReport.PlanningReportID" />
             <div class="col-12 mb-1">
                 <span class="float-left font-weight-bold">
                     Update Time:
@@ -12,21 +14,28 @@
                     {
                         @Model.planningReport.DateTimeLoad.ToLongTimeString()
                     }
-                    --:--
+                    else
+                    {
+                        <span>--:--</span>
+                    }
+
                 </span>
-                <a class="btn btn-dark float-right" href="/PlanningReport/Update">Update</a>
+                <button type="submit" class="btn btn-dark float-right mb-1">Update</button>
             </div>
             <div class="col-12" style="overflow-y:scroll;height:80vh;">
-                <table class="table table-sm text-center align-content-center table-hover">
-                    <thead class="thead-light">
+                <table class="table  table-striped table-sm text-center align-content-center table-hover">
+                    <thead class="thead-dark">
                         <tr>
-                            <th colspan="11">
+                            <th colspan="12">
                                 Planning Report
                                 @if (Model.planningReportRows.Count > 0)
                                 {
                                     @Model.planningReport.PlanningDate.ToShortDateString()
                                 }
-                                --:--
+                                else
+                                {
+                                    <span>--:--</span>
+                                }
                             </th>
                         </tr>
                         <tr>
@@ -63,6 +72,9 @@
                             <th>
                                 Priority
                             </th>
+                            <th>
+                                Custom
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -76,41 +88,46 @@
                         }
                         else
                         {
-                            @foreach (PlanningReportRow reportRow in Model.planningReportRows)
+                            @for (int i = 1; i < Model.planningReportRows.Count; i++)
                             {
+                                @Html.HiddenFor(m => m.planningReportRows[i].PlanningReportRowID)
+                                @Html.HiddenFor(m => m.planningReportRows[i].PO)
                                 <tr>
                                     <td>
-                                        @reportRow.JobNumber
+                                        @Html.DisplayFor(m => m.planningReportRows[i].JobNumber)
                                     </td>
                                     <td>
-                                        @reportRow.Material
+                                        @Html.DisplayFor(m => m.planningReportRows[i].Material)
                                     </td>
                                     <td>
-                                        @reportRow.MRP
+                                        @Html.DisplayFor(m => m.planningReportRows[i].MRP)
                                     </td>
                                     <td>
-                                        @reportRow.PO
+                                        @Html.DisplayFor(m => m.planningReportRows[i].PO)
                                     </td>
                                     <td>
-                                        @reportRow.SoldTo
+                                        @Html.DisplayFor(m => m.planningReportRows[i].SoldTo)
                                     </td>
                                     <td>
-                                        @reportRow.Consecutive
+                                        @Html.DisplayFor(m => m.planningReportRows[i].Consecutive)
                                     </td>
                                     <td>
-                                        @reportRow.JobName
+                                        @Html.DisplayFor(m => m.planningReportRows[i].JobName)
                                     </td>
                                     <td>
-                                        @reportRow.PreviousWorkCenter
+                                        @Html.DisplayFor(m => m.planningReportRows[i].PreviousWorkCenter)
                                     </td>
                                     <td>
-                                        @reportRow.WorkCenter
+                                        @Html.DisplayFor(m => m.planningReportRows[i].WorkCenter)
                                     </td>
                                     <td>
-                                        @reportRow.Notes
+                                        @Html.DisplayFor(m => m.planningReportRows[i].Notes)
                                     </td>
                                     <td>
-                                        @reportRow.Priority
+                                        @Html.DisplayFor(m => m.planningReportRows[i].Priority)
+                                    </td>
+                                    <td>
+                                        @Html.CheckBoxFor(m => m.planningReportRows[i].Custom, new { Class = "form-control col-sm-1;", Style = "text-align:center;" })
                                     </td>
                                 </tr>
                             }
@@ -119,8 +136,10 @@
                     </tbody>
                 </table>
             </div>
-        </div>
+        </form>
         
+    </div>
+
 </div>
 
 

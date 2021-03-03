@@ -14,6 +14,7 @@ using Microsoft.Extensions.Logging;
 using ProdFloor.Controllers;
 using ProdFloor.Services;
 using Microsoft.AspNetCore.Hosting.Internal;
+using Microsoft.AspNetCore.Http.Features;
 
 namespace ProdFloor
 {
@@ -70,6 +71,10 @@ namespace ProdFloor
             services.Configure<IISOptions>(options =>
             {
                 options.ForwardClientCertificate = false;
+            });
+            services.Configure<FormOptions>(options =>
+            {
+                options.ValueCountLimit = int.MaxValue;
             });
 
             // Build the intermediate service provider

@@ -316,15 +316,14 @@ namespace ProdFloor.Models
             return dbEntry;
         }
 
-        public bool DeleteAllPlanningRowsTable()
+        public void DeleteAllPlanningRowsTable()
         {
-            IQueryable<PlanningReportRow> dbEntries = context.PlanningReportRows;
+            if (context.PlanningReports.Any()){
 
-            context.PlanningReportRows.RemoveRange(dbEntries);
+                IQueryable<PlanningReportRow> dbEntries = context.PlanningReportRows;
 
-            bool isTableDeleted = !context.PlanningReports.Any();
-
-            return isTableDeleted;
+                context.PlanningReportRows.RemoveRange(dbEntries);
+            }
         }
 
 
