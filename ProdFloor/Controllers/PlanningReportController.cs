@@ -83,8 +83,8 @@ namespace ProdFloor.Controllers
         public IActionResult Update(PlanningReportListViewModel viewModel)
         {
             PlanningReport planningReport = itemRepository.PlanningReports.FirstOrDefault();
-            //planningReport.Busy = true;
-            //itemRepository.SavePlanningReport(planningReport);
+            planningReport.Busy = true;
+            itemRepository.SavePlanningReport(planningReport);
 
             List<PlanningReportRow> oldReportRows = new List<PlanningReportRow>();
             List<PlanningReportRow> NewReportRows = GetPlanningReportTable();
@@ -99,13 +99,10 @@ namespace ProdFloor.Controllers
             try
             {
                 oldReportRows = viewModel.planningReportRows
-                                                        .Where(m => m.Custom == true)
-                                                       .ToList();
+                                          .Where(m => m.Custom == true)
+                                          .ToList();
             }
-            catch
-            {
-                
-            }
+            catch { }
 
             
 
