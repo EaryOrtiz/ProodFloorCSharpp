@@ -1,0 +1,60 @@
+﻿@model ProdFloor.Models.ViewModels.PlanningReportListViewModel
+@{
+    ViewBag.Title = "Planning Report";
+    Layout = "_AdminLayout_PRO";
+    <script src="~/lib/jquery-PrintArea/demo/jquery.PrintArea.js"></script>
+    <link rel="stylesheet" id="printCSS" href="~/lib/jquery-PrintArea/demo/PrintArea.css" type="text/css" media="print" />
+    <script>
+        $(document).ready(function () {
+            $("#printButton").click(function () {
+                var mode = 'iframe'; //popup
+                var close = mode == "popup";
+                var options = { mode: mode, popClose: close };
+                $("div.printableArea").printArea(options);
+            });
+        });
+    </script>
+
+}
+<div class="container ml-0 mt-5 col-12">
+    <div class="row col-12">
+        <div class="printableArea col-12">
+            <table class="table table-bordered text-center align-content-center w-100" style="font-size: 62px;">
+                <tbody>
+                    <tr>
+                        <th colspan="6">
+                            @Model.ReportRow.ShippingDate
+                        </th>
+                        <th colspan="6">
+                            @Model.ReportRow.Priority
+                        </th>
+                    </tr>
+                    <tr>
+                        <th colspan="12">
+                            @Model.ReportRow.JobNumber
+                        </th>
+                    </tr>
+                    <tr>
+                        <th colspan="6">
+                            @Model.ReportRow.Material
+                        </th>
+                        <th colspan="6">
+                            @Model.ReportRow.PO
+                        </th>
+                    </tr>
+                    <tr>
+                        <th colspan="12">
+                            @Model.ReportRow.JobName
+                        </th>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+        <a class="btn btn-secondary" href="javascript:void(0);" id="printButton">Print</a>
+    </div>
+
+</div>
+
+
+

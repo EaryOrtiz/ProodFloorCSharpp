@@ -57,6 +57,8 @@ namespace ProdFloor.Models
 
         public string SoldTo { get; set; }
 
+        public string ShippingDate { get; set; }
+
         public bool Custom { get; set; }
 
         /*

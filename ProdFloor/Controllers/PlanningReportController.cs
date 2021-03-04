@@ -131,20 +131,35 @@ namespace ProdFloor.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public IActionResult Edit(PlanningReportListViewModel viewModel)
+        public ViewResult NewPrintable()
         {
-            viewModel.planningReport.Busy = true;
-            itemRepository.SavePlanningReport(viewModel.planningReport);
+            return View(new PlanningReportListViewModel());
+        }
 
-            foreach (PlanningReportRow row in viewModel.planningReportRows)
+        [HttpPost]
+        public IActionResult NewPrintable(PlanningReportListViewModel viewModel, string printableType)
+        {
+            PlanningReportRow reportRow = itemRepository.PlanningReportRows
+                                                        .FirstOrDefault(m => m.PO == viewModel.POSearch);
+
+            if(reportRow == null && !string.IsNullOrEmpty(printableType))
             {
-                itemRepository.SavePlanningReportRow(row);
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"El job que esta buscando no existe";
             }
 
-            viewModel.planningReport.Busy = false;
-            itemRepository.SavePlanningReport(viewModel.planningReport);
+            viewModel.ReportRow = reportRow;
 
-            return RedirectToAction(nameof(Index));
+
+            switch (printableType)
+            {
+                case "Identificacion":
+                    return View("IdentificationPrint",viewModel);
+
+                default:
+                    return View(viewModel);
+
+            }
         }
 
         public List<PlanningReportRow> GetPlanningReportTable()
@@ -199,6 +214,7 @@ namespace ProdFloor.Controllers
                     planningRow.WorkCenter = rowList.ElementAt(10);
                     planningRow.Notes = rowList.ElementAt(11);
                     planningRow.Priority = rowList.ElementAt(12);
+                    planningRow.ShippingDate = rowList.ElementAt(13);
 
 
                     planningReportRowTable.Add(planningRow);

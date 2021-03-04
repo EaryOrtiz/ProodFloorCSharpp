@@ -202,6 +202,8 @@ namespace ProdFloor.Models
                     dbEntry.Material = planningReportRow.Material;
                     dbEntry.MRP = planningReportRow.MRP;
                     dbEntry.SoldTo = planningReportRow.SoldTo;
+                    dbEntry.Custom = planningReportRow.Custom;
+                    dbEntry.ShippingDate = dbEntry.ShippingDate;
 
                 }
             }

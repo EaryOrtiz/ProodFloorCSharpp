@@ -1,0 +1,27 @@
+﻿@model ProdFloor.Models.ViewModels.PlanningReportListViewModel
+@{
+    ViewBag.Title = "Search Job";
+
+}
+<br />
+<form asp-controller="PlanningReport" id="Printableform" asp-action="NewPrintable" method="post">
+    <label class="col-form-label">Por favor introduzca un PO:</label>
+    <div class="input-group">
+        <input type="number" class="form-control form-control-sm col-3" id="POSearch"  asp-for="POSearch">
+        <div class="input-group-append">
+            <div class="btn-group text-center">
+                <button type="button" class="btn btn-dark dropdown-toggle" style="padding-top:10px;min-width:100px;" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Select a JobType
+                </button>
+                <div class="dropdown-menu">
+                    <button type="submit" name="printableType" value="Identificacion" class="dropdown-item" style="margin-right:40px">Identificacion</button>
+                    <button type="submit" name="printableType" value="JobTraveler" class="dropdown-item" style="margin-right:40px">JobTraveler</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br />
+    <div>
+        <span asp-validation-for="POSearch" class="text-danger"></span><br />
+    </div>
+</form>
