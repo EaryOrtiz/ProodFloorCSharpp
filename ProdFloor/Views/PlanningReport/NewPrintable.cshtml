@@ -7,7 +7,7 @@
 <form asp-controller="PlanningReport" id="Printableform" asp-action="NewPrintable" method="post">
     <label class="col-form-label">Por favor introduzca un PO:</label>
     <div class="input-group">
-        <input type="number" class="form-control form-control-sm col-3" id="POSearch"  asp-for="POSearch">
+        <input type="number" class="form-control form-control-sm col-3" id="POSearch" asp-for="POSearch">
         <div class="input-group-append">
             <div class="btn-group text-center">
                 <button type="button" class="btn btn-dark dropdown-toggle" style="padding-top:10px;min-width:100px;" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -21,6 +21,7 @@
         </div>
     </div>
     <br />
+    
     <div>
         <span asp-validation-for="POSearch" class="text-danger"></span><br />
     </div>

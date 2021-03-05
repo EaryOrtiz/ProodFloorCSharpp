@@ -11,6 +11,8 @@ using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
 using System;
 using Microsoft.AspNetCore.Hosting;
+using System.Drawing;
+using Microsoft.Office.Interop.Word;
 
 namespace ProdFloor.Controllers
 {
@@ -133,6 +135,7 @@ namespace ProdFloor.Controllers
 
         public ViewResult NewPrintable()
         {
+            GenerateWord();
             return View(new PlanningReportListViewModel());
         }
 
@@ -224,6 +227,36 @@ namespace ProdFloor.Controllers
 
             return planningReportRowTable;
         }
+
+        public void GenerateWord()
+        {
+            Application app = new Application();
+            object fileName = @"C:\Users\eary.ortiz\Desktop\xmlsFromTest\Nidec2.docx";
+            Document doc = app.Documents.Open(@"C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\resources\Nidec.docx");
+
+            // Assign a search string to a variable.
+            object findText = "Nidec Holding Americas";
+
+            app.Selection.Find.ClearFormatting();
+
+            while (app.Selection.Find.Execute(ref findText))
+            {
+               
+
+                // Replace new text.
+                app.Selection.Text = "You found me!";
+
+                // Clear formatting from previous searches.
+                app.Selection.Find.ClearFormatting();
+            }
+
+            doc.SaveAs(fileName);
+            doc.Close(true);
+            
+
+
+        }
+
 
 
     }
