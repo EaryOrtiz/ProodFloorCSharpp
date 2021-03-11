@@ -13,17 +13,21 @@ using System;
 using Microsoft.AspNetCore.Hosting;
 using System.Drawing;
 using Microsoft.Office.Interop.Word;
+using Microsoft.AspNetCore.Identity;
 
 namespace ProdFloor.Controllers
 {
     public class PlanningReportController : Controller
     {
         private IItemRepository itemRepository;
+        private UserManager<AppUser> userManager;
         public int PageSize = 4;
+        private object missing = System.Reflection.Missing.Value;
 
-        public PlanningReportController(IItemRepository repo)
+        public PlanningReportController(IItemRepository repo, UserManager<AppUser> userMgr)
         {
             itemRepository = repo;
+            userManager = userMgr;
         }
 
 
@@ -135,34 +139,52 @@ namespace ProdFloor.Controllers
 
         public ViewResult NewPrintable()
         {
-            GenerateWord();
+            //GenerateWord();
             return View(new PlanningReportListViewModel());
         }
 
         [HttpPost]
-        public IActionResult NewPrintable(PlanningReportListViewModel viewModel, string printableType)
+        public IActionResult NewPrintable(PlanningReportListViewModel viewModel)
         {
             PlanningReportRow reportRow = itemRepository.PlanningReportRows
                                                         .FirstOrDefault(m => m.PO == viewModel.POSearch);
 
-            if(reportRow == null && !string.IsNullOrEmpty(printableType))
+            if(reportRow == null)
             {
                 TempData["alert"] = $"alert-danger";
                 TempData["message"] = $"El job que esta buscando no existe";
             }
+            else
+            {
+                viewModel.Custom = reportRow.Custom;
+                viewModel.ReportRow = reportRow;
+                viewModel.DueDate = DateTime.Now;
+            }
+
+             return View(viewModel);
+        }
+
+        [HttpPost]
+        public IActionResult Printables(PlanningReportListViewModel viewModel)
+        {
+            PlanningReportRow reportRow = itemRepository.PlanningReportRows
+                                                        .FirstOrDefault(m => m.PO == viewModel.POSearch);
+
+
+            if (reportRow == null)
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"El job que esta buscando no existe";
+
+                return RedirectToAction("NewPrintable");
+            }
+            
+            reportRow.Custom = viewModel.Custom;
+            itemRepository.SavePlanningReportRow(reportRow);
 
             viewModel.ReportRow = reportRow;
 
-
-            switch (printableType)
-            {
-                case "Identificacion":
-                    return View("IdentificationPrint",viewModel);
-
-                default:
-                    return View(viewModel);
-
-            }
+            return View(viewModel);
         }
 
         public List<PlanningReportRow> GetPlanningReportTable()
@@ -207,6 +229,7 @@ namespace ProdFloor.Controllers
                     }
 
                     planningRow.JobNumber = rowList.ElementAt(0);
+                    planningRow.LineNumber = int.Parse(rowList.ElementAt(1));
                     planningRow.Material = rowList.ElementAt(2);
                     planningRow.MRP = rowList.ElementAt(3);
                     planningRow.PO = int.Parse(rowList.ElementAt(4));
@@ -217,7 +240,9 @@ namespace ProdFloor.Controllers
                     planningRow.WorkCenter = rowList.ElementAt(10);
                     planningRow.Notes = rowList.ElementAt(11);
                     planningRow.Priority = rowList.ElementAt(12);
-                    planningRow.ShippingDate = rowList.ElementAt(13);
+
+                    DateTime shippingDate = DateTime.Parse(rowList.ElementAt(13));
+                    planningRow.ShippingDate = shippingDate.ToShortDateString();
 
 
                     planningReportRowTable.Add(planningRow);
@@ -228,33 +253,76 @@ namespace ProdFloor.Controllers
             return planningReportRowTable;
         }
 
-        public void GenerateWord()
+        public IActionResult GenerateJobTraveler(PlanningReportListViewModel viewModel)
         {
-            Application app = new Application();
-            object fileName = @"C:\Users\eary.ortiz\Desktop\xmlsFromTest\Nidec2.docx";
-            Document doc = app.Documents.Open(@"C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\resources\Nidec.docx");
+            PlanningReportRow reportRow = itemRepository.PlanningReportRows
+                                                        .FirstOrDefault(m => m.PO == viewModel.POSearch);
 
-            // Assign a search string to a variable.
-            object findText = "Nidec Holding Americas";
+            viewModel.ReportRow = reportRow;
+            string EngName = "HUNG L.";
+            string EngNumberString = reportRow.MRP.Remove(0,1);
 
-            app.Selection.Find.ClearFormatting();
+            int EngNumber = int.Parse(EngNumberString);
+            string EngNameAUx = userManager.Users.FirstOrDefault(m => m.EngID == EngNumber).ShortFullName.ToUpper();
 
-            while (app.Selection.Find.Execute(ref findText))
+            if (!string.IsNullOrEmpty(EngNameAUx))
+                EngName = EngNameAUx;
+
+            Application application = new Application();
+            Document document = application.Documents.Open(@"C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\resources\JobTravelerV6-Template.docx");
+
+            try
             {
-               
+             
+                ReplaceAllParagraphs(application.Selection.Find, "JobName", reportRow.JobName.ToUpper());
+                ReplaceAllParagraphs(application.Selection.Find, "Item", reportRow.LineNumber.ToString());
+                ReplaceAllParagraphs(application.Selection.Find, "JobNum", reportRow.JobNumber.ToString().ToUpper());
+                ReplaceAllParagraphs(application.Selection.Find, "PONum", reportRow.PO.ToString());
+                ReplaceAllParagraphs(application.Selection.Find, "ShippingDate",reportRow.ShippingDate);
+                ReplaceAllParagraphs(application.Selection.Find, "MATERIAL", reportRow.Material.ToUpper());
 
-                // Replace new text.
-                app.Selection.Text = "You found me!";
+                ReplaceAllParagraphs(application.Selection.Find, "DueDate", viewModel.DueDate.ToShortDateString());
+                ReplaceAllParagraphs(application.Selection.Find, "CARNUMBER", viewModel.CarNumber.ToUpper());
+                ReplaceAllParagraphs(application.Selection.Find, "ConfigGuy", viewModel.ConfigGuy.ToUpper());
+                ReplaceAllParagraphs(application.Selection.Find, "EngName", EngName.ToUpper());
 
-                // Clear formatting from previous searches.
-                app.Selection.Find.ClearFormatting();
+                object filename = @"C:\Users\eary.ortiz\Desktop\xmlsFromTest\JobTravelerV6.docx";
+
+            
+                document.SaveAs2(filename);
             }
+            catch(Exception e) {
+                string exeption = e.ToString();
+                document.Close(false, ref missing, ref missing);
+                document = null;
+                application.Quit(false, ref missing, ref missing);
+                application = null;
 
-            doc.SaveAs(fileName);
-            doc.Close(true);
+                return View("Printables", viewModel);
+            }
             
 
 
+            document.Close(ref missing, ref missing, ref missing);
+            document = null;
+            application.Quit(ref missing, ref missing, ref missing);
+            application = null;
+
+
+            return View("Printables", viewModel);
+        }
+
+        public void ReplaceAllParagraphs(Find findObject, string text,string renplacementText)
+        {
+            findObject.ClearFormatting();
+            findObject.Text = text;
+            findObject.Replacement.ClearFormatting();
+            findObject.Replacement.Text = renplacementText;
+
+            object replaceAll = WdReplace.wdReplaceAll;
+            findObject.Execute(ref missing, ref missing, ref missing, ref missing, ref missing,
+                ref missing, ref missing, ref missing, ref missing, ref missing,
+                ref replaceAll, ref missing, ref missing, ref missing, ref missing);
         }
 
 

@@ -53,6 +53,10 @@
                 {
                     @await Component.InvokeAsync("ManagerMenu")
                 }
+                else if (User.IsInRole("Kitting"))
+                {
+                    @await Component.InvokeAsync("KittingMenu")
+                }
                 else
                 {
                     @await Component.InvokeAsync("NavigationMenu")
@@ -76,7 +80,7 @@
                         <li class="nav-item active">
                             <a class="nav-link" href="\">ProdFloor</a>
                         </li>
-                        @if (!(User.IsInRole("Technician")) && !(User.IsInRole("TechAdmin")) && !(User.IsInRole("Manager")))
+                        @if ((User.IsInRole("Engineer")) && (User.IsInRole("EngAdmin")))
                         {
                             <li class="nav-item">
                                 <a class="nav-link" asp-controller="Job" asp-action="List">All Jobs</a>

@@ -204,6 +204,7 @@ namespace ProdFloor.Models
                     dbEntry.SoldTo = planningReportRow.SoldTo;
                     dbEntry.Custom = planningReportRow.Custom;
                     dbEntry.ShippingDate = dbEntry.ShippingDate;
+                    dbEntry.LineNumber = dbEntry.LineNumber;
 
                 }
             }

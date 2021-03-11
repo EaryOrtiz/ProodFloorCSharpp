@@ -17,7 +17,7 @@ using ChartJSCore.Helpers;
 namespace ProdFloor.Controllers
 {
 
-    [Authorize(Roles = "Admin,TechAdmin,Engineer,Technician,EngAdmin,CrossApprover,Manager")]
+    [Authorize(Roles = "Admin,TechAdmin,Engineer,Technician,EngAdmin,CrossApprover,Manager,Kitting")]
     public class HomeController : Controller
     {
         private IJobRepository repository;
@@ -58,6 +58,7 @@ namespace ProdFloor.Controllers
             bool admin = GetCurrentUserRole("Admin").Result;
             bool techAdmin = GetCurrentUserRole("TechAdmin").Result;
             bool manager = GetCurrentUserRole("Manager").Result;
+            bool kitting = GetCurrentUserRole("Kitting").Result;
 
             if (filtrado != null) Sort = filtrado;
             if (engineer)
@@ -202,6 +203,8 @@ namespace ProdFloor.Controllers
             if (techAdmin)  return RedirectToAction("SearchTestJob","TestJob");
 
             if (manager) return RedirectToAction("ManagerDashboard", "Report");
+
+            if (kitting) return RedirectToAction("NewPrintable", "PlanningReport");
 
             return NotFound();
         }

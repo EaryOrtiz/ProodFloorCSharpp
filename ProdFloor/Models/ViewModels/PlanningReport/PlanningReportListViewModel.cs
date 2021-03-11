@@ -25,5 +25,15 @@ namespace ProdFloor.Models.ViewModels
 
         public string PrintableType { get; set; }
 
+        public bool Custom { get; set; }
+
+        public string PrintableNotes { get; set; }
+
+        public DateTime DueDate { get; set; }
+
+        public string CarNumber { get; set; }
+       
+        public string ConfigGuy { get; set; }
+
     }
 }

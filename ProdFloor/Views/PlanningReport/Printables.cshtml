@@ -19,7 +19,7 @@
 <div class="container ml-0 mt-5 col-12">
     <div class="row col-12">
         <div class="printableArea col-12">
-            <table class="table table-bordered text-center align-content-center w-100" style="font-size: 62px;">
+            <table class="table table-bordered text-center align-content-center w-100" style="font-size: 78px;">
                 <tbody>
                     <tr>
                         <th colspan="6">
@@ -49,9 +49,23 @@
                     </tr>
                 </tbody>
             </table>
-            <span class="float-left" style="font-size: 22px">Final____:____H:M QC____:____H:M</span>
+            <p  style="font-size: 22px">Final____:____H:M QC____:____H:M</p>
+            <p>@Model.PrintableNotes</p>
         </div>
-        <a class="btn btn-secondary" href="javascript:void(0);" id="printButton">Print</a>
+        <div class="col text-center">
+            <div class="btn-group">
+                <a class="btn btn-secondary mr-5" href="javascript:void(0);" id="printButton">Print</a>
+                <form asp-controller="PlanningReport" asp-action="GenerateJobTraveler" method="post">
+                    <input type="hidden" asp-for="POSearch" />
+                    <input type="hidden" asp-for="DueDate" />
+                    <input type="hidden" asp-for="CarNumber" />
+                    <input type="hidden" asp-for="ConfigGuy" />
+                    <button type="submit" class="btn btn-primary">Generate JobTraveler</button>
+                </form>
+            </div>
+            
+        </div>
+       
     </div>
 
 </div>

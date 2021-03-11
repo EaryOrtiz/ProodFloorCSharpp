@@ -36,6 +36,7 @@ namespace ProdFloor.Models
         public int PlanningReportID { get; set; }
 
         public int Consecutive { get; set; }
+        public int LineNumber { get; set; }
 
         public string JobNumber { get; set; }
 
