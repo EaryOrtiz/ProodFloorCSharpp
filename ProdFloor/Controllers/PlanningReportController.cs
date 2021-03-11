@@ -21,13 +21,15 @@ namespace ProdFloor.Controllers
     {
         private IItemRepository itemRepository;
         private UserManager<AppUser> userManager;
+        private IHostingEnvironment _env;
         public int PageSize = 4;
         private object missing = System.Reflection.Missing.Value;
 
-        public PlanningReportController(IItemRepository repo, UserManager<AppUser> userMgr)
+        public PlanningReportController(IItemRepository repo, UserManager<AppUser> userMgr, IHostingEnvironment env)
         {
             itemRepository = repo;
             userManager = userMgr;
+            _env = env;
         }
 
 
@@ -261,16 +263,25 @@ namespace ProdFloor.Controllers
             viewModel.ReportRow = reportRow;
             string EngName = "HUNG L.";
             string EngNumberString = reportRow.MRP.Remove(0,1);
+            string EngNameAUx = "";
 
             int EngNumber = int.Parse(EngNumberString);
-            string EngNameAUx = userManager.Users.FirstOrDefault(m => m.EngID == EngNumber).ShortFullName.ToUpper();
 
-            if (!string.IsNullOrEmpty(EngNameAUx))
-                EngName = EngNameAUx;
+            try
+            {
+                EngNameAUx = userManager.Users.FirstOrDefault(m => m.EngID == EngNumber).ShortFullName.ToUpper();
+
+                if (!string.IsNullOrEmpty(EngNameAUx))
+                    EngName = EngNameAUx;
+            }
+            catch { }
+            
 
             Application application = new Application();
-            Document document = application.Documents.Open(@"C:\Users\eary.ortiz\Documents\GitHub\ProodFloorCSharpp\ProdFloor\wwwroot\resources\JobTravelerV6-Template.docx");
+            string rootFolder = _env.WebRootPath.ToString();
 
+            Document document = application.Documents.Add(rootFolder + @"\resources\JobTravelerV6-Template.docx");
+            string folderDesktop = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
             try
             {
              
@@ -286,7 +297,7 @@ namespace ProdFloor.Controllers
                 ReplaceAllParagraphs(application.Selection.Find, "ConfigGuy", viewModel.ConfigGuy.ToUpper());
                 ReplaceAllParagraphs(application.Selection.Find, "EngName", EngName.ToUpper());
 
-                object filename = @"C:\Users\eary.ortiz\Desktop\xmlsFromTest\JobTravelerV6.docx";
+                object filename = folderDesktop + @"\JobTravelerV6-"+DateTime.Now.ToShortDateString()+".docx";
 
             
                 document.SaveAs2(filename);
@@ -298,6 +309,9 @@ namespace ProdFloor.Controllers
                 application.Quit(false, ref missing, ref missing);
                 application = null;
 
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"Error al generar el documento";
+
                 return View("Printables", viewModel);
             }
             
@@ -308,7 +322,7 @@ namespace ProdFloor.Controllers
             application.Quit(ref missing, ref missing, ref missing);
             application = null;
 
-
+            TempData["message"] = $"Documento generado y guardado en el escritorio";
             return View("Printables", viewModel);
         }
 
