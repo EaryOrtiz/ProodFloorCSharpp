@@ -121,6 +121,42 @@ namespace ProdFloor.Controllers
                     AuxTechnicianID = testJob.TechnicianID,
                 };
 
+                /**Esto es para el actual step*/
+                var AllStepsForJob = testingRepo.StepsForJobs.Where(m => m.TestJobID == testJob.TestJobID && m.Obsolete == false).OrderBy(m => m.Consecutivo).ToList();
+                StepsForJob actualStepForAUX = AllStepsForJob.FirstOrDefault(m => m.Complete == false);
+                //For actual Step
+                actualStepForAUX.Stop = DateTime.Now;
+                TimeSpan elapsed = actualStepForAUX.Stop - actualStepForAUX.Start;
+                if (actualStepForAUX.Elapsed.Hour == 0 && actualStepForAUX.Elapsed.Minute == 0 && actualStepForAUX.Elapsed.Second == 0)
+                {
+
+                    actualStepForAUX.Elapsed = new DateTime(1, 1, 1, elapsed.Hours, elapsed.Minutes, elapsed.Seconds);
+                }
+                else
+                {
+                    int newsecond = 0, newhour = 0, newMinute = 0;
+
+                    newsecond = actualStepForAUX.Elapsed.Second + elapsed.Seconds;
+                    newMinute = actualStepForAUX.Elapsed.Minute + elapsed.Minutes;
+                    newhour = actualStepForAUX.Elapsed.Hour + elapsed.Hours;
+                    if (newsecond >= 60)
+                    {
+                        newsecond -= 60;
+                        newMinute++;
+                    }
+                    newMinute += elapsed.Minutes;
+                    if (newMinute >= 60)
+                    {
+                        newMinute -= 60;
+                        newhour++;
+                    }
+
+
+                    actualStepForAUX.Elapsed = new DateTime(1, 1, 1, newhour, newMinute, newsecond);
+                }
+                testingRepo.SaveStepsForJob(actualStepForAUX);
+                /**Esto es para el actual step*/
+
                 testingRepo.SaveStop(NewtStop);
                 Stop CurrentStop = testingRepo.Stops.FirstOrDefault(p => p.StopID == testingRepo.Stops.Max(x => x.StopID));
                 string Reason1Name = testingRepo.Reasons1.FirstOrDefault(m => m.Reason1ID == CurrentStop.Reason1).Description;
@@ -253,6 +289,13 @@ namespace ProdFloor.Controllers
 
                     }
 
+
+                    var AllStepsForJob = testingRepo.StepsForJobs.Where(m => m.TestJobID == testJob.JobID && m.Obsolete == false).OrderBy(m => m.Consecutivo).ToList();
+                    StepsForJob CurrentStep = AllStepsForJob.FirstOrDefault(m => m.Complete == false);
+                    CurrentStep.Start = DateTime.Now;
+                    CurrentStep.Stop = DateTime.Now;
+                    testingRepo.SaveStepsForJob(CurrentStep);
+
                     testJob.Status = "Working on it";
                     testingRepo.SaveTestJob(testJob);
                     return ContinueStep(testJob.TestJobID);
@@ -337,6 +380,14 @@ namespace ProdFloor.Controllers
 
             testingRepo.SaveStop(UpdatedStop);
             TestJob testJob = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == UpdatedStop.TestJobID);
+
+            var AllStepsForJob = testingRepo.StepsForJobs.Where(m => m.TestJobID == testJob.TestJobID && m.Obsolete == false).OrderBy(m => m.Consecutivo).ToList();
+            StepsForJob CurrentStep = AllStepsForJob.FirstOrDefault(m => m.Complete == false);
+            CurrentStep.Start = DateTime.Now;
+            CurrentStep.Stop = DateTime.Now;
+            testingRepo.SaveStepsForJob(CurrentStep);
+
+
             testJob.Status = "Working on it";
             testingRepo.SaveTestJob(testJob);
 
@@ -448,6 +499,15 @@ namespace ProdFloor.Controllers
             {
                 return RedirectToAction("FinishPendingStops", "Stop", new { TestJobID = testJobView.TestJob.TestJobID }); ;
             }
+
+            TestJob testJob = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == UpdatedStop.TestJobID);
+
+            var AllStepsForJob = testingRepo.StepsForJobs.Where(m => m.TestJobID == testJob.TestJobID && m.Obsolete == false).OrderBy(m => m.Consecutivo).ToList();
+            StepsForJob CurrentStep = AllStepsForJob.FirstOrDefault(m => m.Complete == false);
+            CurrentStep.Start = DateTime.Now;
+            CurrentStep.Stop = DateTime.Now;
+            testingRepo.SaveStepsForJob(CurrentStep);
+
             return RedirectToAction("JobCompletion", "TestJob", new { TestJobID = testJobView.TestJob.TestJobID });
 
         }
