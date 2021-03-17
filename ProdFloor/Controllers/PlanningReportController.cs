@@ -12,8 +12,9 @@ using NPOI.XSSF.UserModel;
 using System;
 using Microsoft.AspNetCore.Hosting;
 using System.Drawing;
-using Microsoft.Office.Interop.Word;
 using Microsoft.AspNetCore.Identity;
+using Spire.Doc;
+using System.Diagnostics;
 
 namespace ProdFloor.Controllers
 {
@@ -257,6 +258,93 @@ namespace ProdFloor.Controllers
 
         public IActionResult GenerateJobTraveler(PlanningReportListViewModel viewModel)
         {
+
+            PlanningReportRow reportRow = itemRepository.PlanningReportRows
+                                                        .FirstOrDefault(m => m.PO == viewModel.POSearch);
+
+            viewModel.ReportRow = reportRow; 
+            string EngName = "HUNG L.";
+            string EngNumberString = reportRow.MRP.Remove(0, 1);
+            string EngNameAUx = "";
+
+            int EngNumber = int.Parse(EngNumberString);
+
+            try
+            {
+                EngNameAUx = userManager.Users.FirstOrDefault(m => m.EngID == EngNumber).ShortFullName.ToUpper();
+
+                if (!string.IsNullOrEmpty(EngNameAUx))
+                    EngName = EngNameAUx;
+            }
+            catch { }
+
+            
+            string rootFolder = _env.WebRootPath.ToString();
+            string folderDesktop = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
+            string filename = folderDesktop + @"\JobTravelerV6-" + DateTime.Now.ToString("MM-dd-yyyy") + ".docx";
+            
+            Document doc = new Document();
+            try
+            {
+                
+                doc.LoadFromFile(rootFolder + @"\resources\JobTravelerV6-Template.docx");
+            }
+            catch
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"La plantilla no existe";
+
+                return View("Printables", viewModel);
+            }
+            
+
+
+            try
+            {
+                doc.Replace("JobName", reportRow.JobName.ToUpper(), true, true);
+                doc.Replace("Item", reportRow.JobName.ToUpper(), true, true);
+                doc.Replace("JobNum", reportRow.JobNumber.ToString().ToUpper(), true, true);
+                doc.Replace("PONum", reportRow.PO.ToString(), true, true);
+                doc.Replace("ShippingDate", reportRow.ShippingDate, true, true);
+                doc.Replace("MATERIAL", reportRow.Material.ToUpper(), true, true);
+                doc.Replace("DueDate", viewModel.DueDate.ToShortDateString(), true, true);
+                doc.Replace("CARNUMBER", viewModel.CarNumber.ToUpper(), true, true);
+                doc.Replace("ConfigGuy", viewModel.ConfigGuy.ToUpper(), true, true);
+                doc.Replace("EngName", EngName.ToUpper(), true, true);
+            }
+            catch{
+                doc.Close();
+
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"Error al generar el documento";
+
+                return View("Printables", viewModel);
+            }
+
+
+            doc.SaveToFile(filename, FileFormat.Docx2013);
+            doc.Close();
+            try
+            {
+                Process.Start(new ProcessStartInfo(filename) { UseShellExecute = true });
+            }
+            catch
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"Error al abrir el documento";
+
+                return View("Printables", viewModel);
+            }
+
+
+            TempData["message"] = $"Documento generado con exito";
+
+            return View("Printables", viewModel);
+        }
+
+        /*
+        public IActionResult GenerateJobTraveler(PlanningReportListViewModel viewModel)
+        {
             PlanningReportRow reportRow = itemRepository.PlanningReportRows
                                                         .FirstOrDefault(m => m.PO == viewModel.POSearch);
 
@@ -338,6 +426,7 @@ namespace ProdFloor.Controllers
                 ref missing, ref missing, ref missing, ref missing, ref missing,
                 ref replaceAll, ref missing, ref missing, ref missing, ref missing);
         }
+        */
 
 
 

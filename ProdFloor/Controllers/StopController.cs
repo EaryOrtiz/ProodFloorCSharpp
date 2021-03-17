@@ -288,16 +288,16 @@ namespace ProdFloor.Controllers
                         }
 
                     }
+                    testJob.Status = "Working on it";
+                    testingRepo.SaveTestJob(testJob);
 
-
-                    var AllStepsForJob = testingRepo.StepsForJobs.Where(m => m.TestJobID == testJob.JobID && m.Obsolete == false).OrderBy(m => m.Consecutivo).ToList();
+                    var AllStepsForJob = testingRepo.StepsForJobs.Where(m => m.TestJobID == testJob.TestJobID && m.Obsolete == false).OrderBy(m => m.Consecutivo).ToList();
                     StepsForJob CurrentStep = AllStepsForJob.FirstOrDefault(m => m.Complete == false);
                     CurrentStep.Start = DateTime.Now;
                     CurrentStep.Stop = DateTime.Now;
                     testingRepo.SaveStepsForJob(CurrentStep);
 
-                    testJob.Status = "Working on it";
-                    testingRepo.SaveTestJob(testJob);
+                    
                     return ContinueStep(testJob.TestJobID);
 
 
