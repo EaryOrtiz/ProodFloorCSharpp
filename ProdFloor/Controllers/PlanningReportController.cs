@@ -280,9 +280,10 @@ namespace ProdFloor.Controllers
 
             
             string rootFolder = _env.WebRootPath.ToString();
-            string folderDesktop = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
-            string filename = folderDesktop + @"\JobTravelerV6-" + DateTime.Now.ToString("MM-dd-yyyy") + ".docx";
-            
+            string filename = "JobTravelerV6-" + DateTime.Now.ToString("MM-dd-yyyy") + ".docx";
+            byte[] toArray = null;
+            var memoryStream = new MemoryStream();
+
             Document doc = new Document();
             try
             {
@@ -292,7 +293,7 @@ namespace ProdFloor.Controllers
             catch
             {
                 TempData["alert"] = $"alert-danger";
-                TempData["message"] = $"La plantilla no existe";
+                TempData["message"] = $"Error al leer la plantilla";
 
                 return View("Printables", viewModel);
             }
@@ -310,9 +311,17 @@ namespace ProdFloor.Controllers
                 doc.Replace("DueDate", viewModel.DueDate.ToShortDateString(), true, true);
                 doc.Replace("CARNUMBER", viewModel.CarNumber.ToUpper(), true, true);
                 doc.Replace("ConfigGuy", viewModel.ConfigGuy.ToUpper(), true, true);
-                doc.Replace("EngName", EngName.ToUpper(), true, true);
+                doc.Replace("EngName", EngName.ToUpper(), true, true); 
+
+                using (memoryStream)
+                {
+                    doc.SaveToStream(memoryStream, FileFormat.Docx2013);
+                    toArray = memoryStream.ToArray();
+                    memoryStream.Position = 0;
+                }
             }
-            catch{
+            catch
+            {
                 doc.Close();
 
                 TempData["alert"] = $"alert-danger";
@@ -321,25 +330,9 @@ namespace ProdFloor.Controllers
                 return View("Printables", viewModel);
             }
 
-
-            doc.SaveToFile(filename, FileFormat.Docx2013);
-            doc.Close();
-            try
-            {
-                Process.Start(new ProcessStartInfo(filename) { UseShellExecute = true });
-            }
-            catch
-            {
-                TempData["alert"] = $"alert-danger";
-                TempData["message"] = $"Error al abrir el documento";
-
-                return View("Printables", viewModel);
-            }
-
-
-            TempData["message"] = $"Documento generado con exito";
-
-            return View("Printables", viewModel);
+           
+            
+            return File(toArray, "application/msword", filename);
         }
 
         /*
