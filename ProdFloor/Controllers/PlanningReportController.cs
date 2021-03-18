@@ -173,7 +173,6 @@ namespace ProdFloor.Controllers
             PlanningReportRow reportRow = itemRepository.PlanningReportRows
                                                         .FirstOrDefault(m => m.PO == viewModel.POSearch);
 
-
             if (reportRow == null)
             {
                 TempData["alert"] = $"alert-danger";
@@ -181,7 +180,17 @@ namespace ProdFloor.Controllers
 
                 return RedirectToAction("NewPrintable");
             }
-            
+
+            PlanningReport planning = itemRepository.PlanningReports
+                                                    .FirstOrDefault(m => m.PlanningReportID == reportRow.PlanningReportID);
+            if (planning.Busy)
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"Planning en mantenimiento, regrese despues";
+
+                return RedirectToAction("NewPrintable");
+            }
+
             reportRow.Custom = viewModel.Custom;
             itemRepository.SavePlanningReportRow(reportRow);
 

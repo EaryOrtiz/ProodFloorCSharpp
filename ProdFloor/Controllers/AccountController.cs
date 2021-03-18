@@ -12,7 +12,7 @@ using System.IO;
 
 namespace ProdFloor.Controllers
 {
-    [Authorize(Roles = "Admin,Engineer,TechAdmin,Technician,Manager")]
+    [Authorize(Roles = "Admin,Engineer,TechAdmin,Technician,Manager,Kitting")]
     public class AccountController : Controller
     {
 

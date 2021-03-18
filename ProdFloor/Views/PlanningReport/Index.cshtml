@@ -88,9 +88,11 @@
                     <tbody>
                         @if (Model.planningReport.Busy)
                         {
-                            <tr>
-                                <td>
-                                    Busy
+                            <tr >
+                                <td colspan="14">
+                                    <p class="text-center">
+                                        <img src="~/Images/BusyLoad.gif" alt="Uploading planning report" />
+                                    </p>
                                 </td>
                             </tr>
                         }
@@ -100,56 +102,57 @@
                             {
                                 @Html.HiddenFor(m => m.planningReportRows[i].PlanningReportRowID)
                                 @Html.HiddenFor(m => m.planningReportRows[i].PO)
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(m => m.planningReportRows[i].JobNumber)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(m => m.planningReportRows[i].LineNumber)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(m => m.planningReportRows[i].Material)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(m => m.planningReportRows[i].MRP)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(m => m.planningReportRows[i].PO)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(m => m.planningReportRows[i].SoldTo)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(m => m.planningReportRows[i].Consecutive)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(m => m.planningReportRows[i].JobName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(m => m.planningReportRows[i].PreviousWorkCenter)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(m => m.planningReportRows[i].WorkCenter)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(m => m.planningReportRows[i].Notes)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(m => m.planningReportRows[i].Priority)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(m => m.planningReportRows[i].ShippingDate)
-                        </td>
-                        <td>
-                            @Html.CheckBoxFor(m => m.planningReportRows[i].Custom, new { Class = "form-control form-check col-sm-1;", Style = "text-align:center;" })
-                        </td>
-                    </tr>
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(m => m.planningReportRows[i].JobNumber)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(m => m.planningReportRows[i].LineNumber)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(m => m.planningReportRows[i].Material)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(m => m.planningReportRows[i].MRP)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(m => m.planningReportRows[i].PO)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(m => m.planningReportRows[i].SoldTo)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(m => m.planningReportRows[i].Consecutive)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(m => m.planningReportRows[i].JobName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(m => m.planningReportRows[i].PreviousWorkCenter)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(m => m.planningReportRows[i].WorkCenter)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(m => m.planningReportRows[i].Notes)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(m => m.planningReportRows[i].Priority)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(m => m.planningReportRows[i].ShippingDate)
+                                    </td>
+                                    <td>
+                                        @Html.CheckBoxFor(m => m.planningReportRows[i].Custom, new { Class = "form-control form-check col-sm-1;", Style = "text-align:center;" })
+                                    </td>
+                                </tr>
                             }
                         }
 
                     </tbody>
                 </table>
             </div>
+
         </form>
 
     </div>
