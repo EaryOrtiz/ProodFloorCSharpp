@@ -121,41 +121,45 @@ namespace ProdFloor.Controllers
                     AuxTechnicianID = testJob.TechnicianID,
                 };
 
-                /**Esto es para el actual step*/
-                var AllStepsForJob = testingRepo.StepsForJobs.Where(m => m.TestJobID == testJob.TestJobID && m.Obsolete == false).OrderBy(m => m.Consecutivo).ToList();
-                StepsForJob actualStepForAUX = AllStepsForJob.FirstOrDefault(m => m.Complete == false);
-                //For actual Step
-                actualStepForAUX.Stop = DateTime.Now;
-                TimeSpan elapsed = actualStepForAUX.Stop - actualStepForAUX.Start;
-                if (actualStepForAUX.Elapsed.Hour == 0 && actualStepForAUX.Elapsed.Minute == 0 && actualStepForAUX.Elapsed.Second == 0)
-                {
+                try
 
-                    actualStepForAUX.Elapsed = new DateTime(1, 1, 1, elapsed.Hours, elapsed.Minutes, elapsed.Seconds);
-                }
-                else
-                {
-                    int newsecond = 0, newhour = 0, newMinute = 0;
-
-                    newsecond = actualStepForAUX.Elapsed.Second + elapsed.Seconds;
-                    newMinute = actualStepForAUX.Elapsed.Minute + elapsed.Minutes;
-                    newhour = actualStepForAUX.Elapsed.Hour + elapsed.Hours;
-                    if (newsecond >= 60)
+                {  /**Esto es para el actual step*/
+                    var AllStepsForJob = testingRepo.StepsForJobs.Where(m => m.TestJobID == testJob.TestJobID && m.Obsolete == false).OrderBy(m => m.Consecutivo).ToList();
+                    StepsForJob actualStepForAUX = AllStepsForJob.FirstOrDefault(m => m.Complete == false);
+                    //For actual Step
+                    actualStepForAUX.Stop = DateTime.Now;
+                    TimeSpan elapsed = actualStepForAUX.Stop - actualStepForAUX.Start;
+                    if (actualStepForAUX.Elapsed.Hour == 0 && actualStepForAUX.Elapsed.Minute == 0 && actualStepForAUX.Elapsed.Second == 0)
                     {
-                        newsecond -= 60;
-                        newMinute++;
+
+                        actualStepForAUX.Elapsed = new DateTime(1, 1, 1, elapsed.Hours, elapsed.Minutes, elapsed.Seconds);
                     }
-                    newMinute += elapsed.Minutes;
-                    if (newMinute >= 60)
+                    else
                     {
-                        newMinute -= 60;
-                        newhour++;
+                        int newsecond = 0, newhour = 0, newMinute = 0;
+
+                        newsecond = actualStepForAUX.Elapsed.Second + elapsed.Seconds;
+                        newMinute = actualStepForAUX.Elapsed.Minute + elapsed.Minutes;
+                        newhour = actualStepForAUX.Elapsed.Hour + elapsed.Hours;
+                        if (newsecond >= 60)
+                        {
+                            newsecond -= 60;
+                            newMinute++;
+                        }
+                        newMinute += elapsed.Minutes;
+                        if (newMinute >= 60)
+                        {
+                            newMinute -= 60;
+                            newhour++;
+                        }
+
+
+                        actualStepForAUX.Elapsed = new DateTime(1, 1, 1, newhour, newMinute, newsecond);
                     }
-
-
-                    actualStepForAUX.Elapsed = new DateTime(1, 1, 1, newhour, newMinute, newsecond);
+                    testingRepo.SaveStepsForJob(actualStepForAUX);
+                    /**Esto es para el actual step*/
                 }
-                testingRepo.SaveStepsForJob(actualStepForAUX);
-                /**Esto es para el actual step*/
+                catch { }
 
                 testingRepo.SaveStop(NewtStop);
                 Stop CurrentStop = testingRepo.Stops.FirstOrDefault(p => p.StopID == testingRepo.Stops.Max(x => x.StopID));
