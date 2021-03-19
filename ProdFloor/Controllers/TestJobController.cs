@@ -910,7 +910,12 @@ namespace ProdFloor.Controllers
         [HttpPost]
         public IActionResult EditTestJob(TestJobViewModel viewModel)
         {
-            viewModel.Job.JobNum = getJobNumb(viewModel.Job.JobNumFirstDigits, viewModel.Job.JobNumLastDigits);
+           
+
+            if (string.IsNullOrEmpty(viewModel.Job.JobNum))
+            {
+                viewModel.Job.JobNum = getJobNumb(viewModel.Job.JobNumFirstDigits, viewModel.Job.JobNumLastDigits);
+            } 
 
             bool techAdmin = GetCurrentUserRole("TechAdmin").Result;
             bool Admin = GetCurrentUserRole("Admin").Result;

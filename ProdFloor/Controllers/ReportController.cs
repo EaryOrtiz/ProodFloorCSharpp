@@ -838,7 +838,12 @@ namespace ProdFloor.Controllers
                 State StateFromCity = itemRepository.States.FirstOrDefault(m => m.StateID == UniqueCity.StateID);
                 List<StepsForJob> AllSteps = testingRepo.StepsForJobs.Where(m => m.TestJobID == testjob.TestJobID && m.Obsolete == false).OrderBy(n => n.Consecutivo).ToList();
 
-                string JobNum = FeaturesFromJob.JobNum.Remove(0, 5);
+                string JobNum = "Error";
+                try
+                {
+                    JobNum = FeaturesFromJob.JobNum.Remove(0, 5);
+                }
+                catch { JobNum = "Error"; }
                 string TechName = Users.FirstOrDefault(m => m.EngID == testjob.TechnicianID).FullName;
                 string StationName = StationFromTestJobs.FirstOrDefault(m => m.StationID == testjob.StationID).Label;
                 string Stage = "Error";
