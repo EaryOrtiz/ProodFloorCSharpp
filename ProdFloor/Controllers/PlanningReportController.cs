@@ -312,7 +312,7 @@ namespace ProdFloor.Controllers
             try
             {
                 doc.Replace("JobName", reportRow.JobName.ToUpper(), true, true);
-                doc.Replace("Item", reportRow.JobName.ToUpper(), true, true);
+                doc.Replace("Item", reportRow.LineNumber.ToString(), true, true);
                 doc.Replace("JobNum", reportRow.JobNumber.ToString().ToUpper(), true, true);
                 doc.Replace("PONum", reportRow.PO.ToString(), true, true);
                 doc.Replace("ShippingDate", reportRow.ShippingDate, true, true);

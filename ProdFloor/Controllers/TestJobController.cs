@@ -2255,7 +2255,7 @@ namespace ProdFloor.Controllers
                         try
 
                         {  /**Esto es para el actual step*/
-                            var AllStepsForJob = testingRepo.StepsForJobs.Where(m => m.TestJobID == testjob.TestJobID && m.Obsolete == false).OrderBy(m => m.Consecutivo).ToList();
+                            var AllStepsForJob = testingRepo.StepsForJobs.Where(m => m.TestJobID == testJob.TestJobID && m.Obsolete == false).OrderBy(m => m.Consecutivo).ToList();
                             StepsForJob actualStepForAUX = AllStepsForJob.FirstOrDefault(m => m.Complete == false);
                             //For actual Step
                             actualStepForAUX.Stop = DateTime.Now;
