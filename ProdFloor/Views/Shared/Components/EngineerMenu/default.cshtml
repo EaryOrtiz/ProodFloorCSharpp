@@ -4,12 +4,9 @@
     <li class="nav-item">
         <a class="nav-link text-light" href="\"><i class="far fa-chart-bar"></i>&nbsp; Engineer Dashboard<span class="sr-only">(current)</span></a>
     </li>
-    @if (User.IsInRole("EngAdmin"))
-    {
-        <li class="nav-item nav">
-            <a class="nav-link  text-light" asp-controller="Home" asp-action="EngineerAdminDashBoard"><i class="fas fa-chart-line"></i>&nbsp; Admin Dashboard</a>
-        </li>
-    }
+    <li class="nav-item nav">
+        <a class="nav-link  text-light" asp-controller="Home" asp-action="EngineerAdminDashBoard"><i class="fas fa-chart-line"></i>&nbsp; Admin Dashboard</a>
+    </li>
     <li class="nav-item nav">
         <a class="nav-link  text-light" asp-controller="Home" asp-action="MorningDashBoard"><i class="fas fa-mug-hot"></i>&nbsp; Morning</a>
     </li>

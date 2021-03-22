@@ -552,6 +552,18 @@ namespace ProdFloor.Controllers
         [HttpPost]
         public IActionResult Delete(int ID)
         {
+            Job job = repository.Jobs.FirstOrDefault(m => m.JobID == ID);
+            AppUser CurrentEng = GetCurrentUser().Result;
+            bool EngAdmin = GetCurrentUserRole("EngAdmin").Result;
+            bool Admin = GetCurrentUserRole("Admin").Result;
+
+            if (!EngAdmin && !Admin && CurrentEng.EngID != job.EngID)
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"You cant only delete your jobs";
+                return RedirectToAction("EngineerAdminDashBoard", "Home");
+            }
+
             Job deletedJob = repository.DeleteEngJob(ID);
             if (deletedJob != null)
             {
@@ -568,6 +580,19 @@ namespace ProdFloor.Controllers
         [HttpPost]
         public IActionResult DeleteAdmin(int ID)
         {
+            Job job = repository.Jobs.FirstOrDefault(m => m.JobID == ID);
+
+            AppUser CurrentEng = GetCurrentUser().Result;
+            bool EngAdmin = GetCurrentUserRole("EngAdmin").Result;
+            bool Admin = GetCurrentUserRole("Admin").Result;
+
+            if (!EngAdmin && !Admin && CurrentEng.EngID != job.EngID)
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"You cant only delete your jobs";
+                return RedirectToAction("EngineerAdminDashBoard", "Home");
+            }
+
             Job deletedJob = repository.DeleteEngJob(ID);
             if (deletedJob != null)
             {

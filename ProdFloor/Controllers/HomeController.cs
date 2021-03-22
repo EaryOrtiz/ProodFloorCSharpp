@@ -212,9 +212,11 @@ namespace ProdFloor.Controllers
         public ActionResult EngineerAdminDashBoard(string filtrado, string Sort = "default", int ActiveJobPage = 1, int MyJobsPage = 1, int OnCrossJobPage = 1, int PendingToCrossJobPage = 1)
         {
             AppUser currentUser = GetCurrentUser().Result;
-            bool engineer = GetCurrentUserRole("EngAdmin").Result;
+            bool engAdmin = GetCurrentUserRole("EngAdmin").Result;
+            bool engineer = GetCurrentUserRole("Engineer").Result;
+            bool admin = GetCurrentUserRole("Admin").Result;
             if (filtrado != null) Sort = filtrado;
-            if (engineer)
+            if (engineer || admin || engAdmin )
             {
 
                 List<JobType> JobTyPeList = itemRepo.JobTypes.ToList();
@@ -679,7 +681,17 @@ namespace ProdFloor.Controllers
         [HttpPost]
         public IActionResult ChangeStatus(DashboardIndexViewModel viewModel)
         {
-            Job job = repository.Jobs.FirstOrDefault(m => m.JobID == viewModel.JobID);
+            Job job = repository.Jobs.FirstOrDefault(m => m.JobID == viewModel.JobID); AppUser CurrentEng = GetCurrentUser().Result;
+            bool EngAdmin = GetCurrentUserRole("EngAdmin").Result;
+            bool Admin = GetCurrentUserRole("Admin").Result;
+
+            if (!EngAdmin && !Admin && CurrentEng.EngID != job.EngID)
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"You cant only changes your jobs";
+                return RedirectToAction(nameof(EngineerAdminDashBoard));
+            }
+
             if (job.Status != viewModel.CurrentStatus)
             {
 
@@ -700,6 +712,18 @@ namespace ProdFloor.Controllers
         public IActionResult ChangeStatusAdmin(DashboardIndexViewModel viewModel)
         {
             Job job = repository.Jobs.FirstOrDefault(m => m.JobID == viewModel.JobID);
+
+            AppUser CurrentEng = GetCurrentUser().Result;
+            bool EngAdmin = GetCurrentUserRole("EngAdmin").Result;
+            bool Admin = GetCurrentUserRole("Admin").Result;
+
+            if (!EngAdmin && !Admin && CurrentEng.EngID != job.EngID)
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"You cant only changes your jobs";
+                return RedirectToAction("SuperUserDashBoard");
+            }
+
             if (job.Status != viewModel.CurrentStatus)
             {
 
@@ -719,6 +743,18 @@ namespace ProdFloor.Controllers
         public IActionResult JobReassignment(DashboardIndexViewModel viewModel)
         {
             Job job = repository.Jobs.FirstOrDefault(m => m.JobID == viewModel.JobID);
+
+            AppUser CurrentEng = GetCurrentUser().Result;
+            bool EngAdmin = GetCurrentUserRole("EngAdmin").Result;
+            bool Admin = GetCurrentUserRole("Admin").Result;
+
+            if (!EngAdmin && !Admin)
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"You cant reassign";
+                return RedirectToAction(nameof(EngineerAdminDashBoard));
+            }
+
             int CurrentEngID = job.EngID;
             if ((job.EngID != viewModel.CurrentEngID) && (job.CrossAppEngID != viewModel.CurrentCrosAppEngID))
             {
@@ -798,6 +834,18 @@ namespace ProdFloor.Controllers
             if (btnPriority >= 0 && btnPriority < 4)
             {
                 Job job = repository.Jobs.FirstOrDefault(m => m.JobID == btnJobID);
+
+                AppUser CurrentEng = GetCurrentUser().Result;
+                bool EngAdmin = GetCurrentUserRole("EngAdmin").Result;
+                bool Admin = GetCurrentUserRole("Admin").Result;
+
+                if (!EngAdmin && !Admin && CurrentEng.EngID != job.EngID)
+                {
+                    TempData["alert"] = $"alert-danger";
+                    TempData["message"] = $"You cant only changes your jobs";
+                    return RedirectToAction(nameof(Index));
+                }
+
                 JobAdditional jobAdditional = repository.JobAdditionals.FirstOrDefault(m => m.JobID == btnJobID);
                 jobAdditional.Priority = btnPriority;
                 repository.SaveJobAdditional(jobAdditional);
@@ -817,6 +865,19 @@ namespace ProdFloor.Controllers
             if (btnPriority >= 0 && btnPriority < 4)
             {
                 Job job = repository.Jobs.FirstOrDefault(m => m.JobID == btnJobID);
+
+                AppUser CurrentEng  = GetCurrentUser().Result;
+                bool EngAdmin = GetCurrentUserRole("EngAdmin").Result;
+                bool Admin = GetCurrentUserRole("Admin").Result;
+
+                if (!EngAdmin && !Admin && CurrentEng.EngID != job.EngID)
+                {
+                    TempData["alert"] = $"alert-danger";
+                    TempData["message"] = $"You cant only changes your jobs";
+                    return RedirectToAction(nameof(EngineerAdminDashBoard));
+                }
+
+
                 JobAdditional jobAdditional = repository.JobAdditionals.FirstOrDefault(m => m.JobID == btnJobID);
                 jobAdditional.Priority = btnPriority;
                 repository.SaveJobAdditional(jobAdditional);

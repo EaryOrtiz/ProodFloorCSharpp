@@ -3,28 +3,25 @@
     ViewBag.Title = "Enginneering Admin Dashboard";
 
 }
-@if (User.IsInRole("EngAdmin"))
-{
 
-    @if (Model.OnCrossJobs != null)
-    {
-        @Html.Partial("OngoingJobsEngAdmin", Model)
-    }
-    <br />
-    @if (Model.OnCrossJobs != null)
-    {
-        @Html.Partial("OngoingCrossApprovalsEngAdmin", Model)
-    }
-    <br />
-    @if (Model.OnCrossJobs != null)
-    {
-        @Html.Partial("PendingCrossApprovalsEngAdmin", Model)
-    }
-    <br />
-    @if (Model.ActiveJobs != null)
-    {
-        @Html.Partial("ActiveJobsEngAdmin", Model)
-    }
-    <br />
-    <br />
+@if (Model.OnCrossJobs != null)
+{
+    @Html.Partial("OngoingJobsEngAdmin", Model)
 }
+<br />
+@if (Model.OnCrossJobs != null)
+{
+    @Html.Partial("OngoingCrossApprovalsEngAdmin", Model)
+}
+<br />
+@if (Model.OnCrossJobs != null)
+{
+    @Html.Partial("PendingCrossApprovalsEngAdmin", Model)
+}
+<br />
+@if (Model.ActiveJobs != null)
+{
+    @Html.Partial("ActiveJobsEngAdmin", Model)
+}
+<br />
+<br />
