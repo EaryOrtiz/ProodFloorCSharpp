@@ -13,13 +13,16 @@ namespace ProdFloor.Controllers
     public class CityController : Controller
     {
         private IItemRepository repository;
+        private ItemController itemController;
         public int PageSize = 7;
 
-        public CityController(IItemRepository repo)
+        public CityController(IItemRepository repo,
+            ItemController item)
         {
             repository = repo;
-
+            itemController = item;
         }
+
         public IActionResult List(CityListViewModel viewModel, int page = 1, int totalitemsfromlastsearch = 0)
         {
             if (viewModel.CleanFields) return RedirectToAction("List");
@@ -112,7 +115,7 @@ namespace ProdFloor.Controllers
         public IActionResult SeedXML(string buttonImportXML)
         {
             string resp = buttonImportXML;
-            ItemController.ImportXML(HttpContext.RequestServices, resp);
+            itemController.ImportXML(HttpContext.RequestServices, resp);
             return RedirectToAction(nameof(List));
         }
     }

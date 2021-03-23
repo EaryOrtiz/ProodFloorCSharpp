@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using HtmlAgilityPack;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -20,11 +21,15 @@ namespace ProdFloor.Controllers
     public class ReasonsController : Controller
     {
         private ITestingRepository repository;
+        private IHostingEnvironment _env;
         public int PageSize = 7;
+        string appDataFolder => _env.WebRootPath.ToString() + @"\AppData\";
 
-        public ReasonsController(ITestingRepository testingrepo)
+        public ReasonsController(ITestingRepository testingrepo,
+            IHostingEnvironment env)
         {
             repository = testingrepo;
+            _env = env;
         }
 
 
@@ -608,11 +613,11 @@ namespace ProdFloor.Controllers
             return File(ms, "text/xml", "Error.xml");
         }
 
-        public static void ImportXML(IServiceProvider services)
+        public  void ImportXML(IServiceProvider services)
         {
             ApplicationDbContext context = services.GetRequiredService<ApplicationDbContext>();
             HtmlDocument doc = new HtmlDocument();
-            doc.Load(@"C:\ProdFloorNew90\wwwroot\AppData\Reasons.xml");
+            doc.Load(appDataFolder + "Reasons.xml");
 
             var XMLobs = doc.DocumentNode.SelectSingleNode("//reasons");
 
@@ -756,7 +761,7 @@ namespace ProdFloor.Controllers
         [HttpPost]
         public IActionResult SeedXML()
         {
-            ReasonsController.ImportXML(HttpContext.RequestServices);
+            ImportXML(HttpContext.RequestServices);
             return RedirectToAction(nameof(Reason1List));
         }
 

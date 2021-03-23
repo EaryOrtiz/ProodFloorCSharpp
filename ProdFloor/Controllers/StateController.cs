@@ -13,13 +13,16 @@ namespace ProdFloor.Controllers
     public class StateController : Controller
     {
         private IItemRepository repository;
+        private ItemController itemController;
         public int PageSize = 6;
 
-        public StateController(IItemRepository repo)
+        public StateController(IItemRepository repo,
+            ItemController item)
         {
             repository = repo;
-
+            itemController = item;
         }
+
         public IActionResult List(StateListViewModel viewModel, int page = 1, int totalitemsfromlastsearch = 0)
         {
             if (viewModel.CleanFields) return RedirectToAction("List");
@@ -28,7 +31,7 @@ namespace ProdFloor.Controllers
             if (viewModel.CountryID > 0) states = states.Where(m => m.CountryID == viewModel.CountryID);
             if (!string.IsNullOrEmpty(viewModel.Name)) states = states.Where(m => m.Name.Contains(viewModel.Name));
 
-            
+
             viewModel.TotalItems = repository.States.Count();
 
             int TotalItemsSearch = states.Count();
@@ -51,7 +54,7 @@ namespace ProdFloor.Controllers
             };
             return View(viewModel);
         }
-            
+
 
         public ViewResult Edit(int ID)
         {
@@ -92,12 +95,13 @@ namespace ProdFloor.Controllers
         public IActionResult SeedXML(string buttonImportXML)
         {
             string resp = buttonImportXML;
-            ItemController.ImportXML(HttpContext.RequestServices, resp);
+            itemController.ImportXML(HttpContext.RequestServices, resp);
             return RedirectToAction(nameof(List));
         }
 
-        public ViewResult Add(){
+        public ViewResult Add()
+        {
             return View("Edit", new State());
-        } 
+        }
     }
 }

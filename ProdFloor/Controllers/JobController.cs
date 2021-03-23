@@ -29,15 +29,19 @@ namespace ProdFloor.Controllers
         private IJobRepository repository;
         private IItemRepository itemsrepository;
         private UserManager<AppUser> userManager;
-        private readonly IHostingEnvironment environment;
+        private readonly IHostingEnvironment _env;
         public int PageSize = 5;
+        string appDataFolder => _env.WebRootPath.ToString() + @"\AppData\";
 
-        public JobController(IJobRepository repo, IItemRepository itemsrepo, UserManager<AppUser> userMgr, IHostingEnvironment environment)
+        public JobController(IJobRepository repo, 
+            IItemRepository itemsrepo, 
+            UserManager<AppUser> userMgr, 
+            IHostingEnvironment environment)
         {
             repository = repo;
             itemsrepository = itemsrepo;
             userManager = userMgr;
-            this.environment = environment;
+            _env = environment;
         }
 
         public void alert()
@@ -3667,7 +3671,7 @@ namespace ProdFloor.Controllers
             string fileName = "Jobs-" + DateTime.Now.ToString("dd-MM-yyyy") + ".xml";
 
             List<Job> jobs = repository.Jobs.Where(m => m.Contractor != "Fake").ToList();
-            var path = $@"{environment.ContentRootPath}\wwwroot\DailyJobs\{fileName}";
+            var path = $@"{_env.ContentRootPath}\wwwroot\DailyJobs\{fileName}";
             using (XmlWriter xw = XmlWriter.Create(path, xws))
             {
                 xw.WriteStartDocument();
@@ -4177,14 +4181,14 @@ namespace ProdFloor.Controllers
                 xw.WriteEndDocument();
             }
         }
-        public static void ImportXML(IServiceProvider services, string buttonImportXML)
+        public void ImportXML(IServiceProvider services, string buttonImportXML)
         {
             ApplicationDbContext context = services.GetRequiredService<ApplicationDbContext>();
 
             if (buttonImportXML == "All")
             {
                 HtmlDocument doc = new HtmlDocument();
-                doc.Load(@"C:\ProdFloorNew90\wwwroot\AppData\Jobs.xml");
+                doc.Load(appDataFolder + "Jobs.xml");
 
                 var XMLJobs = doc.DocumentNode.SelectSingleNode("//jobs");
                 var XMLJob = XMLJobs.SelectNodes(".//job");
@@ -4896,7 +4900,7 @@ namespace ProdFloor.Controllers
         [HttpPost]
         public IActionResult SeedXML(string buttonImportXML)
         {
-            JobController.ImportXML(HttpContext.RequestServices, buttonImportXML);
+            ImportXML(HttpContext.RequestServices, buttonImportXML);
             return RedirectToAction(nameof(List));
         }
 

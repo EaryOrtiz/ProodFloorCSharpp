@@ -15,12 +15,16 @@ namespace ProdFloor.Controllers
     {
         private IItemRepository itemprepo;
         private ITestingRepository testingrepo;
+        private ItemController itemController;
         public int PageSize = 7;
 
-        public StationController(ITestingRepository repo, IItemRepository repo2)
+        public StationController(ITestingRepository repo, 
+            IItemRepository repo2,
+            ItemController item)
         {
             testingrepo = repo;
             itemprepo = repo2;
+            itemController = item;
         }
 
         public ViewResult Add()
@@ -96,7 +100,7 @@ namespace ProdFloor.Controllers
         public IActionResult SeedXML(string buttonImportXML)
         {
             string resp = buttonImportXML;
-            ItemController.ImportXML(HttpContext.RequestServices, resp);
+            itemController.ImportXML(HttpContext.RequestServices, resp);
             return RedirectToAction(nameof(List));
         }
     }

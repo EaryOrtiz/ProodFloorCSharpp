@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using HtmlAgilityPack;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -22,13 +23,19 @@ namespace ProdFloor.Controllers
         private IJobRepository jobRepo;
         private ITestingRepository testingRepo;
         private UserManager<AppUser> userManager;
+        private IHostingEnvironment _env;
         public int PageSize = 10;
+        string appDataFolder => _env.WebRootPath.ToString() + @"\AppData\";
 
-        public StopController(ITestingRepository repo, IJobRepository repo2, UserManager<AppUser> userMgr)
+        public StopController(ITestingRepository repo, 
+            IJobRepository repo2, 
+            UserManager<AppUser> userMgr,
+            IHostingEnvironment env)
         {
             jobRepo = repo2;
             testingRepo = repo;
             userManager = userMgr;
+            _env = env;
         }
 
         public IActionResult List(TestJobSearchViewModel searchViewModel, int page = 1)
@@ -568,11 +575,11 @@ namespace ProdFloor.Controllers
             return File(ms, "text/xml", "Stops.xml");
         }
 
-        public static void ImportXML(IServiceProvider services)
+        public void ImportXML(IServiceProvider services)
         {
             ApplicationDbContext context = services.GetRequiredService<ApplicationDbContext>();
             XmlDocument doc = new XmlDocument();
-            doc.Load(@"C:\ProdFloorNew90\wwwroot\AppData\Stops.xml");
+            doc.Load(appDataFolder + "Stops.xml");
 
             var XMLobs = doc.DocumentElement.SelectSingleNode("//Stops");
 

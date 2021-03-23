@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System;
 using System.Xml;
 using System.IO;
+using Microsoft.AspNetCore.Hosting;
 
 namespace ProdFloor.Controllers
 {
@@ -20,13 +21,13 @@ namespace ProdFloor.Controllers
         private SignInManager<AppUser> signInManager;
         private ITestingRepository testingRepo;
         private RoleManager<IdentityRole> roleManager;
+        private IHostingEnvironment _env;
         public int PageSize = 7;
 
         private IUserValidator<AppUser> userValidator;
-
         private IPasswordValidator<AppUser> passwordValidator;
-
         private IPasswordHasher<AppUser> passwordHasher;
+        string appDataFolder => _env.WebRootPath.ToString() + @"\AppData\";
 
 
         public AccountController(UserManager<AppUser> usrMgr,
@@ -35,6 +36,7 @@ namespace ProdFloor.Controllers
         IPasswordHasher<AppUser> passwordHash,
         RoleManager<IdentityRole> roleMgr,
         SignInManager<AppUser> signInMgr,
+        IHostingEnvironment env,
         ITestingRepository repo)
         {
             userManager = usrMgr;
@@ -45,6 +47,7 @@ namespace ProdFloor.Controllers
             roleManager = roleMgr;
 
             signInManager = signInMgr;
+            _env = env;
         }
 
         [AllowAnonymous]
@@ -549,7 +552,7 @@ namespace ProdFloor.Controllers
             string password = "Welcome01$";
 
             XmlDocument doc = new XmlDocument();
-            doc.Load(@"C:\ProdFloorNew90\wwwroot\AppData\Users.xml");
+            doc.Load(appDataFolder + "Users.xml");
 
             var XMLobs = doc.DocumentElement.SelectSingleNode("//Users");
             var XMLUsers = XMLobs.SelectNodes(".//User");
@@ -647,9 +650,9 @@ namespace ProdFloor.Controllers
 
         }
 
-        public static void GenerateImportErrorLog(List<string> Users, List<string> UserNames, List<string> EngIds)
+        public  void GenerateImportErrorLog(List<string> Users, List<string> UserNames, List<string> EngIds)
         {
-            string fileName = @"C:\ProdFloorNew90\wwwroot\AppData\ImportErrorsLog.txt";
+            string fileName = appDataFolder + "ImportErrorsLog.txt";
 
             try
             {

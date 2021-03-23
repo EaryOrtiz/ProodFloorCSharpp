@@ -14,11 +14,14 @@ namespace ProdFloor.Controllers
     public class OverloadController : Controller
     {
         private IItemRepository repository;
+        private ItemController itemController;
         public int PageSize = 15;
 
-        public OverloadController(IItemRepository repo)
+        public OverloadController(IItemRepository repo,
+            ItemController item)
         {
             repository = repo;
+            itemController = item;
         }
 
         public IActionResult List(OverloadListViewModel viewModel, int page = 1, int totalitemsfromlastsearch = 0)
@@ -91,7 +94,7 @@ namespace ProdFloor.Controllers
         public IActionResult SeedXML(string buttonImportXML)
         {
             string resp = buttonImportXML;
-            ItemController.ImportXML(HttpContext.RequestServices, resp);
+            itemController.ImportXML(HttpContext.RequestServices, resp);
             return RedirectToAction(nameof(List));
         }
 

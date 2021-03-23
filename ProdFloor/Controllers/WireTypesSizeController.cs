@@ -14,11 +14,14 @@ namespace ProdFloor.Controllers
     public class WireTypesSizeController : Controller
     {
         private IItemRepository repository;
+        private ItemController itemController;
         public int PageSize = 15;
 
-        public WireTypesSizeController(IItemRepository repo)
+        public WireTypesSizeController(IItemRepository repo,
+            ItemController item)
         {
             repository = repo;
+            itemController = item;
         }
 
         public IActionResult List(WireTypesSizeListViewModel viewModel, int page = 1, int totalitemsfromlastsearch = 0)
@@ -90,7 +93,7 @@ namespace ProdFloor.Controllers
         public IActionResult SeedWire(string buttonImportXML)
         {
             string resp = buttonImportXML;
-            ItemController.ImportXML(HttpContext.RequestServices, resp);
+            itemController.ImportXML(HttpContext.RequestServices, resp);
             return RedirectToAction(nameof(List));
         }
 

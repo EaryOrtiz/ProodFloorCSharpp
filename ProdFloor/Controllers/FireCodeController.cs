@@ -11,11 +11,14 @@ namespace ProdFloor.Controllers
     public class FireCodeController : Controller
     {
         private IItemRepository repository;
+        private ItemController itemController;
         public int PageSize = 4;
 
-        public FireCodeController(IItemRepository repo)
+        public FireCodeController(IItemRepository repo,
+            ItemController item)
         {
             repository = repo;
+            itemController = item;
         }
 
         public ViewResult List(string filtrado, string Sort = "default", int page = 1, int totalitemsfromlastsearch = 0)
@@ -96,7 +99,7 @@ namespace ProdFloor.Controllers
         public IActionResult SeedXML(string buttonImportXML)
         {
             string resp = buttonImportXML;
-            ItemController.ImportXML(HttpContext.RequestServices, resp);
+            itemController.ImportXML(HttpContext.RequestServices, resp);
             return RedirectToAction(nameof(List));
         }
 

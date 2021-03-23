@@ -15,6 +15,7 @@ using HtmlAgilityPack;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Hosting;
 
 namespace ProdFloor.Controllers
 {
@@ -23,15 +24,22 @@ namespace ProdFloor.Controllers
         private IItemRepository repository;
         private IJobRepository jobrepo;
         private ITestingRepository testRepo;
+        private IHostingEnvironment _env;
 
         public int PageSize = 4;
+        string appDataFolder => _env.WebRootPath.ToString() + @"\AppData\";
 
-        public ItemController(IItemRepository repo, IJobRepository jobRepository, ITestingRepository testingRepo)
+        public ItemController(IItemRepository repo,
+            IJobRepository jobRepository,
+            ITestingRepository testingRepo,
+            IHostingEnvironment env)
         {
             repository = repo;
             jobrepo = jobRepository;
             testRepo = testingRepo;
+            _env = env;
         }
+
 
         public ViewResult Index() => View();
 
@@ -729,7 +737,7 @@ namespace ProdFloor.Controllers
                             string auxName2 = "---------------------------------------";
                             if (ViewModel.JobName2 == null) ViewModel.JobName2 = auxName2;
                         }
-                        catch(Exception e)
+                        catch (Exception e)
                         {
                             ViewModel.JobName2 = "-----------------------------------------";
                         }
@@ -844,7 +852,7 @@ namespace ProdFloor.Controllers
                         string jobTypeName = JobTypeName(job.JobTypeID);
                         ViewModel.NumJobSearch = job.JobNum;
 
-                        if (jobTypeName  == "ElmHydro")
+                        if (jobTypeName == "ElmHydro")
                         {
                             #region Hydro
                             ViewModel.SPH = elementHydro.SPH;
@@ -941,7 +949,7 @@ namespace ProdFloor.Controllers
                             ViewModel.Capacity = element.Capacity;
 
                             ViewModel.IdealVIn = (int)(((elementTraction.PickVoltage) * (1.1)) / (0.85));
-                            ViewModel.MinVIn = (int)( (elementTraction.PickVoltage) / (0.85));
+                            ViewModel.MinVIn = (int)((elementTraction.PickVoltage) / (0.85));
                             ViewModel.MaxVIn = (int)(((elementTraction.PickVoltage) * (1.25)) / (0.85));
 
                             if (elementTraction.Resistance > 101) ViewModel.BrakeResistor = "1500R 100W";
@@ -999,7 +1007,7 @@ namespace ProdFloor.Controllers
 
             Job job = jobrepo.Jobs.FirstOrDefault(m => m.JobID == JobID);
 
-            if(JobTypeName(job.JobTypeID) == "M2000")
+            if (JobTypeName(job.JobTypeID) == "M2000")
             {
                 ReferencesSearchvViewModel viewModel = new ReferencesSearchvViewModel
                 {
@@ -1007,7 +1015,8 @@ namespace ProdFloor.Controllers
                     RefernceData = false
                 };
                 return RedirectToAction("ReferencesSearch", viewModel);
-            }else 
+            }
+            else
             {
                 ReferencesSrchElementViewModel viewModel = new ReferencesSrchElementViewModel
                 {
@@ -1019,7 +1028,7 @@ namespace ProdFloor.Controllers
 
         }
 
-        public static void ImportXML(IServiceProvider services, string resp)
+        public void ImportXML(IServiceProvider services, string resp)
         {
             ApplicationDbContext context = services.GetRequiredService<ApplicationDbContext>();
             switch (resp)
@@ -1028,8 +1037,7 @@ namespace ProdFloor.Controllers
 
                     HtmlDocument doc = new HtmlDocument();
 
-
-                    doc.Load(@"C:\ProdFloorNew90\wwwroot\AppData\WireTypesSizes.xml");
+                    doc.Load(appDataFolder + @"WireTypesSizes.xml");
 
                     var XMLobs = doc.DocumentNode.SelectNodes("//wiretypessize");
 
@@ -1057,7 +1065,7 @@ namespace ProdFloor.Controllers
 
                 case "Slowdown":
                     HtmlDocument doc3 = new HtmlDocument();
-                    doc3.Load(@"C:\ProdFloorNew90\wwwroot\AppData\Slowdowns.xml");
+                    doc3.Load(appDataFolder + @"Slowdowns.xml");
                     var XMLobs3 = doc3.DocumentNode.SelectNodes("//slowdown");
 
                     foreach (var XMLob in XMLobs3)
@@ -1095,7 +1103,7 @@ namespace ProdFloor.Controllers
 
                 case "Starter":
                     HtmlDocument doc4 = new HtmlDocument();
-                    doc4.Load(@"C:\ProdFloorNew90\wwwroot\AppData\Starters.xml");
+                    doc4.Load(appDataFolder + @"Starters.xml");
 
                     var XMLobs4 = doc4.DocumentNode.SelectNodes("//starter");
 
@@ -1138,7 +1146,7 @@ namespace ProdFloor.Controllers
 
                 case "Overload":
                     HtmlDocument doc5 = new HtmlDocument();
-                    doc5.Load(@"C:\ProdFloorNew90\wwwroot\AppData\Overloads.xml");
+                    doc5.Load(appDataFolder + @"Overloads.xml");
 
                     var XMLobs5 = doc5.DocumentNode.SelectNodes("//overload");
 
@@ -1177,7 +1185,7 @@ namespace ProdFloor.Controllers
 
                 case "Country":
                     HtmlDocument doc6 = new HtmlDocument();
-                    doc6.Load(@"C:\ProdFloorNew90\wwwroot\AppData\Countries.xml");
+                    doc6.Load(appDataFolder + @"Countries.xml");
 
 
                     var XMLobs6 = doc6.DocumentNode.SelectNodes("//country");
@@ -1209,7 +1217,7 @@ namespace ProdFloor.Controllers
 
                 case "State":
                     HtmlDocument doc2 = new HtmlDocument();
-                    doc2.Load(@"C:\ProdFloorNew90\wwwroot\AppData\States.xml");
+                    doc2.Load(appDataFolder + @"States.xml");
                     var XMLobs2 = doc2.DocumentNode.SelectNodes("//state");
 
                     if (context.Countries.Any())
@@ -1238,7 +1246,7 @@ namespace ProdFloor.Controllers
 
                 case "City":
                     HtmlDocument doc7 = new HtmlDocument();
-                    doc7.Load(@"C:\ProdFloorNew90\wwwroot\AppData\Cities.xml");
+                    doc7.Load(appDataFolder + @"Cities.xml");
 
                     var XMLobs7 = doc7.DocumentNode.SelectNodes("//city");
 
@@ -1277,7 +1285,7 @@ namespace ProdFloor.Controllers
 
                 case "LandingSys":
                     HtmlDocument doc8 = new HtmlDocument();
-                    doc8.Load(@"C:\ProdFloorNew90\wwwroot\AppData\LandingSystems.xml");
+                    doc8.Load(appDataFolder + @"LandingSystems.xml");
 
                     var XMLobs8 = doc8.DocumentNode.SelectNodes("//landingsystem");
 
@@ -1310,7 +1318,7 @@ namespace ProdFloor.Controllers
 
                 case "FireCode":
                     HtmlDocument doc9 = new HtmlDocument();
-                    doc9.Load(@"C:\ProdFloorNew90\wwwroot\AppData\FireCodes.xml");
+                    doc9.Load(appDataFolder + @"FireCodes.xml");
 
                     var XMLobs9 = doc9.DocumentNode.SelectNodes("//firecode");
 
@@ -1341,7 +1349,7 @@ namespace ProdFloor.Controllers
 
                 case "DoorOperator":
                     HtmlDocument doc10 = new HtmlDocument();
-                      doc10.Load(@"C:\ProdFloorNew90\wwwroot\AppData\DoorOperators.xml");
+                    doc10.Load(appDataFolder + @"DoorOperators.xml");
 
                     var XMLobs10 = doc10.DocumentNode.SelectNodes("//dooroperator");
                     foreach (var XMLob in XMLobs10)
@@ -1375,7 +1383,7 @@ namespace ProdFloor.Controllers
 
                 case "JobType":
                     HtmlDocument doc11 = new HtmlDocument();
-                    doc11.Load(@"C:\ProdFloorNew90\wwwroot\AppData\JobTypes.xml");
+                    doc11.Load(appDataFolder + @"JobTypes.xml");
 
                     var XMLobs11 = doc11.DocumentNode.SelectNodes("//jobtype");
 
@@ -1406,7 +1414,7 @@ namespace ProdFloor.Controllers
 
                 case "Stations":
                     HtmlDocument doc12 = new HtmlDocument();
-                    doc12.Load(@"C:\ProdFloorNew90\wwwroot\AppData\Stations.xml");
+                    doc12.Load(appDataFolder + @"Stations.xml");
 
                     var XMLobs12 = doc12.DocumentNode.SelectNodes("//station");
 
@@ -1419,7 +1427,7 @@ namespace ProdFloor.Controllers
                             var label = XMLob.SelectSingleNode(".//label").InnerText;
                             var jobtypeid = XMLob.SelectSingleNode(".//jobtypeid").InnerText;
 
-                            if(Int32.Parse(ID) != 0)
+                            if (Int32.Parse(ID) != 0)
                             {
                                 context.Stations.Add(new Station
                                 {
@@ -1440,10 +1448,10 @@ namespace ProdFloor.Controllers
                                     context.Database.CloseConnection();
                                 }
                             }
-                            
+
                         }
                     }
-                    
+
                     break;
             }
 
@@ -1503,7 +1511,7 @@ namespace ProdFloor.Controllers
                 return Json(new SelectList(Element, "Text", "Value"));
             }
         }
-        
+
         public string JobTypeName(int ID)
         {
             return repository.JobTypes.FirstOrDefault(m => m.JobTypeID == ID).Name;

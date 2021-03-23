@@ -10,13 +10,16 @@ namespace ProdFloor.Controllers
     public class JobTypeController : Controller
     {
         private IItemRepository repository;
+        private ItemController itemController;
+
         public int PageSize = 10;
 
-        public JobTypeController(IItemRepository repo)
+        public JobTypeController(IItemRepository repo,
+            ItemController item)
         {
             repository = repo;
+            itemController = item;
         }
-        
         public ViewResult List(int page = 1)
             => View(new JobTypesListViewModel
             {
@@ -68,7 +71,7 @@ namespace ProdFloor.Controllers
         public IActionResult SeedXML(string buttonImportXML)
         {
             string resp = buttonImportXML;
-            ItemController.ImportXML(HttpContext.RequestServices, resp);
+            itemController.ImportXML(HttpContext.RequestServices, resp);
             return RedirectToAction(nameof(List));
         }
 

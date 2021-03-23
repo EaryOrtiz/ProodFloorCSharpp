@@ -12,6 +12,7 @@ using System.Xml;
 using System.Linq;
 using System;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Hosting;
 
 namespace ProdFloor.Controllers
 {
@@ -20,11 +21,16 @@ namespace ProdFloor.Controllers
     {
         private RoleManager<IdentityRole> roleManager;
         private UserManager<AppUser> userManager;
+        private IHostingEnvironment _env;
+        string appDataFolder => _env.WebRootPath.ToString() + @"\AppData\";
 
-        public RoleAdminController(RoleManager<IdentityRole> roleMgr, UserManager<AppUser> userMrg)
+        public RoleAdminController(RoleManager<IdentityRole> roleMgr, 
+            UserManager<AppUser> userMrg,
+            IHostingEnvironment env)
         {
             roleManager = roleMgr;
             userManager = userMrg;
+            _env = env;
         }
 
         public ViewResult Index() => View(roleManager.Roles);
@@ -178,7 +184,7 @@ namespace ProdFloor.Controllers
             string duplicatedRoles = "";
 
             XmlDocument doc = new XmlDocument();
-            doc.Load(@"C:\ProdFloorNew90\wwwroot\AppData\Roles.xml");
+            doc.Load(appDataFolder + "Roles.xml");
 
             var XMLobs = doc.DocumentElement.SelectSingleNode("//Roles");
             var XMLRoles = XMLobs.SelectNodes(".//Role");

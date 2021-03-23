@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Xml;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -27,19 +28,23 @@ namespace ProdFloor.Controllers
         private IItemRepository itemRepository;
         private ReportController reportController;
         private UserManager<AppUser> userManager;
+        private IHostingEnvironment _env;
         public int PageSize = 7;
+        string appDataFolder => _env.WebRootPath.ToString() + @"\AppData\";
 
         public TestJobController(ITestingRepository repo,
             IJobRepository repo2,
             IItemRepository repo3,
             ReportController report,
-            UserManager<AppUser> userMgr)
+            UserManager<AppUser> userMgr,
+            IHostingEnvironment env)
         {
             jobRepo = repo2;
             testingRepo = repo;
             userManager = userMgr;
             itemRepository = repo3;
             reportController = report;
+            _env = env;
         }
 
         public ViewResult List(int page = 1)
@@ -3634,11 +3639,11 @@ namespace ProdFloor.Controllers
             return File(ms, "text/xml", "TestJobs-TestFeatures-StepsForJob.xml");
         }
 
-        public static void ImportXML(IServiceProvider services)
+        public void ImportXML(IServiceProvider services)
         {
             ApplicationDbContext context = services.GetRequiredService<ApplicationDbContext>();
             XmlDocument doc = new XmlDocument();
-            doc.Load(@"C:\ProdFloorNew90\wwwroot\AppData\TestJobs-TestFeatures-StepsForJob.xml");
+            doc.Load(appDataFolder + "TestJobs-TestFeatures-StepsForJob.xml");
 
 
             var XMLMain = doc.DocumentElement.SelectSingleNode("//TestJobs-TestFeatures-StepsForJob");

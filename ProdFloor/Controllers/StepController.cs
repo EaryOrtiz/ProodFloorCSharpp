@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using HtmlAgilityPack;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,12 +22,18 @@ namespace ProdFloor.Controllers
     {
         private IItemRepository itemprepo;
         private ITestingRepository testingrepo;
+        private IHostingEnvironment _env;
         public int PageSize = 10;
+        string appDataFolder => _env.WebRootPath.ToString() + @"\AppData\";
 
-        public StepController(ITestingRepository repo, IItemRepository repo2)
+
+        public StepController(ITestingRepository repo, 
+            IItemRepository repo2,
+            IHostingEnvironment env)
         {
             testingrepo = repo;
             itemprepo = repo2;
+            _env = env;
         }
 
         public ViewResult List(string filtrado,string JobTypeName = "Traction", int ElmHydroPage = 1, int ElmTractionPage = 1, int M2000Page = 1, int M4000Page = 1)
@@ -337,13 +344,13 @@ namespace ProdFloor.Controllers
             return File(ms, "text/xml", "Steps.xml");
         }
 
-        public static void ImportXML(IServiceProvider services)
+        public void ImportXML(IServiceProvider services)
         {
             ApplicationDbContext context = services.GetRequiredService<ApplicationDbContext>();
 
 
             XmlDocument doc = new XmlDocument();
-            doc.Load(@"C:\ProdFloorNew90\wwwroot\AppData\Steps.xml");
+            doc.Load(appDataFolder + "Steps.xml");
 
             var ALLSteps = doc.DocumentElement.SelectSingleNode("//AllSteps");
 
@@ -416,7 +423,7 @@ namespace ProdFloor.Controllers
         [HttpPost]
         public IActionResult SeedXML()
         {
-            StepController.ImportXML(HttpContext.RequestServices);
+            ImportXML(HttpContext.RequestServices);
             return RedirectToAction(nameof(List));
         }
     }
