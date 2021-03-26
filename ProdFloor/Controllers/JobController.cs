@@ -4217,6 +4217,13 @@ namespace ProdFloor.Controllers
                     var jobtypeid = XMLJobBase.SelectSingleNode(".//jobtypeid").InnerText;
                     var cityid = XMLJobBase.SelectSingleNode(".//cityid").InnerText;
                     var fireCodeid = XMLJobBase.SelectSingleNode(".//firecodeid").InnerText;
+
+                    if (name.Length > 49)
+                        name = name.Remove(48);
+
+                    if (name2.Length > 49)
+                        name2 = name2.Remove(48);
+
                     context.Jobs.Add(new Job
                     {
                         JobID = Int32.Parse(id),
@@ -4248,655 +4255,661 @@ namespace ProdFloor.Controllers
                     }
 
 
-
-                    var XMPOOOO = node.SelectSingleNode(".//pos");
-                    var XMLPOs = XMPOOOO.SelectNodes(".//po");
-                    if (XMLPOs != null)
+                    try
                     {
-                        foreach (var po in XMLPOs)
+                        var XMPOOOO = node.SelectSingleNode(".//pos");
+                        var XMLPOs = XMPOOOO.SelectNodes(".//po");
+                        if (XMLPOs != null)
                         {
-                            var idpo = po.SelectSingleNode(".//id").InnerText;
-                            var idPOnumb = po.SelectSingleNode(".//ponumb").InnerText;
-                            context.POs.Add(new PO
+                            foreach (var po in XMLPOs)
                             {
-                                POID = Int32.Parse(idpo),
-                                JobID = Int32.Parse(id),
-                                PONumb = Int32.Parse(idPOnumb)
+                                var idpo = po.SelectSingleNode(".//id").InnerText;
+                                var idPOnumb = po.SelectSingleNode(".//ponumb").InnerText;
+                                context.POs.Add(new PO
+                                {
+                                    POID = Int32.Parse(idpo),
+                                    JobID = Int32.Parse(id),
+                                    PONumb = Int32.Parse(idPOnumb)
+
+                                });
+                                context.Database.OpenConnection();
+                                try
+                                {
+                                    context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.POs ON");
+                                    context.SaveChanges();
+                                    context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.POs OFF");
+                                }
+                                finally
+                                {
+                                    context.Database.CloseConnection();
+                                }
+                            }
+                        }
+
+                        if (int.Parse(jobtypeid) == 2)
+                        {
+
+
+                            var XMLJobExtension = node.SelectSingleNode(".//jobextension");
+                            var idEx = XMLJobExtension.SelectSingleNode(".//id").InnerText;
+                            var jobid = XMLJobExtension.SelectSingleNode(".//jobid").InnerText;
+                            var numofstops = XMLJobExtension.SelectSingleNode(".//numofstops").InnerText;
+                            var jobtypemain = XMLJobExtension.SelectSingleNode(".//jobtypemain").InnerText;
+                            var jobtypeadd = XMLJobExtension.SelectSingleNode(".//jobtypeadd").InnerText;
+                            var inputvoltage = XMLJobExtension.SelectSingleNode(".//inputvoltage").InnerText;
+                            var inputphase = XMLJobExtension.SelectSingleNode(".//inputphase").InnerText;
+                            var inputfrecuency = XMLJobExtension.SelectSingleNode(".//inputfrecuency").InnerText;
+                            var doorgate = XMLJobExtension.SelectSingleNode(".//doorgate").InnerText;
+                            var doorhoist = XMLJobExtension.SelectSingleNode(".//doorhoist").InnerText;
+                            var infdetector = XMLJobExtension.SelectSingleNode(".//infdetector").InnerText;
+                            var mechsafedge = XMLJobExtension.SelectSingleNode(".//mechsafedge").InnerText;
+                            var heavydoors = XMLJobExtension.SelectSingleNode(".//heavydoors").InnerText;
+                            var cartopdoorbuttons = XMLJobExtension.SelectSingleNode(".//cartopdoorbuttons").InnerText;
+                            var doorhold = XMLJobExtension.SelectSingleNode(".//doorhold").InnerText;
+                            var nudging = XMLJobExtension.SelectSingleNode(".//nudging").InnerText;
+                            var scop = XMLJobExtension.SelectSingleNode(".//scop").InnerText;
+                            var shc = XMLJobExtension.SelectSingleNode(".//shc").InnerText;
+                            var shcrisers = XMLJobExtension.SelectSingleNode(".//shcrisers").InnerText;
+                            var auxcop = XMLJobExtension.SelectSingleNode(".//auxcop").InnerText;
+                            var dooroperatorid = XMLJobExtension.SelectSingleNode(".//dooroperatorid").InnerText;
+                            var swingop = XMLJobExtension.SelectSingleNode(".//swingop").InnerText;
+                            var backupdisp = XMLJobExtension.SelectSingleNode(".//backupdisp").InnerText;
+                            var altris = XMLJobExtension.SelectSingleNode(".//altris").InnerText;
+                            context.JobsExtensions.Add(new JobExtension
+                            {
+                                JobExtensionID = Int32.Parse(idEx),
+                                JobID = Int32.Parse(jobid),
+                                NumOfStops = Int32.Parse(numofstops),
+                                JobTypeMain = jobtypemain,
+                                JobTypeAdd = jobtypeadd,
+                                InputVoltage = Int32.Parse(inputvoltage),
+                                InputPhase = Int32.Parse(inputphase),
+                                InputFrecuency = Int32.Parse(inputfrecuency),
+                                DoorGate = doorgate,
+                                DoorHoist = doorhoist,
+                                InfDetector = Boolean.Parse(infdetector),
+                                MechSafEdge = Boolean.Parse(mechsafedge),
+                                HeavyDoors = Boolean.Parse(heavydoors),
+                                CartopDoorButtons = Boolean.Parse(cartopdoorbuttons),
+                                DoorHold = Boolean.Parse(doorhold),
+                                Nudging = Boolean.Parse(nudging),
+                                SCOP = Boolean.Parse(scop),
+                                SHC = Boolean.Parse(shc),
+                                AUXCOP = Boolean.Parse(auxcop),
+                                SwingOp = Boolean.Parse(swingop),
+                                AltRis = Boolean.Parse(altris),
+                                BackUpDisp = Boolean.Parse(backupdisp),
+                                SHCRisers = Int32.Parse(shcrisers),
+                                DoorOperatorID = Int32.Parse(dooroperatorid)
 
                             });
                             context.Database.OpenConnection();
                             try
                             {
-                                context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.POs ON");
+                                context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.JobsExtensions ON");
                                 context.SaveChanges();
-                                context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.POs OFF");
+                                context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.JobsExtensions OFF");
                             }
                             finally
                             {
                                 context.Database.CloseConnection();
                             }
-                        }
-                    }
-
-                    if (int.Parse(jobtypeid) == 2)
-                    {
-
-
-                        var XMLJobExtension = node.SelectSingleNode(".//jobextension");
-                        var idEx = XMLJobExtension.SelectSingleNode(".//id").InnerText;
-                        var jobid = XMLJobExtension.SelectSingleNode(".//jobid").InnerText;
-                        var numofstops = XMLJobExtension.SelectSingleNode(".//numofstops").InnerText;
-                        var jobtypemain = XMLJobExtension.SelectSingleNode(".//jobtypemain").InnerText;
-                        var jobtypeadd = XMLJobExtension.SelectSingleNode(".//jobtypeadd").InnerText;
-                        var inputvoltage = XMLJobExtension.SelectSingleNode(".//inputvoltage").InnerText;
-                        var inputphase = XMLJobExtension.SelectSingleNode(".//inputphase").InnerText;
-                        var inputfrecuency = XMLJobExtension.SelectSingleNode(".//inputfrecuency").InnerText;
-                        var doorgate = XMLJobExtension.SelectSingleNode(".//doorgate").InnerText;
-                        var doorhoist = XMLJobExtension.SelectSingleNode(".//doorhoist").InnerText;
-                        var infdetector = XMLJobExtension.SelectSingleNode(".//infdetector").InnerText;
-                        var mechsafedge = XMLJobExtension.SelectSingleNode(".//mechsafedge").InnerText;
-                        var heavydoors = XMLJobExtension.SelectSingleNode(".//heavydoors").InnerText;
-                        var cartopdoorbuttons = XMLJobExtension.SelectSingleNode(".//cartopdoorbuttons").InnerText;
-                        var doorhold = XMLJobExtension.SelectSingleNode(".//doorhold").InnerText;
-                        var nudging = XMLJobExtension.SelectSingleNode(".//nudging").InnerText;
-                        var scop = XMLJobExtension.SelectSingleNode(".//scop").InnerText;
-                        var shc = XMLJobExtension.SelectSingleNode(".//shc").InnerText;
-                        var shcrisers = XMLJobExtension.SelectSingleNode(".//shcrisers").InnerText;
-                        var auxcop = XMLJobExtension.SelectSingleNode(".//auxcop").InnerText;
-                        var dooroperatorid = XMLJobExtension.SelectSingleNode(".//dooroperatorid").InnerText;
-                        var swingop = XMLJobExtension.SelectSingleNode(".//swingop").InnerText;
-                        var backupdisp = XMLJobExtension.SelectSingleNode(".//backupdisp").InnerText;
-                        var altris = XMLJobExtension.SelectSingleNode(".//altris").InnerText;
-                        context.JobsExtensions.Add(new JobExtension
-                        {
-                            JobExtensionID = Int32.Parse(idEx),
-                            JobID = Int32.Parse(jobid),
-                            NumOfStops = Int32.Parse(numofstops),
-                            JobTypeMain = jobtypemain,
-                            JobTypeAdd = jobtypeadd,
-                            InputVoltage = Int32.Parse(inputvoltage),
-                            InputPhase = Int32.Parse(inputphase),
-                            InputFrecuency = Int32.Parse(inputfrecuency),
-                            DoorGate = doorgate,
-                            DoorHoist = doorhoist,
-                            InfDetector = Boolean.Parse(infdetector),
-                            MechSafEdge = Boolean.Parse(mechsafedge),
-                            HeavyDoors = Boolean.Parse(heavydoors),
-                            CartopDoorButtons = Boolean.Parse(cartopdoorbuttons),
-                            DoorHold = Boolean.Parse(doorhold),
-                            Nudging = Boolean.Parse(nudging),
-                            SCOP = Boolean.Parse(scop),
-                            SHC = Boolean.Parse(shc),
-                            AUXCOP = Boolean.Parse(auxcop),
-                            SwingOp = Boolean.Parse(swingop),
-                            AltRis = Boolean.Parse(altris),
-                            BackUpDisp = Boolean.Parse(backupdisp),
-                            SHCRisers = Int32.Parse(shcrisers),
-                            DoorOperatorID = Int32.Parse(dooroperatorid)
-
-                        });
-                        context.Database.OpenConnection();
-                        try
-                        {
-                            context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.JobsExtensions ON");
-                            context.SaveChanges();
-                            context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.JobsExtensions OFF");
-                        }
-                        finally
-                        {
-                            context.Database.CloseConnection();
-                        }
 
 
 
 
-                        var XMLHydro = node.SelectSingleNode(".//hydrospecific");
-                        var idHidro = XMLHydro.SelectSingleNode(".//id").InnerText;
-                        var starter = XMLHydro.SelectSingleNode(".//starter").InnerText;
-                        var hp = XMLHydro.SelectSingleNode(".//hp").InnerText;
-                        var fla = XMLHydro.SelectSingleNode(".//fla").InnerText;
-                        var sph = XMLHydro.SelectSingleNode(".//sph").InnerText;
-                        var motorsnum = XMLHydro.SelectSingleNode(".//motorsnum").InnerText;
-                        var motorsdisconnect = XMLHydro.SelectSingleNode(".//motorsdisconnect").InnerText;
-                        var valvebrand = XMLHydro.SelectSingleNode(".//valvebrand").InnerText;
-                        var valvecoils = XMLHydro.SelectSingleNode(".//valvecoils").InnerText;
-                        var valvenum = XMLHydro.SelectSingleNode(".//valvenum").InnerText;
-                        var valvevoltage = XMLHydro.SelectSingleNode(".//valvevoltage").InnerText;
-                        var batterybrand = XMLHydro.SelectSingleNode(".//batterybrand").InnerText;
-                        var battery = XMLHydro.SelectSingleNode(".//battery").InnerText;
-                        var lifejacket = XMLHydro.SelectSingleNode(".//lifejacket").InnerText;
-                        var los = XMLHydro.SelectSingleNode(".//los").InnerText;
-                        var oilcool = XMLHydro.SelectSingleNode(".//oilcool").InnerText;
-                        var oiltank = XMLHydro.SelectSingleNode(".//oiltank").InnerText;
-                        var pss = XMLHydro.SelectSingleNode(".//pss").InnerText;
-                        var resync = XMLHydro.SelectSingleNode(".//resync").InnerText;
-                        var vci = XMLHydro.SelectSingleNode(".//vci").InnerText;
-                        context.HydroSpecifics.Add(new HydroSpecific
-                        {
-                            HydroSpecificID = Int32.Parse(idHidro),
-                            JobID = Int32.Parse(jobid),
-                            Starter = starter,
-                            HP = Int32.Parse(hp),
-                            FLA = float.Parse(fla),
-                            SPH = Int32.Parse(sph),
-                            MotorsNum = Int32.Parse(motorsnum),
-                            MotorsDisconnect = Int32.Parse(motorsdisconnect),
-                            ValveBrand = valvebrand,
-                            ValveCoils = Int32.Parse(valvecoils),
-                            ValveNum = Int32.Parse(valvenum),
-                            ValveVoltage = Int32.Parse(valvevoltage),
-                            BatteryBrand = batterybrand == "Nulo" ? null : batterybrand,
-                            Battery = Boolean.Parse(battery),
-                            LifeJacket = Boolean.Parse(lifejacket),
-                            LOS = Boolean.Parse(los),
-                            OilCool = Boolean.Parse(oilcool),
-                            OilTank = Boolean.Parse(oiltank),
-                            PSS = Boolean.Parse(pss),
-                            Resync = Boolean.Parse(resync),
-                            VCI = Boolean.Parse(vci)
-                        });
-                        context.Database.OpenConnection();
-                        try
-                        {
-                            context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.HydroSpecifics ON");
-                            context.SaveChanges();
-                            context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.HydroSpecifics OFF");
-                        }
-                        finally
-                        {
-                            context.Database.CloseConnection();
-                        }
-
-                        var XMLGeneric = node.SelectSingleNode(".//genericfeatures");
-                        var idGeneric = XMLGeneric.SelectSingleNode(".//id").InnerText;
-                        var fron2 = XMLGeneric.SelectSingleNode(".//fron2").InnerText;
-                        var attendant = XMLGeneric.SelectSingleNode(".//attendant").InnerText;
-                        var cartolobby = XMLGeneric.SelectSingleNode(".//cartolobby").InnerText;
-                        var eq = XMLGeneric.SelectSingleNode(".//eq").InnerText;
-                        var emt = XMLGeneric.SelectSingleNode(".//emt").InnerText;
-                        var ep = XMLGeneric.SelectSingleNode(".//ep").InnerText;
-                        var epvoltage = XMLGeneric.SelectSingleNode(".//epvoltage").InnerText;
-                        var epothercars = XMLGeneric.SelectSingleNode(".//epothercars").InnerText;
-                        var epcarsnumber = XMLGeneric.SelectSingleNode(".//epcarsnumber").InnerText;
-                        var epcontact = XMLGeneric.SelectSingleNode(".//epcontact").InnerText;
-                        var pti = XMLGeneric.SelectSingleNode(".//pti").InnerText;
-                        var epselect = XMLGeneric.SelectSingleNode(".//epselect").InnerText;
-                        var flo = XMLGeneric.SelectSingleNode(".//flo").InnerText;
-                        var hosp = XMLGeneric.SelectSingleNode(".//hosp").InnerText;
-                        var pit = XMLGeneric.SelectSingleNode(".//pit").InnerText;
-                        var ina = XMLGeneric.SelectSingleNode(".//ina").InnerText;
-                        var topaccess = XMLGeneric.SelectSingleNode(".//topaccess").InnerText;
-                        var topaccesslocation = XMLGeneric.SelectSingleNode(".//topaccesslocation").InnerText;
-                        var bottomaccess = XMLGeneric.SelectSingleNode(".//bottomaccess").InnerText;
-                        var bottomaccesslocation = XMLGeneric.SelectSingleNode(".//bottomaccesslocation").InnerText;
-                        var incp = XMLGeneric.SelectSingleNode(".//incp").InnerText;
-                        var incpbuttons = XMLGeneric.SelectSingleNode(".//incpbuttons").InnerText;
-                        var switchstyle = XMLGeneric.SelectSingleNode(".//switchstyle").InnerText;
-                        var loadweigher = XMLGeneric.SelectSingleNode(".//loadweigher").InnerText;
-                        var ctinspst = XMLGeneric.SelectSingleNode(".//ctinspst").InnerText;
-                        var roped = XMLGeneric.SelectSingleNode(".//roped").InnerText;
-                        var govmodel = XMLGeneric.SelectSingleNode(".//govmodel").InnerText;
-                        var monitoring = XMLGeneric.SelectSingleNode(".//monitoring").InnerText;
-                        var callenable = XMLGeneric.SelectSingleNode(".//callenable").InnerText;
-                        var carcallread = XMLGeneric.SelectSingleNode(".//carcallread").InnerText;
-                        var hallcallread = XMLGeneric.SelectSingleNode(".//hallcallread").InnerText;
-                        var carkey = XMLGeneric.SelectSingleNode(".//carkey").InnerText;
-                        var hallkey = XMLGeneric.SelectSingleNode(".//hallkey").InnerText;
-                        var cro = XMLGeneric.SelectSingleNode(".//cro").InnerText;
-                        var hcro = XMLGeneric.SelectSingleNode(".//hcro").InnerText;
-                        var bsi = XMLGeneric.SelectSingleNode(".//bsi").InnerText;
-                        var carcallcodesecurity = XMLGeneric.SelectSingleNode(".//carcallcodesecurity").InnerText;
-                        var specialinstructions = XMLGeneric.SelectSingleNode(".//specialinstructions").InnerText;
-                        context.GenericFeaturesList.Add(new GenericFeatures
-                        {
-                            GenericFeaturesID = Int32.Parse(idGeneric),
-                            JobID = Int32.Parse(jobid),
-                            FRON2 = Boolean.Parse(fron2),
-                            Attendant = Boolean.Parse(attendant),
-                            CarToLobby = Boolean.Parse(cartolobby),
-                            EQ = Boolean.Parse(eq),
-                            EMT = Boolean.Parse(emt),
-                            EP = Boolean.Parse(ep),
-                            EPVoltage = Boolean.Parse(epvoltage),
-                            EPOtherCars = Boolean.Parse(epothercars),
-                            EPCarsNumber = epcarsnumber == "Nulo" ? null : epcarsnumber,
-                            EPContact = epcontact == "Nulo" ? null : epcontact,
-                            PTI = Boolean.Parse(pti),
-                            EPSelect = Boolean.Parse(epselect),
-                            FLO = Boolean.Parse(flo),
-                            Hosp = Boolean.Parse(hosp),
-                            Pit = Boolean.Parse(pit),
-                            INA = Boolean.Parse(ina),
-                            TopAccess = Boolean.Parse(topaccess),
-                            TopAccessLocation = topaccesslocation,
-                            BottomAccess = Boolean.Parse(bottomaccess),
-                            BottomAccessLocation = bottomaccesslocation == "Nulo" ? null : bottomaccesslocation,
-                            INCP = Boolean.Parse(incp),
-                            INCPButtons = incpbuttons == "Nulo" ? null : incpbuttons,
-                            SwitchStyle = switchstyle == "Nulo" ? null : switchstyle,
-                            LoadWeigher = Boolean.Parse(loadweigher),
-                            CTINSPST = Boolean.Parse(ctinspst),
-                            Roped = Boolean.Parse(roped),
-                            GovModel = govmodel == "Nulo" ? null : govmodel,
-                            Monitoring = monitoring == "Nulo" ? null : monitoring,
-                            CallEnable = Boolean.Parse(callenable),
-                            CarCallRead = Boolean.Parse(carcallread),
-                            HallCallRead = Boolean.Parse(hallcallread),
-                            CarKey = Boolean.Parse(carkey),
-                            HallKey = Boolean.Parse(hallkey),
-                            CRO = Boolean.Parse(cro),
-                            HCRO = Boolean.Parse(hcro),
-                            BSI = Boolean.Parse(bsi),
-                            CarCallCodeSecurity = carcallcodesecurity == "Nulo" ? null : carcallcodesecurity,
-                            SpecialInstructions = specialinstructions == "Nulo" ? null : specialinstructions
-                        });
-                        context.Database.OpenConnection();
-                        try
-                        {
-                            context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.GenericFeaturesList ON");
-                            context.SaveChanges();
-                            context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.GenericFeaturesList OFF");
-                        }
-                        finally
-                        {
-                            context.Database.CloseConnection();
-                        }
-
-                        var XMLIndicator = node.SelectSingleNode(".//indicator");
-                        var idIndicator = XMLIndicator.SelectSingleNode(".//id").InnerText;
-                        var carcallsvoltage = XMLIndicator.SelectSingleNode(".//carcallsvoltage").InnerText;
-                        var carcallsvoltagetype = XMLIndicator.SelectSingleNode(".//carcallsvoltagetype").InnerText;
-                        var carcallstype = XMLIndicator.SelectSingleNode(".//carcallstype").InnerText;
-                        var hallcallsvoltage = XMLIndicator.SelectSingleNode(".//hallcallsvoltage").InnerText;
-                        var hallcallsvoltagetype = XMLIndicator.SelectSingleNode(".//hallcallsvoltagetype").InnerText;
-                        var hallcallstype = XMLIndicator.SelectSingleNode(".//hallcallstype").InnerText;
-                        var carpi = XMLIndicator.SelectSingleNode(".//carpi").InnerText;
-                        var carpitype = XMLIndicator.SelectSingleNode(".//carpitype").InnerText;
-                        var carpidiscretetype = XMLIndicator.SelectSingleNode(".//carpidiscretetype").InnerText;
-                        var hallpi = XMLIndicator.SelectSingleNode(".//hallpi").InnerText;
-                        var hallpitype = XMLIndicator.SelectSingleNode(".//hallpitype").InnerText;
-                        var hallpidiscretetype = XMLIndicator.SelectSingleNode(".//hallpidiscretetype").InnerText;
-                        var voiceannunciationpi = XMLIndicator.SelectSingleNode(".//voiceannunciationpi").InnerText;
-                        var voiceannunciationpitype = XMLIndicator.SelectSingleNode(".//voiceannunciationpitype").InnerText;
-                        var carlanterns = XMLIndicator.SelectSingleNode(".//carlanterns").InnerText;
-                        var carlanternsstyle = XMLIndicator.SelectSingleNode(".//carlanternsstyle").InnerText;
-                        var carlanternstype = XMLIndicator.SelectSingleNode(".//carlanternstype").InnerText;
-                        var halllanterns = XMLIndicator.SelectSingleNode(".//halllanterns").InnerText;
-                        var hallpiAll = XMLIndicator.SelectSingleNode(".//hallpiall").InnerText;
-                        var halllanternsstyle = XMLIndicator.SelectSingleNode(".//halllanternsstyle").InnerText;
-                        var halllanternstype = XMLIndicator.SelectSingleNode(".//halllanternstype").InnerText;
-                        var passingfloor = XMLIndicator.SelectSingleNode(".//passingfloor").InnerText;
-                        var passingfloortype = XMLIndicator.SelectSingleNode(".//passingfloortype").InnerText;
-                        var passingfloordiscretetype = XMLIndicator.SelectSingleNode(".//passingfloordiscretetype").InnerText;
-                        var passingfloorenable = XMLIndicator.SelectSingleNode(".//passingfloorenable").InnerText;
-                        var indicatorsvoltage = XMLIndicator.SelectSingleNode(".//indicatorsvoltage").InnerText;
-                        var indicatorsvoltagetype = XMLIndicator.SelectSingleNode(".//indicatorsvoltagetype").InnerText;
-
-                        context.Indicators.Add(new Indicator
-                        {
-                            IndicatorID = Int32.Parse(idIndicator),
-                            JobID = Int32.Parse(jobid),
-                            CarCallsVoltage = carcallsvoltage,
-                            CarCallsVoltageType = carcallsvoltagetype,
-                            CarCallsType = carcallstype,
-                            HallCallsVoltage = hallcallsvoltage,
-                            HallCallsVoltageType = hallcallsvoltagetype,
-                            HallCallsType = hallcallstype,
-                            CarPI = Boolean.Parse(carpi),
-                            CarPIType = carpitype == "Nulo" ? null : carpitype,
-                            CarPIDiscreteType = carpidiscretetype == "Nulo" ? null : carpidiscretetype,
-                            HallPI = Boolean.Parse(hallpi),
-                            HallPIAll = Boolean.Parse(hallpiAll),
-                            HallPIType = hallpitype == "Nulo" ? "" : hallpitype,
-                            HallPIDiscreteType = hallpidiscretetype == "Nulo" ? null : hallpidiscretetype,
-                            VoiceAnnunciationPI = Boolean.Parse(voiceannunciationpi),
-                            VoiceAnnunciationPIType = voiceannunciationpi == "Nulo" ? null : voiceannunciationpitype,
-                            CarLanterns = Boolean.Parse(carlanterns),
-                            CarLanternsStyle = carlanternsstyle == "Nulo" ? null : carlanternsstyle,
-                            CarLanternsType = carlanternstype == "Nulo" ? null : carlanternstype,
-                            HallLanterns = Boolean.Parse(halllanterns),
-                            HallLanternsStyle = halllanternsstyle == "Nulo" ? null : halllanternsstyle,
-                            HallLanternsType = halllanternstype == "Nulo" ? null : halllanternstype,
-                            PassingFloor = Boolean.Parse(passingfloor),
-                            PassingFloorType = passingfloortype == "Nulo" ? null : passingfloortype,
-                            PassingFloorDiscreteType = passingfloordiscretetype == "Nulo" ? null : passingfloordiscretetype,
-                            PassingFloorEnable = Boolean.Parse(passingfloorenable),
-                            IndicatorsVoltage = Int32.Parse(indicatorsvoltage),
-                            IndicatorsVoltageType = indicatorsvoltagetype == "Nulo" ? null : indicatorsvoltagetype
-
-                        });
-                        context.Database.OpenConnection();
-                        try
-                        {
-                            context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.Indicators ON");
-                            context.SaveChanges();
-                            context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.Indicators OFF");
-                        }
-                        finally
-                        {
-                            context.Database.CloseConnection();
-                        }
-
-
-                        var XMLHoist = node.SelectSingleNode(".//hoistwaydata");
-                        var idHoist = XMLHoist.SelectSingleNode(".//id").InnerText;
-                        var hoistwaysnumber = XMLHoist.SelectSingleNode(".//hoistwaysnumber").InnerText;
-                        var machinerooms = XMLHoist.SelectSingleNode(".//machinerooms").InnerText;
-                        var capacity = XMLHoist.SelectSingleNode(".//capacity").InnerText;
-                        var upspeed = XMLHoist.SelectSingleNode(".//upspeed").InnerText;
-                        var downspeed = XMLHoist.SelectSingleNode(".//downspeed").InnerText;
-                        var totaltravel = XMLHoist.SelectSingleNode(".//totaltravel").InnerText;
-                        var landingsystemid = XMLHoist.SelectSingleNode(".//landingsystemid").InnerText;
-                        var frontfirstserved = XMLHoist.SelectSingleNode(".//frontfirstserved").InnerText;
-                        var rearfirstserved = XMLHoist.SelectSingleNode(".//rearfirstserved").InnerText;
-                        var frontsecondserved = XMLHoist.SelectSingleNode(".//frontsecondserved").InnerText;
-                        var rearsecondserved = XMLHoist.SelectSingleNode(".//rearsecondserved").InnerText;
-                        var frontthirdserved = XMLHoist.SelectSingleNode(".//frontthirdserved").InnerText;
-                        var rearthirdserved = XMLHoist.SelectSingleNode(".//rearthirdserved").InnerText;
-                        var frontfourthserved = XMLHoist.SelectSingleNode(".//frontfourthserved").InnerText;
-                        var rearfourthserved = XMLHoist.SelectSingleNode(".//rearfourthserved").InnerText;
-                        var frontfifthserved = XMLHoist.SelectSingleNode(".//frontfifthserved").InnerText;
-                        var rearfifthserved = XMLHoist.SelectSingleNode(".//rearfifthserved").InnerText;
-                        var frontsexthserved = XMLHoist.SelectSingleNode(".//frontsexthserved").InnerText;
-                        var rearsexthserved = XMLHoist.SelectSingleNode(".//rearsexthserved").InnerText;
-                        var frontseventhserved = XMLHoist.SelectSingleNode(".//frontseventhserved").InnerText;
-                        var rearseventhserved = XMLHoist.SelectSingleNode(".//rearseventhserved").InnerText;
-                        var fronteightserved = XMLHoist.SelectSingleNode(".//fronteightserved").InnerText;
-                        var reareightserved = XMLHoist.SelectSingleNode(".//reareightserved").InnerText;
-                        var frontninthserved = XMLHoist.SelectSingleNode(".//frontninthserved").InnerText;
-                        var rearninthserved = XMLHoist.SelectSingleNode(".//rearninthserved").InnerText;
-                        var fronttenthserved = XMLHoist.SelectSingleNode(".//fronttenthserved").InnerText;
-                        var reartenthserved = XMLHoist.SelectSingleNode(".//reartenthserved").InnerText;
-                        var fronteleventhserved = XMLHoist.SelectSingleNode(".//fronteleventhserved").InnerText;
-                        var reareleventhserved = XMLHoist.SelectSingleNode(".//reareleventhserved").InnerText;
-                        var fronttwelvethserved = XMLHoist.SelectSingleNode(".//fronttwelvethserved").InnerText;
-                        var reartwelvethserved = XMLHoist.SelectSingleNode(".//reartwelvethserved").InnerText;
-                        var frontthirteenthserved = XMLHoist.SelectSingleNode(".//frontthirteenthserved").InnerText;
-                        var rearthirteenthserved = XMLHoist.SelectSingleNode(".//rearthirteenthserved").InnerText;
-                        var frontfourteenthserved = XMLHoist.SelectSingleNode(".//frontfourteenthserved").InnerText;
-                        var rearfourteenthserved = XMLHoist.SelectSingleNode(".//rearfourteenthserved").InnerText;
-                        var frontfifteenthserved = XMLHoist.SelectSingleNode(".//frontfifteenthserved").InnerText;
-                        var rearfifteenthserved = XMLHoist.SelectSingleNode(".//rearfifteenthserved").InnerText;
-                        var frontsixteenthserved = XMLHoist.SelectSingleNode(".//frontsixteenthserved").InnerText;
-                        var rearsixteenthserved = XMLHoist.SelectSingleNode(".//rearsixteenthserved").InnerText;
-
-                        context.HoistWayDatas.Add(new HoistWayData
-                        {
-                            HoistWayDataID = Int32.Parse(idHoist),
-                            JobID = Int32.Parse(jobid),
-                            HoistWaysNumber = Int32.Parse(hoistwaysnumber),
-                            MachineRooms = Int32.Parse(machinerooms),
-                            Capacity = Int32.Parse(capacity),
-                            UpSpeed = Int32.Parse(upspeed),
-                            DownSpeed = Int32.Parse(downspeed),
-                            TotalTravel = Int32.Parse(totaltravel),
-                            LandingSystemID = Int32.Parse(landingsystemid),
-                            FrontFirstServed = Boolean.Parse(frontfirstserved),
-                            RearFirstServed = Boolean.Parse(rearfirstserved),
-                            FrontSecondServed = Boolean.Parse(frontsecondserved),
-                            RearSecondServed = Boolean.Parse(rearsecondserved),
-                            FrontThirdServed = Boolean.Parse(frontthirdserved),
-                            RearThirdServed = Boolean.Parse(rearthirdserved),
-                            FrontFourthServed = Boolean.Parse(frontfourthserved),
-                            RearFourthServed = Boolean.Parse(rearfourthserved),
-                            FrontFifthServed = Boolean.Parse(frontfifthserved),
-                            RearFifthServed = Boolean.Parse(rearfifthserved),
-                            FrontSexthServed = Boolean.Parse(frontsexthserved),
-                            RearSexthServed = Boolean.Parse(rearsexthserved),
-                            FrontSeventhServed = Boolean.Parse(frontseventhserved),
-                            RearSeventhServed = Boolean.Parse(rearseventhserved),
-                            FrontEightServed = Boolean.Parse(fronteightserved),
-                            RearEightServed = Boolean.Parse(reareightserved),
-                            FrontNinthServed = Boolean.Parse(frontninthserved),
-                            RearNinthServed = Boolean.Parse(rearninthserved),
-                            FrontTenthServed = Boolean.Parse(fronttenthserved),
-                            RearTenthServed = Boolean.Parse(reartenthserved),
-                            FrontEleventhServed = Boolean.Parse(fronteleventhserved),
-                            RearEleventhServed = Boolean.Parse(reareleventhserved),
-                            FrontTwelvethServed = Boolean.Parse(fronttwelvethserved),
-                            RearTwelvethServed = Boolean.Parse(reartwelvethserved),
-                            FrontThirteenthServed = Boolean.Parse(frontthirteenthserved),
-                            RearThirteenthServed = Boolean.Parse(rearthirteenthserved),
-                            FrontFourteenthServed = Boolean.Parse(frontfourteenthserved),
-                            RearFourteenthServed = Boolean.Parse(rearfourteenthserved),
-                            FrontFifteenthServed = Boolean.Parse(frontfifteenthserved),
-                            RearFifteenthServed = Boolean.Parse(rearfifteenthserved),
-                            FrontSixteenthServed = Boolean.Parse(frontsixteenthserved),
-                            RearSixteenthServed = Boolean.Parse(rearsixteenthserved),
-                        });
-                        context.Database.OpenConnection();
-                        try
-                        {
-                            context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.HoistWayDatas ON");
-                            context.SaveChanges();
-                            context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.HoistWayDatas OFF");
-                        }
-                        finally
-                        {
-                            context.Database.CloseConnection();
-                        }
-                    }
-                    else if (int.Parse(jobtypeid) == 1 || int.Parse(jobtypeid) == 5)
-                    {
-                        var xmlElement = node.SelectSingleNode(".//element");
-                        var idElm = xmlElement.SelectSingleNode(".//id").InnerText;
-                        var jobid = xmlElement.SelectSingleNode(".//jobid").InnerText;
-
-                        var dooroperatorid = xmlElement.SelectSingleNode(".//dooroperatorid").InnerText;
-                        var capacity = xmlElement.SelectSingleNode(".//capacity").InnerText;
-                        var speed = xmlElement.SelectSingleNode(".//speed").InnerText;
-                        var voltage = xmlElement.SelectSingleNode(".//voltage").InnerText;
-                        var phase = xmlElement.SelectSingleNode(".//phase").InnerText;
-                        var frequency = xmlElement.SelectSingleNode(".//frequency").InnerText;
-
-
-                        var doorgate = xmlElement.SelectSingleNode(".//doorgate").InnerText;
-                        var ina = xmlElement.SelectSingleNode(".//ina").InnerText;
-                        var loadweigher = xmlElement.SelectSingleNode(".//loadweigher").InnerText;
-
-
-                        var incp = xmlElement.SelectSingleNode(".//incp").InnerText;
-                        var carkey = xmlElement.SelectSingleNode(".//carkey").InnerText;
-                        var carcardreader = xmlElement.SelectSingleNode(".//carcardreader").InnerText;
-                        var cro = xmlElement.SelectSingleNode(".//cro").InnerText;
-                        var hallkey = xmlElement.SelectSingleNode(".//hallkey").InnerText;
-                        var hallcardreader = xmlElement.SelectSingleNode(".//hallcardreader").InnerText;
-                        var hcro = xmlElement.SelectSingleNode(".//hcro").InnerText;
-                        var callenable = xmlElement.SelectSingleNode(".//callenable").InnerText;
-                        var haps = xmlElement.SelectSingleNode(".//haps").InnerText;
-                        var ep = xmlElement.SelectSingleNode(".//ep").InnerText;
-                        var emt = xmlElement.SelectSingleNode(".//emt").InnerText;
-                        var pss = xmlElement.SelectSingleNode(".//pss").InnerText;
-                        var ptfld = xmlElement.SelectSingleNode(".//ptfld").InnerText;
-                        var vci = xmlElement.SelectSingleNode(".//vci").InnerText;
-                        var creg = xmlElement.SelectSingleNode(".//creg").InnerText;
-                        var egress = xmlElement.SelectSingleNode(".//egress").InnerText;
-                        var phecutout = xmlElement.SelectSingleNode(".//phecutout").InnerText;
-                        var ctinspst = xmlElement.SelectSingleNode(".//ctinspst").InnerText;
-                        var traveler = xmlElement.SelectSingleNode(".//traveler").InnerText;
-                        var los = xmlElement.SelectSingleNode(".//los").InnerText;
-                        var pfge = xmlElement.SelectSingleNode(".//pfge").InnerText;
-                        var fron2 = xmlElement.SelectSingleNode(".//fron2").InnerText;
-                        var ctl = xmlElement.SelectSingleNode(".//ctl").InnerText;
-                        var csd = xmlElement.SelectSingleNode(".//csd").InnerText;
-                        var ctf = xmlElement.SelectSingleNode(".//ctf").InnerText;
-                        var eq = xmlElement.SelectSingleNode(".//eq").InnerText;
-                        var lj = xmlElement.SelectSingleNode(".//lj").InnerText;
-                        var dhld = xmlElement.SelectSingleNode(".//dhld").InnerText;
-                        context.Elements.Add(new Element
-                        {
-                            ElementID = Int32.Parse(idElm),
-                            JobID = Int32.Parse(jobid),
-
-                            DoorOperatorID = Int32.Parse(dooroperatorid),
-                            Capacity = Int32.Parse(capacity),
-                            Speed = Int32.Parse(speed),
-                            Voltage = Int32.Parse(voltage),
-                            Phase = Int32.Parse(phase),
-                            Frequency = Int32.Parse(frequency),
-
-                            DoorGate = doorgate,
-                            INA = ina,
-                            LoadWeigher = loadweigher,
-
-                            INCP = Boolean.Parse(incp),
-                            CarKey = Boolean.Parse(carkey),
-                            CarCardReader = Boolean.Parse(carcardreader),
-                            CRO = Boolean.Parse(cro),
-                            HallKey = Boolean.Parse(hallkey),
-                            HallCardReader = Boolean.Parse(hallcardreader),
-                            HCRO = Boolean.Parse(hcro),
-                            CallEnable = Boolean.Parse(callenable),
-                            HAPS = Boolean.Parse(haps),
-                            EP = Boolean.Parse(ep),
-                            EMT = Boolean.Parse(emt),
-                            PSS = Boolean.Parse(pss),
-                            PTFLD = Boolean.Parse(ptfld),
-                            VCI = Boolean.Parse(vci),
-                            CReg = Boolean.Parse(creg),
-                            Egress = Boolean.Parse(egress),
-                            PHECutOut = Boolean.Parse(phecutout),
-                            CTINSPST = Boolean.Parse(ctinspst),
-                            Traveler = Boolean.Parse(traveler),
-                            LOS = Boolean.Parse(los),
-                            PFGE = Boolean.Parse(pfge),
-                            FRON2 = Boolean.Parse(fron2),
-                            CTL = Boolean.Parse(ctl),
-                            CSD = Boolean.Parse(csd),
-                            CTF = Boolean.Parse(ctf),
-                            EQ = Boolean.Parse(eq),
-                            LJ = Boolean.Parse(lj),
-                            DHLD = Boolean.Parse(dhld),
-                            LandingSystemID = 5,
-
-                        });
-                        context.Database.OpenConnection();
-                        try
-                        {
-                            context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.Elements ON");
-                            context.SaveChanges();
-                            context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.Elements OFF");
-                        }
-                        finally
-                        {
-                            context.Database.CloseConnection();
-                        }
-
-                        if (int.Parse(jobtypeid) == 1)
-                        {
-                            var xmlElementHydro = node.SelectSingleNode(".//elementhydro");
-                            var idElmh = xmlElementHydro.SelectSingleNode(".//id").InnerText;
-
-                            var starter = xmlElementHydro.SelectSingleNode(".//starter").InnerText;
-                            var hp = xmlElementHydro.SelectSingleNode(".//hp").InnerText;
-                            var fla = xmlElementHydro.SelectSingleNode(".//fla").InnerText;
-                            var sph = xmlElementHydro.SelectSingleNode(".//sph").InnerText;
-                            var valvebrand = xmlElementHydro.SelectSingleNode(".//valvebrand").InnerText;
-                            context.ElementHydros.Add(new ElementHydro
+                            var XMLHydro = node.SelectSingleNode(".//hydrospecific");
+                            var idHidro = XMLHydro.SelectSingleNode(".//id").InnerText;
+                            var starter = XMLHydro.SelectSingleNode(".//starter").InnerText;
+                            var hp = XMLHydro.SelectSingleNode(".//hp").InnerText;
+                            var fla = XMLHydro.SelectSingleNode(".//fla").InnerText;
+                            var sph = XMLHydro.SelectSingleNode(".//sph").InnerText;
+                            var motorsnum = XMLHydro.SelectSingleNode(".//motorsnum").InnerText;
+                            var motorsdisconnect = XMLHydro.SelectSingleNode(".//motorsdisconnect").InnerText;
+                            var valvebrand = XMLHydro.SelectSingleNode(".//valvebrand").InnerText;
+                            var valvecoils = XMLHydro.SelectSingleNode(".//valvecoils").InnerText;
+                            var valvenum = XMLHydro.SelectSingleNode(".//valvenum").InnerText;
+                            var valvevoltage = XMLHydro.SelectSingleNode(".//valvevoltage").InnerText;
+                            var batterybrand = XMLHydro.SelectSingleNode(".//batterybrand").InnerText;
+                            var battery = XMLHydro.SelectSingleNode(".//battery").InnerText;
+                            var lifejacket = XMLHydro.SelectSingleNode(".//lifejacket").InnerText;
+                            var los = XMLHydro.SelectSingleNode(".//los").InnerText;
+                            var oilcool = XMLHydro.SelectSingleNode(".//oilcool").InnerText;
+                            var oiltank = XMLHydro.SelectSingleNode(".//oiltank").InnerText;
+                            var pss = XMLHydro.SelectSingleNode(".//pss").InnerText;
+                            var resync = XMLHydro.SelectSingleNode(".//resync").InnerText;
+                            var vci = XMLHydro.SelectSingleNode(".//vci").InnerText;
+                            context.HydroSpecifics.Add(new HydroSpecific
                             {
-                                ElementHydroID = Int32.Parse(idElmh),
+                                HydroSpecificID = Int32.Parse(idHidro),
                                 JobID = Int32.Parse(jobid),
-
                                 Starter = starter,
-                                HP = float.Parse(hp),
+                                HP = Int32.Parse(hp),
                                 FLA = float.Parse(fla),
                                 SPH = Int32.Parse(sph),
+                                MotorsNum = Int32.Parse(motorsnum),
+                                MotorsDisconnect = Int32.Parse(motorsdisconnect),
                                 ValveBrand = valvebrand,
+                                ValveCoils = Int32.Parse(valvecoils),
+                                ValveNum = Int32.Parse(valvenum),
+                                ValveVoltage = Int32.Parse(valvevoltage),
+                                BatteryBrand = batterybrand == "Nulo" ? null : batterybrand,
+                                Battery = Boolean.Parse(battery),
+                                LifeJacket = Boolean.Parse(lifejacket),
+                                LOS = Boolean.Parse(los),
+                                OilCool = Boolean.Parse(oilcool),
+                                OilTank = Boolean.Parse(oiltank),
+                                PSS = Boolean.Parse(pss),
+                                Resync = Boolean.Parse(resync),
+                                VCI = Boolean.Parse(vci)
+                            });
+                            context.Database.OpenConnection();
+                            try
+                            {
+                                context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.HydroSpecifics ON");
+                                context.SaveChanges();
+                                context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.HydroSpecifics OFF");
+                            }
+                            finally
+                            {
+                                context.Database.CloseConnection();
+                            }
+
+                            var XMLGeneric = node.SelectSingleNode(".//genericfeatures");
+                            var idGeneric = XMLGeneric.SelectSingleNode(".//id").InnerText;
+                            var fron2 = XMLGeneric.SelectSingleNode(".//fron2").InnerText;
+                            var attendant = XMLGeneric.SelectSingleNode(".//attendant").InnerText;
+                            var cartolobby = XMLGeneric.SelectSingleNode(".//cartolobby").InnerText;
+                            var eq = XMLGeneric.SelectSingleNode(".//eq").InnerText;
+                            var emt = XMLGeneric.SelectSingleNode(".//emt").InnerText;
+                            var ep = XMLGeneric.SelectSingleNode(".//ep").InnerText;
+                            var epvoltage = XMLGeneric.SelectSingleNode(".//epvoltage").InnerText;
+                            var epothercars = XMLGeneric.SelectSingleNode(".//epothercars").InnerText;
+                            var epcarsnumber = XMLGeneric.SelectSingleNode(".//epcarsnumber").InnerText;
+                            var epcontact = XMLGeneric.SelectSingleNode(".//epcontact").InnerText;
+                            var pti = XMLGeneric.SelectSingleNode(".//pti").InnerText;
+                            var epselect = XMLGeneric.SelectSingleNode(".//epselect").InnerText;
+                            var flo = XMLGeneric.SelectSingleNode(".//flo").InnerText;
+                            var hosp = XMLGeneric.SelectSingleNode(".//hosp").InnerText;
+                            var pit = XMLGeneric.SelectSingleNode(".//pit").InnerText;
+                            var ina = XMLGeneric.SelectSingleNode(".//ina").InnerText;
+                            var topaccess = XMLGeneric.SelectSingleNode(".//topaccess").InnerText;
+                            var topaccesslocation = XMLGeneric.SelectSingleNode(".//topaccesslocation").InnerText;
+                            var bottomaccess = XMLGeneric.SelectSingleNode(".//bottomaccess").InnerText;
+                            var bottomaccesslocation = XMLGeneric.SelectSingleNode(".//bottomaccesslocation").InnerText;
+                            var incp = XMLGeneric.SelectSingleNode(".//incp").InnerText;
+                            var incpbuttons = XMLGeneric.SelectSingleNode(".//incpbuttons").InnerText;
+                            var switchstyle = XMLGeneric.SelectSingleNode(".//switchstyle").InnerText;
+                            var loadweigher = XMLGeneric.SelectSingleNode(".//loadweigher").InnerText;
+                            var ctinspst = XMLGeneric.SelectSingleNode(".//ctinspst").InnerText;
+                            var roped = XMLGeneric.SelectSingleNode(".//roped").InnerText;
+                            var govmodel = XMLGeneric.SelectSingleNode(".//govmodel").InnerText;
+                            var monitoring = XMLGeneric.SelectSingleNode(".//monitoring").InnerText;
+                            var callenable = XMLGeneric.SelectSingleNode(".//callenable").InnerText;
+                            var carcallread = XMLGeneric.SelectSingleNode(".//carcallread").InnerText;
+                            var hallcallread = XMLGeneric.SelectSingleNode(".//hallcallread").InnerText;
+                            var carkey = XMLGeneric.SelectSingleNode(".//carkey").InnerText;
+                            var hallkey = XMLGeneric.SelectSingleNode(".//hallkey").InnerText;
+                            var cro = XMLGeneric.SelectSingleNode(".//cro").InnerText;
+                            var hcro = XMLGeneric.SelectSingleNode(".//hcro").InnerText;
+                            var bsi = XMLGeneric.SelectSingleNode(".//bsi").InnerText;
+                            var carcallcodesecurity = XMLGeneric.SelectSingleNode(".//carcallcodesecurity").InnerText;
+                            var specialinstructions = XMLGeneric.SelectSingleNode(".//specialinstructions").InnerText;
+                            context.GenericFeaturesList.Add(new GenericFeatures
+                            {
+                                GenericFeaturesID = Int32.Parse(idGeneric),
+                                JobID = Int32.Parse(jobid),
+                                FRON2 = Boolean.Parse(fron2),
+                                Attendant = Boolean.Parse(attendant),
+                                CarToLobby = Boolean.Parse(cartolobby),
+                                EQ = Boolean.Parse(eq),
+                                EMT = Boolean.Parse(emt),
+                                EP = Boolean.Parse(ep),
+                                EPVoltage = Boolean.Parse(epvoltage),
+                                EPOtherCars = Boolean.Parse(epothercars),
+                                EPCarsNumber = epcarsnumber == "Nulo" ? null : epcarsnumber,
+                                EPContact = epcontact == "Nulo" ? null : epcontact,
+                                PTI = Boolean.Parse(pti),
+                                EPSelect = Boolean.Parse(epselect),
+                                FLO = Boolean.Parse(flo),
+                                Hosp = Boolean.Parse(hosp),
+                                Pit = Boolean.Parse(pit),
+                                INA = Boolean.Parse(ina),
+                                TopAccess = Boolean.Parse(topaccess),
+                                TopAccessLocation = topaccesslocation,
+                                BottomAccess = Boolean.Parse(bottomaccess),
+                                BottomAccessLocation = bottomaccesslocation == "Nulo" ? null : bottomaccesslocation,
+                                INCP = Boolean.Parse(incp),
+                                INCPButtons = incpbuttons == "Nulo" ? null : incpbuttons,
+                                SwitchStyle = switchstyle == "Nulo" ? null : switchstyle,
+                                LoadWeigher = Boolean.Parse(loadweigher),
+                                CTINSPST = Boolean.Parse(ctinspst),
+                                Roped = Boolean.Parse(roped),
+                                GovModel = govmodel == "Nulo" ? null : govmodel,
+                                Monitoring = monitoring == "Nulo" ? null : monitoring,
+                                CallEnable = Boolean.Parse(callenable),
+                                CarCallRead = Boolean.Parse(carcallread),
+                                HallCallRead = Boolean.Parse(hallcallread),
+                                CarKey = Boolean.Parse(carkey),
+                                HallKey = Boolean.Parse(hallkey),
+                                CRO = Boolean.Parse(cro),
+                                HCRO = Boolean.Parse(hcro),
+                                BSI = Boolean.Parse(bsi),
+                                CarCallCodeSecurity = carcallcodesecurity == "Nulo" ? null : carcallcodesecurity,
+                                SpecialInstructions = specialinstructions == "Nulo" ? null : specialinstructions
+                            });
+                            context.Database.OpenConnection();
+                            try
+                            {
+                                context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.GenericFeaturesList ON");
+                                context.SaveChanges();
+                                context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.GenericFeaturesList OFF");
+                            }
+                            finally
+                            {
+                                context.Database.CloseConnection();
+                            }
+
+                            var XMLIndicator = node.SelectSingleNode(".//indicator");
+                            var idIndicator = XMLIndicator.SelectSingleNode(".//id").InnerText;
+                            var carcallsvoltage = XMLIndicator.SelectSingleNode(".//carcallsvoltage").InnerText;
+                            var carcallsvoltagetype = XMLIndicator.SelectSingleNode(".//carcallsvoltagetype").InnerText;
+                            var carcallstype = XMLIndicator.SelectSingleNode(".//carcallstype").InnerText;
+                            var hallcallsvoltage = XMLIndicator.SelectSingleNode(".//hallcallsvoltage").InnerText;
+                            var hallcallsvoltagetype = XMLIndicator.SelectSingleNode(".//hallcallsvoltagetype").InnerText;
+                            var hallcallstype = XMLIndicator.SelectSingleNode(".//hallcallstype").InnerText;
+                            var carpi = XMLIndicator.SelectSingleNode(".//carpi").InnerText;
+                            var carpitype = XMLIndicator.SelectSingleNode(".//carpitype").InnerText;
+                            var carpidiscretetype = XMLIndicator.SelectSingleNode(".//carpidiscretetype").InnerText;
+                            var hallpi = XMLIndicator.SelectSingleNode(".//hallpi").InnerText;
+                            var hallpitype = XMLIndicator.SelectSingleNode(".//hallpitype").InnerText;
+                            var hallpidiscretetype = XMLIndicator.SelectSingleNode(".//hallpidiscretetype").InnerText;
+                            var voiceannunciationpi = XMLIndicator.SelectSingleNode(".//voiceannunciationpi").InnerText;
+                            var voiceannunciationpitype = XMLIndicator.SelectSingleNode(".//voiceannunciationpitype").InnerText;
+                            var carlanterns = XMLIndicator.SelectSingleNode(".//carlanterns").InnerText;
+                            var carlanternsstyle = XMLIndicator.SelectSingleNode(".//carlanternsstyle").InnerText;
+                            var carlanternstype = XMLIndicator.SelectSingleNode(".//carlanternstype").InnerText;
+                            var halllanterns = XMLIndicator.SelectSingleNode(".//halllanterns").InnerText;
+                            var hallpiAll = XMLIndicator.SelectSingleNode(".//hallpiall").InnerText;
+                            var halllanternsstyle = XMLIndicator.SelectSingleNode(".//halllanternsstyle").InnerText;
+                            var halllanternstype = XMLIndicator.SelectSingleNode(".//halllanternstype").InnerText;
+                            var passingfloor = XMLIndicator.SelectSingleNode(".//passingfloor").InnerText;
+                            var passingfloortype = XMLIndicator.SelectSingleNode(".//passingfloortype").InnerText;
+                            var passingfloordiscretetype = XMLIndicator.SelectSingleNode(".//passingfloordiscretetype").InnerText;
+                            var passingfloorenable = XMLIndicator.SelectSingleNode(".//passingfloorenable").InnerText;
+                            var indicatorsvoltage = XMLIndicator.SelectSingleNode(".//indicatorsvoltage").InnerText;
+                            var indicatorsvoltagetype = XMLIndicator.SelectSingleNode(".//indicatorsvoltagetype").InnerText;
+
+                            context.Indicators.Add(new Indicator
+                            {
+                                IndicatorID = Int32.Parse(idIndicator),
+                                JobID = Int32.Parse(jobid),
+                                CarCallsVoltage = carcallsvoltage,
+                                CarCallsVoltageType = carcallsvoltagetype,
+                                CarCallsType = carcallstype,
+                                HallCallsVoltage = hallcallsvoltage,
+                                HallCallsVoltageType = hallcallsvoltagetype,
+                                HallCallsType = hallcallstype,
+                                CarPI = Boolean.Parse(carpi),
+                                CarPIType = carpitype == "Nulo" ? null : carpitype,
+                                CarPIDiscreteType = carpidiscretetype == "Nulo" ? null : carpidiscretetype,
+                                HallPI = Boolean.Parse(hallpi),
+                                HallPIAll = Boolean.Parse(hallpiAll),
+                                HallPIType = hallpitype == "Nulo" ? "" : hallpitype,
+                                HallPIDiscreteType = hallpidiscretetype == "Nulo" ? null : hallpidiscretetype,
+                                VoiceAnnunciationPI = Boolean.Parse(voiceannunciationpi),
+                                VoiceAnnunciationPIType = voiceannunciationpi == "Nulo" ? null : voiceannunciationpitype,
+                                CarLanterns = Boolean.Parse(carlanterns),
+                                CarLanternsStyle = carlanternsstyle == "Nulo" ? null : carlanternsstyle,
+                                CarLanternsType = carlanternstype == "Nulo" ? null : carlanternstype,
+                                HallLanterns = Boolean.Parse(halllanterns),
+                                HallLanternsStyle = halllanternsstyle == "Nulo" ? null : halllanternsstyle,
+                                HallLanternsType = halllanternstype == "Nulo" ? null : halllanternstype,
+                                PassingFloor = Boolean.Parse(passingfloor),
+                                PassingFloorType = passingfloortype == "Nulo" ? null : passingfloortype,
+                                PassingFloorDiscreteType = passingfloordiscretetype == "Nulo" ? null : passingfloordiscretetype,
+                                PassingFloorEnable = Boolean.Parse(passingfloorenable),
+                                IndicatorsVoltage = Int32.Parse(indicatorsvoltage),
+                                IndicatorsVoltageType = indicatorsvoltagetype == "Nulo" ? null : indicatorsvoltagetype
 
                             });
                             context.Database.OpenConnection();
                             try
                             {
-                                context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.ElementHydros ON");
+                                context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.Indicators ON");
                                 context.SaveChanges();
-                                context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.ElementHydros OFF");
+                                context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.Indicators OFF");
+                            }
+                            finally
+                            {
+                                context.Database.CloseConnection();
+                            }
+
+
+                            var XMLHoist = node.SelectSingleNode(".//hoistwaydata");
+                            var idHoist = XMLHoist.SelectSingleNode(".//id").InnerText;
+                            var hoistwaysnumber = XMLHoist.SelectSingleNode(".//hoistwaysnumber").InnerText;
+                            var machinerooms = XMLHoist.SelectSingleNode(".//machinerooms").InnerText;
+                            var capacity = XMLHoist.SelectSingleNode(".//capacity").InnerText;
+                            var upspeed = XMLHoist.SelectSingleNode(".//upspeed").InnerText;
+                            var downspeed = XMLHoist.SelectSingleNode(".//downspeed").InnerText;
+                            var totaltravel = XMLHoist.SelectSingleNode(".//totaltravel").InnerText;
+                            var landingsystemid = XMLHoist.SelectSingleNode(".//landingsystemid").InnerText;
+                            var frontfirstserved = XMLHoist.SelectSingleNode(".//frontfirstserved").InnerText;
+                            var rearfirstserved = XMLHoist.SelectSingleNode(".//rearfirstserved").InnerText;
+                            var frontsecondserved = XMLHoist.SelectSingleNode(".//frontsecondserved").InnerText;
+                            var rearsecondserved = XMLHoist.SelectSingleNode(".//rearsecondserved").InnerText;
+                            var frontthirdserved = XMLHoist.SelectSingleNode(".//frontthirdserved").InnerText;
+                            var rearthirdserved = XMLHoist.SelectSingleNode(".//rearthirdserved").InnerText;
+                            var frontfourthserved = XMLHoist.SelectSingleNode(".//frontfourthserved").InnerText;
+                            var rearfourthserved = XMLHoist.SelectSingleNode(".//rearfourthserved").InnerText;
+                            var frontfifthserved = XMLHoist.SelectSingleNode(".//frontfifthserved").InnerText;
+                            var rearfifthserved = XMLHoist.SelectSingleNode(".//rearfifthserved").InnerText;
+                            var frontsexthserved = XMLHoist.SelectSingleNode(".//frontsexthserved").InnerText;
+                            var rearsexthserved = XMLHoist.SelectSingleNode(".//rearsexthserved").InnerText;
+                            var frontseventhserved = XMLHoist.SelectSingleNode(".//frontseventhserved").InnerText;
+                            var rearseventhserved = XMLHoist.SelectSingleNode(".//rearseventhserved").InnerText;
+                            var fronteightserved = XMLHoist.SelectSingleNode(".//fronteightserved").InnerText;
+                            var reareightserved = XMLHoist.SelectSingleNode(".//reareightserved").InnerText;
+                            var frontninthserved = XMLHoist.SelectSingleNode(".//frontninthserved").InnerText;
+                            var rearninthserved = XMLHoist.SelectSingleNode(".//rearninthserved").InnerText;
+                            var fronttenthserved = XMLHoist.SelectSingleNode(".//fronttenthserved").InnerText;
+                            var reartenthserved = XMLHoist.SelectSingleNode(".//reartenthserved").InnerText;
+                            var fronteleventhserved = XMLHoist.SelectSingleNode(".//fronteleventhserved").InnerText;
+                            var reareleventhserved = XMLHoist.SelectSingleNode(".//reareleventhserved").InnerText;
+                            var fronttwelvethserved = XMLHoist.SelectSingleNode(".//fronttwelvethserved").InnerText;
+                            var reartwelvethserved = XMLHoist.SelectSingleNode(".//reartwelvethserved").InnerText;
+                            var frontthirteenthserved = XMLHoist.SelectSingleNode(".//frontthirteenthserved").InnerText;
+                            var rearthirteenthserved = XMLHoist.SelectSingleNode(".//rearthirteenthserved").InnerText;
+                            var frontfourteenthserved = XMLHoist.SelectSingleNode(".//frontfourteenthserved").InnerText;
+                            var rearfourteenthserved = XMLHoist.SelectSingleNode(".//rearfourteenthserved").InnerText;
+                            var frontfifteenthserved = XMLHoist.SelectSingleNode(".//frontfifteenthserved").InnerText;
+                            var rearfifteenthserved = XMLHoist.SelectSingleNode(".//rearfifteenthserved").InnerText;
+                            var frontsixteenthserved = XMLHoist.SelectSingleNode(".//frontsixteenthserved").InnerText;
+                            var rearsixteenthserved = XMLHoist.SelectSingleNode(".//rearsixteenthserved").InnerText;
+
+                            context.HoistWayDatas.Add(new HoistWayData
+                            {
+                                HoistWayDataID = Int32.Parse(idHoist),
+                                JobID = Int32.Parse(jobid),
+                                HoistWaysNumber = Int32.Parse(hoistwaysnumber),
+                                MachineRooms = Int32.Parse(machinerooms),
+                                Capacity = Int32.Parse(capacity),
+                                UpSpeed = Int32.Parse(upspeed),
+                                DownSpeed = Int32.Parse(downspeed),
+                                TotalTravel = Int32.Parse(totaltravel),
+                                LandingSystemID = Int32.Parse(landingsystemid),
+                                FrontFirstServed = Boolean.Parse(frontfirstserved),
+                                RearFirstServed = Boolean.Parse(rearfirstserved),
+                                FrontSecondServed = Boolean.Parse(frontsecondserved),
+                                RearSecondServed = Boolean.Parse(rearsecondserved),
+                                FrontThirdServed = Boolean.Parse(frontthirdserved),
+                                RearThirdServed = Boolean.Parse(rearthirdserved),
+                                FrontFourthServed = Boolean.Parse(frontfourthserved),
+                                RearFourthServed = Boolean.Parse(rearfourthserved),
+                                FrontFifthServed = Boolean.Parse(frontfifthserved),
+                                RearFifthServed = Boolean.Parse(rearfifthserved),
+                                FrontSexthServed = Boolean.Parse(frontsexthserved),
+                                RearSexthServed = Boolean.Parse(rearsexthserved),
+                                FrontSeventhServed = Boolean.Parse(frontseventhserved),
+                                RearSeventhServed = Boolean.Parse(rearseventhserved),
+                                FrontEightServed = Boolean.Parse(fronteightserved),
+                                RearEightServed = Boolean.Parse(reareightserved),
+                                FrontNinthServed = Boolean.Parse(frontninthserved),
+                                RearNinthServed = Boolean.Parse(rearninthserved),
+                                FrontTenthServed = Boolean.Parse(fronttenthserved),
+                                RearTenthServed = Boolean.Parse(reartenthserved),
+                                FrontEleventhServed = Boolean.Parse(fronteleventhserved),
+                                RearEleventhServed = Boolean.Parse(reareleventhserved),
+                                FrontTwelvethServed = Boolean.Parse(fronttwelvethserved),
+                                RearTwelvethServed = Boolean.Parse(reartwelvethserved),
+                                FrontThirteenthServed = Boolean.Parse(frontthirteenthserved),
+                                RearThirteenthServed = Boolean.Parse(rearthirteenthserved),
+                                FrontFourteenthServed = Boolean.Parse(frontfourteenthserved),
+                                RearFourteenthServed = Boolean.Parse(rearfourteenthserved),
+                                FrontFifteenthServed = Boolean.Parse(frontfifteenthserved),
+                                RearFifteenthServed = Boolean.Parse(rearfifteenthserved),
+                                FrontSixteenthServed = Boolean.Parse(frontsixteenthserved),
+                                RearSixteenthServed = Boolean.Parse(rearsixteenthserved),
+                            });
+                            context.Database.OpenConnection();
+                            try
+                            {
+                                context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.HoistWayDatas ON");
+                                context.SaveChanges();
+                                context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.HoistWayDatas OFF");
                             }
                             finally
                             {
                                 context.Database.CloseConnection();
                             }
                         }
-                        else
+                        else if (int.Parse(jobtypeid) == 1 || int.Parse(jobtypeid) == 5)
                         {
-                            var xmlElementTraction = node.SelectSingleNode(".//elementtraction");
-                            var idElmt = xmlElementTraction.SelectSingleNode(".//id").InnerText;
+                            var xmlElement = node.SelectSingleNode(".//element");
+                            var idElm = xmlElement.SelectSingleNode(".//id").InnerText;
+                            var jobid = xmlElement.SelectSingleNode(".//jobid").InnerText;
 
-                            var machinelocation = xmlElementTraction.SelectSingleNode(".//machinelocation").InnerText;
-                            var vvvf = xmlElementTraction.SelectSingleNode(".//vvvf").InnerText;
-                            var motorbrand = xmlElementTraction.SelectSingleNode(".//motorbrand").InnerText;
-                            var contact = xmlElementTraction.SelectSingleNode(".//contact").InnerText;
-                            var encoder = xmlElementTraction.SelectSingleNode(".//encoder").InnerText;
-                            var iso = xmlElementTraction.SelectSingleNode(".//iso").InnerText;
-                            var hp = xmlElementTraction.SelectSingleNode(".//hp").InnerText;
-                            var fla = xmlElementTraction.SelectSingleNode(".//fla").InnerText;
-                            var pickvoltage = xmlElementTraction.SelectSingleNode(".//pickvoltage").InnerText;
-                            var holdvoltage = xmlElementTraction.SelectSingleNode(".//holdvoltage").InnerText;
-                            var resistance = xmlElementTraction.SelectSingleNode("./resistance").InnerText;
-                            var current = xmlElementTraction.SelectSingleNode(".//current").InnerText;
+                            var dooroperatorid = xmlElement.SelectSingleNode(".//dooroperatorid").InnerText;
+                            var capacity = xmlElement.SelectSingleNode(".//capacity").InnerText;
+                            var speed = xmlElement.SelectSingleNode(".//speed").InnerText;
+                            var voltage = xmlElement.SelectSingleNode(".//voltage").InnerText;
+                            var phase = xmlElement.SelectSingleNode(".//phase").InnerText;
+                            var frequency = xmlElement.SelectSingleNode(".//frequency").InnerText;
 
-                            context.ElementTractions.Add(new ElementTraction
+
+                            var doorgate = xmlElement.SelectSingleNode(".//doorgate").InnerText;
+                            var ina = xmlElement.SelectSingleNode(".//ina").InnerText;
+                            var loadweigher = xmlElement.SelectSingleNode(".//loadweigher").InnerText;
+
+
+                            var incp = xmlElement.SelectSingleNode(".//incp").InnerText;
+                            var carkey = xmlElement.SelectSingleNode(".//carkey").InnerText;
+                            var carcardreader = xmlElement.SelectSingleNode(".//carcardreader").InnerText;
+                            var cro = xmlElement.SelectSingleNode(".//cro").InnerText;
+                            var hallkey = xmlElement.SelectSingleNode(".//hallkey").InnerText;
+                            var hallcardreader = xmlElement.SelectSingleNode(".//hallcardreader").InnerText;
+                            var hcro = xmlElement.SelectSingleNode(".//hcro").InnerText;
+                            var callenable = xmlElement.SelectSingleNode(".//callenable").InnerText;
+                            var haps = xmlElement.SelectSingleNode(".//haps").InnerText;
+                            var ep = xmlElement.SelectSingleNode(".//ep").InnerText;
+                            var emt = xmlElement.SelectSingleNode(".//emt").InnerText;
+                            var pss = xmlElement.SelectSingleNode(".//pss").InnerText;
+                            var ptfld = xmlElement.SelectSingleNode(".//ptfld").InnerText;
+                            var vci = xmlElement.SelectSingleNode(".//vci").InnerText;
+                            var creg = xmlElement.SelectSingleNode(".//creg").InnerText;
+                            var egress = xmlElement.SelectSingleNode(".//egress").InnerText;
+                            var phecutout = xmlElement.SelectSingleNode(".//phecutout").InnerText;
+                            var ctinspst = xmlElement.SelectSingleNode(".//ctinspst").InnerText;
+                            var traveler = xmlElement.SelectSingleNode(".//traveler").InnerText;
+                            var los = xmlElement.SelectSingleNode(".//los").InnerText;
+                            var pfge = xmlElement.SelectSingleNode(".//pfge").InnerText;
+                            var fron2 = xmlElement.SelectSingleNode(".//fron2").InnerText;
+                            var ctl = xmlElement.SelectSingleNode(".//ctl").InnerText;
+                            var csd = xmlElement.SelectSingleNode(".//csd").InnerText;
+                            var ctf = xmlElement.SelectSingleNode(".//ctf").InnerText;
+                            var eq = xmlElement.SelectSingleNode(".//eq").InnerText;
+                            var lj = xmlElement.SelectSingleNode(".//lj").InnerText;
+                            var dhld = xmlElement.SelectSingleNode(".//dhld").InnerText;
+                            context.Elements.Add(new Element
                             {
-                                ElementTractionID = Int32.Parse(idElmt),
+                                ElementID = Int32.Parse(idElm),
                                 JobID = Int32.Parse(jobid),
 
-                                MachineLocation = machinelocation,
-                                VVVF = vvvf,
-                                MotorBrand = motorbrand,
-                                Contact = contact,
-                                HP = float.Parse(hp),
-                                FLA = float.Parse(fla),
-                                PickVoltage = Int32.Parse(pickvoltage),
-                                HoldVoltage = Int32.Parse(holdvoltage),
-                                Resistance = Int32.Parse(resistance),
-                                Current = float.Parse(current),
+                                DoorOperatorID = Int32.Parse(dooroperatorid),
+                                Capacity = Int32.Parse(capacity),
+                                Speed = Int32.Parse(speed),
+                                Voltage = Int32.Parse(voltage),
+                                Phase = Int32.Parse(phase),
+                                Frequency = Int32.Parse(frequency),
 
+                                DoorGate = doorgate,
+                                INA = ina,
+                                LoadWeigher = loadweigher,
 
-                                Encoder = Boolean.Parse(encoder),
-                                ISO = Boolean.Parse(iso),
+                                INCP = Boolean.Parse(incp),
+                                CarKey = Boolean.Parse(carkey),
+                                CarCardReader = Boolean.Parse(carcardreader),
+                                CRO = Boolean.Parse(cro),
+                                HallKey = Boolean.Parse(hallkey),
+                                HallCardReader = Boolean.Parse(hallcardreader),
+                                HCRO = Boolean.Parse(hcro),
+                                CallEnable = Boolean.Parse(callenable),
+                                HAPS = Boolean.Parse(haps),
+                                EP = Boolean.Parse(ep),
+                                EMT = Boolean.Parse(emt),
+                                PSS = Boolean.Parse(pss),
+                                PTFLD = Boolean.Parse(ptfld),
+                                VCI = Boolean.Parse(vci),
+                                CReg = Boolean.Parse(creg),
+                                Egress = Boolean.Parse(egress),
+                                PHECutOut = Boolean.Parse(phecutout),
+                                CTINSPST = Boolean.Parse(ctinspst),
+                                Traveler = Boolean.Parse(traveler),
+                                LOS = Boolean.Parse(los),
+                                PFGE = Boolean.Parse(pfge),
+                                FRON2 = Boolean.Parse(fron2),
+                                CTL = Boolean.Parse(ctl),
+                                CSD = Boolean.Parse(csd),
+                                CTF = Boolean.Parse(ctf),
+                                EQ = Boolean.Parse(eq),
+                                LJ = Boolean.Parse(lj),
+                                DHLD = Boolean.Parse(dhld),
+                                LandingSystemID = 5,
 
                             });
                             context.Database.OpenConnection();
                             try
                             {
-                                context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.ElementTractions ON");
+                                context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.Elements ON");
                                 context.SaveChanges();
-                                context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.ElementTractions OFF");
+                                context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.Elements OFF");
                             }
                             finally
                             {
                                 context.Database.CloseConnection();
+                            }
+
+                            if (int.Parse(jobtypeid) == 1)
+                            {
+                                var xmlElementHydro = node.SelectSingleNode(".//elementhydro");
+                                var idElmh = xmlElementHydro.SelectSingleNode(".//id").InnerText;
+
+                                var starter = xmlElementHydro.SelectSingleNode(".//starter").InnerText;
+                                var hp = xmlElementHydro.SelectSingleNode(".//hp").InnerText;
+                                var fla = xmlElementHydro.SelectSingleNode(".//fla").InnerText;
+                                var sph = xmlElementHydro.SelectSingleNode(".//sph").InnerText;
+                                var valvebrand = xmlElementHydro.SelectSingleNode(".//valvebrand").InnerText;
+                                context.ElementHydros.Add(new ElementHydro
+                                {
+                                    ElementHydroID = Int32.Parse(idElmh),
+                                    JobID = Int32.Parse(jobid),
+
+                                    Starter = starter,
+                                    HP = float.Parse(hp),
+                                    FLA = float.Parse(fla),
+                                    SPH = Int32.Parse(sph),
+                                    ValveBrand = valvebrand,
+
+                                });
+                                context.Database.OpenConnection();
+                                try
+                                {
+                                    context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.ElementHydros ON");
+                                    context.SaveChanges();
+                                    context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.ElementHydros OFF");
+                                }
+                                finally
+                                {
+                                    context.Database.CloseConnection();
+                                }
+                            }
+                            else
+                            {
+                                var xmlElementTraction = node.SelectSingleNode(".//elementtraction");
+                                var idElmt = xmlElementTraction.SelectSingleNode(".//id").InnerText;
+
+                                var machinelocation = xmlElementTraction.SelectSingleNode(".//machinelocation").InnerText;
+                                var vvvf = xmlElementTraction.SelectSingleNode(".//vvvf").InnerText;
+                                var motorbrand = xmlElementTraction.SelectSingleNode(".//motorbrand").InnerText;
+                                var contact = xmlElementTraction.SelectSingleNode(".//contact").InnerText;
+                                var encoder = xmlElementTraction.SelectSingleNode(".//encoder").InnerText;
+                                var iso = xmlElementTraction.SelectSingleNode(".//iso").InnerText;
+                                var hp = xmlElementTraction.SelectSingleNode(".//hp").InnerText;
+                                var fla = xmlElementTraction.SelectSingleNode(".//fla").InnerText;
+                                var pickvoltage = xmlElementTraction.SelectSingleNode(".//pickvoltage").InnerText;
+                                var holdvoltage = xmlElementTraction.SelectSingleNode(".//holdvoltage").InnerText;
+                                var resistance = xmlElementTraction.SelectSingleNode("./resistance").InnerText;
+                                var current = xmlElementTraction.SelectSingleNode(".//current").InnerText;
+
+                                context.ElementTractions.Add(new ElementTraction
+                                {
+                                    ElementTractionID = Int32.Parse(idElmt),
+                                    JobID = Int32.Parse(jobid),
+
+                                    MachineLocation = machinelocation,
+                                    VVVF = vvvf,
+                                    MotorBrand = motorbrand,
+                                    Contact = contact,
+                                    HP = float.Parse(hp),
+                                    FLA = float.Parse(fla),
+                                    PickVoltage = Int32.Parse(pickvoltage),
+                                    HoldVoltage = Int32.Parse(holdvoltage),
+                                    Resistance = Int32.Parse(resistance),
+                                    Current = float.Parse(current),
+
+
+                                    Encoder = Boolean.Parse(encoder),
+                                    ISO = Boolean.Parse(iso),
+
+                                });
+                                context.Database.OpenConnection();
+                                try
+                                {
+                                    context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.ElementTractions ON");
+                                    context.SaveChanges();
+                                    context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.ElementTractions OFF");
+                                }
+                                finally
+                                {
+                                    context.Database.CloseConnection();
+                                }
+                            }
+                        }
+
+
+                        var XMLSpecialF = node.SelectSingleNode(".//specialfeatures");
+                        var XMLFeatures = XMLSpecialF.SelectNodes(".//specialfeature");
+                        if (XMLFeatures != null)
+                        {
+                            foreach (var Feature in XMLFeatures)
+                            {
+                                var idFeature = Feature.SelectSingleNode(".//id").InnerText;
+                                var description = Feature.SelectSingleNode(".//description").InnerText;
+                                context.SpecialFeatures.Add(new SpecialFeatures
+                                {
+                                    SpecialFeaturesID = Int32.Parse(idFeature),
+                                    JobID = Int32.Parse(id),
+                                    Description = description
+
+                                });
+                                context.Database.OpenConnection();
+                                try
+                                {
+                                    context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.SpecialFeatures ON");
+                                    context.SaveChanges();
+                                    context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.SpecialFeatures OFF");
+                                }
+                                finally
+                                {
+                                    context.Database.CloseConnection();
+                                }
                             }
                         }
                     }
-
-
-                    var XMLSpecialF = node.SelectSingleNode(".//specialfeatures");
-                    var XMLFeatures = XMLSpecialF.SelectNodes(".//specialfeature");
-                    if (XMLFeatures != null)
+                    catch
                     {
-                        foreach (var Feature in XMLFeatures)
-                        {
-                            var idFeature = Feature.SelectSingleNode(".//id").InnerText;
-                            var description = Feature.SelectSingleNode(".//description").InnerText;
-                            context.SpecialFeatures.Add(new SpecialFeatures
-                            {
-                                SpecialFeaturesID = Int32.Parse(idFeature),
-                                JobID = Int32.Parse(id),
-                                Description = description
-
-                            });
-                            context.Database.OpenConnection();
-                            try
-                            {
-                                context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.SpecialFeatures ON");
-                                context.SaveChanges();
-                                context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.SpecialFeatures OFF");
-                            }
-                            finally
-                            {
-                                context.Database.CloseConnection();
-                            }
-                        }
+                        continue;
                     }
                 }
 
