@@ -3147,7 +3147,11 @@ namespace ProdFloor.Controllers
             xws.OmitXmlDeclaration = true;
             xws.Indent = true;
 
-            List<Job> jobs = repository.Jobs.Where(m => m.Contractor != "Fake").ToList();
+            List<Job> jobs = repository.Jobs.Where(m => m.Status != "Incomplete")
+                                            .Include(m => m._SpecialFeatureslist)
+                                            .ToList();
+
+            jobs = repository.Jobs.Where(m => m._SpecialFeatureslist.Count > 0).ToList();
 
             using (XmlWriter xw = XmlWriter.Create(ms, xws))
             {
@@ -3670,7 +3674,10 @@ namespace ProdFloor.Controllers
             xws.Indent = true;
             string fileName = "Jobs-" + DateTime.Now.ToString("dd-MM-yyyy") + ".xml";
 
-            List<Job> jobs = repository.Jobs.Where(m => m.Contractor != "Fake").ToList();
+            List<Job> jobs = repository.Jobs.Where(m => m.Status != "Incomplete" 
+                             && m._SpecialFeatureslist.Any() ).ToList();
+
+
             var path = $@"{_env.ContentRootPath}\wwwroot\DailyJobs\{fileName}";
             using (XmlWriter xw = XmlWriter.Create(path, xws))
             {
@@ -4239,6 +4246,8 @@ namespace ProdFloor.Controllers
                     {
                         context.Database.CloseConnection();
                     }
+
+
 
                     var XMPOOOO = node.SelectSingleNode(".//pos");
                     var XMLPOs = XMPOOOO.SelectNodes(".//po");

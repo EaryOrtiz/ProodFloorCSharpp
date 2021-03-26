@@ -541,7 +541,13 @@ namespace ProdFloor.Controllers
             xws.OmitXmlDeclaration = true;
             xws.Indent = true;
 
-            List<Stop> stops = testingRepo.Stops.Where(m => m.Reason5ID != 0).ToList();
+            IQueryable<TestJob> testjobsCompleted = testingRepo.TestJobs.Where(m => m.Status == "Completed");
+
+            List<Stop> stops = testingRepo.Stops.Where(m => testjobsCompleted.Any(n => n.TestJobID == m.TestJobID))
+                                                 .Where(m => m.Reason5ID != 0)
+                                                 .ToList();
+
+
 
             using (XmlWriter xw = XmlWriter.Create(ms, xws))
             {
