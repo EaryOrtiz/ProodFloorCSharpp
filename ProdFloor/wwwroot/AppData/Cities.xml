@@ -33,7 +33,7 @@
     <ID>6</ID>
     <Name>Other</Name>
     <StateID>21</StateID>
-    <FireCodeID>14</FireCodeID>
+    <FireCodeID>16</FireCodeID>
   </City>
   <City>
     <ID>7</ID>
@@ -57,7 +57,7 @@
     <ID>10</ID>
     <Name>Other</Name>
     <StateID>53</StateID>
-    <FireCodeID>14</FireCodeID>
+    <FireCodeID>16</FireCodeID>
   </City>
   <City>
     <ID>11</ID>
@@ -69,13 +69,13 @@
     <ID>12</ID>
     <Name>Other</Name>
     <StateID>2</StateID>
-    <FireCodeID>16</FireCodeID>
+    <FireCodeID>23</FireCodeID>
   </City>
   <City>
     <ID>13</ID>
     <Name>Other</Name>
     <StateID>61</StateID>
-    <FireCodeID>16</FireCodeID>
+    <FireCodeID>23</FireCodeID>
   </City>
   <City>
     <ID>14</ID>
@@ -105,19 +105,19 @@
     <ID>18</ID>
     <Name>Other</Name>
     <StateID>28</StateID>
-    <FireCodeID>16</FireCodeID>
+    <FireCodeID>23</FireCodeID>
   </City>
   <City>
     <ID>19</ID>
     <Name>Other</Name>
     <StateID>25</StateID>
-    <FireCodeID>16</FireCodeID>
+    <FireCodeID>23</FireCodeID>
   </City>
   <City>
     <ID>20</ID>
     <Name>Other</Name>
     <StateID>26</StateID>
-    <FireCodeID>16</FireCodeID>
+    <FireCodeID>23</FireCodeID>
   </City>
   <City>
     <ID>21</ID>
@@ -129,19 +129,19 @@
     <ID>22</ID>
     <Name>Other</Name>
     <StateID>34</StateID>
-    <FireCodeID>16</FireCodeID>
+    <FireCodeID>23</FireCodeID>
   </City>
   <City>
     <ID>23</ID>
     <Name>Other</Name>
     <StateID>38</StateID>
-    <FireCodeID>16</FireCodeID>
+    <FireCodeID>23</FireCodeID>
   </City>
   <City>
     <ID>24</ID>
     <Name>Other</Name>
     <StateID>40</StateID>
-    <FireCodeID>16</FireCodeID>
+    <FireCodeID>23</FireCodeID>
   </City>
   <City>
     <ID>25</ID>
@@ -171,19 +171,19 @@
     <ID>29</ID>
     <Name>Other</Name>
     <StateID>54</StateID>
-    <FireCodeID>16</FireCodeID>
+    <FireCodeID>23</FireCodeID>
   </City>
   <City>
     <ID>30</ID>
     <Name>Other</Name>
     <StateID>1</StateID>
-    <FireCodeID>15</FireCodeID>
+    <FireCodeID>16</FireCodeID>
   </City>
   <City>
     <ID>31</ID>
     <Name>Other</Name>
     <StateID>6</StateID>
-    <FireCodeID>15</FireCodeID>
+    <FireCodeID>23</FireCodeID>
   </City>
   <City>
     <ID>32</ID>
@@ -195,7 +195,7 @@
     <ID>33</ID>
     <Name>Other</Name>
     <StateID>10</StateID>
-    <FireCodeID>15</FireCodeID>
+    <FireCodeID>16</FireCodeID>
   </City>
   <City>
     <ID>34</ID>
@@ -225,7 +225,7 @@
     <ID>38</ID>
     <Name>Other</Name>
     <StateID>31</StateID>
-    <FireCodeID>15</FireCodeID>
+    <FireCodeID>23</FireCodeID>
   </City>
   <City>
     <ID>39</ID>
@@ -243,7 +243,7 @@
     <ID>41</ID>
     <Name>Other</Name>
     <StateID>32</StateID>
-    <FireCodeID>15</FireCodeID>
+    <FireCodeID>16</FireCodeID>
   </City>
   <City>
     <ID>42</ID>
@@ -333,7 +333,7 @@
     <ID>56</ID>
     <Name>Other</Name>
     <StateID>51</StateID>
-    <FireCodeID>11</FireCodeID>
+    <FireCodeID>16</FireCodeID>
   </City>
   <City>
     <ID>57</ID>
@@ -405,13 +405,13 @@
     <ID>69</ID>
     <Name>Birmingham</Name>
     <StateID>2</StateID>
-    <FireCodeID>16</FireCodeID>
+    <FireCodeID>23</FireCodeID>
   </City>
   <City>
     <ID>70</ID>
     <Name>Anchorage</Name>
     <StateID>1</StateID>
-    <FireCodeID>16</FireCodeID>
+    <FireCodeID>23</FireCodeID>
   </City>
   <City>
     <ID>71</ID>
@@ -525,7 +525,7 @@
     <ID>91</ID>
     <Name>Wichita &amp; Sedwick County</Name>
     <StateID>16</StateID>
-    <FireCodeID>16</FireCodeID>
+    <FireCodeID>23</FireCodeID>
   </City>
   <City>
     <ID>92</ID>
@@ -555,7 +555,7 @@
     <ID>97</ID>
     <Name>City of Manchester</Name>
     <StateID>28</StateID>
-    <FireCodeID>16</FireCodeID>
+    <FireCodeID>23</FireCodeID>
   </City>
   <City>
     <ID>98</ID>
@@ -597,19 +597,19 @@
     <ID>104</ID>
     <Name>Enid</Name>
     <StateID>34</StateID>
-    <FireCodeID>15</FireCodeID>
+    <FireCodeID>23</FireCodeID>
   </City>
   <City>
     <ID>105</ID>
     <Name>Oklahoma City</Name>
     <StateID>34</StateID>
-    <FireCodeID>11</FireCodeID>
+    <FireCodeID>15</FireCodeID>
   </City>
   <City>
     <ID>106</ID>
     <Name>Tulsa</Name>
     <StateID>34</StateID>
-    <FireCodeID>15</FireCodeID>
+    <FireCodeID>23</FireCodeID>
   </City>
   <City>
     <ID>107</ID>
@@ -645,6 +645,6 @@
     <ID>112</ID>
     <Name>Other</Name>
     <StateID>29</StateID>
-    <FireCodeID>15</FireCodeID>
+    <FireCodeID>16</FireCodeID>
   </City>
 </Cities>

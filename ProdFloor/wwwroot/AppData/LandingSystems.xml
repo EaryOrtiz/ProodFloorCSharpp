@@ -44,4 +44,9 @@
     <UsedIn>ElmTract</UsedIn>
     <Name>LS-EDGE</Name>
   </LandingSystem>
+  <LandingSystem>
+    <ID>10</ID>
+    <UsedIn>M2000</UsedIn>
+    <Name>Customer Supplied</Name>
+  </LandingSystem>
 </LandingSystems>
