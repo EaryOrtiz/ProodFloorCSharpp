@@ -64,10 +64,13 @@ namespace ProdFloor.Controllers
 
             if (reportRows.Count == 0)
             {
+                viewModel.planningReport = planningReport;
+                viewModel.planningReportRows = reportRows;
+
                 TempData["alert"] = $"alert-danger";
                 TempData["message"] = $"Planning Schedule Report file doesnt exists or must be renamed";
 
-                return View();
+                return View(viewModel);
             }
 
             foreach (PlanningReportRow row in reportRows)
@@ -142,7 +145,6 @@ namespace ProdFloor.Controllers
 
         public ViewResult NewPrintable()
         {
-            //GenerateWord();
             return View(new PlanningReportListViewModel());
         }
 
@@ -156,15 +158,25 @@ namespace ProdFloor.Controllers
             {
                 TempData["alert"] = $"alert-danger";
                 TempData["message"] = $"El job que esta buscando no existe";
-            }
-            else
-            {
-                viewModel.Custom = reportRow.Custom;
-                viewModel.ReportRow = reportRow;
-                viewModel.DueDate = DateTime.Now;
-            }
+                return View(viewModel);
 
-             return View(viewModel);
+            }
+            
+            PlanningReport report = itemRepository.PlanningReports
+                                                  .FirstOrDefault(m => m.PlanningReportID == reportRow.PlanningReportID);
+            if (report.Busy)
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"El planning esta siendo actualizado";
+                return View(viewModel);
+            }
+            
+            viewModel.Custom = reportRow.Custom;
+            viewModel.ReportRow = reportRow;
+            viewModel.DueDate = DateTime.Now;
+     
+
+            return View(viewModel);
         }
 
         [HttpPost]
@@ -201,7 +213,7 @@ namespace ProdFloor.Controllers
 
         public List<PlanningReportRow> GetPlanningReportTable()
         {
-            string fileName = @"wwwroot\resources\PlanningScheduleReport" + DateTime.Now.ToString("MM-dd-yyy") + ".xlsx";
+            string fileName = @"wwwroot\resources\Planning\PlanningScheduleReport" + DateTime.Now.ToString("MM-dd-yyy") + ".xlsx";
 
             if (!System.IO.File.Exists(Path.Combine(fileName)))
             {
@@ -289,7 +301,6 @@ namespace ProdFloor.Controllers
 
             
             string rootFolder = _env.WebRootPath.ToString();
-            string filename = "JobTravelerV6-" + DateTime.Now.ToString("MM-dd-yyyy") + ".docx";
             byte[] toArray = null;
             var memoryStream = new MemoryStream();
 
@@ -339,8 +350,9 @@ namespace ProdFloor.Controllers
                 return View("Printables", viewModel);
             }
 
-           
-            
+            string filename = "JobTravelerV6-" + reportRow.PO.ToString() + ".docx";
+
+
             return File(toArray, "application/msword", filename);
         }
 
