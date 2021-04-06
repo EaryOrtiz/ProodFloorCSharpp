@@ -3270,7 +3270,7 @@ namespace ProdFloor.Infrastructure
                 case "Contact":
                     return new List<string> { "N/C", "N/O" }.AsQueryable();
                 case "ConfigGuy":
-                    return new List<string> { "AKRAM B.", "VAN X.","ALAN A.", "ABRAHAM C." }.AsQueryable();
+                    return new List<string> { "AKRAM B.", "VAN X.","RUBEN D.","ALAN A.", "ABRAHAM C." }.AsQueryable();
                 case "boolSearch":
                     return new List<string> { "Si", "No" }.AsQueryable();
                 case "Starter":

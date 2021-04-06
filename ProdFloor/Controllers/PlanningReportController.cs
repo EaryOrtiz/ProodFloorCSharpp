@@ -284,7 +284,7 @@ namespace ProdFloor.Controllers
                                                         .FirstOrDefault(m => m.PO == viewModel.POSearch);
 
             viewModel.ReportRow = reportRow; 
-            string EngName = "HUNG L.";
+            string EngName = "HUNG L";
             string EngNumberString = reportRow.MRP.Remove(0, 1);
             string EngNameAUx = "";
 
