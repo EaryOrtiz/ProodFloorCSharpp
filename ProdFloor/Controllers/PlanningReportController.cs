@@ -60,12 +60,13 @@ namespace ProdFloor.Controllers
             itemRepository.SavePlanningReport(planning);
 
             PlanningReport planningReport = itemRepository.PlanningReports.FirstOrDefault();
-            List<PlanningReportRow> reportRows = GetPlanningReportTable();
+            List<PlanningReportRow> planningReportRows = GetPlanningReportTable("PlanningReport");
+            List<PlanningReportRow> NFPRows = GetPlanningReportTable("NFP");
 
-            if (reportRows.Count == 0)
+            if (planningReportRows.Count == 0)
             {
                 viewModel.planningReport = planningReport;
-                viewModel.planningReportRows = reportRows;
+                viewModel.planningReportRows = planningReportRows;
 
                 TempData["alert"] = $"alert-danger";
                 TempData["message"] = $"Planning Schedule Report file doesnt exists or must be renamed";
@@ -73,7 +74,15 @@ namespace ProdFloor.Controllers
                 return View(viewModel);
             }
 
-            foreach (PlanningReportRow row in reportRows)
+            foreach (PlanningReportRow row in NFPRows)
+            {
+                if (planningReportRows.Any(m => m.PO == row.PO))
+                    continue;
+
+                planningReportRows.Add(row);
+            }
+
+            foreach (PlanningReportRow row in planningReportRows)
             {
                 row.PlanningReportID = planning.PlanningReportID;
                 row.Custom = false;
@@ -84,7 +93,7 @@ namespace ProdFloor.Controllers
             itemRepository.SavePlanningReport(planning);
 
             viewModel.planningReport = planningReport;
-            viewModel.planningReportRows = reportRows;
+            viewModel.planningReportRows = planningReportRows;
 
             return View(viewModel);
 
@@ -99,8 +108,10 @@ namespace ProdFloor.Controllers
             itemRepository.SavePlanningReport(planningReport);
 
             List<PlanningReportRow> oldReportRows = new List<PlanningReportRow>();
-            List<PlanningReportRow> NewReportRows = GetPlanningReportTable();
-            if (NewReportRows.Count == 0)
+            List<PlanningReportRow> planningReportRows = GetPlanningReportTable("PlanningReport");
+            List<PlanningReportRow> NFPRows = GetPlanningReportTable("NFP");
+
+            if (planningReportRows.Count == 0)
             {
                 TempData["alert"] = $"alert-danger";
                 TempData["message"] = $"Planning Schedule Report file doesnt exists or must be renamed";
@@ -116,9 +127,17 @@ namespace ProdFloor.Controllers
             }
             catch { }
 
-            
+            foreach (PlanningReportRow row in NFPRows)
+            {
+                if (planningReportRows.Any(m => m.PO == row.PO))
+                    continue;
 
-            foreach (PlanningReportRow row in NewReportRows)
+                planningReportRows.Add(row);
+            }
+
+
+
+            foreach (PlanningReportRow row in planningReportRows)
             {
                 if (oldReportRows.Any(m => m.PO == row.PO))
                 {
@@ -129,7 +148,7 @@ namespace ProdFloor.Controllers
 
             itemRepository.DeleteAllPlanningRowsTable();
 
-            foreach (PlanningReportRow row in NewReportRows)
+            foreach (PlanningReportRow row in planningReportRows)
             {
                 row.PlanningReportID = planningReport.PlanningReportID;
                 itemRepository.SavePlanningReportRow(row);
@@ -211,13 +230,47 @@ namespace ProdFloor.Controllers
             return View(viewModel);
         }
 
-        public List<PlanningReportRow> GetPlanningReportTable()
+        public List<PlanningReportRow> GetPlanningReportTable(string sheetName)
         {
             string fileName = @"wwwroot\resources\Planning\PlanningScheduleReport" + DateTime.Now.ToString("MM-dd-yyy") + ".xlsx";
 
             if (!System.IO.File.Exists(Path.Combine(fileName)))
             {
                 return new List<PlanningReportRow>();
+            }
+
+            int JobNumber = 0;
+            int LineNumber = 1;
+            int Material = 2;
+            int MRP = 3;
+            int PO = 4;
+            int SoldTo = 6;
+            int Consecutive = 7;
+            int JobName = 8;
+            int PreviousWorkCenter = 9;
+            int WorkCenter = 10;
+            int Notes = 11;
+            int Priority = 2;
+            int shippingNumber = 13;
+
+            int sheetNumber = 3;
+            int lastRow = 14;
+
+            if (sheetName == "NFP")
+            {
+                JobNumber = 0;
+                LineNumber = 1;
+                WorkCenter = 2;
+                Material = 3;
+                MRP = 5;
+                PO = 6;
+                SoldTo = 8;
+                JobName = 9;
+                Priority = 11;
+                shippingNumber = 12;
+
+                lastRow = 13;
+                sheetNumber = 0;
             }
 
             List<PlanningReportRow> planningReportRowTable = new List<PlanningReportRow>();
@@ -227,12 +280,19 @@ namespace ProdFloor.Controllers
             {
                 stream.Position = 0;
                 XSSFWorkbook xssWorkbook = new XSSFWorkbook(stream);
-                sheet = xssWorkbook.GetSheetAt(3);
+                sheet = xssWorkbook.GetSheetAt(sheetNumber);
                 IRow headerRow = sheet.GetRow(0);
-                int cellCount = headerRow.LastCellNum;
+                int cellCount = lastRow;
                 for (int i = (sheet.FirstRowNum + 1); i <= sheet.LastRowNum; i++)
                 {
                     PlanningReportRow planningRow = new PlanningReportRow();
+                    if (sheetName == "NFP")
+                    {
+                        planningRow.Consecutive = 999;
+                        planningRow.PreviousWorkCenter = "N/A";
+                        planningRow.Notes = "N/A";
+                    }
+
                     IRow row = sheet.GetRow(i);
                     if (row == null) continue;
                     if (row.Cells.All(d => d.CellType == CellType.Blank)) continue;
@@ -240,32 +300,54 @@ namespace ProdFloor.Controllers
                     {
                         if (row.GetCell(j) != null)
                         {
-                            if (string.IsNullOrWhiteSpace(row.GetCell(j).ToString()))
-                                row.GetCell(j).SetCellValue("N/A");
+                            if (string.IsNullOrWhiteSpace(row.GetCell(j).ToString()) || row.GetCell(j).ToString() == "DROPSHIP")
+                            {
+                                if(sheetName != "NFP")
+                                {
+                                    row.GetCell(j).SetCellValue("N/A");
+                                }
+                                else
+                                {
+                                    rowList.Clear();
+                                    break;
+                                }
+                                
+                            }
+                                
 
                             rowList.Add(row.GetCell(j).ToString());
                         }
                     }
-                    if (rowList.ElementAt(3) == "MRP")
+
+                    if (rowList.Count == 0)
+                    {
+                        continue;
+                    }else if (rowList.ElementAt(MRP) == "MRP")
                     {
                         rowList.Clear();
                         continue;
                     }
 
-                    planningRow.JobNumber = rowList.ElementAt(0);
-                    planningRow.LineNumber = int.Parse(rowList.ElementAt(1));
-                    planningRow.Material = rowList.ElementAt(2);
-                    planningRow.MRP = rowList.ElementAt(3);
-                    planningRow.PO = int.Parse(rowList.ElementAt(4));
-                    planningRow.SoldTo = rowList.ElementAt(6);
-                    planningRow.Consecutive = int.Parse(rowList.ElementAt(7));
-                    planningRow.JobName = rowList.ElementAt(8);
-                    planningRow.PreviousWorkCenter = rowList.ElementAt(9);
-                    planningRow.WorkCenter = rowList.ElementAt(10);
-                    planningRow.Notes = rowList.ElementAt(11);
-                    planningRow.Priority = rowList.ElementAt(12);
+                    if(sheetName != "NFP")
+                    {
+                        planningRow.Consecutive = int.Parse(rowList.ElementAt(Consecutive));
+                        planningRow.PreviousWorkCenter = rowList.ElementAt(PreviousWorkCenter);
+                        planningRow.Notes = rowList.ElementAt(Notes);
+                    }
+                    
 
-                    DateTime shippingDate = DateTime.Parse(rowList.ElementAt(13));
+                    planningRow.JobNumber = rowList.ElementAt(JobNumber);
+                    planningRow.LineNumber = int.Parse(rowList.ElementAt(LineNumber));
+                    planningRow.Material = rowList.ElementAt(Material);
+                    planningRow.MRP = rowList.ElementAt(MRP);
+                    planningRow.PO = int.Parse(rowList.ElementAt(PO));
+                    planningRow.SoldTo = rowList.ElementAt(SoldTo);
+                    planningRow.JobName = rowList.ElementAt(JobName);
+                    planningRow.WorkCenter = rowList.ElementAt(WorkCenter);
+                    
+                    planningRow.Priority = rowList.ElementAt(Priority);
+
+                    DateTime shippingDate = DateTime.Parse(rowList.ElementAt(shippingNumber));
                     planningRow.ShippingDate = shippingDate.ToShortDateString();
 
 

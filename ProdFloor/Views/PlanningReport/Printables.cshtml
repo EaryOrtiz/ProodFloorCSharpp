@@ -3,6 +3,14 @@
     ViewBag.Title = "Planning Report";
     Layout = "_AdminLayout_PRO";
     <script src="~/lib/jquery-PrintArea/demo/jquery.PrintArea.js"></script>
+    <style type="text/css" media="print">
+    @@page {
+        size: landscape;
+    }
+    body {
+        writing-mode: tb-rl;
+    }
+    </style>
     <link rel="stylesheet" id="printCSS" href="~/lib/jquery-PrintArea/demo/PrintArea.css" type="text/css" media="print" />
     <script>
         $(document).ready(function () {
@@ -49,7 +57,7 @@
                     </tr>
                 </tbody>
             </table>
-            <p  style="font-size: 22px">Final____:____H:M QC____:____H:M</p>
+            <p style="font-size: 22px">Final____:____H:M QC____:____H:M</p>
             <p>@Model.PrintableNotes</p>
         </div>
         <div class="col text-center">
@@ -63,9 +71,9 @@
                     <button type="submit" class="btn btn-primary">Generate JobTraveler</button>
                 </form>
             </div>
-            
+
         </div>
-       
+
     </div>
 
 </div>
