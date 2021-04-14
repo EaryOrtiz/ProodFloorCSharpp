@@ -250,7 +250,7 @@ namespace ProdFloor.Controllers
             int PreviousWorkCenter = 9;
             int WorkCenter = 10;
             int Notes = 11;
-            int Priority = 2;
+            int Priority = 12;
             int shippingNumber = 13;
 
             int sheetNumber = 3;

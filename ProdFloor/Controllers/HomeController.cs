@@ -59,6 +59,8 @@ namespace ProdFloor.Controllers
             bool techAdmin = GetCurrentUserRole("TechAdmin").Result;
             bool manager = GetCurrentUserRole("Manager").Result;
             bool kitting = GetCurrentUserRole("Kitting").Result;
+            bool WirerAdmin = GetCurrentUserRole("WirerAdmin").Result;
+            bool wirer = GetCurrentUserRole("Wirer").Result;
 
             if (filtrado != null) Sort = filtrado;
             if (engineer)
@@ -204,7 +206,9 @@ namespace ProdFloor.Controllers
 
             if (manager) return RedirectToAction("ManagerDashboard", "Report");
 
-            if (kitting) return RedirectToAction("NewPrintable", "PlanningReport");
+            if (WirerAdmin) return RedirectToAction("ProductionAdminDash", "Wiring");
+
+            if (wirer) return RedirectToAction("ProductionAdminDash", "Wiring");
 
             return NotFound();
         }

@@ -9,10 +9,10 @@ namespace ProdFloor.Components
 {
     public class WirerMenuViewComponent : ViewComponent
     {
-        private IItemRepository repository;
+        private IWiringRepository repository;
         private IJobRepository jobrepository;
 
-        public WirerMenuViewComponent(IItemRepository repo, IJobRepository jobrepo)
+        public WirerMenuViewComponent(IWiringRepository repo, IJobRepository jobrepo)
         {
             repository = repo;
             jobrepository = jobrepo;
