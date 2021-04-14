@@ -44,3 +44,6 @@ span.test {
 .PrintArea.area3 {
     border: solid 1px #999;
 }
+@page {
+    size: auto;
+}
