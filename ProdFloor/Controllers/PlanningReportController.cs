@@ -189,7 +189,8 @@ namespace ProdFloor.Controllers
                 TempData["message"] = $"El planning esta siendo actualizado";
                 return View(viewModel);
             }
-            
+
+            viewModel.EngID = int.Parse(reportRow.MRP.Remove(0, 1));
             viewModel.Custom = reportRow.Custom;
             viewModel.ReportRow = reportRow;
             viewModel.DueDate = DateTime.Now;
@@ -223,9 +224,8 @@ namespace ProdFloor.Controllers
             }
 
             reportRow.Custom = viewModel.Custom;
+            viewModel.ReportRow.PO = reportRow.PO;
             itemRepository.SavePlanningReportRow(reportRow);
-
-            viewModel.ReportRow = reportRow;
 
             return View(viewModel);
         }
@@ -250,7 +250,7 @@ namespace ProdFloor.Controllers
             int PreviousWorkCenter = 9;
             int WorkCenter = 10;
             int Notes = 11;
-            int Priority = 2;
+            int Priority = 12;
             int shippingNumber = 13;
 
             int sheetNumber = 3;
@@ -365,16 +365,13 @@ namespace ProdFloor.Controllers
             PlanningReportRow reportRow = itemRepository.PlanningReportRows
                                                         .FirstOrDefault(m => m.PO == viewModel.POSearch);
 
-            viewModel.ReportRow = reportRow; 
+            viewModel.ReportRow.PO = reportRow.PO; 
             string EngName = "HUNG L";
-            string EngNumberString = reportRow.MRP.Remove(0, 1);
             string EngNameAUx = "";
-
-            int EngNumber = int.Parse(EngNumberString);
 
             try
             {
-                EngNameAUx = userManager.Users.FirstOrDefault(m => m.EngID == EngNumber).ShortFullName.ToUpper();
+                EngNameAUx = userManager.Users.FirstOrDefault(m => m.EngID == viewModel.EngID).ShortFullName.ToUpper();
 
                 if (!string.IsNullOrEmpty(EngNameAUx))
                     EngName = EngNameAUx;
@@ -404,12 +401,12 @@ namespace ProdFloor.Controllers
 
             try
             {
-                doc.Replace("JobName", reportRow.JobName.ToUpper(), true, true);
-                doc.Replace("Item", reportRow.LineNumber.ToString(), true, true);
-                doc.Replace("JobNum", reportRow.JobNumber.ToString().ToUpper(), true, true);
-                doc.Replace("PONum", reportRow.PO.ToString(), true, true);
-                doc.Replace("ShippingDate", reportRow.ShippingDate, true, true);
-                doc.Replace("MATERIAL", reportRow.Material.ToUpper(), true, true);
+                doc.Replace("JobName", viewModel.ReportRow.JobName.ToUpper(), true, true);
+                doc.Replace("Item", viewModel.ReportRow.LineNumber.ToString(), true, true);
+                doc.Replace("JobNum", viewModel.ReportRow.JobNumber.ToString().ToUpper(), true, true);
+                doc.Replace("PONum", viewModel.ReportRow.PO.ToString(), true, true);
+                doc.Replace("ShippingDate", viewModel.ReportRow.ShippingDate, true, true);
+                doc.Replace("MATERIAL", viewModel.ReportRow.Material.ToUpper(), true, true);
                 doc.Replace("DueDate", viewModel.DueDate.ToShortDateString(), true, true);
                 doc.Replace("CARNUMBER", viewModel.CarNumber.ToUpper(), true, true);
                 doc.Replace("ConfigGuy", viewModel.ConfigGuy.ToUpper(), true, true);

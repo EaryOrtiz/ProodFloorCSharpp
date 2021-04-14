@@ -35,5 +35,7 @@ namespace ProdFloor.Models.ViewModels
        
         public string ConfigGuy { get; set; }
 
+        public int EngID { get; set; }
+
     }
 }

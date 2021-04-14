@@ -64,6 +64,13 @@
             <div class="btn-group">
                 <a class="btn btn-secondary mr-5" href="javascript:void(0);" id="printButton">Print</a>
                 <form asp-controller="PlanningReport" asp-action="GenerateJobTraveler" method="post">
+                    <input type="hidden" asp-for="ReportRow.JobName" />
+                    <input type="hidden" asp-for="ReportRow.LineNumber" />
+                    <input type="hidden" asp-for="ReportRow.JobNumber" />
+                    <input type="hidden" asp-for="ReportRow.ShippingDate" />
+                    <input type="hidden" asp-for="ReportRow.Material" />
+                    <input type="hidden" asp-for="EngID" />
+
                     <input type="hidden" asp-for="POSearch" />
                     <input type="hidden" asp-for="DueDate" />
                     <input type="hidden" asp-for="CarNumber" />
