@@ -100,9 +100,11 @@ namespace ProdFloor.Controllers
 
         }
 
-        [HttpPost]
-        public IActionResult Update(PlanningReportListViewModel viewModel)
+        [AllowAnonymous]
+        public IActionResult Update()
         {
+            PlanningReportListViewModel viewModel = new PlanningReportListViewModel();
+
             PlanningReport planningReport = itemRepository.PlanningReports.FirstOrDefault();
             planningReport.Busy = true;
             itemRepository.SavePlanningReport(planningReport);
