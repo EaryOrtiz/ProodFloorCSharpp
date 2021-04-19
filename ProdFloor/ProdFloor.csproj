@@ -39,6 +39,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Views\WiringPXP\" />
     <Folder Include="wwwroot\DailyJobs\" />
     <Folder Include="Views\Shared\Components\TechMenu\" />
     <Folder Include="wwwroot\AppData\" />

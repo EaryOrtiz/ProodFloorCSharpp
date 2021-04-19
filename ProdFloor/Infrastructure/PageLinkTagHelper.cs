@@ -5360,4 +5360,70 @@ namespace ProdFloor.Infrastructure
         }
     }
 
+    public class PXPReasonsSelectTagHelper : TagHelper
+    {
+        private IWiringRepository repository;
+
+        private IUrlHelperFactory urlHelperFactory;
+
+        public ModelExpression AspFor { get; set; }
+
+        public PXPReasonsSelectTagHelper(IUrlHelperFactory helperFactory, IWiringRepository repo)
+        {
+            urlHelperFactory = helperFactory;
+            repository = repo;
+        }
+
+        [ViewContext]
+        [HtmlAttributeNotBound]
+        public ViewContext ViewContext { get; set; }
+        public int SelectedValue { get; set; }
+
+
+        [HtmlAttributeName("asp-is-disabled")]
+        public bool IsDisabled { set; get; }
+
+        public override void Process(TagHelperContext context, TagHelperOutput output)
+        {
+
+            IUrlHelper urlHelper = urlHelperFactory.GetUrlHelper(ViewContext);
+            output.TagName = "select";
+            TagBuilder result = new TagBuilder("select");
+            string name = this.AspFor.Name;
+            if (!String.IsNullOrEmpty(name))
+            {
+                output.Attributes.Add("id", name);
+                output.Attributes.Add("name", name);
+            }
+            TagBuilder m_tag = new TagBuilder("option");
+            m_tag.Attributes["value"] = "default";
+            m_tag.InnerHtml.Append("Select a Reason 1");
+            result.InnerHtml.AppendHtml(m_tag);
+            int reasonID = 0;
+            if (SelectedValue != 0)
+            {
+                reasonID = SelectedValue;
+            }
+            IQueryable<PXPReason> reasons = repository.pXPReasons.Where(m => m.Description != "-").OrderBy(s => s.Description).AsQueryable();
+            foreach (PXPReason item in reasons)
+            {
+                TagBuilder tag = new TagBuilder("option");
+                tag.Attributes["value"] = item.PXPReasonID.ToString();
+                if (item.PXPReasonID == reasonID)
+                {
+                    tag.Attributes["selected"] = "selected";
+                }
+                tag.InnerHtml.Append(item.Description.ToString());
+                result.InnerHtml.AppendHtml(tag);
+            }
+            output.Content.AppendHtml(result.InnerHtml);
+            if (IsDisabled)
+            {
+                var d = new TagHelperAttribute("disabled", "disabled");
+                output.Attributes.Add(d);
+            }
+            base.Process(context, output);
+        }
+    }
+
 }

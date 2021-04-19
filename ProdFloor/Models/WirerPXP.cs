@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ProdFloor.Models
 {
-    public class WirerPXP
+    public class WiringPXP
     {
         public int WirerPXPID { get; set; }
 
@@ -15,7 +15,11 @@ namespace ProdFloor.Models
 
         public int WirerID { get; set; }
 
+        public List<int> WirersID { get; set; }
+
         public List<PXPError> _PXPErrors { get; set; }
+
+        public PXPError _PXPError { get; set; }
     }
 
     public class PXPError
@@ -35,7 +39,7 @@ namespace ProdFloor.Models
     {
         public int PXPReasonID { get; set; }
 
-        public int Description { get; set; }
+        public string Description { get; set; }
 
         public List<PXPError> _PXPErrors { get;set;}
 
