@@ -36,5 +36,20 @@ namespace ProdFloor.Models.ViewModels.Wiring
 
         public bool CleanFields { get; set; }
         public int TotalItems { get; set; }
+
+        //para el nuevo search 
+        public PO PO { get; set; }
+        public JobExtension JobExtension { get; set; }
+        public HydroSpecific HydroSpecific { get; set; }
+        public HoistWayData HoistWayData { get; set; }
+        public GenericFeatures GenericFeatures { get; set; }
+        public Indicator Indicator { get; set; }
+        public SpecialFeatures SpecialFeature { get; set; }
+
+        public Element Element { get; set; }
+        public ElementHydro ElementHydro { get; set; }
+        public ElementTraction ElementTraction { get; set; }
+
+        public string JobTypeName { get; set; }
     }
 }

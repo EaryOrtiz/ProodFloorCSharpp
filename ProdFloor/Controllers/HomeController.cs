@@ -13,6 +13,8 @@ using System.Collections.Generic;
 using ChartJSCore.Models;
 using System;
 using ChartJSCore.Helpers;
+using ProdFloor.Models.ViewModels.TestJob;
+using ProdFloor.Models.ViewModels.Wiring;
 
 namespace ProdFloor.Controllers
 {
@@ -23,14 +25,20 @@ namespace ProdFloor.Controllers
         private IJobRepository repository;
         private ITestingRepository testingRepo;
         private IItemRepository itemRepo;
+        private IWiringRepository wiringRepo;
         public int PageSize = 3;
         private UserManager<AppUser> userManager;
 
-        public HomeController(IJobRepository repo, IItemRepository item, ITestingRepository testRepo, UserManager<AppUser> userMrg)
+        public HomeController(IJobRepository repo,
+            IItemRepository item,
+            ITestingRepository testRepo,
+            IWiringRepository wirerRepo,
+            UserManager<AppUser> userMrg)
         {
             repository = repo;
             testingRepo = testRepo;
             itemRepo = item;
+            wiringRepo = wirerRepo;
             userManager = userMrg;
         }
 
@@ -898,6 +906,141 @@ namespace ProdFloor.Controllers
         public string JobTypeName(int ID)
         {
             return itemRepo.JobTypes.FirstOrDefault(m => m.JobTypeID == ID).Name;
+        }
+
+        public IActionResult SearchByPO(DashboardIndexViewModel viewModel)
+        {
+            AppUser currentUser = GetCurrentUser().Result;
+            bool engineer = GetCurrentUserRole("Engineer").Result;
+            bool tech = GetCurrentUserRole("Technician").Result;
+            bool kitting = GetCurrentUserRole("Kitting").Result;
+            bool wirerPXP = GetCurrentUserRole("WirerPXP").Result;
+
+            if (!(viewModel.POJobSearch >= 3000000 && viewModel.POJobSearch <= 4900000))
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"Error, PO fuera de rango";
+
+                return RedirectToAction("SearchByPO", viewModel);
+            }
+
+            PO onePO = repository.POs.FirstOrDefault(m => m.PONumb == viewModel.POJobSearch);
+            if(onePO != null)
+            {
+                Job job = repository.Jobs.FirstOrDefault(m => m.JobID == onePO.JobID);
+                if(job.Status == "Incomplete")
+                {
+                    TempData["alert"] = $"alert-danger";
+                    TempData["message"] = $"Error,Job aun en ingenieria o duplicado, intente de nuevo o contacte al Admin";
+                    return RedirectToAction("SearchByPO", viewModel);
+                }
+
+                viewModel.PO = onePO;
+                viewModel.Job = job;
+                viewModel.JobTypeName = itemRepo.JobTypes.FirstOrDefault(m => m.JobTypeID == job.JobTypeID).Name;
+
+                viewModel.JobExtension = repository.JobsExtensions.FirstOrDefault(m => m.JobID == viewModel.Job.JobID);
+                viewModel.HydroSpecific = repository.HydroSpecifics.FirstOrDefault(m => m.JobID == viewModel.Job.JobID);
+                viewModel.GenericFeatures = repository.GenericFeaturesList.FirstOrDefault(m => m.JobID == viewModel.Job.JobID);
+                viewModel.Indicator = repository.Indicators.FirstOrDefault(m => m.JobID == viewModel.Job.JobID);
+                viewModel.HoistWayData = repository.HoistWayDatas.FirstOrDefault(m => m.JobID == viewModel.Job.JobID);
+
+                viewModel.Element = repository.Elements.FirstOrDefault(m => m.JobID == viewModel.Job.JobID);
+                viewModel.ElementTraction = repository.ElementTractions.FirstOrDefault(m => m.JobID == viewModel.Job.JobID);
+                viewModel.ElementHydro = repository.ElementHydros.FirstOrDefault(m => m.JobID == viewModel.Job.JobID);
+
+                if (tech)
+                {
+                    TestJob CurrentTestJob = testingRepo.TestJobs.FirstOrDefault(m => m.TechnicianID == currentUser.EngID && m.Status == "Working on it");
+                    if (CurrentTestJob == null)
+                    {
+                        TempData["alert"] = $"alert-danger";
+                        TempData["message"] = $"Error, Ya existe un TestJob con ese PO, intente de nuevo o contacte al Admin";
+                        return RedirectToAction("SearchByPO", viewModel);
+                    }
+
+                    TestJobViewModel newJobViewModel = new TestJobViewModel();
+
+                    newJobViewModel.Job = (viewModel.Job ?? new Job());
+                    newJobViewModel.JobExtension = (viewModel.JobExtension ?? new JobExtension());
+                    newJobViewModel.HydroSpecific = (viewModel.HydroSpecific ?? new HydroSpecific());
+                    newJobViewModel.GenericFeatures = (viewModel.GenericFeatures ?? new GenericFeatures());
+                    newJobViewModel.Indicator = (viewModel.Indicator ?? new Indicator());
+                    newJobViewModel.HoistWayData = (viewModel.HoistWayData ?? new HoistWayData());
+
+                    newJobViewModel.Element = (viewModel.Element ?? new Element());
+                    newJobViewModel.ElementTraction = (viewModel.ElementTraction ?? new ElementTraction());
+                    newJobViewModel.ElementHydro = (viewModel.ElementHydro ?? new ElementHydro());
+
+                    return RedirectToAction("NewTestJob", "TestJob", newJobViewModel);
+                }else if(wirerPXP)
+                {
+
+                    WiringPXP CurrentWiringPXP = wiringRepo.wirerPXPs.FirstOrDefault(m => m.WirerID == currentUser.EngID && m.Status == "Working on it");
+                    if (CurrentWiringPXP == null)
+                    {
+                        TempData["alert"] = $"alert-danger";
+                        TempData["message"] = $"Error, Ya existe un PXP con ese PO, intente de nuevo o contacte al Admin";
+                        return RedirectToAction("SearchByPO", viewModel);
+                    }
+                    
+                    WiringPXPViewModel newJobViewModel = new WiringPXPViewModel();
+                     
+                    newJobViewModel.Job = (viewModel.Job ?? new Job());
+                    newJobViewModel.JobExtension = (viewModel.JobExtension ?? new JobExtension());
+                    newJobViewModel.HydroSpecific = (viewModel.HydroSpecific ?? new HydroSpecific());
+                    newJobViewModel.GenericFeatures = (viewModel.GenericFeatures ?? new GenericFeatures());
+                    newJobViewModel.Indicator = (viewModel.Indicator ?? new Indicator());
+                    newJobViewModel.HoistWayData = (viewModel.HoistWayData ?? new HoistWayData());
+
+                    newJobViewModel.Element = (viewModel.Element ?? new Element());
+                    newJobViewModel.ElementTraction = (viewModel.ElementTraction ?? new ElementTraction());
+                    newJobViewModel.ElementHydro = (viewModel.ElementHydro ?? new ElementHydro());
+
+                    return RedirectToAction("NewWiringPXP", "WiringPX", newJobViewModel);
+
+                }
+
+
+            }
+
+            return View();
+        }
+
+        public DashboardIndexViewModel GetJobDependencies(PO po, Job job)
+        {
+            DashboardIndexViewModel viewModel = new DashboardIndexViewModel();
+            
+            viewModel.JobExtension = new JobExtension();
+            viewModel.HydroSpecific = new HydroSpecific();
+            viewModel.GenericFeatures = new GenericFeatures();
+            viewModel.Indicator = new Indicator();
+            viewModel.HoistWayData = new HoistWayData();
+            viewModel.Element = new Element();
+            viewModel.ElementHydro = new ElementHydro();
+            viewModel.ElementTraction = new ElementTraction();
+
+
+            switch (viewModel.JobTypeName)
+            {
+                case "M2000":
+                case "M4000":
+                    
+
+                    break;
+                case "ElmHydro":
+                    Element element = repository.Elements.FirstOrDefault(m => m.JobID == viewModel.Job.JobID);
+                    ElementHydro elementHydro = repository.ElementHydros.FirstOrDefault(m => m.JobID == viewModel.Job.JobID);
+
+                    break;
+                case "ElmTract":
+                    Element element2 = jobRepo.Elements.FirstOrDefault(m => m.JobID == viewModel.Job.JobID);
+                    ElementTraction elementTract = repository.ElementTractions.FirstOrDefault(m => m.JobID == viewModel.Job.JobID);
+                    break;
+
+            }
+
+            return viewModel;
         }
 
     }

@@ -7,7 +7,9 @@ namespace ProdFloor.Models
 {
     public class WiringPXP
     {
-        public int WirerPXPID { get; set; }
+        public int WiringXPID { get; set; }
+
+        public string Status { get; set; }
 
         public int JobID { get; set; }
 
@@ -18,21 +20,17 @@ namespace ProdFloor.Models
         public List<int> WirersID { get; set; }
 
         public List<PXPError> _PXPErrors { get; set; }
-
-        public PXPError _PXPError { get; set; }
     }
 
     public class PXPError
     {
         public int PXPErrorID { get; set; }
 
-        public int WirerPXPID { get; set; }
+        public int WiringXPID { get; set; }
 
         public int PXPReasonID { get; set; }
 
         public int GuiltyWirerID { get; set; }
-
-
     }
 
     public class PXPReason
@@ -40,8 +38,5 @@ namespace ProdFloor.Models
         public int PXPReasonID { get; set; }
 
         public string Description { get; set; }
-
-        public List<PXPError> _PXPErrors { get;set;}
-
     }
 }
