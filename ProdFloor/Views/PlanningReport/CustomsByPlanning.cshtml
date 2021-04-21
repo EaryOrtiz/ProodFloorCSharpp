@@ -6,31 +6,13 @@
 <div class="container-fluid">
     <table class="table table-striped  text-center table-sm" style="text-align:center">
         <thead style="background-color:#343a40!important;color:#fff;">
-            @if (Model.planningReportRows.Count() > 0)
-            {
+
                 <tr>
-                    <th class="text-center" colspan="3">
-                        <h5>Morning Custom Job’s</h5>
-                    </th>
-                    <th colspan="1">
-                        <div class="row float-right" style="padding-right:20px">
-                            <div class="text-center">
-                                    <div class="btn-group text-center">
-                                        <button style="background-color:seagreen;color:white" class="btn btn-sm " value="Save" type="submit">Update</button>
-                                    </div>
-                            </div>
-                        </div>
-                    </th>
-                </tr>
-            }
-            else
-            {
-                <tr>
-                    <th class="text-center" colspan="12">
+                    <th class="text-center" colspan="4">
                         <h5>Morning Custom Job’s</h5>
                     </th>
                 </tr>
-            }
+
 
         <tr>
             <th scope="col">
