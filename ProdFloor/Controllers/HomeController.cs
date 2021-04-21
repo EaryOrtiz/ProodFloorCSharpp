@@ -973,7 +973,8 @@ namespace ProdFloor.Controllers
                     newJobViewModel.ElementHydro = (viewModel.ElementHydro ?? new ElementHydro());
 
                     return RedirectToAction("NewTestJob", "TestJob", newJobViewModel);
-                }else if(wirerPXP)
+                }
+                else if(wirerPXP)
                 {
 
                     WiringPXP CurrentWiringPXP = wiringRepo.wirerPXPs.FirstOrDefault(m => m.WirerID == currentUser.EngID && m.Status == "Working on it");
@@ -1000,8 +1001,22 @@ namespace ProdFloor.Controllers
                     return RedirectToAction("NewWiringPXP", "WiringPX", newJobViewModel);
 
                 }
+                else
+                {
+                    TempData["alert"] = $"alert-danger";
+                    TempData["message"] = $"Error, usted no tiene acceso aqui";
+                    return RedirectToAction("SearchByPO", viewModel);
+                }
 
 
+            }
+
+            PlanningReportRow reportRow = itemRepo.PlanningReportRows.FirstOrDefault(m => m.PO == onePO.PONumb);
+            if(reportRow == null)
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"Error, El PO no existe";
+                return RedirectToAction("SearchByPO", viewModel);
             }
 
             return View();
