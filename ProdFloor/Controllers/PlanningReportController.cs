@@ -123,6 +123,69 @@ namespace ProdFloor.Controllers
 
             try
             {
+                oldReportRows = itemRepository.PlanningReportRows
+                                          .Where(m => m.Custom == true)
+                                          .ToList();
+            }
+            catch { }
+
+            foreach (PlanningReportRow row in NFPRows)
+            {
+                if (planningReportRows.Any(m => m.PO == row.PO))
+                    continue;
+
+                planningReportRows.Add(row);
+            }
+
+
+
+            foreach (PlanningReportRow row in planningReportRows)
+            {
+                if (oldReportRows.Any(m => m.PO == row.PO))
+                {
+                    row.Custom = true;
+                }
+
+            }
+
+            itemRepository.DeleteAllPlanningRowsTable();
+
+            foreach (PlanningReportRow row in planningReportRows)
+            {
+                row.PlanningReportID = planningReport.PlanningReportID;
+                itemRepository.SavePlanningReportRow(row);
+            }
+
+            planningReport.Busy = false;
+            planningReport.DateTimeLoad = DateTime.Now;
+            planningReport.PlanningDate = DateTime.Now;
+            itemRepository.SavePlanningReport(planningReport);
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        public IActionResult UpdateOnPost(PlanningReportListViewModel viewModel)
+        {
+
+            PlanningReport planningReport = itemRepository.PlanningReports.FirstOrDefault();
+            planningReport.Busy = true;
+            itemRepository.SavePlanningReport(planningReport);
+
+            List<PlanningReportRow> oldReportRows = new List<PlanningReportRow>();
+            List<PlanningReportRow> planningReportRows = GetPlanningReportTable("PlanningReport");
+            List<PlanningReportRow> NFPRows = GetPlanningReportTable("NFP");
+
+            if (planningReportRows.Count == 0)
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"Planning Schedule Report file doesnt exists or must be renamed";
+
+                return RedirectToAction(nameof(Index));
+            }
+
+            try
+            {
                 oldReportRows = viewModel.planningReportRows
                                           .Where(m => m.Custom == true)
                                           .ToList();
@@ -523,7 +586,15 @@ namespace ProdFloor.Controllers
         }
         */
 
+        public IActionResult CustomsByPlanning()
+        {
+            PlanningReportListViewModel viewModel = new PlanningReportListViewModel
+            {
+                planningReportRows = itemRepository.PlanningReportRows.Where(m => m.Custom == true).ToList()
+            };
 
+            return View(viewModel);
+        }
 
     }
 }
