@@ -908,6 +908,24 @@ namespace ProdFloor.Controllers
             return itemRepo.JobTypes.FirstOrDefault(m => m.JobTypeID == ID).Name;
         }
 
+        public string JobTypeName(string material)
+        {
+            string JobType = "";
+
+            if (material.Contains("M2000"))
+                JobType = "M2000";
+            else if(material.Contains("M4000"))
+                JobType = "M4000";
+            else if (material.Contains("ELEMENT-HYDRO"))
+                JobType = "ElmHydro";
+            else if (material.Contains("ELEMENT-AC"))
+                JobType = "ElmTract";
+
+
+            return JobType;
+        }
+
+        [HttpPost]
         public IActionResult SearchByPO(DashboardIndexViewModel viewModel)
         {
             AppUser currentUser = GetCurrentUser().Result;
@@ -936,18 +954,6 @@ namespace ProdFloor.Controllers
                 }
 
                 viewModel.PO = onePO;
-                viewModel.Job = job;
-                viewModel.JobTypeName = itemRepo.JobTypes.FirstOrDefault(m => m.JobTypeID == job.JobTypeID).Name;
-
-                viewModel.JobExtension = repository.JobsExtensions.FirstOrDefault(m => m.JobID == viewModel.Job.JobID);
-                viewModel.HydroSpecific = repository.HydroSpecifics.FirstOrDefault(m => m.JobID == viewModel.Job.JobID);
-                viewModel.GenericFeatures = repository.GenericFeaturesList.FirstOrDefault(m => m.JobID == viewModel.Job.JobID);
-                viewModel.Indicator = repository.Indicators.FirstOrDefault(m => m.JobID == viewModel.Job.JobID);
-                viewModel.HoistWayData = repository.HoistWayDatas.FirstOrDefault(m => m.JobID == viewModel.Job.JobID);
-
-                viewModel.Element = repository.Elements.FirstOrDefault(m => m.JobID == viewModel.Job.JobID);
-                viewModel.ElementTraction = repository.ElementTractions.FirstOrDefault(m => m.JobID == viewModel.Job.JobID);
-                viewModel.ElementHydro = repository.ElementHydros.FirstOrDefault(m => m.JobID == viewModel.Job.JobID);
 
                 if (tech)
                 {
@@ -959,20 +965,8 @@ namespace ProdFloor.Controllers
                         return RedirectToAction("SearchByPO", viewModel);
                     }
 
-                    TestJobViewModel newJobViewModel = new TestJobViewModel();
 
-                    newJobViewModel.Job = (viewModel.Job ?? new Job());
-                    newJobViewModel.JobExtension = (viewModel.JobExtension ?? new JobExtension());
-                    newJobViewModel.HydroSpecific = (viewModel.HydroSpecific ?? new HydroSpecific());
-                    newJobViewModel.GenericFeatures = (viewModel.GenericFeatures ?? new GenericFeatures());
-                    newJobViewModel.Indicator = (viewModel.Indicator ?? new Indicator());
-                    newJobViewModel.HoistWayData = (viewModel.HoistWayData ?? new HoistWayData());
-
-                    newJobViewModel.Element = (viewModel.Element ?? new Element());
-                    newJobViewModel.ElementTraction = (viewModel.ElementTraction ?? new ElementTraction());
-                    newJobViewModel.ElementHydro = (viewModel.ElementHydro ?? new ElementHydro());
-
-                    return RedirectToAction("NewTestJob", "TestJob", newJobViewModel);
+                    return RedirectToAction("NewTestJob", "TestJob", onePO.PONumb);
                 }
                 else if(wirerPXP)
                 {
@@ -985,20 +979,8 @@ namespace ProdFloor.Controllers
                         return RedirectToAction("SearchByPO", viewModel);
                     }
                     
-                    WiringPXPViewModel newJobViewModel = new WiringPXPViewModel();
-                     
-                    newJobViewModel.Job = (viewModel.Job ?? new Job());
-                    newJobViewModel.JobExtension = (viewModel.JobExtension ?? new JobExtension());
-                    newJobViewModel.HydroSpecific = (viewModel.HydroSpecific ?? new HydroSpecific());
-                    newJobViewModel.GenericFeatures = (viewModel.GenericFeatures ?? new GenericFeatures());
-                    newJobViewModel.Indicator = (viewModel.Indicator ?? new Indicator());
-                    newJobViewModel.HoistWayData = (viewModel.HoistWayData ?? new HoistWayData());
 
-                    newJobViewModel.Element = (viewModel.Element ?? new Element());
-                    newJobViewModel.ElementTraction = (viewModel.ElementTraction ?? new ElementTraction());
-                    newJobViewModel.ElementHydro = (viewModel.ElementHydro ?? new ElementHydro());
-
-                    return RedirectToAction("NewWiringPXP", "WiringPX", newJobViewModel);
+                    return RedirectToAction("NewWiringPXP", "WiringPX", onePO.PONumb);
 
                 }
                 else
@@ -1018,44 +1000,155 @@ namespace ProdFloor.Controllers
                 TempData["message"] = $"Error, El PO no existe";
                 return RedirectToAction("SearchByPO", viewModel);
             }
+            viewModel.PO.PONumb = CreateDummyByPlanning(reportRow);
+            if (tech)
+                return RedirectToAction("NewTestJob", "TestJob", onePO.PONumb);
+            else if (wirerPXP)
+                return RedirectToAction("NewWiringPXP", "WiringPX", onePO.PONumb);
 
-            return View();
+            TempData["alert"] = $"alert-danger";
+            TempData["message"] = $"Algo salio mal xD";
+            return RedirectToAction("SearchByPO", viewModel);
         }
 
-        public DashboardIndexViewModel GetJobDependencies(PO po, Job job)
+        public int CreateDummyByPlanning(PlanningReportRow reportRow)
         {
             DashboardIndexViewModel viewModel = new DashboardIndexViewModel();
-            
-            viewModel.JobExtension = new JobExtension();
-            viewModel.HydroSpecific = new HydroSpecific();
-            viewModel.GenericFeatures = new GenericFeatures();
-            viewModel.Indicator = new Indicator();
-            viewModel.HoistWayData = new HoistWayData();
-            viewModel.Element = new Element();
-            viewModel.ElementHydro = new ElementHydro();
-            viewModel.ElementTraction = new ElementTraction();
+
+            Job currentJob = new Job();
+            AppUser currentUser = GetCurrentUser().Result;
+
+            Job Job = new Job();
+            Job.Contractor = "Fake"; 
+            Job.Cust = "Fake"; 
+            Job.FireCodeID = 1; 
+            Job.LatestFinishDate = new DateTime(1, 1, 1);
+            Job.EngID = Int32.Parse(reportRow.MRP.Remove(0, 1));
+            Job.Status = "Pending"; 
+            Job.CrossAppEngID = 0;
+            Job.CityID = 1;
+            Job.JobNum = reportRow.JobNumber;
+            Job.JobTypeID = itemRepo.JobTypes.FirstOrDefault(m => m.Name == JobTypeName(reportRow.Material)).JobTypeID;
+            Job.Name = reportRow.JobName;
+            Job.ShipDate = DateTime.Parse(reportRow.ShippingDate);
+            repository.SaveJob(Job);
+            currentJob = repository.Jobs.FirstOrDefault(p => p.JobID == repository.Jobs.Max(x => x.JobID));
 
 
-            switch (viewModel.JobTypeName)
+            switch (JobTypeName(reportRow.Material))
             {
                 case "M2000":
                 case "M4000":
-                    
+
+                    //Save the dummy Job Extension
+                    JobExtension currentExtension = new JobExtension(); currentExtension.JobID = currentJob.JobID; currentExtension.InputFrecuency = 60; currentExtension.InputPhase = 3; currentExtension.DoorGate = "Fake";
+                    currentExtension.InputVoltage = 1; currentExtension.NumOfStops = 2; currentExtension.SHCRisers = 1; currentExtension.DoorHoist = "Fake"; currentExtension.JobTypeAdd = "Fake";
+                    currentExtension.SCOP = false;
+                    currentExtension.SHC = false;
+                    currentExtension.DoorOperatorID = 1;
+                    repository.SaveJobExtension(currentExtension);
+
+                    //Save the dummy Job HydroSpecific
+                    HydroSpecific currenHydroSpecific = new HydroSpecific(); currenHydroSpecific.JobID = currentJob.JobID; currenHydroSpecific.FLA = 1; currenHydroSpecific.HP = 1;
+                    currenHydroSpecific.SPH = 1; currenHydroSpecific.Starter = "Fake"; currenHydroSpecific.ValveCoils = 1; currenHydroSpecific.ValveBrand = "Fake";
+                    currenHydroSpecific.MotorsNum = 1;
+                    repository.SaveHydroSpecific(currenHydroSpecific);
+
+                    //Save the dummy job Indicators
+                    Indicator currentIndicator = new Indicator(); currentIndicator.CarCallsVoltage = "Fake"; currentIndicator.CarCallsVoltageType = "Fake"; currentIndicator.CarCallsType = "Fake";
+                    currentIndicator.HallCallsVoltage = "Fake"; currentIndicator.HallCallsVoltageType = "Fake"; currentIndicator.HallCallsType = "Fake"; currentIndicator.IndicatorsVoltageType = "Fake";
+                    currentIndicator.IndicatorsVoltage = 1; currentIndicator.JobID = currentJob.JobID;
+                    repository.SaveIndicator(currentIndicator);
+
+                    //Save the dummy Job HoistWayData
+                    HoistWayData currentHoistWayData = new HoistWayData(); currentHoistWayData.JobID = currentJob.JobID; currentHoistWayData.Capacity = 1; currentHoistWayData.DownSpeed = 1;
+                    currentHoistWayData.TotalTravel = 1; currentHoistWayData.UpSpeed = 1; currentHoistWayData.HoistWaysNumber = 1; currentHoistWayData.MachineRooms = 1;
+                    repository.SaveHoistWayData(currentHoistWayData);
+
+                    //Save the dummy Job Generic Features
+                    GenericFeatures currentGenericFeatures = new GenericFeatures(); currentGenericFeatures.JobID = currentJob.JobID;
+                    currentGenericFeatures.Monitoring = "Fake";
+                    repository.SaveGenericFeatures(currentGenericFeatures);
 
                     break;
                 case "ElmHydro":
-                    Element element = repository.Elements.FirstOrDefault(m => m.JobID == viewModel.Job.JobID);
-                    ElementHydro elementHydro = repository.ElementHydros.FirstOrDefault(m => m.JobID == viewModel.Job.JobID);
+                    Element element = new Element
+                    {
+                        JobID = currentJob.JobID,
+                        LandingSystemID = 5,
+                        DoorGate = "Fake",
+                        HAPS = false,
+                        INA = "fake",
+                        Capacity = 1,
+                        Frequency = 1,
+                        LoadWeigher = "fake",
+                        Phase = 1,
+                        Speed = 1,
+                        Voltage = 1,
+                        DoorBrand = "fake",
+                    };
+                    element.DoorOperatorID = 1;
 
+                    repository.SaveElement(element);
+                    ElementHydro elementHydro = new ElementHydro
+                    {
+                        JobID = currentJob.JobID,
+                        FLA = 20,
+                        HP = 20,
+                        SPH = 14,
+                        Starter = "fake",
+                        ValveBrand = "fake",
+                    };
+                    repository.SaveElementHydro(elementHydro);
                     break;
                 case "ElmTract":
-                    Element element2 = jobRepo.Elements.FirstOrDefault(m => m.JobID == viewModel.Job.JobID);
-                    ElementTraction elementTract = repository.ElementTractions.FirstOrDefault(m => m.JobID == viewModel.Job.JobID);
-                    break;
 
+                    Element element2 = new Element
+                    {
+                        JobID = currentJob.JobID,
+                        LandingSystemID = 9,
+                        DoorGate = "Fake",
+                        HAPS = false,
+                        INA = "fake",
+                        Capacity = 1,
+                        Frequency = 1,
+                        LoadWeigher = "fake",
+                        Phase = 1,
+                        Speed = 1,
+                        Voltage = 1,
+                        DoorBrand = "fake",
+                    };
+                    element2.DoorOperatorID = 1;
+
+                    repository.SaveElement(element2);
+                    ElementTraction elementTraction = new ElementTraction
+                    {
+                        JobID = currentJob.JobID,
+                        Contact = "fake",
+                        Current = 10,
+                        FLA = 10,
+                        HoldVoltage = 10,
+                        HP = 10,
+                        MachineLocation = "fake",
+                        MotorBrand = "fake",
+                        PickVoltage = 10,
+                        Resistance = 10,
+                        VVVF = "fake"
+
+                    };
+                    repository.SaveElementTraction(elementTraction);
+                    break;
             }
 
-            return viewModel;
+            SpecialFeatures featureFake = new SpecialFeatures(); featureFake.JobID = currentJob.JobID; featureFake.Description = null;
+            repository.SaveSpecialFeatures(featureFake);
+
+            PO POFake = new PO();
+            POFake.JobID = currentJob.JobID;
+            POFake.PONumb = reportRow.PO;
+            repository.SavePO(POFake);
+
+            return POFake.PONumb;
         }
 
     }

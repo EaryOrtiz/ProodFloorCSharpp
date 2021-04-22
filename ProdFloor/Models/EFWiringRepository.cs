@@ -20,14 +20,14 @@ namespace ProdFloor.Models
 
         public void SaveWirerPXP(WiringPXP wirerPXP)
         {
-            if (wirerPXP.WirerPXPID == 0)
+            if (wirerPXP.WiringXPID == 0)
             {
                 context.wiringPXPs.Add(wirerPXP);
             }
             else
             {
                 WiringPXP dbEntry = context.wiringPXPs
-                .FirstOrDefault(p => p.WirerID == wirerPXP.WirerPXPID);
+                .FirstOrDefault(p => p.WirerID == wirerPXP.WiringXPID);
                 if (dbEntry != null)
                 {
                     dbEntry.WirerID = wirerPXP.WirerID;
@@ -51,7 +51,7 @@ namespace ProdFloor.Models
                 .FirstOrDefault(p => p.PXPErrorID == pXPError.PXPErrorID);
                 if (dbEntry != null)
                 {
-                    dbEntry.WirerPXPID = pXPError.WirerPXPID;
+                    dbEntry.WiringXPID = pXPError.WiringXPID;
                     dbEntry.PXPReasonID = pXPError.PXPReasonID;
                     dbEntry.GuiltyWirerID = pXPError.GuiltyWirerID;
                 }
@@ -82,7 +82,7 @@ namespace ProdFloor.Models
         public WiringPXP DeleteWirerPXP(int WirerPXPID)
         {
             WiringPXP dbEntry = context.wiringPXPs
-                 .FirstOrDefault(p => p.WirerPXPID == WirerPXPID);
+                 .FirstOrDefault(p => p.WiringXPID == WirerPXPID);
             if (dbEntry != null)
             {
                 context.wiringPXPs.Remove(dbEntry);
