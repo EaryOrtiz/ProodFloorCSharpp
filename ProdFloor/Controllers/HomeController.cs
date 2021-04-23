@@ -920,7 +920,7 @@ namespace ProdFloor.Controllers
                 JobType = "ElmHydro";
             else if (material.Contains("ELEMENT-AC"))
                 JobType = "ElmTract";
-
+            
 
             return JobType;
         }
@@ -961,6 +961,14 @@ namespace ProdFloor.Controllers
                     if (CurrentTestJob == null)
                     {
                         TempData["alert"] = $"alert-danger";
+                        TempData["message"] = $"Error, tiene un testjob activo, intente de nuevo o contacte al Admin";
+                        return RedirectToAction("SearchByPO", viewModel);
+                    }
+
+                    TestJob TestJobWithSamePO = testingRepo.TestJobs.FirstOrDefault(m => m.SinglePO == onePO.PONumb);
+                    if (CurrentTestJob == null)
+                    {
+                        TempData["alert"] = $"alert-danger";
                         TempData["message"] = $"Error, Ya existe un TestJob con ese PO, intente de nuevo o contacte al Admin";
                         return RedirectToAction("SearchByPO", viewModel);
                     }
@@ -975,10 +983,18 @@ namespace ProdFloor.Controllers
                     if (CurrentWiringPXP == null)
                     {
                         TempData["alert"] = $"alert-danger";
+                        TempData["message"] = $"Error, Ya tiene un PXP activo, intente de nuevo o contacte al Admin";
+                        return RedirectToAction("SearchByPO", viewModel);
+                    }
+
+                    WiringPXP WiringPXPWithSamePO = wiringRepo.wirerPXPs.FirstOrDefault(m => m.SinglePO == onePO.PONumb);
+                    if (WiringPXPWithSamePO == null)
+                    {
+                        TempData["alert"] = $"alert-danger";
                         TempData["message"] = $"Error, Ya existe un PXP con ese PO, intente de nuevo o contacte al Admin";
                         return RedirectToAction("SearchByPO", viewModel);
                     }
-                    
+
 
                     return RedirectToAction("NewWiringPXP", "WiringPX", onePO.PONumb);
 
@@ -1005,6 +1021,7 @@ namespace ProdFloor.Controllers
                 return RedirectToAction("NewTestJob", "TestJob", onePO.PONumb);
             else if (wirerPXP)
                 return RedirectToAction("NewWiringPXP", "WiringPX", onePO.PONumb);
+
 
             TempData["alert"] = $"alert-danger";
             TempData["message"] = $"Algo salio mal xD";
