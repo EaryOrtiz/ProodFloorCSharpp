@@ -76,8 +76,18 @@ namespace ProdFloor.Controllers
 
             foreach (PlanningReportRow row in NFPRows)
             {
-                if (planningReportRows.Any(m => m.PO == row.PO))
+                if (planningReportRows.Any(m => m.PO == row.PO && m.Material == m.JobName))
+                {
+                    PlanningReportRow resistorRow = planningReportRows.FirstOrDefault(m => m.PO == row.PO);
+                    resistorRow.JobName = row.JobName;
+
                     continue;
+
+                }
+                else if (planningReportRows.Any(m => m.PO == row.PO))
+                {
+                    continue;
+                }
 
                 planningReportRows.Add(row);
             }
@@ -131,8 +141,18 @@ namespace ProdFloor.Controllers
 
             foreach (PlanningReportRow row in NFPRows)
             {
-                if (planningReportRows.Any(m => m.PO == row.PO))
+                if (planningReportRows.Any(m => m.PO == row.PO && m.Material == m.JobName))
+                {
+                    PlanningReportRow resistorRow = planningReportRows.FirstOrDefault(m => m.PO == row.PO);
+                    resistorRow.JobName = row.JobName;
+
                     continue;
+
+                }
+                else if (planningReportRows.Any(m => m.PO == row.PO))
+                {
+                    continue;
+                }
 
                 planningReportRows.Add(row);
             }
