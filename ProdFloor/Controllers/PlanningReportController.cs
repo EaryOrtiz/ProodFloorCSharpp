@@ -194,10 +194,19 @@ namespace ProdFloor.Controllers
 
             foreach (PlanningReportRow row in NFPRows)
             {
-                if (planningReportRows.Any(m => m.PO == row.PO))
+                if (planningReportRows.Any(m => m.PO == row.PO && m.Material == m.JobName))
+                {
+                    PlanningReportRow resistorRow = planningReportRows.FirstOrDefault(m => m.PO == row.PO);
+                    resistorRow.JobName = row.JobName;
+
                     continue;
 
-                planningReportRows.Add(row);
+                }else if (planningReportRows.Any(m => m.PO == row.PO))
+                {
+                    continue;
+                }
+
+                    planningReportRows.Add(row);
             }
 
 
@@ -475,7 +484,7 @@ namespace ProdFloor.Controllers
                 doc.Replace("DueDate", viewModel.DueDate.ToShortDateString(), true, true);
                 doc.Replace("CARNUMBER", viewModel.CarNumber.ToUpper(), true, true);
                 doc.Replace("ConfigGuy", viewModel.ConfigGuy.ToUpper(), true, true);
-                doc.Replace("EngName", EngName.ToUpper(), true, true); 
+                doc.Replace("EngName", EngName.ToUpper(), true, true);
 
                 using (memoryStream)
                 {
