@@ -24,7 +24,7 @@
 <div class="container ml-0 mt-5 col-12">
     <div class="row col-12">
         <div class="printableArea col-12">
-            <table class="table table-bordered text-center align-content-center w-100" style="font-size: 78px;">
+            <table class="table table-bordered text-center align-content-center w-100" style="font-size: 75px;">
                 <tbody>
                     <tr>
                         <th colspan="6">
@@ -35,7 +35,7 @@
                         </th>
                     </tr>
                     <tr>
-                        <th colspan="12">
+                        <th style="font-size: 85px;" colspan="12">
                             @Model.ReportRow.JobNumber
                         </th>
                     </tr>
@@ -48,14 +48,14 @@
                         </th>
                     </tr>
                     <tr>
-                        <th colspan="12">
+                        <th style="font-size: 55px;" colspan="12">
                             @Model.ReportRow.JobName
                         </th>
                     </tr>
                 </tbody>
             </table>
-            <p style="font-size: 22px">Final____:____H:M QC____:____H:M</p>
-            <p>@Model.PrintableNotes</p>
+            <p style="font-size: 20px">Final____:____H:M QC____:____H:M</p>
+            <p class="font-weight-bold border-bottom border-top border-left border-right" style="font-size: 20px">@Model.PrintableNotes</p>
         </div>
         <div class="col text-center">
             <div class="btn-group">
