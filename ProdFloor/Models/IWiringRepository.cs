@@ -9,14 +9,16 @@ namespace ProdFloor.Models
     {
         IQueryable<WiringPXP> wirerPXPs { get; }
         IQueryable<PXPError> pXPErrors { get; }
-        IQueryable<PXPReason> pXPReasons { get; }
+        IQueryable<WiringStation> wiringStations { get; }
 
         void SaveWirerPXP(WiringPXP wirerPXP);
         void SavePXPError(PXPError pXPError);
         void SavePXPReason(PXPReason pXPReason);
+        void SaveWiringStation(WiringStation wiringStation);
 
         WiringPXP DeleteWirerPXP(int WiringPXPID);
         PXPError DeletePXPError(int PXPErrorID);
         PXPReason DeletePXPReason(int PXPReasonID);
+        WiringStation DeleteWiringStation(int WiringStationID);
     }
 }

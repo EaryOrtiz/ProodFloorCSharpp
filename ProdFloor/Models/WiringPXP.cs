@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -12,6 +13,8 @@ namespace ProdFloor.Models
         public string Status { get; set; }
 
         public int JobID { get; set; }
+
+        public int WiringStationID { get; set; }
 
         public int SinglePO { get; set; }
 
@@ -38,5 +41,17 @@ namespace ProdFloor.Models
         public int PXPReasonID { get; set; }
 
         public string Description { get; set; }
+    }
+
+    public class WiringStation
+    {
+        public int WiringStationID { get; set; }
+        public string Label { get; set; }
+
+        //wiring or pxp
+        public string Type { get; set; }
+
+        [Display(Name = "Job Type")]
+        public int JobTypeID { get; set; }
     }
 }

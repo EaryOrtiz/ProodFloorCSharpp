@@ -69,6 +69,7 @@ namespace ProdFloor.Controllers
             bool kitting = GetCurrentUserRole("Kitting").Result;
             bool WirerAdmin = GetCurrentUserRole("WirerAdmin").Result;
             bool wirer = GetCurrentUserRole("Wirer").Result;
+            bool wirerPXP = GetCurrentUserRole("WirerPXP").Result;
 
             if (filtrado != null) Sort = filtrado;
             if (engineer)
@@ -217,6 +218,8 @@ namespace ProdFloor.Controllers
             if (WirerAdmin) return RedirectToAction("ProductionAdminDash", "Wiring");
 
             if (wirer) return RedirectToAction("ProductionAdminDash", "Wiring");
+
+            if (wirerPXP) return RedirectToAction("PXPDashboard", "WiringPXP");
 
             return NotFound();
         }
@@ -923,6 +926,11 @@ namespace ProdFloor.Controllers
             
 
             return JobType;
+        }
+
+        public ViewResult SearchByPO()
+        {
+            return View(new DashboardIndexViewModel());
         }
 
         [HttpPost]

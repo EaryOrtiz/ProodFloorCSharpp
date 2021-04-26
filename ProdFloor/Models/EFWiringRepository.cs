@@ -17,6 +17,7 @@ namespace ProdFloor.Models
         public IQueryable<WiringPXP> wirerPXPs => context.wiringPXPs;
         public IQueryable<PXPError> pXPErrors => context.pXPErrors;
         public IQueryable<PXPReason> pXPReasons => context.pXPReasons;
+        public IQueryable<WiringStation> wiringStations => context.wiringStations;
 
         public void SaveWirerPXP(WiringPXP wirerPXP)
         {
@@ -79,6 +80,27 @@ namespace ProdFloor.Models
 
         }
 
+        public void SaveWiringStation(WiringStation wiringStation)
+        {
+            if (wiringStation.WiringStationID == 0)
+            {
+                context.wiringStations.Add(wiringStation);
+            }
+            else
+            {
+                WiringStation dbEntry = context.wiringStations
+                .FirstOrDefault(p => p.WiringStationID == wiringStation.WiringStationID);
+                if (dbEntry != null)
+                {
+                    dbEntry.JobTypeID = wiringStation.JobTypeID;
+                    dbEntry.Label = wiringStation.Label;
+                    dbEntry.Type = wiringStation.Type;
+                }
+            }
+            context.SaveChanges();
+
+        }
+
         public WiringPXP DeleteWirerPXP(int WirerPXPID)
         {
             WiringPXP dbEntry = context.wiringPXPs
@@ -110,6 +132,18 @@ namespace ProdFloor.Models
             if (dbEntry != null)
             {
                 context.pXPReasons.Remove(dbEntry);
+                context.SaveChanges();
+            }
+            return dbEntry;
+        }
+
+        public WiringStation DeleteWiringStation(int WiringStationID)
+        {
+            WiringStation dbEntry = context.wiringStations
+                  .FirstOrDefault(p => p.WiringStationID == WiringStationID);
+            if (dbEntry != null)
+            {
+                context.wiringStations.Remove(dbEntry);
                 context.SaveChanges();
             }
             return dbEntry;
