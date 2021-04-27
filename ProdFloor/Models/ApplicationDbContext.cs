@@ -80,8 +80,6 @@ namespace ProdFloor.Models
         public DbSet<WiringPXP> wiringPXPs { get; set; }
         public DbSet<PXPError> pXPErrors { get; set; }
         public DbSet<PXPReason> pXPReasons { get; set; }
-        public DbSet<WiringStation> wiringStations { get; set; }
-
 
 
         protected override void OnModelCreating(ModelBuilder builder)

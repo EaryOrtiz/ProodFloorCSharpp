@@ -7,18 +7,16 @@ namespace ProdFloor.Models
 {
     public interface IWiringRepository
     {
-        IQueryable<WiringPXP> wirerPXPs { get; }
+        IQueryable<WiringPXP> wiringPXPs { get; }
         IQueryable<PXPError> pXPErrors { get; }
-        IQueryable<WiringStation> wiringStations { get; }
+        IQueryable<PXPReason> pXPReasons { get; }
 
-        void SaveWirerPXP(WiringPXP wirerPXP);
+        void SaveWiringPXP(WiringPXP wiringPXP);
         void SavePXPError(PXPError pXPError);
         void SavePXPReason(PXPReason pXPReason);
-        void SaveWiringStation(WiringStation wiringStation);
 
         WiringPXP DeleteWirerPXP(int WiringPXPID);
         PXPError DeletePXPError(int PXPErrorID);
         PXPReason DeletePXPReason(int PXPReasonID);
-        WiringStation DeleteWiringStation(int WiringStationID);
     }
 }

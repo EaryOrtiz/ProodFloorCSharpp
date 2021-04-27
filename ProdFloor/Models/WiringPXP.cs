@@ -8,13 +8,13 @@ namespace ProdFloor.Models
 {
     public class WiringPXP
     {
-        public int WiringXPID { get; set; }
+        public int WiringPXPID { get; set; }
 
         public string Status { get; set; }
 
         public int JobID { get; set; }
 
-        public int WiringStationID { get; set; }
+        public int StationID { get; set; }
 
         public int SinglePO { get; set; }
 
@@ -29,7 +29,7 @@ namespace ProdFloor.Models
     {
         public int PXPErrorID { get; set; }
 
-        public int WiringXPID { get; set; }
+        public int WiringPXPID { get; set; }
 
         public int PXPReasonID { get; set; }
 
@@ -43,15 +43,4 @@ namespace ProdFloor.Models
         public string Description { get; set; }
     }
 
-    public class WiringStation
-    {
-        public int WiringStationID { get; set; }
-        public string Label { get; set; }
-
-        //wiring or pxp
-        public string Type { get; set; }
-
-        [Display(Name = "Job Type")]
-        public int JobTypeID { get; set; }
-    }
 }

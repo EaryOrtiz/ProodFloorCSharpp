@@ -14,26 +14,27 @@ namespace ProdFloor.Models
             context = ctx;
         }
 
-        public IQueryable<WiringPXP> wirerPXPs => context.wiringPXPs;
+        public IQueryable<WiringPXP> wiringPXPs => context.wiringPXPs;
         public IQueryable<PXPError> pXPErrors => context.pXPErrors;
         public IQueryable<PXPReason> pXPReasons => context.pXPReasons;
-        public IQueryable<WiringStation> wiringStations => context.wiringStations;
 
-        public void SaveWirerPXP(WiringPXP wirerPXP)
+        public void SaveWiringPXP(WiringPXP wiringPXP)
         {
-            if (wirerPXP.WiringXPID == 0)
+            if (wiringPXP.WiringPXPID == 0)
             {
-                context.wiringPXPs.Add(wirerPXP);
+                context.wiringPXPs.Add(wiringPXP);
             }
             else
             {
                 WiringPXP dbEntry = context.wiringPXPs
-                .FirstOrDefault(p => p.WirerID == wirerPXP.WiringXPID);
+                .FirstOrDefault(p => p.WirerID == wiringPXP.WiringPXPID);
                 if (dbEntry != null)
                 {
-                    dbEntry.WirerID = wirerPXP.WirerID;
-                    dbEntry.JobID = wirerPXP.JobID;
-                    dbEntry.SinglePO = wirerPXP.SinglePO;
+                    dbEntry.WirerID = wiringPXP.WirerID;
+                    dbEntry.JobID = wiringPXP.JobID;
+                    dbEntry.SinglePO = wiringPXP.SinglePO;
+                    dbEntry.Status = wiringPXP.Status;
+                    dbEntry.StationID = wiringPXP.StationID;
                 }
             }
             context.SaveChanges();
@@ -52,7 +53,7 @@ namespace ProdFloor.Models
                 .FirstOrDefault(p => p.PXPErrorID == pXPError.PXPErrorID);
                 if (dbEntry != null)
                 {
-                    dbEntry.WiringXPID = pXPError.WiringXPID;
+                    dbEntry.WiringPXPID = pXPError.WiringPXPID;
                     dbEntry.PXPReasonID = pXPError.PXPReasonID;
                     dbEntry.GuiltyWirerID = pXPError.GuiltyWirerID;
                 }
@@ -80,31 +81,11 @@ namespace ProdFloor.Models
 
         }
 
-        public void SaveWiringStation(WiringStation wiringStation)
-        {
-            if (wiringStation.WiringStationID == 0)
-            {
-                context.wiringStations.Add(wiringStation);
-            }
-            else
-            {
-                WiringStation dbEntry = context.wiringStations
-                .FirstOrDefault(p => p.WiringStationID == wiringStation.WiringStationID);
-                if (dbEntry != null)
-                {
-                    dbEntry.JobTypeID = wiringStation.JobTypeID;
-                    dbEntry.Label = wiringStation.Label;
-                    dbEntry.Type = wiringStation.Type;
-                }
-            }
-            context.SaveChanges();
-
-        }
 
         public WiringPXP DeleteWirerPXP(int WirerPXPID)
         {
             WiringPXP dbEntry = context.wiringPXPs
-                 .FirstOrDefault(p => p.WiringXPID == WirerPXPID);
+                 .FirstOrDefault(p => p.WiringPXPID == WirerPXPID);
             if (dbEntry != null)
             {
                 context.wiringPXPs.Remove(dbEntry);
@@ -137,17 +118,6 @@ namespace ProdFloor.Models
             return dbEntry;
         }
 
-        public WiringStation DeleteWiringStation(int WiringStationID)
-        {
-            WiringStation dbEntry = context.wiringStations
-                  .FirstOrDefault(p => p.WiringStationID == WiringStationID);
-            if (dbEntry != null)
-            {
-                context.wiringStations.Remove(dbEntry);
-                context.SaveChanges();
-            }
-            return dbEntry;
-        }
 
     }
 }

@@ -70,5 +70,13 @@ namespace ProdFloor.Models.ViewModels
 
         public string JobTypeName { get; set; }
 
+        //for WiringPXP
+        public IEnumerable<WiringPXP> MyWiringPXPs { get; set; }
+        public PagingInfo MyWiringPXPsPagingInfo { get; set; }
+        public IEnumerable<WiringPXP> OnCrossWiringPXPS { get; set; }
+        public PagingInfo OnCrossWiringPXPsPagingInfo { get; set; }
+        public IEnumerable<WiringPXP> PendingToCrossWiringPXPs { get; set; }
+        public PagingInfo PendingToCrossWiringPXPsPagingInfo { get; set; }
+
     }
 }

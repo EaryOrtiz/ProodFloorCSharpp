@@ -987,7 +987,7 @@ namespace ProdFloor.Controllers
                 else if(wirerPXP)
                 {
 
-                    WiringPXP CurrentWiringPXP = wiringRepo.wirerPXPs.FirstOrDefault(m => m.WirerID == currentUser.EngID && m.Status == "Working on it");
+                    WiringPXP CurrentWiringPXP = wiringRepo.wiringPXPs.FirstOrDefault(m => m.WirerID == currentUser.EngID && m.Status == "Working on it");
                     if (CurrentWiringPXP == null)
                     {
                         TempData["alert"] = $"alert-danger";
@@ -995,7 +995,7 @@ namespace ProdFloor.Controllers
                         return RedirectToAction("SearchByPO", viewModel);
                     }
 
-                    WiringPXP WiringPXPWithSamePO = wiringRepo.wirerPXPs.FirstOrDefault(m => m.SinglePO == onePO.PONumb);
+                    WiringPXP WiringPXPWithSamePO = wiringRepo.wiringPXPs.FirstOrDefault(m => m.SinglePO == onePO.PONumb);
                     if (WiringPXPWithSamePO == null)
                     {
                         TempData["alert"] = $"alert-danger";
@@ -1004,7 +1004,7 @@ namespace ProdFloor.Controllers
                     }
 
 
-                    return RedirectToAction("NewWiringPXP", "WiringPX", onePO.PONumb);
+                    return RedirectToAction("NewWiringPXP", "WiringPXP", onePO.PONumb);
 
                 }
                 else
@@ -1028,7 +1028,7 @@ namespace ProdFloor.Controllers
             if (tech)
                 return RedirectToAction("NewTestJob", "TestJob", onePO.PONumb);
             else if (wirerPXP)
-                return RedirectToAction("NewWiringPXP", "WiringPX", onePO.PONumb);
+                return RedirectToAction("NewWiringPXP", "WiringPXP", onePO.PONumb);
 
 
             TempData["alert"] = $"alert-danger";
