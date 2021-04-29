@@ -144,6 +144,16 @@ namespace ProdFloor.Controllers
             return View(viewModel);
         }
 
+        public IActionResult NewPXPError(WiringPXPViewModel viewModel)
+        {
+            viewModel.pXPError = new PXPError();
+            viewModel.wiringPXP = wiringRepo.wiringPXPs.FirstOrDefault(m => m.WiringPXPID == viewModel.wiringPXP.WiringPXPID);
+
+           
+
+            return View(viewModel);
+        }
+
         [HttpPost]
         public IActionResult AddPXPError(WiringPXPViewModel viewModel)
         {
@@ -169,36 +179,50 @@ namespace ProdFloor.Controllers
             viewModel.pXPError.WiringPXPID = wiringPXP.WiringPXPID;
             wiringRepo.SavePXPError(viewModel.pXPError);
 
+            TempData["message"] = $"Nuevo error añadido con exito.";
             return RedirectToAction("NewWiringPXP", wiringPXP.SinglePO);
+        }
+
+
+        public IActionResult EditPXPError(int ID)
+        {
+            PXPError pXPError = wiringRepo.pXPErrors.FirstOrDefault(m => m.WiringPXPID == ID);
+            WiringPXP wiringPXP = wiringRepo.wiringPXPs.FirstOrDefault(m => m.WiringPXPID == pXPError.WiringPXPID);
+
+            WiringPXPViewModel viewModel = new WiringPXPViewModel()
+            {
+                pXPError = pXPError,
+                wiringPXP = wiringPXP,
+            };
+
+            return View(viewModel);
         }
 
         [HttpPost]
         public IActionResult EditPXPError(WiringPXPViewModel viewModel)
         {
-            AppUser currentUser = GetCurrentUser().Result;
-            WiringPXP wiringPXP = wiringRepo.wiringPXPs.FirstOrDefault(m => m.JobID == viewModel.Job.JobID);
-
-            if (wiringPXP == null)
-            {
-                WiringPXP wiring = new WiringPXP()
-                {
-                    JobID = viewModel.Job.JobID,
-                    StationID = viewModel.wiringPXP.StationID,
-                    WirerID = currentUser.EngID,
-                    SinglePO = viewModel.wiringPXP.SinglePO,
-                    Status = "Working on it",
-                };
-
-                wiringRepo.SaveWiringPXP(wiringPXP);
-
-                wiringPXP = wiringRepo.wiringPXPs.FirstOrDefault(m => m.JobID == viewModel.Job.JobID);
-            }
-
-            viewModel.pXPError.WiringPXPID = wiringPXP.WiringPXPID;
             wiringRepo.SavePXPError(viewModel.pXPError);
+
+            TempData["message"] = $"Error actualizado con exito.";
+            return RedirectToAction("NewWiringPXP", viewModel.wiringPXP.SinglePO);
+        }
+
+        [HttpPost]
+        public IActionResult DeletePXPError(int ID)
+        {
+            PXPError deletedError = wiringRepo.DeletePXPError(ID);
+            WiringPXP wiringPXP = wiringRepo.wiringPXPs.FirstOrDefault(m => m.WiringPXPID == deletedError.WiringPXPID);
+            PXPReason reasonPXP = wiringRepo.pXPReasons.FirstOrDefault(m => m.PXPReasonID == deletedError.PXPReasonID);
+
+            if (deletedError != null)
+            {
+                TempData["message"] = $"{reasonPXP.Description} was deleted";
+            }
 
             return RedirectToAction("NewWiringPXP", wiringPXP.SinglePO);
         }
+
+        
 
 
     }
