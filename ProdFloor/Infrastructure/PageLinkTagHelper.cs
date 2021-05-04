@@ -5426,4 +5426,96 @@ namespace ProdFloor.Infrastructure
         }
     }
 
+    public class UserInputTagHelper : TagHelper
+    {
+        private IWiringRepository repository;
+
+        private IUrlHelperFactory urlHelperFactory;
+
+        private UserManager<AppUser> userManager;
+
+
+        public ModelExpression AspFor { get; set; }
+
+        public UserInputTagHelper(IUrlHelperFactory helperFactory, UserManager<AppUser> userMrg)
+        {
+            urlHelperFactory = helperFactory;
+            userManager = userMrg;
+        }
+
+        [ViewContext]
+        [HtmlAttributeNotBound]
+        public ViewContext ViewContext { get; set; }
+        public int UserID { get; set; }
+
+        public override void Process(TagHelperContext context, TagHelperOutput output)
+        {
+
+            IUrlHelper urlHelper = urlHelperFactory.GetUrlHelper(ViewContext);
+            output.TagName = "input";
+            TagBuilder result = new TagBuilder("input");
+            string name = this.AspFor.Name;
+            if (!String.IsNullOrEmpty(name))
+            {
+                output.Attributes.Add("name", name);
+            }
+
+            AppUser user = userManager.Users.FirstOrDefault(m => m.EngID == UserID);
+
+            TagBuilder tag = new TagBuilder("input");
+            tag.Attributes.Add("name", "UserName");
+            tag.Attributes.Add("type", "text");
+            tag.Attributes.Add("value", user == null ? "Error" : user.FullName);
+
+            output.Content.AppendHtml(result.InnerHtml);
+            base.Process(context, output);
+        }
+    }
+
+    public class PXPReasonInputTagHelper : TagHelper
+    {
+        private IWiringRepository repository;
+
+        private IUrlHelperFactory urlHelperFactory;
+
+        private UserManager<AppUser> userManager;
+
+
+        public ModelExpression AspFor { get; set; }
+
+        public PXPReasonInputTagHelper(IUrlHelperFactory helperFactory, IWiringRepository repo)
+        {
+            urlHelperFactory = helperFactory;
+            repository = repo;
+        }
+        
+        [ViewContext]
+        [HtmlAttributeNotBound]
+        public ViewContext ViewContext { get; set; }
+        public int ReasonID { get; set; }
+
+        public override void Process(TagHelperContext context, TagHelperOutput output)
+        {
+
+            IUrlHelper urlHelper = urlHelperFactory.GetUrlHelper(ViewContext);
+            output.TagName = "input";
+            TagBuilder result = new TagBuilder("input");
+            string name = this.AspFor.Name;
+            if (!String.IsNullOrEmpty(name))
+            {
+                output.Attributes.Add("name", name);
+            }
+
+            PXPReason reason = repository.pXPReasons.FirstOrDefault(m => m.PXPReasonID == ReasonID);
+
+            TagBuilder tag = new TagBuilder("input");
+            tag.Attributes.Add("name", "UserName");
+            tag.Attributes.Add("type", "text");
+            tag.Attributes.Add("value", reason == null ? "Error" : reason.Description);
+
+            output.Content.AppendHtml(result.InnerHtml);
+            base.Process(context, output);
+        }
+    }
+
 }

@@ -1,0 +1,54 @@
+﻿@model ProdFloor.Models.ViewModels.Wiring.WiringPXPViewModel
+@{
+    <script>$(document).ready(function () { $('[data-tooltip="tooltip"]').tooltip(); });</script>
+}
+<div class="col justify-content-md-center">
+    <div class="table-responsive">
+        <table class="table form-control">
+            <thead>
+                <tr>
+                    <td style="text-align:center;">Errores</td>
+                    <td>
+                        <button asp-action="AddPXPError" class="btn btn-success btn-sm">
+                            <i class="fas fa-plus-circle"></i>&nbsp;
+                        </button>
+                    </td>
+                </tr>
+            </thead>
+
+            <tbody style="text-align:">
+                @for (int i = 0; i < Model.pXPErrorList.Count; i++)
+                {
+                    <tr>
+                        <td>
+                            <label class="col-4 col-form-label">Cableadora:</label>
+                            <div class="col-5">
+                                <user-input user-id="@Model.pXPErrorList[i].GuiltyWirerID"></user-input>
+                            </div>
+                            <label class="col-4 col-form-label">Error:</label>
+                            <div class="col-5">
+                                <pxp-reason-input reason-id="@Model.pXPErrorList[i].PXPReasonID"></pxp-reason-input>
+                            </div>
+                        </td>
+                        <td style="text-align:center;">
+                            <form asp-action="DeletePXPError" method="post">
+                                <input type="hidden" name="ID" value="@Model.pXPErrorList[i].PXPErrorID" />
+                                <input type="hidden" name="returnUrl" value="\WiringPXP\EditPXPError\@Model.pXPErrorList[i].PXPErrorID" />
+                                <button type="submit" class="btn btn-danger btn-sm">
+                                    <i class="fa fa-minus-circle"></i>
+                                </button>
+                            </form>
+
+                        </td>
+
+
+
+                    </tr>
+
+                }
+            </tbody>
+
+        </table>
+
+    </div>
+</div>

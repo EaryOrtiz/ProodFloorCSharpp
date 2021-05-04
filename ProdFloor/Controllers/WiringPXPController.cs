@@ -149,7 +149,6 @@ namespace ProdFloor.Controllers
             viewModel.pXPError = new PXPError();
             viewModel.wiringPXP = wiringRepo.wiringPXPs.FirstOrDefault(m => m.WiringPXPID == viewModel.wiringPXP.WiringPXPID);
 
-           
 
             return View(viewModel);
         }
@@ -203,7 +202,7 @@ namespace ProdFloor.Controllers
         {
             wiringRepo.SavePXPError(viewModel.pXPError);
 
-            TempData["message"] = $"Error actualizado con exito.";
+            TempData["message"] = $"PXPError actualizado con exito.";
             return RedirectToAction("NewWiringPXP", viewModel.wiringPXP.SinglePO);
         }
 
