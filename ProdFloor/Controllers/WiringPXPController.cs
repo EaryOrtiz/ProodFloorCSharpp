@@ -144,22 +144,42 @@ namespace ProdFloor.Controllers
             return View(viewModel);
         }
 
-        public IActionResult NewPXPError(WiringPXPViewModel viewModel)
-        {
-            viewModel.pXPError = new PXPError();
-            viewModel.wiringPXP = wiringRepo.wiringPXPs.FirstOrDefault(m => m.WiringPXPID == viewModel.wiringPXP.WiringPXPID);
-
-
-            return View(viewModel);
-        }
-
-        [HttpPost]
-        public IActionResult AddPXPError(WiringPXPViewModel viewModel)
+        public IActionResult EndWiringPXP(WiringPXPViewModel viewModel)
         {
             AppUser currentUser = GetCurrentUser().Result;
-            WiringPXP wiringPXP = wiringRepo.wiringPXPs.FirstOrDefault(m => m.JobID == viewModel.Job.JobID);
+            WiringPXP wiringPXP = wiringRepo.wiringPXPs.FirstOrDefault(m => m.WiringPXPID == viewModel.wiringPXP.WiringPXPID);
 
-            if(wiringPXP == null)
+            if (wiringPXP == null)
+            {
+                WiringPXP wiring = new WiringPXP()
+                {
+                    JobID = viewModel.Job.JobID,
+                    StationID = viewModel.wiringPXP.StationID,
+                    WirerID = currentUser.EngID,
+                    SinglePO = viewModel.wiringPXP.SinglePO,
+                    Status = "Complete",
+                };
+
+                wiringRepo.SaveWiringPXP(wiringPXP);
+
+                wiringPXP = wiringRepo.wiringPXPs.FirstOrDefault(m => m.JobID == viewModel.Job.JobID);
+            }
+            else
+            {
+                wiringPXP.Status = "Complete";
+                wiringRepo.SaveWiringPXP(wiringPXP);
+            }
+
+            TempData["message"] = $"PXP del PO #" +wiringPXP.SinglePO + " finalizado";
+            return RedirectToAction("PXPDashboard");
+        }
+
+        public IActionResult NewPXPError(WiringPXPViewModel viewModel)
+        {
+            AppUser currentUser = GetCurrentUser().Result;
+            WiringPXP wiringPXP = wiringRepo.wiringPXPs.FirstOrDefault(m => m.WiringPXPID == viewModel.wiringPXP.WiringPXPID);
+
+            if (wiringPXP == null)
             {
                 WiringPXP wiring = new WiringPXP()
                 {
@@ -174,6 +194,17 @@ namespace ProdFloor.Controllers
 
                 wiringPXP = wiringRepo.wiringPXPs.FirstOrDefault(m => m.JobID == viewModel.Job.JobID);
             }
+
+            viewModel.wiringPXP = wiringPXP;
+            viewModel.pXPError = new PXPError();
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public IActionResult AddPXPError(WiringPXPViewModel viewModel)
+        {
+            WiringPXP wiringPXP = wiringRepo.wiringPXPs.FirstOrDefault(m => m.WiringPXPID == viewModel.wiringPXP.WiringPXPID);
 
             viewModel.pXPError.WiringPXPID = wiringPXP.WiringPXPID;
             wiringRepo.SavePXPError(viewModel.pXPError);

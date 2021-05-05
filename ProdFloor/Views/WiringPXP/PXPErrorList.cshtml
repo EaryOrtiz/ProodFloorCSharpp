@@ -9,7 +9,7 @@
                 <tr>
                     <td style="text-align:center;">Errores</td>
                     <td>
-                        <button asp-action="AddPXPError" class="btn btn-success btn-sm">
+                        <button type="submit" asp-action="NewPXPError" class="btn btn-success btn-sm">
                             <i class="fas fa-plus-circle"></i>&nbsp;
                         </button>
                     </td>
@@ -33,7 +33,7 @@
                         <td style="text-align:center;">
                             <form asp-action="DeletePXPError" method="post">
                                 <input type="hidden" name="ID" value="@Model.pXPErrorList[i].PXPErrorID" />
-                                <input type="hidden" name="returnUrl" value="\WiringPXP\EditPXPError\@Model.pXPErrorList[i].PXPErrorID" />
+                                <input type="hidden" name="Edit" value="\WiringPXP\EditPXPError\@Model.pXPErrorList[i].PXPErrorID" />
                                 <button type="submit" class="btn btn-danger btn-sm">
                                     <i class="fa fa-minus-circle"></i>
                                 </button>

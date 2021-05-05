@@ -5266,6 +5266,14 @@ namespace ProdFloor.Infrastructure
                         }
                         users = usersAux.AsQueryable();
                         break;
+                    case "Wirer":
+                        foreach (AppUser user in users)
+                        {
+                            bool IsInRole = GetCurrentUserRole(user, "Wirer").Result;
+                            if (IsInRole) usersAux.Add(user);
+                        }
+                        users = usersAux.AsQueryable();
+                        break;
                 }
             }
             foreach (AppUser user in users)
@@ -5313,6 +5321,8 @@ namespace ProdFloor.Infrastructure
         public int SelectedValue { get; set; }
         public int SelectFor { get; set; }
 
+        public string JobType { get; set; }
+
 
         [HtmlAttributeName("asp-is-disabled")]
         public bool IsDisabled { set; get; }
@@ -5336,6 +5346,10 @@ namespace ProdFloor.Infrastructure
             IQueryable<Station> stations = testingRepository.Stations.Where(m => m.StationID != 0).OrderBy(s => s.Label).AsQueryable();
             if (SelectFor != 0) { 
                 stations = testingRepository.Stations.OrderBy(s => s.Label).Where(m => m.JobTypeID == SelectFor && m.StationID != 0).AsQueryable(); 
+            }else if (!string.IsNullOrEmpty(JobType))
+            {
+                JobType jobTypeAUx = itemsrepository.JobTypes.FirstOrDefault(m => m.Name == JobType);
+                stations = testingRepository.Stations.OrderBy(s => s.Label).Where(m => m.JobTypeID == SelectFor && m.StationID != 0).AsQueryable();
             }
             foreach (Station station in stations)
             {
