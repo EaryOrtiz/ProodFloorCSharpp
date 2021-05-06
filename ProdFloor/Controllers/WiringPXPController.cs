@@ -144,6 +144,7 @@ namespace ProdFloor.Controllers
             return View(viewModel);
         }
 
+        [HttpPost]
         public IActionResult EndWiringPXP(WiringPXPViewModel viewModel)
         {
             AppUser currentUser = GetCurrentUser().Result;

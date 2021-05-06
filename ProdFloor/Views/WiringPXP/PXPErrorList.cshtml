@@ -34,7 +34,7 @@
                             <form asp-action="DeletePXPError" method="post">
                                 <input type="hidden" name="ID" value="@Model.pXPErrorList[i].PXPErrorID" />
                                 <input type="hidden" name="Edit" value="\WiringPXP\EditPXPError\@Model.pXPErrorList[i].PXPErrorID" />
-                                <button type="submit" class="btn btn-danger btn-sm">
+                                <button type="submit" asp-action="DeletePXPError" class="btn btn-danger btn-sm">
                                     <i class="fa fa-minus-circle"></i>
                                 </button>
                             </form>

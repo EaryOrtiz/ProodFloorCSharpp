@@ -2,7 +2,7 @@
 @{
     ViewBag.Title = "New PXP Error";
 }
-<form asp-controller="Stop" asp-action="WiringPXP" method="post">
+<form asp-controller="WiringPXP" asp-action="AddPXPError" method="post">
     <input type="hidden" asp-for="pXPError.PXPErrorID" />
     <input type="hidden" asp-for="wiringPXP.WiringPXPID" />
     <input type="hidden" asp-for="wiringPXP.SinglePO" />
@@ -28,6 +28,7 @@
     <div class="justify-content-md-center text-center">
         <div class="btn-group row " style="position:center" role="group" aria-label="Basic example">
             <button class="btn btn-primary" type="submit">Guardar</button>
+            <a class="btn btn-lg btn-secondary"  asp-action="NewWiringPXP" asp-route-PONumb="@Model.wiringPXP.SinglePO">Cancelar</a>
         </div>
     </div>
 </form>

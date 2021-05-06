@@ -32,7 +32,7 @@
             <div class="form-group row">
                 <label asp-for="wiringPXP.StationID" class="col-sm-2 col-form-label"></label>
                 <div>
-                    <station-select select-for="@Model.Job.JobTypeID" selected-value="@Model.wiringPXP.StationID"  class="form-control form-control-sm" asp-for="wiringPXP.StationID"></station-select>
+                    <station-select job-type="WiringPXP" selected-value="@Model.wiringPXP.StationID"  class="form-control form-control-sm" asp-for="wiringPXP.StationID"></station-select>
                     <span asp-validation-for="wiringPXP.StationID" class="text-danger"></span>
                 </div>
             </div>
@@ -41,6 +41,12 @@
             @Html.Partial("PXPErrorList", Model)
         </div>
     </form>
+    <div class="btn-group">
+        <form asp-action="EndWiringPXP" method="post">
+            <button type="submit" class="btn btn-lg btn-danger">Terminar</button>
+            <a class="btn btn-lg btn-secondary" asp-action="PXPDashboard">Regresar</a>
+        </form>
+    </div>
 </div>
 
 
