@@ -77,9 +77,10 @@ namespace ProdFloor.Models
         public DbSet<WireTypeSize_audit> WireTypeSize_Audits { get; set; }
 
         //WirerPXP
-        public DbSet<WiringPXP> wiringPXPs { get; set; }
-        public DbSet<PXPError> pXPErrors { get; set; }
-        public DbSet<PXPReason> pXPReasons { get; set; }
+        public DbSet<WiringPXP> WiringPXPs { get; set; }
+        public DbSet<PXPError> PXPErrors { get; set; }
+        public DbSet<PXPReason> PXPReasons { get; set; }
+        public DbSet<WirersPXPInvolved> WirersPXPInvolveds { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder builder)

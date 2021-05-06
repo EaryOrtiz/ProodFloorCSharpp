@@ -10,19 +10,24 @@ namespace ProdFloor.Models
     {
         public int WiringPXPID { get; set; }
 
-        public string Status { get; set; }
-
         public int JobID { get; set; }
 
         public int StationID { get; set; }
 
         public int SinglePO { get; set; }
 
-        public int WirerID { get; set; }
-
-        public List<int> WirersID { get; set; }
+        public int WirerPXPID { get; set; }
 
         public List<PXPError> _PXPErrors { get; set; }
+    }
+
+    public class WirersPXPInvolved
+    {
+        public int WirersPXPInvolvedID { get; set; }
+
+        public int WiringPXPID { get; set; }
+
+        public int WirerPXPID { get; set; }
     }
 
     public class PXPError

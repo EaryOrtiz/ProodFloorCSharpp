@@ -987,7 +987,7 @@ namespace ProdFloor.Controllers
                 else if(wirerPXP)
                 {
 
-                    WiringPXP CurrentWiringPXP = wiringRepo.wiringPXPs.FirstOrDefault(m => m.WirerID == currentUser.EngID && m.Status == "Working on it");
+                    WiringPXP CurrentWiringPXP = wiringRepo.WiringPXPs.FirstOrDefault(m => m.WirerPXPID == currentUser.EngID);
                     if (CurrentWiringPXP == null)
                     {
                         TempData["alert"] = $"alert-danger";
