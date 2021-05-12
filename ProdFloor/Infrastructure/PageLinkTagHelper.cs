@@ -3219,17 +3219,23 @@ namespace ProdFloor.Infrastructure
     {
         private IItemRepository itemsrepository;
         private IJobRepository jobrepository;
+        private ITestingRepository testingRepo;
         private IUrlHelperFactory urlHelperFactory;
 
         public ModelExpression AspFor { get; set; }
 
         public string SelectFor { get; set; }
 
-        public CustomSelectTagHelper(IUrlHelperFactory helperFactory, IItemRepository itemsrepo, IJobRepository jobrepo)
+        public CustomSelectTagHelper(IUrlHelperFactory helperFactory,
+            IItemRepository itemsrepo,
+            IJobRepository jobrepo,
+             ITestingRepository repo4
+            )
         {
             urlHelperFactory = helperFactory;
             itemsrepository = itemsrepo;
             jobrepository = jobrepo;
+            testingRepo = repo4;
         }
 
         [HtmlAttributeName("asp-is-disabled")]
@@ -3239,12 +3245,16 @@ namespace ProdFloor.Infrastructure
         {
             int YearNow = DateTime.Now.Year;
             string YearNowCanada = "C" + YearNow.ToString().Remove(0, 2) + "00";
+            JobType PXPJobtype = itemsrepository.JobTypes.FirstOrDefault(m => m.Name == "PXP");
+            int PXPJobtypeID = PXPJobtype != null ? PXPJobtype.JobTypeID : 1;
             switch (value)
             {
                 case "JobType":
                     return itemsrepository.JobTypes.OrderBy(s => s.Name).Select(d => d.Name).Distinct();
                 case "Style":
                     return itemsrepository.DoorOperators.OrderBy(s => s.Name).Select(d => d.Style).Distinct();
+                case "StationPXP":
+                    return testingRepo.Stations.Where(m => m.JobTypeID == PXPJobtypeID).OrderBy(s => s.Label).Select(d => d.Label).Distinct();
                 case "SwitchStyle":
                     return new List<string> { "2-Position", "3-Position" }.AsQueryable();
                 case "Stage":
@@ -5349,7 +5359,7 @@ namespace ProdFloor.Infrastructure
             }else if (!string.IsNullOrEmpty(JobType))
             {
                 JobType jobTypeAUx = itemsrepository.JobTypes.FirstOrDefault(m => m.Name == JobType);
-                stations = testingRepository.Stations.OrderBy(s => s.Label).Where(m => m.JobTypeID == SelectFor && m.StationID != 0).AsQueryable();
+                stations = testingRepository.Stations.OrderBy(s => s.Label).Where(m => m.JobTypeID == jobTypeAUx.JobTypeID && m.StationID != 0).AsQueryable();
             }
             foreach (Station station in stations)
             {
@@ -5466,13 +5476,7 @@ namespace ProdFloor.Infrastructure
         {
 
             IUrlHelper urlHelper = urlHelperFactory.GetUrlHelper(ViewContext);
-            output.TagName = "input";
-            TagBuilder result = new TagBuilder("input");
             string name = this.AspFor.Name;
-            if (!String.IsNullOrEmpty(name))
-            {
-                output.Attributes.Add("name", name);
-            }
 
             AppUser user = userManager.Users.FirstOrDefault(m => m.EngID == UserID);
 
@@ -5481,7 +5485,7 @@ namespace ProdFloor.Infrastructure
             tag.Attributes.Add("type", "text");
             tag.Attributes.Add("value", user == null ? "Error" : user.FullName);
 
-            output.Content.AppendHtml(result.InnerHtml);
+            output.Content.AppendHtml(tag);
             base.Process(context, output);
         }
     }
@@ -5492,7 +5496,6 @@ namespace ProdFloor.Infrastructure
 
         private IUrlHelperFactory urlHelperFactory;
 
-        private UserManager<AppUser> userManager;
 
 
         public ModelExpression AspFor { get; set; }
@@ -5512,13 +5515,7 @@ namespace ProdFloor.Infrastructure
         {
 
             IUrlHelper urlHelper = urlHelperFactory.GetUrlHelper(ViewContext);
-            output.TagName = "input";
-            TagBuilder result = new TagBuilder("input");
             string name = this.AspFor.Name;
-            if (!String.IsNullOrEmpty(name))
-            {
-                output.Attributes.Add("name", name);
-            }
 
             PXPReason reason = repository.PXPReasons.FirstOrDefault(m => m.PXPReasonID == ReasonID);
 
@@ -5527,7 +5524,8 @@ namespace ProdFloor.Infrastructure
             tag.Attributes.Add("type", "text");
             tag.Attributes.Add("value", reason == null ? "Error" : reason.Description);
 
-            output.Content.AppendHtml(result.InnerHtml);
+
+            output.Content.AppendHtml(tag);
             base.Process(context, output);
         }
     }

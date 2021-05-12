@@ -19,7 +19,7 @@ using ProdFloor.Models.ViewModels.Wiring;
 namespace ProdFloor.Controllers
 {
 
-    [Authorize(Roles = "Admin,TechAdmin,Engineer,Technician,EngAdmin,CrossApprover,Manager,Kitting")]
+    [Authorize(Roles = "Admin,TechAdmin,Engineer,Technician,EngAdmin,CrossApprover,Manager,Kitting, ProductionAdmin, WirerPXP")]
     public class HomeController : Controller
     {
         private IJobRepository repository;
@@ -67,7 +67,7 @@ namespace ProdFloor.Controllers
             bool techAdmin = GetCurrentUserRole("TechAdmin").Result;
             bool manager = GetCurrentUserRole("Manager").Result;
             bool kitting = GetCurrentUserRole("Kitting").Result;
-            bool ProdctionAdmin = GetCurrentUserRole("ProdctionAdmin").Result;
+            bool ProdctionAdmin = GetCurrentUserRole("ProductionAdmin").Result;
             bool wirer = GetCurrentUserRole("Wirer").Result;
             bool wirerPXP = GetCurrentUserRole("WirerPXP").Result;
 
@@ -215,7 +215,7 @@ namespace ProdFloor.Controllers
 
             if (manager) return RedirectToAction("ManagerDashboard", "Report");
 
-            if (ProdctionAdmin) return RedirectToAction("ProductionAdminDash", "Wiring");
+            if (ProdctionAdmin) return RedirectToAction("PXPProductionDashboard", "WiringPXP");
 
             if (wirer) return RedirectToAction("ProductionAdminDash", "Wiring");
 
@@ -915,9 +915,9 @@ namespace ProdFloor.Controllers
         {
             string JobType = "";
 
-            if (material.Contains("M2000"))
+            if (material.Contains("2000"))
                 JobType = "M2000";
-            else if (material.Contains("M4000"))
+            else if (material.Contains("4000"))
                 JobType = "M4000";
             else if (material.Contains("ELEMENT-HYDRO"))
                 JobType = "ElmHydro";
@@ -966,7 +966,7 @@ namespace ProdFloor.Controllers
                 if (tech)
                 {
                     TestJob CurrentTestJob = testingRepo.TestJobs.FirstOrDefault(m => m.TechnicianID == currentUser.EngID && m.Status == "Working on it");
-                    if (CurrentTestJob == null)
+                    if (CurrentTestJob != null)
                     {
                         TempData["alert"] = $"alert-danger";
                         TempData["message"] = $"Error, tiene un testjob activo, intente de nuevo o contacte al Admin";
@@ -974,7 +974,7 @@ namespace ProdFloor.Controllers
                     }
 
                     TestJob TestJobWithSamePO = testingRepo.TestJobs.FirstOrDefault(m => m.SinglePO == onePO.PONumb);
-                    if (CurrentTestJob == null)
+                    if (CurrentTestJob != null)
                     {
                         TempData["alert"] = $"alert-danger";
                         TempData["message"] = $"Error, Ya existe un TestJob con ese PO, intente de nuevo o contacte al Admin";
@@ -986,9 +986,16 @@ namespace ProdFloor.Controllers
                 }
                 else if (wirerPXP)
                 {
+                    List<Job> MyjobsList = repository.Jobs
+                                            .Where(s => s.Status == "PXP on progress")
+                                            .OrderBy(n => n.LatestFinishDate).ToList();
 
-                    WiringPXP CurrentWiringPXP = wiringRepo.WiringPXPs.FirstOrDefault(m => m.WirerPXPID == currentUser.EngID);
-                    if (CurrentWiringPXP == null)
+                    List<WiringPXP> MyWiringPXPList = wiringRepo.WiringPXPs.Where(m => MyjobsList.Any(n => n.JobID == m.JobID))
+                                                                           .ToList();
+
+                    WiringPXP CurrentWiringPXP = MyWiringPXPList.FirstOrDefault(m => m.WirerPXPID == currentUser.EngID);
+
+                    if (CurrentWiringPXP != null)
                     {
                         TempData["alert"] = $"alert-danger";
                         TempData["message"] = $"Error, Ya tiene un PXP activo, intente de nuevo o contacte al Admin";
@@ -996,7 +1003,7 @@ namespace ProdFloor.Controllers
                     }
 
                     WiringPXP WiringPXPWithSamePO = wiringRepo.WiringPXPs.FirstOrDefault(m => m.SinglePO == onePO.PONumb);
-                    if (WiringPXPWithSamePO == null)
+                    if (WiringPXPWithSamePO != null)
                     {
                         TempData["alert"] = $"alert-danger";
                         TempData["message"] = $"Error, Ya existe un PXP con ese PO, intente de nuevo o contacte al Admin";
@@ -1004,7 +1011,7 @@ namespace ProdFloor.Controllers
                     }
 
 
-                    return RedirectToAction("NewWiringPXP", "WiringPXP", onePO.PONumb);
+                    return RedirectToAction("NewWiringPXP", "WiringPXP", new { PONumb = viewModel.POJobSearch });
 
                 }
                 else
@@ -1017,18 +1024,18 @@ namespace ProdFloor.Controllers
 
             }
 
-            PlanningReportRow reportRow = itemRepo.PlanningReportRows.FirstOrDefault(m => m.PO == onePO.PONumb);
+            PlanningReportRow reportRow = itemRepo.PlanningReportRows.FirstOrDefault(m => m.PO == viewModel.POJobSearch);
             if (reportRow == null)
             {
                 TempData["alert"] = $"alert-danger";
                 TempData["message"] = $"Error, El PO no existe";
                 return RedirectToAction("SearchByPO", viewModel);
             }
-            viewModel.PO.PONumb = CreateDummyByPlanning(reportRow);
+            viewModel.POJobSearch = CreateDummyByPlanning(reportRow);
             if (tech)
-                return RedirectToAction("NewTestJob", "TestJob", onePO.PONumb);
+                return RedirectToAction("NewTestJob", "TestJob", viewModel.POJobSearch);
             else if (wirerPXP)
-                return RedirectToAction("NewWiringPXP", "WiringPXP", onePO.PONumb);
+                return RedirectToAction("NewWiringPXP", "WiringPXP", new { PONumb = viewModel.POJobSearch } );
 
 
             TempData["alert"] = $"alert-danger";
@@ -1068,6 +1075,7 @@ namespace ProdFloor.Controllers
                     //Save the dummy Job Extension
                     JobExtension currentExtension = new JobExtension(); currentExtension.JobID = currentJob.JobID; currentExtension.InputFrecuency = 60; currentExtension.InputPhase = 3; currentExtension.DoorGate = "Fake";
                     currentExtension.InputVoltage = 1; currentExtension.NumOfStops = 2; currentExtension.SHCRisers = 1; currentExtension.DoorHoist = "Fake"; currentExtension.JobTypeAdd = "Fake";
+                    currentExtension.JobTypeMain = "Simplex";
                     currentExtension.SCOP = false;
                     currentExtension.SHC = false;
                     currentExtension.DoorOperatorID = 1;
@@ -1088,6 +1096,7 @@ namespace ProdFloor.Controllers
                     //Save the dummy Job HoistWayData
                     HoistWayData currentHoistWayData = new HoistWayData(); currentHoistWayData.JobID = currentJob.JobID; currentHoistWayData.Capacity = 1; currentHoistWayData.DownSpeed = 1;
                     currentHoistWayData.TotalTravel = 1; currentHoistWayData.UpSpeed = 1; currentHoistWayData.HoistWaysNumber = 1; currentHoistWayData.MachineRooms = 1;
+                    currentHoistWayData.LandingSystemID = 1;
                     repository.SaveHoistWayData(currentHoistWayData);
 
                     //Save the dummy Job Generic Features

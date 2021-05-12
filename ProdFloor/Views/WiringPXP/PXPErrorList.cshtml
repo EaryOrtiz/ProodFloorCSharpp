@@ -4,30 +4,25 @@
 }
 <div class="col justify-content-md-center">
     <div class="table-responsive">
-        <table class="table form-control">
+        <table class="table form-control text-center">
             <thead>
                 <tr>
                     <td style="text-align:center;">Errores</td>
-                    <td>
-                        <button type="submit" asp-action="NewPXPError" class="btn btn-success btn-sm">
-                            <i class="fas fa-plus-circle"></i>&nbsp;
-                        </button>
-                    </td>
                 </tr>
             </thead>
 
-            <tbody style="text-align:">
+            <tbody style="text-align:center">
                 @for (int i = 0; i < Model.pXPErrorList.Count; i++)
                 {
                     <tr>
                         <td>
                             <label class="col-4 col-form-label">Cableadora:</label>
                             <div class="col-5">
-                                <user-input user-id="@Model.pXPErrorList[i].GuiltyWirerID"></user-input>
+                                <user-input user-id="@Model.pXPErrorList[i].GuiltyWirerID" asp-for="@Model.pXPErrorList[i].GuiltyWirerID"></user-input>
                             </div>
                             <label class="col-4 col-form-label">Error:</label>
                             <div class="col-5">
-                                <pxp-reason-input reason-id="@Model.pXPErrorList[i].PXPReasonID"></pxp-reason-input>
+                                <pxp-reason-input reason-id="@Model.pXPErrorList[i].PXPReasonID" asp-for="@Model.pXPErrorList[i].PXPReasonID"></pxp-reason-input>
                             </div>
                         </td>
                         <td style="text-align:center;">

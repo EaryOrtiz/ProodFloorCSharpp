@@ -33,15 +33,20 @@ namespace ProdFloor.Controllers
 
         //PXPReasons part
 
-        public IActionResult List(WiringPXPViewModel viewModel, int page = 1, int totalitemsfromlastsearch = 0)
+        public IActionResult List(string filtrado, string Sort = "default", int page = 1, int totalitemsfromlastsearch = 0)
         {
-            if (viewModel.CleanFields) return RedirectToAction("List");
-            IQueryable<PXPReason> reasons = wiringRepo.PXPReasons.AsQueryable();
+            if (filtrado != null) Sort = filtrado;
 
-            if (!string.IsNullOrEmpty(viewModel.pXPReason.Description)) reasons = reasons.Where(m => m.Description.Contains(viewModel.pXPReason.Description));
+            List<PXPReason> reasons = wiringRepo.PXPReasons
+                .Where(m => m.Description != "-")
+                .OrderBy(p => p.PXPReasonID).ToList();
 
-
-            viewModel.TotalItems = wiringRepo.PXPReasons.Count();
+            if (Sort != "default")
+            {
+                reasons = wiringRepo.PXPReasons
+                 .Where(m => m.Description.Contains(Sort) && m.Description != "-")
+                 .OrderBy(p => p.PXPReasonID).ToList();
+            }
 
 
             int TotalItemsSearch = reasons.Count();
@@ -54,13 +59,21 @@ namespace ProdFloor.Controllers
                 totalitemsfromlastsearch = TotalItemsSearch;
                 page = 1;
             }
-            viewModel.pXPReasonList = reasons.OrderBy(p => p.Description).Skip((page - 1) * 5).Take(5).ToList();
-            viewModel.PagingInfo = new PagingInfo
+
+            WiringPXPViewModel viewModel = new WiringPXPViewModel
             {
-                CurrentPage = page,
-                ItemsPerPage = 5,
-                TotalItemsFromLastSearch = totalitemsfromlastsearch,
-                TotalItems = reasons.Count()
+                pXPReasonList = reasons.Skip((page - 1) * PageSize)
+                .Take(PageSize).ToList(),
+                TotalItems = wiringRepo.PXPReasons.Count(),
+                PagingInfo = new PagingInfo
+                {
+                    CurrentPage = page,
+                    sort = Sort != "default" ? Sort : "default",
+                    TotalItemsFromLastSearch = totalitemsfromlastsearch,
+                    ItemsPerPage = PageSize,
+
+                    TotalItems = TotalItemsSearch
+                }
             };
             return View(viewModel);
         }

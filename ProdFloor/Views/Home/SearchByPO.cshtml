@@ -1,4 +1,4 @@
-﻿@model ProdFloor.Models.ViewModels.PlanningReportListViewModel
+﻿@model ProdFloor.Models.ViewModels.DashboardIndexViewModel
 @{
     ViewBag.Title = "Search Job";
 
@@ -7,7 +7,7 @@
 <form asp-controller="Home" id="Printableform" asp-action="SearchByPO" method="post">
     <label class="col-form-label">Por favor introduzca un PO:</label>
     <div class="input-group">
-        <input type="number" class="form-control form-control-sm col-3" id="POSearch" asp-for="POSearch">
+        <input type="number" class="form-control form-control-sm col-3" id="POSearch" asp-for="POJobSearch">
         <div class="input-group-append">
             <div class="btn-group text-center">
                 <button class="btn btn-dark" type="submit" value="Search" data-tooltip="tooltip" data-placement="top" title="Search">
@@ -18,6 +18,6 @@
     </div>
     <br />
     <div>
-        <span asp-validation-for="POSearch" class="text-danger"></span><br />
+        <span asp-validation-for="POJobSearch" class="text-danger"></span><br />
     </div>
 </form>

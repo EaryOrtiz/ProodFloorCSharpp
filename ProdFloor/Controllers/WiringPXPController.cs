@@ -25,12 +25,14 @@ namespace ProdFloor.Controllers
         public WiringPXPController(IWiringRepository repo,
             IJobRepository repo2,
             IItemRepository repo3,
+            ITestingRepository repo4,
             UserManager<AppUser> userMgr,
             IHostingEnvironment env)
         {
             jobRepo = repo2;
             wiringRepo = repo;
             itemRepo = repo3;
+            testingRepo = repo4;
             userManager = userMgr;
             _env = env;
         }
@@ -65,7 +67,7 @@ namespace ProdFloor.Controllers
                 List<PO> POsList = jobRepo.POs.ToList();
 
                 List<Job> MyjobsList = jobRepo.Jobs
-                    .Where(s => s.Status != "PXP on progress")
+                    .Where(s => s.Status == "PXP on progress")
                     .OrderBy(n => n.LatestFinishDate).ToList();
 
                 List<WiringPXP> MyWiringPXPList = wiringRepo.WiringPXPs.Where(m => MyjobsList.Any(n => n.JobID == m.JobID))
@@ -124,10 +126,16 @@ namespace ProdFloor.Controllers
         {
             AppUser currentUser = GetCurrentUser().Result;
 
-            var CurrentWiringPXPs = wiringRepo.WiringPXPs
-                    .Where(j => j.WirerPXPID == currentUser.EngID)
-                    .OrderBy(p => p.WirerPXPID).ToList();
+            List<Job> MyjobsList = jobRepo.Jobs
+                    .Where(s => s.Status == "PXP on progress")
+                    .OrderBy(n => n.LatestFinishDate).ToList();
 
+            List<WiringPXP> MyWiringPXPList = wiringRepo.WiringPXPs.Where(m => MyjobsList.Any(n => n.JobID == m.JobID))
+                                                                   .ToList();
+
+            var CurrentWiringPXPs = MyWiringPXPList
+                   .Where(j => j.WirerPXPID == currentUser.EngID)
+                   .OrderBy(p => p.WirerPXPID).ToList();
 
             List<Job> DummyOnCrossJobsList = new List<Job>();
 
@@ -144,9 +152,9 @@ namespace ProdFloor.Controllers
                 },
 
 
-                MyJobs = jobRepo.Jobs.Where(m => CurrentWiringPXPs.Any(s => s.JobID == m.JobID)),
+                MyJobs = MyjobsList,
                 JobTypesList = itemRepo.JobTypes.ToList(),
-                OnCrossJobs = new List<Job>(),
+                OnCrossJobs = DummyOnCrossJobsList,
                 StationList = testingRepo.Stations.ToList(),
                 OnCrossJobsPagingInfo = new PagingInfo
                 {
@@ -162,7 +170,7 @@ namespace ProdFloor.Controllers
                     CurrentPage = PendingToCrossJobPage,
                     ItemsPerPage = PageSize,
                     TotalItems = DummyPendingToCrossJobList.Count(),
-                    sort =  "deafult"
+                    sort = "deafult"
                 },
             });
         }
@@ -179,7 +187,7 @@ namespace ProdFloor.Controllers
                 TempData["alert"] = $"alert-danger";
                 TempData["message"] = $"Error, el PO no existe";
 
-                return RedirectToAction("SearchByPO","Home", viewHomeModel);
+                return RedirectToAction("SearchByPO", "Home", viewHomeModel);
             }
 
             Job job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == po.JobID);
@@ -213,34 +221,25 @@ namespace ProdFloor.Controllers
         }
 
         [HttpPost]
-        public IActionResult EndWiringPXP(WiringPXPViewModel viewModel)
+        public IActionResult SaveWiringPXP(WiringPXPViewModel viewModel)
         {
             AppUser currentUser = GetCurrentUser().Result;
-            WiringPXP wiringPXP = wiringRepo.WiringPXPs.FirstOrDefault(m => m.WiringPXPID == viewModel.wiringPXP.WiringPXPID);
 
-            if (wiringPXP == null)
+
+            WiringPXP wiring = new WiringPXP()
             {
-                WiringPXP wiring = new WiringPXP()
-                {
-                    JobID = viewModel.Job.JobID,
-                    StationID = viewModel.wiringPXP.StationID,
-                    WirerPXPID = currentUser.EngID,
-                    SinglePO = viewModel.wiringPXP.SinglePO,
-                    StartDate = DateTime.Now,
-                    EndDate = DateTime.Now,
-                };
+                JobID = viewModel.Job.JobID,
+                StationID = viewModel.wiringPXP.StationID,
+                WirerPXPID = currentUser.EngID,
+                SinglePO = viewModel.wiringPXP.SinglePO,
+                StartDate = DateTime.Now,
+                EndDate = DateTime.Now,
+            };
 
-                wiringRepo.SaveWiringPXP(wiringPXP);
+            wiringRepo.SaveWiringPXP(wiring);
 
-                wiringPXP = wiringRepo.WiringPXPs.FirstOrDefault(m => m.JobID == viewModel.Job.JobID);
-            }
-            else
-            {
-                wiringPXP.EndDate = DateTime.Now;
-                wiringRepo.SaveWiringPXP(wiringPXP);
+            WiringPXP wiringPXP = wiringRepo.WiringPXPs.FirstOrDefault(m => m.JobID == viewModel.Job.JobID);
 
-                wiringPXP = wiringRepo.WiringPXPs.FirstOrDefault(m => m.JobID == viewModel.Job.JobID);
-            }
 
             WirersPXPInvolved involved = wiringRepo.WirersPXPInvolveds
                                                   .Where(m => m.WiringPXPID == wiringPXP.WiringPXPID)
@@ -255,45 +254,20 @@ namespace ProdFloor.Controllers
 
 
             Job job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == wiringPXP.JobID);
-            job.Status = "Waiting for test";
-            jobRepo.SaveJob(job);
-
-
-            TempData["message"] = $"PXP del PO #" +wiringPXP.SinglePO + " finalizado";
-            return RedirectToAction("PXPDashboard");
-        }
-
-        public IActionResult NewPXPError(WiringPXPViewModel viewModel)
-        {
-            AppUser currentUser = GetCurrentUser().Result;
-            WiringPXP wiringPXP = wiringRepo.WiringPXPs.FirstOrDefault(m => m.WiringPXPID == viewModel.wiringPXP.WiringPXPID);
-
-            if (wiringPXP == null)
-            {
-                WiringPXP wiring = new WiringPXP()
-                {
-                    JobID = viewModel.Job.JobID,
-                    StationID = viewModel.wiringPXP.StationID,
-                    WirerPXPID = currentUser.EngID,
-                    SinglePO = viewModel.wiringPXP.SinglePO,
-                    StartDate = DateTime.Now,
-                    EndDate = DateTime.Now,
-                };
-
-                wiringRepo.SaveWiringPXP(wiringPXP);
-
-                wiringPXP = wiringRepo.WiringPXPs.FirstOrDefault(m => m.JobID == viewModel.Job.JobID);
-
-                WirersPXPInvolved wirersInvolved = new WirersPXPInvolved();
-                wirersInvolved.WiringPXPID = wiringPXP.WiringPXPID;
-                wirersInvolved.WirerPXPID = currentUser.EngID;
-                wiringRepo.SaveWirersPXPInvolved(wirersInvolved);
-            }
-
-            Job job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == wiringPXP.JobID);
 
             job.Status = "PXP on progress";
             jobRepo.SaveJob(job);
+
+
+            return RedirectToAction("NewWiringPXP", "WiringPXP", new { PONumb = wiringPXP.SinglePO });
+        }
+
+        public IActionResult NewPXPError(int ID)
+        {
+            AppUser currentUser = GetCurrentUser().Result;
+            WiringPXP wiringPXP = wiringRepo.WiringPXPs.FirstOrDefault(m => m.WiringPXPID == ID);
+
+            WiringPXPViewModel viewModel = new WiringPXPViewModel();
 
             viewModel.wiringPXP = wiringPXP;
             viewModel.pXPError = new PXPError();
@@ -322,7 +296,8 @@ namespace ProdFloor.Controllers
             }
 
             TempData["message"] = $"Nuevo error añadido con exito.";
-            return RedirectToAction("NewWiringPXP", wiringPXP.SinglePO);
+
+            return RedirectToAction("NewWiringPXP", "WiringPXP", new { PONumb = wiringPXP.SinglePO });
         }
 
 
@@ -346,7 +321,8 @@ namespace ProdFloor.Controllers
             wiringRepo.SavePXPError(viewModel.pXPError);
 
             TempData["message"] = $"PXPError actualizado con exito.";
-            return RedirectToAction("NewWiringPXP", viewModel.wiringPXP.SinglePO);
+
+            return RedirectToAction("NewWiringPXP", "WiringPXP", new { PONumb = viewModel.wiringPXP.SinglePO });
         }
 
         [HttpPost]
@@ -361,7 +337,7 @@ namespace ProdFloor.Controllers
                 TempData["message"] = $"{reasonPXP.Description} was deleted";
             }
 
-            return RedirectToAction("NewWiringPXP", wiringPXP.SinglePO);
+            return RedirectToAction("NewWiringPXP", "WiringPXP", new { PONumb = wiringPXP.SinglePO });
         }
 
         [HttpPost]
@@ -374,7 +350,7 @@ namespace ProdFloor.Controllers
                 TempData["message"] = $"#{deletedPXP.SinglePO} was deleted";
             }
 
-            return RedirectToAction("NewWiringPXP", deletedPXP.SinglePO);
+            return RedirectToAction("PXPProductionDashboard");
         }
 
         [HttpPost]
@@ -407,14 +383,14 @@ namespace ProdFloor.Controllers
             WirersPXPInvolved involved = wiringRepo.WirersPXPInvolveds
                                                     .Where(m => m.WiringPXPID == viewModel.WiringPXP.WiringPXPID)
                                                     .FirstOrDefault(m => m.WirerPXPID == viewModel.WiringPXP.WirerPXPID);
-            if(involved == null)
+            if (involved == null)
             {
                 WirersPXPInvolved wirersInvolved = new WirersPXPInvolved();
                 wirersInvolved.WiringPXPID = wiringPXP.WiringPXPID;
                 wirersInvolved.WirerPXPID = viewModel.WiringPXP.WirerPXPID;
                 wiringRepo.SaveWirersPXPInvolved(wirersInvolved);
             }
-            
+
             AppUser user = userManager.Users.FirstOrDefault(m => m.EngID == wiringPXP.WirerPXPID);
 
             TempData["message"] = $"You have reassigned the WirerPXP for the Job with PO #{wiringPXP.SinglePO} to {user.FullName}";
@@ -422,14 +398,25 @@ namespace ProdFloor.Controllers
 
         }
 
-        [HttpPost]
-        public IActionResult AdminEndWiringPXP(int ID)
+        public IActionResult EndWiringPXP(int ID)
         {
+
             AppUser currentUser = GetCurrentUser().Result;
+            bool ProdctionAdmin = GetCurrentUserRole("ProductionAdmin").Result;
             WiringPXP wiringPXP = wiringRepo.WiringPXPs.FirstOrDefault(m => m.WiringPXPID == ID);
 
             wiringPXP.EndDate = DateTime.Now;
             wiringRepo.SaveWiringPXP(wiringPXP);
+
+            Job job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == wiringPXP.JobID);
+            job.Status = "Waiting for test";
+            jobRepo.SaveJob(job);
+
+            TempData["message"] = $"PXP del PO #" + wiringPXP.SinglePO + " finalizado";
+
+            if (ProdctionAdmin)
+                return RedirectToAction("PXPProductionDashboard");
+
 
             WirersPXPInvolved involved = wiringRepo.WirersPXPInvolveds
                                                    .Where(m => m.WiringPXPID == wiringPXP.WiringPXPID)
@@ -442,12 +429,6 @@ namespace ProdFloor.Controllers
                 wiringRepo.SaveWirersPXPInvolved(wirersInvolved);
             }
 
-            Job job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == wiringPXP.JobID);
-            job.Status = "Waiting for test";
-            jobRepo.SaveJob(job);
-
-
-            TempData["message"] = $"PXP del PO #" + wiringPXP.SinglePO + " finalizado";
             return RedirectToAction("PXPDashboard");
         }
 
@@ -463,7 +444,7 @@ namespace ProdFloor.Controllers
 
 
             TempData["message"] = $"PXP del PO #" + wiringPXP.SinglePO + " finalizado";
-            return RedirectToAction("PXPDashboard");
+            return RedirectToAction("PXPProductionDashboard");
         }
 
 
