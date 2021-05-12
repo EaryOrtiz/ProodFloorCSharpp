@@ -1,21 +1,21 @@
 ﻿@model DashboardIndexViewModel
 @{
-    <script>$(document).ready(function () { $('[data-tooltip="tooltip"]').tooltip(); }); </script>
+    <script>$(document).ready(function () { $('[data-tooltip="tooltip"]').tooltip(); });</script>
 }
 <br />
 <table class="table table-striped  text-center table-sm" style="text-align:center">
     <thead style="background-color:#343a40!important;color:#fff;">
         <tr>
             <th class="text-center" colspan="7">
-                <h5>On Going PXP Jobs</h5>
+                <h5>PXP en progreso</h5>
             </th>
             <th colspan="1">
                 <div class="row float-right" style="padding-right:20px">
                     <div class="text-center">
                         <div class="btn-group text-center">
-                                <a style="background-color:seagreen;color:white" class="btn btn-sm" asp-action="SearchByPO" asp-controller="Home">
-                                    New PXP
-                                </a>
+                            <a style="background-color:seagreen;color:white" class="btn btn-sm" asp-action="SearchByPO" asp-controller="Home">
+                                New PXP
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -26,7 +26,6 @@
             <th scope="col">PO#</th>
             <th scope="col">Nombre</th>
             <th scope="col">Estacion</th>
-            <th scope="col">Estado</th>
             <th scope="col">Opciones</th>
         </tr>
     </thead>
@@ -34,7 +33,7 @@
         @if (Model.MyWiringPXPs.Count() == 0)
         {
             <tr>
-                <td>No Test Jobs!</td>
+                <td>No PXPs!</td>
             </tr>
         }
         else
@@ -42,61 +41,24 @@
             @foreach (var t in Model.MyWiringPXPs)
             {
 
-                var j = Model.PendingJobs.FirstOrDefault(m => m.JobID == t.JobID);
+                var j = Model.MyJobs.FirstOrDefault(m => m.JobID == t.JobID);
                 string JobtypeName = Model.JobTypesList.First(s => s.JobTypeID == j.JobTypeID).Name;
 
-    <tr>
-        <th scope="row">
-            @if (t.Status == "Incomplete")
-            {
-                <a asp-action="ContinueForm"
-                   asp-controller="WiringPXP" asp-route-Id="@t.WiringPXPID">
-                    @j.JobNum
-                </a>
-            }
-            else if (t.Status == "Working on it")
-            {
-                <a asp-action="EditWiringPXP"
-                   asp-controller="WiringPXP" asp-route-Id="@t.WiringPXPID">
-                    @j.JobNum
-                </a>
-            }
-            else
-            {
-                @j.JobNum
-            }
-        </th>
-        <td>@t.SinglePO</td>
-        <td>@j.Name</td>
-        <td>@JobtypeName</td>
-        @if (t.Status != "Incomplete")
-        {
-            <td>@Model.StationList.FirstOrDefault(m => m.StationID == t.StationID).Label</td>
-        }
-        else
-        {
-            <td>-</td>
-        }
-
-        <td>@t.Status</td>
-        <td>
-            @if (t.Status == "Working on it")
-            {
-                <a asp-action="ContinueStep" asp-controller="TestJob"
-                   asp-route-id="@t.WiringPXPID" class="btn btn-info btn-sm">
-                    Continuar
-                </a>
-            }
-            else
-            {
-                <a asp-action="ContinueForm" asp-controller="TestJob"
-                   asp-route-Id="@t.WiringPXPID" class="btn btn-info btn-sm">
-                    Continuar
-                </a>
-            }
-
-        </td>
-    </tr>
+                <tr>
+                    <th scope="row">
+                        @j.JobNum
+                    </th>
+                    <td>@t.SinglePO</td>
+                    <td>@j.Name</td>
+                    <td>@JobtypeName</td>
+                    <td>@Model.StationList.FirstOrDefault(m => m.StationID == t.StationID).Label</td>
+                    <td>
+                        <a asp-action="NewWiringPXP" asp-controller="WiringPXP"
+                           asp-route-Id="@t.SinglePO" class="btn btn-info btn-sm">
+                            Continuar
+                        </a>
+                    </td>
+                </tr>
             }
         }
     </tbody>
@@ -104,8 +66,8 @@
 @if (Model.MyWiringPXPs.Count() > 0)
 {
     <cool-pagination-dash-board current-model="MyJobs" my-jobs-page-model="@Model.MyJobsPagingInfo" page-action="Index" page-classes-enabled="true"
-                                page-class="btn" page-class-normal="btn-secondary" on-cross-page-model="@Model.OnCrossJobsPagingInfo" 
-                                pending-to-cross-page-model="@Model.PendingToCrossJobsPagingInfo" page-class-selected="btn-dark" 
+                                page-class="btn" page-class-normal="btn-secondary" on-cross-page-model="@Model.OnCrossJobsPagingInfo"
+                                pending-to-cross-page-model="@Model.PendingToCrossJobsPagingInfo" page-class-selected="btn-dark"
                                 my-jobs-url-value="MyJobsPage" on-cross-url-value="OnCrossJobPage"
                                 pending-to-cross-url-value="PendingToCrossJobPage" sort="Sort"
                                 class="btn-group pull-right m-1">

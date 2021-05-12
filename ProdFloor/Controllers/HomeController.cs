@@ -54,11 +54,11 @@ namespace ProdFloor.Controllers
         private async Task<AppUser> GetCurrentUser()
         {
             AppUser user = await userManager.GetUserAsync(HttpContext.User);
-  
+
             return user;
         }
 
-        public ActionResult Index(string filtrado, string Sort = "default", int MyJobsPage = 1, int OnCrossJobPage = 1, int PendingToCrossJobPage = 1,int pendingJobPage = 1)
+        public ActionResult Index(string filtrado, string Sort = "default", int MyJobsPage = 1, int OnCrossJobPage = 1, int PendingToCrossJobPage = 1, int pendingJobPage = 1)
         {
             AppUser currentUser = GetCurrentUser().Result;
             bool engineer = GetCurrentUserRole("Engineer").Result;
@@ -67,7 +67,7 @@ namespace ProdFloor.Controllers
             bool techAdmin = GetCurrentUserRole("TechAdmin").Result;
             bool manager = GetCurrentUserRole("Manager").Result;
             bool kitting = GetCurrentUserRole("Kitting").Result;
-            bool WirerAdmin = GetCurrentUserRole("WirerAdmin").Result;
+            bool ProdctionAdmin = GetCurrentUserRole("ProdctionAdmin").Result;
             bool wirer = GetCurrentUserRole("Wirer").Result;
             bool wirerPXP = GetCurrentUserRole("WirerPXP").Result;
 
@@ -167,7 +167,7 @@ namespace ProdFloor.Controllers
                     .Where(j => j.TechnicianID == currentUser.EngID)
                     .Where(j => j.Status != "Completed")
                     .OrderBy(p => p.TestJobID).ToList();
-                  
+
 
                 List<Job> DummyOnCrossJobsList = repository.Jobs
                         .Where(j => j.Status == "On Cross Approval").ToList();
@@ -209,13 +209,13 @@ namespace ProdFloor.Controllers
                 });
             }
 
-            if(admin) return RedirectToAction("SuperUserDashBoard");
+            if (admin) return RedirectToAction("SuperUserDashBoard");
 
-            if (techAdmin)  return RedirectToAction("SearchTestJob","TestJob");
+            if (techAdmin) return RedirectToAction("SearchTestJob", "TestJob");
 
             if (manager) return RedirectToAction("ManagerDashboard", "Report");
 
-            if (WirerAdmin) return RedirectToAction("ProductionAdminDash", "Wiring");
+            if (ProdctionAdmin) return RedirectToAction("ProductionAdminDash", "Wiring");
 
             if (wirer) return RedirectToAction("ProductionAdminDash", "Wiring");
 
@@ -231,7 +231,7 @@ namespace ProdFloor.Controllers
             bool engineer = GetCurrentUserRole("Engineer").Result;
             bool admin = GetCurrentUserRole("Admin").Result;
             if (filtrado != null) Sort = filtrado;
-            if (engineer || admin || engAdmin )
+            if (engineer || admin || engAdmin)
             {
 
                 List<JobType> JobTyPeList = itemRepo.JobTypes.ToList();
@@ -368,7 +368,7 @@ namespace ProdFloor.Controllers
                 .Where(j => j.Status == "On Cross Approval")
                 .OrderByDescending(m => m._JobAdditional.Priority)
                  .ThenBy(n => n.LatestFinishDate).ToList();
-            
+
 
             List<Job> PendingToCrossJobList = repository.Jobs
                 .Where(s => s.Status != "Pending")
@@ -427,7 +427,7 @@ namespace ProdFloor.Controllers
             return View(dashboard);
         }
 
-        public ActionResult MorningDashBoard(string filtrado, bool isEngAdmin = false,string Sort = "default", int MyJobsPage = 1, int OnCrossJobPage = 1, int PendingToCrossJobPage = 1)
+        public ActionResult MorningDashBoard(string filtrado, bool isEngAdmin = false, string Sort = "default", int MyJobsPage = 1, int OnCrossJobPage = 1, int PendingToCrossJobPage = 1)
         {
             AppUser currentUser = GetCurrentUser().Result;
             bool engineer = GetCurrentUserRole("Engineer").Result;
@@ -605,7 +605,7 @@ namespace ProdFloor.Controllers
             {
                 if (viewModel.buttonAction == "ToCross" && currentUser.EngID == UpdateStatus.EngID)
                 {
-                    if(UpdateStatus.Status == "Working on it")
+                    if (UpdateStatus.Status == "Working on it")
                     {
                         UpdateStatus.Status = "Cross Approval Pending";
                         repository.SaveJob(UpdateStatus);
@@ -619,7 +619,7 @@ namespace ProdFloor.Controllers
                         TempData["alert"] = $"alert-danger";
                         TempData["message"] = $"There was an error with your request{JobCrossID}";
                     }
-                    
+
                 }
                 else if (viewModel.buttonAction == "CrossApproved" && currentUser.EngID == UpdateStatus.CrossAppEngID)
                 {
@@ -822,7 +822,7 @@ namespace ProdFloor.Controllers
         }
 
         [HttpPost]
-        public IActionResult MorningReport(bool isAdmin,DashboardIndexViewModel viewModel)
+        public IActionResult MorningReport(bool isAdmin, DashboardIndexViewModel viewModel)
         {
             if (viewModel.MyJobAdditionals != null && viewModel.MyJobAdditionals.Count > 0)
             {
@@ -881,7 +881,7 @@ namespace ProdFloor.Controllers
             {
                 Job job = repository.Jobs.FirstOrDefault(m => m.JobID == btnJobID);
 
-                AppUser CurrentEng  = GetCurrentUser().Result;
+                AppUser CurrentEng = GetCurrentUser().Result;
                 bool EngAdmin = GetCurrentUserRole("EngAdmin").Result;
                 bool Admin = GetCurrentUserRole("Admin").Result;
 
@@ -917,13 +917,13 @@ namespace ProdFloor.Controllers
 
             if (material.Contains("M2000"))
                 JobType = "M2000";
-            else if(material.Contains("M4000"))
+            else if (material.Contains("M4000"))
                 JobType = "M4000";
             else if (material.Contains("ELEMENT-HYDRO"))
                 JobType = "ElmHydro";
             else if (material.Contains("ELEMENT-AC"))
                 JobType = "ElmTract";
-            
+
 
             return JobType;
         }
@@ -951,10 +951,10 @@ namespace ProdFloor.Controllers
             }
 
             PO onePO = repository.POs.FirstOrDefault(m => m.PONumb == viewModel.POJobSearch);
-            if(onePO != null)
+            if (onePO != null)
             {
                 Job job = repository.Jobs.FirstOrDefault(m => m.JobID == onePO.JobID);
-                if(job.Status == "Incomplete")
+                if (job.Status == "Incomplete")
                 {
                     TempData["alert"] = $"alert-danger";
                     TempData["message"] = $"Error,Job aun en ingenieria o duplicado, intente de nuevo o contacte al Admin";
@@ -984,7 +984,7 @@ namespace ProdFloor.Controllers
 
                     return RedirectToAction("NewTestJob", "TestJob", onePO.PONumb);
                 }
-                else if(wirerPXP)
+                else if (wirerPXP)
                 {
 
                     WiringPXP CurrentWiringPXP = wiringRepo.WiringPXPs.FirstOrDefault(m => m.WirerPXPID == currentUser.EngID);
@@ -995,7 +995,7 @@ namespace ProdFloor.Controllers
                         return RedirectToAction("SearchByPO", viewModel);
                     }
 
-                    WiringPXP WiringPXPWithSamePO = wiringRepo.wiringPXPs.FirstOrDefault(m => m.SinglePO == onePO.PONumb);
+                    WiringPXP WiringPXPWithSamePO = wiringRepo.WiringPXPs.FirstOrDefault(m => m.SinglePO == onePO.PONumb);
                     if (WiringPXPWithSamePO == null)
                     {
                         TempData["alert"] = $"alert-danger";
@@ -1018,7 +1018,7 @@ namespace ProdFloor.Controllers
             }
 
             PlanningReportRow reportRow = itemRepo.PlanningReportRows.FirstOrDefault(m => m.PO == onePO.PONumb);
-            if(reportRow == null)
+            if (reportRow == null)
             {
                 TempData["alert"] = $"alert-danger";
                 TempData["message"] = $"Error, El PO no existe";
@@ -1044,12 +1044,12 @@ namespace ProdFloor.Controllers
             AppUser currentUser = GetCurrentUser().Result;
 
             Job Job = new Job();
-            Job.Contractor = "Fake"; 
-            Job.Cust = "Fake"; 
-            Job.FireCodeID = 1; 
+            Job.Contractor = "Fake";
+            Job.Cust = "Fake";
+            Job.FireCodeID = 1;
             Job.LatestFinishDate = new DateTime(1, 1, 1);
             Job.EngID = Int32.Parse(reportRow.MRP.Remove(0, 1));
-            Job.Status = "Pending"; 
+            Job.Status = "Pending";
             Job.CrossAppEngID = 0;
             Job.CityID = 1;
             Job.JobNum = reportRow.JobNumber;
@@ -1176,6 +1176,8 @@ namespace ProdFloor.Controllers
             return POFake.PONumb;
         }
 
-    }
 
+
+    }
 }
+

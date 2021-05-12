@@ -36,12 +36,12 @@ namespace ProdFloor.Controllers
         public IActionResult List(WiringPXPViewModel viewModel, int page = 1, int totalitemsfromlastsearch = 0)
         {
             if (viewModel.CleanFields) return RedirectToAction("List");
-            IQueryable<PXPReason> reasons = wiringRepo.pXPReasons.AsQueryable();
+            IQueryable<PXPReason> reasons = wiringRepo.PXPReasons.AsQueryable();
 
             if (!string.IsNullOrEmpty(viewModel.pXPReason.Description)) reasons = reasons.Where(m => m.Description.Contains(viewModel.pXPReason.Description));
 
 
-            viewModel.TotalItems = wiringRepo.pXPReasons.Count();
+            viewModel.TotalItems = wiringRepo.PXPReasons.Count();
 
 
             int TotalItemsSearch = reasons.Count();
@@ -68,7 +68,7 @@ namespace ProdFloor.Controllers
         public ViewResult Add() => View("Edit", new PXPReason());
 
         public ViewResult Edit(int ID) =>
-            View(wiringRepo.pXPReasons
+            View(wiringRepo.PXPReasons
                 .FirstOrDefault(j => j.PXPReasonID == ID));
 
         [HttpPost]

@@ -17,7 +17,7 @@ namespace ProdFloor.Models
         void SavePXPReason(PXPReason pXPReason);
         void SaveWirersPXPInvolved(WirersPXPInvolved wirersPXPInvolved);
 
-        WiringPXP DeleteWirerPXP(int WiringPXPID);
+        WiringPXP DeleteWiringPXP(int WiringPXPID);
         PXPError DeletePXPError(int PXPErrorID);
         PXPReason DeletePXPReason(int PXPReasonID);
         WirersPXPInvolved DeleteWirersPXPInvolved(int WirersPXPInvolvedID);

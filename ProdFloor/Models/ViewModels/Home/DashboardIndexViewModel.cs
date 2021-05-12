@@ -78,5 +78,10 @@ namespace ProdFloor.Models.ViewModels
         public IEnumerable<WiringPXP> PendingToCrossWiringPXPs { get; set; }
         public PagingInfo PendingToCrossWiringPXPsPagingInfo { get; set; }
 
+
+        public WiringPXP WiringPXP { get; set; }
+
+
+
     }
 }

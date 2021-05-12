@@ -5266,10 +5266,10 @@ namespace ProdFloor.Infrastructure
                         }
                         users = usersAux.AsQueryable();
                         break;
-                    case "Wirer":
+                    case "WirerPXP":
                         foreach (AppUser user in users)
                         {
-                            bool IsInRole = GetCurrentUserRole(user, "Wirer").Result;
+                            bool IsInRole = GetCurrentUserRole(user, "WirerPXP").Result;
                             if (IsInRole) usersAux.Add(user);
                         }
                         users = usersAux.AsQueryable();
@@ -5418,7 +5418,7 @@ namespace ProdFloor.Infrastructure
             {
                 reasonID = SelectedValue;
             }
-            IQueryable<PXPReason> reasons = repository.pXPReasons.Where(m => m.Description != "-").OrderBy(s => s.Description).AsQueryable();
+            IQueryable<PXPReason> reasons = repository.PXPReasons.Where(m => m.Description != "-").OrderBy(s => s.Description).AsQueryable();
             foreach (PXPReason item in reasons)
             {
                 TagBuilder tag = new TagBuilder("option");
@@ -5520,7 +5520,7 @@ namespace ProdFloor.Infrastructure
                 output.Attributes.Add("name", name);
             }
 
-            PXPReason reason = repository.pXPReasons.FirstOrDefault(m => m.PXPReasonID == ReasonID);
+            PXPReason reason = repository.PXPReasons.FirstOrDefault(m => m.PXPReasonID == ReasonID);
 
             TagBuilder tag = new TagBuilder("input");
             tag.Attributes.Add("name", "UserName");

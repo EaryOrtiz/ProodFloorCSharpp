@@ -35,6 +35,8 @@ namespace ProdFloor.Models
                     dbEntry.JobID = wiringPXP.JobID;
                     dbEntry.SinglePO = wiringPXP.SinglePO;
                     dbEntry.StationID = wiringPXP.StationID;
+                    dbEntry.StartDate = wiringPXP.StartDate;
+                    dbEntry.EndDate = wiringPXP.EndDate;
                 }
             }
             context.SaveChanges();
@@ -102,7 +104,7 @@ namespace ProdFloor.Models
         }
 
 
-        public WiringPXP DeleteWirerPXP(int WirerPXPID)
+        public WiringPXP DeleteWiringPXP(int WirerPXPID)
         {
             WiringPXP dbEntry = context.WiringPXPs
                  .FirstOrDefault(p => p.WiringPXPID == WirerPXPID);

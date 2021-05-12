@@ -13,6 +13,8 @@ namespace ProdFloor.Models
         public int JobID { get; set; }
 
         public int StationID { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
 
         public int SinglePO { get; set; }
 
