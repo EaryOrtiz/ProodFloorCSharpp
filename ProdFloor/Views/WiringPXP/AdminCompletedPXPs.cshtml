@@ -2,11 +2,19 @@
 <table class="table table-striped  text-center table-sm" style="text-align:center">
     <thead style="background-color:#343a40!important;color:#fff;">
         <tr>
+            <th class="text-center" colspan="7">
+                <h5>PXP Completed</h5>
+            </th>
+        <tr>
+        <tr>
             <th scope="col">
                 Job#
             </th>
             <th scope="col">
                 PO#
+            </th>
+            <th scope="col">
+                JobName
             </th>
             <th scope="col">
                 JobType
@@ -17,7 +25,7 @@
             <th scope="col">
                 Station
             </th>
-            <th width="22%">
+            <th scope="col">
                 Options
             </th>
         </tr>
@@ -36,56 +44,58 @@
                 AppUser CurrentUser = UserManager.Users.FirstOrDefault(m => m.EngID == j.WirerPXPID);
                 Job MyJob = Model.MyJobs.FirstOrDefault(m => m.JobID == j.JobID);
 
-                <tr>
-                    <th scope="row">
-                        @Model.MyJobs.FirstOrDefault(m => m.JobID == j.JobID).JobNum
-                    </th>
-                    <td>@j.SinglePO</td>
-                    <td>@Model.JobTypesList.FirstOrDefault(m => m.JobTypeID == MyJob.JobTypeID).Name</td>
-                    <td>@CurrentUser.FullName</td>
-                    <td>
-                        @Model.StationList.FirstOrDefault(m => m.StationID == j.StationID).Label
-                    </td>
-                    <td>
-                        <!-- Return from Complete Button trigger modal -->
-                        <button type="button" class="btn btn-light" style="float:left;background-color:transparent" data-toggle="modal" data-target="#delete @j.WiringPXPID" data-tooltip="tooltip" data-placement="top" title="Delete TestJob">
-                            <i class="fas fa-trash-alt"></i>
-                        </button>
-                        <!-- Modal -->
-                        <form asp-action="ReturnFromComplete" asp-controller="WiringPXP" method="post" asp-route-Id="@j.WiringPXPID">
-                            <div class="modal fade" id="delete @j.WiringPXPID" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLongTitle"><i class="fas fa-exclamation-triangle"></i>&nbsp;Warning</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            Are you sure want to return from complete this PXP with PO #@j.SinglePO?
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
-                                            <button type="submit" class="btn btn-danger btn-sm">
-                                                Go
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
+    <tr>
+        <th scope="row">
+            @MyJob.JobNum
+        </th>
+        <td>@j.SinglePO</td>
+        <td>@MyJob.Name</td>
+        <td>@Model.JobTypesList.FirstOrDefault(m => m.JobTypeID == MyJob.JobTypeID).Name</td>
+        <td>@CurrentUser.FullName</td>
+        <td>
+            @Model.StationList.FirstOrDefault(m => m.StationID == j.StationID).Label
+        </td>
+        <td>
+            <!-- Return from Complete Button trigger modal -->
+            <button type="button" class="btn btn-light" style="float:left;background-color:transparent" data-toggle="modal" data-target="#delete @j.WiringPXPID"
+                    data-tooltip="tooltip" data-placement="top" title="Return this PXP from complete">
+                <i class="fas fa-undo"></i>
+            </button>
+            <!-- Modal -->
+            <form asp-action="ReturnFromComplete" asp-controller="WiringPXP" method="post" asp-route-Id="@j.WiringPXPID">
+                <div class="modal fade" id="delete @j.WiringPXPID" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLongTitle"><i class="fas fa-exclamation-triangle"></i>&nbsp;Warning</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
                             </div>
-                        </form>
-                    </td>
-                </tr>
+                            <div class="modal-body">
+                                Are you sure want to return from complete this PXP with PO #@j.SinglePO?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
+                                <button type="submit" class="btn btn-danger btn-sm">
+                                    Go
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </td>
+    </tr>
             }
         }
     </tbody>
 </table>
 @if (Model.OnCrossWiringPXPS.Count() > 0)
 {
-    <cool-pagination-dash-board-job-num current-model="OncrossJobs" my-jobs-page-model="@Model.MyJobsPagingInfo" page-action="SearchTestJob" page-classes-enabled="true"
-                                        page-class="btn" page-class-normal="btn-secondary" on-cross-page-model="@Model.OnCrossJobsPagingInfo" 
-                                        pending-to-cross-page-model="@Model.PendingToCrossWiringPXPsPagingInfo"
+    <cool-pagination-dash-board-job-num current-model="OncrossJobs" my-jobs-page-model="@Model.MyWiringPXPsPagingInfo" page-action="PXPProductionDashboard" page-classes-enabled="true"
+                                        page-class="btn" page-class-normal="btn-secondary" on-cross-page-model="@Model.OnCrossWiringPXPsPagingInfo" 
+                                        pending-to-cross-page-model="@Model.PendingToCrossJobsPagingInfo"
                                         page-class-selected="btn-dark" my-jobs-url-value="MyJobsPage" on-cross-url-value="OnCrossJobPage"
                                         pending-to-cross-url-value="PendingToCrossJobPage" job-numb="JobNumb"
                                         class="btn-group pull-right m-1">

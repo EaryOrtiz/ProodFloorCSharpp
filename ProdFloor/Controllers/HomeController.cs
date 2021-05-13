@@ -1031,6 +1031,14 @@ namespace ProdFloor.Controllers
                 TempData["message"] = $"Error, El PO no existe";
                 return RedirectToAction("SearchByPO", viewModel);
             }
+
+            if(string.IsNullOrEmpty(JobTypeName(reportRow.Material)))
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"Error, El PO corresponde aun " + reportRow.Material.ToLower();
+                return RedirectToAction("SearchByPO", viewModel);
+            }
+
             viewModel.POJobSearch = CreateDummyByPlanning(reportRow);
             if (tech)
                 return RedirectToAction("NewTestJob", "TestJob", viewModel.POJobSearch);

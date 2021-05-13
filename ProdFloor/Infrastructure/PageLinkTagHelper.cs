@@ -5483,6 +5483,8 @@ namespace ProdFloor.Infrastructure
             TagBuilder tag = new TagBuilder("input");
             tag.Attributes.Add("name", "UserName");
             tag.Attributes.Add("type", "text");
+            tag.Attributes.Add("disabled", "true");
+            tag.Attributes.Add("class", "form-control");
             tag.Attributes.Add("value", user == null ? "Error" : user.FullName);
 
             output.Content.AppendHtml(tag);
@@ -5522,6 +5524,8 @@ namespace ProdFloor.Infrastructure
             TagBuilder tag = new TagBuilder("input");
             tag.Attributes.Add("name", "UserName");
             tag.Attributes.Add("type", "text");
+            tag.Attributes.Add("disabled", "true");
+            tag.Attributes.Add("class", "form-control");
             tag.Attributes.Add("value", reason == null ? "Error" : reason.Description);
 
 

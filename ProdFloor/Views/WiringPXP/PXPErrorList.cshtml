@@ -7,7 +7,7 @@
         <table class="table form-control text-center">
             <thead>
                 <tr>
-                    <td style="text-align:center;">Errores</td>
+                    <td style="text-align:center;font-size: 22px">Errores</td>
                 </tr>
             </thead>
 
@@ -16,29 +16,59 @@
                 {
                     <tr>
                         <td>
-                            <label class="col-4 col-form-label">Cableadora:</label>
-                            <div class="col-5">
-                                <user-input user-id="@Model.pXPErrorList[i].GuiltyWirerID" asp-for="@Model.pXPErrorList[i].GuiltyWirerID"></user-input>
+                            <div class="form-inline row" style="margin-bottom:0em;">
+                                <label class="col-4 col-form-label">Cableadora:</label>
+                                <div class="col-7">
+                                    <user-input user-id="@Model.pXPErrorList[i].GuiltyWirerID" asp-for="@Model.pXPErrorList[i].GuiltyWirerID"></user-input>
+                                </div>
                             </div>
-                            <label class="col-4 col-form-label">Error:</label>
-                            <div class="col-5">
-                                <pxp-reason-input reason-id="@Model.pXPErrorList[i].PXPReasonID" asp-for="@Model.pXPErrorList[i].PXPReasonID"></pxp-reason-input>
+
+                            <div class="form-inline row" style="margin-bottom:0em;">
+                                <label class="col-4 col-form-label">Error:</label>
+                                <div class="col-7">
+                                    <pxp-reason-input reason-id="@Model.pXPErrorList[i].PXPReasonID" asp-for="@Model.pXPErrorList[i].PXPReasonID" disabled></pxp-reason-input>
+                                </div>
                             </div>
+
                         </td>
                         <td style="text-align:center;">
+                            <!-- Delete Button trigger modal -->
+                            <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#delete @Model.pXPErrorList[i].WiringPXPID"
+                                    data-tooltip="tooltip" data-placement="top" title="Eliminar error">
+                                <i class="fa fa-minus-circle"></i>
+                            </button>
+                            <!-- Modal -->
                             <form asp-action="DeletePXPError" method="post">
                                 <input type="hidden" name="ID" value="@Model.pXPErrorList[i].PXPErrorID" />
                                 <input type="hidden" name="Edit" value="\WiringPXP\EditPXPError\@Model.pXPErrorList[i].PXPErrorID" />
-                                <button type="submit" asp-action="DeletePXPError" class="btn btn-danger btn-sm">
-                                    <i class="fa fa-minus-circle"></i>
-                                </button>
+                                <div class="modal fade" id="delete @Model.pXPErrorList[i].WiringPXPID" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLongTitle"><i class="fas fa-exclamation-triangle"></i>&nbsp;Warning</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                               Seguro que desea eliminar el Error?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
+                                                <button type="submit" asp-action="DeletePXPError" class="btn btn-danger btn-sm">
+                                                    Elminar
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </form>
-
                         </td>
 
 
 
                     </tr>
+
 
                 }
             </tbody>
@@ -47,3 +77,6 @@
 
     </div>
 </div>
+
+
+

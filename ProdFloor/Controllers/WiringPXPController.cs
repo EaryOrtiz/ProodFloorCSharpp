@@ -74,7 +74,7 @@ namespace ProdFloor.Controllers
                                                                        .ToList();
 
                 List<Job> OnCrossJobsList = jobRepo.Jobs
-                        .Where(j => j.Status == "Pending for test")
+                        .Where(j => j.Status == "Waiting for test")
                         .OrderBy(n => n.LatestFinishDate).ToList();
 
                 List<WiringPXP> OnCrossWiringPXPList = wiringRepo.WiringPXPs.Where(m => OnCrossJobsList.Any(n => n.JobID == m.JobID))
@@ -114,6 +114,8 @@ namespace ProdFloor.Controllers
                         TotalItems = 0,
                         sort = Sort != "default" ? Sort : "deafult"
                     },
+                    StationList = testingRepo.Stations.ToList(),
+                    JobTypesList = itemRepo.JobTypes.ToList(),
                 };
 
                 return View(dashboard);
@@ -179,6 +181,7 @@ namespace ProdFloor.Controllers
         {
             WiringPXPViewModel viewModel = new WiringPXPViewModel();
             DashboardIndexViewModel viewHomeModel = new DashboardIndexViewModel();
+            AppUser currentUser = GetCurrentUser().Result;
             viewHomeModel.POJobSearch = PONumb;
 
             PO po = jobRepo.POs.FirstOrDefault(m => m.PONumb == PONumb);
@@ -191,7 +194,7 @@ namespace ProdFloor.Controllers
             }
 
             Job job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == po.JobID);
-            if (po == null)
+            if (job == null)
             {
                 TempData["alert"] = $"alert-danger";
                 TempData["message"] = $"Error, el Job no existe";
@@ -209,6 +212,20 @@ namespace ProdFloor.Controllers
                 viewModel.wiringPXP = new WiringPXP();
                 viewModel.wiringPXP.SinglePO = PONumb;
                 viewModel.pXPErrorList = new List<PXPError>();
+            }
+            else if (currentUser.EngID != wiringPXP.WirerPXPID)
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"Error, el PXP a sido reasigando";
+
+                return RedirectToAction("PXPDashboard");
+            }
+            else if (job.Status == "Waiting for test")
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"Error, el PXP con PO #{wiringPXP.SinglePO} ya esta terminado";
+
+                return RedirectToAction("PXPDashboard");
             }
             else
             {
@@ -267,6 +284,31 @@ namespace ProdFloor.Controllers
             AppUser currentUser = GetCurrentUser().Result;
             WiringPXP wiringPXP = wiringRepo.WiringPXPs.FirstOrDefault(m => m.WiringPXPID == ID);
 
+            if (wiringPXP == null)
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"Error, el PXP no existe";
+
+                return RedirectToAction("PXPDashboard");
+            }
+
+            Job job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == wiringPXP.JobID);
+
+            if (currentUser.EngID != wiringPXP.WirerPXPID)
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"Error, el PXP a sido reasigando";
+
+                return RedirectToAction("PXPDashboard");
+            }
+            else if (job.Status == "Waiting for test")
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"Error, el PXP con PO #{wiringPXP.SinglePO} ya esta terminado";
+
+                return RedirectToAction("PXPDashboard");
+            }
+
             WiringPXPViewModel viewModel = new WiringPXPViewModel();
 
             viewModel.wiringPXP = wiringPXP;
@@ -280,6 +322,30 @@ namespace ProdFloor.Controllers
         {
             AppUser currentUser = GetCurrentUser().Result;
             WiringPXP wiringPXP = wiringRepo.WiringPXPs.FirstOrDefault(m => m.WiringPXPID == viewModel.wiringPXP.WiringPXPID);
+
+            if (wiringPXP == null)
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"Error, el PXP no existe";
+
+                return RedirectToAction("PXPDashboard");
+            }
+
+            Job job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == wiringPXP.JobID);
+            if (currentUser.EngID != wiringPXP.WirerPXPID)
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"Error, el PXP a sido reasigando";
+
+                return RedirectToAction("PXPDashboard");
+            }
+            else if (job.Status == "Waiting for test")
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"Error, el PXP con PO #{wiringPXP.SinglePO} ya esta terminado";
+
+                return RedirectToAction("PXPDashboard");
+            }
 
             viewModel.pXPError.WiringPXPID = wiringPXP.WiringPXPID;
             wiringRepo.SavePXPError(viewModel.pXPError);
@@ -328,10 +394,38 @@ namespace ProdFloor.Controllers
         [HttpPost]
         public IActionResult DeletePXPError(int ID)
         {
-            PXPError deletedError = wiringRepo.DeletePXPError(ID);
-            WiringPXP wiringPXP = wiringRepo.WiringPXPs.FirstOrDefault(m => m.WiringPXPID == deletedError.WiringPXPID);
-            PXPReason reasonPXP = wiringRepo.PXPReasons.FirstOrDefault(m => m.PXPReasonID == deletedError.PXPReasonID);
+            AppUser currentUser = GetCurrentUser().Result;
+            
+            
+            PXPError pXPError = wiringRepo.PXPErrors.FirstOrDefault(m => m.PXPErrorID == ID);
+            WiringPXP wiringPXP = wiringRepo.WiringPXPs.FirstOrDefault(m => m.WiringPXPID == pXPError.WiringPXPID);
 
+            if (wiringPXP == null)
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"Error, el PXP no existe";
+
+                return RedirectToAction("PXPDashboard");
+            }
+
+            Job job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == wiringPXP.JobID);
+            if (currentUser.EngID != wiringPXP.WirerPXPID)
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"Error, el PXP a sido reasigando";
+
+                return RedirectToAction("PXPDashboard");
+            }
+            else if (job.Status == "Waiting for test")
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"Error, el PXP con PO #{wiringPXP.SinglePO} ya esta terminado";
+
+                return RedirectToAction("PXPDashboard");
+            }
+
+            PXPError deletedError = wiringRepo.DeletePXPError(ID);
+            PXPReason reasonPXP = wiringRepo.PXPReasons.FirstOrDefault(m => m.PXPReasonID == deletedError.PXPReasonID);
             if (deletedError != null)
             {
                 TempData["message"] = $"{reasonPXP.Description} was deleted";
@@ -343,11 +437,22 @@ namespace ProdFloor.Controllers
         [HttpPost]
         public IActionResult DeleteWiringPXP(int ID)
         {
+            WiringPXP wiringPXP = wiringRepo.WiringPXPs.FirstOrDefault(m => m.WiringPXPID == ID);
+            Job job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == wiringPXP.JobID);
+
+            if (job.Status == "Waiting for test")
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"Error, el PXP con PO #{wiringPXP.SinglePO} ya esta terminado";
+
+                 return RedirectToAction("PXPProductionDashboard");
+            }
+
             WiringPXP deletedPXP = wiringRepo.DeleteWiringPXP(ID);
 
             if (deletedPXP != null)
             {
-                TempData["message"] = $"#{deletedPXP.SinglePO} was deleted";
+                TempData["message"] = $"PXP with PO#{deletedPXP.SinglePO} was deleted";
             }
 
             return RedirectToAction("PXPProductionDashboard");
@@ -356,16 +461,35 @@ namespace ProdFloor.Controllers
         [HttpPost]
         public IActionResult Reassignment(DashboardIndexViewModel viewModel)
         {
-            WiringPXP wiringPXP = wiringRepo.WiringPXPs.FirstOrDefault(m => m.JobID == viewModel.WiringPXP.WiringPXPID);
-
+            WiringPXP wiringPXP = wiringRepo.WiringPXPs.FirstOrDefault(m => m.WiringPXPID == viewModel.WiringPXP.WiringPXPID);
+            
             bool ProductionAdmin = GetCurrentUserRole("ProductionAdmin").Result;
             bool Admin = GetCurrentUserRole("Admin").Result;
+
+            if (wiringPXP == null)
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"Error, el PXP ah sido completado";
+
+                 return RedirectToAction("PXPProductionDashboard");
+
+
+            }
+
+            Job job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == wiringPXP.JobID);
+            if (job.Status == "Waiting for test")
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"Error, el PXP con PO #{wiringPXP.SinglePO} ya esta terminado";
+
+                    return RedirectToAction("PXPProductionDashboard");
+            }
 
             if (!ProductionAdmin && !Admin)
             {
                 TempData["alert"] = $"alert-danger";
                 TempData["message"] = $"You cant reassign";
-                return RedirectToAction("PXPAdminDashBoard");
+                return RedirectToAction("PXPDashboard");
             }
 
 
@@ -373,7 +497,7 @@ namespace ProdFloor.Controllers
             {
                 TempData["alert"] = $"alert-danger";
                 TempData["message"] = $"You cannot reassing the WirerPXP because is the same who owns the PXP";
-                return RedirectToAction("PXPAdminDashBoard");
+                return RedirectToAction("PXPProductionDashboard");
 
             }
 
@@ -394,7 +518,7 @@ namespace ProdFloor.Controllers
             AppUser user = userManager.Users.FirstOrDefault(m => m.EngID == wiringPXP.WirerPXPID);
 
             TempData["message"] = $"You have reassigned the WirerPXP for the Job with PO #{wiringPXP.SinglePO} to {user.FullName}";
-            return RedirectToAction("PXPAdminDashBoard");
+            return RedirectToAction("PXPProductionDashboard");
 
         }
 
@@ -405,10 +529,42 @@ namespace ProdFloor.Controllers
             bool ProdctionAdmin = GetCurrentUserRole("ProductionAdmin").Result;
             WiringPXP wiringPXP = wiringRepo.WiringPXPs.FirstOrDefault(m => m.WiringPXPID == ID);
 
+            if (wiringPXP == null)
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"Error, el PXP no existe";
+
+                if (ProdctionAdmin)
+                    return RedirectToAction("PXPProductionDashboard");
+
+                return RedirectToAction("PXPDashboard");
+
+
+            }
+
+            Job job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == wiringPXP.JobID);
+            if (currentUser.EngID != wiringPXP.WirerPXPID && !ProdctionAdmin)
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"Error, el PXP a sido reasigando";
+
+                return RedirectToAction("PXPDashboard");
+
+            }else if (job.Status == "Waiting for test")
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"Error, el PXP con PO #{wiringPXP.SinglePO} ya esta terminado";
+
+                if (ProdctionAdmin)
+                    return RedirectToAction("PXPProductionDashboard");
+
+                return RedirectToAction("PXPDashboard");
+            }
+
+
             wiringPXP.EndDate = DateTime.Now;
             wiringRepo.SaveWiringPXP(wiringPXP);
 
-            Job job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == wiringPXP.JobID);
             job.Status = "Waiting for test";
             jobRepo.SaveJob(job);
 
