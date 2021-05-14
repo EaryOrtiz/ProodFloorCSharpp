@@ -95,5 +95,12 @@ namespace ProdFloor.Models.ViewModels.TestJob
 
          public Report.ReportsViewModel ReportsViewModel { get; set; }
 
+        //para el nuevo search 
+
+
+        public Element Element { get; set; }
+        public ElementHydro ElementHydro { get; set; }
+        public ElementTraction ElementTraction { get; set; }
+
     }
 }

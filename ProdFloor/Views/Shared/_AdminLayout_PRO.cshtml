@@ -57,6 +57,18 @@
                 {
                     @await Component.InvokeAsync("KittingMenu")
                 }
+                else if (User.IsInRole("ProductionAdmin"))
+                {
+                    @await Component.InvokeAsync("AdminProdMenu")
+                }
+                else if (User.IsInRole("Wirer"))
+                {
+                    @await Component.InvokeAsync("WirerMenu")
+                }
+                else if (User.IsInRole("WirerPXP"))
+                {
+                    @await Component.InvokeAsync("WirerPXPMenu")
+                }
                 else
                 {
                     @await Component.InvokeAsync("NavigationMenu")

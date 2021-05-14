@@ -3219,17 +3219,23 @@ namespace ProdFloor.Infrastructure
     {
         private IItemRepository itemsrepository;
         private IJobRepository jobrepository;
+        private ITestingRepository testingRepo;
         private IUrlHelperFactory urlHelperFactory;
 
         public ModelExpression AspFor { get; set; }
 
         public string SelectFor { get; set; }
 
-        public CustomSelectTagHelper(IUrlHelperFactory helperFactory, IItemRepository itemsrepo, IJobRepository jobrepo)
+        public CustomSelectTagHelper(IUrlHelperFactory helperFactory,
+            IItemRepository itemsrepo,
+            IJobRepository jobrepo,
+             ITestingRepository repo4
+            )
         {
             urlHelperFactory = helperFactory;
             itemsrepository = itemsrepo;
             jobrepository = jobrepo;
+            testingRepo = repo4;
         }
 
         [HtmlAttributeName("asp-is-disabled")]
@@ -3239,12 +3245,16 @@ namespace ProdFloor.Infrastructure
         {
             int YearNow = DateTime.Now.Year;
             string YearNowCanada = "C" + YearNow.ToString().Remove(0, 2) + "00";
+            JobType PXPJobtype = itemsrepository.JobTypes.FirstOrDefault(m => m.Name == "PXP");
+            int PXPJobtypeID = PXPJobtype != null ? PXPJobtype.JobTypeID : 1;
             switch (value)
             {
                 case "JobType":
                     return itemsrepository.JobTypes.OrderBy(s => s.Name).Select(d => d.Name).Distinct();
                 case "Style":
                     return itemsrepository.DoorOperators.OrderBy(s => s.Name).Select(d => d.Style).Distinct();
+                case "StationPXP":
+                    return testingRepo.Stations.Where(m => m.JobTypeID == PXPJobtypeID).OrderBy(s => s.Label).Select(d => d.Label).Distinct();
                 case "SwitchStyle":
                     return new List<string> { "2-Position", "3-Position" }.AsQueryable();
                 case "Stage":
@@ -5266,6 +5276,14 @@ namespace ProdFloor.Infrastructure
                         }
                         users = usersAux.AsQueryable();
                         break;
+                    case "WirerPXP":
+                        foreach (AppUser user in users)
+                        {
+                            bool IsInRole = GetCurrentUserRole(user, "WirerPXP").Result;
+                            if (IsInRole) usersAux.Add(user);
+                        }
+                        users = usersAux.AsQueryable();
+                        break;
                 }
             }
             foreach (AppUser user in users)
@@ -5313,6 +5331,8 @@ namespace ProdFloor.Infrastructure
         public int SelectedValue { get; set; }
         public int SelectFor { get; set; }
 
+        public string JobType { get; set; }
+
 
         [HtmlAttributeName("asp-is-disabled")]
         public bool IsDisabled { set; get; }
@@ -5336,6 +5356,10 @@ namespace ProdFloor.Infrastructure
             IQueryable<Station> stations = testingRepository.Stations.Where(m => m.StationID != 0).OrderBy(s => s.Label).AsQueryable();
             if (SelectFor != 0) { 
                 stations = testingRepository.Stations.OrderBy(s => s.Label).Where(m => m.JobTypeID == SelectFor && m.StationID != 0).AsQueryable(); 
+            }else if (!string.IsNullOrEmpty(JobType))
+            {
+                JobType jobTypeAUx = itemsrepository.JobTypes.FirstOrDefault(m => m.Name == JobType);
+                stations = testingRepository.Stations.OrderBy(s => s.Label).Where(m => m.JobTypeID == jobTypeAUx.JobTypeID && m.StationID != 0).AsQueryable();
             }
             foreach (Station station in stations)
             {
@@ -5356,6 +5380,156 @@ namespace ProdFloor.Infrastructure
                 var d = new TagHelperAttribute("disabled", "disabled");
                 output.Attributes.Add(d);
             }
+            base.Process(context, output);
+        }
+    }
+
+    public class PXPReasonsSelectTagHelper : TagHelper
+    {
+        private IWiringRepository repository;
+
+        private IUrlHelperFactory urlHelperFactory;
+
+        public ModelExpression AspFor { get; set; }
+
+        public PXPReasonsSelectTagHelper(IUrlHelperFactory helperFactory, IWiringRepository repo)
+        {
+            urlHelperFactory = helperFactory;
+            repository = repo;
+        }
+
+        [ViewContext]
+        [HtmlAttributeNotBound]
+        public ViewContext ViewContext { get; set; }
+        public int SelectedValue { get; set; }
+
+
+        [HtmlAttributeName("asp-is-disabled")]
+        public bool IsDisabled { set; get; }
+
+        public override void Process(TagHelperContext context, TagHelperOutput output)
+        {
+
+            IUrlHelper urlHelper = urlHelperFactory.GetUrlHelper(ViewContext);
+            output.TagName = "select";
+            TagBuilder result = new TagBuilder("select");
+            string name = this.AspFor.Name;
+            if (!String.IsNullOrEmpty(name))
+            {
+                output.Attributes.Add("id", name);
+                output.Attributes.Add("name", name);
+            }
+            TagBuilder m_tag = new TagBuilder("option");
+            m_tag.Attributes["value"] = "default";
+            m_tag.InnerHtml.Append("Select a Reason 1");
+            result.InnerHtml.AppendHtml(m_tag);
+            int reasonID = 0;
+            if (SelectedValue != 0)
+            {
+                reasonID = SelectedValue;
+            }
+            IQueryable<PXPReason> reasons = repository.PXPReasons.Where(m => m.Description != "-").OrderBy(s => s.Description).AsQueryable();
+            foreach (PXPReason item in reasons)
+            {
+                TagBuilder tag = new TagBuilder("option");
+                tag.Attributes["value"] = item.PXPReasonID.ToString();
+                if (item.PXPReasonID == reasonID)
+                {
+                    tag.Attributes["selected"] = "selected";
+                }
+                tag.InnerHtml.Append(item.Description.ToString());
+                result.InnerHtml.AppendHtml(tag);
+            }
+            output.Content.AppendHtml(result.InnerHtml);
+            if (IsDisabled)
+            {
+                var d = new TagHelperAttribute("disabled", "disabled");
+                output.Attributes.Add(d);
+            }
+            base.Process(context, output);
+        }
+    }
+
+    public class UserInputTagHelper : TagHelper
+    {
+        private IWiringRepository repository;
+
+        private IUrlHelperFactory urlHelperFactory;
+
+        private UserManager<AppUser> userManager;
+
+
+        public ModelExpression AspFor { get; set; }
+
+        public UserInputTagHelper(IUrlHelperFactory helperFactory, UserManager<AppUser> userMrg)
+        {
+            urlHelperFactory = helperFactory;
+            userManager = userMrg;
+        }
+
+        [ViewContext]
+        [HtmlAttributeNotBound]
+        public ViewContext ViewContext { get; set; }
+        public int UserID { get; set; }
+
+        public override void Process(TagHelperContext context, TagHelperOutput output)
+        {
+
+            IUrlHelper urlHelper = urlHelperFactory.GetUrlHelper(ViewContext);
+            string name = this.AspFor.Name;
+
+            AppUser user = userManager.Users.FirstOrDefault(m => m.EngID == UserID);
+
+            TagBuilder tag = new TagBuilder("input");
+            tag.Attributes.Add("name", "UserName");
+            tag.Attributes.Add("type", "text");
+            tag.Attributes.Add("disabled", "true");
+            tag.Attributes.Add("class", "form-control");
+            tag.Attributes.Add("value", user == null ? "Error" : user.FullName);
+
+            output.Content.AppendHtml(tag);
+            base.Process(context, output);
+        }
+    }
+
+    public class PXPReasonInputTagHelper : TagHelper
+    {
+        private IWiringRepository repository;
+
+        private IUrlHelperFactory urlHelperFactory;
+
+
+
+        public ModelExpression AspFor { get; set; }
+
+        public PXPReasonInputTagHelper(IUrlHelperFactory helperFactory, IWiringRepository repo)
+        {
+            urlHelperFactory = helperFactory;
+            repository = repo;
+        }
+        
+        [ViewContext]
+        [HtmlAttributeNotBound]
+        public ViewContext ViewContext { get; set; }
+        public int ReasonID { get; set; }
+
+        public override void Process(TagHelperContext context, TagHelperOutput output)
+        {
+
+            IUrlHelper urlHelper = urlHelperFactory.GetUrlHelper(ViewContext);
+            string name = this.AspFor.Name;
+
+            PXPReason reason = repository.PXPReasons.FirstOrDefault(m => m.PXPReasonID == ReasonID);
+
+            TagBuilder tag = new TagBuilder("input");
+            tag.Attributes.Add("name", "UserName");
+            tag.Attributes.Add("type", "text");
+            tag.Attributes.Add("disabled", "true");
+            tag.Attributes.Add("class", "form-control");
+            tag.Attributes.Add("value", reason == null ? "Error" : reason.Description);
+
+
+            output.Content.AppendHtml(tag);
             base.Process(context, output);
         }
     }

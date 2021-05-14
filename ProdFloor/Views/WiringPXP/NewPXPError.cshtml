@@ -1,0 +1,34 @@
+﻿@model ProdFloor.Models.ViewModels.Wiring.WiringPXPViewModel
+@{
+    ViewBag.Title = "New PXP Error";
+}
+<form asp-controller="WiringPXP" asp-action="AddPXPError" method="post">
+    <input type="hidden" asp-for="pXPError.PXPErrorID" />
+    <input type="hidden" asp-for="wiringPXP.WiringPXPID" />
+    <input type="hidden" asp-for="wiringPXP.SinglePO" />
+    <input type="hidden" asp-for="Job.JobID" />
+    <input type="hidden" asp-for="wiringPXP.StationID" />
+    <div class="text-center container justify-content-md-center">
+        <h3>Razon del paro</h3>
+    </div>
+    <br />
+    <div class="form-group row text-center justify-content-md-center">
+        <div>
+            <pxp-reasons-select selected-value="@Model.pXPError.PXPReasonID" class="form-control-lg" asp-for="pXPError.PXPReasonID"></pxp-reasons-select>
+            <span asp-validation-for="pXPError.PXPReasonID" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group row text-center justify-content-md-center">
+        <div>
+            <user-select selected-value="@Model.pXPError.GuiltyWirerID" roles="WirerPXP" class="form-control-lg" asp-for="pXPError.GuiltyWirerID"></user-select>
+            <span asp-validation-for="pXPError.GuiltyWirerID" class="text-danger"></span>
+        </div>
+    </div>
+    <br />
+    <div class="justify-content-md-center text-center">
+        <div class="btn-group row " style="position:center" role="group" aria-label="Basic example">
+            <button class="btn btn-primary" type="submit">Guardar</button>
+            <a class="btn btn-lg btn-secondary"  asp-action="NewWiringPXP" asp-route-PONumb="@Model.wiringPXP.SinglePO">Cancelar</a>
+        </div>
+    </div>
+</form>

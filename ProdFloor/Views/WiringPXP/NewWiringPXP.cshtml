@@ -1,0 +1,74 @@
+﻿@model ProdFloor.Models.ViewModels.Wiring.WiringPXPViewModel
+@{
+    ViewBag.Title = "New Wiring PXP Error";
+}
+<div class="container-fluid">
+    <form asp-action="SaveWiringPXP" method="post">
+
+        <div class="row">
+            <input type="hidden" asp-for="wiringPXP.WiringPXPID" />
+            <input type="hidden" asp-for="wiringPXP.SinglePO" />
+            <input type="hidden" asp-for="Job.JobID" />
+
+            <div class="col">
+                <div class="form-group row" style="margin-bottom:0em;">
+                    <label class="col-4 col-form-label">Job Number:</label>
+                    <div class="col-5">
+                        <input type="text" value="@Model.Job.JobNum" class="form-control form-control-sm col-12" disabled asp-for="Job.JobNum">
+                    </div>
+                </div>
+                <div class="form-group row" style="margin-bottom:0em;">
+                    <label class="col-4 col-form-label">PO: &nbsp;</label>
+                    <div class="col-5">
+                        <input type="text" value="@Model.PO.PONumb" class="form-control form-control-sm col-sm-12" disabled asp-for="PO.PONumb">
+                    </div>
+                </div>
+                <div class="form-group row" style="margin-bottom:0em;">
+                    <label class="col-4 col-form-label">JobType:</label>
+                    <div class="col-5">
+                        <input type="text" value="@Model.JobTypeName" class="form-control form-control-sm col-12" disabled asp-for="JobTypeName">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="wiringPXP.StationID" class="col-4 col-form-label"></label>
+                    <div class="col-5">
+                        <station-select job-type="PXP" selected-value="@Model.wiringPXP.StationID" class="form-control form-control-sm col-12" 
+                                        asp-for="wiringPXP.StationID" required></station-select>
+                        <span asp-validation-for="wiringPXP.StationID" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            @if (Model.wiringPXP.WiringPXPID != 0)
+            {
+                <div class="col-8">
+                    @Html.Partial("PXPErrorList", Model)
+                </div>
+            }
+
+
+
+        </div>
+        <div class="text-center">
+            <div class="btn-group">
+                @if (Model.wiringPXP.WiringPXPID == 0)
+                {
+                    <button type="submit" class="btn btn-lg btn-info">Guardar</button>
+                }
+                else
+                {
+                    <a asp-action="EndWiringPXP" class="btn  btn-lg  btn-danger"
+                       asp-route-Id="@Model.wiringPXP.WiringPXPID">
+                        Terminar
+                    </a>
+                    <a asp-action="NewPXPError" class="btn btn-lg btn-success"
+                       asp-route-Id="@Model.wiringPXP.WiringPXPID">
+                        Añadir Error
+                    </a>
+                }
+                <a class="btn btn-lg btn-secondary" asp-action="PXPDashboard">Regresar</a>
+            </div>
+        </div>
+    </form>
+   
+</div>

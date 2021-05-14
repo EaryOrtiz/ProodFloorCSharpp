@@ -47,5 +47,41 @@ namespace ProdFloor.Models.ViewModels
         public bool isEngAdmin { get; set; }
 
         public int CurrentUserID { get; set; }
+
+        [Range(3000000, 4900000, ErrorMessage = "PO number is out of range")]
+        [Required(ErrorMessage = "Please enter a PO")]
+        public int POJobSearch { get; set; }
+
+
+
+        //para el nuevo search 
+        public PO PO { get; set; }
+        public Models.Job Job { get; set; }
+        public JobExtension JobExtension { get; set; }
+        public HydroSpecific HydroSpecific { get; set; }
+        public HoistWayData HoistWayData { get; set; }
+        public GenericFeatures GenericFeatures { get; set; }
+        public Indicator Indicator { get; set; }
+        public SpecialFeatures SpecialFeature { get; set; }
+
+        public Element Element { get; set; }
+        public ElementHydro ElementHydro {get; set;}
+        public ElementTraction ElementTraction {get; set;}
+
+        public string JobTypeName { get; set; }
+
+        //for WiringPXP
+        public IEnumerable<WiringPXP> MyWiringPXPs { get; set; }
+        public PagingInfo MyWiringPXPsPagingInfo { get; set; }
+        public IEnumerable<WiringPXP> OnCrossWiringPXPS { get; set; }
+        public PagingInfo OnCrossWiringPXPsPagingInfo { get; set; }
+        public IEnumerable<WiringPXP> PendingToCrossWiringPXPs { get; set; }
+        public PagingInfo PendingToCrossWiringPXPsPagingInfo { get; set; }
+
+
+        public WiringPXP WiringPXP { get; set; }
+
+
+
     }
 }

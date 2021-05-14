@@ -1,0 +1,76 @@
+﻿@model DashboardIndexViewModel
+@{
+    <script>$(document).ready(function () { $('[data-tooltip="tooltip"]').tooltip(); });</script>
+}
+<br />
+<table class="table table-striped  text-center table-sm" style="text-align:center">
+    <thead style="background-color:#343a40!important;color:#fff;">
+        <tr>
+            <th class="text-center" colspan="5">
+                <h5>PXP en progreso</h5>
+            </th>
+            <th colspan="1">
+                <div class="row float-right" style="padding-right:20px">
+                    <div class="text-center">
+                        <div class="btn-group text-center">
+                            <a style="background-color:seagreen;color:white" class="btn btn-sm" asp-action="SearchByPO" asp-controller="Home">
+                                New PXP
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </th>
+        </tr>
+        <tr>
+            <th scope="col">Job#</th>
+            <th scope="col">PO#</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">JobType</th>
+            <th scope="col">Estacion</th>
+            <th scope="col">Opciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.MyWiringPXPs.Count() == 0)
+        {
+            <tr>
+                <td>No PXPs!</td>
+            </tr>
+        }
+        else
+        {
+            @foreach (var t in Model.MyWiringPXPs)
+            {
+
+                var j = Model.MyJobs.FirstOrDefault(m => m.JobID == t.JobID);
+                string JobtypeName = Model.JobTypesList.First(s => s.JobTypeID == j.JobTypeID).Name;
+
+                <tr>
+                    <th scope="row">
+                        @j.JobNum
+                    </th>
+                    <td>@t.SinglePO</td>
+                    <td>@j.Name</td>
+                    <td>@JobtypeName</td>
+                    <td>@Model.StationList.FirstOrDefault(m => m.StationID == t.StationID).Label</td>
+                    <td>
+                        <a asp-action="NewWiringPXP" asp-controller="WiringPXP"
+                           asp-route-PONumb="@t.SinglePO" class="btn btn-info btn-sm">
+                            Continuar
+                        </a>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+@if (Model.MyWiringPXPs.Count() > 0)
+{
+    <cool-pagination-dash-board current-model="MyJobs" my-jobs-page-model="@Model.MyJobsPagingInfo" page-action="Index" page-classes-enabled="true"
+                                page-class="btn" page-class-normal="btn-secondary" on-cross-page-model="@Model.OnCrossJobsPagingInfo"
+                                pending-to-cross-page-model="@Model.PendingToCrossJobsPagingInfo" page-class-selected="btn-dark"
+                                my-jobs-url-value="MyJobsPage" on-cross-url-value="OnCrossJobPage"
+                                pending-to-cross-url-value="PendingToCrossJobPage" sort="Sort"
+                                class="btn-group pull-right m-1">
+    </cool-pagination-dash-board>
+}
