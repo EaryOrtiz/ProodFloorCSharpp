@@ -10,7 +10,7 @@ using ProdFloor.Models.ViewModels.Stations;
 
 namespace ProdFloor.Controllers
 {
-    [Authorize(Roles = "Admin,TechAdmin")]
+    [Authorize(Roles = "Admin,TechAdmin,ProductionAdmin")]
     public class StationController : Controller
     {
         private IItemRepository itemprepo;

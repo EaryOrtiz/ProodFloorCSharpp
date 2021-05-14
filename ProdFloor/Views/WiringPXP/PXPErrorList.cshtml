@@ -17,7 +17,7 @@
                     <tr>
                         <td>
                             <div class="form-inline row" style="margin-bottom:0em;">
-                                <label class="col-4 col-form-label">Cableadora:</label>
+                                <label class="col-4 col-form-label">Cableador(a):</label>
                                 <div class="col-7">
                                     <user-input user-id="@Model.pXPErrorList[i].GuiltyWirerID" asp-for="@Model.pXPErrorList[i].GuiltyWirerID"></user-input>
                                 </div>
@@ -33,7 +33,7 @@
                         </td>
                         <td style="text-align:center;">
                             <!-- Delete Button trigger modal -->
-                            <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#delete @Model.pXPErrorList[i].WiringPXPID"
+                            <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#delete @Model.pXPErrorList[i].PXPErrorID"
                                     data-tooltip="tooltip" data-placement="top" title="Eliminar error">
                                 <i class="fa fa-minus-circle"></i>
                             </button>
@@ -41,7 +41,7 @@
                             <form asp-action="DeletePXPError" method="post">
                                 <input type="hidden" name="ID" value="@Model.pXPErrorList[i].PXPErrorID" />
                                 <input type="hidden" name="Edit" value="\WiringPXP\EditPXPError\@Model.pXPErrorList[i].PXPErrorID" />
-                                <div class="modal fade" id="delete @Model.pXPErrorList[i].WiringPXPID" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div class="modal fade" id="delete @Model.pXPErrorList[i].PXPErrorID" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
