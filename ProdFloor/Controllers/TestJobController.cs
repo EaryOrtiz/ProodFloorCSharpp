@@ -228,7 +228,7 @@ namespace ProdFloor.Controllers
                     {
                         var _jobSearch = jobSearch.FirstOrDefault(m => m.JobID == onePO.JobID);
 
-                        if (_jobSearch != null && _jobSearch.Status != "Incomplete" && _jobSearch.Contractor != "Fake")
+                        if (_jobSearch != null && _jobSearch.Status != "Incomplete" )
                         {
                             TestJob testJobAu = testingRepo.TestJobs.FirstOrDefault(m => m.SinglePO == onePO.PONumb);
                             if (testJobAu != null)
@@ -258,7 +258,7 @@ namespace ProdFloor.Controllers
                             NewtestJobView.Job = _jobSearch;
                             NewtestJobView.POJobSearch = testJob.SinglePO;
                             NewtestJobView.PO = jobRepo.POs.FirstOrDefault(m => m.JobID == _jobSearch.JobID);
-                            NewtestJobView.isNotDummy = true;
+                            NewtestJobView.isNotDummy = _jobSearch.Contractor == "Fake" ? false : true;
                             NewtestJobView.TestFeature = new TestFeature();
                             NewtestJobView.TestFeature.TestJobID = testJob.TestJobID;
                             NewtestJobView.CurrentTab = "NewFeatures";
@@ -393,8 +393,17 @@ namespace ProdFloor.Controllers
 
                     try
                     {
-                        if (jobExtension != null)
+                        if (jobExtension != null) {
+
+                            if (nextViewModel.MOD == true) jobExtension.DoorOperatorID = 7;
+                            else if (nextViewModel.Manual == true) jobExtension.DoorOperatorID = 2;
+                            else jobExtension.DoorOperatorID = 1;
+
+                            jobExtension.SCOP = nextViewModel.JobExtension.SCOP;
+                            jobExtension.SHC = nextViewModel.JobExtension.SHC;
+
                             nextViewModel.JobExtension = jobExtension;
+                        }
                     }
                     catch { }
 
@@ -486,6 +495,7 @@ namespace ProdFloor.Controllers
 
                         if (nextViewModel.JobExtension.DoorOperatorID == 2)
                             nextViewModel.Manual = true;
+
 
                         //Hrydrospecific
                         if (nextViewModel.HydroSpecific.MotorsNum == 3) nextViewModel.TwosStarters = true;
@@ -1113,9 +1123,11 @@ namespace ProdFloor.Controllers
                     //Save the dummy Job Extension
                     JobExtension currentExtension = jobRepo.JobsExtensions.FirstOrDefault(m => m.JobID == currentJob.JobID);
                     if (viewModel.MOD == true) currentExtension.DoorOperatorID = 7;
+                    else if (viewModel.Manual == true) currentExtension.DoorOperatorID = 2;
                     else currentExtension.DoorOperatorID = 1;
-                    if (viewModel.Manual == true) currentExtension.DoorOperatorID = 2;
-                    else currentExtension.DoorOperatorID = 1;
+
+                    currentExtension.SCOP = viewModel.JobExtension.SCOP;
+                    currentExtension.SHC = viewModel.JobExtension.SHC;
                     jobRepo.SaveJobExtension(currentExtension);
 
                     //Save the dummy Job HydroSpecific
@@ -1184,8 +1196,7 @@ namespace ProdFloor.Controllers
                     currentExtension.SCOP = viewModel.JobExtension.SCOP;
                     currentExtension.SHC = viewModel.JobExtension.SHC;
                     if (viewModel.MOD == true) currentExtension.DoorOperatorID = 7;
-                    else currentExtension.DoorOperatorID = 1;
-                    if (viewModel.Manual == true) currentExtension.DoorOperatorID = 2;
+                    else if (viewModel.Manual == true) currentExtension.DoorOperatorID = 2;
                     else currentExtension.DoorOperatorID = 1;
                     jobRepo.SaveJobExtension(currentExtension);
 
@@ -1714,24 +1725,14 @@ namespace ProdFloor.Controllers
                 {
                     Job job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == testJob.JobID);
 
-                    if (job.Contractor == "Fake")
-                    {
-                        Job deletDummy = jobRepo.DeleteEngJob(job.JobID);
 
-                        if (deletDummy != null)
-                        {
-                            TempData["message"] = $"Job with #JobNum {deletDummy.JobNum} and all its depenencies were deleted";
-                        }
-                    }
-                    else
-                    {
-                        TestJob deletedItem = testingRepo.DeleteTestJob(ID);
+                   TestJob deletedItem = testingRepo.DeleteTestJob(ID);
 
                         if (deletedItem != null)
                         {
                             TempData["message"] = $"Testjob with #PO {deletedItem.SinglePO} was deleted";
                         }
-                    }
+                   
 
 
 
