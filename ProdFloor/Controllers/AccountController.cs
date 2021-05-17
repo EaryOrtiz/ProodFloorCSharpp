@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Hosting;
 
 namespace ProdFloor.Controllers
 {
-    [Authorize(Roles = "Admin,Engineer,TechAdmin,Technician,Manager,Kitting")]
+    [Authorize(Roles = "Admin,Engineer,TechAdmin,Technician,Manager,ProductionAdmin,WirerPXP,Kitting")]
     public class AccountController : Controller
     {
 

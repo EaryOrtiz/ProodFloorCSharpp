@@ -2,7 +2,6 @@
 @{
     ViewBag.Title = "New Wiring PXP Error";
 }
-<div class="container-fluid">
     <form asp-action="SaveWiringPXP" method="post">
 
         <div class="row">
@@ -10,28 +9,28 @@
             <input type="hidden" asp-for="wiringPXP.SinglePO" />
             <input type="hidden" asp-for="Job.JobID" />
 
-            <div class="col">
+            <div class="col-4">
                 <div class="form-group row" style="margin-bottom:0em;">
                     <label class="col-4 col-form-label">Job Number:</label>
-                    <div class="col-5">
+                    <div class="col-7">
                         <input type="text" value="@Model.Job.JobNum" class="form-control form-control-sm col-12" disabled asp-for="Job.JobNum">
                     </div>
                 </div>
                 <div class="form-group row" style="margin-bottom:0em;">
                     <label class="col-4 col-form-label">PO: &nbsp;</label>
-                    <div class="col-5">
+                    <div class="col-7">
                         <input type="text" value="@Model.PO.PONumb" class="form-control form-control-sm col-sm-12" disabled asp-for="PO.PONumb">
                     </div>
                 </div>
                 <div class="form-group row" style="margin-bottom:0em;">
                     <label class="col-4 col-form-label">JobType:</label>
-                    <div class="col-5">
+                    <div class="col-7">
                         <input type="text" value="@Model.JobTypeName" class="form-control form-control-sm col-12" disabled asp-for="JobTypeName">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label asp-for="wiringPXP.StationID" class="col-4 col-form-label"></label>
-                    <div class="col-5">
+                    <div class="col-7">
                         <station-select job-type="PXP" selected-value="@Model.wiringPXP.StationID" class="form-control form-control-sm col-12" 
                                         asp-for="wiringPXP.StationID" required></station-select>
                         <span asp-validation-for="wiringPXP.StationID" class="text-danger"></span>
@@ -71,4 +70,3 @@
         </div>
     </form>
    
-</div>
