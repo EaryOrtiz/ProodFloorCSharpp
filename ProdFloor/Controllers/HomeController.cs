@@ -219,9 +219,11 @@ namespace ProdFloor.Controllers
 
             if (ProdctionAdmin) return RedirectToAction("PXPProductionDashboard", "WiringPXP");
 
+            if (wirerPXP) return RedirectToAction("PXPDashboard", "WiringPXP");
+
             if (wirer) return RedirectToAction("ProductionAdminDash", "Wiring");
 
-            if (wirerPXP) return RedirectToAction("PXPDashboard", "WiringPXP");
+            
 
             return NotFound();
         }

@@ -61,14 +61,15 @@
                 {
                     @await Component.InvokeAsync("AdminProdMenu")
                 }
-                else if (User.IsInRole("Wirer"))
-                {
-                    @await Component.InvokeAsync("WirerMenu")
-                }
                 else if (User.IsInRole("WirerPXP"))
                 {
                     @await Component.InvokeAsync("WirerPXPMenu")
                 }
+                else if (User.IsInRole("Wirer"))
+                {
+                    @await Component.InvokeAsync("WirerMenu")
+                }
+
                 else
                 {
                     @await Component.InvokeAsync("NavigationMenu")
