@@ -215,6 +215,8 @@ namespace ProdFloor.Controllers
 
             if (manager) return RedirectToAction("ManagerDashboard", "Report");
 
+            if (kitting) return RedirectToAction("NewPrintable", "PlanningReport");
+
             if (ProdctionAdmin) return RedirectToAction("PXPProductionDashboard", "WiringPXP");
 
             if (wirer) return RedirectToAction("ProductionAdminDash", "Wiring");
