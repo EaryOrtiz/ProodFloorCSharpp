@@ -5280,7 +5280,15 @@ namespace ProdFloor.Infrastructure
                         foreach (AppUser user in users)
                         {
                             bool IsInRole = GetCurrentUserRole(user, "WirerPXP").Result;
-                            if (IsInRole) usersAux.Add(user);
+                            if (IsInRole && !user.FullName.Contains("Tester")) usersAux.Add(user);
+                        }
+                        users = usersAux.AsQueryable();
+                        break;
+                    case "Wirer":
+                        foreach (AppUser user in users)
+                        {
+                            bool IsInRole = GetCurrentUserRole(user, "Wirer").Result;
+                            if (IsInRole && !user.FullName.Contains("Tester")) usersAux.Add(user);
                         }
                         users = usersAux.AsQueryable();
                         break;
