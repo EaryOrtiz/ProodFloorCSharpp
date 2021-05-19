@@ -215,6 +215,14 @@ namespace ProdFloor.Controllers
             bool techAdmin = GetCurrentUserRole("TechAdmin").Result;
             bool Admin = GetCurrentUserRole("Admin").Result;
 
+            if (!Admin)
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"You don't have permissions, contact to your admin";
+
+                return RedirectToAction("Index");
+            }
+
             AppUser user = await userManager.FindByIdAsync(id);
             if (user != null && ( engAdmin || techAdmin || Admin ))
             {

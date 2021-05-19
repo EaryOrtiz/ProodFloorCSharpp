@@ -7,6 +7,7 @@ using System.Xml;
 using HtmlAgilityPack;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -22,14 +23,17 @@ namespace ProdFloor.Controllers
     {
         private ITestingRepository repository;
         private IHostingEnvironment _env;
+        private UserManager<AppUser> userManager;
         public int PageSize = 7;
         string appDataFolder => _env.WebRootPath.ToString() + @"\AppData\";
 
         public ReasonsController(ITestingRepository testingrepo,
-            IHostingEnvironment env)
+            IHostingEnvironment env,
+            UserManager<AppUser> userMrg)
         {
             repository = testingrepo;
             _env = env;
+            userManager = userMrg;
         }
 
 
@@ -456,6 +460,16 @@ namespace ProdFloor.Controllers
         [HttpPost]
         public IActionResult Delete(string btn, int ID)
         {
+            bool admin = GetCurrentUserRole("Admin").Result;
+
+            if (!admin)
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"You don't have permissions, contact to your admin";
+
+                return RedirectToAction("Reason1List");
+            }
+
             switch (btn)
             {
                 case "R1":
@@ -777,6 +791,15 @@ namespace ProdFloor.Controllers
             {
                 return BadRequest();
             }
+        }
+
+        private async Task<bool> GetCurrentUserRole(string role)
+        {
+            AppUser user = await userManager.GetUserAsync(HttpContext.User);
+
+            bool isInRole = await userManager.IsInRoleAsync(user, role);
+
+            return isInRole;
         }
 
     }

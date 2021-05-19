@@ -103,6 +103,16 @@ namespace ProdFloor.Controllers
         [HttpPost]
         public IActionResult Delete(int ID)
         {
+            bool admin = GetCurrentUserRole("Admin").Result;
+
+            if (!admin)
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"You don't have permissions, contact to your admin";
+
+                return RedirectToAction("List");
+            }
+
             PXPReason deletedPXPReason = wiringRepo.DeletePXPReason(ID);
 
             if (deletedPXPReason != null)
@@ -110,6 +120,15 @@ namespace ProdFloor.Controllers
                 TempData["message"] = $"{deletedPXPReason.Description} was deleted";
             }
             return RedirectToAction("List");
+        }
+
+        private async Task<bool> GetCurrentUserRole(string role)
+        {
+            AppUser user = await userManager.GetUserAsync(HttpContext.User);
+
+            bool isInRole = await userManager.IsInRoleAsync(user, role);
+
+            return isInRole;
         }
     }
 }

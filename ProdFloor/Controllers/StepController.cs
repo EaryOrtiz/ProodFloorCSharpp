@@ -7,6 +7,7 @@ using System.Xml;
 using HtmlAgilityPack;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,17 +24,20 @@ namespace ProdFloor.Controllers
         private IItemRepository itemprepo;
         private ITestingRepository testingrepo;
         private IHostingEnvironment _env;
+        private UserManager<AppUser> userManager;
         public int PageSize = 10;
         string appDataFolder => _env.WebRootPath.ToString() + @"\AppData\";
 
 
         public StepController(ITestingRepository repo, 
             IItemRepository repo2,
-            IHostingEnvironment env)
+            IHostingEnvironment env,
+            UserManager<AppUser> userMrg)
         {
             testingrepo = repo;
             itemprepo = repo2;
             _env = env;
+            userManager = userMrg;
         }
 
         public ViewResult List(string filtrado,string JobTypeName = "Traction", int ElmHydroPage = 1, int ElmTractionPage = 1, int M2000Page = 1, int M4000Page = 1)
@@ -221,6 +225,16 @@ namespace ProdFloor.Controllers
         [HttpPost]
         public IActionResult Delete(int ID)
         {
+            bool admin = GetCurrentUserRole("Admin").Result;
+
+            if (!admin)
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"You don't have permissions, contact to your admin";
+
+                return RedirectToAction("List");
+            }
+
             Step deletedStep = testingrepo.DeleteTestStep(ID);
             if (deletedStep != null)
             {
@@ -425,6 +439,15 @@ namespace ProdFloor.Controllers
         {
             ImportXML(HttpContext.RequestServices);
             return RedirectToAction(nameof(List));
+        }
+
+        private async Task<bool> GetCurrentUserRole(string role)
+        {
+            AppUser user = await userManager.GetUserAsync(HttpContext.User);
+
+            bool isInRole = await userManager.IsInRoleAsync(user, role);
+
+            return isInRole;
         }
     }
 }
