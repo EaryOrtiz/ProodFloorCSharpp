@@ -96,6 +96,8 @@ namespace ProdFloor.Controllers
             {
                 row.PlanningReportID = planning.PlanningReportID;
                 row.Custom = false;
+                row.CustomReady = false;
+                row.Notes = "";
                 itemRepository.SavePlanningReportRow(row);
             }
 
@@ -163,7 +165,10 @@ namespace ProdFloor.Controllers
             {
                 if (oldReportRows.Any(m => m.PO == row.PO))
                 {
-                    row.Custom = true;
+                    PlanningReportRow oldRow = oldReportRows.First(m => m.PO == row.PO);
+                    row.Custom = oldRow.Custom;
+                    row.CustomReady = oldRow.CustomReady;
+                    row.Notes = oldRow.Notes;
                 }
 
             }
@@ -235,7 +240,10 @@ namespace ProdFloor.Controllers
             {
                 if (oldReportRows.Any(m => m.PO == row.PO))
                 {
-                    row.Custom = true;
+                    PlanningReportRow oldRow = oldReportRows.First(m => m.PO == row.PO);
+                    row.Custom = oldRow.Custom;
+                    row.CustomReady = oldRow.CustomReady;
+                    row.Notes = oldRow.Notes;
                 }
 
             }
@@ -343,7 +351,6 @@ namespace ProdFloor.Controllers
             int JobName = 8;
             int PreviousWorkCenter = 9;
             int WorkCenter = 10;
-            int Notes = 11;
             int Priority = 12;
             int shippingNumber = 13;
 
@@ -426,7 +433,6 @@ namespace ProdFloor.Controllers
                     {
                         planningRow.Consecutive = int.Parse(rowList.ElementAt(Consecutive));
                         planningRow.PreviousWorkCenter = rowList.ElementAt(PreviousWorkCenter);
-                        planningRow.Notes = rowList.ElementAt(Notes);
                     }
                     
 
@@ -621,6 +627,27 @@ namespace ProdFloor.Controllers
             {
                 planningReportRows = itemRepository.PlanningReportRows.Where(m => m.Custom == true).ToList()
             };
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public IActionResult UpdateCustoms(PlanningReportListViewModel viewModel)
+        {
+            if (viewModel.planningReportRows != null && viewModel.planningReportRows.Count > 0)
+            {
+                foreach (PlanningReportRow row in viewModel.planningReportRows)
+                {
+                    PlanningReportRow rowFromDB = itemRepository.PlanningReportRows.FirstOrDefault(m => m.PlanningReportRowID == row.PlanningReportRowID);
+                    rowFromDB.Notes = row.Notes;
+                    rowFromDB.Custom = row.Custom;
+                    rowFromDB.CustomReady = row.CustomReady;
+
+                    itemRepository.SavePlanningReportRow(rowFromDB);
+                }
+                TempData["message"] = $"The custom morning report was updated successfully";
+                return Redirect("CustomsByPlanning");
+            }
 
             return View(viewModel);
         }

@@ -187,7 +187,7 @@ namespace ProdFloor.Models
             else
             {
                 PlanningReportRow dbEntry = context.PlanningReportRows
-                .FirstOrDefault(p => p.PlanningReportID == planningReportRow.PlanningReportID);
+                .FirstOrDefault(p => p.PlanningReportRowID == planningReportRow.PlanningReportRowID);
                 if (dbEntry != null)
                 {
                     dbEntry.PlanningReportID = planningReportRow.PlanningReportID;
@@ -205,6 +205,7 @@ namespace ProdFloor.Models
                     dbEntry.Custom = planningReportRow.Custom;
                     dbEntry.ShippingDate = dbEntry.ShippingDate;
                     dbEntry.LineNumber = dbEntry.LineNumber;
+                    dbEntry.CustomReady = dbEntry.CustomReady;
 
                 }
             }
