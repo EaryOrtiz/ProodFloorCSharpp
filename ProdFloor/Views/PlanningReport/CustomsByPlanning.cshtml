@@ -3,6 +3,85 @@
     ViewBag.Title = "Morning Custom";
 }
 <br />
+<form asp-controller="PlanningReport" asp-action="SearchRowByPO" method="post">
+    <div class="container-fluid">
+        <label class="col-form-label">Por favor introduzca un PO:</label>
+        <div class="input-group">
+            <input type="number" class="form-control form-control-sm col-3" id="POSearch" asp-for="POSearch">
+            <div class="input-group-append">
+                <div class="btn-group text-center">
+                    <button class="btn btn-dark" type="submit" value="Search" data-tooltip="tooltip" data-placement="top" title="Search">
+                        <i class="fa fa-search" aria-hidden="true"></i>
+                    </button>
+                    <a class="btn btn-dark" data-tooltip="tooltip" asp-action="CustomsByPlanning" asp-controller="PlanningReport">
+                        <i class="fas fa-undo" aria-hidden="true"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <br />
+
+        <div>
+            <span asp-validation-for="POSearch" class="text-danger"></span><br />
+        </div>
+    </div>
+
+</form>
+
+@if (Model.ReportRow.PlanningReportRowID != 0)
+{
+    <br />
+    <form asp-action="MakeRowCustom" method="post">
+        <div class="container-fluid">
+            <table class="table table-striped  text-center table-sm" style="text-align:center">
+                <thead style="background-color:#343a40!important;color:#fff;">
+                    <tr>
+                        <th class="text-center" colspan="3">
+                            <h5>Job without custom</h5>
+                        </th>
+                        <th colspan="1">
+                            <div class="row float-right" style="padding-right:20px">
+                                <div class="text-center">
+                                    <div class="btn-group text-center">
+                                        <button class="btn btn-sm btn-warning" value="Save" type="submit">Make Custom</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th scope="col">
+                            Job#
+                        </th>
+                        <th scope="col">
+                            PO
+                        </th>
+                        <th scope="col">
+                            Name
+                        </th>
+                        <th scope="col">
+                            JobType
+                        </th>
+                    </tr>
+                </thead>
+                <tbody class="align-content-center text-center">
+                    <tr>
+                        <th scope="row">
+                            <input type="hidden" asp-for="@Model.ReportRow.PlanningReportRowID" value="@Model.ReportRow.PlanningReportRowID" />
+
+                            @Model.ReportRow.JobNumber
+                        </th>
+                        <td>@Model.ReportRow.PO</td>
+                        <td>@Model.ReportRow.JobName</td>
+                        <td>@Model.ReportRow.Material</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </form>
+}
+
+<br />
 <form asp-action="UpdateCustoms" method="post">
     <div class="container-fluid">
         <table class="table table-striped  text-center table-sm" style="text-align:center">
@@ -93,3 +172,14 @@
         </table>
     </div>
 </form>
+@if (Model.planningReportRows.Count > 0)
+{
+    <coool-pagination-search page-model="@Model.PagingInfo" page-action="CustomsByPlanning" page-classes-enabled="true"
+                             page-class="btn" page-class-normal="btn-secondary"
+                             page-class-selected="btn-dark"
+                             class="btn-group pull-right m-1">
+    </coool-pagination-search>
+}
+<br />
+<br />
+<br />

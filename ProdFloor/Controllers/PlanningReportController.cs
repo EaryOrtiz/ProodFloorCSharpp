@@ -23,7 +23,7 @@ namespace ProdFloor.Controllers
         private IItemRepository itemRepository;
         private UserManager<AppUser> userManager;
         private IHostingEnvironment _env;
-        public int PageSize = 4;
+        public int PageSize = 8;
         private object missing = System.Reflection.Missing.Value;
 
         public PlanningReportController(IItemRepository repo, UserManager<AppUser> userMgr, IHostingEnvironment env)
@@ -226,12 +226,13 @@ namespace ProdFloor.Controllers
 
                     continue;
 
-                }else if (planningReportRows.Any(m => m.PO == row.PO))
+                }
+                else if (planningReportRows.Any(m => m.PO == row.PO))
                 {
                     continue;
                 }
 
-                    planningReportRows.Add(row);
+                planningReportRows.Add(row);
             }
 
 
@@ -275,14 +276,14 @@ namespace ProdFloor.Controllers
             PlanningReportRow reportRow = itemRepository.PlanningReportRows
                                                         .FirstOrDefault(m => m.PO == viewModel.POSearch);
 
-            if(reportRow == null)
+            if (reportRow == null)
             {
                 TempData["alert"] = $"alert-danger";
                 TempData["message"] = $"El job que esta buscando no existe";
                 return View(viewModel);
 
             }
-            
+
             PlanningReport report = itemRepository.PlanningReports
                                                   .FirstOrDefault(m => m.PlanningReportID == reportRow.PlanningReportID);
             if (report.Busy)
@@ -296,7 +297,7 @@ namespace ProdFloor.Controllers
             viewModel.Custom = reportRow.Custom;
             viewModel.ReportRow = reportRow;
             viewModel.DueDate = DateTime.Now;
-     
+
 
             return View(viewModel);
         }
@@ -403,7 +404,7 @@ namespace ProdFloor.Controllers
                         {
                             if (string.IsNullOrWhiteSpace(row.GetCell(j).ToString()) || row.GetCell(j).ToString() == "DROPSHIP")
                             {
-                                if(sheetName != "NFP")
+                                if (sheetName != "NFP")
                                 {
                                     row.GetCell(j).SetCellValue("N/A");
                                 }
@@ -412,9 +413,9 @@ namespace ProdFloor.Controllers
                                     rowList.Clear();
                                     break;
                                 }
-                                
+
                             }
-                                
+
 
                             rowList.Add(row.GetCell(j).ToString());
                         }
@@ -423,18 +424,19 @@ namespace ProdFloor.Controllers
                     if (rowList.Count == 0)
                     {
                         continue;
-                    }else if (rowList.ElementAt(MRP) == "MRP")
+                    }
+                    else if (rowList.ElementAt(MRP) == "MRP")
                     {
                         rowList.Clear();
                         continue;
                     }
 
-                    if(sheetName != "NFP")
+                    if (sheetName != "NFP")
                     {
                         planningRow.Consecutive = int.Parse(rowList.ElementAt(Consecutive));
                         planningRow.PreviousWorkCenter = rowList.ElementAt(PreviousWorkCenter);
                     }
-                    
+
 
                     planningRow.JobNumber = rowList.ElementAt(JobNumber);
                     planningRow.LineNumber = int.Parse(rowList.ElementAt(LineNumber));
@@ -444,7 +446,7 @@ namespace ProdFloor.Controllers
                     planningRow.SoldTo = rowList.ElementAt(SoldTo);
                     planningRow.JobName = rowList.ElementAt(JobName);
                     planningRow.WorkCenter = rowList.ElementAt(WorkCenter);
-                    
+
                     planningRow.Priority = rowList.ElementAt(Priority);
 
                     DateTime shippingDate = DateTime.Parse(rowList.ElementAt(shippingNumber));
@@ -465,7 +467,7 @@ namespace ProdFloor.Controllers
             PlanningReportRow reportRow = itemRepository.PlanningReportRows
                                                         .FirstOrDefault(m => m.PO == viewModel.POSearch);
 
-            viewModel.ReportRow.PO = reportRow.PO; 
+            viewModel.ReportRow.PO = reportRow.PO;
             string EngName = "HUNG L";
             string EngNameAUx = "";
 
@@ -478,7 +480,7 @@ namespace ProdFloor.Controllers
             }
             catch { }
 
-            
+
             string rootFolder = _env.WebRootPath.ToString();
             byte[] toArray = null;
             var memoryStream = new MemoryStream();
@@ -486,7 +488,7 @@ namespace ProdFloor.Controllers
             Document doc = new Document();
             try
             {
-                
+
                 doc.LoadFromFile(rootFolder + @"\resources\JobTravelerV6-Template.docx");
             }
             catch
@@ -496,7 +498,7 @@ namespace ProdFloor.Controllers
 
                 return View("Printables", viewModel);
             }
-            
+
 
 
             try
@@ -621,14 +623,83 @@ namespace ProdFloor.Controllers
         }
         */
 
-        public IActionResult CustomsByPlanning()
+        public IActionResult CustomsByPlanning(string filtrado, string Sort = "default", int page = 1, int totalitemsfromlastsearch = 0)
         {
+
+            List<PlanningReportRow> planningReportRows = itemRepository.PlanningReportRows.Where(m => m.Custom == true).ToList();
+
             PlanningReportListViewModel viewModel = new PlanningReportListViewModel
             {
-                planningReportRows = itemRepository.PlanningReportRows.Where(m => m.Custom == true).ToList()
+                planningReportRows = planningReportRows.Skip((page - 1) * PageSize)
+                                       .Take(PageSize).ToList(),
+                ReportRow = new PlanningReportRow(),
+                TotalItems = planningReportRows.Count(),
+                PagingInfo = new PagingInfo
+                {
+                    CurrentPage = page,
+                    sort = Sort != "default" ? Sort : "default",
+                    TotalItemsFromLastSearch = totalitemsfromlastsearch,
+                    ItemsPerPage = PageSize,
+
+                    TotalItems = planningReportRows.Count()
+                }
             };
 
             return View(viewModel);
+        }
+
+        [HttpPost]
+        public IActionResult SearchRowByPO(PlanningReportListViewModel viewModel)
+        {
+            viewModel.ReportRow = new PlanningReportRow();
+
+            PlanningReportRow row = itemRepository.PlanningReportRows.FirstOrDefault(m => m.PO == viewModel.POSearch);
+            if (row == null)
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"The Job with that PO doesn't exist";
+                viewModel.ReportRow = row;
+            }
+            else if(row.Custom == true)
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"The Job with that PO is already Custom";
+            }
+            else
+            {
+                viewModel.ReportRow = row;
+            }
+
+            List<PlanningReportRow> planningReportRows = itemRepository.PlanningReportRows.Where(m => m.Custom == true).ToList();
+
+
+            viewModel.planningReportRows = planningReportRows.Skip((1 - 1) * PageSize)
+                                                             .Take(PageSize).ToList();
+            viewModel.TotalItems = planningReportRows.Count();
+            viewModel.PagingInfo = new PagingInfo
+            {
+                CurrentPage = 1,
+                sort = "default",
+                TotalItemsFromLastSearch = planningReportRows.Count(),
+                ItemsPerPage = PageSize,
+
+                TotalItems = planningReportRows.Count()
+            };
+
+
+            return View("CustomsByPlanning", viewModel);
+        }
+
+        [HttpPost]
+        public IActionResult MakeRowCustom(PlanningReportListViewModel viewModel)
+        {
+            PlanningReportRow rowFromDB = itemRepository.PlanningReportRows.FirstOrDefault(m => m.PlanningReportRowID == viewModel.ReportRow.PlanningReportRowID);
+            rowFromDB.Custom = true;
+
+            itemRepository.SavePlanningReportRow(rowFromDB);
+
+            TempData["message"] = $"The custom morning report was updated successfully";
+            return Redirect("CustomsByPlanning");
         }
 
         [HttpPost]

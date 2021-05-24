@@ -37,5 +37,7 @@ namespace ProdFloor.Models.ViewModels
 
         public int EngID { get; set; }
 
+        public int TotalItems { get; set; }
+
     }
 }
