@@ -28,7 +28,7 @@
         <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
     </div>
     <button type="submit" class="btn btn-primary" id="submit">Save</button>
-    @if (User.IsInRole("Engineer"))
+    @if (!User.IsInRole("Admin"))
     {
         <a asp-action="Index" asp-controller="Home" class="btn btn-secondary">Cancel</a>
     }
