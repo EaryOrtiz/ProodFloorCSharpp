@@ -12,7 +12,7 @@
 <form asp-action="SeedXML" asp-controller="PXPReason" method="post">
     @if (Model.pXPReasonList.Count() == 0)
     {
-        <button type="submit" name="buttonImportXML" value="All" class="btn btn-danger btn-sm">Import All Jobs from XML <i class="fas fa-file-alt"></i></button>
+        <button type="submit" name="buttonImportXML" value="All" class="btn btn-danger btn-sm">Import All Reasons from XML <i class="fas fa-file-alt"></i></button>
     }
 </form>
 <br />
@@ -48,5 +48,10 @@
 </coool-pagination-search>
 }
 <br />
+<div>
+    <form asp-controller="PXPReason" asp-action="ExportToXML" method="post">
+        <button class="btn btn-sm " name="buttonXML" style="background-color:steelblue;color:white">Export Reasons to an XML File</button>
+    </form>
+</div>
 <br />
 <br />

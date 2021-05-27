@@ -657,13 +657,13 @@ namespace ProdFloor.Controllers
             if (row == null)
             {
                 TempData["alert"] = $"alert-danger";
-                TempData["message"] = $"The Job with that PO doesn't exist";
+                TempData["message"] = $"The Job with PO #{viewModel.POSearch} doesn't exist";
                 viewModel.ReportRow = row;
             }
             else if(row.Custom == true)
             {
                 TempData["alert"] = $"alert-danger";
-                TempData["message"] = $"The Job with that PO is already Custom";
+                TempData["message"] = $"The Job with that PO #{viewModel.POSearch} is already Custom";
             }
             else
             {

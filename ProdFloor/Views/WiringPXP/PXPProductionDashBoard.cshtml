@@ -2,7 +2,21 @@
 @{
     ViewBag.Title = "PXP Dashboard";
 }
+<form asp-action="SeedXML" asp-controller="WiringPXP" method="post">
+    @if (Model.PendingToCrossWiringPXPs.Count() == 0)
+    {
+        <button type="submit" name="buttonImportXML" value="All" class="btn btn-danger btn-sm">Import All PXP from XML <i class="fas fa-file-alt"></i></button>
+    }
+</form>
+<br />
 @Html.Partial("AdminOnProgresPXPs", Model)
-<br /><br /><br />
+<br />
+<br />
+<br />
 @Html.Partial("AdminCompletedPXPs", Model)
-
+<br />
+<div>
+    <form asp-controller="WiringPXP" asp-action="ExportToXML" method="post">
+        <button class="btn btn-sm " name="buttonXML" style="background-color:steelblue;color:white">Export PXPs to an XML File</button>
+    </form>
+</div>

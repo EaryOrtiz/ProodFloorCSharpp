@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using ProdFloor.Models;
 using ProdFloor.Models.ViewModels;
 using ProdFloor.Models.ViewModels.Wiring;
@@ -120,6 +124,74 @@ namespace ProdFloor.Controllers
                 TempData["message"] = $"{deletedPXPReason.Description} was deleted";
             }
             return RedirectToAction("List");
+        }
+
+        [HttpPost]
+        public FileStreamResult ExportToXML()
+        {
+            MemoryStream ms = new MemoryStream();
+            XmlWriterSettings xws = new XmlWriterSettings();
+            xws.OmitXmlDeclaration = true;
+            xws.Indent = true;
+
+            List<PXPReason> reasons = wiringRepo.PXPReasons.ToList();
+
+            using (XmlWriter xw = XmlWriter.Create(ms, xws))
+            {
+                xw.WriteStartDocument();
+
+                xw.WriteStartElement("PXPReasons");
+                foreach (PXPReason reason in reasons)
+                {
+                    xw.WriteStartElement("PXPReason");
+                    xw.WriteElementString("PXPReasonID", reason.PXPReasonID.ToString());
+                    xw.WriteElementString("Description", reason.Description);
+                    xw.WriteEndElement();
+                }
+                xw.WriteEndElement();
+                
+                xw.WriteEndDocument();
+            }
+
+            ms.Position = 0;
+            return File(ms, "text/xml", "PXPReasons.xml");
+        }
+
+        public void ImportXML(IServiceProvider services)
+        {
+            ApplicationDbContext context = services.GetRequiredService<ApplicationDbContext>();
+
+
+            XmlDocument doc = new XmlDocument();
+            doc.Load(appDataFolder + "PXPReasons.xml");
+
+            var ALLXMLobs = doc.DocumentElement.SelectSingleNode("//PXPReasons");
+            var XMLobs = ALLXMLobs.SelectNodes("//PXPReason");
+
+            foreach (XmlElement XMLob in XMLobs)
+            {
+                var pxpReasonID = XMLob.SelectSingleNode(".//PXPReasonID").InnerText;
+                var description = XMLob.SelectSingleNode(".//Description").InnerText;
+
+                context.PXPReasons.Add(new PXPReason
+                {
+                    PXPReasonID = Int32.Parse(pxpReasonID),
+                    Description = description,
+                });
+                context.Database.OpenConnection();
+                try
+                {
+                    context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.PXPReasons ON");
+                    context.SaveChanges();
+                    context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.PXPReasons OFF");
+                }
+                finally
+                {
+                    context.Database.CloseConnection();
+                }
+            }
+
+
         }
 
         private async Task<bool> GetCurrentUserRole(string role)

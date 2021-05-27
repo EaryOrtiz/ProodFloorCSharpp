@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using ProdFloor.Models;
 using ProdFloor.Models.ViewModels;
 using ProdFloor.Models.ViewModels.Wiring;
@@ -96,6 +100,7 @@ namespace ProdFloor.Controllers
                     },
                     JobTypes = JobTyPeList,
                     POs = POsList,
+                    PendingToCrossWiringPXPs = wiringRepo.WiringPXPs.ToList(),
                     MyJobs = AllJobsList,
                     OnCrossWiringPXPS = OnCrossWiringPXPList.Skip((OnCrossJobPage - 1) * 6).Take(6),
                     OnCrossWiringPXPsPagingInfo = new PagingInfo
@@ -603,7 +608,193 @@ namespace ProdFloor.Controllers
             return RedirectToAction("PXPProductionDashboard");
         }
 
+        [HttpPost]
+        public FileStreamResult ExportToXML()
+        {
+            MemoryStream ms = new MemoryStream();
+            XmlWriterSettings xws = new XmlWriterSettings();
+            xws.OmitXmlDeclaration = true;
+            xws.Indent = true;
 
+            List<WiringPXP> wiringPXPs = wiringRepo.WiringPXPs.ToList();
+            List<PXPError> errors = wiringRepo.PXPErrors.ToList();
+            List<WirersPXPInvolved> involveds = wiringRepo.WirersPXPInvolveds.ToList();
+
+            using (XmlWriter xw = XmlWriter.Create(ms, xws))
+            {
+                xw.WriteStartDocument();
+                xw.WriteStartElement("PXP");
+
+                xw.WriteStartElement("WiringPXPs");
+                foreach (WiringPXP wiringPXP in wiringPXPs)
+                {
+                    xw.WriteStartElement("WiringPXP");
+                    xw.WriteElementString("WiringPXPID", wiringPXP.WiringPXPID.ToString());
+                    xw.WriteElementString("JobID", wiringPXP.JobID.ToString());
+                    xw.WriteElementString("StationID", wiringPXP.StationID.ToString());
+                    xw.WriteElementString("StartDate", wiringPXP.StartDate.ToString());
+                    xw.WriteElementString("EndDate", wiringPXP.EndDate.ToString());
+                    xw.WriteElementString("SinglePO", wiringPXP.SinglePO.ToString());
+                    xw.WriteElementString("WirerPXPID", wiringPXP.WirerPXPID.ToString());
+                    xw.WriteEndElement();
+                }
+                xw.WriteEndElement();
+
+                xw.WriteStartElement("PXPErrors");
+
+                foreach (PXPError error in errors)
+                {
+                    xw.WriteStartElement("PXPError");
+                    xw.WriteElementString("PXPErrorID", error.PXPErrorID.ToString());
+                    xw.WriteElementString("WiringPXPID", error.WiringPXPID.ToString());
+                    xw.WriteElementString("PXPReasonID", error.PXPReasonID.ToString());
+                    xw.WriteElementString("GuiltyWirerID", error.GuiltyWirerID.ToString());
+                    xw.WriteEndElement();
+
+                }
+                xw.WriteEndElement();
+
+                xw.WriteStartElement("WirersPXPInvolveds");
+                foreach (WirersPXPInvolved involved in involveds)
+                {
+                    xw.WriteStartElement("WirersPXPInvolved");
+                    xw.WriteElementString("WirersPXPInvolvedID", involved.WirersPXPInvolvedID.ToString());
+                    xw.WriteElementString("WiringPXPID", involved.WiringPXPID.ToString());
+                    xw.WriteElementString("WirerPXPID", involved.WirerPXPID.ToString());
+                    xw.WriteEndElement();
+
+                }
+                xw.WriteEndElement();
+
+
+                xw.WriteEndElement();
+                xw.WriteEndDocument();
+            }
+
+            ms.Position = 0;
+            return File(ms, "text/xml", "WiringPXPs-PXPErrors-WirersPXPInvolveds.xml");
+        }
+
+        public void ImportXML(IServiceProvider services)
+        {
+            ApplicationDbContext context = services.GetRequiredService<ApplicationDbContext>();
+
+
+            XmlDocument doc = new XmlDocument();
+            doc.Load(appDataFolder + "WiringPXPs-PXPErrors-WirersPXPInvolveds.xml");
+
+            if (context.JobTypes.Any() && context.Jobs.Any()
+                 && context.Stations.Any() && context.PXPReasons.Any())
+            {
+                var ALLPXP = doc.DocumentElement.SelectSingleNode("//PXP");
+
+                var ALLXMLobs = ALLPXP.SelectSingleNode("//WiringPXPs");
+                var XMLobs = ALLXMLobs.SelectNodes("//WiringPXP");
+
+                var ALLerrors = ALLPXP.SelectSingleNode("//PXPErrors");
+                var errors = ALLerrors.SelectNodes("//PXPError");
+
+                var ALLinvolveds = ALLPXP.SelectSingleNode("//WirersPXPInvolveds");
+                var involveds = ALLinvolveds.SelectNodes("//WirersPXPInvolved");
+
+                foreach (XmlElement XMLob in XMLobs)
+                {
+                    var wiringPXPID = XMLob.SelectSingleNode(".//WiringPXPID").InnerText;
+                    var jobID = XMLob.SelectSingleNode(".//JobID").InnerText;
+                    var stationID = XMLob.SelectSingleNode(".//StationID").InnerText;
+                    var startDate = XMLob.SelectSingleNode(".//StartDate").InnerText;
+                    var endDate = XMLob.SelectSingleNode(".//EndDate").InnerText;
+                    var singlePO = XMLob.SelectSingleNode(".//SinglePO").InnerText;
+                    var wirerPXPID = XMLob.SelectSingleNode(".//WirerPXPID").InnerText;
+
+                    context.WiringPXPs.Add(new WiringPXP
+                    {
+                        WiringPXPID = Int32.Parse(wiringPXPID),
+                        JobID = Int32.Parse(jobID),
+                        StationID = Int32.Parse(stationID),
+                        StartDate = DateTime.Parse(startDate),
+                        EndDate = DateTime.Parse(endDate),
+                        SinglePO = Int32.Parse(singlePO),
+                        WirerPXPID = Int32.Parse(wirerPXPID)
+                    });
+                    context.Database.OpenConnection();
+                    try
+                    {
+                        context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.WiringPXPs ON");
+                        context.SaveChanges();
+                        context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.WiringPXPs OFF");
+                    }
+                    finally
+                    {
+                        context.Database.CloseConnection();
+                    }
+                }
+
+                foreach (XmlElement error in errors)
+                {
+                    var pXPErrorID = error.SelectSingleNode(".//PXPErrorID").InnerText;
+                    var wiringPXPID = error.SelectSingleNode(".//WiringPXPID").InnerText;
+                    var pXPReasonID = error.SelectSingleNode(".//PXPReasonID").InnerText;
+                    var guiltyWirerID = error.SelectSingleNode(".//GuiltyWirerID").InnerText;
+
+                    context.PXPErrors.Add(new PXPError
+                    {
+                        PXPErrorID = Int32.Parse(pXPErrorID),
+                        WiringPXPID = Int32.Parse(wiringPXPID),
+                        PXPReasonID = Int32.Parse(pXPReasonID),
+                        GuiltyWirerID = Int32.Parse(guiltyWirerID),
+
+                    });
+                    context.Database.OpenConnection();
+                    try
+                    {
+                        context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.PXPErrors ON");
+                        context.SaveChanges();
+                        context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.PXPErrors OFF");
+                    }
+                    finally
+                    {
+                        context.Database.CloseConnection();
+                    }
+                }
+
+                foreach (XmlElement involved in involveds)
+                {
+                    var wirersPXPInvolvedID = involved.SelectSingleNode(".//WirersPXPInvolvedID").InnerText;
+                    var wiringPXPID = involved.SelectSingleNode(".//WiringPXPID").InnerText;
+                    var wirerPXPID = involved.SelectSingleNode(".//WirerPXPID").InnerText;
+
+                    context.WirersPXPInvolveds.Add(new WirersPXPInvolved
+                    {
+                        WirersPXPInvolvedID = Int32.Parse(wirersPXPInvolvedID),
+                        WiringPXPID = Int32.Parse(wiringPXPID),
+                        WirerPXPID = Int32.Parse(wirerPXPID),
+
+                    });
+                    context.Database.OpenConnection();
+                    try
+                    {
+                        context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.WirersPXPInvolveds ON");
+                        context.SaveChanges();
+                        context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.WirersPXPInvolveds OFF");
+                    }
+                    finally
+                    {
+                        context.Database.CloseConnection();
+                    }
+                }
+            }
+
+           
+
+        }
+
+        [HttpPost]
+        public IActionResult SeedXML()
+        {
+            ImportXML(HttpContext.RequestServices);
+            return RedirectToAction(nameof(PXPProductionDashboard));
+        }
 
     }
 }
