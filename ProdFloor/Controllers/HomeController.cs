@@ -927,6 +927,23 @@ namespace ProdFloor.Controllers
                 JobType = "ElmHydro";
             else if (material.Contains("ELEMENT-AC"))
                 JobType = "ElmTract";
+            else if (material.Contains("M-VIEW-SYSTEM"))
+                JobType = "mView";
+            else if (material.Contains("CUSTOM-T"))
+                JobType = "CustomT";
+            else if (material.Contains("RESISTOR"))
+                JobType = "Resistor";
+            else if (material.Contains("M-GROUP"))
+                JobType = "mGroup";
+            else if (material.Contains("M-CARTOP"))
+                JobType = "mCartop";
+            else if (material.Contains("IMONITOR"))
+                JobType = "iMonitor";
+            else if (material.Contains("CUSTOM-H"))
+                JobType = "CustomH";
+            else if (material.Contains("IREPORT"))
+                JobType = "iReport";
+            else JobType = "Generic";
 
 
             return JobType;
@@ -1036,12 +1053,7 @@ namespace ProdFloor.Controllers
                 return RedirectToAction("SearchByPO", viewModel);
             }
 
-            if(string.IsNullOrEmpty(JobTypeName(reportRow.Material)))
-            {
-                TempData["alert"] = $"alert-danger";
-                TempData["message"] = $"Error, El PO corresponde aun " + reportRow.Material.ToLower();
-                return RedirectToAction("SearchByPO", viewModel);
-            }
+
 
             viewModel.POJobSearch = CreateDummyByPlanning(reportRow);
             if (tech)
@@ -1061,6 +1073,7 @@ namespace ProdFloor.Controllers
 
             Job currentJob = new Job();
             AppUser currentUser = GetCurrentUser().Result;
+            JobType jobType = itemRepo.JobTypes.FirstOrDefault(m => m.Name == JobTypeName(reportRow.Material));
 
             Job Job = new Job();
             Job.Contractor = "Fake";
@@ -1072,14 +1085,14 @@ namespace ProdFloor.Controllers
             Job.CrossAppEngID = 0;
             Job.CityID = 1;
             Job.JobNum = reportRow.JobNumber;
-            Job.JobTypeID = itemRepo.JobTypes.FirstOrDefault(m => m.Name == JobTypeName(reportRow.Material)).JobTypeID;
+            Job.JobTypeID = jobType.JobTypeID;
             Job.Name = reportRow.JobName;
             Job.ShipDate = DateTime.Parse(reportRow.ShippingDate);
             repository.SaveJob(Job);
             currentJob = repository.Jobs.FirstOrDefault(p => p.JobID == repository.Jobs.Max(x => x.JobID));
 
 
-            switch (JobTypeName(reportRow.Material))
+            switch (jobType.Name)
             {
                 case "M2000":
                 case "M4000":
@@ -1184,10 +1197,17 @@ namespace ProdFloor.Controllers
                     };
                     repository.SaveElementTraction(elementTraction);
                     break;
+                default: break;
             }
 
-            SpecialFeatures featureFake = new SpecialFeatures(); featureFake.JobID = currentJob.JobID; featureFake.Description = null;
-            repository.SaveSpecialFeatures(featureFake);
+            if(jobType.Name == "M2000" || jobType.Name == "ElmHydro" ||
+                jobType.Name == "M4000" || jobType.Name == "ElmTract")
+            {
+                SpecialFeatures featureFake = new SpecialFeatures(); featureFake.JobID = currentJob.JobID; featureFake.Description = null;
+                repository.SaveSpecialFeatures(featureFake);
+            }
+
+            
 
             PO POFake = new PO();
             POFake.JobID = currentJob.JobID;

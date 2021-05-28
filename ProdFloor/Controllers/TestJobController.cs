@@ -238,6 +238,22 @@ namespace ProdFloor.Controllers
                                 return View("NewTestJob", testJobSearchAux);
                             }
 
+                            PlanningReportRow reportRow = itemRepository.PlanningReportRows.FirstOrDefault(m => m.PO == onePO.PONumb);
+
+                            if(reportRow != null)
+                            {
+                                JobType jobType = itemRepository.JobTypes.FirstOrDefault(m => m.Name == JobTypeName(reportRow.Material));
+
+                                if (jobType.Name != "M2000" && jobType.Name != "ElmHydro" &&
+                                    jobType.Name != "M4000" && jobType.Name != "ElmTract")
+                                {
+                                    TempData["alert"] = $"alert-danger";
+                                    TempData["message"] = $"Error, El PO corresponde aun " + reportRow.Material.ToLower();
+                                    return View("NewTestJob", testJobSearchAux);
+                                }
+                            }
+                           
+
                             TestJob testJob = new TestJob
                             {
                                 JobID = _jobSearch.JobID,
@@ -3803,6 +3819,39 @@ namespace ProdFloor.Controllers
         {
             ImportXML(HttpContext.RequestServices);
             return RedirectToAction(nameof(List));
+        }
+        public string JobTypeName(string material)
+        {
+            string JobType = "";
+
+            if (material.Contains("2000"))
+                JobType = "M2000";
+            else if (material.Contains("4000"))
+                JobType = "M4000";
+            else if (material.Contains("ELEMENT-HYDRO"))
+                JobType = "ElmHydro";
+            else if (material.Contains("ELEMENT-AC"))
+                JobType = "ElmTract";
+            else if (material.Contains("M-VIEW-SYSTEM"))
+                JobType = "mView";
+            else if (material.Contains("CUSTOM-T"))
+                JobType = "CustomT";
+            else if (material.Contains("RESISTOR"))
+                JobType = "Resistor";
+            else if (material.Contains("M-GROUP"))
+                JobType = "mGroup";
+            else if (material.Contains("M-CARTOP"))
+                JobType = "mCartop";
+            else if (material.Contains("IMONITOR"))
+                JobType = "iMonitor";
+            else if (material.Contains("CUSTOM-H"))
+                JobType = "CustomH";
+            else if (material.Contains("IREPORT"))
+                JobType = "iReport";
+            else JobType = "Generic";
+
+
+            return JobType;
         }
 
     }
