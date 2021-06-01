@@ -26,6 +26,7 @@ namespace ProdFloor.Controllers
         private IJobRepository jobRepo;
         private ITestingRepository testingRepo;
         private IItemRepository itemRepository;
+        private IWiringRepository wiringRepo;
         private ReportController reportController;
         private UserManager<AppUser> userManager;
         private IHostingEnvironment _env;
@@ -35,6 +36,7 @@ namespace ProdFloor.Controllers
         public TestJobController(ITestingRepository repo,
             IJobRepository repo2,
             IItemRepository repo3,
+            IWiringRepository repo4,
             ReportController report,
             UserManager<AppUser> userMgr,
             IHostingEnvironment env)
@@ -44,6 +46,7 @@ namespace ProdFloor.Controllers
             userManager = userMgr;
             itemRepository = repo3;
             reportController = report;
+            wiringRepo = repo4;
             _env = env;
         }
 
@@ -1740,18 +1743,29 @@ namespace ProdFloor.Controllers
                 if (isNotCompleted && (isAdmin || isTechAdmin))
                 {
                     Job job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == testJob.JobID);
+                    WiringPXP pxp = wiringRepo.WiringPXPs.FirstOrDefault(m => m.JobID == job.JobID);
 
-
-                   TestJob deletedItem = testingRepo.DeleteTestJob(ID);
+                    
+                    if (pxp != null || job.Contractor != "Fake")
+                    {
+                        TestJob deletedItem = testingRepo.DeleteTestJob(ID);
 
                         if (deletedItem != null)
                         {
-                            TempData["message"] = $"Testjob with #PO {deletedItem.SinglePO} was deleted";
+                            TempData["message"] = $"Only Testjob with #PO {deletedItem.SinglePO} was deleted";
                         }
-                   
+                    }
+                    else
+                    {
+                        Job deletedAll = jobRepo.DeleteJob(ID);
 
+                        if (deletedAll != null)
+                        {
+                            TempData["message"] = $"All dependencies with #PO {testJob.SinglePO} were deleted";
+                        }
+                    }
 
-
+                  
                     if (isAdmin) return RedirectToAction("SearchTestJob", "TestJob");
                     return RedirectToAction("Index", "Home");
 
