@@ -83,7 +83,7 @@ namespace ProdFloor.Models
 
         public JobExtension _jobExtension { get; set; }
 
-        public WiringPXP _WiringPXP { get; set; }
+        public List<WiringPXP> _WiringPXPs { get; set; }
         public HydroSpecific _HydroSpecific { get; set; }
         public GenericFeatures _GenericFeatures { get; set; }
         public Indicator _Indicator { get; set; }
