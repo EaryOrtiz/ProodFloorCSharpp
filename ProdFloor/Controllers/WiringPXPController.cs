@@ -211,7 +211,7 @@ namespace ProdFloor.Controllers
             viewModel.PO = po;
             viewModel.JobTypeName = itemRepo.JobTypes.FirstOrDefault(m => m.JobTypeID == job.JobTypeID).Name;
 
-            WiringPXP wiringPXP = wiringRepo.WiringPXPs.FirstOrDefault(m => m.JobID == job.JobID);
+            WiringPXP wiringPXP = wiringRepo.WiringPXPs.FirstOrDefault(m => m.SinglePO == PONumb);
             if (wiringPXP == null)
             {
                 viewModel.wiringPXP = new WiringPXP();
@@ -260,7 +260,7 @@ namespace ProdFloor.Controllers
 
             wiringRepo.SaveWiringPXP(wiring);
 
-            WiringPXP wiringPXP = wiringRepo.WiringPXPs.FirstOrDefault(m => m.JobID == viewModel.Job.JobID);
+            WiringPXP wiringPXP = wiringRepo.WiringPXPs.FirstOrDefault(m => m.SinglePO == viewModel.wiringPXP.SinglePO);
 
 
             WirersPXPInvolved involved = wiringRepo.WirersPXPInvolveds
