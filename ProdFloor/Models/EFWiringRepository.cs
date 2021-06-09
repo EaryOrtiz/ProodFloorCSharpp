@@ -32,7 +32,7 @@ namespace ProdFloor.Models
                 if (dbEntry != null)
                 {
                     dbEntry.WirerPXPID = wiringPXP.WirerPXPID;
-                    dbEntry.JobID = wiringPXP.JobID;
+                    dbEntry.POID = wiringPXP.POID;
                     dbEntry.SinglePO = wiringPXP.SinglePO;
                     dbEntry.StationID = wiringPXP.StationID;
                     dbEntry.StartDate = wiringPXP.StartDate;

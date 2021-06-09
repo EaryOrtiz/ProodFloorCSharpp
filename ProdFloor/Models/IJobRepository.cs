@@ -21,6 +21,7 @@ namespace ProdFloor.Models
         IQueryable<ElementHydro> ElementHydros { get; }
         IQueryable<ElementTraction> ElementTractions { get; }
         IQueryable<JobAdditional> JobAdditionals { get;}
+        IQueryable<StatusPO> StatusPOs { get;}
 
         void SaveJob(Job job);
         void SaveJobExtension(JobExtension jobExtension);
@@ -30,6 +31,7 @@ namespace ProdFloor.Models
         void SaveHoistWayData(HoistWayData hoistWayData);
         void SaveSpecialFeatures(SpecialFeatures specialFeatures);
         void SavePO(PO po);
+        void SaveStatusPO(StatusPO statusPO);
         void SaveJobAdditional(JobAdditional jobAdditional);
         void SaveEngJobView(JobViewModel viewModelToSave);
         void SaveCustomSoftware(CustomSoftware customSoftware);
@@ -53,6 +55,7 @@ namespace ProdFloor.Models
         HoistWayData DeleteHoistWayData(int hoistWatDataID);
         SpecialFeatures DeleteSpecialFeatures(int specialFeaturesID);
         PO DeletePO(int POID);
+        StatusPO DeleteStatusPO(int StatusPOID);
         JobAdditional DeleteJobAdditional(int JobAdditionalID);
         CustomSoftware DeleteCustomSoftware(int CustomSoftwareID);
         TriggeringCustSoft DeleteTriggeringCustSoft(int TriggeringCustSoftID);

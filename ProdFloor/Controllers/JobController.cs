@@ -2180,6 +2180,29 @@ namespace ProdFloor.Controllers
                         {
 
                             repository.SaveEngJobView(nextViewModel);
+
+                            try
+                            {
+                                List<PO> pOs = repository.POs.Where(m => m.JobID == nextViewModel.CurrentJob.JobID).ToList();
+                                foreach (PO po in pOs)
+                                {
+                                    StatusPO statusPO = repository.StatusPOs.FirstOrDefault(m => m.POID == po.POID);
+
+                                    if (statusPO != null)
+                                        continue;
+
+                                    statusPO = new StatusPO();
+                                    statusPO.POID = po.POID;
+                                    statusPO.Status = "Engineering";
+
+                                    repository.SaveStatusPO(statusPO);
+                                }
+                            }
+                            catch (Exception e)
+                            {
+
+                            }
+
                             JobExtension jobExt = repository.JobsExtensions.FirstOrDefault(j => j.JobID == nextViewModel.CurrentJob.JobID);
                             nextViewModel.CurrentJobExtension = (jobExt ?? new JobExtension { JobID = nextViewModel.CurrentJob.JobID });
                             nextViewModel.CurrentHydroSpecific = new HydroSpecific();
@@ -2316,6 +2339,30 @@ namespace ProdFloor.Controllers
                         else
                         {
                             repository.SaveEngElementHydroJobView(nextViewModel);
+
+
+                            try
+                            {
+                                List<PO> pOs = repository.POs.Where(m => m.JobID == nextViewModel.CurrentJob.JobID).ToList();
+                                foreach (PO po in pOs)
+                                {
+                                    StatusPO statusPO = repository.StatusPOs.FirstOrDefault(m => m.POID == po.POID);
+
+                                    if (statusPO != null)
+                                        continue;
+
+                                    statusPO = new StatusPO();
+                                    statusPO.POID = po.POID;
+                                    statusPO.Status = "Engineering";
+
+                                    repository.SaveStatusPO(statusPO);
+                                }
+                            }
+                            catch (Exception e)
+                            {
+
+                            }
+
                             Element elem = repository.Elements.FirstOrDefault(j => j.JobID == nextViewModel.CurrentJob.JobID);
                             nextViewModel.Element = (elem ?? new Element { JobID = nextViewModel.CurrentJob.JobID });
                             nextViewModel.ElementHydro = new ElementHydro();
@@ -2440,6 +2487,30 @@ namespace ProdFloor.Controllers
                         else
                         {
                             repository.SaveEngElementTractionJobView(nextViewModel);
+
+
+                            try
+                            {
+                                List<PO> pOs = repository.POs.Where(m => m.JobID == nextViewModel.CurrentJob.JobID).ToList();
+                                foreach (PO po in pOs)
+                                {
+                                    StatusPO statusPO = repository.StatusPOs.FirstOrDefault(m => m.POID == po.POID);
+
+                                    if (statusPO != null)
+                                        continue;
+
+                                    statusPO = new StatusPO();
+                                    statusPO.POID = po.POID;
+                                    statusPO.Status = "Engineering";
+
+                                    repository.SaveStatusPO(statusPO);
+                                }
+                            }
+                            catch (Exception e)
+                            {
+
+                            }
+
                             Element elem = repository.Elements.FirstOrDefault(j => j.JobID == nextViewModel.CurrentJob.JobID);
                             nextViewModel.Element = (elem ?? new Element { JobID = nextViewModel.CurrentJob.JobID });
                             nextViewModel.ElementTraction = new ElementTraction();

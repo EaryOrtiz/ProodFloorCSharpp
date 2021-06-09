@@ -31,6 +31,7 @@ namespace ProdFloor.Models
         public IQueryable<ElementHydro> ElementHydros => context.ElementHydros;
         public IQueryable<ElementTraction> ElementTractions => context.ElementTractions;
         public IQueryable<JobAdditional> JobAdditionals => context.JobAdditionals;
+        public IQueryable<StatusPO> StatusPOs => context.StatusPOs;
 
         public void SaveJob(Job job)
         {
@@ -374,7 +375,36 @@ namespace ProdFloor.Models
 
             }
 
+        } 
+        
+        public void SaveStatusPO(StatusPO statusPO)
+        {
+            if (statusPO.StatusPOID == 0)
+            {
+                context.StatusPOs.Add(statusPO);
+            }
+            else
+            {
+                StatusPO dbEntry = context.StatusPOs
+                .FirstOrDefault(p => p.POID == statusPO.StatusPOID);
+                if (dbEntry != null)
+                {
+                    dbEntry.POID = statusPO.POID;
+                    dbEntry.Status = statusPO.Status;
+
+                }
+            }
+            try
+            {
+                context.SaveChanges();
+            }
+            catch (DbUpdateException)
+            {
+
+            }
+
         }
+
         public void SaveCustomSoftware(CustomSoftware customSoftware)
         {
             if (customSoftware.CustomSoftwareID == 0)
@@ -763,6 +793,19 @@ namespace ProdFloor.Models
             }
             return dbEntry;
         }
+
+        public StatusPO DeleteStatusPO(int statusPOID)
+        {
+            StatusPO dbEntry = context.StatusPOs
+                .FirstOrDefault(p => p.StatusPOID == statusPOID);
+            if (dbEntry != null)
+            {
+                context.StatusPOs.Remove(dbEntry);
+                context.SaveChanges();
+            }
+            return dbEntry;
+        }
+
         public CustomSoftware DeleteCustomSoftware(int CustomSoftwareID)
         {
             CustomSoftware dbEntry = context.CustomSoftwares

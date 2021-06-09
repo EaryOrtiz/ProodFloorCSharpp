@@ -649,6 +649,22 @@ namespace ProdFloor.Controllers
                         UpdateStatus.Status = "Test";
                         repository.SaveJob(UpdateStatus);
                         TempData["message"] = $"You have sent to production the Job #{UpdateStatus.JobNum}";
+
+                        try
+                        {
+                            List<PO> pOs = repository.POs.Where(m => m.JobID == UpdateStatus.JobID).ToList();
+                            foreach (PO po in pOs)
+                            {
+                                StatusPO statusPO = repository.StatusPOs.FirstOrDefault(m => m.POID == po.POID);
+                                statusPO.Status = "Production";
+
+                                repository.SaveStatusPO(statusPO);
+                            }
+                        }
+                        catch (Exception e)
+                        {
+
+                        }
                     }
                     else
                     {
@@ -660,6 +676,22 @@ namespace ProdFloor.Controllers
                 {
                     UpdateStatus.Status = "Completed";
                     repository.SaveJob(UpdateStatus);
+
+                    try
+                    {
+                        List<PO> pOs = repository.POs.Where(m => m.JobID == UpdateStatus.JobID).ToList();
+                        foreach (PO po in pOs)
+                        {
+                            StatusPO statusPO = repository.StatusPOs.FirstOrDefault(m => m.POID == po.POID);
+                            statusPO.Status = "Completed";
+
+                            repository.SaveStatusPO(statusPO);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+
+                    }
 
                     TempData["message"] = $"You have sent to Completed the Job #{UpdateStatus.JobNum}";
                 }
@@ -1007,21 +1039,23 @@ namespace ProdFloor.Controllers
                 }
                 else if (wirerPXP)
                 {
-                    List<Job> MyjobsList = repository.Jobs
-                                            .Where(s => s.Status == "PXP on progress")
-                                            .OrderBy(n => n.LatestFinishDate).ToList();
+                    List<StatusPO> MyPOsOnProduction = repository.StatusPOs
+                                            .Where(s => s.Status == "Production")
+                                            .ToList();
 
-                    List<WiringPXP> MyWiringPXPList = wiringRepo.WiringPXPs.Where(m => MyjobsList.Any(n => n.JobID == m.JobID))
+                    List<WiringPXP> MyWiringPXPList = wiringRepo.WiringPXPs.Where(m => MyPOsOnProduction.Any(n => n.POID == m.POID))
                                                                            .ToList();
+                   /*
+                   WiringPXP CurrentWiringPXP = MyWiringPXPList.FirstOrDefault(m => m.WirerPXPID == currentUser.EngID);
 
-                    WiringPXP CurrentWiringPXP = MyWiringPXPList.FirstOrDefault(m => m.WirerPXPID == currentUser.EngID);
 
-                    if (CurrentWiringPXP != null)
-                    {
-                        TempData["alert"] = $"alert-danger";
-                        TempData["message"] = $"Error, Ya tiene un PXP activo, intente de nuevo o contacte al Admin";
-                        return RedirectToAction("SearchByPO", viewModel);
-                    }
+                   if (CurrentWiringPXP != null)
+                   {
+                       TempData["alert"] = $"alert-danger";
+                       TempData["message"] = $"Error, Ya tiene un PXP activo, intente de nuevo o contacte al Admin";
+                       return RedirectToAction("SearchByPO", viewModel);
+                   }
+                   */
 
                     WiringPXP WiringPXPWithSamePO = wiringRepo.WiringPXPs.FirstOrDefault(m => m.SinglePO == onePO.PONumb);
                     if (WiringPXPWithSamePO != null)
@@ -1213,6 +1247,14 @@ namespace ProdFloor.Controllers
             POFake.JobID = currentJob.JobID;
             POFake.PONumb = reportRow.PO;
             repository.SavePO(POFake);
+
+            POFake = repository.POs.FirstOrDefault(m => m.JobID == Job.JobID);
+
+            StatusPO statusPO = new StatusPO();
+            statusPO.POID = POFake.POID;
+            statusPO.Status = "Production";
+
+            repository.SaveStatusPO(statusPO);
 
             return POFake.PONumb;
         }

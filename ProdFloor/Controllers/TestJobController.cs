@@ -1743,7 +1743,8 @@ namespace ProdFloor.Controllers
                 if (isNotCompleted && (isAdmin || isTechAdmin))
                 {
                     Job job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == testJob.JobID);
-                    WiringPXP pxp = wiringRepo.WiringPXPs.FirstOrDefault(m => m.JobID == job.JobID);
+                    PO po = jobRepo.POs.FirstOrDefault(m => m.PONumb == testJob.SinglePO);
+                    WiringPXP pxp = wiringRepo.WiringPXPs.FirstOrDefault(m => m.POID == po.POID);
 
                     
                     if (pxp != null || job.Contractor != "Fake")
