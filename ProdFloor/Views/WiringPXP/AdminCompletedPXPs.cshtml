@@ -42,7 +42,8 @@
             @foreach (var j in Model.OnCrossWiringPXPS)
             {
                 AppUser CurrentUser = UserManager.Users.FirstOrDefault(m => m.EngID == j.WirerPXPID);
-                Job MyJob = Model.MyJobs.FirstOrDefault(m => m.JobID == j.JobID);
+                PO MyPO = Model.POs.FirstOrDefault(m => m.POID == j.POID);
+                Job MyJob = Model.MyJobs.FirstOrDefault(m => m.JobID == MyPO.JobID);
 
     <tr>
         <th scope="row">
