@@ -628,9 +628,11 @@ namespace ProdFloor.Controllers
                 xw.WriteStartElement("WiringPXPs");
                 foreach (WiringPXP wiringPXP in wiringPXPs)
                 {
+                    PO po = jobRepo.POs.FirstOrDefault(m => m.PONumb == wiringPXP.SinglePO);
+
                     xw.WriteStartElement("WiringPXP");
                     xw.WriteElementString("WiringPXPID", wiringPXP.WiringPXPID.ToString());
-                    xw.WriteElementString("JobID", wiringPXP.JobID.ToString());
+                    xw.WriteElementString("POID", po.POID.ToString());
                     xw.WriteElementString("StationID", wiringPXP.StationID.ToString());
                     xw.WriteElementString("StartDate", wiringPXP.StartDate.ToString());
                     xw.WriteElementString("EndDate", wiringPXP.EndDate.ToString());
