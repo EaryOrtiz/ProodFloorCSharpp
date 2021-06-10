@@ -421,6 +421,7 @@ namespace ProdFloor.Controllers
                     TotalItems = PendingToCrossJobList.Count(),
                 },
                 JobTypesList = JobTyPeList,
+                StatusPOCount = repository.StatusPOs.Count()
 
             };
 

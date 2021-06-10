@@ -1924,6 +1924,40 @@ namespace ProdFloor.Models
 
                 }
             }
+
+            if (context.POs.Any())
+            {
+                List<PO> POList = context.POs.ToList();
+
+                foreach (PO po in POList)
+                {
+                    Job job = context.Jobs.FirstOrDefault(m => m.JobID == po.JobID);
+                    StatusPO statusPO = context.StatusPOs.FirstOrDefault(m => m.POID == po.POID);
+
+                    if (statusPO != null)
+                        continue;
+
+                    statusPO = new StatusPO();
+                    statusPO.POID = po.POID;
+
+                    if(job.Status.Contains("Cross Approval") || job.Status == "Incomplete"
+                        || job.Status == "Working on it")
+                    {
+                        statusPO.Status = "Engineering";
+                    }
+                    else if (job.Status == "Completed")
+                    {
+                        statusPO.Status = "Completed";
+                    }
+                    else
+                    {
+                        statusPO.Status = "Production";
+                    }
+
+                    context.StatusPOs.Add(statusPO);
+                    context.SaveChanges();
+                }
+            }
         }
     }
 }

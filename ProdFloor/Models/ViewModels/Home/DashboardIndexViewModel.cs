@@ -81,6 +81,8 @@ namespace ProdFloor.Models.ViewModels
 
         public WiringPXP WiringPXP { get; set; }
 
+        public int StatusPOCount { get; set; }
+
 
 
     }

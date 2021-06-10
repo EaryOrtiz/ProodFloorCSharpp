@@ -5073,6 +5073,84 @@ namespace ProdFloor.Controllers
             return jobNum;
         }
 
+        [HttpPost]
+        public FileStreamResult ExportStatusPOToXML()
+        {
+            MemoryStream ms = new MemoryStream();
+            XmlWriterSettings xws = new XmlWriterSettings();
+            xws.OmitXmlDeclaration = true;
+            xws.Indent = true;
+
+            List<StatusPO> statusPOs = repository.StatusPOs.ToList();
+
+            using (XmlWriter xw = XmlWriter.Create(ms, xws))
+            {
+                xw.WriteStartDocument();
+
+                xw.WriteStartElement("StatusPOs");
+                foreach (StatusPO statusPO in statusPOs)
+                {
+                    xw.WriteStartElement("StatusPO");
+                    xw.WriteElementString("StatusPOID", statusPO.StatusPOID.ToString());
+                    xw.WriteElementString("POID", statusPO.POID.ToString());
+                    xw.WriteElementString("Status", statusPO.Status);
+                    xw.WriteEndElement();
+                }
+                xw.WriteEndElement();
+
+                xw.WriteEndDocument();
+            }
+
+            ms.Position = 0;
+            return File(ms, "text/xml", "StatusPOs.xml");
+        }
+
+        public void ImportStatusPOXML(IServiceProvider services)
+        {
+            ApplicationDbContext context = services.GetRequiredService<ApplicationDbContext>();
+
+
+            XmlDocument doc = new XmlDocument();
+            doc.Load(appDataFolder + "StatusPOs.xml");
+
+            var ALLXMLobs = doc.DocumentElement.SelectSingleNode("//StatusPOs");
+            var XMLobs = ALLXMLobs.SelectNodes("//StatusPO");
+
+            foreach (XmlElement XMLob in XMLobs)
+            {
+                var statusPOID = XMLob.SelectSingleNode(".//StatusPOID").InnerText;
+                var pXPReasonID = XMLob.SelectSingleNode(".//PXPReasonID").InnerText;
+                var status = XMLob.SelectSingleNode(".//Status").InnerText;
+
+                context.StatusPOs.Add(new StatusPO
+                {
+                    StatusPOID = Int32.Parse(statusPOID),
+                    POID = Int32.Parse(pXPReasonID),
+                    Status = status,
+                });
+                context.Database.OpenConnection();
+                try
+                {
+                    context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.StatusPOs ON");
+                    context.SaveChanges();
+                    context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.StatusPOs OFF");
+                }
+                finally
+                {
+                    context.Database.CloseConnection();
+                }
+            }
+
+        }
+
+        [HttpPost]
+        public IActionResult SeedStatusPOXML()
+        {
+            ImportStatusPOXML(HttpContext.RequestServices);
+            return RedirectToAction(nameof(List));
+        }
+
+
         /*
          NewtestJobView.Job.JobNumFirstDigits = getJobNumbDivided(_jobSearch.JobNum).firstDigits;
          NewtestJobView.Job.JobNumLastDigits = getJobNumbDivided(_jobSearch.JobNum).lastDigits;
