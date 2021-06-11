@@ -183,7 +183,7 @@ namespace ProdFloor.Controllers
                     ItemsPerPage = 5,
                     TotalItems = CurrentWiringPXPs.Count(),
                 },
-
+                POs = OnProgressPOsList,
 
                 MyJobs = MyjobsList,
                 JobTypesList = itemRepo.JobTypes.ToList(),
@@ -205,7 +205,7 @@ namespace ProdFloor.Controllers
                     TotalItems = DummyPendingToCrossJobList.Count(),
                     sort = "deafult"
                 },
-            });
+            }); ;
         }
 
         public IActionResult NewWiringPXP(int PONumb)
@@ -559,6 +559,7 @@ namespace ProdFloor.Controllers
 
             AppUser currentUser = GetCurrentUser().Result;
             bool ProdctionAdmin = GetCurrentUserRole("ProductionAdmin").Result;
+            bool Admin = GetCurrentUserRole("Admin").Result;
             WiringPXP wiringPXP = wiringRepo.WiringPXPs.FirstOrDefault(m => m.WiringPXPID == ID);
 
             if (wiringPXP == null)
@@ -566,7 +567,7 @@ namespace ProdFloor.Controllers
                 TempData["alert"] = $"alert-danger";
                 TempData["message"] = $"Error, el PXP no existe";
 
-                if (ProdctionAdmin)
+                if (ProdctionAdmin || Admin)
                     return RedirectToAction("PXPProductionDashboard");
 
                 return RedirectToAction("PXPDashboard");
@@ -575,7 +576,7 @@ namespace ProdFloor.Controllers
             }
 
             StatusPO statusPO = jobRepo.StatusPOs.FirstOrDefault(m => m.POID == wiringPXP.POID);
-            if (currentUser.EngID != wiringPXP.WirerPXPID && !ProdctionAdmin)
+            if (currentUser.EngID != wiringPXP.WirerPXPID && !(ProdctionAdmin || Admin))
             {
                 TempData["alert"] = $"alert-danger";
                 TempData["message"] = $"Error, el PXP a sido reasigando";
@@ -587,7 +588,7 @@ namespace ProdFloor.Controllers
                 TempData["alert"] = $"alert-danger";
                 TempData["message"] = $"Error, el PXP con PO #{wiringPXP.SinglePO} ya esta terminado";
 
-                if (ProdctionAdmin)
+                if (ProdctionAdmin || Admin)
                     return RedirectToAction("PXPProductionDashboard");
 
                 return RedirectToAction("PXPDashboard");
@@ -602,7 +603,7 @@ namespace ProdFloor.Controllers
 
             TempData["message"] = $"PXP del PO #" + wiringPXP.SinglePO + " finalizado";
 
-            if (ProdctionAdmin)
+            if (ProdctionAdmin || Admin)
                 return RedirectToAction("PXPProductionDashboard");
 
 

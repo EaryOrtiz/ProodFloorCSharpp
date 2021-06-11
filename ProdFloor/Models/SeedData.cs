@@ -1945,6 +1945,14 @@ namespace ProdFloor.Models
                     {
                         statusPO.Status = "Engineering";
                     }
+                    else if (job.Status == "Waiting for test")
+                    {
+                        statusPO.Status = "Waiting for test";
+                    }
+                    else if (job.Status == "PXP on progress")
+                    {
+                        statusPO.Status = "PXP on progress";
+                    }
                     else if (job.Status == "Completed")
                     {
                         statusPO.Status = "Completed";
