@@ -10,8 +10,8 @@ namespace ProdFloor.Models
     {
         public int WiringPXPID { get; set; }
 
-        public int JobID { get; set; }
-
+        public int POID { get; set; }
+         
         public int StationID { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }

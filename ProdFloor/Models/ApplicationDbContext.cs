@@ -33,6 +33,7 @@ namespace ProdFloor.Models
         //Enginner Refernces Tables
 
         public DbSet<PO> POs { get; set; }
+        public DbSet<StatusPO> StatusPOs { get; set; }
         public DbSet<JobAdditional> JobAdditionals { get; set; }
         public DbSet<CustomSoftware> CustomSoftwares { get; set; }
         public DbSet<TriggeringCustSoft> TriggeringCustSofts { get; set; }

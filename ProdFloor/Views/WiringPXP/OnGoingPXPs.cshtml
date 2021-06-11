@@ -41,8 +41,8 @@
         {
             @foreach (var t in Model.MyWiringPXPs)
             {
-
-                var j = Model.MyJobs.FirstOrDefault(m => m.JobID == t.JobID);
+                PO MyPO = Model.POs.FirstOrDefault(m => m.POID == t.POID);
+                var j = Model.MyJobs.FirstOrDefault(m => m.JobID == MyPO.JobID);
                 string JobtypeName = Model.JobTypesList.First(s => s.JobTypeID == j.JobTypeID).Name;
 
                 <tr>

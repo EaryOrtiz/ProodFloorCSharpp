@@ -83,7 +83,6 @@ namespace ProdFloor.Models
 
         public JobExtension _jobExtension { get; set; }
 
-        public List<WiringPXP> _WiringPXPs { get; set; }
         public HydroSpecific _HydroSpecific { get; set; }
         public GenericFeatures _GenericFeatures { get; set; }
         public Indicator _Indicator { get; set; }
@@ -121,6 +120,18 @@ namespace ProdFloor.Models
         [Range(3000000, 4900000, ErrorMessage = "PO number is out of range")]
         [Required(ErrorMessage = "Please enter a PO")]
         public int PONumb { get; set; }
+
+
+        public WiringPXP _WiringPXP { get; set; }
+        public StatusPO _StatusPO { get; set; }
+    }
+
+    public class StatusPO
+    {
+        public int POID { get; set; }
+        public int StatusPOID { get; set; }
+
+        public string Status { get; set; }
     }
 
     public class JobExtension

@@ -68,21 +68,39 @@ namespace ProdFloor.Controllers
 
                 List<JobType> JobTyPeList = itemRepo.JobTypes.ToList();
 
-                List<PO> POsList = jobRepo.POs.ToList();
+                List<PO> AllPOsList = new List<PO>();
 
-                List<Job> MyjobsList = jobRepo.Jobs
+
+                List<StatusPO> MyStatusPOList = jobRepo.StatusPOs
                     .Where(s => s.Status == "PXP on progress")
-                    .OrderBy(n => n.LatestFinishDate).ToList();
+                    .ToList();
 
-                List<WiringPXP> MyWiringPXPList = wiringRepo.WiringPXPs.Where(m => MyjobsList.Any(n => n.JobID == m.JobID))
+
+                List<PO> OnProgressPOsList = jobRepo.POs.Where(m => MyStatusPOList.Any(n => n.POID == m.POID))
                                                                        .ToList();
 
-                List<Job> OnCrossJobsList = jobRepo.Jobs
+                List<Job> MyjobsList = jobRepo.Jobs.Where(m => OnProgressPOsList.Any(n => n.JobID == m.JobID))
+                                                    .OrderBy(n => n.LatestFinishDate).ToList();
+
+
+                List<WiringPXP> MyWiringPXPList = wiringRepo.WiringPXPs.Where(m => MyStatusPOList.Any(n => n.POID == m.POID))
+                                                                       .ToList();
+
+                AllPOsList.AddRange(OnProgressPOsList);
+
+                List<StatusPO> OnCrossStatusPOList = jobRepo.StatusPOs
                         .Where(j => j.Status == "Waiting for test")
-                        .OrderBy(n => n.LatestFinishDate).ToList();
+                        .ToList();
 
-                List<WiringPXP> OnCrossWiringPXPList = wiringRepo.WiringPXPs.Where(m => OnCrossJobsList.Any(n => n.JobID == m.JobID))
+                List<PO> TestQueAllPOsList = jobRepo.POs.Where(m => OnCrossStatusPOList.Any(n => n.POID == m.POID))
                                                                        .ToList();
+
+                List<Job> OnCrossJobsList = jobRepo.Jobs.Where(m => TestQueAllPOsList.Any(n => n.JobID == m.JobID))
+                                                        .OrderBy(n => n.LatestFinishDate).ToList();
+
+                List<WiringPXP> OnCrossWiringPXPList = wiringRepo.WiringPXPs.Where(m => OnCrossStatusPOList.Any(n => n.POID == m.POID))
+                                                                       .ToList();
+                AllPOsList.AddRange(TestQueAllPOsList);
 
                 List<Job> AllJobsList = MyjobsList;
                 AllJobsList.AddRange(OnCrossJobsList);
@@ -99,7 +117,7 @@ namespace ProdFloor.Controllers
 
                     },
                     JobTypes = JobTyPeList,
-                    POs = POsList,
+                    POs = AllPOsList,
                     PendingToCrossWiringPXPs = wiringRepo.WiringPXPs.ToList(),
                     MyJobs = AllJobsList,
                     OnCrossWiringPXPS = OnCrossWiringPXPList.Skip((OnCrossJobPage - 1) * 6).Take(6),
@@ -133,11 +151,19 @@ namespace ProdFloor.Controllers
         {
             AppUser currentUser = GetCurrentUser().Result;
 
-            List<Job> MyjobsList = jobRepo.Jobs
-                    .Where(s => s.Status == "PXP on progress")
-                    .OrderBy(n => n.LatestFinishDate).ToList();
+            List<StatusPO> MyStatusPOList = jobRepo.StatusPOs
+                 .Where(s => s.Status == "PXP on progress")
+                 .ToList();
 
-            List<WiringPXP> MyWiringPXPList = wiringRepo.WiringPXPs.Where(m => MyjobsList.Any(n => n.JobID == m.JobID))
+
+            List<PO> OnProgressPOsList = jobRepo.POs.Where(m => MyStatusPOList.Any(n => n.POID == m.POID))
+                                                                   .ToList();
+
+            List<Job> MyjobsList = jobRepo.Jobs.Where(m => OnProgressPOsList.Any(n => n.JobID == m.JobID))
+                                                .OrderBy(n => n.LatestFinishDate).ToList();
+
+
+            List<WiringPXP> MyWiringPXPList = wiringRepo.WiringPXPs.Where(m => MyStatusPOList.Any(n => n.POID == m.POID))
                                                                    .ToList();
 
             var CurrentWiringPXPs = MyWiringPXPList
@@ -157,7 +183,7 @@ namespace ProdFloor.Controllers
                     ItemsPerPage = 5,
                     TotalItems = CurrentWiringPXPs.Count(),
                 },
-
+                POs = OnProgressPOsList,
 
                 MyJobs = MyjobsList,
                 JobTypesList = itemRepo.JobTypes.ToList(),
@@ -179,7 +205,7 @@ namespace ProdFloor.Controllers
                     TotalItems = DummyPendingToCrossJobList.Count(),
                     sort = "deafult"
                 },
-            });
+            }); ;
         }
 
         public IActionResult NewWiringPXP(int PONumb)
@@ -250,7 +276,7 @@ namespace ProdFloor.Controllers
 
             WiringPXP wiring = new WiringPXP()
             {
-                JobID = viewModel.Job.JobID,
+                POID = viewModel.PO.POID,
                 StationID = viewModel.wiringPXP.StationID,
                 WirerPXPID = currentUser.EngID,
                 SinglePO = viewModel.wiringPXP.SinglePO,
@@ -275,10 +301,10 @@ namespace ProdFloor.Controllers
             }
 
 
-            Job job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == wiringPXP.JobID);
+            StatusPO statusPO = jobRepo.StatusPOs.FirstOrDefault(m => m.POID == wiringPXP.POID);
 
-            job.Status = "PXP on progress";
-            jobRepo.SaveJob(job);
+            statusPO.Status = "PXP on progress";
+            jobRepo.SaveStatusPO(statusPO);
 
 
             return RedirectToAction("NewWiringPXP", "WiringPXP", new { PONumb = wiringPXP.SinglePO });
@@ -297,7 +323,7 @@ namespace ProdFloor.Controllers
                 return RedirectToAction("PXPDashboard");
             }
 
-            Job job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == wiringPXP.JobID);
+            StatusPO statusPO = jobRepo.StatusPOs.FirstOrDefault(m => m.POID == wiringPXP.POID);
 
             if (currentUser.EngID != wiringPXP.WirerPXPID)
             {
@@ -306,7 +332,7 @@ namespace ProdFloor.Controllers
 
                 return RedirectToAction("PXPDashboard");
             }
-            else if (job.Status == "Waiting for test")
+            else if (statusPO.Status == "Waiting for test")
             {
                 TempData["alert"] = $"alert-danger";
                 TempData["message"] = $"Error, el PXP con PO #{wiringPXP.SinglePO} ya esta terminado";
@@ -336,7 +362,8 @@ namespace ProdFloor.Controllers
                 return RedirectToAction("PXPDashboard");
             }
 
-            Job job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == wiringPXP.JobID);
+            StatusPO statusPO = jobRepo.StatusPOs.FirstOrDefault(m => m.POID == wiringPXP.POID);
+
             if (currentUser.EngID != wiringPXP.WirerPXPID)
             {
                 TempData["alert"] = $"alert-danger";
@@ -344,7 +371,7 @@ namespace ProdFloor.Controllers
 
                 return RedirectToAction("PXPDashboard");
             }
-            else if (job.Status == "Waiting for test")
+            else if (statusPO.Status == "Waiting for test")
             {
                 TempData["alert"] = $"alert-danger";
                 TempData["message"] = $"Error, el PXP con PO #{wiringPXP.SinglePO} ya esta terminado";
@@ -413,7 +440,7 @@ namespace ProdFloor.Controllers
                 return RedirectToAction("PXPDashboard");
             }
 
-            Job job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == wiringPXP.JobID);
+            StatusPO statusPO = jobRepo.StatusPOs.FirstOrDefault(m => m.POID == wiringPXP.POID);
             if (currentUser.EngID != wiringPXP.WirerPXPID)
             {
                 TempData["alert"] = $"alert-danger";
@@ -421,7 +448,7 @@ namespace ProdFloor.Controllers
 
                 return RedirectToAction("PXPDashboard");
             }
-            else if (job.Status == "Waiting for test")
+            else if (statusPO.Status == "Waiting for test")
             {
                 TempData["alert"] = $"alert-danger";
                 TempData["message"] = $"Error, el PXP con PO #{wiringPXP.SinglePO} ya esta terminado";
@@ -443,9 +470,9 @@ namespace ProdFloor.Controllers
         public IActionResult DeleteWiringPXP(int ID)
         {
             WiringPXP wiringPXP = wiringRepo.WiringPXPs.FirstOrDefault(m => m.WiringPXPID == ID);
-            Job job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == wiringPXP.JobID);
+            StatusPO statusPO = jobRepo.StatusPOs.FirstOrDefault(m => m.POID == wiringPXP.POID);
 
-            if (job.Status == "Waiting for test")
+            if (statusPO.Status == "Waiting for test")
             {
                 TempData["alert"] = $"alert-danger";
                 TempData["message"] = $"Error, el PXP con PO #{wiringPXP.SinglePO} ya esta terminado";
@@ -481,8 +508,8 @@ namespace ProdFloor.Controllers
 
             }
 
-            Job job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == wiringPXP.JobID);
-            if (job.Status == "Waiting for test")
+            StatusPO statusPO = jobRepo.StatusPOs.FirstOrDefault(m => m.POID == wiringPXP.POID);
+            if (statusPO.Status == "Waiting for test")
             {
                 TempData["alert"] = $"alert-danger";
                 TempData["message"] = $"Error, el PXP con PO #{wiringPXP.SinglePO} ya esta terminado";
@@ -532,6 +559,7 @@ namespace ProdFloor.Controllers
 
             AppUser currentUser = GetCurrentUser().Result;
             bool ProdctionAdmin = GetCurrentUserRole("ProductionAdmin").Result;
+            bool Admin = GetCurrentUserRole("Admin").Result;
             WiringPXP wiringPXP = wiringRepo.WiringPXPs.FirstOrDefault(m => m.WiringPXPID == ID);
 
             if (wiringPXP == null)
@@ -539,7 +567,7 @@ namespace ProdFloor.Controllers
                 TempData["alert"] = $"alert-danger";
                 TempData["message"] = $"Error, el PXP no existe";
 
-                if (ProdctionAdmin)
+                if (ProdctionAdmin || Admin)
                     return RedirectToAction("PXPProductionDashboard");
 
                 return RedirectToAction("PXPDashboard");
@@ -547,20 +575,20 @@ namespace ProdFloor.Controllers
 
             }
 
-            Job job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == wiringPXP.JobID);
-            if (currentUser.EngID != wiringPXP.WirerPXPID && !ProdctionAdmin)
+            StatusPO statusPO = jobRepo.StatusPOs.FirstOrDefault(m => m.POID == wiringPXP.POID);
+            if (currentUser.EngID != wiringPXP.WirerPXPID && !(ProdctionAdmin || Admin))
             {
                 TempData["alert"] = $"alert-danger";
                 TempData["message"] = $"Error, el PXP a sido reasigando";
 
                 return RedirectToAction("PXPDashboard");
 
-            }else if (job.Status == "Waiting for test")
+            }else if (statusPO.Status == "Waiting for test")
             {
                 TempData["alert"] = $"alert-danger";
                 TempData["message"] = $"Error, el PXP con PO #{wiringPXP.SinglePO} ya esta terminado";
 
-                if (ProdctionAdmin)
+                if (ProdctionAdmin || Admin)
                     return RedirectToAction("PXPProductionDashboard");
 
                 return RedirectToAction("PXPDashboard");
@@ -570,12 +598,12 @@ namespace ProdFloor.Controllers
             wiringPXP.EndDate = DateTime.Now;
             wiringRepo.SaveWiringPXP(wiringPXP);
 
-            job.Status = "Waiting for test";
-            jobRepo.SaveJob(job);
+            statusPO.Status = "Waiting for test";
+            jobRepo.SaveStatusPO(statusPO);
 
             TempData["message"] = $"PXP del PO #" + wiringPXP.SinglePO + " finalizado";
 
-            if (ProdctionAdmin)
+            if (ProdctionAdmin || Admin)
                 return RedirectToAction("PXPProductionDashboard");
 
 
@@ -599,9 +627,9 @@ namespace ProdFloor.Controllers
             AppUser currentUser = GetCurrentUser().Result;
             WiringPXP wiringPXP = wiringRepo.WiringPXPs.FirstOrDefault(m => m.WiringPXPID == ID);
 
-            Job job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == wiringPXP.JobID);
-            job.Status = "PXP on progress";
-            jobRepo.SaveJob(job);
+            StatusPO statusPO = jobRepo.StatusPOs.FirstOrDefault(m => m.POID == wiringPXP.POID);
+            statusPO.Status = "PXP on progress";
+            jobRepo.SaveStatusPO(statusPO);
 
 
             TempData["message"] = $"PXP del PO #" + wiringPXP.SinglePO + " finalizado";
@@ -632,7 +660,7 @@ namespace ProdFloor.Controllers
 
                     xw.WriteStartElement("WiringPXP");
                     xw.WriteElementString("WiringPXPID", wiringPXP.WiringPXPID.ToString());
-                    xw.WriteElementString("POID", po.POID.ToString());
+                    xw.WriteElementString("POID", wiringPXP.POID.ToString());
                     xw.WriteElementString("StationID", wiringPXP.StationID.ToString());
                     xw.WriteElementString("StartDate", wiringPXP.StartDate.ToString());
                     xw.WriteElementString("EndDate", wiringPXP.EndDate.ToString());
@@ -702,7 +730,7 @@ namespace ProdFloor.Controllers
                 foreach (XmlElement XMLob in XMLobs)
                 {
                     var wiringPXPID = XMLob.SelectSingleNode(".//WiringPXPID").InnerText;
-                    var jobID = XMLob.SelectSingleNode(".//JobID").InnerText;
+                    var poid = XMLob.SelectSingleNode(".//POID").InnerText;
                     var stationID = XMLob.SelectSingleNode(".//StationID").InnerText;
                     var startDate = XMLob.SelectSingleNode(".//StartDate").InnerText;
                     var endDate = XMLob.SelectSingleNode(".//EndDate").InnerText;
@@ -712,7 +740,7 @@ namespace ProdFloor.Controllers
                     context.WiringPXPs.Add(new WiringPXP
                     {
                         WiringPXPID = Int32.Parse(wiringPXPID),
-                        JobID = Int32.Parse(jobID),
+                        POID = Int32.Parse(poid),
                         StationID = Int32.Parse(stationID),
                         StartDate = DateTime.Parse(startDate),
                         EndDate = DateTime.Parse(endDate),
