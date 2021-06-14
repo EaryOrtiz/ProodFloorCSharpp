@@ -386,7 +386,7 @@ namespace ProdFloor.Models
             else
             {
                 StatusPO dbEntry = context.StatusPOs
-                .FirstOrDefault(p => p.POID == statusPO.StatusPOID);
+                .FirstOrDefault(p => p.StatusPOID == statusPO.StatusPOID);
                 if (dbEntry != null)
                 {
                     dbEntry.POID = statusPO.POID;
