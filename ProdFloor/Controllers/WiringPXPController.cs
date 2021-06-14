@@ -236,6 +236,7 @@ namespace ProdFloor.Controllers
             viewModel.Job = job;
             viewModel.PO = po;
             viewModel.JobTypeName = itemRepo.JobTypes.FirstOrDefault(m => m.JobTypeID == job.JobTypeID).Name;
+            StatusPO statusPO = jobRepo.StatusPOs.FirstOrDefault(m => m.POID == po.POID);
 
             WiringPXP wiringPXP = wiringRepo.WiringPXPs.FirstOrDefault(m => m.SinglePO == PONumb);
             if (wiringPXP == null)
@@ -251,7 +252,7 @@ namespace ProdFloor.Controllers
 
                 return RedirectToAction("PXPDashboard");
             }
-            else if (job.Status == "Waiting for test")
+            else if (statusPO.Status == "Waiting for test")
             {
                 TempData["alert"] = $"alert-danger";
                 TempData["message"] = $"Error, el PXP con PO #{wiringPXP.SinglePO} ya esta terminado";
