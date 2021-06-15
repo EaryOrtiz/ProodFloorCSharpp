@@ -437,6 +437,12 @@ namespace ProdFloor.Controllers
                         planningRow.PreviousWorkCenter = rowList.ElementAt(PreviousWorkCenter);
                     }
 
+                    if(rowList.ElementAt(PO).Length < 6)
+                    {
+                        rowList.Clear();
+                        continue;
+                    }
+
 
                     planningRow.JobNumber = rowList.ElementAt(JobNumber);
                     planningRow.LineNumber = int.Parse(rowList.ElementAt(LineNumber));
