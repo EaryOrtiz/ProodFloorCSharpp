@@ -327,7 +327,7 @@ namespace ProdFloor.Controllers
                         TotalItems = OnCrossJobsList.Count(),
                         sort = Sort != "default" ? Sort : "deafult"
                     },
-
+                    StatusPOCount = repository.StatusPOs.Count(),
                     PendingToCrossJobs = PendingToCrossJobList.Skip((PendingToCrossJobPage - 1) * 6).Take(6),
                     PendingToCrossJobsPagingInfo = new PagingInfo
                     {

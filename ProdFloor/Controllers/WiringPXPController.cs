@@ -486,6 +486,10 @@ namespace ProdFloor.Controllers
             if (deletedPXP != null)
             {
                 TempData["message"] = $"PXP with PO#{deletedPXP.SinglePO} was deleted";
+
+                statusPO.Status = "Production";
+                jobRepo.SaveStatusPO(statusPO);
+
             }
 
             return RedirectToAction("PXPProductionDashboard");
