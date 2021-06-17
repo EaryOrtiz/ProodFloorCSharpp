@@ -1925,6 +1925,7 @@ namespace ProdFloor.Models
                 }
             }
 
+            /*
             if (context.POs.Any())
             {
                 List<PO> POList = context.POs.ToList();
@@ -1966,6 +1967,7 @@ namespace ProdFloor.Models
                     context.SaveChanges();
                 }
             }
+           */
         }
     }
 }

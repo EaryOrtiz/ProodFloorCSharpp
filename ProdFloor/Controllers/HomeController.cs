@@ -1041,29 +1041,56 @@ namespace ProdFloor.Controllers
                 }
                 else if (wirerPXP)
                 {
-                    List<StatusPO> MyPOsOnProduction = repository.StatusPOs
-                                            .Where(s => s.Status == "Production")
-                                            .ToList();
+                    StatusPO statusPO = repository.StatusPOs
+                                            .FirstOrDefault(s => s.POID == onePO.POID);
 
-                    List<WiringPXP> MyWiringPXPList = wiringRepo.WiringPXPs.Where(m => MyPOsOnProduction.Any(n => n.POID == m.POID))
-                                                                           .ToList();
-                   /*
-                   WiringPXP CurrentWiringPXP = MyWiringPXPList.FirstOrDefault(m => m.WirerPXPID == currentUser.EngID);
+                    if(statusPO == null)
+                    {
+                        statusPO = new StatusPO();
+                        statusPO.POID = onePO.POID;
+
+                        if (job.Status.Contains("Cross Approval") || job.Status == "Incomplete"
+                            || job.Status == "Working on it")
+                        {
+                            statusPO.Status = "Engineering";
+                        }
+                        else if (job.Status == "Waiting for test")
+                        {
+                            statusPO.Status = "Waiting for test";
+                        }
+                        else if (job.Status == "PXP on progress")
+                        {
+                            statusPO.Status = "PXP on progress";
+                        }
+                        else if (job.Status == "Completed")
+                        {
+                            statusPO.Status = "Completed";
+                        }
+                        else
+                        {
+                            statusPO.Status = "Production";
+                        }
+
+                        repository.SaveStatusPO(statusPO);
+
+                        statusPO = repository.StatusPOs
+                                            .FirstOrDefault(s => s.POID == onePO.POID);
+                    }
 
 
-                   if (CurrentWiringPXP != null)
-                   {
-                       TempData["alert"] = $"alert-danger";
-                       TempData["message"] = $"Error, Ya tiene un PXP activo, intente de nuevo o contacte al Admin";
-                       return RedirectToAction("SearchByPO", viewModel);
-                   }
-                   */
 
                     WiringPXP WiringPXPWithSamePO = wiringRepo.WiringPXPs.FirstOrDefault(m => m.SinglePO == onePO.PONumb);
                     if (WiringPXPWithSamePO != null)
                     {
                         TempData["alert"] = $"alert-danger";
                         TempData["message"] = $"Error, Ya existe un PXP con ese PO, intente de nuevo o contacte al Admin";
+                        return RedirectToAction("SearchByPO", viewModel);
+                    }
+
+                    if (statusPO.Status != "Production")
+                    {
+                        TempData["alert"] = $"alert-danger";
+                        TempData["message"] = $"Error, El Job aun no esta en produccion o ha sido completado, intente de nuevo o contacte al Admin";
                         return RedirectToAction("SearchByPO", viewModel);
                     }
 
