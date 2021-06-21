@@ -104,12 +104,15 @@ namespace ProdFloor.Controllers
             List<AppUser> users = new List<AppUser>();
             string roleName = "";
             if (GetCurrentUserRole("EngAdmin").Result
-                || GetCurrentUserRole("TechAdmin").Result)
+                || GetCurrentUserRole("TechAdmin").Result
+                || GetCurrentUserRole("ProductionAdmin").Result)
             {
                 if (GetCurrentUserRole("EngAdmin").Result)
                     roleName = "Engineer";
                 else if (GetCurrentUserRole("TechAdmin").Result)
                     roleName = "Technician";
+                else if (GetCurrentUserRole("ProductionAdmin").Result)
+                    roleName = "Wirer";
 
                 foreach (var user in userManager.Users)
                 {
@@ -151,8 +154,9 @@ namespace ProdFloor.Controllers
                 IEnumerable<AppUser> users = userManager.Users;
                 bool engineer = GetCurrentUserRole("EngAdmin").Result;
                 bool techAdmin = GetCurrentUserRole("TechAdmin").Result;
+                bool productionAdmin = GetCurrentUserRole("ProductionAdmin").Result;
                 bool SameID = users.Any(m => m.EngID == model.EngineerID);
-                if (SameID == true && !techAdmin)
+                if (SameID == true && !techAdmin & !productionAdmin)
                 {
                     TempData["alert"] = $"alert-danger";
                     TempData["message"] = $"That EngID is already in use, please contact to your admin";
@@ -179,9 +183,38 @@ namespace ProdFloor.Controllers
                     }
                     else MaxEngId++;
                     user.EngID = MaxEngId;
+                }else if (productionAdmin)
+                {
+                    IQueryable<AppUser> auxUsers = userManager.Users.AsQueryable();
+                    List<AppUser> wirers = new List<AppUser>();
+                    int MaxEngId = 0;
+
+                    foreach (AppUser auxUser in auxUsers)
+                    {
+                        bool IsInRole = GetCurrentUserRole(auxUser, "Wirer").Result;
+                        if (IsInRole && (auxUser.EngID > 299 && auxUser.EngID < 600)) wirers.Add(auxUser);
+                    }
+
+                    if(wirers.Count == 0)
+                    {
+                        MaxEngId = 300;
+                    }
+                    else
+                    {
+                        MaxEngId = wirers.Select(m => m.EngID).Max();
+                    }
+                   
+                    if (MaxEngId == 599)
+                    {
+                        TempData["alert"] = $"alert-danger";
+                        TempData["message"] = $"No EngId availables, please contact to your admin";
+                        return View(model);
+                    }
+                    else MaxEngId++;
+                    user.EngID = MaxEngId;
                 }
 
-                result = await userManager.CreateAsync(user, model.Password);
+                    result = await userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
                     if (engineer)
@@ -193,6 +226,11 @@ namespace ProdFloor.Controllers
                     else if (techAdmin)
                     {
                         result = await userManager.AddToRoleAsync(user, "Technician");
+                        return RedirectToAction("Index", "Home");
+                    }
+                    else if (productionAdmin)
+                    {
+                        result = await userManager.AddToRoleAsync(user, "Wirer");
                         return RedirectToAction("Index", "Home");
                     }
                     return RedirectToAction("Index");
