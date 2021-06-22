@@ -74,10 +74,18 @@
                 <td>@j.Email</td>
                 <td>
                     <form asp-action="Delete" method="post">
+                        @if (User.IsInRole("ProductionAdmin"))
+                        {
+                            <a asp-action="MakePXP" class="btn btn-sm btn-info"
+                               asp-route-Id="@j.Id">
+                                Make PXP
+                            </a>
+                        }
                         <a asp-action="Edit" class="btn btn-sm btn-warning"
                            asp-route-Id="@j.Id">
                             Edit
                         </a>
+
                         <input type="hidden" name="ID" value="@j.Id" />
                         <button type="submit" class="btn btn-danger btn-sm">
                             Delete

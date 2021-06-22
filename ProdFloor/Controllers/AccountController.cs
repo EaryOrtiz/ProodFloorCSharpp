@@ -303,6 +303,31 @@ namespace ProdFloor.Controllers
             }
         }
 
+        public async Task<IActionResult> MakePXP(string id)
+        {
+            IdentityResult result;
+            AppUser user = await userManager.FindByIdAsync(id);
+
+            if (user != null)
+            {
+                result = await userManager.AddToRoleAsync(user, "WirerPXP");
+                if (!result.Succeeded)
+                {
+                    TempData["alert"] = $"alert-danger";
+                    TempData["message"] = $"The user {user.FullName} is already a PXP";
+
+                    AddErrorsFromResult(result);
+                }
+                else
+                {
+                    TempData["message"] = $"The user {user.FullName} is now a PXP";
+                } 
+            }
+
+            
+            return RedirectToAction("Index");
+        }
+
         [HttpPost]
         public async Task<IActionResult> Edit(string id, string email,
             string password, int EngID)
