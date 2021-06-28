@@ -11,7 +11,8 @@ namespace ProdFloor.Models
         public int WiringPXPID { get; set; }
 
         public int POID { get; set; }
-         
+        //New field for station
+        [Display(Name = "Station")]
         public int StationID { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
