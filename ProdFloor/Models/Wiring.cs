@@ -24,8 +24,9 @@ namespace ProdFloor.Models
         public DateTime CompletedDate { get; set; }
 
         public List<WiringStop> _WiringStops { get; set; }
-        public List<WiringStepsForJob> _WiringStepsForJobs { get; set; }
+        public List<WiringStepForJob> _WiringStepsForJobs { get; set; }
         public List<WirersInvolved> _WirersInvolved { get; set; }
+        public WiringFeatures _WiringFeatures { get; set; }
     }
 
     public class WirersInvolved
@@ -112,10 +113,11 @@ namespace ProdFloor.Models
         public int Order { get; set; }
 
         //public List<TriggeringFeature> _TriggeringFeatures { get; set; }
-        public List<WiringStepsForJob> _WiringStepsForJob { get; set; }
+        public List<WiringStepForJob> _WiringStepsForJob { get; set; }
+        public List<WiringTriggeringFeature> _WiringTriggeringFeatures { get; set; }
     }
 
-    public class WiringStepsForJob
+    public class WiringStepForJob
     {
         public int WiringStepsForJobID { get; set; }
 
@@ -225,5 +227,31 @@ namespace ProdFloor.Models
 
     //New classes
 
+    public class WiringOption
+    {
+        public int WiringOptionID { get; set; }
+        public string Description { get; set; }
+        public bool isDeleted { get; set; }
+    }
+
+    public class WiringFeatures
+    {
+        public int WiringFeaturesID { get; set; }
+        public int WiringID { get; set; }
+
+        public int WiringOptionID { get; set; }
+        public int Quantity { get; set; }
+
+    }
+    public class WiringTriggeringFeature
+    {
+        public int WiringTriggeringFeatureID { get; set; }
+        public int WiringOptionID { get; set; }
+        public int WiringStepID { get; set; }
+
+        public int Quantity { get; set; }
+        public string Equality { get; set; }
+
+    }
 
 }
