@@ -119,7 +119,7 @@ namespace ProdFloor.Models
 
     public class WiringStepForJob
     {
-        public int WiringStepsForJobID { get; set; }
+        public int WiringStepForJobID { get; set; }
 
         [Required(ErrorMessage = "Please enter a {0}")]
         public int WiringStepID { get; set; }
