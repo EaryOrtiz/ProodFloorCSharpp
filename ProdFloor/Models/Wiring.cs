@@ -14,7 +14,7 @@ namespace ProdFloor.Models
     {
         public int WiringID { get; set; }
         public int POID { get; set; }
-        public int WirerD { get; set; }
+        public int WirerID { get; set; }
 
         [Display(Name = "Station")]
         public int StationID { get; set; }
@@ -65,7 +65,7 @@ namespace ProdFloor.Models
         public bool Critical { get; set; }
 
         //Auxiliaries fields
-        public int AuxTechnicianID { get; set; }
+        public int AuxWirerID { get; set; }
         public int AuxStationID { get; set; }
 
         // This presumes that weeks start with Monday.
@@ -226,7 +226,6 @@ namespace ProdFloor.Models
     }
 
     //New classes
-
     public class WiringOption
     {
         public int WiringOptionID { get; set; }
@@ -243,6 +242,7 @@ namespace ProdFloor.Models
         public int Quantity { get; set; }
 
     }
+
     public class WiringTriggeringFeature
     {
         public int WiringTriggeringFeatureID { get; set; }
