@@ -90,11 +90,11 @@ namespace ProdFloor.Models
         public DbSet<WiringStop> WiringStops { get; set; }
         public DbSet<WiringStep> WiringSteps { get; set; }
         public DbSet<WiringStepForJob> WiringStepsForJobs { get; set; }
-        public DbSet<WiringReason1> WiringReason1s { get; set; }
-        public DbSet<WiringReason2> WiringReason2s { get; set; }
-        public DbSet<WiringReason3> WiringReason3s { get; set; }
-        public DbSet<WiringReason4> WiringReason4s { get; set; }
-        public DbSet<WiringReason5> WiringReason5s { get; set; }
+        public DbSet<WiringReason1> WiringReasons1 { get; set; }
+        public DbSet<WiringReason2> WiringReasons2 { get; set; }
+        public DbSet<WiringReason3> WiringReasons3 { get; set; }
+        public DbSet<WiringReason4> WiringReasons4 { get; set; }
+        public DbSet<WiringReason5> WiringReasons5 { get; set; }
         public DbSet<WiringOption> WiringOptions { get; set; }
         public DbSet<WiringFeatures> WiringFeatures { get; set; }
         public DbSet<WiringTriggeringFeature> WiringTriggeringFeatures { get; set; }

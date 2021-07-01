@@ -13,11 +13,11 @@ namespace ProdFloor.Models
         IQueryable<WiringStop> WiringStops { get; }
         IQueryable<WiringStep> WiringSteps { get; }
         IQueryable<WiringStepForJob> WiringStepsForJobs { get; }
-        IQueryable<WiringReason1> WiringReason1s { get; }
-        IQueryable<WiringReason2> WiringReason2s { get; }
-        IQueryable<WiringReason3> WiringReason3s { get; }
-        IQueryable<WiringReason4> WiringReason4s { get; }
-        IQueryable<WiringReason5> WiringReason5s { get; }
+        IQueryable<WiringReason1> WiringReasons1 { get; }
+        IQueryable<WiringReason2> WiringReasons2 { get; }
+        IQueryable<WiringReason3> WiringReasons3 { get; }
+        IQueryable<WiringReason4> WiringReasons4 { get; }
+        IQueryable<WiringReason5> WiringReasons5 { get; }
         IQueryable<WiringOption> WiringOptions { get; }
         IQueryable<WiringFeatures> WiringFeatures { get; }
         IQueryable<WiringTriggeringFeature> WiringTriggeringFeatures { get; }

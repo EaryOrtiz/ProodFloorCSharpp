@@ -20,11 +20,11 @@ namespace ProdFloor.Models
         public IQueryable<WiringStop> WiringStops => context.WiringStops;
         public IQueryable<WiringStep> WiringSteps => context.WiringSteps;
         public IQueryable<WiringStepForJob> WiringStepsForJobs => context.WiringStepsForJobs;
-        public IQueryable<WiringReason1> WiringReason1s => context.WiringReason1s;
-        public IQueryable<WiringReason2> WiringReason2s => context.WiringReason2s;
-        public IQueryable<WiringReason3> WiringReason3s => context.WiringReason3s;
-        public IQueryable<WiringReason4> WiringReason4s => context.WiringReason4s;
-        public IQueryable<WiringReason5> WiringReason5s => context.WiringReason5s;
+        public IQueryable<WiringReason1> WiringReasons1 => context.WiringReasons1;
+        public IQueryable<WiringReason2> WiringReasons2 => context.WiringReasons2;
+        public IQueryable<WiringReason3> WiringReasons3 => context.WiringReasons3;
+        public IQueryable<WiringReason4> WiringReasons4 => context.WiringReasons4;
+        public IQueryable<WiringReason5> WiringReasons5 => context.WiringReasons5;
         public IQueryable<WiringOption> WiringOptions => context.WiringOptions;
         public IQueryable<WiringFeatures> WiringFeatures => context.WiringFeatures;
         public IQueryable<WiringTriggeringFeature> WiringTriggeringFeatures => context.WiringTriggeringFeatures;
@@ -153,11 +153,11 @@ namespace ProdFloor.Models
         {
             if (wiringReason1.WiringReason1ID == 0)
             {
-                context.WiringReason1s.Add(wiringReason1);
+                context.WiringReasons1.Add(wiringReason1);
             }
             else
             {
-                WiringReason1 dbEntry = context.WiringReason1s
+                WiringReason1 dbEntry = context.WiringReasons1
                 .FirstOrDefault(p => p.WiringReason1ID == wiringReason1.WiringReason1ID);
                 if (dbEntry != null)
                 {
@@ -171,11 +171,11 @@ namespace ProdFloor.Models
         {
             if (wiringReason2.WiringReason2ID == 0)
             {
-                context.WiringReason2s.Add(wiringReason2);
+                context.WiringReasons2.Add(wiringReason2);
             }
             else
             {
-                WiringReason2 dbEntry = context.WiringReason2s
+                WiringReason2 dbEntry = context.WiringReasons2
                 .FirstOrDefault(p => p.WiringReason2ID == wiringReason2.WiringReason2ID);
                 if (dbEntry != null)
                 {
@@ -189,11 +189,11 @@ namespace ProdFloor.Models
         {
             if (wiringReason3.WiringReason3ID == 0)
             {
-                context.WiringReason3s.Add(wiringReason3);
+                context.WiringReasons3.Add(wiringReason3);
             }
             else
             {
-                WiringReason3 dbEntry = context.WiringReason3s
+                WiringReason3 dbEntry = context.WiringReasons3
                 .FirstOrDefault(p => p.WiringReason3ID == wiringReason3.WiringReason3ID);
                 if (dbEntry != null)
                 {
@@ -207,11 +207,11 @@ namespace ProdFloor.Models
         {
             if (reason4.WiringReason4ID == 0)
             {
-                context.WiringReason4s.Add(reason4);
+                context.WiringReasons4.Add(reason4);
             }
             else
             {
-                WiringReason4 dbEntry = context.WiringReason4s
+                WiringReason4 dbEntry = context.WiringReasons4
                 .FirstOrDefault(p => p.WiringReason4ID == reason4.WiringReason4ID);
                 if (dbEntry != null)
                 {
@@ -226,11 +226,11 @@ namespace ProdFloor.Models
         {
             if (reason5.WiringReason5ID == 0)
             {
-                context.WiringReason5s.Add(reason5);
+                context.WiringReasons5.Add(reason5);
             }
             else
             {
-                WiringReason5 dbEntry = context.WiringReason5s
+                WiringReason5 dbEntry = context.WiringReasons5
                 .FirstOrDefault(p => p.WiringReason5ID == reason5.WiringReason5ID);
                 if (dbEntry != null)
                 {
@@ -355,55 +355,55 @@ namespace ProdFloor.Models
         }
         public WiringReason1 DeleteWiringReason1(int WiringReason1ID)
         {
-            WiringReason1 dbEntry = context.WiringReason1s
+            WiringReason1 dbEntry = context.WiringReasons1
                 .FirstOrDefault(p => p.WiringReason1ID == WiringReason1ID);
             if (dbEntry != null)
             {
-                context.WiringReason1s.Remove(dbEntry);
+                context.WiringReasons1.Remove(dbEntry);
                 context.SaveChanges();
             }
             return dbEntry;
         }
         public WiringReason2 DeleteWiringReason2(int WiringReason2ID)
         {
-            WiringReason2 dbEntry = context.WiringReason2s
+            WiringReason2 dbEntry = context.WiringReasons2
                 .FirstOrDefault(p => p.WiringReason2ID == WiringReason2ID);
             if (dbEntry != null)
             {
-                context.WiringReason2s.Remove(dbEntry);
+                context.WiringReasons2.Remove(dbEntry);
                 context.SaveChanges();
             }
             return dbEntry;
         }
         public WiringReason3 DeleteWiringReason3(int WiringReason3ID)
         {
-            WiringReason3 dbEntry = context.WiringReason3s
+            WiringReason3 dbEntry = context.WiringReasons3
                 .FirstOrDefault(p => p.WiringReason3ID == WiringReason3ID);
             if (dbEntry != null)
             {
-                context.WiringReason3s.Remove(dbEntry);
+                context.WiringReasons3.Remove(dbEntry);
                 context.SaveChanges();
             }
             return dbEntry;
         }
         public WiringReason4 DeleteWiringReason4(int WiringReason4ID)
         {
-            WiringReason4 dbEntry = context.WiringReason4s
+            WiringReason4 dbEntry = context.WiringReasons4
                 .FirstOrDefault(p => p.WiringReason4ID == WiringReason4ID);
             if (dbEntry != null)
             {
-                context.WiringReason4s.Remove(dbEntry);
+                context.WiringReasons4.Remove(dbEntry);
                 context.SaveChanges();
             }
             return dbEntry;
         }
         public WiringReason5 DeleteWiringReason5(int WiringReason5ID)
         {
-            WiringReason5 dbEntry = context.WiringReason5s
+            WiringReason5 dbEntry = context.WiringReasons5
                 .FirstOrDefault(p => p.WiringReason5ID == WiringReason5ID);
             if (dbEntry != null)
             {
-                context.WiringReason5s.Remove(dbEntry);
+                context.WiringReasons5.Remove(dbEntry);
                 context.SaveChanges();
             }
             return dbEntry;
