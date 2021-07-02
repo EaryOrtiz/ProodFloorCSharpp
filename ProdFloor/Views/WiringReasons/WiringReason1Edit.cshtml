@@ -1,0 +1,17 @@
+﻿@model WiringReason1
+@{
+    ViewBag.Title = "Edit Reason 1";
+}
+<div class="bg-dark m-1 p-1"><h4 style="color:white">Edit Reason 1</h4></div>
+<form asp-action="EditR1" asp-controller="WiringReasons" method="post">
+    <input type="hidden" asp-for="WiringReason1ID" />
+    <div class="form-group">
+        <label asp-for="Description"></label>
+        <div><span asp-validation-for="Description" class="text-danger"></span></div>
+        <input asp-for="Description" class="form-control" />
+    </div>
+    <div class="text-center">
+        <button class="btn btn-primary" type="submit">Save</button>
+        <a asp-action="Reason1List" asp-controller="WiringReasons" asp-route-Page="1" class="btn btn-secondary">Cancel</a>
+    </div>
+</form>

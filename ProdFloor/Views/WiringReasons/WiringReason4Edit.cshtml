@@ -1,0 +1,39 @@
+﻿@model WiringReason4
+@{
+    ViewBag.Title = "Edit Reason 4";
+    <script src="~/Scripts/CascadingR1R2R3.js" type="text/javascript"></script>
+}
+<div class="bg-dark m-1 p-1"><h4 style="color:white">Edit Reasons 4</h4></div>
+<form asp-action="EditR4" asp-controller="WiringReasons" method="post">
+    <input type="hidden" asp-for="WiringReason4ID" />
+    <div class="form-group">
+        <label asp-for="WiringReason1ID" class="col-sm-2 col-form-label"></label>
+        <div>
+            <reasons1-select selected-in-r4-value="@Model.WiringReason4ID" class="form-control-sm form-control col-6" asp-for="WiringReason1ID"></reasons1-select>
+            <span asp-validation-for="WiringReason1ID" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="WiringReason2ID" class="col-sm-2 col-form-label"></label>
+        <div>
+            <reasons2-select selected-in-r4-value="@Model.WiringReason4ID" class="form-control-sm form-control col-6" asp-for="WiringReason2ID"></reasons2-select>
+            <span asp-validation-for="WiringReason2ID" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="WiringReason3ID" class="col-sm-2 col-form-label"></label>
+        <div>
+            <reasons3-select selected-in-r4-value="@Model.WiringReason4ID" class="form-control-sm form-control col-6" asp-for="WiringReason3ID"></reasons3-select>
+            <span asp-validation-for="WiringReason3ID" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="Description"></label>
+        <div><span asp-validation-for="Description" class="text-danger"></span></div>
+        <input asp-for="Description" class="form-control form-control-sm col-6" />
+    </div>
+    <div class="text-center">
+        <button class="btn btn-primary" type="submit">Save</button>
+        <a asp-action="Reason4List" asp-controller="WiringReasons" asp-route-Page="1" asp-route-ReasonNumber="4" class="btn btn-secondary">Cancel</a>
+    </div>
+</form>

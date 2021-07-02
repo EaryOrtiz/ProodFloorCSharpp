@@ -1,0 +1,24 @@
+﻿@model WiringReason2
+@{
+    ViewBag.Title = "Edit Reason 2";
+}
+<div class="bg-dark m-1 p-1"><h4 style="color:white">Edit Reasons 2</h4></div>
+<form asp-action="EditR2" asp-controller="WiringReasons" method="post">
+    <input type="hidden" asp-for="WiringReason2ID" />
+    <div class="form-group">
+        <label asp-for="WiringReason1ID" class="col-sm-2 col-form-label"></label>
+        <div>
+            <reasons1-select selected-in-r2-value="@Model.WiringReason2ID" class="form-control-sm form-control col-6" asp-for="WiringReason1ID"></reasons1-select>
+            <span asp-validation-for="WiringReason1ID" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="Description"></label>
+        <div><span asp-validation-for="Description" class="text-danger"></span></div>
+        <input asp-for="Description" class="form-control-sm form-control col-6" />
+    </div>
+    <div class="text-center">
+        <button class="btn btn-primary" type="submit">Save</button>
+        <a asp-action="Reason2List" asp-controller="WiringReasons" asp-route-Page="1" asp-route-ReasonNumber="2" class="btn btn-secondary">Cancel</a>
+    </div>
+</form>

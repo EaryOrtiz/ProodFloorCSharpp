@@ -779,7 +779,7 @@ namespace ProdFloor.Controllers
             return RedirectToAction(nameof(Reason1List));
         }
 
-        public IActionResult SearchR1()
+        public IActionResult WiringSearchR1()
         {
             try
             {
