@@ -113,6 +113,28 @@ namespace ProdFloor.Controllers
         }
 
         [HttpPost]
+        public IActionResult FakeDelete(int ID)
+        {
+            bool admin = GetCurrentUserRole("Admin").Result;
+            bool prodAdmin = GetCurrentUserRole("ProductionAdmin").Result;
+
+            if (!prodAdmin && !admin)
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"You don't have permissions, contact to your admin";
+
+                return RedirectToAction("List");
+            }
+
+            WiringOption option = wiringRepo.WiringOptions.FirstOrDefault(m => m.WiringOptionID == ID);
+            option.isDeleted = true;
+            wiringRepo.SaveWiringOption(option);
+            
+            TempData["message"] = $"{option.Description} was deleted";
+            return RedirectToAction("List");
+        }
+
+        [HttpPost]
         public FileStreamResult ExportToXML()
         {
             MemoryStream ms = new MemoryStream();
