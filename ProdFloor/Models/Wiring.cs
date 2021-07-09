@@ -112,7 +112,6 @@ namespace ProdFloor.Models
         [Required(ErrorMessage = "Please enter a {0}")]
         public int Order { get; set; }
 
-        //public List<TriggeringFeature> _TriggeringFeatures { get; set; }
         public List<WiringStepForJob> _WiringStepsForJob { get; set; }
         public List<WiringTriggeringFeature> _WiringTriggeringFeatures { get; set; }
     }
@@ -251,6 +250,7 @@ namespace ProdFloor.Models
 
         public int Quantity { get; set; }
         public string Equality { get; set; }
+        public bool IsSelected { get; set; }
 
     }
 

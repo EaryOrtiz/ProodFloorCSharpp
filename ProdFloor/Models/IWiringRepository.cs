@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProdFloor.Models.ViewModels.Wiring;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -65,5 +66,10 @@ namespace ProdFloor.Models
         PXPError DeletePXPError(int PXPErrorID);
         PXPReason DeletePXPReason(int PXPReasonID);
         WirersPXPInvolved DeleteWirersPXPInvolved(int WirersPXPInvolvedID);
+
+
+        //Save ViewModels
+
+        void SaveWiringStepWithTriggers(WiringStepViewModel viewModel);
     }
 }

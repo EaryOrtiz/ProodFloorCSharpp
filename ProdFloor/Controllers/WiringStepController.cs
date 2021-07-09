@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml;
-using HtmlAgilityPack;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -13,8 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using ProdFloor.Models;
 using ProdFloor.Models.ViewModels;
-using ProdFloor.Models.ViewModels.Testing;
-using ProdFloor.Models.ViewModels.TestJob;
+using ProdFloor.Models.ViewModels.Wiring;
 
 namespace ProdFloor.Controllers
 {
@@ -23,6 +21,7 @@ namespace ProdFloor.Controllers
     {
         private IItemRepository itemprepo;
         private ITestingRepository testingrepo;
+        private IWiringRepository wiringRepo;
         private IHostingEnvironment _env;
         private UserManager<AppUser> userManager;
         public int PageSize = 10;
@@ -32,9 +31,11 @@ namespace ProdFloor.Controllers
         public WiringStepController(ITestingRepository repo, 
             IItemRepository repo2,
             IHostingEnvironment env,
+            IWiringRepository repo3,
             UserManager<AppUser> userMrg)
         {
             testingrepo = repo;
+            wiringRepo = repo3;
             itemprepo = repo2;
             _env = env;
             userManager = userMrg;
@@ -43,27 +44,27 @@ namespace ProdFloor.Controllers
         public ViewResult List(string filtrado,string JobTypeName = "Traction", int ElmHydroPage = 1, int ElmTractionPage = 1, int M2000Page = 1, int M4000Page = 1)
         {
             if (filtrado != null ) JobTypeName = filtrado;
-            List<Step> StepList = testingrepo.Steps.ToList();
+            List<WiringStep> StepList = wiringRepo.WiringSteps.ToList();
 
             switch (JobTypeName)
             {
                 case "Hydro":
-                    StepList = testingrepo.Steps.Where(s => s.JobTypeID == 1).OrderBy(p => p.Order)
+                    StepList = wiringRepo.WiringSteps.Where(s => s.JobTypeID == 1).OrderBy(p => p.Order)
                         .Skip((ElmHydroPage - 1) * PageSize).Take(PageSize).ToList(); break;
                 case "Traction":
-                        StepList = testingrepo.Steps.Where(s => s.JobTypeID == 5).OrderBy(p => p.Order)
+                        StepList = wiringRepo.WiringSteps.Where(s => s.JobTypeID == 5).OrderBy(p => p.Order)
                         .Skip((ElmTractionPage - 1) * PageSize).Take(PageSize).ToList(); break;
                 case "M2000":
-                    StepList = testingrepo.Steps.Where(s => s.JobTypeID == 2).OrderBy(p => p.Order)
+                    StepList = wiringRepo.WiringSteps.Where(s => s.JobTypeID == 2).OrderBy(p => p.Order)
                     .Skip((M2000Page - 1) * PageSize).Take(PageSize).ToList();break;
                 case "M4000":
-                    StepList = testingrepo.Steps.Where(s => s.JobTypeID == 4).OrderBy(p => p.Order)
+                    StepList = wiringRepo.WiringSteps.Where(s => s.JobTypeID == 4).OrderBy(p => p.Order)
                         .Skip((M4000Page - 1) * PageSize).Take(PageSize).ToList();break;
             }
 
-            StepViewModel stepView = new StepViewModel
+            WiringStepViewModel stepView = new WiringStepViewModel
             {
-                StepList = StepList,
+                WiringStepList = StepList,
                 ElmHydroPagingInfo = new PagingInfo
                 {
                     CurrentPage = ElmHydroPage,
@@ -96,7 +97,7 @@ namespace ProdFloor.Controllers
                     TotalItems = testingrepo.Steps
                         .Where(s => s.JobTypeID == 4).Count()
                 },
-                TriggeringList = testingrepo.TriggeringFeatures.ToList(),
+                WiringTriggeringList = wiringRepo.WiringTriggeringFeatures.ToList(),
                 JobTypeSelected = JobTypeName,
                 JobTypesList = itemprepo.JobTypes.ToList(),
             };
@@ -105,27 +106,26 @@ namespace ProdFloor.Controllers
 
         public ViewResult NewStep()
         {
-            return View(new StepViewModel() { Step = new Step(), Time = new TimeSpan() });
+            return View(new WiringStepViewModel() { WiringStep = new WiringStep(), Time = new TimeSpan() });
         }
 
         [HttpPost]
-        public IActionResult NewStep(StepViewModel newStep)
+        public IActionResult NewStep(WiringStepViewModel newStep)
         {
                
-            if (newStep.Step.JobTypeID != 0 && newStep.Step.Order > 0 && !string.IsNullOrEmpty(newStep.Step.Stage))
+            if (newStep.WiringStep.JobTypeID != 0 && newStep.WiringStep.Order > 0 && !string.IsNullOrEmpty(newStep.WiringStep.Stage))
             {
-                DateTime ExpectedTime = new DateTime(1, 1, 1, newStep.Time.Hours, newStep.Time.Minutes, newStep.Time.Seconds);
-                newStep.Step.ExpectedTime = ExpectedTime;
-                testingrepo.SaveStep(newStep.Step);
-                StepViewModel newStepViewModel = new StepViewModel
+                newStep.WiringStep.ExpectedTime = new DateTime(1, 1, 1, newStep.Time.Hours, newStep.Time.Minutes, newStep.Time.Seconds);
+                wiringRepo.SaveWiringStep(newStep.WiringStep);
+                WiringStepViewModel newWiringStepViewModel = new WiringStepViewModel
                 {
-                    Step = newStep.Step,
+                    WiringStep = newStep.WiringStep,
                     Time = newStep.Time,
-                    TriggeringList = new List<TriggeringFeature> { new TriggeringFeature { StepID = newStep.Step.StepID } },
+                    WiringTriggeringList = new List<WiringTriggeringFeature> { new WiringTriggeringFeature { WiringStepID = newStep.WiringStep.WiringStepID } },
                     CurrentTab = "Triggering"
                 };
-                TempData["message"] = $"Step# {newStepViewModel.Step.StepID} has been saved....";
-                return View("NextForm", newStepViewModel);
+                TempData["message"] = $"Step# {newWiringStepViewModel.WiringStep.WiringStepID} has been saved....";
+                return View("NextForm", newWiringStepViewModel);
             }
             else
             {
@@ -136,32 +136,33 @@ namespace ProdFloor.Controllers
         }
 
         [HttpPost]
-        public IActionResult NextForm(StepViewModel nextViewModel)
+        public IActionResult NextForm(WiringStepViewModel nextViewModel)
         {
 
             if (nextViewModel.buttonAction == "AddSF")
             {
-                nextViewModel.TriggeringList.Add(new TriggeringFeature { StepID = nextViewModel.TriggeringList[0].StepID });
+                nextViewModel.WiringTriggeringList.Add(new WiringTriggeringFeature { WiringStepID = nextViewModel.WiringTriggeringList[0].WiringStepID });
                 nextViewModel.CurrentTab = "Triggering";
             }
             else
             {
                 if (ModelState.IsValid)
                 {
-                    if (nextViewModel.Step.StepID == 0) nextViewModel.Step.StepID = nextViewModel.TriggeringList[0].StepID;
-                    if (nextViewModel.TriggeringList != null)
+                    if (nextViewModel.WiringStep.WiringStepID == 0) nextViewModel.WiringStep.WiringStepID = nextViewModel.WiringTriggeringList[0].WiringStepID;
+                    if (nextViewModel.WiringTriggeringList != null)
                     {
-                        DateTime ExpectedTime = new DateTime(1, 1, 1, nextViewModel.Time.Hours, nextViewModel.Time.Minutes, nextViewModel.Time.Seconds);
-                        nextViewModel.Step.ExpectedTime = ExpectedTime;
-                        testingrepo.SaveTestStep(nextViewModel);
+
+                        nextViewModel.WiringStep.ExpectedTime = new DateTime(1, 1, 1, nextViewModel.Time.Hours, nextViewModel.Time.Minutes, nextViewModel.Time.Seconds);
+                        wiringRepo.SaveWiringStepWithTriggers(nextViewModel);
                         nextViewModel.CurrentTab = "Main";
+
                         TempData["message"] = $"everything was saved";
                         return RedirectToAction(nameof(List));
                     }
                     else
                     {
-                        testingrepo.SaveTestStep(nextViewModel);
-                        nextViewModel.TriggeringList = new List<TriggeringFeature> { new TriggeringFeature { StepID = nextViewModel.TriggeringList[0].StepID } };
+                        wiringRepo.SaveWiringStepWithTriggers(nextViewModel);
+                        nextViewModel.WiringTriggeringList = new List<WiringTriggeringFeature> { new WiringTriggeringFeature { WiringStepID = nextViewModel.WiringTriggeringList[0].WiringStepID } };
                         nextViewModel.CurrentTab = "Triggering";
                         TempData["message"] = $"Step was saved";
                         return View(nextViewModel);
@@ -181,7 +182,7 @@ namespace ProdFloor.Controllers
 
         public IActionResult Edit(int ID)
         {
-            Step step = testingrepo.Steps.FirstOrDefault(j => j.StepID == ID);
+            WiringStep step = wiringRepo.WiringSteps.FirstOrDefault(j => j.WiringStepID == ID);
             if (step == null)
             {
                 TempData["message"] = $"The requested Step doesn't exist.";
@@ -189,12 +190,12 @@ namespace ProdFloor.Controllers
             }
             else
             {
-                List<TriggeringFeature> SfList = testingrepo.TriggeringFeatures.Where(j => j.StepID == ID).ToList();
-                StepViewModel viewModel = new StepViewModel();
-                viewModel.Step = step;
+                List<WiringTriggeringFeature> SfList = wiringRepo.WiringTriggeringFeatures.Where(j => j.WiringStepID == ID).ToList();
+                WiringStepViewModel viewModel = new WiringStepViewModel();
+                viewModel.WiringStep = step;
                 viewModel.Time = new TimeSpan(step.ExpectedTime.Hour, step.ExpectedTime.Minute,step.ExpectedTime.Second);
-                if (SfList != null) viewModel.TriggeringList = SfList;
-                else viewModel.TriggeringList = new List<TriggeringFeature> { new TriggeringFeature() };
+                if (SfList != null) viewModel.WiringTriggeringList = SfList;
+                else viewModel.WiringTriggeringList = new List<WiringTriggeringFeature> { new WiringTriggeringFeature() };
                 viewModel.CurrentTab = "Main";
                 return View(viewModel);
             }
@@ -202,15 +203,15 @@ namespace ProdFloor.Controllers
         }
 
         [HttpPost]
-        public IActionResult Edit(StepViewModel multiEditViewModel)
+        public IActionResult Edit(WiringStepViewModel multiEditViewModel)
         {
             if (ModelState.IsValid)
             {
-                DateTime ExpectedTime = new DateTime(1, 1, 1, multiEditViewModel.Time.Hours, multiEditViewModel.Time.Minutes, multiEditViewModel.Time.Seconds);
-                multiEditViewModel.Step.ExpectedTime = ExpectedTime;
-                testingrepo.SaveTestStep(multiEditViewModel);
+                multiEditViewModel.WiringStep.ExpectedTime = new DateTime(1, 1, 1, multiEditViewModel.Time.Hours, multiEditViewModel.Time.Minutes, multiEditViewModel.Time.Seconds);
+                wiringRepo.SaveWiringStepWithTriggers(multiEditViewModel);
                 multiEditViewModel.CurrentTab = "Main";
-                TempData["message"] = $"{multiEditViewModel.Step.StepID} ID has been saved...";
+
+                TempData["message"] = $"{multiEditViewModel.WiringStep.WiringStepID} ID has been saved...";
                 return RedirectToAction(nameof(List));
             }
             else
@@ -235,10 +236,10 @@ namespace ProdFloor.Controllers
                 return RedirectToAction("List");
             }
 
-            Step deletedStep = testingrepo.DeleteTestStep(ID);
-            if (deletedStep != null)
+            WiringStep deletedWiringStep = wiringRepo.DeleteWiringStep(ID);
+            if (deletedWiringStep != null)
             {
-                TempData["message"] = $"{deletedStep.StepID} was deleted";
+                TempData["message"] = $"{deletedWiringStep.WiringStepID} was deleted";
             }
             else
             {
@@ -249,12 +250,12 @@ namespace ProdFloor.Controllers
         }
 
         [HttpPost]
-        public IActionResult DeleteSF(int fieldID, string returnUrl, StepViewModel viewModel)
+        public IActionResult DeleteSF(int fieldID, string returnUrl, WiringStepViewModel viewModel)
         {
-            TriggeringFeature deletedField = testingrepo.DeleteTriggeringFeature(fieldID);
+            WiringTriggeringFeature deletedField = wiringRepo.DeleteWiringTriggeringFeature(fieldID);
             if (deletedField != null)
             {
-                TempData["message"] = $"{deletedField.TriggeringFeatureID} was deleted";
+                TempData["message"] = $"{deletedField.WiringTriggeringFeatureID} was deleted";
             }
             else
             {
@@ -264,48 +265,6 @@ namespace ProdFloor.Controllers
             return Redirect(returnUrl);
         }
 
-        public ViewResult EditStepsForJob(int ID)
-        {
-            StepsForJob stepsForJob = testingrepo.StepsForJobs.FirstOrDefault(m => m.StepsForJobID == ID);
-            if (stepsForJob == null)
-            {
-                return View(NotFound());
-            }
-            TestJobViewModel viewModel = new TestJobViewModel
-            {
-                StepsForJob = stepsForJob,
-                TestJob = testingrepo.TestJobs.FirstOrDefault(m => m.TestJobID == stepsForJob.TestJobID),
-                Step = testingrepo.Steps.FirstOrDefault(m => m.StepID == stepsForJob.StepID)
-            };
-            return View(viewModel);
-        }
-
-        [HttpPost]
-        public IActionResult EditStepsForJob(TestJobViewModel viewModel)
-        {
-            try
-            {
-                TimeSpan elapsed = viewModel.StepsForJob.Stop - viewModel.StepsForJob.Start;
-                viewModel.StepsForJob.Elapsed += elapsed;
-                testingrepo.SaveStepsForJob(viewModel.StepsForJob);
-                TempData["message"] = $"{viewModel.StepsForJob.StepsForJobID} has been saved...";
-                return RedirectToAction("SearchTestJob", "TestJob");
-            }
-            catch(Exception e)
-            {
-                StepsForJob stepsForJob = testingrepo.StepsForJobs.FirstOrDefault(m => m.StepsForJobID == viewModel.StepsForJob.StepsForJobID);
-                TestJobViewModel testJobView = new TestJobViewModel
-                {
-                    StepsForJob = stepsForJob,
-                    TestJob = testingrepo.TestJobs.FirstOrDefault(m => m.TestJobID == stepsForJob.TestJobID),
-                    Step = testingrepo.Steps.FirstOrDefault(m => m.StepID == stepsForJob.StepID)
-                };
-                TempData["alert"] = $"alert-danger";
-                TempData["message"] = $"There was an error with your times";
-                return View(testJobView);
-            }
-            
-        }
 
         [HttpPost]
         public FileStreamResult ExportToXML()
@@ -315,19 +274,19 @@ namespace ProdFloor.Controllers
             xws.OmitXmlDeclaration = true;
             xws.Indent = true;
 
-            List<Step> steps = testingrepo.Steps.ToList();
-            List<TriggeringFeature> triggerings = testingrepo.TriggeringFeatures.ToList();
+            List<WiringStep> steps = wiringRepo.WiringSteps.ToList();
+            List<WiringTriggeringFeature> triggerings = wiringRepo.WiringTriggeringFeatures.ToList();
 
             using (XmlWriter xw = XmlWriter.Create(ms, xws))
             {
                 xw.WriteStartDocument();
-                xw.WriteStartElement("AllSteps");
+                xw.WriteStartElement("AllWiringSteps");
 
-                xw.WriteStartElement("Steps");
-                foreach (Step step in steps)
+                xw.WriteStartElement("WiringSteps");
+                foreach (WiringStep step in steps)
                 {
-                    xw.WriteStartElement("Step");
-                    xw.WriteElementString("StepID", step.StepID.ToString());
+                    xw.WriteStartElement("WiringStep");
+                    xw.WriteElementString("WiringStepID", step.WiringStepID.ToString());
                     xw.WriteElementString("JobTypeID", step.JobTypeID.ToString());
                     xw.WriteElementString("Stage", step.Stage.ToString());
                     xw.WriteElementString("ExpectedTime", step.ExpectedTime.ToString());
@@ -336,15 +295,16 @@ namespace ProdFloor.Controllers
                     xw.WriteEndElement();
                 }
                 xw.WriteEndElement();
-                xw.WriteStartElement("TriggerFeatures");
+                xw.WriteStartElement("WiringTriggerFeatures");
                 string aux;
-                foreach (TriggeringFeature triggering in triggerings)
+                foreach (WiringTriggeringFeature triggering in triggerings)
                 {
-                    xw.WriteStartElement("TriggerFeature");
-                    xw.WriteElementString("ID", triggering.TriggeringFeatureID.ToString());
-                    xw.WriteElementString("StepID", triggering.StepID.ToString());
-                    aux = !string.IsNullOrEmpty(triggering.Name) ? triggering.Name : "Nulo";
-                    xw.WriteElementString("Name", aux);
+                    xw.WriteStartElement("WiringTriggeringFeature");
+                    xw.WriteElementString("WiringTriggeringFeatureID", triggering.WiringTriggeringFeatureID.ToString());
+                    xw.WriteElementString("WiringStepID", triggering.WiringStepID.ToString());
+                    xw.WriteElementString("WiringOptionID", triggering.WiringOptionID.ToString());
+                    xw.WriteElementString("Quantity", triggering.Quantity.ToString());
+                    xw.WriteElementString("Equality", triggering.Equality);
                     xw.WriteElementString("IsSelected", triggering.IsSelected.ToString());
                     xw.WriteEndElement();
 
@@ -355,7 +315,7 @@ namespace ProdFloor.Controllers
             }
 
             ms.Position = 0;
-            return File(ms, "text/xml", "Steps.xml");
+            return File(ms, "text/xml", "WiringSteps.xml");
         }
 
         public void ImportXML(IServiceProvider services)
@@ -364,28 +324,28 @@ namespace ProdFloor.Controllers
 
 
             XmlDocument doc = new XmlDocument();
-            doc.Load(appDataFolder + "Steps.xml");
+            doc.Load(appDataFolder + "WiringSteps.xml");
 
-            var ALLSteps = doc.DocumentElement.SelectSingleNode("//AllSteps");
+            var ALLSteps = doc.DocumentElement.SelectSingleNode("//AllWiringSteps");
 
-            var ALLXMLobs = ALLSteps.SelectSingleNode("//Steps");
-            var XMLobs = ALLXMLobs.SelectNodes("//Step");
+            var ALLXMLobs = ALLSteps.SelectSingleNode("//WiringSteps");
+            var XMLobs = ALLXMLobs.SelectNodes("//WiringStep");
 
-            var ALLtriggers = ALLSteps.SelectSingleNode("//TriggerFeatures");
-            var triggers = ALLtriggers.SelectNodes("//TriggerFeature");
+            var ALLtriggers = ALLSteps.SelectSingleNode("//WiringTriggerFeatures");
+            var triggers = ALLtriggers.SelectNodes("//WiringTriggeringFeature");
 
             foreach (XmlElement XMLob in XMLobs)
             {
-                var stepid = XMLob.SelectSingleNode(".//StepID").InnerText;
+                var stepid = XMLob.SelectSingleNode(".//WiringStepID").InnerText;
                 var jobtypeid = XMLob.SelectSingleNode(".//JobTypeID").InnerText;
                 var stage = XMLob.SelectSingleNode(".//Stage").InnerText;
                 var expectedtime = XMLob.SelectSingleNode(".//ExpectedTime").InnerText;
                 var description = XMLob.SelectSingleNode(".//Description").InnerText;
                 var order = XMLob.SelectSingleNode(".//Order").InnerText;
 
-                context.Steps.Add(new Step
+                context.WiringSteps.Add(new WiringStep
                 {
-                    StepID = Int32.Parse(stepid),
+                    WiringStepID = Int32.Parse(stepid),
                     JobTypeID = Int32.Parse(jobtypeid),
                     Stage = stage,
                     ExpectedTime = DateTime.Parse(expectedtime),
@@ -395,9 +355,9 @@ namespace ProdFloor.Controllers
                 context.Database.OpenConnection();
                 try
                 {
-                    context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.Steps ON");
+                    context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.WiringSteps ON");
                     context.SaveChanges();
-                    context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.Steps OFF");
+                    context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.WiringSteps OFF");
                 }
                 finally
                 {
@@ -407,24 +367,28 @@ namespace ProdFloor.Controllers
 
             foreach (XmlElement po in triggers)
             {
-                var id = po.SelectSingleNode(".//ID").InnerText;
-                var sttepid = po.SelectSingleNode(".//StepID").InnerText;
-                var name = po.SelectSingleNode(".//Name").InnerText;
+                var id = po.SelectSingleNode(".//WiringTriggeringFeatureID").InnerText;
+                var sttepid = po.SelectSingleNode(".//WiringStepID").InnerText;
+                var wiringOptionID = po.SelectSingleNode(".//WiringOptionID").InnerText;
+                var quantity = po.SelectSingleNode(".//Quantity").InnerText;
+                var equality = po.SelectSingleNode(".//Equality").InnerText;
                 var isselected = po.SelectSingleNode(".//IsSelected").InnerText;
-                context.TriggeringFeatures.Add(new TriggeringFeature
+                context.WiringTriggeringFeatures.Add(new WiringTriggeringFeature
                 {
-                    TriggeringFeatureID = Int32.Parse(id),
-                    StepID = Int32.Parse(sttepid),
-                    Name = name == "Nulo" ? null : name,
+                    WiringTriggeringFeatureID = Int32.Parse(id),
+                    WiringStepID = Int32.Parse(sttepid),
+                    WiringOptionID = Int32.Parse(wiringOptionID),
+                    Quantity = Int32.Parse(quantity),
+                    Equality = equality,
                     IsSelected = Boolean.Parse(isselected)
 
                 });
                 context.Database.OpenConnection();
                 try
                 {
-                    context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.TriggeringFeatures ON");
+                    context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.WiringTriggeringFeatures ON");
                     context.SaveChanges();
-                    context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.TriggeringFeatures OFF");
+                    context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.WiringTriggeringFeatures OFF");
                 }
                 finally
                 {

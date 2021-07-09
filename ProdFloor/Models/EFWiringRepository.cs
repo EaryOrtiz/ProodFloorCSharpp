@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProdFloor.Models.ViewModels.Wiring;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -293,6 +294,7 @@ namespace ProdFloor.Models
                     dbEntry.WiringOptionID = wiringTriggeringFeature.WiringOptionID;
                     dbEntry.Quantity = wiringTriggeringFeature.Quantity;
                     dbEntry.Equality = wiringTriggeringFeature.Equality;
+                    dbEntry.IsSelected = wiringTriggeringFeature.IsSelected;
                 }
             }
             context.SaveChanges();
@@ -576,6 +578,29 @@ namespace ProdFloor.Models
             return dbEntry;
         }
 
+        //saving ViewModels
 
+        public void SaveWiringStepWithTriggers(WiringStepViewModel viewModelToSave)
+        {
+            SaveWiringStep(viewModelToSave.WiringStep);
+            if (viewModelToSave.WiringTriggeringList != null)
+            {
+                for (int i = 0; i < viewModelToSave.WiringTriggeringList.Count; i++)
+                {
+                    if (viewModelToSave.WiringTriggeringList[i].WiringStepID != 0)
+                    {
+                        if (viewModelToSave.WiringTriggeringList == null)
+                        {
+                            SaveWiringTriggeringFeature(viewModelToSave.WiringTriggeringList[i]);
+                        }
+                        else
+                        {
+                            viewModelToSave.WiringTriggeringList[i].WiringTriggeringFeatureID = viewModelToSave.WiringTriggeringList[i].WiringTriggeringFeatureID;
+                            SaveWiringTriggeringFeature(viewModelToSave.WiringTriggeringList[i]);
+                        }
+                    }
+                }
+            }
+        }
     }
 }
