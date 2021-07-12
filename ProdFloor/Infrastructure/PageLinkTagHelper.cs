@@ -5768,4 +5768,78 @@ namespace ProdFloor.Infrastructure
         }
     }
 
+    //Wiring
+
+    public class WiringOpcionSelectTagHelper : TagHelper
+    {
+        private IWiringRepository wiringRepo;
+
+        private IUrlHelperFactory urlHelperFactory;
+
+        public ModelExpression AspFor { get; set; }
+
+        public WiringOpcionSelectTagHelper(IUrlHelperFactory helperFactory,
+            IWiringRepository wiringRepository)
+        {
+            urlHelperFactory = helperFactory;
+            wiringRepo = wiringRepository;
+        }
+
+        [ViewContext]
+        [HtmlAttributeNotBound]
+        public ViewContext ViewContext { get; set; }
+
+        public string Area { get; set; }
+        public int SelectedValue { get; set; }
+
+        [HtmlAttributeName("asp-is-disabled")]
+        public bool IsDisabled { set; get; }
+
+        public override void Process(TagHelperContext context, TagHelperOutput output)
+        {
+
+            IUrlHelper urlHelper = urlHelperFactory.GetUrlHelper(ViewContext);
+            output.TagName = "select";
+            TagBuilder result = new TagBuilder("select a feature");
+            string name = this.AspFor.Name;
+            if (!String.IsNullOrEmpty(name))
+            {
+                output.Attributes.Add("id", name);
+                output.Attributes.Add("name", name);
+            }
+            TagBuilder m_tag = new TagBuilder("option");
+            m_tag.Attributes["value"] = "default";
+            m_tag.InnerHtml.Append("Select a ");
+            result.InnerHtml.AppendHtml(m_tag);
+            int ItemID = 0;
+
+            if (SelectedValue != 0)
+            {
+                WiringOption selectedItem = wiringRepo.WiringOptions.FirstOrDefault(c => c.WiringOptionID == SelectedValue);
+                ItemID = selectedItem.WiringOptionID;
+            }
+
+            IQueryable<WiringOption> items = wiringRepo.WiringOptions.OrderBy(s => s.Description).AsQueryable();
+            foreach (WiringOption item in items)
+            {
+                TagBuilder tag = new TagBuilder("option");
+                tag.Attributes["value"] = item.WiringOptionID.ToString();
+                if (item.WiringOptionID == ItemID) 
+                {
+                    tag.Attributes["selected"] = "selected";
+                }
+                tag.InnerHtml.Append(item.Description.ToString());
+                result.InnerHtml.AppendHtml(tag);
+            }
+
+            output.Content.AppendHtml(result.InnerHtml);
+            if (IsDisabled)
+            {
+                var d = new TagHelperAttribute("disabled", "disabled");
+                output.Attributes.Add(d);
+            }
+            base.Process(context, output);
+        }
+    }
+
 }

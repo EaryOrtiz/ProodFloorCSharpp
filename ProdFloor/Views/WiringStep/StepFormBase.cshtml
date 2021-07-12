@@ -1,0 +1,37 @@
+﻿@model ProdFloor.Models.ViewModels.Wiring.WiringStepViewModel
+<input type="hidden" asp-for="WiringStep.WiringStepID" />
+<div class="form-group row">
+    <label asp-for="WiringStep.JobTypeID" class="col-sm-2 col-form-label"></label>
+    <div>
+        <job-type-select selected-value="@Model.WiringStep.JobTypeID" class="form-control-sm form-control" asp-for="WiringStep.JobTypeID"></job-type-select>
+        <span asp-validation-for="WiringStep.JobTypeID" class="text-danger"></span>
+    </div>
+</div>
+<div class="form-group row">
+    <label asp-for="WiringStep.Stage" class="col-sm-2 col-form-label"></label>
+    <div>
+        <custom-select selected-value="@Model.WiringStep.Stage" class="form-control-sm form-control" asp-for="WiringStep.Stage" select-for="Stage"></custom-select>
+        <span asp-validation-for="WiringStep.Stage" class="text-danger"></span>
+    </div>
+</div>
+<div class="form-group row">
+    <label asp-for="Time" class="col-sm-2 col-form-label"></label>
+    <div>
+        <input type="datetime" asp-for="Time" class="form-control col-sm-8" />
+        <span asp-validation-for="Time" class="text-danger"></span>
+    </div>
+</div>
+<div class="form-group row">
+    <label asp-for="WiringStep.Description" class="col-sm-2 col-form-label"></label>
+    <div>
+        <textarea asp-for="WiringStep.Description" class="form-control col-sm-15" rows="4"></textarea>
+        <span asp-validation-for="WiringStep.Description" class="text-danger"></span>
+    </div>
+</div>
+<div class="form-group row">
+    <label asp-for="WiringStep.Order" class="col-sm-2 col-form-label"></label>
+    <div>
+        <input asp-for="WiringStep.Order" class="form-control col-sm-15" />
+        <span asp-validation-for="WiringStep.Order" class="text-danger"></span>
+    </div>
+</div>

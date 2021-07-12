@@ -1,0 +1,43 @@
+﻿@model ProdFloor.Models.ViewModels.Wiring.WiringStepViewModel
+<button asp-action="NextForm" asp-controller="WiringStep" type="submit" value="AddSF" name="buttonAction" class="btn btn-success btn-sm col-sm-2" style="padding-top:10px;margin-bottom:10px;min-width:100px;float:left">
+    <i class="fa fa-plus"></i>&nbsp; Trigger Feature
+</button>
+<input type="hidden" asp-for="WiringStep.WiringStepID" />
+<input type="hidden" asp-for="Time" />
+<div class="table-responsive">
+    <table class="table form-control">
+        <thead>
+            <tr>
+                <th style="text-align:center;width:100%">Feature</th>
+            </tr>
+        </thead>
+        <tbody style="text-align:">
+            @for (int i = 0; i < Model.WiringTriggeringList.Count; i++)
+            {
+                @Html.HiddenFor(m => m.WiringTriggeringList[i].WiringStepID)
+                @Html.HiddenFor(m => m.WiringTriggeringList[i].WiringTriggeringFeatureID)
+                <tr>
+                    <td>
+                        <div class="input-group mb-3 ">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    @Html.CheckBoxFor(m => m.WiringTriggeringList[i].IsSelected, new { Class = "form-control;" })
+                                </div>
+                            </div>
+                            @*@----------------------------TahHelper - ------- - -- -- - - - - - - - - - - -*@
+                        </div>
+                    </td>
+                    <td style="text-align:center;">
+                        <form asp-action="DeleteSF" method="post">
+                            <input type="hidden" name="fieldID" value="@Model.WiringTriggeringList[i].WiringTriggeringFeatureID" />
+                            <input type="hidden" name="returnUrl" value="\WiringStep\Edit\@Model.WiringTriggeringList[i].WiringStepID" />
+                            <button type="submit" class="btn btn-danger btn-sm">
+                                <i class="fa fa-minus-circle"></i>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
