@@ -5618,6 +5618,49 @@ namespace ProdFloor.Infrastructure
         }
     }
 
+    public class UserInputTagHelper : TagHelper
+    {
+        private IWiringRepository repository;
+
+        private IUrlHelperFactory urlHelperFactory;
+
+        private UserManager<AppUser> userManager;
+
+
+        public ModelExpression AspFor { get; set; }
+
+        public UserInputTagHelper(IUrlHelperFactory helperFactory, UserManager<AppUser> userMrg)
+        {
+            urlHelperFactory = helperFactory;
+            userManager = userMrg;
+        }
+
+        [ViewContext]
+        [HtmlAttributeNotBound]
+        public ViewContext ViewContext { get; set; }
+        public int UserID { get; set; }
+
+        public override void Process(TagHelperContext context, TagHelperOutput output)
+        {
+
+            IUrlHelper urlHelper = urlHelperFactory.GetUrlHelper(ViewContext);
+            string name = this.AspFor.Name;
+
+            AppUser user = userManager.Users.FirstOrDefault(m => m.EngID == UserID);
+
+            TagBuilder tag = new TagBuilder("input");
+            tag.Attributes.Add("name", "UserName");
+            tag.Attributes.Add("type", "text");
+            tag.Attributes.Add("disabled", "true");
+            tag.Attributes.Add("class", "form-control");
+            tag.Attributes.Add("value", user == null ? "Error" : user.FullName);
+
+            output.Content.AppendHtml(tag);
+            base.Process(context, output);
+        }
+    }
+
+    //Wiring
     public class PXPReasonsSelectTagHelper : TagHelper
     {
         private IWiringRepository repository;
@@ -5684,48 +5727,6 @@ namespace ProdFloor.Infrastructure
         }
     }
 
-    public class UserInputTagHelper : TagHelper
-    {
-        private IWiringRepository repository;
-
-        private IUrlHelperFactory urlHelperFactory;
-
-        private UserManager<AppUser> userManager;
-
-
-        public ModelExpression AspFor { get; set; }
-
-        public UserInputTagHelper(IUrlHelperFactory helperFactory, UserManager<AppUser> userMrg)
-        {
-            urlHelperFactory = helperFactory;
-            userManager = userMrg;
-        }
-
-        [ViewContext]
-        [HtmlAttributeNotBound]
-        public ViewContext ViewContext { get; set; }
-        public int UserID { get; set; }
-
-        public override void Process(TagHelperContext context, TagHelperOutput output)
-        {
-
-            IUrlHelper urlHelper = urlHelperFactory.GetUrlHelper(ViewContext);
-            string name = this.AspFor.Name;
-
-            AppUser user = userManager.Users.FirstOrDefault(m => m.EngID == UserID);
-
-            TagBuilder tag = new TagBuilder("input");
-            tag.Attributes.Add("name", "UserName");
-            tag.Attributes.Add("type", "text");
-            tag.Attributes.Add("disabled", "true");
-            tag.Attributes.Add("class", "form-control");
-            tag.Attributes.Add("value", user == null ? "Error" : user.FullName);
-
-            output.Content.AppendHtml(tag);
-            base.Process(context, output);
-        }
-    }
-
     public class PXPReasonInputTagHelper : TagHelper
     {
         private IWiringRepository repository;
@@ -5741,7 +5742,7 @@ namespace ProdFloor.Infrastructure
             urlHelperFactory = helperFactory;
             repository = repo;
         }
-        
+
         [ViewContext]
         [HtmlAttributeNotBound]
         public ViewContext ViewContext { get; set; }
@@ -5767,8 +5768,6 @@ namespace ProdFloor.Infrastructure
             base.Process(context, output);
         }
     }
-
-    //Wiring
 
     public class WiringOpcionSelectTagHelper : TagHelper
     {
@@ -5838,6 +5837,48 @@ namespace ProdFloor.Infrastructure
                 var d = new TagHelperAttribute("disabled", "disabled");
                 output.Attributes.Add(d);
             }
+            base.Process(context, output);
+        }
+    }
+
+    public class WiringOpcionInputTagHelper : TagHelper
+    {
+        private IWiringRepository repository;
+
+        private IUrlHelperFactory urlHelperFactory;
+
+
+
+        public ModelExpression AspFor { get; set; }
+
+        public WiringOpcionInputTagHelper(IUrlHelperFactory helperFactory, IWiringRepository repo)
+        {
+            urlHelperFactory = helperFactory;
+            repository = repo;
+        }
+
+        [ViewContext]
+        [HtmlAttributeNotBound]
+        public ViewContext ViewContext { get; set; }
+        public int ItemID { get; set; }
+
+        public override void Process(TagHelperContext context, TagHelperOutput output)
+        {
+
+            IUrlHelper urlHelper = urlHelperFactory.GetUrlHelper(ViewContext);
+            string name = this.AspFor.Name;
+
+            WiringOption item = repository.WiringOptions.FirstOrDefault(m => m.WiringOptionID == ItemID);
+
+            TagBuilder tag = new TagBuilder("input");
+            tag.Attributes.Add("name", "UserName");
+            tag.Attributes.Add("type", "text");
+            tag.Attributes.Add("disabled", "true");
+            tag.Attributes.Add("class", "form-control");
+            tag.Attributes.Add("value", item == null ? "Error" : item.Description);
+
+
+            output.Content.AppendHtml(tag);
             base.Process(context, output);
         }
     }

@@ -24,7 +24,10 @@
                                     @Html.CheckBoxFor(m => m.WiringTriggeringList[i].IsSelected, new { Class = "form-control;" })
                                 </div>
                             </div>
-                            @*@----------------------------TahHelper - ------- - -- -- - - - - - - - - - - -*@
+                            <wiring-opcion-select class="form-control form-control-sm;"  
+                                                  asp-for="@Model.WiringTriggeringList[i].WiringOptionID" 
+                                                  selected-value="@Model.WiringTriggeringList[i].WiringOptionID" >
+                            </wiring-opcion-select>
                         </div>
                     </td>
                     <td style="text-align:center;">
