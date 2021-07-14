@@ -10,7 +10,7 @@ $(function () {
                         url: '/WiringReasons/GetReason2',
                         contentType: "applications/json",
                         data: {
-                            Reason1ID: Reason1ID
+                            WiringReason1ID: Reason1ID
                         },
                         success: function (data) {
                             $("#WiringReason2ID").prop("disabled", false);
@@ -35,7 +35,7 @@ $(function () {
                         url: '/WiringReasons/GetReason3',
                         contentType: "applications/json",
                         data: {
-                            Reason2ID: Reason2ID
+                            WiringReason2ID: Reason2ID
                         },
                         success: function (data) {
                             $("#WiringReason3ID").prop("disabled", false);
@@ -60,7 +60,7 @@ $(function () {
                         url: '/WiringReasons/GetReason4',
                         contentType: "applications/json",
                         data: {
-                            Reason3ID: Reason3ID
+                            WiringReason3ID: Reason3ID
                         },
                         success: function (data) {
                             $("WiringReason4ID").prop("disabled", false);
@@ -85,7 +85,7 @@ $(function () {
                         url: '/WiringReasons/GetReason5',
                         contentType: "applications/json",
                         data: {
-                            Reason4ID: Reason4ID
+                            WiringReason4ID: Reason4ID
                         },
                         success: function (data) {
                             $("#WiringReason5ID").prop("disabled", false);

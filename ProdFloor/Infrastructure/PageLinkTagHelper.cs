@@ -5164,10 +5164,6 @@ namespace ProdFloor.Infrastructure
                     WiringReason4 selectedR4 = wiringRepo.WiringReasons4.FirstOrDefault(c => c.WiringReason4ID == selectedR5.WiringReason4ID);
                     reason4ID = selectedR4.WiringReason4ID;
                 }
-                if (SelectedInR5Value != 0)
-                {
-                    reason4ID = SelectedValue;
-                }
                 IQueryable<WiringReason4> reason4s = wiringRepo.WiringReasons4.Where(m => m.Description != "-").OrderBy(s => s.Description).AsQueryable();
                 foreach (WiringReason4 item in reason4s)
                 {

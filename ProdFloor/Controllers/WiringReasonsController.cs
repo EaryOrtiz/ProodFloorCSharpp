@@ -18,7 +18,7 @@ using ProdFloor.Models.ViewModels.Reasons;
 
 namespace ProdFloor.Controllers
 {
-    [Authorize(Roles = "Admin,TechAdmin,Technician")]
+    [Authorize(Roles = "Admin,TechAdmin,Technician,ProductionAdmin")]
     public class WiringReasonsController : Controller
     {
         private IWiringRepository repository;
@@ -36,112 +36,6 @@ namespace ProdFloor.Controllers
             userManager = userMrg;
         }
 
-
-        /*public ViewResult List(int reasonNumber, int separator, int page = 1)
-        {
-
-            switch (reasonNumber)
-            {
-                case 1:
-                    var ReasonCount = repository.Reasons1
-                        .Where(s => s.Description != "-").Count();
-
-                    return View("Reason1List", new ReasonViewModel
-                    {
-                        Reasons1 = repository.Reasons1
-                        .Where(s => s.Description != "-")
-                        .OrderBy(p => p.Reason1ID)
-                        .Skip((page - 1) * PageSize)
-                        .Take(PageSize).ToList(),
-                        PagingInfo = new PagingInfo
-                        {
-                            CurrentPage = page,
-                            ItemsPerPage = PageSize,
-                            TotalItems = ReasonCount
-                        },
-                        CurrentSeparator = separator.ToString()
-                    });
-
-                case 2:
-                    var Reason2Count = repository.Reasons2.Count();
-
-                    return View("Reason2List", new ReasonViewModel
-                    {
-                        Reasons2 = repository.Reasons2
-                        .Where(s => s.Description != "-")
-                        .OrderBy(p => p.Reason2ID)
-                        .Skip((page - 1) * PageSize)
-                        .Take(PageSize).ToList(),
-                        PagingInfo = new PagingInfo
-                        {
-                            CurrentPage = page,
-                            ItemsPerPage = PageSize,
-                            TotalItems = Reason2Count
-                        },
-                        CurrentSeparator = separator.ToString()
-                    });
-
-                case 3:
-                    var Reason3Count = repository.Reasons3.Count();
-
-                    return View("Reason3List", new ReasonViewModel
-                    {
-                        Reasons3 = repository.Reasons3
-                        .Where(s => s.Description != "-")
-                        .OrderBy(p => p.Reason3ID)
-                        .Skip((page - 1) * PageSize)
-                        .Take(PageSize).ToList(),
-                        PagingInfo = new PagingInfo
-                        {
-                            CurrentPage = page,
-                            ItemsPerPage = PageSize,
-                            TotalItems = Reason3Count
-                        },
-                        CurrentSeparator = separator.ToString()
-                    });
-
-                case 4:
-                    var Reason4Count = repository.Reasons4.Count();
-
-                    return View("Reason4List", new ReasonViewModel
-                    {
-                        Reasons4 = repository.Reasons4
-                        .Where(s => s.Description != "-")
-                        .OrderBy(p => p.Reason4ID)
-                        .Skip((page - 1) * PageSize)
-                        .Take(PageSize).ToList(),
-                        PagingInfo = new PagingInfo
-                        {
-                            CurrentPage = page,
-                            ItemsPerPage = PageSize,
-                            TotalItems = Reason4Count
-                        },
-                        CurrentSeparator = separator.ToString()
-                    });
-
-                case 5:
-                    var Reason5Count = repository.Reasons5.Count();
-
-                    return View("Reason5List", new ReasonViewModel
-                    {
-                        Reasons5 = repository.Reasons5
-                        .Where(s => s.Description != "-")
-                        .OrderBy(p => p.Reason5ID)
-                        .Skip((page - 1) * PageSize)
-                        .Take(PageSize).ToList(),
-                        PagingInfo = new PagingInfo
-                        {
-                            CurrentPage = page,
-                            ItemsPerPage = PageSize,
-                            TotalItems = Reason5Count
-                        },
-                        CurrentSeparator = separator.ToString()
-                    });
-            }
-
-            return View(NotFound());
-        }
-        */
         public ViewResult Reason1List(string filtrado, string Sort = "default", int page = 1, int totalitemsfromlastsearch = 0)
         {
             if (filtrado != null) Sort = filtrado;
@@ -353,11 +247,11 @@ namespace ProdFloor.Controllers
         {
             switch (AddR)
             {
-                case "R1": return View("WiringReason1Edit", new Reason1());
-                case "R2": return View("RWiringeason2Edit", new Reason2());
-                case "R3": return View("WiringReason3Edit", new Reason3());
-                case "R4": return View("WiringReason4Edit", new Reason4());
-                case "R5": return View("WiringReason5Edit", new Reason5());
+                case "R1": return View("Reason1Edit", new WiringReason1());
+                case "R2": return View("Reason2Edit", new WiringReason2());
+                case "R3": return View("Reason3Edit", new WiringReason3());
+                case "R4": return View("Reason4Edit", new WiringReason4());
+                case "R5": return View("Reason5Edit", new WiringReason5());
             }
 
             return View();
@@ -367,11 +261,11 @@ namespace ProdFloor.Controllers
         {
             switch (btn)
             {
-                case "R1": return View("WiringReason1Edit", repository.WiringReasons1.FirstOrDefault(j => j.WiringReason1ID == ID));
-                case "R2": return View("WiringReason2Edit", repository.WiringReasons2.FirstOrDefault(j => j.WiringReason2ID == ID));
-                case "R3": return View("WiringReason3Edit", repository.WiringReasons3.FirstOrDefault(j => j.WiringReason3ID == ID));
-                case "R4": return View("WiringReason4Edit", repository.WiringReasons4.FirstOrDefault(j => j.WiringReason4ID == ID));
-                case "R5": return View("WiringReason5Edit", repository.WiringReasons5.FirstOrDefault(j => j.WiringReason5ID == ID));
+                case "R1": return View("Reason1Edit", repository.WiringReasons1.FirstOrDefault(j => j.WiringReason1ID == ID));
+                case "R2": return View("Reason2Edit", repository.WiringReasons2.FirstOrDefault(j => j.WiringReason2ID == ID));
+                case "R3": return View("Reason3Edit", repository.WiringReasons3.FirstOrDefault(j => j.WiringReason3ID == ID));
+                case "R4": return View("Reason4Edit", repository.WiringReasons4.FirstOrDefault(j => j.WiringReason4ID == ID));
+                case "R5": return View("Reason5Edit", repository.WiringReasons5.FirstOrDefault(j => j.WiringReason5ID == ID));
             }
 
             return View(NotFound());
@@ -384,7 +278,7 @@ namespace ProdFloor.Controllers
             {
                 repository.SaveWiringReason1(reason);
                 TempData["message"] = $"{reason.WiringReason1ID},, has been saved...";
-                return RedirectToAction("WiringReason1List");
+                return RedirectToAction("Reason1List");
             }
             else
             {
@@ -400,7 +294,7 @@ namespace ProdFloor.Controllers
             {
                 repository.SaveWiringReason2(reason);
                 TempData["message"] = $"{reason.WiringReason2ID},, has been saved...";
-                return RedirectToAction("WiringReason2List");
+                return RedirectToAction("Reason2List");
             }
             else
             {
@@ -416,7 +310,7 @@ namespace ProdFloor.Controllers
             {
                 repository.SaveWiringReason3(reason);
                 TempData["message"] = $"{reason.WiringReason3ID}, has been saved...";
-                return RedirectToAction("WiringReason3List");
+                return RedirectToAction("Reason3List");
             }
             else
             {
@@ -432,7 +326,7 @@ namespace ProdFloor.Controllers
             {
                 repository.SaveWiringReason4(reason);
                 TempData["message"] = $"{reason.WiringReason4ID},, has been saved...";
-                return RedirectToAction("WiringReason4List");
+                return RedirectToAction("Reason4List");
             }
             else
             {
@@ -448,7 +342,7 @@ namespace ProdFloor.Controllers
             {
                 repository.SaveWiringReason5(reason);
                 TempData["message"] = $"{reason.WiringReason5ID},, has been saved...";
-                return RedirectToAction("WiringReason5List");
+                return RedirectToAction("Reason5List");
             }
             else
             {
@@ -479,7 +373,7 @@ namespace ProdFloor.Controllers
                     {
                         TempData["message"] = $"{deleteReason.WiringReason1ID} was deleted";
                     }
-                    return RedirectToAction("WiringReason1List");
+                    return RedirectToAction("Reason1List");
 
                 case "R2":
                     WiringReason2 deleteReason2 = repository.DeleteWiringReason2(ID);
@@ -488,7 +382,7 @@ namespace ProdFloor.Controllers
                     {
                         TempData["message"] = $"{deleteReason2.WiringReason2ID} was deleted";
                     }
-                    return RedirectToAction("WiringReason2List");
+                    return RedirectToAction("Reason2List");
                 case "R3":
                     WiringReason3 deleteReason3 = repository.DeleteWiringReason3(ID);
 
@@ -496,7 +390,7 @@ namespace ProdFloor.Controllers
                     {
                         TempData["message"] = $"{deleteReason3.WiringReason3ID} was deleted";
                     }
-                    return RedirectToAction("WiringReason3List");
+                    return RedirectToAction("Reason3List");
                 case "R4":
                     WiringReason4 deleteReason4 = repository.DeleteWiringReason4(ID);
 
@@ -521,7 +415,7 @@ namespace ProdFloor.Controllers
         public JsonResult GetReason2(int WiringReason1ID)
         {
             List<WiringReason2> WiringReasonlist = new List<WiringReason2>();
-            WiringReasonlist = (from Wiringreason2 in repository.WiringReasons2 where Wiringreason2.WiringReason1ID == WiringReason1ID && Wiringreason2.Description != "-" select Wiringreason2).ToList();
+            WiringReasonlist = (from Wiringreasons2 in repository.WiringReasons2 where Wiringreasons2.WiringReason1ID == WiringReason1ID && Wiringreasons2.Description != "-" select Wiringreasons2).ToList();
             return Json(new SelectList(WiringReasonlist, "WiringReason2ID", "Description"));
         }
 

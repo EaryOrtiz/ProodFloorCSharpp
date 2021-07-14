@@ -16,7 +16,7 @@ using ProdFloor.Models.ViewModels.Wiring;
 
 namespace ProdFloor.Controllers
 {
-    [Authorize(Roles = "Admin,TechAdmin")]
+    [Authorize(Roles = "Admin,TechAdmin,ProductionAdmin")]
     public class WiringStepController : Controller
     {
         private IItemRepository itemprepo;
