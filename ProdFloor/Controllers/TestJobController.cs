@@ -412,7 +412,7 @@ namespace ProdFloor.Controllers
 
                     try
                     {
-                        if (jobExtension != null) {
+                        if (jobExtension != null && CurrentJob.Contractor == "Fake") {
 
                             if (nextViewModel.MOD == true) jobExtension.DoorOperatorID = 7;
                             else if (nextViewModel.Manual == true) jobExtension.DoorOperatorID = 2;
