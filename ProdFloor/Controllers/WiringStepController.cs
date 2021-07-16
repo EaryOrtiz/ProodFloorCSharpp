@@ -70,7 +70,7 @@ namespace ProdFloor.Controllers
                     CurrentPage = ElmHydroPage,
                     JobTypeName = JobTypeName,
                     ItemsPerPage = PageSize,
-                    TotalItems = testingrepo.Steps
+                    TotalItems = wiringRepo.WiringSteps
                         .Where(s => s.JobTypeID == 1).Count()
                 },
                 ElmTractionPagingInfo = new PagingInfo
@@ -78,7 +78,7 @@ namespace ProdFloor.Controllers
                     CurrentPage = ElmTractionPage,
                     ItemsPerPage = PageSize,
                     JobTypeName = JobTypeName,
-                    TotalItems = testingrepo.Steps
+                    TotalItems = wiringRepo.WiringSteps
                         .Where(s => s.JobTypeID == 5).Count()
                 },
                 M2000PagingInfo = new PagingInfo
@@ -86,7 +86,7 @@ namespace ProdFloor.Controllers
                     CurrentPage = M2000Page,
                     ItemsPerPage = PageSize,
                     JobTypeName = JobTypeName,
-                    TotalItems = testingrepo.Steps
+                    TotalItems = wiringRepo.WiringSteps
                         .Where(s => s.JobTypeID == 2).Count()
                 },
                 M4000PagingInfo = new PagingInfo
@@ -94,7 +94,7 @@ namespace ProdFloor.Controllers
                     CurrentPage = M4000Page,
                     ItemsPerPage = PageSize,
                     JobTypeName = JobTypeName,
-                    TotalItems = testingrepo.Steps
+                    TotalItems = wiringRepo.WiringSteps
                         .Where(s => s.JobTypeID == 4).Count()
                 },
                 WiringTriggeringList = wiringRepo.WiringTriggeringFeatures.Where(m => m.WiringOptionID != 0).ToList(),
