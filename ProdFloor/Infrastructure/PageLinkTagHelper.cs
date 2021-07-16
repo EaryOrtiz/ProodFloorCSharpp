@@ -5795,17 +5795,13 @@ namespace ProdFloor.Infrastructure
 
             IUrlHelper urlHelper = urlHelperFactory.GetUrlHelper(ViewContext);
             output.TagName = "select";
-            TagBuilder result = new TagBuilder("select a feature");
+            TagBuilder result = new TagBuilder("Select a feature");
             string name = this.AspFor.Name;
             if (!String.IsNullOrEmpty(name))
             {
                 output.Attributes.Add("id", name);
                 output.Attributes.Add("name", name);
             }
-            TagBuilder m_tag = new TagBuilder("option");
-            m_tag.Attributes["value"] = "default";
-            m_tag.InnerHtml.Append("Select a ");
-            result.InnerHtml.AppendHtml(m_tag);
             int ItemID = 0;
 
             if (SelectedValue != 0)

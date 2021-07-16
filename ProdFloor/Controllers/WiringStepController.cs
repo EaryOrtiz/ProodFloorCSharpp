@@ -97,7 +97,7 @@ namespace ProdFloor.Controllers
                     TotalItems = testingrepo.Steps
                         .Where(s => s.JobTypeID == 4).Count()
                 },
-                WiringTriggeringList = wiringRepo.WiringTriggeringFeatures.ToList(),
+                WiringTriggeringList = wiringRepo.WiringTriggeringFeatures.Where(m => m.WiringOptionID != 0).ToList(),
                 JobTypeSelected = JobTypeName,
                 JobTypesList = itemprepo.JobTypes.ToList(),
             };
@@ -194,9 +194,14 @@ namespace ProdFloor.Controllers
                 WiringStepViewModel viewModel = new WiringStepViewModel();
                 viewModel.WiringStep = step;
                 viewModel.Time = new TimeSpan(step.ExpectedTime.Hour, step.ExpectedTime.Minute,step.ExpectedTime.Second);
-                if (SfList != null) viewModel.WiringTriggeringList = SfList;
-                else viewModel.WiringTriggeringList = new List<WiringTriggeringFeature> { new WiringTriggeringFeature() };
                 viewModel.CurrentTab = "Main";
+                if (SfList.Count != 0) viewModel.WiringTriggeringList = SfList;
+                else {
+                    viewModel.WiringTriggeringList = new List<WiringTriggeringFeature> { new WiringTriggeringFeature { WiringStepID = step.WiringStepID } };
+                    viewModel.CurrentTab = "Triggering";
+                }
+                
+                
                 return View(viewModel);
             }
 

@@ -71,7 +71,7 @@
                         @Html.DisplayFor(m => item.Order)
                     </td>
                     <td>
-                        @foreach (WiringTriggeringFeature trigger in Model.WiringTriggeringList.Where(n => n.WiringStepID == item.WiringStepID))
+                        @foreach (WiringTriggeringFeature trigger in Model.WiringTriggeringList.Where(n => n.WiringStepID == item.WiringStepID && n.WiringOptionID != 0))
                         {
                             <div class="form-group form-inline text-center" style="margin-bottom:0em;padding-bottom:0em;">
                                 <div class="input-group mb-3" style="margin-bottom:0em;padding-bottom:0em;">
@@ -87,7 +87,8 @@
                                             }
                                         </div>
                                     </div>
-                                    <wiring-opcion-input class="form-control form-control-sm;" item-id="@trigger.WiringOptionID" asp-for="@trigger.WiringOptionID"></wiring-opcion-input>
+                                    <wiring-opcion-input item-id="@trigger.WiringOptionID" asp-for="@trigger.WiringOptionID"></wiring-opcion-input>
+                                    <input class="form-control form-control-sm col-2" asp-for="@trigger.Quantity" readonly value="@trigger.Quantity" />
                                 </div>
                             </div>
                         }

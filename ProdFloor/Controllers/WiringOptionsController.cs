@@ -35,7 +35,7 @@ namespace ProdFloor.Controllers
         public IActionResult List(WiringOptionsViewModel viewModel, int page = 1, int totalitemsfromlastsearch = 0)
         {
             if (viewModel.CleanFields) return RedirectToAction("List");
-            IQueryable<WiringOption> wiringOptions = wiringRepo.WiringOptions.AsQueryable();
+            IQueryable<WiringOption> wiringOptions = wiringRepo.WiringOptions.Where(m => m.WiringOptionID != 0).AsQueryable();
 
             if (viewModel.isDeleted) wiringOptions = wiringOptions.Where(m => m.isDeleted == viewModel.isDeleted);
             if (!string.IsNullOrEmpty(viewModel.Description)) wiringOptions = wiringOptions.Where(m => m.Description.Contains(viewModel.Description));
@@ -142,7 +142,7 @@ namespace ProdFloor.Controllers
             xws.OmitXmlDeclaration = true;
             xws.Indent = true;
 
-            List<WiringOption> options = wiringRepo.WiringOptions.ToList();
+            List<WiringOption> options = wiringRepo.WiringOptions.Where(m => m.WiringOptionID != 0).ToList();
 
             using (XmlWriter xw = XmlWriter.Create(ms, xws))
             {
