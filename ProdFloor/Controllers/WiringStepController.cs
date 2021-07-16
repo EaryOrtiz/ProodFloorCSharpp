@@ -124,7 +124,7 @@ namespace ProdFloor.Controllers
                     WiringTriggeringList = new List<WiringTriggeringFeature> { new WiringTriggeringFeature { WiringStepID = newStep.WiringStep.WiringStepID } },
                     CurrentTab = "Triggering"
                 };
-                TempData["message"] = $"Step# {newWiringStepViewModel.WiringStep.WiringStepID} has been saved....";
+                TempData["message"] = $"Step# {newWiringStepViewModel.WiringStep.Description+} has been saved....";
                 return View("NextForm", newWiringStepViewModel);
             }
             else
@@ -216,7 +216,7 @@ namespace ProdFloor.Controllers
                 wiringRepo.SaveWiringStepWithTriggers(multiEditViewModel);
                 multiEditViewModel.CurrentTab = "Main";
 
-                TempData["message"] = $"{multiEditViewModel.WiringStep.WiringStepID} ID has been saved...";
+                TempData["message"] = $"{multiEditViewModel.WiringStep.Description} ID has been saved...";
                 return RedirectToAction(nameof(List));
             }
             else
@@ -244,7 +244,7 @@ namespace ProdFloor.Controllers
             WiringStep deletedWiringStep = wiringRepo.DeleteWiringStep(ID);
             if (deletedWiringStep != null)
             {
-                TempData["message"] = $"{deletedWiringStep.WiringStepID} was deleted";
+                TempData["message"] = $"{deletedWiringStep.Description}... was deleted";
             }
             else
             {
