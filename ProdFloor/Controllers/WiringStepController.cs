@@ -124,7 +124,7 @@ namespace ProdFloor.Controllers
                     WiringTriggeringList = new List<WiringTriggeringFeature> { new WiringTriggeringFeature { WiringStepID = newStep.WiringStep.WiringStepID } },
                     CurrentTab = "Triggering"
                 };
-                TempData["message"] = $"Step# {newWiringStepViewModel.WiringStep.Description+} has been saved....";
+                TempData["message"] = $"Step# {newWiringStepViewModel.WiringStep.Description} has been saved....";
                 return View("NextForm", newWiringStepViewModel);
             }
             else
