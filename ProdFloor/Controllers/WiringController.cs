@@ -152,10 +152,9 @@ namespace ProdFloor.Controllers
                 wiringRepo.SaveWirersInvolved(wirersInvolved);
             }
 
-
             StatusPO statusPO = jobRepo.StatusPOs.FirstOrDefault(m => m.POID == viewModel.WiringJob.POID);
 
-            statusPO.Status = "Wiring on progress";
+            statusPO.Status = "WR: Adding Features";
             jobRepo.SaveStatusPO(statusPO);
 
             viewModel.FeatureList = new List<WiringFeatures>();
@@ -163,6 +162,60 @@ namespace ProdFloor.Controllers
             return View("AddFeatures", viewModel);
         }
 
+        [HttpPost]
+        public IActionResult AddFeatures(WiringViewModel viewModel)
+        {
+            AppUser currentUser = GetCurrentUser().Result;
+            Wiring wiring = wiringRepo.Wirings.FirstOrDefault(m => m.WiringID == viewModel.WiringJob.WiringID);
+            PO po = jobRepo.POs.FirstOrDefault(m => m.POID == wiring.POID);
+
+            if (wiring == null)
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"Error, el WiringJob no existe";
+
+                return RedirectToAction("List");
+            }
+
+            StatusPO statusPO = jobRepo.StatusPOs.FirstOrDefault(m => m.POID == wiring.POID);
+
+            if (currentUser.EngID != wiring.WirerID)
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"Error, el WiringJob a sido reasigando";
+
+                return RedirectToAction("List");
+            }
+            else if (statusPO.Status == "Waiting for PXP")
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"Error, el WiringJob con PO #{po.PONumb} ya esta terminado";
+
+                return RedirectToAction("List");
+            }
+
+            viewModel.Feature.WiringID = wiring.WiringID;
+            wiringRepo.SaveWiringFeatures(viewModel.Feature);
+
+            WirersInvolved involved = wiringRepo.WirersInvolveds
+                                                 .Where(m => m.WiringID == wiring.WiringID)
+                                                 .FirstOrDefault(m => m.WirerID == currentUser.EngID);
+            if (involved == null)
+            {
+                WirersInvolved wirersInvolved = new WirersInvolved();
+                wirersInvolved.WiringID = wiring.WiringID;
+                wirersInvolved.WirerID = currentUser.EngID;
+                wiringRepo.SaveWirersInvolved(wirersInvolved);
+            }
+
+            viewModel.WiringJob = wiring;
+            viewModel.PO = po;
+            viewModel.Job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == po.JobID);
+            viewModel.FeatureList = wiringRepo.WiringFeatures.Where(m => m.WiringID == wiring.WiringID).ToList();
+
+            TempData["message"] = $"Nueva caracteristica añadida con exito.";
+            return View(viewModel);
+        }
 
         ///Aditional functions
         private async Task<bool> GetCurrentUserRole(string role)

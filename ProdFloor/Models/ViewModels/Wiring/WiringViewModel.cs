@@ -10,6 +10,7 @@ namespace ProdFloor.Models.ViewModels.Wiring
     {
         public Models.Wiring WiringJob { get; set; }
         public List<WiringFeatures> FeatureList { get; set; }
+        public WiringFeatures Feature { get; set; }
         public WiringStep Step { get; set; }
         public WiringStepForJob StepsForJob { get; set; }
         public WiringStop Stop { get; set; }
