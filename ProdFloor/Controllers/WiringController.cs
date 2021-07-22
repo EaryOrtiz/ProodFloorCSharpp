@@ -163,7 +163,7 @@ namespace ProdFloor.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddFeatures(WiringViewModel viewModel)
+        public IActionResult AddFeature(WiringViewModel viewModel)
         {
             AppUser currentUser = GetCurrentUser().Result;
             Wiring wiring = wiringRepo.Wirings.FirstOrDefault(m => m.WiringID == viewModel.WiringJob.WiringID);
@@ -215,6 +215,63 @@ namespace ProdFloor.Controllers
 
             TempData["message"] = $"Nueva caracteristica añadida con exito.";
             return View(viewModel);
+        }
+
+        [HttpPost]
+        public IActionResult SaveFeatures(WiringViewModel viewModel)
+        {
+
+
+
+            return View(viewModel);
+        }
+
+        public List<WiringStepForJob> MakeStepsForJobList(WiringViewModel viewModel)
+        {
+            List<WiringStepForJob> stepsForJob = new List<WiringStepForJob>();
+            Wiring wiring = wiringRepo.Wirings.FirstOrDefault(m => m.WiringID == viewModel.WiringJob.WiringID);
+            PO po = jobRepo.POs.FirstOrDefault(m => m.POID == wiring.POID);
+            Job job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == po.JobID);
+
+            List<WiringStep> steps = wiringRepo.WiringSteps.Where(m => m.JobTypeID == job.JobTypeID).OrderBy(m => m.Order).ToList();
+
+            if(steps == null || steps.Count == 0)
+            {
+                return stepsForJob;
+            }
+
+            int consecutivo = 1;
+
+            foreach(WiringStep step in steps)
+            {
+                WiringTriggeringFeature trigger = wiringRepo.WiringTriggeringFeatures.FirstOrDefault(m => m.WiringStepID == step.WiringStepID);
+
+                if(trigger == null || trigger.WiringOptionID == 0)
+                {
+                    WiringStepForJob stepForJob = new WiringStepForJob
+                    {
+                        WiringStepID = step.WiringStepID,
+                        WiringID = wiring.WiringID,
+                        Start = DateTime.Now,
+                        Stop = DateTime.Now,
+                        Elapsed = new DateTime(1, 1, 1, 0, 0, 0),
+                        Consecutivo = consecutivo,
+                        AuxStationID = wiring.StationID,
+                        AuxWirerID = wiring.WirerID
+                    };
+
+                    stepsForJob.Add(stepForJob);
+                    consecutivo++;
+                }
+                else
+                {
+
+                }
+            }
+
+
+
+            return stepsForJob;
         }
 
         ///Aditional functions
