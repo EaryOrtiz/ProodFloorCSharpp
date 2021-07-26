@@ -220,33 +220,102 @@ namespace ProdFloor.Controllers
         [HttpPost]
         public IActionResult SaveFeatures(WiringViewModel viewModel)
         {
+            bool Admin = GetCurrentUserRole("Admin").Result;
+            bool productionAdmin = GetCurrentUserRole("ProductionAdmin").Result;
+            int wirerID = GetCurrentUser().Result.EngID;
 
+            Wiring wiring = wiringRepo.Wirings.FirstOrDefault(m => m.WiringID == viewModel.WiringJob.WiringID);
 
+            if(wiring == null)
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"Error, El WiringJob no existe, intente de nuevo o contacte al Admin";
+                return RedirectToAction("Index", "Home");
+            }
+
+            if (wiring.WirerID != wirerID && !productionAdmin && !Admin)
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"Error, El WiringJob fue reasignado, intente de nuevo o contacte al Admin";
+                return RedirectToAction("Index", "Home");
+            }
+
+            List<WiringStepForJob> OldStepsForJob = wiringRepo.WiringStepsForJobs.Where(m => m.WiringID == wiring.WiringID).ToList();
+            if (OldStepsForJob.Count == 0)
+            {
+                foreach (WiringStepForJob step in MakeStepsForJobList(viewModel))
+                {
+                    if (step != null) 
+                            wiringRepo.SaveWiringStepForJob(step);
+                }
+
+            }
+            else
+            {
+                List<WiringStepForJob> NewStepsForJob = MakeStepsForJobList(viewModel);
+
+                foreach (WiringStepForJob OldStep in OldStepsForJob)
+                {
+                    if (!(NewStepsForJob.Any(s => s.WiringStepID == OldStep.WiringStepID)))
+                    {
+                        OldStep.Obsolete = true;
+                        wiringRepo.SaveWiringStepForJob(OldStep);
+                    }
+                }
+
+                foreach (WiringStepForJob Newstep in NewStepsForJob)
+                {
+                    if (!(OldStepsForJob.Any(s => s.WiringStepID == Newstep.WiringStepID)))
+                    {
+                        wiringRepo.SaveWiringStepForJob(Newstep);
+                    }
+                }
+
+                List<WiringStepForJob> StepsForJobUpdated = wiringRepo.WiringStepsForJobs.Where(m => m.WiringID == wiring.WiringID).ToList();
+                int PreviusStepNumber = 1;
+                foreach (WiringStepForJob step in StepsForJobUpdated)
+                {
+                    step.Consecutivo = PreviusStepNumber;
+                    wiringRepo.SaveWiringStepForJob(step);
+                    PreviusStepNumber++;
+                }
+            }
+
+            WirersInvolved involved = wiringRepo.WirersInvolveds
+                                                 .Where(m => m.WiringID == wiring.WiringID)
+                                                 .FirstOrDefault(m => m.WirerID == wirerID);
+            if (involved == null)
+            {
+                WirersInvolved wirersInvolved = new WirersInvolved();
+                wirersInvolved.WiringID = wiring.WiringID;
+                wirersInvolved.WirerID = wirerID;
+                wiringRepo.SaveWirersInvolved(wirersInvolved);
+            }
 
             return View(viewModel);
         }
 
         public List<WiringStepForJob> MakeStepsForJobList(WiringViewModel viewModel)
         {
-            List<WiringStepForJob> stepsForJob = new List<WiringStepForJob>();
             Wiring wiring = wiringRepo.Wirings.FirstOrDefault(m => m.WiringID == viewModel.WiringJob.WiringID);
             PO po = jobRepo.POs.FirstOrDefault(m => m.POID == wiring.POID);
             Job job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == po.JobID);
 
+            List<WiringStepForJob> stepsForJob = new List<WiringStepForJob>();
+            List<WiringFeatures> features = wiringRepo.WiringFeatures.Where(m => m.WiringID == wiring.WiringID).ToList(); 
             List<WiringStep> steps = wiringRepo.WiringSteps.Where(m => m.JobTypeID == job.JobTypeID).OrderBy(m => m.Order).ToList();
-
-            if(steps == null || steps.Count == 0)
-            {
-                return stepsForJob;
-            }
-
             int consecutivo = 1;
+
+            if (steps == null || steps.Count == 0)
+                return stepsForJob;
 
             foreach(WiringStep step in steps)
             {
-                WiringTriggeringFeature trigger = wiringRepo.WiringTriggeringFeatures.FirstOrDefault(m => m.WiringStepID == step.WiringStepID);
+                List<WiringTriggeringFeature> triggers = wiringRepo.WiringTriggeringFeatures
+                                                                   .Where(m => m.WiringStepID == step.WiringStepID)
+                                                                   .ToList();
 
-                if(trigger == null || trigger.WiringOptionID == 0)
+                if(triggers.Count == 0 || (triggers.Count == 1 && triggers[0].WiringOptionID == 0 ))
                 {
                     WiringStepForJob stepForJob = new WiringStepForJob
                     {
@@ -265,13 +334,84 @@ namespace ProdFloor.Controllers
                 }
                 else
                 {
+                    int triggersExpected = triggers.Count;
+                    int triggersCounted = 0;
 
+                    foreach(WiringTriggeringFeature trigger in triggers)
+                    {
+                        if (trigger.IsSelected == true && features.Any(m => m.WiringOptionID == trigger.WiringOptionID))
+                            triggersCounted++;
+                        else if (trigger.IsSelected == false && features.Any(m => m.WiringOptionID == trigger.WiringOptionID == false))
+                            triggersCounted++;
+                        else
+                            continue;
+                    }
+
+                    if(triggersExpected == triggersCounted)
+                    {
+                        WiringStepForJob stepForJob = new WiringStepForJob
+                        {
+                            WiringStepID = step.WiringStepID,
+                            WiringID = wiring.WiringID,
+                            Start = DateTime.Now,
+                            Stop = DateTime.Now,
+                            Elapsed = new DateTime(1, 1, 1, 0, 0, 0),
+                            Consecutivo = consecutivo,
+                            AuxStationID = wiring.StationID,
+                            AuxWirerID = wiring.WirerID
+                        };
+
+                        stepsForJob.Add(stepForJob);
+                        consecutivo++;
+                    }
                 }
             }
 
 
 
             return stepsForJob;
+        }
+
+        public IActionResult ContinueStep(int wiringID)
+        {
+            Wiring wiring = wiringRepo.Wirings.FirstOrDefault(m => m.WiringID == wiringID);
+            StatusPO statusPO = jobRepo.StatusPOs.FirstOrDefault(m => m.POID == wiring.POID);
+
+            if (wiring == null)
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"Error, El WiringJob no existe, intente de nuevo o contacte al Admin";
+                return RedirectToAction("Index", "Home");
+            }
+
+            bool Admin = GetCurrentUserRole("Admin").Result;
+            bool productionAdmin = GetCurrentUserRole("ProductionAdmin").Result;
+            bool isNotSameEngineer = GetCurrentUser().Result.EngID != wiring.WirerID;
+            bool istCompleted = statusPO.Status == "Waiting for PXP";
+
+            if (istCompleted || (isNotSameEngineer &&  !productionAdmin && !Admin ))
+            {
+                if(istCompleted) 
+                    TempData["message"] = $"Error, El WiringJob ya esta completado, intente de nuevo o contacte al Admin";
+                else 
+                    TempData["message"] = $"Error, El WiringJob fue reasignado, intente de nuevo o contacte al Admin";
+
+                TempData["alert"] = $"alert-danger";
+                return RedirectToAction("Index", "Home");
+            }
+
+            List<WiringStepForJob> StepsForJob = wiringRepo.WiringStepsForJobs.Where(m => m.WiringID == wiring.WiringID).ToList();
+            List<WiringStop> AllStopsFromWiringJob = wiringRepo.WiringStops.Where(m => m.WiringID == wiring.WiringID).ToList();
+            List<WiringStop> StopsFromWiringJob = wiringRepo.WiringStops.Where(m => m.WiringID == wiring.WiringID && m.Critical == false)
+                                                                   .Where(m => m.Reason1 != 980 & m.Reason1 != 981 && m.Reason2 == 0).ToList();
+
+            if (!StepsForJob.Any(m => m.Complete == true) && AllStopsFromWiringJob.Count == 0)
+            {
+
+            }
+
+
+            return View();
         }
 
         ///Aditional functions
