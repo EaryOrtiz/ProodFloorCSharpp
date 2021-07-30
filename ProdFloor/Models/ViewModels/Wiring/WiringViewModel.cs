@@ -44,8 +44,7 @@ namespace ProdFloor.Models.ViewModels.Wiring
         public List<WiringReason4> Reasons4List { get; set; }
         public List<WiringReason5> Reasons5List { get; set; }
         public string Reason1Name { get; set; }
-        public int CurrentStep { get; set; }
-        public int TotalStepsPerStage { get; set; }
+       
         public string buttonAction { get; set; }
         public string CurrentTab { get; set; }
 
@@ -71,5 +70,15 @@ namespace ProdFloor.Models.ViewModels.Wiring
         public Element Element { get; set; }
         public ElementHydro ElementHydro { get; set; }
         public ElementTraction ElementTraction { get; set; }
+
+        //Steps for Job
+        public int CurrentStepInStage { get; set; }
+        public int TotalStepsPerStage { get; set; }
+        public string JobNum { get; set; }
+        public bool StopNC { get; set; }
+       
+        public WiringStepForJob prevStep { get; set; }
+        public WiringStepForJob nextStep { get; set; }
+        public WiringStepForJob currentStep { get; set; }
     }
 }

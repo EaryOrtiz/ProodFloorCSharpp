@@ -374,6 +374,7 @@ namespace ProdFloor.Controllers
 
         public IActionResult ContinueStep(int wiringID)
         {
+            WiringViewModel viewModel = new WiringViewModel();
             Wiring wiring = wiringRepo.Wirings.FirstOrDefault(m => m.WiringID == wiringID);
             StatusPO statusPO = jobRepo.StatusPOs.FirstOrDefault(m => m.POID == wiring.POID);
 
@@ -389,7 +390,7 @@ namespace ProdFloor.Controllers
             bool isNotSameEngineer = GetCurrentUser().Result.EngID != wiring.WirerID;
             bool istCompleted = statusPO.Status == "Waiting for PXP";
 
-            if (istCompleted || (isNotSameEngineer &&  !productionAdmin && !Admin ))
+            if (istCompleted || isNotSameEngineer)
             {
                 if(istCompleted) 
                     TempData["message"] = $"Error, El WiringJob ya esta completado, intente de nuevo o contacte al Admin";
@@ -400,21 +401,81 @@ namespace ProdFloor.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
-            List<WiringStepForJob> StepsForJob = wiringRepo.WiringStepsForJobs.Where(m => m.WiringID == wiring.WiringID).ToList();
-            List<WiringStop> AllStopsFromWiringJob = wiringRepo.WiringStops.Where(m => m.WiringID == wiring.WiringID).ToList();
-            List<WiringStop> StopsFromWiringJob = wiringRepo.WiringStops.Where(m => m.WiringID == wiring.WiringID && m.Critical == false)
-                                                                   .Where(m => m.Reason1 != 980 & m.Reason1 != 981 && m.Reason2 == 0).ToList();
 
-            if (!StepsForJob.Any(m => m.Complete == true) && AllStopsFromWiringJob.Count == 0)
+            List<WiringStepForJob> StepsForJobList = wiringRepo.WiringStepsForJobs.Where(m => m.WiringID == wiring.WiringID && m.Obsolete == false)
+                                                                            .OrderBy(m => m.Consecutivo).ToList();
+            List<WiringStep> StepsInfoList = wiringRepo.WiringSteps.Where(m => StepsForJobList.Any(n => n.WiringStepID == m.WiringStepID)).ToList();
+
+            viewModel.WiringJob = wiring;
+            viewModel.PO = jobRepo.POs.FirstOrDefault(m => m.POID == wiring.POID);
+            viewModel.JobNum = jobRepo.Jobs.FirstOrDefault(m => m.JobID == viewModel.PO.JobID).JobNum;
+            viewModel.currentStep = StepsForJobList.FirstOrDefault(m => m.Complete == false);
+            viewModel.prevStep = StepsForJobList.FirstOrDefault(m => m.Complete == false && m.Consecutivo == (viewModel.currentStep.Consecutivo - 1));
+            viewModel.nextStep = StepsForJobList.FirstOrDefault(m => m.Complete == false && m.Consecutivo == (viewModel.currentStep.Consecutivo + 1));
+            viewModel.Step = StepsInfoList.FirstOrDefault(m => m.WiringStepID == viewModel.currentStep.WiringStepID);
+            
+            List<WiringStep> StepsInStageList = StepsInfoList.Where(m => m.Stage == viewModel.Step.Stage).ToList();
+
+            viewModel.TotalStepsPerStage = StepsInStageList.Count();
+            viewModel.CurrentStepInStage = StepsForJobList.Where(m => StepsInStageList.Any(s => s.WiringStepID == m.WiringStepID))
+                                                          .Where(m => m.Complete == true).Count() + 1;
+            viewModel.StopNC = wiringRepo.WiringStops.Where(m => m.WiringID == wiring.WiringID && m.Reason1 != 980 && m.Reason1 != 981)
+                                                     .Where(m => m.Reason2 == 0 && m.Critical == false).Any();
+
+            if (viewModel.currentStep.Start != viewModel.currentStep.Stop)
             {
-
+                TimeSpan elapsed = viewModel.currentStep.Start - viewModel.currentStep.Stop;
+                viewModel.currentStep.Elapsed += elapsed;
             }
+            viewModel.currentStep.Start = DateTime.Now;
+            viewModel.currentStep.Stop = DateTime.Now;
+            wiringRepo.SaveWiringStepForJob(viewModel.currentStep);
 
-
-            return View();
+            return View("WiringStepsForJob",viewModel);
         }
 
         ///Aditional functions
+        ///
+
+        private DateTime GetElpasedAsDateTime(DateTime elapsed, DateTime start, DateTime stop)
+        {
+            TimeSpan elapsedAfter = stop - start;
+
+            if (elapsed.Hour == 0 && elapsed.Minute == 0 && elapsed.Second == 0)
+            {
+                elapsed = new DateTime(1, 1, 1, elapsedAfter.Hours, elapsedAfter.Minutes, elapsedAfter.Seconds);
+            }
+            else
+            {
+                int newsecond = 0, newhour = 0, newMinute = 0, days = 0;
+
+                newsecond = elapsed.Second + elapsedAfter.Seconds;
+                newMinute = elapsed.Minute + elapsedAfter.Minutes;
+                newhour = elapsed.Hour + elapsedAfter.Hours;
+                days = elapsed.Day + elapsedAfter.Days;
+                if (newsecond >= 60)
+                {
+                    newsecond -= 60;
+                    newMinute++;
+                }
+                newMinute += elapsedAfter.Minutes;
+                if (newMinute >= 60)
+                {
+                    newMinute -= 60;
+                    newhour++;
+                }
+                if (newhour >= 24)
+                {
+                    newhour -= 24;
+                    days++;
+                }
+
+                elapsed = new DateTime(1, 1, days, newhour, newMinute, newsecond);
+            }
+
+            return elapsed;
+        }
+
         private async Task<bool> GetCurrentUserRole(string role)
         {
             AppUser user = await userManager.GetUserAsync(HttpContext.User);

@@ -1435,7 +1435,6 @@ namespace ProdFloor.Controllers
                         TimeSpan elapsed = currentStepForJob.Stop - currentStepForJob.Start;
                         if (currentStepForJob.Elapsed.Hour == 0 && currentStepForJob.Elapsed.Minute == 0 && currentStepForJob.Elapsed.Second == 0)
                         {
-
                             currentStepForJob.Elapsed = new DateTime(1, 1, 1, elapsed.Hours, elapsed.Minutes, elapsed.Seconds);
                         }
                         else
@@ -2186,7 +2185,6 @@ namespace ProdFloor.Controllers
 
             return steps;
         }
-
 
 
         //==========================================================================.
