@@ -2954,8 +2954,6 @@ namespace ProdFloor.Controllers
 
         }
 
-
-
         //===================================
 
         private async Task<AppUser> GetCurrentUser()

@@ -63,6 +63,7 @@ namespace ProdFloor
             services.AddTransient<JobController>();
             //services.AddSingleton<IHostingEnvironment>(new HostingEnvironment());
             services.AddTransient<TestJobController>();
+            services.AddTransient<WiringController>();
             services.AddTransient<Microsoft.Extensions.Hosting.IHostedService, DailyJobsBackupHostedService>();
             //services.AddTransient<Microsoft.Extensions.Hosting.IHostedService, ShiftEndHostedService>();
             services.AddMvc()

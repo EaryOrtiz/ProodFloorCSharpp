@@ -292,6 +292,14 @@ namespace ProdFloor.Controllers
                 wiringRepo.SaveWirersInvolved(wirersInvolved);
             }
 
+            StatusPO statusPO = jobRepo.StatusPOs.FirstOrDefault(m => m.POID == wiring.WiringID);
+            statusPO.Status = "Wiring on progress";
+            jobRepo.SaveStatusPO(statusPO);
+
+            wiring.StartDate = DateTime.Now;
+            wiring.CompletedDate = DateTime.Now;
+            wiringRepo.SaveWiring(wiring);
+
             if (Admin | productionAdmin)
                 return View("ProductionAdminDash", "Home");
             
@@ -491,7 +499,6 @@ namespace ProdFloor.Controllers
         }
 
         ///Aditional functions
-        ///
         public void PreviusStep(int previousStepID, int currentStepID)
         {
             //For Current step
@@ -533,7 +540,7 @@ namespace ProdFloor.Controllers
 
         }
 
-        private DateTime GetElpasedAsDateTime(DateTime elapsed, DateTime start, DateTime stop)
+        public DateTime GetElpasedAsDateTime(DateTime elapsed, DateTime start, DateTime stop)
         {
             TimeSpan elapsedAfter = stop - start;
 
@@ -586,6 +593,18 @@ namespace ProdFloor.Controllers
             AppUser user = await userManager.GetUserAsync(HttpContext.User);
 
             return user;
+        }
+
+        public bool AnyWiringJobOnProgress(int wirerID)
+        {
+            bool AnyWiringActive = false;
+
+            List<Wiring> activeWirings = wiringRepo.Wirings.Where(m => m.StartDate.ToShortDateString() == m.CompletedDate.ToShortDateString())
+                                                           .Where(m => m.WirerID == wirerID).ToList();
+
+            AnyWiringActive = jobRepo.StatusPOs.Any(m => activeWirings.Any(n => n.POID == m.POID) && m.Status == "Wiring on progress");
+
+            return AnyWiringActive;
         }
     }
 }
