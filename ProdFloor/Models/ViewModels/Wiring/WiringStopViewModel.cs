@@ -22,6 +22,7 @@ namespace ProdFloor.Models.ViewModels.Wiring
         public bool CleanFields { get; set; }
         public string Critical { get; set; }
         public string JobNum { get; set; }
+        public int PONum { get; set; }
 
         [Display(Name = "Shift End")]
         public bool WithShiftEnd { get; set; }

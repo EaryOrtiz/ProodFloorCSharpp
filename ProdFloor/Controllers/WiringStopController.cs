@@ -222,6 +222,80 @@ namespace ProdFloor.Controllers
             }
         }
 
+        public IActionResult RestarWiringJob(int ID, bool Critical = true)
+        {
+            WiringStop CurrentStop = wiringRepo.WiringStops.FirstOrDefault(p => p.WiringStopID == ID);
+            Wiring wiring = wiringRepo.Wirings.FirstOrDefault(m => m.WiringID == CurrentStop.WiringID);
+            StatusPO statusPO = jobRepo.StatusPOs.FirstOrDefault(m => m.POID == wiring.POID);
+            PO po = jobRepo.POs.FirstOrDefault(m => m.POID == wiring.POID);
+
+            AppUser currentUser = GetCurrentUser().Result;
+            bool isSameEngineer = currentUser.EngID == wiring.WirerID;
+            bool isNotCompleted = statusPO.Status != "Completed";
+            bool isNotOnReassigment = statusPO.Status != "WR: Reassignment";
+            bool isNotOnShiftEnd = statusPO.Status != "WR: Shift End";
+            bool isOnWorkingOnIt = statusPO.Status == "Wiring on progress";
+
+            if (isNotOnShiftEnd && isNotOnReassigment && isNotCompleted && isSameEngineer)
+            {
+                if (Critical == true)
+                {
+                    CurrentStop.Critical = true;
+                    wiringRepo.SaveWiringStop(CurrentStop);
+                    Job job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == po.JobID);
+                    return View(new WiringStopViewModel { JobNum = job.JobNum, Stop = CurrentStop, PONum = po.PONumb });
+                }
+                else
+                {
+                    CurrentStop.Critical = false;
+                    wiringRepo.SaveWiringStop(CurrentStop);
+                    statusPO.Status = "Wiring on progress";
+                    jobRepo.SaveStatusPO(statusPO);
+                    return wiringController.ContinueStep(wiring.WiringID);
+                }
+            }
+            else
+            {
+                TempData["alert"] = $"alert-danger";
+                if (isNotCompleted == false) TempData["message"] = $"Error, El Testjob ya ha sido completado, intente de nuevo o contacte al Admin";
+                else if (!isNotOnShiftEnd) TempData["message"] = $"Error, El Testjob esta en shift end, pulse el boton de continuar";
+                else TempData["message"] = $"Error, El Testjob a sido reasignado, intente de nuevo o contacte al Admin";
+
+                return RedirectToAction("Index", "Home");
+            }
+
+        }
+
+        [HttpPost]
+        public IActionResult RestarTestJob(TestJobViewModel viewModel)
+        {
+
+            Stop UpdatedStop = testingRepo.Stops.FirstOrDefault(m => m.StopID == viewModel.Stop.StopID);
+            UpdatedStop.StopDate = DateTime.Now;
+            UpdatedStop.Elapsed += GetElapsed(UpdatedStop.StartDate, UpdatedStop.StopDate);
+            UpdatedStop.Reason1 = viewModel.Stop.Reason1;
+            UpdatedStop.Reason2 = viewModel.Stop.Reason2;
+            UpdatedStop.Reason3 = viewModel.Stop.Reason3;
+            UpdatedStop.Reason4 = viewModel.Stop.Reason4;
+            UpdatedStop.Reason5ID = viewModel.Stop.Reason5ID;
+            UpdatedStop.Description = viewModel.Stop.Description;
+
+            testingRepo.SaveStop(UpdatedStop);
+            TestJob testJob = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == UpdatedStop.TestJobID);
+
+            var AllStepsForJob = testingRepo.StepsForJobs.Where(m => m.TestJobID == testJob.TestJobID && m.Obsolete == false).OrderBy(m => m.Consecutivo).ToList();
+            StepsForJob CurrentStep = AllStepsForJob.FirstOrDefault(m => m.Complete == false);
+            CurrentStep.Start = DateTime.Now;
+            CurrentStep.Stop = DateTime.Now;
+            testingRepo.SaveStepsForJob(CurrentStep);
+
+
+            testJob.Status = "Working on it";
+            testingRepo.SaveTestJob(testJob);
+
+            return ContinueStep(testJob.TestJobID);
+        }
+
         private async Task<AppUser> GetCurrentUser()
         {
             AppUser user = await userManager.GetUserAsync(HttpContext.User);
