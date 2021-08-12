@@ -418,6 +418,8 @@ namespace ProdFloor.Controllers
                         #region JobData
                         var LandingOne = LandingList.FirstOrDefault(m => m.LandingSystemID == JobSearch._HoistWayData.LandingSystemID);
                         var FireCodeOne = FireCodeList.FirstOrDefault(m => m.FireCodeID == JobSearch.FireCodeID);
+                        ViewModel.RMSAMPS = "18,000A";
+                        ViewModel.SCCRVOLTS = "600V";
                         ViewModel.SPH = JobSearch._HydroSpecific.SPH;
                         ViewModel.FLA = JobSearch._HydroSpecific.FLA;
                         ViewModel.NumJobSearch = JobSearch.JobNum;
@@ -449,6 +451,17 @@ namespace ProdFloor.Controllers
                         if (volts > 480 && volts <= 600 && (ViewModel.StarterType == "ATL" || ViewModel.StarterType == "YD" || ViewModel.StarterType == "Sprecher SS : 6/12" || ViewModel.StarterType == "Sprecher SS : 3/9" || ViewModel.StarterType == "Siemens SS : 6/12" || ViewModel.StarterType == "Siemens SS : 3/9")) ViewModel.Volts = "575";
                         if (volts > 430 && volts <= 480 && (ViewModel.StarterType == "Siemens SS : 6/12" || ViewModel.StarterType == "Siemens SS : 3/9")) ViewModel.Volts = "460";
                         if (volts >= 300 && volts <= 430 && (ViewModel.StarterType == "Siemens SS : 6/12" || ViewModel.StarterType == "Siemens SS : 3/9")) ViewModel.Volts = "380/415";
+
+                        if (ViewModel.HP <= 50)
+                                ViewModel.RMSAMPS = "5,000A";
+                        else if (ViewModel.HP <= 200)
+                                ViewModel.RMSAMPS = "10,000A";
+
+                        if (volts <= 240)
+                            ViewModel.SCCRVOLTS = "240V";
+                        else if (volts <= 480)
+                            ViewModel.SCCRVOLTS = "480V";
+
 
                         #endregion
 
@@ -758,6 +771,8 @@ namespace ProdFloor.Controllers
                             FireCodeName = ViewModel.FireCodeName.ToUpper(),
                             LandingName = ViewModel.LandingName.ToUpper(),
                             NumJobSearch = ViewModel.NumJobSearch,
+                            RMSAMPS = ViewModel.RMSAMPS,
+                            SCCRVOLTS =  ViewModel.SCCRVOLTS,
                             //****Slow Table
 
                             //For Down Speed
