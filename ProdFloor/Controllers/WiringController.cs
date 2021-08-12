@@ -546,7 +546,7 @@ namespace ProdFloor.Controllers
 
             if (elapsed.Hour == 0 && elapsed.Minute == 0 && elapsed.Second == 0)
             {
-                elapsed = new DateTime(1, 1, 1, elapsedAfter.Hours, elapsedAfter.Minutes, elapsedAfter.Seconds);
+                elapsed = new DateTime(1, 1, elapsedAfter.Days, elapsedAfter.Hours, elapsedAfter.Minutes, elapsedAfter.Seconds);
             }
             else
             {

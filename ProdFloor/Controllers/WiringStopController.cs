@@ -222,7 +222,7 @@ namespace ProdFloor.Controllers
             }
         }
 
-        public IActionResult RestarWiringJob(int ID, bool Critical = true)
+        public IActionResult RestartWiringJob(int ID, bool Critical = true)
         {
             WiringStop CurrentStop = wiringRepo.WiringStops.FirstOrDefault(p => p.WiringStopID == ID);
             Wiring wiring = wiringRepo.Wirings.FirstOrDefault(m => m.WiringID == CurrentStop.WiringID);
@@ -267,35 +267,68 @@ namespace ProdFloor.Controllers
         }
 
         [HttpPost]
-        public IActionResult RestarTestJob(TestJobViewModel viewModel)
+        public IActionResult RestartWiringJob(WiringStopViewModel viewModel)
         {
+            bool isProductionAdmin = GetCurrentUserRole("ProductionAdmin").Result;
+            bool isAdmin = GetCurrentUserRole("Admin").Result;
 
-            Stop UpdatedStop = testingRepo.Stops.FirstOrDefault(m => m.StopID == viewModel.Stop.StopID);
+            WiringStop UpdatedStop = wiringRepo.WiringStops.FirstOrDefault(m => m.WiringStopID == viewModel.Stop.WiringStopID);
             UpdatedStop.StopDate = DateTime.Now;
-            UpdatedStop.Elapsed += GetElapsed(UpdatedStop.StartDate, UpdatedStop.StopDate);
+            UpdatedStop.Elapsed = wiringController.GetElpasedAsDateTime(UpdatedStop.Elapsed, UpdatedStop.StartDate, UpdatedStop.StopDate);
             UpdatedStop.Reason1 = viewModel.Stop.Reason1;
             UpdatedStop.Reason2 = viewModel.Stop.Reason2;
             UpdatedStop.Reason3 = viewModel.Stop.Reason3;
             UpdatedStop.Reason4 = viewModel.Stop.Reason4;
             UpdatedStop.Reason5ID = viewModel.Stop.Reason5ID;
             UpdatedStop.Description = viewModel.Stop.Description;
+            wiringRepo.SaveWiringStop(UpdatedStop);
 
-            testingRepo.SaveStop(UpdatedStop);
-            TestJob testJob = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == UpdatedStop.TestJobID);
+            if(isProductionAdmin || isAdmin)
+                return RedirectToAction("SearchStop");
 
-            var AllStepsForJob = testingRepo.StepsForJobs.Where(m => m.TestJobID == testJob.TestJobID && m.Obsolete == false).OrderBy(m => m.Consecutivo).ToList();
-            StepsForJob CurrentStep = AllStepsForJob.FirstOrDefault(m => m.Complete == false);
-            CurrentStep.Start = DateTime.Now;
-            CurrentStep.Stop = DateTime.Now;
-            testingRepo.SaveStepsForJob(CurrentStep);
+            Wiring wiring = wiringRepo.Wirings.FirstOrDefault(m => m.WiringID == UpdatedStop.WiringID);
+            StatusPO statusPO = jobRepo.StatusPOs.FirstOrDefault(m => m.POID == wiring.POID);
 
+            statusPO.Status = "Wiring on progress";
+            jobRepo.SaveStatusPO(statusPO);
 
-            testJob.Status = "Working on it";
-            testingRepo.SaveTestJob(testJob);
-
-            return ContinueStep(testJob.TestJobID);
+            return wiringController.ContinueStep(wiring.WiringID);
         }
 
+        public ViewResult Edit(int StopID)
+        {
+            WiringStopViewModel viewModel = new WiringStopViewModel();
+            viewModel.Stop = wiringRepo.WiringStops.FirstOrDefault(p => p.WiringStopID == StopID);
+            Wiring wiring = wiringRepo.Wirings.FirstOrDefault(m => m.WiringID == viewModel.Stop.WiringID);
+            viewModel.PONum = jobRepo.POs.FirstOrDefault(m => m.POID == wiring.POID).PONumb;
+            viewModel.JobNum = jobRepo.Jobs.FirstOrDefault(m => m.JobID == wiring.POID).JobNum;
+
+            return View("RestartWiringJob", viewModel);
+        }
+
+        [HttpPost]
+        public IActionResult Delete(int ID)
+        {
+            bool isProductionAdmin = GetCurrentUserRole("ProductionAdmin").Result;
+            bool isAdmin = GetCurrentUserRole("Admin").Result;
+
+            if (isProductionAdmin == false && isAdmin == false)
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"Error,No tiene permisos para usar esta accion, contacte con el admin";
+                return RedirectToAction("List");
+            }
+
+            WiringStop deletedStop = wiringRepo.DeleteWiringStop(ID);
+            if (deletedStop != null)
+            {
+                WiringReason1 reason1 = wiringRepo.WiringReasons1.FirstOrDefault(m => m.WiringReason1ID == deletedStop.Reason1);
+                TempData["message"] = $"{reason1.Description} was deleted";
+            }
+            return RedirectToAction("List");
+        }
+
+        //Extra functions
         private async Task<AppUser> GetCurrentUser()
         {
             AppUser user = await userManager.GetUserAsync(HttpContext.User);
