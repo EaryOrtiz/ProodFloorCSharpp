@@ -378,9 +378,6 @@ namespace ProdFloor.Controllers
                     }
                 }
             }
-
-
-
             return stepsForJob;
         }
 

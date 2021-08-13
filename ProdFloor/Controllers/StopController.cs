@@ -468,7 +468,7 @@ namespace ProdFloor.Controllers
                 {
                     TempData["alert"] = $"alert-danger";
                     if (isNotCompleted == false) TempData["message"] = $"Error, El Testjob ya ha sido completado, intente de nuevo o contacte al Admin";
-                    else TempData["message"] = $"Error, El Testjob a sido reasignado, intente de nuevo o contacte al Admin";
+                    else TempData["message"] = $"Error, no cuenta con los permisos suficientes, intente de nuevo o contacte al Admin";
 
                     return RedirectToAction("Index", "Home");
                 }

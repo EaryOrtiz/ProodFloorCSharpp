@@ -128,7 +128,7 @@ namespace ProdFloor.Controllers
 
                 try
                 {
-                    WiringStepForJob currentStep =  wiringRepo.WiringStepsForJobs.Where(m => m.WiringID == wiring.WiringID && m.Obsolete == false)
+                    WiringStepForJob currentStep = wiringRepo.WiringStepsForJobs.Where(m => m.WiringID == wiring.WiringID && m.Obsolete == false)
                                                                                  .OrderBy(m => m.Consecutivo).FirstOrDefault();
                     //For Current step
                     if (currentStep.Start != DateTime.Now)
@@ -146,7 +146,7 @@ namespace ProdFloor.Controllers
                 viewModel.Stop = wiringRepo.WiringStops.Last(m => m.WiringID == wiring.WiringID && m.Reason1 == Stop.Reason1 && m.Reason5ID == 0);
                 viewModel.Reason1Name = wiringRepo.PXPReasons.FirstOrDefault(m => m.PXPReasonID == Stop.Reason1).Description;
                 viewModel.JobNum = job.JobNum;
-                
+
 
                 statusPO.Status = "Wiring: Stopped";
                 jobRepo.SaveStatusPO(statusPO);
@@ -283,7 +283,7 @@ namespace ProdFloor.Controllers
             UpdatedStop.Description = viewModel.Stop.Description;
             wiringRepo.SaveWiringStop(UpdatedStop);
 
-            if(isProductionAdmin || isAdmin)
+            if (isProductionAdmin || isAdmin)
                 return RedirectToAction("SearchStop");
 
             Wiring wiring = wiringRepo.Wirings.FirstOrDefault(m => m.WiringID == UpdatedStop.WiringID);
@@ -294,6 +294,9 @@ namespace ProdFloor.Controllers
 
             return wiringController.ContinueStep(wiring.WiringID);
         }
+
+
+        //Admin only functions
 
         public ViewResult Edit(int StopID)
         {
@@ -326,6 +329,82 @@ namespace ProdFloor.Controllers
                 TempData["message"] = $"{reason1.Description} was deleted";
             }
             return RedirectToAction("List");
+        }
+
+        public IActionResult FinishPendingStops(int wiringID)
+        {
+            Wiring wiring = wiringRepo.Wirings.FirstOrDefault(m => m.WiringID == wiringID);
+            if (wiring == null)
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"Error, El Testjob no existe o a sido eliminado, intente de nuevo o contacte al Admin";
+                return RedirectToAction("Index", "Home");
+            }
+
+            List<WiringStop> stops = wiringRepo.WiringStops.Where(p => wiringID == p.WiringID && p.Reason1 != 980 && p.Reason1 != 981 && p.Reason2 == 0).ToList();
+            if (stops.Count == 0)
+            {
+                TempData["message"] = $"El WiringJob no tiene paradas pendientes";
+                return RedirectToAction("JobCompletion", "Wiring", new { WiringID = wiring.WiringID });
+            }
+
+            StatusPO statusPO = jobRepo.StatusPOs.FirstOrDefault(m => m.POID == wiring.POID);
+            PO po = jobRepo.POs.FirstOrDefault(m => m.POID == wiring.POID);
+            Job job = jobRepo.Jobs.FirstOrDefault(m => m._PO.Any(n => n.POID == wiring.POID));
+
+            bool isProductionAdmin = GetCurrentUserRole("ProductionAdmin").Result;
+            bool isAdmin = GetCurrentUserRole("Admin").Result;
+            bool isNotCompleted = statusPO.Status != "Waiting for PXP";
+
+            if (isNotCompleted && (isAdmin || isProductionAdmin))
+            {
+                WiringStop CurrentStop = stops.FirstOrDefault();
+
+                return View(new WiringStopViewModel { JobNum = job.JobNum, Stop = CurrentStop, PONum = po.PONumb });
+            }
+            else
+            {
+                TempData["alert"] = $"alert-danger";
+                if (isNotCompleted == false) TempData["message"] = $"Error, El Testjob ya ha sido completado, intente de nuevo o contacte al Admin";
+                else TempData["message"] = $"Error, no cuenta con los permisos suficientes, intente de nuevo o contacte al Admin";
+
+                return RedirectToAction("Index", "Home");
+            }
+
+        }
+
+        [HttpPost]
+        public IActionResult FinishPendingStops(WiringStopViewModel viewModel)
+        {
+            Wiring wiring = wiringRepo.Wirings.FirstOrDefault(m => m.WiringID == viewModel.Stop.WiringID);
+            if (wiring == null)
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"Error, El Testjob no existe o a sido eliminado, intente de nuevo o contacte al Admin";
+                return RedirectToAction("Index", "Home");
+            }
+
+            WiringStop UpdatedStop = wiringRepo.WiringStops.FirstOrDefault(m => m.WiringStopID == viewModel.Stop.WiringStopID);
+            UpdatedStop.StopDate = DateTime.Now;
+            UpdatedStop.Elapsed = wiringController.GetElpasedAsDateTime(UpdatedStop.Elapsed, UpdatedStop.StartDate, UpdatedStop.StopDate);
+            UpdatedStop.Reason1 = viewModel.Stop.Reason1;
+            UpdatedStop.Reason2 = viewModel.Stop.Reason2;
+            UpdatedStop.Reason3 = viewModel.Stop.Reason3;
+            UpdatedStop.Reason4 = viewModel.Stop.Reason4;
+            UpdatedStop.Reason5ID = viewModel.Stop.Reason5ID;
+            UpdatedStop.Description = viewModel.Stop.Description;
+            wiringRepo.SaveWiringStop(UpdatedStop);
+
+            WiringStop stop = wiringRepo.WiringStops.FirstOrDefault(m => m.Reason1 != 980 & m.Reason1 != 981 && m.Reason2 == 0 && m.WiringID == wiring.WiringID);
+            if (stop != null)
+            {
+                TempData["message"] = $"{UpdatedStop.Description} has been ended..";
+                return RedirectToAction("FinishPendingStops", "Stop", new { WiringID = wiring.WiringID });
+            }
+                
+            TempData["message"] = $"El WiringJob no tiene paradas pendientes";
+            return RedirectToAction("JobCompletion", "Wiring", new { WiringID = wiring.WiringID });
+
         }
 
         //Extra functions
