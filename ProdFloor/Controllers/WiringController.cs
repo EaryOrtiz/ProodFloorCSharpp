@@ -461,7 +461,7 @@ namespace ProdFloor.Controllers
                 return RedirectToAction("List");
             }
 
-            int stepsLeft = wiringRepo.WiringStepsForJobs.Where(m => m.WiringID == viewModel.WiringJob.WiringID && m.Complete == false).Count();
+            int stepsLeft = wiringRepo.WiringStepsForJobs.Where(m => m.WiringID == viewModel.WiringJob.WiringID && m.Obsolete == false && m.Complete == false).Count();
 
             if (movement == "previus")
                 PreviusStep(viewModel.prevStep.WiringStepID, viewModel.currentStep.WiringStepID);
@@ -495,11 +495,238 @@ namespace ProdFloor.Controllers
 
         }
 
+
+        public IActionResult JobCompletion(int WiringID)
+        {
+            bool isTechAdmin = GetCurrentUserRole("TechAdmin").Result;
+            bool isAdmin = GetCurrentUserRole("Admin").Result;
+
+            if (isAdmin == false && isTechAdmin == false)
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"Error, no tiene permisos para realizar esta accion, contacte al Admin";
+                return RedirectToAction("Index", "Home");
+            }
+
+            Wiring wiring = wiringRepo.Wirings.FirstOrDefault(m => m.WiringID == WiringID);
+            if (wiring != null)
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"Error, el WiringJob no existe, contacte al Admin";
+                return RedirectToAction("Index", "Home");
+            }
+
+            StatusPO statusPO = jobRepo.StatusPOs.FirstOrDefault(m => m.POID == wiring.POID);
+            PO po = jobRepo.POs.FirstOrDefault(m => m.POID == wiring.POID);
+            if (statusPO.Status == "Waiting for PXP")
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"Error, el wiringJob ya se completo, contacte al Admin";
+                return RedirectToAction("Index", "Home");
+            }
+
+            WiringViewModel viewModel = new WiringViewModel()
+            {
+                WiringJob = wiring,
+                StepsLeft = wiringRepo.WiringStepsForJobs.Where(m => m.WiringID == WiringID && m.Complete == false).Count(),
+            };
+
+            return View(viewModel);
+
+        }
+
+        [HttpPost]
+        public IActionResult JobCompletion(WiringViewModel viewModel)
+        {
+
+            Wiring wiring = wiringRepo.Wirings.FirstOrDefault(m => m.WiringID == viewModel.WiringJob.WiringID);
+            if (wiring != null)
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"Error, el WiringJob no existe, contacte al Admin";
+                return RedirectToAction("Index", "Home");
+            }
+
+            StatusPO statusPO = jobRepo.StatusPOs.FirstOrDefault(m => m.POID == wiring.POID);
+            PO po = jobRepo.POs.FirstOrDefault(m => m.POID == wiring.POID);
+            if (statusPO.Status == "Waiting for PXP")
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"Error, el wiringJob ya se completo, contacte al Admin";
+                return RedirectToAction("List");
+            }
+
+            List<WiringStop> otherStops = wiringRepo.WiringStops.Where(p => wiring.WiringID == p.WiringID && (p.Reason1 == 980 || p.Reason1 == 981))
+                                                     .Where(p => p.Reason2 == 0 && p.Reason3 == 0).ToList();
+
+            if (otherStops.Count > 0)
+            {
+                foreach (WiringStop otherStop in otherStops)
+                {
+                    TimeSpan auxTime = (DateTime.Now - otherStop.StartDate);
+                    otherStop.Elapsed += auxTime;
+                    otherStop.StopDate = DateTime.Now;
+                    otherStop.StartDate = DateTime.Now;
+                    otherStop.Reason2 = 982;
+                    otherStop.Reason3 = 982;
+                    otherStop.Reason4 = 982;
+                    otherStop.Reason5ID = 982;
+                    otherStop.Description = "Job was send to complete";
+                    wiringRepo.SaveWiringStop(otherStop);
+
+                }
+            }
+
+            List<WiringStepForJob> IncompleteStepsForJob = wiringRepo.WiringStepsForJobs.Where(m => m.WiringID == viewModel.WiringJob.WiringID && m.Obsolete == false && m.Complete == false)
+                                                                                        .OrderBy(m => m.Consecutivo).ToList();
+            List<WiringStep> IncompleteStepsForJobInfo = wiringRepo.WiringSteps.Where(m => IncompleteStepsForJob.Any(s => s.WiringStepID == m.WiringStepID)).ToList();
+            
+            double ExpectecTimeSUM = 0;
+            double ElapseHoursFromView = viewModel.ElapsedTimeHours + (viewModel.ElapsedTimeHours / 60);
+
+            foreach (WiringStep step in IncompleteStepsForJobInfo)
+            {
+                double StepExpectTime = ToHours(step.ExpectedTime);
+                ExpectecTimeSUM += StepExpectTime;
+            }
+
+            foreach (WiringStepForJob step in IncompleteStepsForJob)
+            {
+                if (IncompleteStepsForJobInfo.First(m => m.WiringStepID == step.WiringStepID).ExpectedTime.Minute != 0)
+                {
+                    double ExpectedTimeForStep = ToHours(IncompleteStepsForJobInfo.First(m => m.WiringStepID == step.WiringStepID).ExpectedTime);
+                    double TimePercentage = ExpectedTimeForStep / ExpectecTimeSUM;
+                    if (TimePercentage == 0) TimePercentage = 1;
+                    double TotalTime = ElapseHoursFromView * TimePercentage;
+
+                    step.Elapsed = ToDateTime(TotalTime);
+                    step.Complete = true;
+                    wiringRepo.SaveWiringStepForJob(step);
+                }
+
+            }
+
+            wiring.CompletedDate = DateTime.Now;
+            wiringRepo.SaveWiring(wiring);
+
+            statusPO.Status = "Waiting for PXP";
+            jobRepo.SaveStatusPO(statusPO);
+
+            TempData["message"] = $"You have completed the WiringJob PO# {po.PONumb}";
+            return RedirectToAction("SearchTestJob");
+
+        }
+
+        //Linked to StopController
+        [HttpPost]
+        public IActionResult Reassignment(WiringViewModel viewModel)
+        {
+            if (VerifyAdminPermissions(viewModel.WiringJob.WirerID) != Ok())
+                return RedirectToAction("Home", "Index");
+
+            Wiring wiring = wiringRepo.Wirings.FirstOrDefault(m => m.WiringID == viewModel.WiringJob.WirerID);
+            StatusPO statusPO = jobRepo.StatusPOs.FirstOrDefault(m => m.POID == wiring.POID);
+            PO po = jobRepo.POs.FirstOrDefault(m => m.POID == wiring.POID);
+            string StationName = testRepo.Stations.FirstOrDefault(m => m.StationID == viewModel.NewStationID).Label;
+
+            if (wiring.WiringID == viewModel.NewWirerID && wiring.StationID == viewModel.NewStationID)
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"No puedes reasiganr el trabajo debido a que el Tecnico y la estacion son iguales";
+                return RedirectToAction("SearchTestJob");
+            }
+
+            CloseShifEndStops(wiring, statusPO);
+
+            List<WiringStop> CurrentStops = wiringRepo.WiringStops.Where(p => wiring.WiringID == p.WiringID && p.Reason2 == 0 && p.Reason3 == 0)
+                                                                  .Where(p => p.Reason1 != 980 && p.Reason1 != 981).ToList();
+            if (CurrentStops.Count > 0)
+            {
+                foreach (WiringStop CurrentStop in CurrentStops)
+                {
+
+                    WiringStop CopyStop = new WiringStop();
+
+                    //Firts copy the stop
+                    CopyStop.Reason1 = CurrentStop.Reason1;
+                    CopyStop.Reason2 = CurrentStop.Reason2;
+                    CopyStop.Reason3 = CurrentStop.Reason3;
+                    CopyStop.Reason4 = CurrentStop.Reason4;
+                    CopyStop.Reason5ID = CurrentStop.Reason5ID;
+                    CopyStop.Critical = CurrentStop.Critical;
+                    CopyStop.Description = CurrentStop.Description;
+                    CopyStop.WiringID = CurrentStop.WiringID;
+
+                    CopyStop.StartDate = DateTime.Now;
+                    CopyStop.StopDate = DateTime.Now;
+                    CopyStop.Elapsed = new DateTime(1, 1, 1, 0, 0, 0);
+                    CopyStop.AuxStationID = viewModel.NewStationID;
+                    CopyStop.AuxWirerID = viewModel.NewWirerID;
+                    wiringRepo.SaveWiringStop(CopyStop);
+
+                    CurrentStop.Elapsed = GetElpasedAsDateTime(CurrentStop.Elapsed, CurrentStop.StartDate, DateTime.Now);
+                    CurrentStop.StopDate = DateTime.Now;
+                    CurrentStop.StartDate = DateTime.Now;
+                    CurrentStop.Reason2 = 980;
+                    CurrentStop.Reason3 = 980;
+                    CurrentStop.Reason4 = 980;
+                    CurrentStop.Reason5ID = 980;
+                    CurrentStop.Description = "Job was reassigned";
+                    wiringRepo.SaveWiringStop(CurrentStop);
+                }
+
+            }
+
+            WiringStop ReassignmentStop = wiringRepo.WiringStops.LastOrDefault(p => p.WiringID == wiring.WiringID && p.Reason1 == 980 && p.Reason2 == 0 && p.Reason3 == 0);
+            WiringStop NewtStop = new WiringStop();
+
+            if (ReassignmentStop == null)
+            {
+                NewtStop = new WiringStop
+                {
+                    WiringID = wiring.WiringID,
+                    Reason1 = 980,
+                    Reason2 = 0,
+                    Reason3 = 0,
+                    Reason4 = 0,
+                    Reason5ID = 0,
+                    Description = "Job was reassigned",
+                    Critical = true,
+                    StartDate = DateTime.Now,
+                    StopDate = DateTime.Now,
+                    Elapsed = new DateTime(1, 1, 1, 0, 0, 0),
+                    AuxStationID = viewModel.NewStationID,
+                    AuxWirerID = viewModel.NewWirerID,
+                };
+            }
+            else
+            {
+                NewtStop = ReassignmentStop;
+                NewtStop.AuxStationID = viewModel.NewStationID;
+                NewtStop.AuxWirerID = viewModel.NewWirerID;
+            }
+            wiringRepo.SaveWiringStop(NewtStop);
+
+            wiring.StationID = viewModel.NewStationID;
+            wiringRepo.SaveWiring(wiring);
+
+            statusPO.Status = "WR: Reassignment";
+            jobRepo.SaveStatusPO(statusPO);
+
+
+
+
+            TempData["message"] = $"You have reassinged the WIRER for the wiringjob PO# {po.PONumb} to T{viewModel.NewWirerID} and the station to {StationName}";
+            return RedirectToAction("SearchTestJob");
+        }
+
+
+
         ///Aditional functions
         public void PreviusStep(int previousStepID, int currentStepID)
         {
             //For Current step
-            WiringStepForJob currentStep = wiringRepo.WiringStepsForJobs.FirstOrDefault(m => m.WiringStepForJobID == currentStepID && m.Complete == false);
+            WiringStepForJob currentStep = wiringRepo.WiringStepsForJobs.FirstOrDefault(m => m.WiringStepForJobID == currentStepID &&  m.Obsolete == false && m.Complete == false);
 
             if (currentStep.Start != DateTime.Now)
             {
@@ -512,7 +739,7 @@ namespace ProdFloor.Controllers
 
             //For Previus Step
             //For target step (before actual step)
-            WiringStepForJob previusStep = wiringRepo.WiringStepsForJobs.FirstOrDefault(m => m.WiringStepForJobID == previousStepID && m.Complete == true);
+            WiringStepForJob previusStep = wiringRepo.WiringStepsForJobs.FirstOrDefault(m => m.WiringStepForJobID == previousStepID && m.Obsolete == false && m.Complete == true);
 
             previusStep.Complete = false;
             previusStep.Stop = DateTime.Now;
@@ -522,7 +749,7 @@ namespace ProdFloor.Controllers
 
         public void NextStep(int currentStepID)
         {
-            WiringStepForJob currentStep = wiringRepo.WiringStepsForJobs.FirstOrDefault(m => m.WiringStepForJobID == currentStepID && m.Complete == false);
+            WiringStepForJob currentStep = wiringRepo.WiringStepsForJobs.FirstOrDefault(m => m.WiringStepForJobID == currentStepID && m.Obsolete == false && m.Complete == false);
 
             //For Current step
             if (currentStep.Start != DateTime.Now)
@@ -603,5 +830,120 @@ namespace ProdFloor.Controllers
 
             return AnyWiringActive;
         }
+
+        public double ToHours(DateTime date)
+        {
+            double totalTime = 0;
+            totalTime += date.Hour;
+            totalTime += (date.Minute * 0.01666666666666666666666666666667);
+            totalTime += (date.Second * 0.0002777777777777777777777777777778);
+            return totalTime;
+        }
+
+        public DateTime ToDateTime(double TotalHours)
+        {
+            DateTime Date = new DateTime(1, 1, 1, 0, 0, 0);
+            double AuxTotalHours = Math.Truncate(TotalHours);
+            double AuxTotalMinutes = TotalHours - AuxTotalHours;
+            int AuxDays = 0;
+            while (AuxTotalHours >= 24)
+            {
+                AuxTotalHours -= 24;
+                AuxDays++;
+            };
+            int Hours = (int)AuxTotalHours;
+            int Minutes = (int)(Math.Round(AuxTotalMinutes * 60));
+            if (Minutes == 60)
+            {
+                Hours++;
+                Minutes = 0;
+            }
+
+            int Days = 1 + AuxDays;
+
+
+            return new DateTime(1, 1, Days, Hours, Minutes, 0);
+        }
+
+        public IActionResult VerifyAdminPermissions(int WiringID)
+        {
+            bool isTechAdmin = GetCurrentUserRole("TechAdmin").Result;
+            bool isAdmin = GetCurrentUserRole("Admin").Result;
+
+            if (isAdmin == false && isTechAdmin == false)
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"Error, no tiene permisos para realizar esta accion, contacte al Admin";
+                return RedirectToAction("Index", "Home");
+            }
+
+            Wiring wiring = wiringRepo.Wirings.FirstOrDefault(m => m.WiringID == WiringID);
+            if (wiring != null)
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"Error, el WiringJob no existe, contacte al Admin";
+                return RedirectToAction("Index", "Home");
+            }
+
+            StatusPO statusPO = jobRepo.StatusPOs.FirstOrDefault(m => m.POID == wiring.POID);
+            PO po = jobRepo.POs.FirstOrDefault(m => m.POID == wiring.POID);
+            if (statusPO.Status == "Waiting for PXP")
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"Error, el wiringJob ya se completo, contacte al Admin";
+                return RedirectToAction("Index", "Home");
+            }
+
+            return Ok();
+        }
+
+        public void CloseShifEndStops(Wiring wiring, StatusPO statusPO)
+        {
+            WiringStop ShiftEndStop = wiringRepo.WiringStops.LastOrDefault(p => p.WiringID == wiring.WiringID && p.Reason1 == 981 && p.Reason2 == 0 && p.Reason3 == 0);
+
+            if (ShiftEndStop == null)
+                return;
+
+            try
+            {
+                TimeSpan auxTime = (DateTime.Now - ShiftEndStop.StartDate);
+                ShiftEndStop.Elapsed += auxTime;
+                ShiftEndStop.StopDate = DateTime.Now;
+                ShiftEndStop.Reason2 = 981;
+                ShiftEndStop.Reason3 = 981;
+                ShiftEndStop.Reason4 = 981;
+                ShiftEndStop.Reason5ID = 981;
+                wiringRepo.SaveWiringStop(ShiftEndStop);
+
+                List<WiringStop> stops = wiringRepo.WiringStops.Where(p => p.WiringID == wiring.WiringID && p.Reason1 != 980 && p.Reason1 != 981 && p.Reason2 == 0).ToList();
+                if (stops.Count > 0)
+                {
+                    foreach (WiringStop stop in stops)
+                    {
+                        stop.StartDate = DateTime.Now;
+                        stop.StopDate = DateTime.Now;
+                        wiringRepo.SaveWiringStop(stop);
+                    }
+
+                }
+
+                if (stops.Any(m => m.Critical == true))
+                {
+                    statusPO.Status = "WR: Stopped";
+                }
+                else
+                {
+                    statusPO.Status = "Wiring on pogress";
+                }
+
+                jobRepo.SaveStatusPO(statusPO);
+                return;
+            }
+            catch
+            {
+                return;
+            }
+        }
     }
+
 }

@@ -32,5 +32,7 @@ namespace ProdFloor.Models.ViewModels.Wiring
         public bool WithReturnedFromComplete { get; set; }
 
         public int TotalOnDB { get; set; }
+
+        public int WiringID { get; set; }
     }
 }

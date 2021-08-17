@@ -2286,8 +2286,6 @@ namespace ProdFloor.Controllers
                                 CurrentStop.Reason5ID = 980;
                                 CurrentStop.Description = "Job was reassigned";
                                 testingRepo.SaveStop(CurrentStop);
-
-
                             }
 
                         }
@@ -2776,8 +2774,6 @@ namespace ProdFloor.Controllers
             catch {
                 return false;
             }
-
-
         }
 
         public IActionResult RestarShiftEndOnDash(int ID)
@@ -3273,7 +3269,7 @@ namespace ProdFloor.Controllers
             return View(searchViewModel);
         }
 
-        public String getJobNumb(string firstDigits, int lastDigits)
+        public string getJobNumb(string firstDigits, int lastDigits)
         {
             string JobNumb = firstDigits + lastDigits.ToString();
 

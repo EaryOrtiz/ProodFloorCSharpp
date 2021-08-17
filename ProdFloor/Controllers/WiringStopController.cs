@@ -197,8 +197,8 @@ namespace ProdFloor.Controllers
                         return wiringController.ContinueStep(wiring.WiringID);
                     }
                     WiringStopViewModel viewModel = new WiringStopViewModel();
-                    viewModel.Stop = wiringRepo.WiringStops.Last(m => m.WiringID == wiring.WiringID && m.Reason1 == Stop.Reason1 && m.Reason5ID == 0);
-                    viewModel.Reason1Name = wiringRepo.PXPReasons.FirstOrDefault(m => m.PXPReasonID == Stop.Reason1).Description;
+                    viewModel.Stop = wiringRepo.WiringStops.Last(m => m.WiringID == wiring.WiringID && m.Reason5ID == 0 && m.Critical == true);
+                    viewModel.Reason1Name = wiringRepo.PXPReasons.FirstOrDefault(m => m.PXPReasonID == viewModel.Stop.Reason1).Description;
                     viewModel.JobNum = job.JobNum;
 
                     return View("WaitingForRestar", viewModel);
@@ -297,7 +297,6 @@ namespace ProdFloor.Controllers
 
 
         //Admin only functions
-
         public ViewResult Edit(int StopID)
         {
             WiringStopViewModel viewModel = new WiringStopViewModel();
