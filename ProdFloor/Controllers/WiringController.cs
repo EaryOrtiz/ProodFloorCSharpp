@@ -478,7 +478,7 @@ namespace ProdFloor.Controllers
                 NextStep(viewModel.currentStep.WiringStepID);
             }
 
-            stepsLeft = wiringRepo.WiringStepsForJobs.Where(m => m.WiringID == viewModel.WiringJob.WiringID && m.Complete == false).Count();
+            stepsLeft = wiringRepo.WiringStepsForJobs.Where(m => m.WiringID == viewModel.WiringJob.WiringID && m.Obsolete == false && m.Complete == false).Count();
 
             if (stepsLeft > 1)
                 ContinueStep(viewModel.WiringJob.WiringID);
@@ -713,14 +713,126 @@ namespace ProdFloor.Controllers
             statusPO.Status = "WR: Reassignment";
             jobRepo.SaveStatusPO(statusPO);
 
-
-
+            NextStep(wiring.WiringID);
 
             TempData["message"] = $"You have reassinged the WIRER for the wiringjob PO# {po.PONumb} to T{viewModel.NewWirerID} and the station to {StationName}";
             return RedirectToAction("SearchTestJob");
         }
 
+        [HttpPost]
+        public IActionResult ReturnFromComplete(int WiringId)
+        {
+            if (VerifyAdminPermissions(WiringId) != Ok())
+                return RedirectToAction("Home", "Index");
 
+            Wiring wiring= wiringRepo.Wirings.FirstOrDefault(m => m.WiringID == WiringId);
+            StatusPO statusPO = jobRepo.StatusPOs.FirstOrDefault(m => m.POID == wiring.POID);
+            PO po = jobRepo.POs.FirstOrDefault(m => m.POID == wiring.POID);
+            bool isNotCompleted = statusPO.Status == "WR: Adding Features" || statusPO.Status == "Wiring on progress";
+
+            if (isNotCompleted)
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"Error, El Wiringjob se encuentra activo, intente de nuevo o contacte al Admin";
+
+                return RedirectToAction("Index", "Home");
+            }
+
+            WiringStepForJob stepsForJob = wiringRepo.WiringStepsForJobs.OrderBy(s => s.Consecutivo).Where(p => p.WiringID == WiringId && p.Obsolete == false).Last();
+            stepsForJob.Complete = false;
+            wiringRepo.SaveWiringStepForJob(stepsForJob);
+
+            if (AnyWiringJobOnProgress(wiring.WirerID))
+            {
+                statusPO.Status = "WR: Stopped";
+                jobRepo.SaveStatusPO(statusPO);
+                WiringStop NewtStop = new WiringStop
+                {
+                    WiringID = wiring.WiringID,
+                    Reason1 = 982,
+                    Reason2 = 982,
+                    Reason3 = 982,
+                    Reason4 = 982,
+                    Reason5ID = 982,
+                    Description = "The admin was returned the job to working on it",
+                    Critical = true,
+                    StartDate = DateTime.Now,
+                    StopDate = DateTime.Now,
+                    Elapsed = new DateTime(1, 1, 1, 0, 0, 0),
+                    AuxStationID = wiring.StationID,
+                    AuxWirerID = wiring.WirerID,
+                };
+                wiringRepo.SaveWiringStop(NewtStop);
+                TempData["message"] = $"You have returned the WiringJob PO# {po.PONumb} to stopped";
+                return RedirectToAction("SearchTestJob");
+            }
+            statusPO.Status = "Wiring on progress";
+            jobRepo.SaveStatusPO(statusPO);
+            TempData["message"] = $"You have returned the TestJob PO# {po.PONumb} to Working on it";
+            return RedirectToAction("SearchTestJob");
+
+        }
+
+        public void ShiftEnd(int wirerID)
+        {
+            List<Wiring> activeWirings = wiringRepo.Wirings.Where(m => m.StartDate.ToShortDateString() == m.CompletedDate.ToShortDateString())
+                                                           .Where(m => m.WirerID == wirerID).ToList();
+
+            List<StatusPO> StatusPoList= jobRepo.StatusPOs.Where(m => activeWirings.Any(n => n.POID == m.POID) && m.Status == "Wiring on progress").ToList();
+            activeWirings = activeWirings.Where(m => StatusPoList.Any(n => n.POID == m.POID)).ToList();
+
+            if (activeWirings.Count > 0)
+            {
+                foreach (Wiring wiring in activeWirings)
+                {
+                    List<WiringStop> stops = new List<WiringStop>();
+                    stops = wiringRepo.WiringStops.Where(p => wiring.WiringID == p.WiringID && p.Reason1 != 981 && p.Reason3 == 0 && p.Reason2 == 0).ToList();
+                    StatusPO statusPO = jobRepo.StatusPOs.FirstOrDefault(m => m.POID == wiring.POID);
+
+                    if (stops.Count > 0)
+                    {
+                        foreach (WiringStop stop in stops)
+                        {
+                            TimeSpan auxTime = (DateTime.Now - stop.StartDate);
+                            stop.Elapsed += auxTime;
+                            stop.StartDate = DateTime.Now;
+                            stop.StopDate = DateTime.Now;
+                            wiringRepo.SaveWiringStop(stop);
+                        }
+                    }
+
+                    try
+                    {
+                        NextStep(wiring.WiringID);
+                    }
+                    catch { }
+
+
+
+                    WiringStop NewtStop = new WiringStop
+                    {
+                        WiringID = wiring.WiringID,
+                        Reason1 = 981,
+                        Reason2 = 0,
+                        Reason3 = 0,
+                        Reason4 = 0,
+                        Reason5ID = 0,
+                        Description = "Automatic Shift End",
+                        Critical = true,
+                        StartDate = DateTime.Now,
+                        StopDate = DateTime.Now,
+                        Elapsed = new DateTime(1, 1, 1, 0, 0, 0),
+                        AuxStationID = wiring.StationID,
+                        AuxWirerID = wiring.WirerID,
+                    };
+                    wiringRepo.SaveWiringStop(NewtStop);
+
+                    statusPO.Status = "WR: Shift End";
+                    jobRepo.SaveStatusPO(statusPO);
+                }
+            }
+
+        }
 
         ///Aditional functions
         public void PreviusStep(int previousStepID, int currentStepID)
@@ -760,6 +872,24 @@ namespace ProdFloor.Controllers
             currentStep.Start = DateTime.Now;
             currentStep.Stop = DateTime.Now;
             currentStep.Complete = true;
+            wiringRepo.SaveWiringStepForJob(currentStep);
+
+        }
+
+        public void SaveTimeStep(int WiringId)
+        {
+            Wiring wiring = wiringRepo.Wirings.FirstOrDefault(m => m.WiringID == WiringId);
+
+            WiringStepForJob currentStep = wiringRepo.WiringStepsForJobs.FirstOrDefault(m => m.WiringID == WiringId && m.Obsolete == false && m.Complete == false);
+
+            //For Current step
+            if (currentStep.Start != DateTime.Now)
+            {
+                currentStep.Elapsed = GetElpasedAsDateTime(currentStep.Elapsed, currentStep.Start, DateTime.Now);
+            }
+
+            currentStep.Start = DateTime.Now;
+            currentStep.Stop = DateTime.Now;
             wiringRepo.SaveWiringStepForJob(currentStep);
 
         }
