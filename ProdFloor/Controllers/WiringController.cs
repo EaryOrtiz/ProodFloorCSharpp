@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -549,7 +550,7 @@ namespace ProdFloor.Controllers
 
             StatusPO statusPO = jobRepo.StatusPOs.FirstOrDefault(m => m.POID == wiring.POID);
             PO po = jobRepo.POs.FirstOrDefault(m => m.POID == wiring.POID);
-            if (statusPO.Status == "Waiting for PXP")
+            if (statusPO.Status != "WR: Adding Features" && statusPO.Status != "Wiring on progress")
             {
                 TempData["alert"] = $"alert-danger";
                 TempData["message"] = $"Error, el wiringJob ya se completo, contacte al Admin";
@@ -713,13 +714,13 @@ namespace ProdFloor.Controllers
             statusPO.Status = "WR: Reassignment";
             jobRepo.SaveStatusPO(statusPO);
 
-            NextStep(wiring.WiringID);
+            SaveTimeStep(wiring.WiringID);
 
             TempData["message"] = $"You have reassinged the WIRER for the wiringjob PO# {po.PONumb} to T{viewModel.NewWirerID} and the station to {StationName}";
             return RedirectToAction("SearchTestJob");
         }
 
-        [HttpPost]
+
         public IActionResult ReturnFromComplete(int WiringId)
         {
             if (VerifyAdminPermissions(WiringId) != Ok())
@@ -753,7 +754,7 @@ namespace ProdFloor.Controllers
                     Reason2 = 982,
                     Reason3 = 982,
                     Reason4 = 982,
-                    Reason5ID = 982,
+                    Reason5ID = 0,
                     Description = "The admin was returned the job to working on it",
                     Critical = true,
                     StartDate = DateTime.Now,
@@ -778,7 +779,8 @@ namespace ProdFloor.Controllers
             List<Wiring> activeWirings = wiringRepo.Wirings.Where(m => m.StartDate.ToShortDateString() == m.CompletedDate.ToShortDateString())
                                                            .Where(m => m.WirerID == wirerID).ToList();
 
-            List<StatusPO> StatusPoList= jobRepo.StatusPOs.Where(m => activeWirings.Any(n => n.POID == m.POID) && m.Status == "Wiring on progress").ToList();
+            List<StatusPO> StatusPoList= jobRepo.StatusPOs.Where(m => activeWirings.Any(n => n.POID == m.POID))
+                                                          .Where(m => m.Status == "Wiring on progress" || m.Status == "WR: Stopped" || m.Status == "WR: Reassignment").ToList();
             activeWirings = activeWirings.Where(m => StatusPoList.Any(n => n.POID == m.POID)).ToList();
 
             if (activeWirings.Count > 0)
@@ -803,11 +805,70 @@ namespace ProdFloor.Controllers
 
                     try
                     {
-                        NextStep(wiring.WiringID);
+                        SaveTimeStep(wiring.WiringID);
                     }
                     catch { }
 
+                    WiringStop NewtStop = new WiringStop
+                    {
+                        WiringID = wiring.WiringID,
+                        Reason1 = 981,
+                        Reason2 = 0,
+                        Reason3 = 0,
+                        Reason4 = 0,
+                        Reason5ID = 0,
+                        Description = "Automatic Shift End",
+                        Critical = true,
+                        StartDate = DateTime.Now,
+                        StopDate = DateTime.Now,
+                        Elapsed = new DateTime(1, 1, 1, 0, 0, 0),
+                        AuxStationID = wiring.StationID,
+                        AuxWirerID = wiring.WirerID,
+                    };
+                    wiringRepo.SaveWiringStop(NewtStop);
 
+                    statusPO.Status = "WR: Shift End";
+                    jobRepo.SaveStatusPO(statusPO);
+                }
+            }
+
+        }
+
+        [AllowAnonymous]
+        public void AutomaticShiftEnd()
+        {
+            List<Wiring> activeWirings = wiringRepo.Wirings.Where(m => m.StartDate.ToShortDateString() == m.CompletedDate.ToShortDateString())
+                                                           .ToList();
+
+            List<StatusPO> StatusPoList = jobRepo.StatusPOs.Where(m => activeWirings.Any(n => n.POID == m.POID))
+                                                          .Where(m => m.Status == "Wiring on progress" || m.Status == "WR: Stopped" || m.Status == "WR: Reassignment").ToList();
+            activeWirings = activeWirings.Where(m => StatusPoList.Any(n => n.POID == m.POID)).ToList();
+
+            if (activeWirings.Count > 0)
+            {
+                foreach (Wiring wiring in activeWirings)
+                {
+                    List<WiringStop> stops = new List<WiringStop>();
+                    stops = wiringRepo.WiringStops.Where(p => wiring.WiringID == p.WiringID && p.Reason1 != 981 && p.Reason3 == 0 && p.Reason2 == 0).ToList();
+                    StatusPO statusPO = jobRepo.StatusPOs.FirstOrDefault(m => m.POID == wiring.POID);
+
+                    if (stops.Count > 0)
+                    {
+                        foreach (WiringStop stop in stops)
+                        {
+                            TimeSpan auxTime = (DateTime.Now - stop.StartDate);
+                            stop.Elapsed += auxTime;
+                            stop.StartDate = DateTime.Now;
+                            stop.StopDate = DateTime.Now;
+                            wiringRepo.SaveWiringStop(stop);
+                        }
+                    }
+
+                    try
+                    {
+                        SaveTimeStep(wiring.WiringID);
+                    }
+                    catch { }
 
                     WiringStop NewtStop = new WiringStop
                     {

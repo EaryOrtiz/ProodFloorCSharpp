@@ -178,7 +178,7 @@ namespace ProdFloor.Controllers
 
                 if (isNotCompleted && isSameEngineer)
                 {
-                    WiringStop ReturnedFromCompleteStop = wiringRepo.WiringStops.LastOrDefault(p => p.WiringID == wiring.WiringID && p.Reason1 == 982 && p.Reason2 == 0);
+                    WiringStop ReturnedFromCompleteStop = wiringRepo.WiringStops.LastOrDefault(p => p.WiringID == wiring.WiringID && p.Reason1 == 982 && p.Reason5ID == 0);
                     if (wiringController.AnyWiringJobOnProgress(wirerID))
                     {
                         TempData["alert"] = $"alert-danger";
@@ -187,6 +187,7 @@ namespace ProdFloor.Controllers
                     }
                     else if (ReturnedFromCompleteStop != null)
                     {
+                        ReturnedFromCompleteStop.Reason5ID = 982;
                         ReturnedFromCompleteStop.StopDate = DateTime.Now;
                         ReturnedFromCompleteStop.Elapsed = wiringController.GetElpasedAsDateTime(ReturnedFromCompleteStop.Elapsed, ReturnedFromCompleteStop.StartDate, ReturnedFromCompleteStop.StopDate);
                         wiringRepo.SaveWiringStop(ReturnedFromCompleteStop);
@@ -207,8 +208,8 @@ namespace ProdFloor.Controllers
                 else
                 {
                     TempData["alert"] = $"alert-danger";
-                    if (isNotCompleted == false) TempData["message"] = $"Error, El Testjob ya ha sido completado, intente de nuevo o contacte al Admin";
-                    else TempData["message"] = $"Error, El Testjob a sido reasignado, intente de nuevo o contacte al Admin";
+                    if (isNotCompleted == false) TempData["message"] = $"Error, El wiringjob ya ha sido completado, intente de nuevo o contacte al Admin";
+                    else TempData["message"] = $"Error, El wiringjob a sido reasignado, intente de nuevo o contacte al Admin";
 
                     return RedirectToAction("Index", "Home");
                 }
@@ -217,7 +218,7 @@ namespace ProdFloor.Controllers
             else
             {
                 TempData["alert"] = $"alert-danger";
-                TempData["message"] = $"Error, El Testjob no existe o a sido eliminado, intente de nuevo o contacte al Admin";
+                TempData["message"] = $"Error, El wiringjob no existe o a sido eliminado, intente de nuevo o contacte al Admin";
                 return RedirectToAction("Index", "Home");
             }
         }
@@ -257,9 +258,9 @@ namespace ProdFloor.Controllers
             else
             {
                 TempData["alert"] = $"alert-danger";
-                if (isNotCompleted == false) TempData["message"] = $"Error, El Testjob ya ha sido completado, intente de nuevo o contacte al Admin";
-                else if (!isNotOnShiftEnd) TempData["message"] = $"Error, El Testjob esta en shift end, pulse el boton de continuar";
-                else TempData["message"] = $"Error, El Testjob a sido reasignado, intente de nuevo o contacte al Admin";
+                if (isNotCompleted == false) TempData["message"] = $"Error, El wiringjob ya ha sido completado, intente de nuevo o contacte al Admin";
+                else if (!isNotOnShiftEnd) TempData["message"] = $"Error, El wiringjob esta en shift end, pulse el boton de continuar";
+                else TempData["message"] = $"Error, El wiringjob a sido reasignado, intente de nuevo o contacte al Admin";
 
                 return RedirectToAction("Index", "Home");
             }
@@ -295,7 +296,64 @@ namespace ProdFloor.Controllers
             return wiringController.ContinueStep(wiring.WiringID);
         }
 
+        public IActionResult RestartReassignment(int WiringID)
+        {
+            Wiring wiring = wiringRepo.Wirings.FirstOrDefault(m => m.WiringID == WiringID);
+            if (wiring != null)
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"Error, el WiringJob no existe, contacte al Admin";
+                return RedirectToAction("Index", "Home");
+            }
+            int wirerID = GetCurrentUser().Result.EngID;
+            if (wiring.WirerID != wirerID)
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"Error, el wiringjob no esta reasignadoa usted, contacte al Admin";
+                return RedirectToAction("Index", "Home");
+            }
+            StatusPO statusPO = jobRepo.StatusPOs.FirstOrDefault(m => m.POID == wiring.POID);
+            WiringStop ReassignmentStop = wiringRepo.WiringStops.LastOrDefault(p => p.WiringID == wiring.WiringID && p.Reason1 == 980 && p.Reason5ID == 0);
+            Job job = jobRepo.Jobs.FirstOrDefault(m => m._PO.Any(n => n.POID == wiring.POID));
+            if (wiringController.AnyWiringJobOnProgress(wirerID))
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"Error, Tiene un trabajo activo, intente de nuevo o contacte al admin";
+                return RedirectToAction("Index", "Home");
+            }
 
+            ReassignmentStop.StopDate = DateTime.Now;
+            ReassignmentStop.Elapsed = wiringController.GetElpasedAsDateTime(ReassignmentStop.Elapsed, ReassignmentStop.StartDate, ReassignmentStop.StopDate);
+            ReassignmentStop.Reason2 = 980;
+            ReassignmentStop.Reason3 = 980;
+            ReassignmentStop.Reason4 = 980;
+            ReassignmentStop.Reason5ID = 980;
+            wiringRepo.SaveWiringStop(ReassignmentStop);
+
+            List<WiringStop> stops = wiringRepo.WiringStops.Where(p => wiring.WiringID == p.WiringID)
+                                                           .Where(p => p.WiringStopID != 982 && p.WiringStopID != 981 && p.Reason2 == 0).ToList();
+            if (stops.Count > 0)
+            {
+                foreach (WiringStop stop in stops)
+                {
+                    stop.StartDate = DateTime.Now;
+                    stop.StopDate = DateTime.Now;
+                    wiringRepo.SaveWiringStop(stop);
+                }
+
+                if (stops.Any(m => m.Critical == true))
+                {
+                   statusPO.Status = "WR: Stopped";
+                   jobRepo.SaveStatusPO(statusPO);
+                }
+
+            }
+
+            statusPO.Status = "Wiring on progress";
+            jobRepo.SaveStatusPO(statusPO);
+
+            return wiringController.ContinueStep(wiring.WiringID);
+        }
         //Admin only functions
         public ViewResult Edit(int StopID)
         {
