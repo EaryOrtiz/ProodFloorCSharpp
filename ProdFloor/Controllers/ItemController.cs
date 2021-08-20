@@ -962,6 +962,9 @@ namespace ProdFloor.Controllers
                             ViewModel.HP = elementTraction.HP;
                             ViewModel.Speed = element.Speed;
                             ViewModel.Capacity = element.Capacity;
+                            ViewModel.RMSAMPS = "18,000A";
+                            ViewModel.SCCRVOLTS = "600V";
+                            var volts = element.Voltage;
 
                             ViewModel.IdealVIn = (int)(((elementTraction.PickVoltage) * (1.1)) / (0.85));
                             ViewModel.MinVIn = (int)((elementTraction.PickVoltage) / (0.85));
@@ -969,6 +972,16 @@ namespace ProdFloor.Controllers
 
                             if (elementTraction.Resistance > 101) ViewModel.BrakeResistor = "1500R 100W";
                             else ViewModel.BrakeResistor = "500R 225W";
+
+                            if (ViewModel.HP <= 50)
+                                ViewModel.RMSAMPS = "5,000A";
+                            else if (ViewModel.HP <= 200)
+                                ViewModel.RMSAMPS = "10,000A";
+
+                            if (volts <= 240)
+                                ViewModel.SCCRVOLTS = "240V";
+                            else if (volts <= 480)
+                                ViewModel.SCCRVOLTS = "480V";
 
                             #region ReferSearchVM
                             ReferencesSrchElementViewModel referSearch = new ReferencesSrchElementViewModel
@@ -981,6 +994,8 @@ namespace ProdFloor.Controllers
                                 Speed = ViewModel.Speed,
                                 HP = ViewModel.HP,
                                 Capacity = ViewModel.Capacity,
+                                SCCRVOLTS = ViewModel.SCCRVOLTS,
+                                RMSAMPS = ViewModel.RMSAMPS,
 
                                 //Brake
                                 IdealVIn = ViewModel.IdealVIn,
