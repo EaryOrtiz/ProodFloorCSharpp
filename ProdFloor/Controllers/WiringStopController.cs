@@ -352,6 +352,17 @@ namespace ProdFloor.Controllers
             statusPO.Status = "Wiring on progress";
             jobRepo.SaveStatusPO(statusPO);
 
+            WirersInvolved involved = wiringRepo.WirersInvolveds
+                                     .Where(m => m.WiringID == wiring.WiringID)
+                                     .FirstOrDefault(m => m.WirerID == wiring.WirerID);
+            if (involved == null)
+            {
+                WirersInvolved wirersInvolved = new WirersInvolved();
+                wirersInvolved.WiringID = wiring.WiringID;
+                wirersInvolved.WirerID = wiring.WirerID;
+                wiringRepo.SaveWirersInvolved(wirersInvolved);
+            }
+
             return wiringController.ContinueStep(wiring.WiringID);
         }
         //Admin only functions

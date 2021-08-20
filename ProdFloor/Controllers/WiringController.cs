@@ -198,17 +198,6 @@ namespace ProdFloor.Controllers
             viewModel.Feature.WiringID = wiring.WiringID;
             wiringRepo.SaveWiringFeatures(viewModel.Feature);
 
-            WirersInvolved involved = wiringRepo.WirersInvolveds
-                                                 .Where(m => m.WiringID == wiring.WiringID)
-                                                 .FirstOrDefault(m => m.WirerID == currentUser.EngID);
-            if (involved == null)
-            {
-                WirersInvolved wirersInvolved = new WirersInvolved();
-                wirersInvolved.WiringID = wiring.WiringID;
-                wirersInvolved.WirerID = currentUser.EngID;
-                wiringRepo.SaveWirersInvolved(wirersInvolved);
-            }
-
             viewModel.WiringJob = wiring;
             viewModel.PO = po;
             viewModel.Job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == po.JobID);
