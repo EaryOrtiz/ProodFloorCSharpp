@@ -8,7 +8,7 @@ namespace ProdFloor.Models.ViewModels.Wiring
 {
     public class WiringViewModel
     {
-        public Models.Wiring WiringJob { get; set; }
+        public Models.Wiring Wiring { get; set; }
         public List<WiringFeatures> FeatureList { get; set; }
         public WiringFeatures Feature { get; set; }
         public WiringStep StepInfo { get; set; }

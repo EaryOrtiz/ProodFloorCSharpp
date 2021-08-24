@@ -20,7 +20,10 @@ namespace ProdFloor.Controllers
         private UserManager<AppUser> userManager;
         private SignInManager<AppUser> signInManager;
         private ITestingRepository testingRepo;
+        private IWiringRepository wiringRepo;
+        private IJobRepository jobRepo;
         private RoleManager<IdentityRole> roleManager;
+        private WiringController wiringController;
         private IHostingEnvironment _env;
         public int PageSize = 7;
 
@@ -36,14 +39,20 @@ namespace ProdFloor.Controllers
         IPasswordHasher<AppUser> passwordHash,
         RoleManager<IdentityRole> roleMgr,
         SignInManager<AppUser> signInMgr,
+        WiringController wiring,
         IHostingEnvironment env,
-        ITestingRepository repo)
+        ITestingRepository repo,
+        IWiringRepository repo2,
+        IJobRepository repo3)
         {
             userManager = usrMgr;
             userValidator = userValid;
             passwordValidator = passValid;
             passwordHasher = passwordHash;
+            wiringController = wiring;
             testingRepo = repo;
+            wiringRepo = repo2;
+            jobRepo = repo3;
             roleManager = roleMgr;
 
             signInManager = signInMgr;
@@ -544,6 +553,81 @@ namespace ProdFloor.Controllers
 
 
                     testingRepo.SaveTestJob(testJob);
+                }
+            }
+
+        }
+
+        public void WRRestartShiftEnd(int WirerID)
+        {
+            List<Wiring> filteredList = new List<Wiring>();
+            IQueryable<Wiring> wiringList = wiringRepo.Wirings.Where(m => m.WirerID == WirerID);
+            IQueryable<WiringStop> stopsShiftEnd = wiringRepo.WiringStops.Where(m => wiringList.Any(n => n.WiringID == m.WiringID) && m.Reason1 == 981 && m.Reason2 == 0 && m.Reason3 == 0);
+
+            filteredList = wiringList.Where(m => stopsShiftEnd.Any(n => n.WiringID == m.WiringID)).ToList();
+
+            if (filteredList.Count > 0)
+            {
+                foreach (Wiring wiring in filteredList)
+                {
+                    StatusPO statusPO = jobRepo.StatusPOs.FirstOrDefault(m => m.POID == wiring.POID);
+                    PO po = jobRepo.POs.FirstOrDefault(m => m.POID == wiring.POID);
+                    List<WiringStop> stops = new List<WiringStop>();
+
+                    try {
+
+                       
+
+                        WiringStop ShiftEndStop = wiringRepo.WiringStops.LastOrDefault(p => p.WiringID == wiring.WiringID && p.Reason1 == 981 && p.Reason5ID == 0);
+                        WiringStop ReassignmentStop = wiringRepo.WiringStops.LastOrDefault(p => p.WiringID == wiring.WiringID && p.Reason1 == 980 && p.Reason5ID == 0);
+                        stops = wiringRepo.WiringStops.Where(p => wiring.WiringID == p.WiringID && p.Reason1 != 980 && p.Reason1 != 981 && p.Reason5ID == 0).ToList();
+
+                        TimeSpan auxTime = (DateTime.Now - ShiftEndStop.StartDate);
+                        ShiftEndStop.Elapsed += auxTime;
+                        ShiftEndStop.StopDate = DateTime.Now;
+                        ShiftEndStop.Reason2 = 981;
+                        ShiftEndStop.Reason3 = 981;
+                        ShiftEndStop.Reason4 = 981;
+                        ShiftEndStop.Reason5ID = 981;
+                        wiringRepo.SaveWiringStop(ShiftEndStop);
+
+                        wiringController.RestarTimeStep(wiring.WiringID);
+
+                        if (stops.Count > 0)
+                        {
+                            foreach (WiringStop stop in stops)
+                            {
+                                stop.StartDate = DateTime.Now;
+                                stop.StopDate = DateTime.Now;
+                                wiringRepo.SaveWiringStop(stop);
+                            }
+
+                        }
+
+                        if (ReassignmentStop != null)
+                        {
+                            ReassignmentStop.StartDate = DateTime.Now;
+                            ReassignmentStop.StopDate = DateTime.Now;
+                            wiringRepo.SaveWiringStop(ReassignmentStop);
+
+                            statusPO.Status = "WR: Reassignment";
+                        }
+                        else if (stops.Any(m => m.Critical == true))
+                        {
+                            statusPO.Status = "WR: Stopped";
+                        }
+                        else
+                        {
+                            statusPO.Status = "Wiring on progress";
+                        }
+                    }
+                    catch(Exception e)
+                    {
+                        TempData["message"] = $"Algo salio mal al tratar de cerrar el Shift end, contacte al admin, Error:{e.Message}, PO: {po.PONumb}";
+                        TempData["alert"] = $"alert-danger";
+                    }
+
+
                 }
             }
 

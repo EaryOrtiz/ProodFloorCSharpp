@@ -1,0 +1,122 @@
+﻿@model DashboardIndexViewModel
+@{
+    ViewBag.Title = "Wiring";
+}
+<br />
+<table class="table table-striped  text-center table-sm" style="text-align:center">
+    <thead style="background-color:#343a40!important;color:#fff;">
+        <tr>
+            <th class="text-center" colspan="7">
+                <h5>Wiring Jobs en progreso</h5>
+            </th>
+            <th colspan="1">
+                <div class="row float-right" style="padding-right:20px">
+                    <div class="text-center">
+                        <div class="btn-group text-center">
+                            <a style="background-color:seagreen;color:white" class="btn btn-sm" asp-action="SearchByPO" asp-controller="Home">
+                                New Wiring Job
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </th>
+        </tr>
+        <tr>
+            <th scope="col">Job#</th>
+            <th scope="col">PO#</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Job Type</th>
+            <th scope="col">Ship Date</th>
+            <th scope="col">Estacion</th>
+            <th scope="col">Estado</th>
+            <th scope="col">Opciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.MyWirings.Count() == 0)
+        {
+            <tr>
+                <td>No Test Jobs!</td>
+            </tr>
+        }
+        else
+        {
+            @foreach (var t in Model.MyWirings)
+            {
+                PO po = Model.POs.FirstOrDefault(m => m.POID == t.POID);
+                StatusPO statusPO = Model.StatusPOs.FirstOrDefault(m => m.POID == t.POID);
+                Job job = Model.MyJobs.FirstOrDefault(m => m.JobID == po.POID);
+                string JobtypeName = Model.JobTypesList.First(s => s.JobTypeID == job.JobTypeID).Name;
+
+                <tr>
+                    <th scope="row">
+                        @if (statusPO.Status == "WR: Adding Features" || statusPO.Status == "Wiring on progress")
+                        {
+                            <a asp-action="EditFeatures"
+                               asp-controller="Wiring" asp-route-Id="@t.WiringID">
+                                @job.JobNum
+                            </a>
+                        }
+                        else
+                        {
+                            @job.JobNum
+                        }
+                    </th>
+                    <td>@po.PONumb</td>
+                    <td>@job.Name</td>
+                    <td>@JobtypeName</td>
+                    <td>@job.ShipDate</td>
+                    <td>@Model.StationList.FirstOrDefault(m => m.StationID == t.StationID).Label</td>
+                    <td>@statusPO.Status</td>
+                    <td>
+                        @if (statusPO.Status == "WR: Stopped")
+                        {
+                            <a asp-action="WaitingForRestar" asp-controller="WiringStop"
+                               asp-route-id="@t.WiringID" class="btn btn-warning btn-sm">
+                                Reiniciar Job
+                            </a>
+                        }
+                        else if (statusPO.Status == "WR: Reassignment")
+                        {
+                            <a asp-action="RestartReassignment" asp-controller="WiringStop"
+                               asp-route-id="@t.WiringID" class="btn btn-warning btn-sm">
+                                Tomar el Job
+                            </a>
+                        }
+                        else if (statusPO.Status == "Wiring on progress")
+                        {
+                            <a asp-action="ContinueStep" asp-controller="Wiring"
+                               asp-route-id="@t.WiringID" class="btn btn-info btn-sm">
+                                Continuar
+                            </a>
+                        }
+                        else if (statusPO.Status == "WR: Shift End")
+                        {
+                            <a asp-action="WRRestarShiftEndOnDash" asp-controller="Wiring"
+                               asp-route-id="@t.WiringID" class="btn btn-secondary btn-sm">
+                                Continuar
+                            </a>
+                        }
+                        else if (statusPO.Status == "WR: Adding Features")
+                        {
+                        <a asp-action="EditFeatures" asp-controller="Wiring"
+                           asp-route-Id="@t.WiringID" class="btn btn-info btn-sm">
+                            Continuar
+                        </a>
+                        }
+
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+@if (Model.PendingTestJobs.Count() > 0)
+{
+    <cool-pagination-dash-board current-model="MyJobs" my-jobs-page-model="@Model.MyJobsPagingInfo" page-action="Index" page-classes-enabled="true"
+                                page-class="btn" page-class-normal="btn-secondary" on-cross-page-model="@Model.OnCrossJobsPagingInfo" pending-to-cross-page-model="@Model.PendingToCrossJobsPagingInfo"
+                                page-class-selected="btn-dark" my-jobs-url-value="MyJobsPage" on-cross-url-value="OnCrossJobPage"
+                                pending-to-cross-url-value="PendingToCrossJobPage" sort="Sort"
+                                class="btn-group pull-right m-1">
+    </cool-pagination-dash-board>
+}

@@ -343,8 +343,8 @@ namespace ProdFloor.Controllers
 
                 if (stops.Any(m => m.Critical == true))
                 {
-                   statusPO.Status = "WR: Stopped";
-                   jobRepo.SaveStatusPO(statusPO);
+                    statusPO.Status = "WR: Stopped";
+                    jobRepo.SaveStatusPO(statusPO);
                 }
 
             }
@@ -365,6 +365,74 @@ namespace ProdFloor.Controllers
 
             return wiringController.ContinueStep(wiring.WiringID);
         }
+
+        public IActionResult WRRestartShiftEnd(int WiringID)
+        {
+            Wiring wiring = wiringRepo.Wirings.FirstOrDefault(m => m.WiringID == WiringID);
+            StatusPO statusPO = jobRepo.StatusPOs.FirstOrDefault(m => m.POID == wiring.POID);
+            PO po = jobRepo.POs.FirstOrDefault(m => m.POID == wiring.POID);
+            List<WiringStop> stops = new List<WiringStop>();
+
+            try
+            {
+                WiringStop ShiftEndStop = wiringRepo.WiringStops.LastOrDefault(p => p.WiringID == wiring.WiringID && p.Reason1 == 981 && p.Reason5ID == 0);
+                WiringStop ReassignmentStop = wiringRepo.WiringStops.LastOrDefault(p => p.WiringID == wiring.WiringID && p.Reason1 == 980 && p.Reason5ID == 0);
+                stops = wiringRepo.WiringStops.Where(p => wiring.WiringID == p.WiringID && p.Reason1 != 980 && p.Reason1 != 981 && p.Reason5ID == 0).ToList();
+
+                TimeSpan auxTime = (DateTime.Now - ShiftEndStop.StartDate);
+                ShiftEndStop.Elapsed += auxTime;
+                ShiftEndStop.StopDate = DateTime.Now;
+                ShiftEndStop.Reason2 = 981;
+                ShiftEndStop.Reason3 = 981;
+                ShiftEndStop.Reason4 = 981;
+                ShiftEndStop.Reason5ID = 981;
+                wiringRepo.SaveWiringStop(ShiftEndStop);
+
+                wiringController.RestarTimeStep(wiring.WiringID);
+
+                if (stops.Count > 0)
+                {
+                    foreach (WiringStop stop in stops)
+                    {
+                        stop.StartDate = DateTime.Now;
+                        stop.StopDate = DateTime.Now;
+                        wiringRepo.SaveWiringStop(stop);
+                    }
+
+                }
+
+                if (ReassignmentStop != null)
+                {
+                    ReassignmentStop.StartDate = DateTime.Now;
+                    ReassignmentStop.StopDate = DateTime.Now;
+                    wiringRepo.SaveWiringStop(ReassignmentStop);
+
+                    statusPO.Status = "WR: Reassignment";
+                }
+                else if (stops.Any(m => m.Critical == true))
+                {
+                    statusPO.Status = "WR: Stopped";
+                }
+                else
+                {
+                    statusPO.Status = "Wiring on progress";
+
+                    TempData["message"] = $"Shift end terminado con exito";
+                    wiringController.ContinueStep(WiringID);
+                }
+
+                TempData["message"] = $"Shift end terminado con exito";
+                return RedirectToAction("List", "Wiring");
+            }
+            catch (Exception e)
+            {
+                TempData["message"] = $"Algo salio mal al tratar de cerrar el Shift end, contacte al admin, Error:{e.Message}, PO: {po.PONumb}]";
+                TempData["alert"] = $"alert-danger";
+                return RedirectToAction("List", "Wiring");
+            }
+
+        }
+
         //Admin only functions
         public ViewResult Edit(int StopID)
         {
@@ -469,7 +537,7 @@ namespace ProdFloor.Controllers
                 TempData["message"] = $"{UpdatedStop.Description} has been ended..";
                 return RedirectToAction("FinishPendingStops", "Stop", new { WiringID = wiring.WiringID });
             }
-                
+
             TempData["message"] = $"El WiringJob no tiene paradas pendientes";
             return RedirectToAction("JobCompletion", "Wiring", new { WiringID = wiring.WiringID });
 

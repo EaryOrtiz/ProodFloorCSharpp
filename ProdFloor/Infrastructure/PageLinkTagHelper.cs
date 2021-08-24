@@ -5765,6 +5765,46 @@ namespace ProdFloor.Infrastructure
         }
     }
 
+    public class JobTypeInputTagHelper : TagHelper
+    {
+        private IItemRepository repository;
+
+        private IUrlHelperFactory urlHelperFactory;
+
+        public ModelExpression AspFor { get; set; }
+
+        public JobTypeInputTagHelper(IUrlHelperFactory helperFactory, IItemRepository repo)
+        {
+            urlHelperFactory = helperFactory;
+            repository = repo;
+        }
+
+        [ViewContext]
+        [HtmlAttributeNotBound]
+        public ViewContext ViewContext { get; set; }
+        public int JobTypeID { get; set; }
+
+        public override void Process(TagHelperContext context, TagHelperOutput output)
+        {
+
+            IUrlHelper urlHelper = urlHelperFactory.GetUrlHelper(ViewContext);
+            string name = this.AspFor.Name;
+
+            JobType jobtype = repository.JobTypes.FirstOrDefault(m => m.JobTypeID == JobTypeID);
+
+            TagBuilder tag = new TagBuilder("input");
+            tag.Attributes.Add("name", "JobType");
+            tag.Attributes.Add("type", "text");
+            tag.Attributes.Add("disabled", "true");
+            tag.Attributes.Add("class", "form-control");
+            tag.Attributes.Add("value", jobtype == null ? "Error" : jobtype.Name);
+
+
+            output.Content.AppendHtml(tag);
+            base.Process(context, output);
+        }
+    }
+
     public class WiringOpcionSelectTagHelper : TagHelper
     {
         private IWiringRepository wiringRepo;
