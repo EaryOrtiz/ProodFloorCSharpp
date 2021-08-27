@@ -183,97 +183,81 @@ namespace ProdFloor.Controllers
             statusPO.Status = "WR: Adding Features";
             jobRepo.SaveStatusPO(statusPO);
 
+            viewModel.PO = jobRepo.POs.FirstOrDefault(m => m.POID == viewModel.Wiring.POID);
+            viewModel.Job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == viewModel.PO.JobID);
             viewModel.FeatureList = new List<WiringFeatures>();
 
-            return View("AddFeatures", viewModel);
+            return EditFeatures(viewModel.Wiring.WiringID);
+        }
+
+        public IActionResult AddFeature(int WiringID)
+        {
+            if (VerifyWiringJobStatus(WiringID) != Ok())
+                return RedirectToAction("List");
+
+            WiringViewModel viewModel = new WiringViewModel();
+            viewModel.Wiring = wiringRepo.Wirings.FirstOrDefault(m => m.WiringID == viewModel.Wiring.WiringID);
+            viewModel.Feature = new WiringFeatures();
+
+            return View(viewModel);
         }
 
         [HttpPost]
         public IActionResult AddFeature(WiringViewModel viewModel)
         {
-            AppUser currentUser = GetCurrentUser().Result;
+            if (VerifyWiringJobStatus(viewModel.Wiring.WirerID) != Ok())
+                return RedirectToAction("List");
+
             Wiring wiring = wiringRepo.Wirings.FirstOrDefault(m => m.WiringID == viewModel.Wiring.WiringID);
-            PO po = jobRepo.POs.FirstOrDefault(m => m.POID == wiring.POID);
-
-            if (wiring == null)
-            {
-                TempData["alert"] = $"alert-danger";
-                TempData["message"] = $"Error, el WiringJob no existe";
-
-                return RedirectToAction("List");
-            }
-
-            StatusPO statusPO = jobRepo.StatusPOs.FirstOrDefault(m => m.POID == wiring.POID);
-
-            if (currentUser.EngID != wiring.WirerID)
-            {
-                TempData["alert"] = $"alert-danger";
-                TempData["message"] = $"Error, el WiringJob a sido reasigando";
-
-                return RedirectToAction("List");
-            }
-            else if (statusPO.Status == "Waiting for PXP")
-            {
-                TempData["alert"] = $"alert-danger";
-                TempData["message"] = $"Error, el WiringJob con PO #{po.PONumb} ya esta terminado";
-
-                return RedirectToAction("List");
-            }
 
             viewModel.Feature.WiringID = wiring.WiringID;
+            viewModel.Feature.Quantity = 1;
             wiringRepo.SaveWiringFeatures(viewModel.Feature);
 
-            viewModel.Wiring = wiring;
-            viewModel.PO = po;
-            viewModel.Job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == po.JobID);
-            viewModel.FeatureList = wiringRepo.WiringFeatures.Where(m => m.WiringID == wiring.WiringID).ToList();
-
             TempData["message"] = $"Nueva caracteristica añadida con exito.";
+            return EditFeatures(viewModel.Wiring.WiringID);
+        }
+
+        public IActionResult EditFeatures(int WiringID)
+        {
+            if (VerifyWiringJobStatus(WiringID) != Ok())
+                return RedirectToAction("List");
+
+            List<WiringFeatures> features = wiringRepo.WiringFeatures.Where(m => m.WiringID == WiringID).ToList();
+
+            WiringViewModel viewModel = new WiringViewModel();
+            viewModel.Wiring = wiringRepo.Wirings.FirstOrDefault(m => m.WiringID == WiringID);
+            viewModel.PO = jobRepo.POs.FirstOrDefault(m => m.POID == viewModel.Wiring.POID);
+            viewModel.Job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == viewModel.Wiring.POID);
+            viewModel.FeatureList = features ?? new List<WiringFeatures>();
+
             return View(viewModel);
         }
 
-        public IActionResult EditFeatures(WiringViewModel viewModel)
+        public IActionResult DeleteFeature(int ID)
         {
-            AppUser currentUser = GetCurrentUser().Result;
-            Wiring wiring = wiringRepo.Wirings.FirstOrDefault(m => m.WiringID == viewModel.Wiring.WiringID);
-            PO po = jobRepo.POs.FirstOrDefault(m => m.POID == wiring.POID);
+            WiringFeatures feature = wiringRepo.WiringFeatures.FirstOrDefault(m => m.WiringFeaturesID == ID);
+            Wiring wiring = wiringRepo.Wirings.FirstOrDefault(m => m.WiringID == feature.WiringID);
 
-            if (wiring == null)
-            {
-                TempData["alert"] = $"alert-danger";
-                TempData["message"] = $"Error, el WiringJob no existe";
-
+            if (VerifyWiringJobStatus(wiring.WiringID) != Ok())
                 return RedirectToAction("List");
+
+            WiringFeatures deletedFeature = wiringRepo.DeleteWiringFeatures(ID);
+            WiringOption wiringOption = wiringRepo.WiringOptions.FirstOrDefault(m => m.WiringOptionID == deletedFeature.WiringOptionID);
+            if (deletedFeature != null)
+            {
+                TempData["message"] = $"{wiringOption.Description} ha sido eliminado";
             }
 
-            StatusPO statusPO = jobRepo.StatusPOs.FirstOrDefault(m => m.POID == wiring.POID);
-
-            if (currentUser.EngID != wiring.WirerID)
-            {
-                TempData["alert"] = $"alert-danger";
-                TempData["message"] = $"Error, el WiringJob a sido reasigando";
-
-                return RedirectToAction("List");
-            }
-            else if (statusPO.Status == "Waiting for PXP")
-            {
-                TempData["alert"] = $"alert-danger";
-                TempData["message"] = $"Error, el WiringJob con PO #{po.PONumb} ya esta terminado";
-
-                return RedirectToAction("List");
-            }
-
-            viewModel.Wiring = wiring;
-            viewModel.PO = po;
-            viewModel.Job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == po.JobID);
-            viewModel.FeatureList = wiringRepo.WiringFeatures.Where(m => m.WiringID == wiring.WiringID).ToList();
-
-            return View(viewModel);
+            return EditFeatures(wiring.WiringID);
         }
 
         [HttpPost]
         public IActionResult SaveFeatures(WiringViewModel viewModel)
         {
+            if (VerifyWiringJobStatus(viewModel.Wiring.WiringID) != Ok())
+                return RedirectToAction("List");
+
             bool Admin = GetCurrentUserRole("Admin").Result;
             bool productionAdmin = GetCurrentUserRole("ProductionAdmin").Result;
             int wirerID = GetCurrentUser().Result.EngID;
@@ -282,26 +266,6 @@ namespace ProdFloor.Controllers
             StatusPO statusPO = jobRepo.StatusPOs.FirstOrDefault(m => m.POID == wiring.POID);
             PO po = jobRepo.POs.FirstOrDefault(m => m.POID == wiring.POID);
 
-            if (wiring == null)
-            {
-                TempData["alert"] = $"alert-danger";
-                TempData["message"] = $"Error, El WiringJob no existe, intente de nuevo o contacte al Admin";
-                return RedirectToAction("Index", "Home");
-            }
-
-            if (wiring.WirerID != wirerID && !productionAdmin && !Admin)
-            {
-                TempData["alert"] = $"alert-danger";
-                TempData["message"] = $"Error, El WiringJob fue reasignado, intente de nuevo o contacte al Admin";
-                return RedirectToAction("Index", "Home");
-            }
-            else if (statusPO.Status == "WR: Shift End" || statusPO.Status == "WR: Stopped" || statusPO.Status == "WR: Reassignment")
-            {
-                TempData["alert"] = $"alert-danger";
-                TempData["message"] = $"Error, el WiringJob con PO #{po.PONumb} tiene un paro";
-
-                return RedirectToAction("List");
-            }
 
             List<WiringStepForJob> OldStepsForJob = wiringRepo.WiringStepsForJobs.Where(m => m.WiringID == wiring.WiringID).ToList();
             if (OldStepsForJob.Count == 0)
@@ -445,35 +409,23 @@ namespace ProdFloor.Controllers
 
         public IActionResult ContinueStep(int wiringID)
         {
+            if (VerifyWiringJobStatus(wiringID) != Ok())
+                return RedirectToAction("List");
+
             WiringViewModel viewModel = new WiringViewModel();
             Wiring wiring = wiringRepo.Wirings.FirstOrDefault(m => m.WiringID == wiringID);
             StatusPO statusPO = jobRepo.StatusPOs.FirstOrDefault(m => m.POID == wiring.POID);
 
-            if (wiring == null)
-            {
-                TempData["alert"] = $"alert-danger";
-                TempData["message"] = $"Error, El WiringJob no existe, intente de nuevo o contacte al Admin";
-                return RedirectToAction("Index", "Home");
-            }
 
             bool Admin = GetCurrentUserRole("Admin").Result;
             bool productionAdmin = GetCurrentUserRole("ProductionAdmin").Result;
             bool isNotSameEngineer = GetCurrentUser().Result.EngID != wiring.WirerID;
             bool istCompleted = statusPO.Status == "Waiting for PXP";
 
-            if (istCompleted || isNotSameEngineer)
-            {
-                if(istCompleted) 
-                    TempData["message"] = $"Error, El WiringJob ya esta completado, intente de nuevo o contacte al Admin";
-                else 
-                    TempData["message"] = $"Error, El WiringJob fue reasignado, intente de nuevo o contacte al Admin";
-
-                TempData["alert"] = $"alert-danger";
-                return RedirectToAction("Index", "Home");
-            }
 
             List<WiringStepForJob> StepsForJobList = wiringRepo.WiringStepsForJobs.Where(m => m.WiringID == wiring.WiringID && m.Obsolete == false)
                                                                             .OrderBy(m => m.Consecutivo).ToList();
+
             List<WiringStep> StepsInfoList = wiringRepo.WiringSteps.Where(m => StepsForJobList.Any(n => n.WiringStepID == m.WiringStepID)).ToList();
 
             viewModel.Wiring = wiring;
@@ -486,42 +438,25 @@ namespace ProdFloor.Controllers
             
             List<WiringStep> StepsInStageList = StepsInfoList.Where(m => m.Stage == viewModel.StepInfo.Stage).ToList();
 
+            viewModel.StepsForJobList = StepsForJobList;
+            viewModel.StepList = StepsInfoList;
             viewModel.TotalStepsPerStage = StepsInStageList.Count();
             viewModel.CurrentStepInStage = StepsForJobList.Where(m => StepsInStageList.Any(s => s.WiringStepID == m.WiringStepID))
                                                           .Where(m => m.Complete == true).Count() + 1;
             viewModel.StopNC = wiringRepo.WiringStops.Where(m => m.WiringID == wiring.WiringID && m.Reason1 != 980 && m.Reason1 != 981)
                                                      .Where(m => m.Reason2 == 0 && m.Critical == false).Any();
 
-
-            return View("WiringStepsForJob",viewModel);
+            return View("StepsOnProgress", viewModel);
         }
 
         public IActionResult StepsOnProgress(WiringViewModel viewModel, string movement)
         {
+            if (VerifyWiringJobStatus(viewModel.Wiring.WiringID) != Ok())
+                return RedirectToAction("List");
+
             Wiring wiring = wiringRepo.Wirings.FirstOrDefault(m => m.WiringID == viewModel.Wiring.WiringID);
-            if (wiring != null)
-            {
-                TempData["alert"] = $"alert-danger";
-                TempData["message"] = $"Error, el WiringJob no existe, contacte al Admin";
-                return RedirectToAction("List");
-            }
-
-            if (wiring.WirerID != GetCurrentUser().Result.EngID)
-            {
-                TempData["alert"] = $"alert-danger";
-                TempData["message"] = $"Error, el WiringJob a sido reasignado, contacte al Admin";
-                return RedirectToAction("List");
-            }
-
             StatusPO statusPO = jobRepo.StatusPOs.FirstOrDefault(m => m.POID == wiring.POID);
             PO po = jobRepo.POs.FirstOrDefault(m => m.POID == wiring.POID);
-
-            if (statusPO.Status != "Wiring on Progress")
-            {
-                TempData["alert"] = $"alert-danger";
-                TempData["message"] = $"Error, el equipo esta en paro o ya se completo, contacte al Admin";
-                return RedirectToAction("List");
-            }
 
             int stepsLeft = wiringRepo.WiringStepsForJobs.Where(m => m.WiringID == viewModel.Wiring.WiringID && m.Obsolete == false && m.Complete == false).Count();
 
@@ -556,7 +491,6 @@ namespace ProdFloor.Controllers
             return RedirectToAction("List");
 
         }
-
 
         public IActionResult JobCompletion(int WiringID)
         {
@@ -679,13 +613,33 @@ namespace ProdFloor.Controllers
 
         }
 
+        public IActionResult CurrentStepsList(WiringViewModel viewModel, int targetStepID)
+        {
+            ///Current step
+            WiringStepForJob currentStep = wiringRepo.WiringStepsForJobs.FirstOrDefault(m => m.WiringStepForJobID == viewModel.StepsForJob.WiringStepForJobID && m.Obsolete == false && m.Complete == false);
 
+            currentStep.Elapsed = GetElpasedAsDateTime(currentStep.Elapsed, currentStep.Start, DateTime.Now);
+            currentStep.Start = DateTime.Now;
+            currentStep.Stop = DateTime.Now;
+            wiringRepo.SaveWiringStepForJob(currentStep);
+
+            //Target step
+            WiringStepForJob targetStep = wiringRepo.WiringStepsForJobs.FirstOrDefault(m => m.WiringStepForJobID == targetStepID && m.Obsolete == false && m.Complete == false);
+            
+            currentStep.Elapsed = GetElpasedAsDateTime(currentStep.Elapsed, currentStep.Start, DateTime.Now);
+            currentStep.Complete = false;
+            currentStep.Start = DateTime.Now;
+            currentStep.Stop = DateTime.Now;
+            wiringRepo.SaveWiringStepForJob(currentStep);
+
+            return ContinueStep(targetStep.WiringID);
+        }
 
         //Linked to StopController
         [HttpPost]
         public IActionResult Reassignment(WiringViewModel viewModel)
         {
-            if (VerifyAdminPermissions(viewModel.Wiring.WirerID) != Ok())
+            if (VerifyAdminPermissions(viewModel.Wiring.WiringID) != Ok())
                 return RedirectToAction("Home", "Index");
 
             Wiring wiring = wiringRepo.Wirings.FirstOrDefault(m => m.WiringID == viewModel.Wiring.WirerID);
@@ -782,7 +736,6 @@ namespace ProdFloor.Controllers
             TempData["message"] = $"You have reassinged the WIRER for the wiringjob PO# {po.PONumb} to T{viewModel.NewWirerID} and the station to {StationName}";
             return RedirectToAction("SearchTestJob");
         }
-
 
         public IActionResult ReturnFromComplete(int WiringId)
         {
@@ -990,11 +943,7 @@ namespace ProdFloor.Controllers
             WiringStepForJob currentStep = wiringRepo.WiringStepsForJobs.FirstOrDefault(m => m.WiringStepForJobID == currentStepID && m.Obsolete == false && m.Complete == false);
 
             //For Current step
-            if (currentStep.Start != DateTime.Now)
-            {
-                currentStep.Elapsed = GetElpasedAsDateTime(currentStep.Elapsed, currentStep.Start, DateTime.Now);
-            }
-
+            currentStep.Elapsed = GetElpasedAsDateTime(currentStep.Elapsed, currentStep.Start, DateTime.Now);
             currentStep.Start = DateTime.Now;
             currentStep.Stop = DateTime.Now;
             currentStep.Complete = true;
@@ -1009,16 +958,13 @@ namespace ProdFloor.Controllers
             WiringStepForJob currentStep = wiringRepo.WiringStepsForJobs.FirstOrDefault(m => m.WiringID == WiringId && m.Obsolete == false && m.Complete == false);
 
             //For Current step
-            if (currentStep.Start != DateTime.Now)
-            {
-                currentStep.Elapsed = GetElpasedAsDateTime(currentStep.Elapsed, currentStep.Start, DateTime.Now);
-            }
-
+            currentStep.Elapsed = GetElpasedAsDateTime(currentStep.Elapsed, currentStep.Start, DateTime.Now);
             currentStep.Start = DateTime.Now;
             currentStep.Stop = DateTime.Now;
             wiringRepo.SaveWiringStepForJob(currentStep);
 
         }
+
         public void RestarTimeStep(int WiringId)
         {
             Wiring wiring = wiringRepo.Wirings.FirstOrDefault(m => m.WiringID == WiringId);
@@ -1159,6 +1105,47 @@ namespace ProdFloor.Controllers
                 TempData["alert"] = $"alert-danger";
                 TempData["message"] = $"Error, el wiringJob ya se completo, contacte al Admin";
                 return RedirectToAction("Index", "Home");
+            }
+
+            return Ok();
+        }
+
+        public IActionResult VerifyWiringJobStatus(int WiringID)
+        {
+            bool Admin = GetCurrentUserRole("Admin").Result;
+            bool productionAdmin = GetCurrentUserRole("ProductionAdmin").Result;
+            int wirerID = GetCurrentUser().Result.EngID;
+
+            Wiring wiring = wiringRepo.Wirings.FirstOrDefault(m => m.WiringID == WiringID);
+            if (wiring == null)
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"Error, El WiringJob no existe, intente de nuevo o contacte al Admin";
+                return RedirectToAction("List");
+            }
+
+            StatusPO statusPO = jobRepo.StatusPOs.FirstOrDefault(m => m.POID == wiring.POID);
+            PO po = jobRepo.POs.FirstOrDefault(m => m.POID == wiring.POID);
+
+            if (wiring.WirerID != wirerID && !productionAdmin && !Admin)
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"Error, El WiringJob fue reasignado, intente de nuevo o contacte al Admin";
+                return RedirectToAction("List");
+            }
+            else if (statusPO.Status == "Waiting for PXP")
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"Error, el WiringJob con PO #{po.PONumb} ya esta terminado";
+
+                return RedirectToAction("List");
+            }
+            else if (statusPO.Status == "WR: Shift End" || statusPO.Status == "WR: Stopped" || statusPO.Status == "WR: Reassignment")
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"Error, el WiringJob con PO #{po.PONumb} tiene un paro";
+
+                return RedirectToAction("List");
             }
 
             return Ok();

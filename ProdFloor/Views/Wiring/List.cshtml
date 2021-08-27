@@ -53,7 +53,7 @@
                         @if (statusPO.Status == "WR: Adding Features" || statusPO.Status == "Wiring on progress")
                         {
                             <a asp-action="EditFeatures"
-                               asp-controller="Wiring" asp-route-Id="@t.WiringID">
+                               asp-controller="Wiring" asp-route-WiringID="@t.WiringID">
                                 @job.JobNum
                             </a>
                         }

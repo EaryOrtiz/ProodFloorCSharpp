@@ -1,0 +1,181 @@
+﻿@model ProdFloor.Models.ViewModels.Wiring.WiringViewModel
+@{
+    ViewBag.Title = "Steps For Job";
+    
+}  
+<div class="container-fluid">
+    <div class="row">
+        <div class="col justify-content-md-center">
+            <form asp-controller="Wiring" asp-action="StepsOnProgress" method="post">
+                <input type="hidden" asp-for="Wiring.WiringID" value="@Model.Wiring.WiringID" />
+                <input type="hidden" asp-for="StepsForJob.WiringStepForJobID" value="@Model.StepsForJob.WiringStepForJobID" />
+
+                <br />
+                <div class="container justify-content-md-center">
+
+                    <div class="row justify-content-md-center"><h2>@Model.JobNum</h2></div>
+                    <br />
+                    <div class="row justify-content-md-center"><h3>@Model.StepInfo.Stage</h3></div>
+                    <br />
+                    <div class="row justify-content-md-center">
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <h3>@Model.CurrentStepInStage of @Model.TotalStepsPerStage</h3>&nbsp;&nbsp;
+                        @if (Model.StopNC)
+                        {
+                            <!-- Button trigger no critical stops-->
+                            <button type="button" class="btn btn-light" data-toggle="modal" title="Tiene Un Paro Pendiente" data-target="#exampleModalreassign @Model.Wiring.WiringID" style="float:left;background-color:transparent">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </button>
+                            <!-- Modal -->
+                            <div class="modal fade" id="exampleModalreassign @Model.Wiring.WiringID" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLongTitle">Paros Pendientes</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <table class="table text-center align-content-center">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Razon</th>
+                                                        <th>Accion</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach (WiringStop Stop in Model.StopList)
+                                                    {
+                                                        <tr>
+                                                            <td>@Model.Reasons1List.FirstOrDefault(m => m.WiringReason1ID == Stop.Reason1).Description</td>
+                                                            <td><a class="btn btn-danger btn-sm" asp-controller="WiringStop"  asp-action="RestartWiringJob" asp-route-id="@Model.StopList.First(m => m.WiringID == Model.Wiring.WiringID).WiringStopID">Terminar Paro</a></td>
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancelar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <br />
+                    <div class="row justify-content-md-center"><h3>@Model.StepInfo.Description</h3></div>
+                </div>
+                <br />
+                <div class="justify-content-md-center text-center">
+                    <div class="btn-group row " style="position:center" role="group" aria-label="Basic example">
+                        <button type="submit" class="btn btn-primary" name="movement" value="previus" disabled="@(Model.StepsForJob.Consecutivo <= 1 ? true: false)">Atras</button>
+                        <button type="submit" class="btn btn-success" name="movement" value="next">Siguiente</button>
+                        <a class="btn btn-danger" asp-controller="WiringStop" asp-action="NewStop" asp-route-id="@Model.Wiring.WiringID">Paro</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div>
+            <button id="btnAllSteps" class="btn btn-light" type="button" data-toggle="collapse" data-target="#collapseStepsForJob" aria-expanded="false" aria-controls="collapseSteps" style="float:right">
+                <i class="fas fa-grip-lines"></i>
+            </button>
+            <div class="collapse" id="collapseStepsForJob">
+                <div style="overflow-y:scroll;height:70vh;">
+                    <div class="card card-body">
+                        @foreach (WiringStepForJob step in Model.StepsForJobList)
+                        {
+                            if (step.Complete)
+                            {
+                                <div class="form-group form-inline" style="margin-bottom:0.1em;padding-bottom:01em;">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">
+                                                <i class="fas fa-check-circle"></i>
+                                            </div>
+                                        </div>
+                                        @{ string descripcion = Model.StepList.FirstOrDefault(m => m.WiringStepID == step.WiringStepID).Description;}
+                                        <input name="StepDescription" class="form-control col-sm" value="@descripcion" readonly />
+                                        <div class="input-group-prepend">
+                                            @if (step.Consecutivo < Model.StepsForJob.Consecutivo)
+                                            {
+                                                <div class="input-group-text">
+                                                    <i class="fas fa-arrow-circle-right" data-toggle="modal" data-target="#stepModel1 @step.WiringStepForJobID"></i>
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <div class="input-group-text">
+                                                    <i class="fas fa-arrow-circle-right"></i>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="form-group form-inline">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">
+                                                <i class="fas fa-times-circle"></i>
+                                            </div>
+                                        </div>
+                                        @{ string descripcion = Model.StepList.FirstOrDefault(m => m.WiringStepID == step.WiringStepID).Description;}
+                                             <input name="StepDescription" class="form-control col-sm" value="@descripcion" readonly />
+                                        @if (step.Consecutivo < Model.StepsForJob.Consecutivo)
+                                        {
+                                            <div class="input-group-text">
+                                                <i class="fas fa-arrow-circle-right" data-toggle="modal" data-target="#stepModel1 @step.WiringStepForJobID"></i>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="input-group-text">
+                                                <i class="fas fa-arrow-circle-right"></i>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            }
+                            <!-- Modal -->
+                            <div class="modal fade" id="stepModel1 @step.WiringStepForJobID" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle1" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLongTitle1"><i class="fas fa-exclamation-triangle"></i>&nbsp;Warning</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            Estas seguro de que quieres regresar al paso #@step.Consecutivo?
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancelar</button>
+                                            <form asp-controller="Wiring" asp-action="CurrentStepsList" method="get">
+                                                <input type="hidden" asp-for="Wiring.WiringID" value="@Model.Wiring.WiringID" />
+                                                <input type="hidden" asp-for="StepsForJob.WiringStepForJobID" value="@Model.StepsForJob.WiringStepForJobID" />
+                                                <button type="submit" class="btn btn-primary btn-sm" name="targetStepID" value="@step.WiringStepForJobID">Go!</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <br />
+
+                </div>
+
+            </div>
+         </div>
+    </div>
+</div>
+@{ 
+    <script type="text/javascript">
+        $('#btnAllSteps').click(function () {
+            $(this).find('i').toggleClass('fa-grip-lines').toggleClass('fa-grip-lines-vertical');
+        });
+    </script>
+}

@@ -1592,7 +1592,6 @@ namespace ProdFloor.Controllers
                 "IN( select  Max(dbo.StepsForJobs.StepsForJobID ) from dbo.StepsForJobs where dbo.StepsForJobs.TestJobID = {0} group by dbo.StepsForJobs.Consecutivo)", viewModel.TestJob.TestJobID).ToList();
 
             StepsForJobList = StepsForJobList.Where(m => m.Obsolete == false).ToList();
-
             var AllStepsForJobInfo = testingRepo.Steps.Where(m => StepsForJobList.Any(s => s.StepID == m.StepID)).ToList();
 
             var currentStepForJob = StepsForJobList.FirstOrDefault(m => m.Consecutivo == viewModel.StepsForJob.Consecutivo);

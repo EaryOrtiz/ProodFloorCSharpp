@@ -1,0 +1,25 @@
+﻿@model ProdFloor.Models.ViewModels.Wiring.WiringViewModel
+@{
+    ViewBag.Title = "New Feature";
+}
+<form asp-controller="WiringPXP" asp-action="AddPXPError" method="post">
+    <input type="hidden" asp-for="Wiring.WiringID" />
+
+    <div class="text-center container justify-content-md-center">
+        <h3>Añade un caracteristica</h3>
+    </div>
+    <br />
+    <div class="form-group row text-center justify-content-md-center">
+        <div>
+            <wiring-opcion-select selected-value="Model.Feature.WiringOptionID" asp-for="@Model.Feature.WiringOptionID"></wiring-opcion-select>
+            <span asp-validation-for="Feature.WiringFeaturesID" class="text-danger"></span>
+        </div>
+    </div>
+    <br />
+    <div class="justify-content-md-center text-center">
+        <div class="btn-group row " style="position:center" role="group" aria-label="Basic example">
+            <button class="btn btn-primary" type="submit">Guardar</button>
+            <a class="btn btn-lg btn-secondary" asp-action="EditFeatures" asp-route-WiringID="@Model.Wiring.WiringID">Cancelar</a>
+        </div>
+    </div>
+</form>

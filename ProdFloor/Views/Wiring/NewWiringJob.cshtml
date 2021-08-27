@@ -1,10 +1,10 @@
 ﻿@model ProdFloor.Models.ViewModels.Wiring.WiringViewModel
 @{
-    ViewBag.Title = "Search Job";
+    ViewBag.Title = "New Wiring Job";
 
 }
 <br />
-{<form asp-controller="Wiring" asp-action="NewWiringJob" method="post">
+<form asp-controller="Wiring" asp-action="NewWiringJob" method="post">
      <div class="row col-12">
          <div class="form-group row">
              <label asp-for="@Model.Wiring.StationID" class="col-4 col-form-label"></label>
