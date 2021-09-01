@@ -37,6 +37,7 @@ namespace ProdFloor.Models.ViewModels.Wiring
         public List<WiringStepForJob> StepsForJobList { get; set; }
         public List<Station> StationsList { get; set; }
         public List<PO> POList { get; set; }
+        public List<StatusPO> StatusPOList { get; set; }
         public List<WiringStop> StopList { get; set; }
         public List<WiringReason1> Reasons1List { get; set; }
         public List<WiringReason2> Reasons2List { get; set; }

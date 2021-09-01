@@ -11,6 +11,8 @@ namespace ProdFloor.Models.ViewModels.Wiring
         public List<WiringStop> StopList { get; set; }
         public List<Station> StationsList { get; set; }
         public List<JobType> JobTypeList { get; set; }
+        public List<Models.Wiring> WiringList { get; set; }
+        public List<PO> POList { get; set; }
         public List<WiringReason1> Reasons1List { get; set; }
         public List<WiringReason2> Reasons2List { get; set; }
         public List<WiringReason3> Reasons3List { get; set; }

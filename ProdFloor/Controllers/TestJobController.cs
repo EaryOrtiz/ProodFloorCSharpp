@@ -1726,6 +1726,7 @@ namespace ProdFloor.Controllers
         }
 
 
+
         [HttpPost]
         public IActionResult Delete(int ID)
         {

@@ -90,6 +90,10 @@ namespace ProdFloor.Controllers
             searchViewModel.Reasons3List = wiringRepo.WiringReasons3.ToList();
             searchViewModel.Reasons4List = wiringRepo.WiringReasons4.ToList();
             searchViewModel.Reasons5List = wiringRepo.WiringReasons5.ToList();
+
+            searchViewModel.WiringList = wiringRepo.Wirings.Where(m => searchViewModel.StopList.Any(n => n.WiringID == m.WiringID)).ToList();
+            searchViewModel.POList = jobRepo.POs.Where(m => searchViewModel.WiringList.Any(n => n.POID == m.POID)).ToList();
+
             return View(searchViewModel);
         }
 
@@ -167,6 +171,7 @@ namespace ProdFloor.Controllers
         {
             Wiring wiring = wiringRepo.Wirings.FirstOrDefault(m => m.WiringID == ID);
             StatusPO statusPO = jobRepo.StatusPOs.FirstOrDefault(m => m.POID == wiring.POID);
+            PO po = jobRepo.POs.FirstOrDefault(m => m.POID == wiring.POID);
             Job job = jobRepo.Jobs.FirstOrDefault(m => m._PO.Any(n => n.POID == wiring.POID));
             int wirerID = GetCurrentUser().Result.EngID;
 
@@ -201,6 +206,7 @@ namespace ProdFloor.Controllers
                     viewModel.Stop = wiringRepo.WiringStops.Last(m => m.WiringID == wiring.WiringID && m.Reason5ID == 0 && m.Critical == true);
                     viewModel.Reason1Name = wiringRepo.PXPReasons.FirstOrDefault(m => m.PXPReasonID == viewModel.Stop.Reason1).Description;
                     viewModel.JobNum = job.JobNum;
+                    viewModel.PONum = po.PONumb;
 
                     return View("WaitingForRestar", viewModel);
 

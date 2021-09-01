@@ -180,7 +180,7 @@ namespace ProdFloor.Controllers
 
             StatusPO statusPO = jobRepo.StatusPOs.FirstOrDefault(m => m.POID == viewModel.Wiring.POID);
 
-            statusPO.Status = "WR: Adding Features";
+            statusPO.Status = "WR: Adding features";
             jobRepo.SaveStatusPO(statusPO);
 
             viewModel.PO = jobRepo.POs.FirstOrDefault(m => m.POID == viewModel.Wiring.POID);
@@ -545,7 +545,7 @@ namespace ProdFloor.Controllers
 
             StatusPO statusPO = jobRepo.StatusPOs.FirstOrDefault(m => m.POID == wiring.POID);
             PO po = jobRepo.POs.FirstOrDefault(m => m.POID == wiring.POID);
-            if (statusPO.Status != "WR: Adding Features" && statusPO.Status != "Wiring on progress")
+            if (statusPO.Status != "WR: Adding features" && statusPO.Status != "Wiring on progress")
             {
                 TempData["alert"] = $"alert-danger";
                 TempData["message"] = $"Error, el wiringJob ya se completo, contacte al Admin";
@@ -633,6 +633,48 @@ namespace ProdFloor.Controllers
             wiringRepo.SaveWiringStepForJob(currentStep);
 
             return ContinueStep(targetStep.WiringID);
+        }
+
+
+        [HttpPost]
+        public IActionResult Delete(int ID)
+        {
+            bool isProductionAdmin = GetCurrentUserRole("ProductionAdmin").Result;
+            bool isAdmin = GetCurrentUserRole("Admin").Result;
+
+            if (isAdmin == false && isProductionAdmin == false)
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"Error, no tiene permisos para realizar esta accion, contacte al Admin";
+                return RedirectToAction("Index", "Home");
+            }
+
+            Wiring wiring = wiringRepo.Wirings.FirstOrDefault(m => m.WiringID == ID);
+            if (wiring != null)
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"Error, el WiringJob no existe, contacte al Admin";
+                return RedirectToAction("Index", "Home");
+            }
+
+            StatusPO statusPO = jobRepo.StatusPOs.FirstOrDefault(m => m.POID == wiring.POID);
+            PO po = jobRepo.POs.FirstOrDefault(m => m.POID == wiring.POID);
+
+            Wiring wiringDeleted = wiringRepo.DeleteWiring(ID);
+            if (wiringDeleted != null)
+            {
+                TempData["message"] = $"Wirinjob with #PO {po.PONumb} was deleted";
+
+                if (statusPO.Status == "Wiring on progress" || statusPO.Status == "WR: Stopped" ||
+                    statusPO.Status == "WR: Reassignment" || statusPO.Status == "WR: Shift End" ||
+                    statusPO.Status == "Wiring for pxp" || statusPO.Status == "WR: Adding features")
+                {
+                    statusPO.Status = "Production";
+                    jobRepo.SaveStatusPO(statusPO);
+                }
+            }
+
+            return RedirectToAction("Index", "Home");
         }
 
         //Linked to StopController
@@ -745,7 +787,7 @@ namespace ProdFloor.Controllers
             Wiring wiring= wiringRepo.Wirings.FirstOrDefault(m => m.WiringID == WiringId);
             StatusPO statusPO = jobRepo.StatusPOs.FirstOrDefault(m => m.POID == wiring.POID);
             PO po = jobRepo.POs.FirstOrDefault(m => m.POID == wiring.POID);
-            bool isNotCompleted = statusPO.Status == "WR: Adding Features" || statusPO.Status == "Wiring on progress";
+            bool isNotCompleted = statusPO.Status == "WR: Adding features" || statusPO.Status == "Wiring on progress";
 
             if (isNotCompleted)
             {

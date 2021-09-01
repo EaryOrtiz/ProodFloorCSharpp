@@ -1,0 +1,25 @@
+﻿@model WiringStop
+@{
+    ViewBag.Title = "Stop";
+}
+<form asp-controller="WiringStop" asp-action="NewStop" method="post">
+    <input type="hidden" asp-for="WiringStopID" />
+    <input type="hidden" asp-for="WiringID" />
+    <div class="text-center container justify-content-md-center">
+        <h3>Razon del paro</h3>
+    </div>
+    <br />
+    <div class="form-group row text-center justify-content-md-center">
+        <div>
+            <reasons1-select selected-value="@Model.Reason1" class="form-control-lg" asp-for="Reason1"></reasons1-select>
+            <span asp-validation-for="Reason1" class="text-danger"></span>
+        </div>
+    </div>
+    <br />
+    <div class="justify-content-md-center text-center">
+        <div class="btn-group row " style="position:center" role="group" aria-label="Basic example">
+            <button class="btn btn-primary" type="submit">Save</button>
+            <a asp-action="ContinueStep" asp-controller="Wiring" asp-route-wiringID="@Model.WiringID" class="btn btn-secondary">Cancel</a>
+        </div>
+    </div>
+</form>
