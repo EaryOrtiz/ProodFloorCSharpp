@@ -12,7 +12,7 @@
                 JobType
             </th>
             <th scope="col">
-                Technician
+                Wirer
             </th>
             <th scope="col">
                 Status
@@ -55,21 +55,20 @@
                         @Model.StationsList.FirstOrDefault(m => m.StationID == j.StationID).Label
                     </td>
                     <td>
-                        <form asp-action="EditFeatures" asp-controller="TestJob" method="get">
-                            <button type="submit" value="@j.TestJobID" name="ID" class="btn btn-light" data-tooltip="tooltip" data-placement="top" title="Continue Form"
+                        <form asp-action="EditFeatures" asp-controller="Wiring" method="get">
+                            <button type="submit" value="@j.WiringID" name="ID" class="btn btn-light" data-tooltip="tooltip" data-placement="top" title="Continue adding features"
                                     style="float:left;background-color:transparent">
                                 <i class="fas fa-edit"></i>
                             </button>
                         </form>
 
-
                         <!-- Button trigger modal -->
-                        <button type="button" class="btn btn-light" style="float:left;background-color:transparent" data-toggle="modal" data-target="#delete @j.TestJobID" data-tooltip="tooltip" data-placement="top" title="Delete TestJob">
+                        <button type="button" class="btn btn-light" style="float:left;background-color:transparent" data-toggle="modal" data-target="#delete @j.WiringID" data-tooltip="tooltip" data-placement="top" title="Delete Wiring">
                             <i class="fas fa-trash-alt"></i>
                         </button>
                         <!-- Modal -->
-                        <form asp-action="Delete" asp-controller="TestJob" method="post" asp-route-Id="@j.TestJobID">
-                            <div class="modal fade" id="delete @j.TestJobID" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <form asp-action="Delete" asp-controller="Wiring" method="post" asp-route-Id="@j.WiringID">
+                            <div class="modal fade" id="delete @j.WiringID" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -79,7 +78,7 @@
                                             </button>
                                         </div>
                                         <div class="modal-body">
-                                            Are you sure want to delete permanently this Testjob with PO #@j.SinglePO?
+                                            Are you sure want to delete permanently this Wiring with PO #@po.PONumb?
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
