@@ -38,6 +38,119 @@ namespace ProdFloor.Controllers
             _env = env;
         }
 
+        public IActionResult AdminDashboard(string Clean, string jobNumber, string jobnumb = "", int MyJobsPage = 1, int PendingToCrossJobPage = 1, int OnCrossJobPage = 1)
+        {
+            if (!string.IsNullOrEmpty(jobnumb)) jobNumber = jobnumb;
+            if (!string.IsNullOrEmpty(jobNumber)) jobnumb = jobNumber;
+            if (!string.IsNullOrEmpty(Clean))
+            {
+                RedirectToAction("SearchTestJob", "TestJob");
+                jobnumb = "";
+            }
+
+            List<Wiring> WiringsOnProgress = new List<Wiring>();
+            List<Wiring> WiringsCompleted = new List<Wiring>();
+            List<Wiring> WiringsToBeStart = new List<Wiring>();
+            List<Wiring> wiringList = new List<Wiring>();
+            List<Wiring> PoList = new List<Wiring>();
+            List<Wiring> StatusPOList = new List<Wiring>();
+            List<Job> jobList = jobRepo.Jobs.Where(m => m.JobNum.Contains(jobnumb)).ToList();
+
+            foreach (Job job in jobList)
+            {
+                PO poByJob = jobRepo.POs.FirstOrDefault(m => m.JobID == job.JobID);
+                Wiring wiring = wiringRepo.Wirings.FirstOrDefault(m => m.POID == poByJob.POID);
+
+                if (wiring != null) wiringList.Add(wiring);
+            }
+
+            //WiringsToBeStart
+            List<StatusPO> statusPOsToBeStart = jobRepo.StatusPOs.Where(m => m.Status == "WR: Adding fetaures").ToList();
+
+            //WiringsOnProgress
+            List<StatusPO> statusPOsOnProgress = jobRepo.StatusPOs.Where(s => s.Status == "Wiring on progress" || s.Status == "WR: Reassignment"
+                                                                           || s.Status == "WR: Stopped" || s.Status == "WR: Shift End").ToList();
+
+            //WiringsCompleted
+            List<StatusPO> statusPOsCompleted = jobRepo.StatusPOs.Where(m => m.Status == "Waiting for PXP" || m.Status == "PXP on progress").ToList();
+
+            if (wiringList != null && wiringList.Count > 0)
+            {
+                WiringsToBeStart = wiringList.Where(m => statusPOsToBeStart.Any(n => n.POID == m.POID)).ToList();
+
+                WiringsOnProgress = wiringList.Where(m => statusPOsOnProgress.Any(n => n.POID == m.POID)).ToList();
+
+                WiringsCompleted = wiringList.Where(m => statusPOsToBeStart.Any(n => n.POID == m.POID))
+                                             .Where(m => (m.CompletedDate.AddDays(-2) < (DateTime.Now))).OrderBy(s => s.CompletedDate).ToList();
+
+            }
+            else
+            {
+                WiringsToBeStart = wiringRepo.Wirings.Where(m => statusPOsToBeStart.Any(n => n.POID == m.POID)).ToList();
+
+                WiringsOnProgress = wiringRepo.Wirings.Where(m => statusPOsOnProgress.Any(n => n.POID == m.POID)).ToList();
+
+                WiringsCompleted = wiringRepo.Wirings.Where(m => statusPOsToBeStart.Any(n => n.POID == m.POID))
+                                             .Where(m => (m.CompletedDate.AddDays(-2) < (DateTime.Now))).OrderBy(s => s.CompletedDate).ToList();
+            }
+
+            WiringViewModel viewModel = new WiringViewModel
+            {
+                WiringJobIncompletedList = WiringsToBeStart
+                    .OrderBy(p => p.WirerID)
+                    .Skip((MyJobsPage - 1) * 5)
+                    .Take(5).ToList(),
+                WiringJobWorkingOnItList = WiringsOnProgress
+                    .OrderBy(p => p.WirerID)
+                    .Skip((PendingToCrossJobPage - 1) * 5)
+                    .Take(5).ToList(),
+                WiringJobCompletedList = WiringsCompleted
+                    .OrderBy(p => p.WirerID)
+                    .Skip((OnCrossJobPage - 1) * 5)
+                    .Take(5).ToList(),
+
+                JobList = jobRepo.Jobs.ToList(),
+                JobTypeList = itemRepo.JobTypes.ToList(),
+                StationsList = testRepo.Stations.ToList(),
+                StatusPOList = jobRepo.StatusPOs.ToList(),
+                StepList = wiringRepo.WiringSteps.ToList(),
+                StepsForJobList = wiringRepo.WiringStepsForJobs.ToList(),
+                StopList = wiringRepo.WiringStops.Where(m => m.Reason1 != 980 && m.Reason1 != 981 && m.Reason2 == 0).ToList(),
+                
+                PagingInfoIncompleted = new PagingInfo
+                {
+                    CurrentPage = MyJobsPage,
+                    ItemsPerPage = 5,
+                    JobNumb = jobnumb,
+                    TotalItems = WiringsToBeStart.Count()
+                },
+                PagingInfoWorkingOnIt = new PagingInfo
+                {
+                    CurrentPage = PendingToCrossJobPage,
+                    JobNumb = jobnumb,
+                    ItemsPerPage = 5,
+                    TotalItems = WiringsOnProgress.Count()
+                },
+                PagingInfoCompleted = new PagingInfo
+                {
+                    CurrentPage = OnCrossJobPage,
+                    ItemsPerPage = 5,
+                    JobNumb = jobnumb,
+                    TotalItems = WiringsCompleted.Count()
+                },
+
+            };
+
+            if (string.IsNullOrEmpty(jobNumber))
+                return View(viewModel);
+            if (wiringList.Count > 0 && wiringList[0] != null)
+                return View(viewModel);
+
+            TempData["message"] = $"Does not exist any job with the JobNum #{jobNumber}, please try again.";
+            TempData["alert"] = $"alert-danger";
+            return View(viewModel);
+        }
+
         public ViewResult List(int MyJobsPage = 1, int OnCrossJobPage = 1, int PendingToCrossJobPage = 1)
         {
             AppUser currentUser = GetCurrentUser().Result;
@@ -93,6 +206,41 @@ namespace ProdFloor.Controllers
                     TotalItems = DummyPendingToCrossJobList.Count(),
                     sort = "deafult"
                 },
+            });
+        }
+
+        public ViewResult MyWirings(int MyJobsPage = 1, int OnCrossJobPage = 1, int PendingToCrossJobPage = 1)
+        {
+            AppUser currentUser = GetCurrentUser().Result;
+
+            List<Wiring> MyWiringList = wiringRepo.Wirings.Where(j => j.WirerID == currentUser.EngID).ToList();
+
+            List<StatusPO> MyStatusPOList = jobRepo.StatusPOs
+                                                .Where(m => MyWiringList.Any(n => n.POID == m.POID)).ToList();
+
+            List<PO> OnProgressPOsList = jobRepo.POs.Where(m => MyStatusPOList.Any(n => n.POID == m.POID))
+                                                    .ToList();
+
+            List<Job> MyjobsList = jobRepo.Jobs.Where(m => OnProgressPOsList.Any(n => n.JobID == m.JobID))
+                                                .OrderBy(n => n.LatestFinishDate).ToList();
+
+            List<Job> DummyOnCrossJobsList = new List<Job>();
+            List<Job> DummyPendingToCrossJobList = new List<Job>();
+
+            return View(new WiringViewModel
+            {
+                WiringJobList = MyWiringList.Skip((MyJobsPage - 1) * 5).Take(5).ToList(),
+                PagingInfo = new PagingInfo
+                {
+                    CurrentPage = MyJobsPage,
+                    ItemsPerPage = 5,
+                    TotalItems = MyWiringList.Count(),
+                },
+                JobList = jobRepo.Jobs.ToList(),
+                StatusPOList = jobRepo.StatusPOs.ToList(),
+                JobTypeList = itemRepo.JobTypes.ToList(),
+                StationsList = testRepo.Stations.ToList(),
+
             });
         }
 

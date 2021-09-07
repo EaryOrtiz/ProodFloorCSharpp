@@ -1,0 +1,23 @@
+﻿@model ProdFloor.Models.ViewModels.Wiring.WiringViewModel
+@{
+    ViewBag.Title = "Wiring Jobs";
+}
+<div class="row" style="padding-right:20px">
+    <h2 class="col-sm-10">
+        My Wirings Jobs
+    </h2>
+</div>
+<br />
+<br />
+
+@Html.Partial("MyWiringsSummary", Model)
+
+@if (Model.WiringJobList.Count() > 0)
+{
+    <coool-pagination-all page-model="@Model.PagingInfo" page-action="MyWirings" page-classes-enabled="true"
+                          page-class="btn" page-class-normal="btn-secondary"
+                          page-class-selected="btn-dark"
+                          class="btn-group pull-right m-1">
+    </coool-pagination-all>
+}
+
