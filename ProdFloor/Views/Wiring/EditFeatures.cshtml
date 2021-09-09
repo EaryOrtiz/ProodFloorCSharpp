@@ -5,18 +5,19 @@
 }
 <br />
 <form asp-action="SaveFeatures" method="post">
-<div class="row">
-    <div class="col-8">
-         @Html.Partial("FeatureList", Model)
+    <input type="hidden" asp-for="Wiring.WiringID" />
+    <div class="row">
+        <div class="col-8">
+            @Html.Partial("FeatureList", Model)
+        </div>
     </div>
-</div>
-<div class="text-center">
-    <div class="btn-group">
-        <button type="submit" class="btn btn-lg btn-info">Guardar</button>
-        <a asp-action="AddFeature" class="btn btn-lg btn-success"
-            asp-route-Id="@Model.Wiring.WiringID">
-            Añadir Error
-         </a>
+    <div class="text-center">
+        <div class="btn-group">
+            <button type="submit" class="btn btn-lg btn-info">Guardar</button>
+            <a asp-action="AddFeature" class="btn btn-lg btn-success"
+               asp-route-WiringID="@Model.Wiring.WiringID">
+                Añadir Caracteristica
+            </a>
             <a class="btn btn-lg btn-secondary" asp-action="List">Regresar</a>
         </div>
     </div>

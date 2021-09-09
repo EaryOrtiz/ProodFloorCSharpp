@@ -217,11 +217,9 @@ namespace ProdFloor.Controllers
 
             if (kitting) return RedirectToAction("NewPrintable", "PlanningReport");
 
-            if (ProdctionAdmin) return RedirectToAction("PXPProductionDashboard", "WiringPXP");
+            if (ProdctionAdmin) return RedirectToAction("AdminDashboard", "Wiring");
 
-            if (wirerPXP) return RedirectToAction("PXPDashboard", "WiringPXP");
-
-            if (wirer) return RedirectToAction("ProductionAdminDash", "Wiring");
+            if (wirer || wirerPXP) return RedirectToAction("List", "Wiring");
 
             
 
@@ -983,9 +981,9 @@ namespace ProdFloor.Controllers
             return JobType;
         }
 
-        public ViewResult SearchByPO()
+        public ViewResult SearchByPO(string side = "1")
         {
-            return View(new DashboardIndexViewModel());
+            return View(new DashboardIndexViewModel {Side = side });
         }
 
         [HttpPost]
@@ -1076,7 +1074,7 @@ namespace ProdFloor.Controllers
 
                     return RedirectToAction("NewTestJob", "TestJob", onePO.PONumb);
                 }
-                else if (wirerPXP)
+                else if (wirerPXP && viewModel.Side == "1")
                 {
                    
                     WiringPXP WiringPXPWithSamePO = wiringRepo.WiringPXPs.FirstOrDefault(m => m.SinglePO == onePO.POID);
@@ -1098,7 +1096,7 @@ namespace ProdFloor.Controllers
                     return RedirectToAction("NewWiringPXP", "WiringPXP", new { PONumb = viewModel.POJobSearch });
 
                 }
-                else if (wirer)
+                else if (wirer && viewModel.Side == "2")
                 {
 
                     Wiring WiringWithSamePO = wiringRepo.Wirings.FirstOrDefault(m => m.POID == onePO.POID);
@@ -1117,7 +1115,7 @@ namespace ProdFloor.Controllers
                     }
 
 
-                    return RedirectToAction("NewWiringPXP", "WiringPXP", new { PONumb = viewModel.POJobSearch });
+                    return RedirectToAction("NewWiringJob", "Wiring", new { PONumb = viewModel.POJobSearch });
 
                 }
                 else
@@ -1166,6 +1164,7 @@ namespace ProdFloor.Controllers
             TempData["message"] = $"Algo salio mal xD";
             return RedirectToAction("SearchByPO", viewModel);
         }
+
 
         public int CreateDummyByPlanning(PlanningReportRow reportRow)
         {

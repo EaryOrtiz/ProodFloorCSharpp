@@ -15,6 +15,8 @@ namespace ProdFloor.Models.ViewModels
         public PagingInfo ActiveJobsPagingInfo { get; set; }
         public List<JobType> JobTypesList { get; set; }
 
+        public string Side { get; set; }
+
         public List<AppUser> users { get; set; }
 
 

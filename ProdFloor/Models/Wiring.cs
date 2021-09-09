@@ -26,7 +26,7 @@ namespace ProdFloor.Models
         public List<WiringStop> _WiringStops { get; set; }
         public List<WiringStepForJob> _WiringStepsForJobs { get; set; }
         public List<WirersInvolved> _WirersInvolved { get; set; }
-        public WiringFeatures _WiringFeatures { get; set; }
+        public List<WiringFeatures> _WiringFeatures { get; set; }
     }
 
     public class WirersInvolved
