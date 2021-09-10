@@ -561,12 +561,10 @@ namespace ProdFloor.Controllers
             Wiring wiring = wiringRepo.Wirings.FirstOrDefault(m => m.WiringID == wiringID);
             StatusPO statusPO = jobRepo.StatusPOs.FirstOrDefault(m => m.POID == wiring.POID);
 
-
             bool Admin = GetCurrentUserRole("Admin").Result;
             bool productionAdmin = GetCurrentUserRole("ProductionAdmin").Result;
             bool isNotSameEngineer = GetCurrentUser().Result.EngID != wiring.WirerID;
             bool istCompleted = statusPO.Status == "Waiting for PXP";
-
 
             List<WiringStepForJob> StepsForJobList = wiringRepo.WiringStepsForJobs.Where(m => m.WiringID == wiring.WiringID && m.Obsolete == false)
                                                                             .OrderBy(m => m.Consecutivo).ToList();
@@ -578,7 +576,7 @@ namespace ProdFloor.Controllers
             viewModel.JobNum = jobRepo.Jobs.FirstOrDefault(m => m.JobID == viewModel.PO.JobID).JobNum;
             viewModel.currentStep = StepsForJobList.FirstOrDefault(m => m.Complete == false);
             viewModel.StepsForJob = viewModel.currentStep;
-            viewModel.prevStep = StepsForJobList.FirstOrDefault(m => m.Complete == false && m.Consecutivo == (viewModel.currentStep.Consecutivo - 1));
+            viewModel.prevStep = StepsForJobList.FirstOrDefault(m => m.Complete == true && m.Consecutivo == (viewModel.currentStep.Consecutivo - 1));
             viewModel.nextStep = StepsForJobList.FirstOrDefault(m => m.Complete == false && m.Consecutivo == (viewModel.currentStep.Consecutivo + 1));
             viewModel.StepInfo = StepsInfoList.FirstOrDefault(m => m.WiringStepID == viewModel.currentStep.WiringStepID);
             
@@ -591,7 +589,7 @@ namespace ProdFloor.Controllers
                                                           .Where(m => m.Complete == true).Count() + 1;
             viewModel.StopNC = wiringRepo.WiringStops.Where(m => m.WiringID == wiring.WiringID && m.Reason1 != 980 && m.Reason1 != 981)
                                                      .Where(m => m.Reason2 == 0 && m.Critical == false).Any();
-
+            SaveTimeStep(wiring.WiringID);
             return View("StepsOnProgress", viewModel);
         }
 
@@ -606,7 +604,7 @@ namespace ProdFloor.Controllers
             int stepsLeft = wiringRepo.WiringStepsForJobs.Where(m => m.WiringID == viewModel.Wiring.WiringID && m.Obsolete == false && m.Complete == false).Count();
 
             if (movement == "previus")
-                PreviusStep(viewModel.prevStep.WiringStepID, viewModel.currentStep.WiringStepID);
+                PreviusStep(viewModel.prevStep.WiringStepForJobID, viewModel.currentStep.WiringStepForJobID);
 
             if (movement == "next")
             {
@@ -622,7 +620,7 @@ namespace ProdFloor.Controllers
 
             stepsLeft = wiringRepo.WiringStepsForJobs.Where(m => m.WiringID == viewModel.Wiring.WiringID && m.Obsolete == false && m.Complete == false).Count();
 
-            if (stepsLeft > 1)
+            if (stepsLeft > 0)
                 return RedirectToAction("ContinueStep", new { WiringID = wiring.WiringID });
 
             wiring.CompletedDate = DateTime.Now;
@@ -631,7 +629,7 @@ namespace ProdFloor.Controllers
             statusPO.Status = "Waiting for PXP";
             jobRepo.SaveStatusPO(statusPO);
 
-            TempData["message"] = $"El WiringJob {po.PONumb} se ha completado con exito!";
+            TempData["message"] = $"El WiringJob con el PO #{po.PONumb} se ha completado con exito!";
             TempData["alert"] = $"alert-success";
             return RedirectToAction("List");
 
@@ -1125,15 +1123,23 @@ namespace ProdFloor.Controllers
 
         public void NextStep(int currentStepID)
         {
-            WiringStepForJob currentStep = wiringRepo.WiringStepsForJobs.FirstOrDefault(m => m.WiringStepForJobID == currentStepID && m.Obsolete == false && m.Complete == false);
-
             //For Current step
+            WiringStepForJob currentStep = wiringRepo.WiringStepsForJobs.FirstOrDefault(m => m.WiringStepForJobID == currentStepID && m.Obsolete == false && m.Complete == false);
             currentStep.Elapsed = GetElpasedAsDateTime(currentStep.Elapsed, currentStep.Start, DateTime.Now);
             currentStep.Start = DateTime.Now;
             currentStep.Stop = DateTime.Now;
             currentStep.Complete = true;
             wiringRepo.SaveWiringStepForJob(currentStep);
 
+            //For Next step
+            WiringStepForJob NextStep = wiringRepo.WiringStepsForJobs.FirstOrDefault(m => m.WiringID == currentStep.WiringID && m.Obsolete == false && m.Complete == false);
+            if(NextStep != null)
+            {
+                NextStep.Start = DateTime.Now;
+                NextStep.Stop = DateTime.Now;
+                wiringRepo.SaveWiringStepForJob(NextStep);
+            }
+   
         }
 
         public void SaveTimeStep(int WiringId)

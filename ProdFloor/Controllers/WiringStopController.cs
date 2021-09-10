@@ -148,7 +148,7 @@ namespace ProdFloor.Controllers
 
                 WiringStopViewModel viewModel = new WiringStopViewModel();
                 viewModel.Stop = wiringRepo.WiringStops.Last(m => m.WiringID == wiring.WiringID && m.Reason1 == Stop.Reason1 && m.Reason5ID == 0);
-                viewModel.Reason1Name = wiringRepo.PXPReasons.FirstOrDefault(m => m.PXPReasonID == Stop.Reason1).Description;
+                viewModel.Reason1Name = wiringRepo.WiringReasons1.FirstOrDefault(m => m.WiringReason1ID == viewModel.Stop.Reason1).Description;
                 viewModel.JobNum = job.JobNum;
 
 
@@ -204,7 +204,7 @@ namespace ProdFloor.Controllers
                     }
                     WiringStopViewModel viewModel = new WiringStopViewModel();
                     viewModel.Stop = wiringRepo.WiringStops.Last(m => m.WiringID == wiring.WiringID && m.Reason5ID == 0 && m.Critical == true);
-                    viewModel.Reason1Name = wiringRepo.PXPReasons.FirstOrDefault(m => m.PXPReasonID == viewModel.Stop.Reason1).Description;
+                    viewModel.Reason1Name = wiringRepo.WiringReasons1.FirstOrDefault(m => m.WiringReason1ID == viewModel.Stop.Reason1).Description;
                     viewModel.JobNum = job.JobNum;
                     viewModel.PONum = po.PONumb;
 

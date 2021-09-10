@@ -9,7 +9,10 @@
             <form asp-controller="Wiring" asp-action="StepsOnProgress" method="post">
                 <input type="hidden" asp-for="Wiring.WiringID" value="@Model.Wiring.WiringID" />
                 <input type="hidden" asp-for="currentStep.WiringStepForJobID" value="@Model.currentStep.WiringStepForJobID" />
-
+                @if (Model.currentStep.Consecutivo > 1)
+                {
+                    <input type="hidden" asp-for="prevStep.WiringStepForJobID" value="@Model.prevStep.WiringStepForJobID" />
+                }
                 <br />
                 <div class="container justify-content-md-center">
 
@@ -48,7 +51,7 @@
                                                     {
                                                         <tr>
                                                             <td>@Model.Reasons1List.FirstOrDefault(m => m.WiringReason1ID == Stop.Reason1).Description</td>
-                                                            <td><a class="btn btn-danger btn-sm" asp-controller="WiringStop"  asp-action="RestartWiringJob" asp-route-id="@Model.StopList.First(m => m.WiringID == Model.Wiring.WiringID).WiringStopID">Terminar Paro</a></td>
+                                                            <td><a class="btn btn-danger btn-sm" asp-controller="WiringStop" asp-action="RestartWiringJob" asp-route-id="@Model.StopList.First(m => m.WiringID == Model.Wiring.WiringID).WiringStopID">Terminar Paro</a></td>
                                                         </tr>
                                                     }
                                                 </tbody>
