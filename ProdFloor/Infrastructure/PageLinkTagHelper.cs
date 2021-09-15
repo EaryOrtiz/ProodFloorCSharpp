@@ -5850,7 +5850,7 @@ namespace ProdFloor.Infrastructure
                 ItemID = selectedItem.WiringOptionID;
             }
 
-            IQueryable<WiringOption> items = wiringRepo.WiringOptions.OrderBy(s => s.Description).AsQueryable();
+            IQueryable<WiringOption> items = wiringRepo.WiringOptions.Where(m => m.isDeleted == false).OrderBy(s => s.Description).AsQueryable();
             foreach (WiringOption item in items)
             {
                 TagBuilder tag = new TagBuilder("option");

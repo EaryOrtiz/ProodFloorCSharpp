@@ -1,10 +1,10 @@
 ﻿@model ProdFloor.Models.ViewModels.Wiring.WiringStopViewModel
 @{
     ViewBag.Title = "Restart WiringJob";
-    <script src="~/Scripts/CascadingR1R2R3R4R5.js" type="text/javascript"></script>
+    <script src="~/Scripts/CascadingWiringR1R2R3R4R5.js" type="text/javascript"></script>
 }
 <div class="m-1 p-1" style="background-color:#1B2831;"><h4 style="color:white">Restart Job</h4></div>
-<form asp-action="RestarTestJob" method="post">
+<form asp-action="RestartWiringJob" method="post">
     <input type="hidden" asp-for="Stop.WiringStopID" />
     <input type="hidden" asp-for="Stop.WiringID" />
     <input type="hidden" asp-for="Stop.StartDate" />

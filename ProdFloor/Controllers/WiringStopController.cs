@@ -152,7 +152,7 @@ namespace ProdFloor.Controllers
                 viewModel.JobNum = job.JobNum;
 
 
-                statusPO.Status = "Wiring: Stopped";
+                statusPO.Status = "WR: Stopped";
                 jobRepo.SaveStatusPO(statusPO);
 
                 return View("WaitingForRestar", viewModel);
@@ -167,9 +167,9 @@ namespace ProdFloor.Controllers
 
         }
 
-        public IActionResult WaitingForRestar(int ID)
+        public IActionResult WaitingForRestar(int WiringID)
         {
-            Wiring wiring = wiringRepo.Wirings.FirstOrDefault(m => m.WiringID == ID);
+            Wiring wiring = wiringRepo.Wirings.FirstOrDefault(m => m.WiringID == WiringID);
             StatusPO statusPO = jobRepo.StatusPOs.FirstOrDefault(m => m.POID == wiring.POID);
             PO po = jobRepo.POs.FirstOrDefault(m => m.POID == wiring.POID);
             Job job = jobRepo.Jobs.FirstOrDefault(m => m._PO.Any(n => n.POID == wiring.POID));
@@ -200,7 +200,7 @@ namespace ProdFloor.Controllers
                         statusPO.Status = "Wiring on progress";
                         jobRepo.SaveStatusPO(statusPO);
 
-                        return wiringController.ContinueStep(wiring.WiringID);
+                        return RedirectToAction("ContinueStep", "Wiring", new { WiringID = wiring.WiringID });
                     }
                     WiringStopViewModel viewModel = new WiringStopViewModel();
                     viewModel.Stop = wiringRepo.WiringStops.Last(m => m.WiringID == wiring.WiringID && m.Reason5ID == 0 && m.Critical == true);
@@ -258,7 +258,7 @@ namespace ProdFloor.Controllers
                     wiringRepo.SaveWiringStop(CurrentStop);
                     statusPO.Status = "Wiring on progress";
                     jobRepo.SaveStatusPO(statusPO);
-                    return wiringController.ContinueStep(wiring.WiringID);
+                    return RedirectToAction("ContinueStep", "Wiring", new { WiringID = wiring.WiringID });
                 }
             }
             else
@@ -299,7 +299,7 @@ namespace ProdFloor.Controllers
             statusPO.Status = "Wiring on progress";
             jobRepo.SaveStatusPO(statusPO);
 
-            return wiringController.ContinueStep(wiring.WiringID);
+            return RedirectToAction("ContinueStep", "Wiring", new { WiringID = wiring.WiringID });
         }
 
         public IActionResult RestartReassignment(int WiringID)
@@ -369,7 +369,7 @@ namespace ProdFloor.Controllers
                 wiringRepo.SaveWirersInvolved(wirersInvolved);
             }
 
-            return wiringController.ContinueStep(wiring.WiringID);
+            return RedirectToAction("ContinueStep", "Wiring", new { WiringID = wiring.WiringID });
         }
 
         public IActionResult WRRestartShiftEnd(int WiringID)
@@ -424,7 +424,7 @@ namespace ProdFloor.Controllers
                     statusPO.Status = "Wiring on progress";
 
                     TempData["message"] = $"Shift end terminado con exito";
-                    wiringController.ContinueStep(WiringID);
+                    return RedirectToAction("ContinueStep", "Wiring", new { WiringID = wiring.WiringID });
                 }
 
                 TempData["message"] = $"Shift end terminado con exito";

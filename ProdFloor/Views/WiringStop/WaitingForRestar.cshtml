@@ -15,7 +15,8 @@
     <div class="row justify-content-md-center text-center">
         <div class="btn-group">
             <a class="btn btn-danger btn" asp-controller="WiringStop" asp-action="RestartWiringJob" asp-route-id="@Model.Stop.WiringStopID">Reiniciar</a>
-            <a class="btn btn-warning btn" asp-controller="WiringStop" asp-action="RestartWiringJob" asp-route-Critical="@false" asp-route-id="@Model.Stop.WiringStopID">Continuar sin terminar el paro</a>
+            <a class="btn btn-warning btn" asp-controller="WiringStop" asp-action="RestartWiringJob" asp-route-Critical="@false" 
+               asp-route-id="@Model.Stop.WiringStopID">Continuar sin terminar el paro</a>
         </div>
     </div>
 </div>
