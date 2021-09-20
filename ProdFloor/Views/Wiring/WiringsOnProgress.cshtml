@@ -87,19 +87,19 @@
                                             <span aria-hidden="true">&times;</span>
                                         </button>
                                     </div>
-                                    <form asp-action="Reassignment" asp-controller="Wiring" method="get">
+                                    <form asp-action="Reassignment" asp-controller="Wiring" method="post">
                                         <div class="modal-body">
                                             <table class="table text-center align-content-center">
                                                 <thead>
                                                     <tr>
-                                                        <th>Current Technician</th>
+                                                        <th>Current Wirer</th>
                                                         <th>Current Station</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     <tr>
                                                         <td><user-select selected-value="@j.WirerID" class="form-control form-control-sm" asp-for="@Model.NewWirerID" roles="Wirer"></user-select></td>
-                                                        <td><station-select select-for="Model.JobList.FirstOrDefault(m => m.JobID == po.JobID).JobTypeID" selected-value="@j.StationID" class="form-control form-control-sm" asp-for="@Model.NewStationID"></station-select></td>
+                                                        <td><station-select job-type="Wiring"  selected-value="@j.StationID" class="form-control form-control-sm" asp-for="@Model.NewStationID"></station-select></td>
                                                     </tr>
                                                 </tbody>
                                             </table>

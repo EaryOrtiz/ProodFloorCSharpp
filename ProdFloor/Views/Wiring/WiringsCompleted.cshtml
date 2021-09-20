@@ -75,11 +75,11 @@
                         </form>
 
                         <!-- Return Button trigger modal -->
-                        <button type="button" class="btn btn-light" style="float:left;background-color:transparent" data-toggle="modal" data-target="#ReturnFromComplete @j.WiringID" data-tooltip="tooltip" data-placement="top" title="Delete Wiring">
+                        <button type="button" class="btn btn-light" style="float:left;background-color:transparent" data-toggle="modal" data-target="#ReturnFromComplete @j.WiringID" data-tooltip="tooltip" data-placement="top" title="Return From Complete">
                             <i class="fas fa-undo"></i>
                         </button>
                         <!-- Modal -->
-                        <form asp-action="ReturnFromComplete" asp-controller="Wiring" method="post" asp-route-Id="@j.WiringID">
+                        <form asp-action="ReturnFromComplete" asp-controller="Wiring" method="post" asp-route-WiringId="@j.WiringID">
                             <div class="modal fade" id="ReturnFromComplete @j.WiringID" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                     <div class="modal-content">
@@ -108,7 +108,7 @@
                                 <i class="fas fa-trash-alt"></i>
                             </button>
                             <!-- Modal -->
-                            <form asp-action="FakeDelete" asp-controller="Wiring" method="post" asp-route-Id="@j.WiringID">
+                            <form asp-action="Delete" asp-controller="Wiring" method="post" asp-route-WiringId="@j.WiringID">
                                 <div class="modal fade" id="delete @j.WiringID" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered" role="document">
                                         <div class="modal-content">

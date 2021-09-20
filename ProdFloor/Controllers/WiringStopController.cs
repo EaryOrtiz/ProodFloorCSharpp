@@ -305,7 +305,7 @@ namespace ProdFloor.Controllers
         public IActionResult RestartReassignment(int WiringID)
         {
             Wiring wiring = wiringRepo.Wirings.FirstOrDefault(m => m.WiringID == WiringID);
-            if (wiring != null)
+            if (wiring == null)
             {
                 TempData["alert"] = $"alert-danger";
                 TempData["message"] = $"Error, el WiringJob no existe, contacte al Admin";
