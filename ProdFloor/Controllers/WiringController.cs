@@ -668,10 +668,14 @@ namespace ProdFloor.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
+            WiringStop stop = wiringRepo.WiringStops.FirstOrDefault(m => m.Reason1 != 980 & m.Reason1 != 981 && m.Reason2 == 0 && m.WiringID == wiring.WiringID);
+            if (stop != null)
+                return RedirectToAction("FinishPendingStops", "Stop", new { WiringID = wiring.WiringID });
+
             WiringViewModel viewModel = new WiringViewModel()
             {
                 Wiring = wiring,
-                StepsLeft = wiringRepo.WiringStepsForJobs.Where(m => m.WiringID == WiringID && m.Obsolete && m.Complete == false).Count(),
+                StepsLeft = wiringRepo.WiringStepsForJobs.Where(m => m.WiringID == WiringID && m.Obsolete == false && m.Complete == false).Count(),
             };
 
             return View(viewModel);
@@ -681,22 +685,29 @@ namespace ProdFloor.Controllers
         [HttpPost]
         public IActionResult JobCompletion(WiringViewModel viewModel)
         {
+            if(viewModel.ElapsedTimeHours == 0 && viewModel.ElapsedTimeMinutes == 0)
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"Error, minutos y horas en cero";
+                return View(viewModel);
+            }
 
             Wiring wiring = wiringRepo.Wirings.FirstOrDefault(m => m.WiringID == viewModel.Wiring.WiringID);
-            if (wiring != null)
+            if (wiring == null)
             {
                 TempData["alert"] = $"alert-danger";
                 TempData["message"] = $"Error, el WiringJob no existe, contacte al Admin";
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("AdminDashboard");
             }
 
             StatusPO statusPO = jobRepo.StatusPOs.FirstOrDefault(m => m.POID == wiring.POID);
             PO po = jobRepo.POs.FirstOrDefault(m => m.POID == wiring.POID);
-            if (statusPO.Status != "WR: Adding features" && statusPO.Status != "Wiring on progress")
+            if (statusPO.Status != "WR: Adding features" && statusPO.Status != "Wiring on progress" && statusPO.Status != "WR: Reassignment"
+                  && statusPO.Status != "WR: Stopped" && statusPO.Status != "WR: Shift End")
             {
                 TempData["alert"] = $"alert-danger";
                 TempData["message"] = $"Error, el wiringJob ya se completo, contacte al Admin";
-                return RedirectToAction("List");
+                return RedirectToAction("AdminDashboard");
             }
 
             List<WiringStop> otherStops = wiringRepo.WiringStops.Where(p => wiring.WiringID == p.WiringID && (p.Reason1 == 980 || p.Reason1 == 981))
@@ -756,7 +767,7 @@ namespace ProdFloor.Controllers
             jobRepo.SaveStatusPO(statusPO);
 
             TempData["message"] = $"You have completed the WiringJob PO# {po.PONumb}";
-            return RedirectToAction("SearchTestJob");
+            return RedirectToAction("AdminDashboard");
 
         }
 

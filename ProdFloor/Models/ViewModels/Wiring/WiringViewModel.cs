@@ -89,13 +89,11 @@ namespace ProdFloor.Models.ViewModels.Wiring
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}")]
         public DateTime FinishDate { get; set; }
 
-        [Required(ErrorMessage = "Please enter the hours to complete")]
-        [Range(1, 720, ErrorMessage = "The hours are out of range")]
+        [Range(0, 72, ErrorMessage = "The hours are out of range")]
         [Display(Name = "Hours to complete")]
         public double ElapsedTimeHours { get; set; }
 
-        [Range(1, 60, ErrorMessage = "The minutes are out of range")]
-        [Required(ErrorMessage = "Please enter the minutes to complete")]
+        [Range(0, 60, ErrorMessage = "The minutes are out of range")]
         [Display(Name = "Minutes to complete")]
         public double ElapsedTimeMinutes { get; set; }
     }

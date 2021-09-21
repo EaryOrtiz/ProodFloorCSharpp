@@ -2922,7 +2922,7 @@ namespace ProdFloor.Controllers
             List<StepsForJob> IncompleteStepsForJob = testingRepo.StepsForJobs.Where(m => m.TestJobID == testJob.TestJobID && m.Obsolete == false && m.Complete == false).OrderBy(m => m.Consecutivo).ToList();
             List<Step> IncompleteStepsForJobInfo = testingRepo.Steps.Where(m => IncompleteStepsForJob.Any(s => s.StepID == m.StepID)).ToList();
             double ExpectecTimeSUM = 0;
-            double ElapseHoursFromView = viewModel.ElapsedTimeHours + (viewModel.ElapsedTimeMinutes * 0.01666666666666666666666666666667);
+            double ElapseHoursFromView = jobCompletion.ElapsedTimeHours + (jobCompletion.ElapsedTimeMinutes * 0.01666666666666666666666666666667);
 
             foreach (Step step in IncompleteStepsForJobInfo)
             {
