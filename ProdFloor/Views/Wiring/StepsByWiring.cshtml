@@ -5,7 +5,7 @@
 <br />
 <div class="row" style="padding-right:20px">
     <h4 class="col-sm-10">
-        Steps for Job #@Model.Job.JobNum and PO #@Model.PO.PONumb
+        Steps of Job #@Model.Job.JobNum and PO #@Model.PO.PONumb
     </h4>
 </div>
 <div>
@@ -33,12 +33,6 @@
                 <th>
                     <label>Obsolete</label>
                 </th>
-                @if (User.IsInRole("Admin"))
-                {
-                    <th>
-                        <label>Options</label>
-                    </th>
-                }
             </tr>
         </thead>
         @foreach (var item in Model.StepsForJobList)
@@ -49,7 +43,7 @@
                     @Html.DisplayFor(m => item.Consecutivo)
                 </td>
                 <td>
-                    @Html.DisplayFor(m => Model.StepList.FirstOrDefault(s => s.StepID == item.StepID).Description)
+                    @Html.DisplayFor(m => Model.StepList.FirstOrDefault(s => s.WiringStepID == item.WiringStepID).Description)
                 </td>
                 <td>
                     @Html.DisplayFor(m => item.Start)
@@ -66,16 +60,6 @@
                 <td>
                     @Html.DisplayFor(m => item.Obsolete)
                 </td>
-                @if (User.IsInRole("Admin"))
-                {
-                    <td style="width:100px">
-
-                        <a asp-action="EditStepsForJob" asp-controller="Step" class="btn btn-sm btn-warning"
-                           asp-route-Id="@item.StepsForJobID">
-                            <i class="fas fa-edit"></i>
-                        </a>
-                    </td>
-                }
             </tr>
 
         }
@@ -83,8 +67,8 @@
 </div>
 @if (Model.StepsForJobList.Count > 0)
 {
-    <coool-pagination-test page-model="@Model.PagingInfo" page-action="AllStepsForJob" page-classes-enabled="true"
-                           page-class="btn" page-class-normal="btn-secondary" page-id="@Model.StepsForJobList[0].TestJobID"
+    <coool-pagination-test page-model="@Model.PagingInfo" page-action="StepsByWiring" page-classes-enabled="true"
+                           page-class="btn" page-class-normal="btn-secondary" page-id="@Model.StepsForJobList[0].WiringID"
                            page-class-selected="btn-dark"
                            class="btn-group pull-right m-1">
     </coool-pagination-test>

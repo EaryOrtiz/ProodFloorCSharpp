@@ -116,14 +116,14 @@
                             </div>
                         </div>
 
-                        <form asp-action="StepsFromWiringJob" asp-controller="Wiring" method="get">
-                            <button type="submit" value="@j.WiringID" name="WiringID" class="btn btn-light" data-tooltip="tooltip" data-placement="top" title="Steps from wiringjob"
+                        <form asp-action="StepsByWiring" asp-controller="Wiring" method="get">
+                            <button type="submit" value="@j.WiringID" name="ID" class="btn btn-light" data-tooltip="tooltip" data-placement="top" title="Steps from wiringjob"
                                     style="float:left;background-color:transparent">
                                 <i class="fas fa-shoe-prints"></i>
                             </button>
                         </form>
-                        <form asp-action="StopsFromWiringJob" asp-controller="Wiring" method="get">
-                            <button type="submit" value="@j.WiringID" name="WiringID" class="btn btn-light" data-tooltip="tooltip" data-placement="top" title="Stops from wiringjob"
+                        <form asp-action="StopsByWiring" asp-controller="Wiring" method="get">
+                            <button type="submit" value="@j.WiringID" name="ID" class="btn btn-light" data-tooltip="tooltip" data-placement="top" title="Stops from wiringjob"
                                     style="float:left;background-color:transparent">
                                 <i class="fas fa-hourglass-half"></i>
                             </button>

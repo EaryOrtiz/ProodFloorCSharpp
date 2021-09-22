@@ -117,7 +117,7 @@ namespace ProdFloor.Controllers
                 StepList = wiringRepo.WiringSteps.ToList(),
                 StepsForJobList = wiringRepo.WiringStepsForJobs.ToList(),
                 StopList = wiringRepo.WiringStops.Where(m => m.Reason1 != 980 && m.Reason1 != 981 && m.Reason2 == 0).ToList(),
-                
+
                 PagingInfoIncompleted = new PagingInfo
                 {
                     CurrentPage = MyJobsPage,
@@ -161,7 +161,7 @@ namespace ProdFloor.Controllers
 
             List<StatusPO> MyStatusPOList = jobRepo.StatusPOs
                 .Where(m => MyWiringList.Any(n => n.POID == m.POID))
-                .Where(s => s.Status == "Wiring on progress" || s.Status ==  "WR: Reassignment" 
+                .Where(s => s.Status == "Wiring on progress" || s.Status == "WR: Reassignment"
                          || s.Status == "WR: Stopped" || s.Status == "WR: Shift End" || s.Status == "WR: Adding features")
                 .ToList();
 
@@ -244,6 +244,74 @@ namespace ProdFloor.Controllers
                 JobTypeList = itemRepo.JobTypes.ToList(),
                 StationsList = testRepo.Stations.ToList(),
 
+            });
+        }
+
+        public ViewResult StepsByWiring(int ID, int page = 1)
+        {
+            AppUser currentUser = GetCurrentUser().Result;
+
+            Wiring MyWiring = wiringRepo.Wirings.FirstOrDefault(j => j.WiringID == ID);
+            PO MyPO = jobRepo.POs.FirstOrDefault(m => m.POID == MyWiring.POID);
+            Job Myjob = jobRepo.Jobs.FirstOrDefault(m => m.JobID == MyPO.JobID);
+
+            List<WiringStepForJob> WStepsForJob = wiringRepo.WiringStepsForJobs.Where(m => m.WiringID == ID).ToList();
+            List<WiringStep> wiringSteps = wiringRepo.WiringSteps.Where(m => WStepsForJob.Any(n => n.WiringStepID == m.WiringStepID)).ToList();
+
+
+            return View(new WiringViewModel
+            {
+                StepsForJobList = WStepsForJob
+                 .OrderBy(p => p.Consecutivo)
+                 .Skip((page - 1) * PageSize)
+                 .Take(PageSize).ToList(),
+                Job = Myjob,
+                PO = MyPO,
+                StepList = wiringSteps,
+                PagingInfo = new PagingInfo
+                {
+                    CurrentPage = page,
+                    ItemsPerPage = PageSize,
+                    TotalItems = WStepsForJob.ToList().Count()
+                }
+            });
+         }
+
+        public ViewResult StopsByWiring(int ID, int page = 1)
+        {
+            AppUser currentUser = GetCurrentUser().Result;
+
+            Wiring MyWiring = wiringRepo.Wirings.FirstOrDefault(j => j.WiringID == ID);
+            PO MyPO = jobRepo.POs.FirstOrDefault(m => m.POID == MyWiring.POID);
+            Job Myjob = jobRepo.Jobs.FirstOrDefault(m => m.JobID == MyPO.JobID);
+
+            List<WiringStop> stopsForJob = wiringRepo.WiringStops.Where(m => m.WiringID == ID).ToList();
+
+            List<WiringReason1> reaons1 = wiringRepo.WiringReasons1.Where(m => stopsForJob.Any(n => n.Reason1 == m.WiringReason1ID)).ToList();
+            List<WiringReason2> reaons2 = wiringRepo.WiringReasons2.Where(m => stopsForJob.Any(n => n.Reason2 == m.WiringReason2ID)).ToList();
+            List<WiringReason3> reaons3 = wiringRepo.WiringReasons3.Where(m => stopsForJob.Any(n => n.Reason3 == m.WiringReason3ID)).ToList();
+            List<WiringReason4> reaons4 = wiringRepo.WiringReasons4.Where(m => stopsForJob.Any(n => n.Reason4 == m.WiringReason4ID)).ToList();
+            List<WiringReason5> reaons5 = wiringRepo.WiringReasons5.Where(m => stopsForJob.Any(n => n.Reason5ID == m.WiringReason5ID)).ToList();
+
+            return View(new WiringViewModel
+            {
+                StopList = stopsForJob
+                 .OrderBy(p => p.StartDate)
+                 .Skip((page - 1) * PageSize)
+                 .Take(PageSize).ToList(),
+                Job = Myjob,
+                PO = MyPO,
+                Reasons1List = reaons1,
+                Reasons2List = reaons2,
+                Reasons3List = reaons3,
+                Reasons4List = reaons4,
+                Reasons5List = reaons5,
+                PagingInfo = new PagingInfo
+                {
+                    CurrentPage = page,
+                    ItemsPerPage = PageSize,
+                    TotalItems = stopsForJob.ToList().Count()
+                }
             });
         }
 
