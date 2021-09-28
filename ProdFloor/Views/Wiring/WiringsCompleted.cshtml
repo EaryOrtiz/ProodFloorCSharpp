@@ -55,12 +55,6 @@
                         @Model.StationsList.FirstOrDefault(m => m.StationID == j.StationID).Label
                     </td>
                     <td>
-                        <form asp-action="EditFeatures" asp-controller="Wiring" method="get">
-                            <button type="submit" value="@j.WiringID" name="WiringID" class="btn btn-light" data-tooltip="tooltip" data-placement="top" title="Details"
-                                    style="float:left;background-color:transparent">
-                                <i class="fas fa-list"></i>
-                            </button>
-                        </form>
                         <form asp-action="StepsByWiring" asp-controller="Wiring" method="get">
                             <button type="submit" value="@j.WiringID" name="ID" class="btn btn-light" data-tooltip="tooltip" data-placement="top" title="Steps from wiringjob"
                                     style="float:left;background-color:transparent">
