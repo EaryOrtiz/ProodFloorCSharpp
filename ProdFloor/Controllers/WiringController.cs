@@ -43,10 +43,7 @@ namespace ProdFloor.Controllers
             if (!string.IsNullOrEmpty(jobnumb)) jobNumber = jobnumb;
             if (!string.IsNullOrEmpty(jobNumber)) jobnumb = jobNumber;
             if (!string.IsNullOrEmpty(Clean))
-            {
-                RedirectToAction("SearchTestJob", "TestJob");
-                jobnumb = "";
-            }
+                RedirectToAction("AdminDashboard");
 
             List<Wiring> WiringsOnProgress = new List<Wiring>();
             List<Wiring> WiringsCompleted = new List<Wiring>();

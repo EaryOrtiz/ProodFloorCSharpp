@@ -53,7 +53,7 @@
                     <td>@Model.JobTypeList.FirstOrDefault(m => m.JobTypeID == MyJob.JobTypeID).Name</td>
                     <td>@CurrentUser.FullName</td>
                     <td>
-                        @if (statusPO.Status == "Wiring on progress" && stepIncomplete != null)
+                        @if (stepIncomplete != null)
                         {
 
                             string StageName = Model.StepList.FirstOrDefault(m => m.WiringStepID == stepIncomplete.WiringStepID).Stage;

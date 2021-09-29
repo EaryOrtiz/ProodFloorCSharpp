@@ -84,7 +84,13 @@ namespace ProdFloor.Controllers
                     if ((await signInManager.PasswordSignInAsync(user,
                     loginModel.Password, false, false)).Succeeded)
                     {
-                        if (user.EngID >= 100 && user.EngID < 300) RestartShiftEnd(user.EngID);
+                        bool tech = GetCurrentUserRole(user,"Technician").Result;
+                        bool wirer = GetCurrentUserRole(user,"Wirer").Result;
+                        if (tech) 
+                            RestartShiftEnd(user.EngID);
+
+                        if (wirer)
+                            WRRestartShiftEnd(user.EngID);
 
                         TempData["message"] = $"Welcome {user.FullName}!!";
                         return Redirect("/Home/Index");
@@ -100,8 +106,12 @@ namespace ProdFloor.Controllers
         {
             AppUser user = await userManager.GetUserAsync(HttpContext.User);
             bool tech = GetCurrentUserRole("Technician").Result;
-            if (tech) ShiftEnd(user.EngID);
+            bool wirer = GetCurrentUserRole("Wirer").Result;
+            if (tech) 
+                ShiftEnd(user.EngID);
 
+            if (wirer)
+                wiringController.ShiftEnd(user.EngID);
 
             await signInManager.SignOutAsync();
             TempData["message"] = $"You properly logged out.";
@@ -557,6 +567,7 @@ namespace ProdFloor.Controllers
             }
 
         }
+
 
         public void WRRestartShiftEnd(int WirerID)
         {
