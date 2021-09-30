@@ -587,8 +587,6 @@ namespace ProdFloor.Controllers
 
                     try {
 
-                       
-
                         WiringStop ShiftEndStop = wiringRepo.WiringStops.LastOrDefault(p => p.WiringID == wiring.WiringID && p.Reason1 == 981 && p.Reason5ID == 0);
                         WiringStop ReassignmentStop = wiringRepo.WiringStops.LastOrDefault(p => p.WiringID == wiring.WiringID && p.Reason1 == 980 && p.Reason5ID == 0);
                         stops = wiringRepo.WiringStops.Where(p => wiring.WiringID == p.WiringID && p.Reason1 != 980 && p.Reason1 != 981 && p.Reason5ID == 0).ToList();
@@ -631,6 +629,8 @@ namespace ProdFloor.Controllers
                         {
                             statusPO.Status = "Wiring on progress";
                         }
+
+                        jobRepo.SaveStatusPO(statusPO);
                     }
                     catch(Exception e)
                     {

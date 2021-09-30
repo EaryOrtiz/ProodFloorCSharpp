@@ -296,6 +296,25 @@ namespace ProdFloor.Controllers
             Wiring wiring = wiringRepo.Wirings.FirstOrDefault(m => m.WiringID == UpdatedStop.WiringID);
             StatusPO statusPO = jobRepo.StatusPOs.FirstOrDefault(m => m.POID == wiring.POID);
 
+            List<WiringStop> stops = wiringRepo.WiringStops.Where(p => wiring.WiringID == p.WiringID)
+                                                          .Where(p => p.WiringStopID != 982 && p.WiringStopID != 981 && p.Reason2 == 0).ToList();
+            if (stops.Count > 0)
+            {
+                foreach (WiringStop stop in stops)
+                {
+                    stop.StartDate = DateTime.Now;
+                    stop.StopDate = DateTime.Now;
+                    wiringRepo.SaveWiringStop(stop);
+                }
+
+                if (stops.Any(m => m.Critical == true))
+                {
+                    statusPO.Status = "WR: Stopped";
+                    jobRepo.SaveStatusPO(statusPO);
+                }
+
+            }
+
             statusPO.Status = "Wiring on progress";
             jobRepo.SaveStatusPO(statusPO);
 
@@ -357,6 +376,8 @@ namespace ProdFloor.Controllers
 
             statusPO.Status = "Wiring on progress";
             jobRepo.SaveStatusPO(statusPO);
+
+            wiringController.RestarTimeStep(WiringID);
 
             WirersInvolved involved = wiringRepo.WirersInvolveds
                                      .Where(m => m.WiringID == wiring.WiringID)

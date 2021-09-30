@@ -678,6 +678,8 @@ namespace ProdFloor.Controllers
             PO po = jobRepo.POs.FirstOrDefault(m => m.POID == wiring.POID);
 
             int stepsLeft = wiringRepo.WiringStepsForJobs.Where(m => m.WiringID == viewModel.Wiring.WiringID && m.Obsolete == false && m.Complete == false).Count();
+            viewModel.StopNC = viewModel.StopNC = wiringRepo.WiringStops.Where(m => m.WiringID == wiring.WiringID && m.Reason1 != 980 && m.Reason1 != 981)
+                                                     .Where(m => m.Reason2 == 0 && m.Critical == false).Any();
 
             if (movement == "previus")
                 PreviusStep(viewModel.prevStep.WiringStepForJobID, viewModel.currentStep.WiringStepForJobID);

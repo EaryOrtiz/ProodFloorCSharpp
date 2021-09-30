@@ -8,6 +8,7 @@
         <div class="col justify-content-md-center">
             <form asp-controller="Wiring" asp-action="StepsOnProgress" method="post">
                 <input type="hidden" asp-for="Wiring.WiringID" value="@Model.Wiring.WiringID" />
+                <input type="hidden" asp-for="StopNC" value="@Model.StopNC" />
                 <input type="hidden" asp-for="currentStep.WiringStepForJobID" value="@Model.currentStep.WiringStepForJobID" />
                 @if (Model.currentStep.Consecutivo > 1)
                 {
