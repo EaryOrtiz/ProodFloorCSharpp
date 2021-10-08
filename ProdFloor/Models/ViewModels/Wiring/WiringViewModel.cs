@@ -78,6 +78,7 @@ namespace ProdFloor.Models.ViewModels.Wiring
         public int StepsLeft { get; set; }
         public string JobNum { get; set; }
         public bool StopNC { get; set; }
+        public bool isAnyWiring { get; set; }
        
         public WiringStepForJob prevStep { get; set; }
         public WiringStepForJob nextStep { get; set; }

@@ -10,6 +10,12 @@
     </script>
 }
 @*Html.Partial("TestArea", Model.ReportsViewModel)*@
+<form asp-action="SeedXML" asp-controller="Wirings" method="post">
+    @if (Model.isAnyWiring == false && User.IsInRole("Admin"))
+    {
+        <button type="submit" name="buttonImportXML" value="All" class="btn btn-danger btn-sm">Import All Jobs from XML <i class="fas fa-file-alt"></i></button>
+    }
+</form>
 <form asp-controller="Wiring" asp-action="AdminDashboard" method="get">
     <div class="input-group" style="padding-top:2rem">
 
@@ -62,7 +68,7 @@
             <div class="btn-group">
                 <!--Header Info-->
                 <button type="button" id="headingJobInfo" class="btn btn-sm btn-dark" style="border-color:transparent" data-toggle="collapse" data-target="#collapseTechAdminDashBoard2" aria-expanded="true" aria-controls="collapseTechAdminDashBoard2">
-                    <h6 class="mb-0 text-center">Complete TestJob(s)</h6>
+                    <h6 class="mb-0 text-center">Complete WiringJob(s)</h6>
                 </button>
             </div>
         </div>
@@ -82,7 +88,7 @@
             <div class="btn-group">
                 <!--Header Info-->
                 <button type="button" id="headingJobInfo" class="btn btn-sm btn-dark" style="border-color:transparent" data-toggle="collapse" data-target="#collapseTechAdminDashBoard" aria-expanded="true" aria-controls="collapseTechAdminDashBoard">
-                    <h6 class="mb-0 text-center">Incomplete TestJob(s)</h6>
+                    <h6 class="mb-0 text-center">Incomplete WiringJob(s)</h6>
                 </button>
             </div>
         </div>
@@ -95,6 +101,11 @@
 
 </div>
 <br />
+<div>
+    <form asp-controller="Wiring" asp-action="ExportToXML" method="post">
+        <button class="btn btn-sm " name="buttonXML" style="background-color:steelblue;color:white;margin-bottom:30px">Export wirings to an XML File</button>
+    </form>
+</div>
 
 
 

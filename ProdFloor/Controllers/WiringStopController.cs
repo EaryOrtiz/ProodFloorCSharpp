@@ -132,7 +132,7 @@ namespace ProdFloor.Controllers
 
                 try
                 {
-                    WiringStepForJob currentStep = wiringRepo.WiringStepsForJobs.Where(m => m.WiringID == wiring.WiringID && m.Obsolete == false)
+                    WiringStepForJob currentStep = wiringRepo.WiringStepsForJobs.Where(m => m.WiringID == wiring.WiringID && m.Complete == false && m.Obsolete == false)
                                                                                  .OrderBy(m => m.Consecutivo).FirstOrDefault();
                     //For Current step
                     if (currentStep.Start != DateTime.Now)
@@ -318,6 +318,8 @@ namespace ProdFloor.Controllers
             statusPO.Status = "Wiring on progress";
             jobRepo.SaveStatusPO(statusPO);
 
+            wiringController.RestarTimeStep(wiring.WiringID);
+
             return RedirectToAction("ContinueStep", "Wiring", new { WiringID = wiring.WiringID });
         }
 
@@ -444,6 +446,7 @@ namespace ProdFloor.Controllers
                 {
                     statusPO.Status = "Wiring on progress";
 
+                    wiringController.RestarTimeStep(wiring.WiringID);
                     TempData["message"] = $"Shift end terminado con exito";
                     return RedirectToAction("ContinueStep", "Wiring", new { WiringID = wiring.WiringID });
                 }

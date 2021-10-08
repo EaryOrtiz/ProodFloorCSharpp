@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using ProdFloor.Models;
 using ProdFloor.Models.ViewModels;
 using ProdFloor.Models.ViewModels.Wiring;
@@ -55,10 +59,15 @@ namespace ProdFloor.Controllers
 
             foreach (Job job in jobList)
             {
-                PO poByJob = jobRepo.POs.FirstOrDefault(m => m.JobID == job.JobID);
-                Wiring wiring = wiringRepo.Wirings.FirstOrDefault(m => m.POID == poByJob.POID);
+                List<PO> Pos = jobRepo.POs.Where(m => m.JobID == job.JobID).ToList();
 
-                if (wiring != null) wiringList.Add(wiring);
+                foreach(PO po in Pos)
+                {
+                    Wiring wiring = wiringRepo.Wirings.FirstOrDefault(m => m.POID == po.POID);
+
+                    if (wiring != null) wiringList.Add(wiring);
+                }
+                
             }
 
             //WiringsToBeStart
@@ -114,7 +123,7 @@ namespace ProdFloor.Controllers
                 StepList = wiringRepo.WiringSteps.ToList(),
                 StepsForJobList = wiringRepo.WiringStepsForJobs.ToList(),
                 StopList = wiringRepo.WiringStops.Where(m => m.Reason1 != 980 && m.Reason1 != 981 && m.Reason2 == 0).ToList(),
-
+                isAnyWiring = wiringRepo.Wirings.Any(),
                 PagingInfoIncompleted = new PagingInfo
                 {
                     CurrentPage = MyJobsPage,
@@ -907,7 +916,7 @@ namespace ProdFloor.Controllers
 
                 if (statusPO.Status == "Wiring on progress" || statusPO.Status == "WR: Stopped" ||
                     statusPO.Status == "WR: Reassignment" || statusPO.Status == "WR: Shift End" ||
-                    statusPO.Status == "Wiring for pxp" || statusPO.Status == "WR: Adding features")
+                    statusPO.Status == "Waiting for PXP" || statusPO.Status == "WR: Adding features")
                 {
                     statusPO.Status = "Production";
                     jobRepo.SaveStatusPO(statusPO);
@@ -1496,6 +1505,266 @@ namespace ProdFloor.Controllers
             {
                 return;
             }
+        }
+
+        //XML Import / Export
+        [HttpPost]
+        public FileStreamResult ExportToXML()
+        {
+            MemoryStream ms = new MemoryStream();
+            XmlWriterSettings xws = new XmlWriterSettings();
+            xws.OmitXmlDeclaration = true;
+            xws.Indent = true;
+            List<StatusPO> statusPOs = jobRepo.StatusPOs.Where(s => s.Status != "Wiring on progress" && s.Status != "WR: Reassignment"
+                                                                           && s.Status != "WR: Stopped" && s.Status != "WR: Shift End" 
+                                                                           && s.Status != "WR: Adding features").ToList();
+
+            IQueryable<Wiring> wiringsCompleted = wiringRepo.Wirings.Where(m => statusPOs.Any(n => n.POID == m.POID));
+
+            using (XmlWriter xw = XmlWriter.Create(ms, xws))
+            {
+                xw.WriteStartDocument();
+                xw.WriteStartElement("Wirings-WiringFeatures-StepsForJob-WirersInvolved");
+
+                foreach (Wiring wiring in wiringsCompleted)
+                {
+                    IQueryable<WiringFeatures> features = wiringRepo.WiringFeatures.Where(m => m.WiringID == wiring.WiringID);
+
+                    IQueryable<WirersInvolved> wirersInvolveds = wiringRepo.WirersInvolveds.Where(m => m.WiringID == wiring.WiringID);
+
+                    IQueryable<WiringStepForJob> stepsForJob = wiringRepo.WiringStepsForJobs.Where(m => m.WiringID == wiring.WiringID)
+                                                                         .Where(m => m.Complete == true)
+                                                                         .OrderBy(n => n.Consecutivo);
+
+                    xw.WriteStartElement("Wiring");
+                    xw.WriteElementString("WiringID", wiring.WiringID.ToString());
+                    xw.WriteElementString("POID", wiring.POID.ToString());
+                    xw.WriteElementString("WirerID", wiring.WirerID.ToString());
+                    xw.WriteElementString("StationID", wiring.StationID.ToString());
+                    xw.WriteElementString("StartDate", wiring.StartDate.ToString());
+                    xw.WriteElementString("CompletedDate", wiring.CompletedDate.ToString());
+
+                    xw.WriteStartElement("WiringFeatures");
+                    foreach (WiringFeatures feature in features)
+                    {
+                        xw.WriteStartElement("Feature");
+
+                        xw.WriteElementString("WiringFeaturesID", feature.WiringFeaturesID.ToString());
+                        xw.WriteElementString("WiringID", feature.WiringID.ToString());
+                        xw.WriteElementString("WiringOptionID", feature.WiringOptionID.ToString());
+                        xw.WriteElementString("Quantity", feature.Quantity.ToString());
+
+                        xw.WriteEndElement();
+                    }
+                    xw.WriteEndElement();
+
+                    xw.WriteStartElement("StepsForJob");
+                    foreach (WiringStepForJob step in stepsForJob)
+                    {
+                        xw.WriteStartElement("WiringStepsForJob");
+
+                        xw.WriteElementString("WiringStepForJobID", step.WiringStepForJobID.ToString());
+                        xw.WriteElementString("WiringStepID", step.WiringStepID.ToString());
+                        xw.WriteElementString("WiringID", step.WiringID.ToString());
+                        xw.WriteElementString("Start", step.Start.ToString());
+                        xw.WriteElementString("Stop", step.Stop.ToString());
+                        xw.WriteElementString("Elapsed", step.Elapsed.ToString());
+                        xw.WriteElementString("Complete", step.Complete.ToString());
+                        xw.WriteElementString("Consecutivo", step.Consecutivo.ToString());
+                        xw.WriteElementString("Obsolete", step.Obsolete.ToString());
+                        xw.WriteElementString("AuxWirerID", step.AuxWirerID.ToString());
+                        xw.WriteElementString("AuxStationID", step.AuxStationID.ToString());
+
+                        xw.WriteEndElement();
+                    }
+                    xw.WriteEndElement();
+
+                    xw.WriteStartElement("WirersInvolved");
+                    foreach (WirersInvolved wirer in wirersInvolveds)
+                    {
+                        xw.WriteStartElement("Feature");
+
+                        xw.WriteElementString("WirersInvolvedID", wirer.WirersInvolvedID.ToString());
+                        xw.WriteElementString("WiringID", wirer.WiringID.ToString());
+                        xw.WriteElementString("WirerID", wirer.WirerID.ToString());
+
+                        xw.WriteEndElement();
+                    }
+                    xw.WriteEndElement();
+
+                    xw.WriteEndElement();
+                }
+                xw.WriteEndElement();
+
+                xw.WriteEndDocument();
+            }
+
+            ms.Position = 0;
+            return File(ms, "text/xml", "Wirings-WiringFeatures-StepsForJob-WirersInvolved.xml");
+        }
+
+
+        public void ImportXML(IServiceProvider services)
+        {
+            ApplicationDbContext context = services.GetRequiredService<ApplicationDbContext>();
+            XmlDocument doc = new XmlDocument();
+            doc.Load(appDataFolder + "Wirings-WiringFeatures-StepsForJob-WirersInvolved.xml");
+
+
+            var XMLMain = doc.DocumentElement.SelectSingleNode("//Wirings-WiringFeatures-StepsForJob-WirersInvolved");
+
+            var XMLWirings = XMLMain.SelectNodes("//Wiring");
+
+            if (XMLWirings != null && context.WiringSteps.Any() && context.Jobs.Any()
+                && context.Stations.Any())
+            {
+                foreach (XmlElement wiring in XMLWirings)
+                {
+                    //saving TestJob
+                    var WiringID = wiring.SelectSingleNode(".//WiringID").InnerText;
+                    var POID = wiring.SelectSingleNode(".//POID").InnerText;
+                    var WirerID = wiring.SelectSingleNode(".//WirerID").InnerText;
+                    var StartDate = wiring.SelectSingleNode(".//StartDate").InnerText;
+                    var CompletedDate = wiring.SelectSingleNode(".//CompletedDate").InnerText;
+                    var StationID = wiring.SelectSingleNode(".//StationID").InnerText;
+
+                    context.Wirings.Add(new Wiring
+                    {
+                        WiringID = Int32.Parse(WiringID),
+                        POID = Int32.Parse(POID),
+                        WirerID = Int32.Parse(WirerID),
+                        StartDate = DateTime.Parse(StartDate),
+                        CompletedDate = DateTime.Parse(CompletedDate),
+                        StationID = Int32.Parse(StationID),
+
+                    });
+                    context.Database.OpenConnection();
+                    try
+                    {
+                        context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.Wirings ON");
+                        context.SaveChanges();
+                        context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.Wirings OFF");
+                    }
+                    finally
+                    {
+                        context.Database.CloseConnection();
+                    }
+
+                    //Saving features
+                    var XMLFeatures = wiring.SelectSingleNode(".//WiringFeatures");
+
+                    var XMLFeatureList = XMLFeatures.SelectNodes(".//Feature");
+
+                    foreach (XmlElement feature in XMLFeatureList)
+                    {
+                        var WiringFeaturesID = feature.SelectSingleNode(".//WiringFeaturesID").InnerText;
+                        var WiringOptionID = feature.SelectSingleNode(".//WiringOptionID").InnerText;
+                        var Quantity = feature.SelectSingleNode(".//Quantity").InnerText;
+
+                        context.WiringFeatures.Add(new WiringFeatures
+                        {
+                            WiringFeaturesID = Int32.Parse(WiringFeaturesID),
+                            WiringOptionID = Int32.Parse(WiringOptionID),
+                            WiringID = Int32.Parse(WiringID),
+                            Quantity = Int32.Parse(Quantity),
+
+                        });
+                        context.Database.OpenConnection();
+                        try
+                        {
+                            context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.WiringFeatures ON");
+                            context.SaveChanges();
+                            context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.WiringFeatures OFF");
+                        }
+                        finally
+                        {
+                            context.Database.CloseConnection();
+                        }
+                    }
+
+                    //Saving all StepsForJob
+
+                    var XMLStepsForJob = wiring.SelectSingleNode(".//StepsForJob");
+
+                    var XMLStepForJob = XMLStepsForJob.SelectNodes(".//StepForJob");
+
+                    foreach (XmlElement stepForJob in XMLStepForJob)
+                    {
+
+                        var WiringStepForJobID = stepForJob.SelectSingleNode(".//WiringStepForJobID").InnerText;
+                        var WiringStepID = stepForJob.SelectSingleNode(".//WiringStepID").InnerText;
+                        var Start = stepForJob.SelectSingleNode(".//Start").InnerText;
+                        var Stop = stepForJob.SelectSingleNode(".//Stop").InnerText;
+                        var Elapsed = stepForJob.SelectSingleNode(".//Elapsed").InnerText;
+                        var Complete = stepForJob.SelectSingleNode(".//Complete").InnerText;
+                        var Consecutivo = stepForJob.SelectSingleNode(".//Consecutivo").InnerText;
+                        var Obsolete = stepForJob.SelectSingleNode(".//Obsolete").InnerText;
+                        var AuxWirerID = stepForJob.SelectSingleNode(".//AuxWirerID").InnerText;
+                        var AuxStationID = stepForJob.SelectSingleNode(".//AuxStationID").InnerText;
+
+                        context.WiringStepsForJobs.Add(new WiringStepForJob
+                        {
+                            WiringStepForJobID = Int32.Parse(WiringStepForJobID),
+                            WiringStepID = Int32.Parse(WiringStepID),
+                            WiringID = Int32.Parse(WiringID),
+                            Start = DateTime.Parse(Start),
+                            Stop = DateTime.Parse(Stop),
+                            Elapsed = DateTime.Parse(Elapsed),
+                            Complete = Boolean.Parse(Complete),
+                            Consecutivo = Int32.Parse(Consecutivo),
+                            Obsolete = Boolean.Parse(Obsolete),
+                            AuxWirerID = Int32.Parse(AuxWirerID),
+                            AuxStationID = Int32.Parse(AuxStationID),
+
+                        });
+                        context.Database.OpenConnection();
+                        try
+                        {
+                            context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.WiringStepsForJobs ON");
+                            context.SaveChanges();
+                            context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.StepsForJobs OFF");
+                        }
+                        finally
+                        {
+                            context.Database.CloseConnection();
+                        }
+
+                    }
+
+                    //Saving features
+                    var XMLWirersInvolved = wiring.SelectSingleNode(".//WiringFeatures");
+
+                    var XMLWirersList = XMLFeatures.SelectNodes(".//Feature");
+
+                    foreach (XmlElement wirer in XMLWirersList)
+                    {
+                        var WirersInvolvedID = wirer.SelectSingleNode(".//WirersInvolvedID").InnerText;
+                        var WirerInvolve = wirer.SelectSingleNode(".//WirerID").InnerText;
+
+                        context.WirersInvolveds.Add(new WirersInvolved
+                        {
+                            WirersInvolvedID = Int32.Parse(WirersInvolvedID),
+                            WirerID = Int32.Parse(WirerID),
+                            WiringID = Int32.Parse(WiringID),
+
+                        });
+                        context.Database.OpenConnection();
+                        try
+                        {
+                            context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.WirersInvolveds ON");
+                            context.SaveChanges();
+                            context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.WirersInvolveds OFF");
+                        }
+                        finally
+                        {
+                            context.Database.CloseConnection();
+                        }
+                    }
+
+                }
+
+            }
+
         }
     }
 
