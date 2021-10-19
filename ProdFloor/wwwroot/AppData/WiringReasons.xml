@@ -1,0 +1,36 @@
+﻿<WiringReasons>
+  <WiringReasons1>
+    <WiringReason1>
+      <WiringReason1ID>1</WiringReason1ID>
+      <Description>R1</Description>
+    </WiringReason1>
+  </WiringReasons1>
+  <WiringReasons2>
+    <WiringReason2>
+      <WiringReason2ID>1</WiringReason2ID>
+      <WiringReason1ID>1</WiringReason1ID>
+      <Description>R2</Description>
+    </WiringReason2>
+  </WiringReasons2>
+  <WiringReasons3>
+    <WiringReason3>
+      <WiringReason3ID>1</WiringReason3ID>
+      <WiringReason2ID>1</WiringReason2ID>
+      <Description>R3</Description>
+    </WiringReason3>
+  </WiringReasons3>
+  <WiringReasons4>
+    <WiringReason4>
+      <WiringReason4ID>1</WiringReason4ID>
+      <WiringReason3ID>1</WiringReason3ID>
+      <Description>R4</Description>
+    </WiringReason4>
+  </WiringReasons4>
+  <WiringReasons5>
+    <WiringReason5>
+      <WiringReason5ID>1</WiringReason5ID>
+      <WiringReason4ID>1</WiringReason4ID>
+      <Description>R5</Description>
+    </WiringReason5>
+  </WiringReasons5>
+</WiringReasons>

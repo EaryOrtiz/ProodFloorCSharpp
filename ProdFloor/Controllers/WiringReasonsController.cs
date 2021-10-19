@@ -475,7 +475,7 @@ namespace ProdFloor.Controllers
                     {
                         xw.WriteStartElement("WiringReason2");
                         xw.WriteElementString("WiringReason2ID", reason2.WiringReason2ID.ToString());
-                        xw.WriteElementString("Reason1ID", reason2.WiringReason1ID.ToString());
+                        xw.WriteElementString("WiringReason1ID", reason2.WiringReason1ID.ToString());
                         xw.WriteElementString("Description", reason2.Description.ToString());
                         xw.WriteEndElement();
                     }
@@ -485,7 +485,7 @@ namespace ProdFloor.Controllers
                     {
                         xw.WriteStartElement("WiringReason3");
                         xw.WriteElementString("WiringReason3ID", reason3.WiringReason3ID.ToString());
-                        xw.WriteElementString("Reason2ID", reason3.WiringReason2ID.ToString());
+                        xw.WriteElementString("WiringReason2ID", reason3.WiringReason2ID.ToString());
                         xw.WriteElementString("Description", reason3.Description.ToString());
                         xw.WriteEndElement();
                     }
@@ -503,7 +503,7 @@ namespace ProdFloor.Controllers
                     xw.WriteStartElement("WiringReasons5");
                     foreach (WiringReason5 reason5 in reason5s)
                     {
-                        xw.WriteStartElement("Reason5");
+                        xw.WriteStartElement("WiringReason5");
                         xw.WriteElementString("WiringReason5ID", reason5.WiringReason5ID.ToString());
                         xw.WriteElementString("WiringReason4ID", reason5.WiringReason4ID.ToString());
                         xw.WriteElementString("Description", reason5.Description.ToString());
@@ -524,29 +524,29 @@ namespace ProdFloor.Controllers
         public  void ImportXML(IServiceProvider services)
         {
             ApplicationDbContext context = services.GetRequiredService<ApplicationDbContext>();
-            HtmlDocument doc = new HtmlDocument();
+            XmlDocument doc = new XmlDocument();
             doc.Load(appDataFolder + "WiringReasons.xml");
 
-            var XMLobs = doc.DocumentNode.SelectSingleNode("//reasons");
+            var XMLobs = doc.DocumentElement.SelectSingleNode("//WiringReasons");
 
-            var ALLReasons1 = XMLobs.SelectSingleNode(".//wiringreasons1");
-            var ALLReasons2 = XMLobs.SelectSingleNode(".//wiringreasons2");
-            var ALLReasons3 = XMLobs.SelectSingleNode(".//wiringreasons3");
-            var ALLReasons4 = XMLobs.SelectSingleNode(".//wiringreasons4");
-            var ALLReasons5 = XMLobs.SelectSingleNode(".//wiringreasons5");
+            var ALLReasons1 = XMLobs.SelectSingleNode(".//WiringReasons1");
+            var ALLReasons2 = XMLobs.SelectSingleNode(".//WiringReasons2");
+            var ALLReasons3 = XMLobs.SelectSingleNode(".//WiringReasons3");
+            var ALLReasons4 = XMLobs.SelectSingleNode(".//WiringReasons4");
+            var ALLReasons5 = XMLobs.SelectSingleNode(".//WiringReasons5");
 
-            var XMLReasons1 = ALLReasons1.SelectNodes(".//wiringreason1");
-            var XMLReasons2 = ALLReasons2.SelectNodes(".//wiringreason2");
-            var XMLReasons3 = ALLReasons3.SelectNodes(".//wiringreason3");
-            var XMLReasons4 = ALLReasons4.SelectNodes(".//wiringreason4");
-            var XMLReasons5 = ALLReasons5.SelectNodes(".//wiringreason5");
+            var XMLReasons1 = ALLReasons1.SelectNodes(".//WiringReason1");
+            var XMLReasons2 = ALLReasons2.SelectNodes(".//WiringReason2");
+            var XMLReasons3 = ALLReasons3.SelectNodes(".//WiringReason3");
+            var XMLReasons4 = ALLReasons4.SelectNodes(".//WiringReason4");
+            var XMLReasons5 = ALLReasons5.SelectNodes(".//WiringReason5");
 
-            if (XMLobs != null && !context.Reasons5.Any())
+            if (XMLobs != null && !context.WiringReasons5.Any())
             {
-                foreach (var Reasons1 in XMLReasons1)
+                foreach (XmlElement Reasons1 in XMLReasons1)
                 {
-                    var reason1id = Reasons1.SelectSingleNode(".//wiringreason1id").InnerText;
-                    var description = Reasons1.SelectSingleNode(".//description").InnerText;
+                    var reason1id = Reasons1.SelectSingleNode(".//WiringReason1ID").InnerText;
+                    var description = Reasons1.SelectSingleNode(".//Description").InnerText;
                     context.WiringReasons1.Add(new WiringReason1
                     {
                         WiringReason1ID = Int32.Parse(reason1id),
@@ -565,11 +565,11 @@ namespace ProdFloor.Controllers
                         context.Database.CloseConnection();
                     }
                 }
-                foreach (var Reasons2 in XMLReasons2)
+                foreach (XmlElement Reasons2 in XMLReasons2)
                 {
-                    var reason2id = Reasons2.SelectSingleNode(".//wiringreason2id").InnerText;
-                    var reason1id = Reasons2.SelectSingleNode(".//wiringreason1id").InnerText;
-                    var description = Reasons2.SelectSingleNode(".//description").InnerText;
+                    var reason2id = Reasons2.SelectSingleNode(".//WiringReason2ID").InnerText;
+                    var reason1id = Reasons2.SelectSingleNode(".//WiringReason1ID").InnerText;
+                    var description = Reasons2.SelectSingleNode(".//Description").InnerText;
                     context.WiringReasons2.Add(new WiringReason2
                     {
                         WiringReason2ID = Int32.Parse(reason2id),
@@ -589,11 +589,11 @@ namespace ProdFloor.Controllers
                         context.Database.CloseConnection();
                     }
                 }
-                foreach (var Reasons3 in XMLReasons3)
+                foreach (XmlElement Reasons3 in XMLReasons3)
                 {
-                    var reason3id = Reasons3.SelectSingleNode(".//wiringreason3id").InnerText;
-                    var reason2id = Reasons3.SelectSingleNode(".//wiringreason2id").InnerText;
-                    var description = Reasons3.SelectSingleNode(".//description").InnerText;
+                    var reason3id = Reasons3.SelectSingleNode(".//WiringReason3ID").InnerText;
+                    var reason2id = Reasons3.SelectSingleNode(".//WiringReason2ID").InnerText;
+                    var description = Reasons3.SelectSingleNode(".//Description").InnerText;
                     context.WiringReasons3.Add(new WiringReason3
                     {
                         WiringReason3ID = Int32.Parse(reason3id),
@@ -613,11 +613,11 @@ namespace ProdFloor.Controllers
                         context.Database.CloseConnection();
                     }
                 }
-                foreach (var Reasons4 in XMLReasons4)
+                foreach (XmlElement Reasons4 in XMLReasons4)
                 {
-                    var reason4id = Reasons4.SelectSingleNode(".//wiringreason4id").InnerText;
-                    var reason3id = Reasons4.SelectSingleNode(".//wiringreason3id").InnerText;
-                    var description = Reasons4.SelectSingleNode(".//description").InnerText;
+                    var reason4id = Reasons4.SelectSingleNode(".//WiringReason4ID").InnerText;
+                    var reason3id = Reasons4.SelectSingleNode(".//WiringReason3ID").InnerText;
+                    var description = Reasons4.SelectSingleNode(".//Description").InnerText;
                     context.WiringReasons4.Add(new WiringReason4
                     {
                         WiringReason4ID = Int32.Parse(reason4id),
@@ -638,11 +638,11 @@ namespace ProdFloor.Controllers
                     }
                 }
 
-                foreach (var Reasons5 in XMLReasons5)
+                foreach (XmlElement Reasons5 in XMLReasons5)
                 {
-                    var reason5id = Reasons5.SelectSingleNode(".//wiringreason5id").InnerText;
-                    var reason4id = Reasons5.SelectSingleNode(".//wiringreason4id").InnerText;
-                    var description = Reasons5.SelectSingleNode(".//description").InnerText;
+                    var reason5id = Reasons5.SelectSingleNode(".//WiringReason5ID").InnerText;
+                    var reason4id = Reasons5.SelectSingleNode(".//WiringReason4ID").InnerText;
+                    var description = Reasons5.SelectSingleNode(".//Description").InnerText;
                     context.WiringReasons5.Add(new WiringReason5
                     {
                         WiringReason5ID = Int32.Parse(reason5id),
@@ -670,6 +670,7 @@ namespace ProdFloor.Controllers
         public IActionResult SeedXML()
         {
             ImportXML(HttpContext.RequestServices);
+
             return RedirectToAction(nameof(Reason1List));
         }
 

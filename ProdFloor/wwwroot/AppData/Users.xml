@@ -18,12 +18,36 @@
     </Roles>
   </User>
   <User>
+    <UserName>MariaDelRosario.Castro</UserName>
+    <Email>MariaDelRosario.Castro@nidec-mce.com</Email>
+    <EngID>314</EngID>
+    <Roles>
+      <RoleName>Wirer</RoleName>
+    </Roles>
+  </User>
+  <User>
+    <UserName>Estrella.Pascasio</UserName>
+    <Email>Estrella.Pascasio@nidec-mce.com</Email>
+    <EngID>315</EngID>
+    <Roles>
+      <RoleName>Wirer</RoleName>
+    </Roles>
+  </User>
+  <User>
     <UserName>dummy.crossapprover2</UserName>
     <Email>dummy.crossapprover2@nidec-mce.com</Email>
-    <EngID>28</EngID>
+    <EngID>32</EngID>
     <Roles>
       <RoleName>Engineer</RoleName>
       <RoleName>CrossApprover</RoleName>
+    </Roles>
+  </User>
+  <User>
+    <UserName>Blanca.Urazanda</UserName>
+    <Email>Blanca.Urazanda@nidec-mce.com</Email>
+    <EngID>320</EngID>
+    <Roles>
+      <RoleName>Wirer</RoleName>
     </Roles>
   </User>
   <User>
@@ -51,6 +75,22 @@
     </Roles>
   </User>
   <User>
+    <UserName>Matt.Phillips</UserName>
+    <Email>Matt.Phillips@nidec-mce.com</Email>
+    <EngID>47</EngID>
+    <Roles>
+      <RoleName>Engineer</RoleName>
+    </Roles>
+  </User>
+  <User>
+    <UserName>Maribel.Martinez</UserName>
+    <Email>Maribel.Martinez@nidec-mce.com</Email>
+    <EngID>313</EngID>
+    <Roles>
+      <RoleName>Wirer</RoleName>
+    </Roles>
+  </User>
+  <User>
     <UserName>Ernesto.Mattenberger</UserName>
     <Email>ernesto.mattenberger</Email>
     <EngID>805</EngID>
@@ -64,6 +104,55 @@
     <EngID>107</EngID>
     <Roles>
       <RoleName>Technician</RoleName>
+    </Roles>
+  </User>
+  <User>
+    <UserName>Diana.Flores</UserName>
+    <Email>Diana.Flores@nidec-mce.com</Email>
+    <EngID>601</EngID>
+    <Roles>
+      <RoleName>Kitting</RoleName>
+    </Roles>
+  </User>
+  <User>
+    <UserName>tester.kitting</UserName>
+    <Email>noreply@nidec-mce.com</Email>
+    <EngID>807</EngID>
+    <Roles>
+      <RoleName>Kitting</RoleName>
+    </Roles>
+  </User>
+  <User>
+    <UserName>Maria.Garcia</UserName>
+    <Email>Maria.Garcia@nidec-mce.com</Email>
+    <EngID>304</EngID>
+    <Roles>
+      <RoleName>Wirer</RoleName>
+      <RoleName>WirerPXP</RoleName>
+    </Roles>
+  </User>
+  <User>
+    <UserName>Lorena.Mendoza</UserName>
+    <Email>Lorena.Mendoza@nidec-mce.com</Email>
+    <EngID>312</EngID>
+    <Roles>
+      <RoleName>Wirer</RoleName>
+    </Roles>
+  </User>
+  <User>
+    <UserName>Richard.Verwoest</UserName>
+    <Email>Richard.Verwoest@nidec-mce.com</Email>
+    <EngID>28</EngID>
+    <Roles>
+      <RoleName>Engineer</RoleName>
+    </Roles>
+  </User>
+  <User>
+    <UserName>Esther.Hernandez</UserName>
+    <Email>Esther.Hernandez@nidec-mce.com</Email>
+    <EngID>310</EngID>
+    <Roles>
+      <RoleName>Wirer</RoleName>
     </Roles>
   </User>
   <User>
@@ -109,11 +198,35 @@
     </Roles>
   </User>
   <User>
+    <UserName>Jeff.Morgan</UserName>
+    <Email>Jeff.Morgan@nidec-mce.com</Email>
+    <EngID>21</EngID>
+    <Roles>
+      <RoleName>Engineer</RoleName>
+    </Roles>
+  </User>
+  <User>
+    <UserName>Deyanira.Hernandez</UserName>
+    <Email>Deyanira.Hernandez@nidec-mce.com</Email>
+    <EngID>326</EngID>
+    <Roles>
+      <RoleName>Wirer</RoleName>
+    </Roles>
+  </User>
+  <User>
     <UserName>salvador.alcaraz</UserName>
     <Email>salvador.alcaraz@nidec-mce.com</Email>
     <EngID>112</EngID>
     <Roles>
       <RoleName>Technician</RoleName>
+    </Roles>
+  </User>
+  <User>
+    <UserName>Production.Admin</UserName>
+    <Email>noreply@nidec-mce.com</Email>
+    <EngID>808</EngID>
+    <Roles>
+      <RoleName>ProductionAdmin</RoleName>
     </Roles>
   </User>
   <User>
@@ -125,6 +238,23 @@
     </Roles>
   </User>
   <User>
+    <UserName>Eloina.Salas</UserName>
+    <Email>Eloina.Salas@nidec-mce.com</Email>
+    <EngID>322</EngID>
+    <Roles>
+      <RoleName>Wirer</RoleName>
+    </Roles>
+  </User>
+  <User>
+    <UserName>Cinthia.Ibalba</UserName>
+    <Email>Cinthia.Ibalba@nidec-mce.com</Email>
+    <EngID>301</EngID>
+    <Roles>
+      <RoleName>Wirer</RoleName>
+      <RoleName>WirerPXP</RoleName>
+    </Roles>
+  </User>
+  <User>
     <UserName>francisco.benavides</UserName>
     <Email>francisco.benavides@nidec-mce.com</Email>
     <EngID>30</EngID>
@@ -133,11 +263,28 @@
     </Roles>
   </User>
   <User>
+    <UserName>Deyanira.Vargas</UserName>
+    <Email>Deyanira.Vargas@nidec-mce.com</Email>
+    <EngID>318</EngID>
+    <Roles>
+      <RoleName>Wirer</RoleName>
+      <RoleName>WirerPXP</RoleName>
+    </Roles>
+  </User>
+  <User>
     <UserName>alicia.castro</UserName>
     <Email>alicia.castro@nidec-mce.com</Email>
     <EngID>113</EngID>
     <Roles>
       <RoleName>Technician</RoleName>
+    </Roles>
+  </User>
+  <User>
+    <UserName>Hung.Lu</UserName>
+    <Email>hun.lu@nidec-mce.com</Email>
+    <EngID>18</EngID>
+    <Roles>
+      <RoleName>Engineer</RoleName>
     </Roles>
   </User>
   <User>
@@ -150,6 +297,22 @@
     </Roles>
   </User>
   <User>
+    <UserName>Norma.Garcia</UserName>
+    <Email>Norma.Garcia@nidec-mce.com</Email>
+    <EngID>303</EngID>
+    <Roles>
+      <RoleName>Wirer</RoleName>
+    </Roles>
+  </User>
+  <User>
+    <UserName>Adriana.Arguelles</UserName>
+    <Email>Adriana.Arguelles@nidec-mce.com</Email>
+    <EngID>325</EngID>
+    <Roles>
+      <RoleName>Wirer</RoleName>
+    </Roles>
+  </User>
+  <User>
     <UserName>jorge.quiroga</UserName>
     <Email>jorge.quiroga@nidec-mce.com</Email>
     <EngID>99</EngID>
@@ -159,11 +322,75 @@
     </Roles>
   </User>
   <User>
+    <UserName>Nick.Mastriopieri</UserName>
+    <Email>Nick.Mastriopieri@nidec-mce.com</Email>
+    <EngID>7</EngID>
+    <Roles>
+      <RoleName>Engineer</RoleName>
+    </Roles>
+  </User>
+  <User>
+    <UserName>Maria.DeLosSantos</UserName>
+    <Email>Maria.DeLosSantos@nidec-mce.com</Email>
+    <EngID>316</EngID>
+    <Roles>
+      <RoleName>Wirer</RoleName>
+    </Roles>
+  </User>
+  <User>
+    <UserName>Javier.Tamez</UserName>
+    <Email>Javier.Tamez@nidec-mce.com</Email>
+    <EngID>817</EngID>
+    <Roles>
+      <RoleName>ProductionAdmin</RoleName>
+    </Roles>
+  </User>
+  <User>
+    <UserName>Tony.Thai</UserName>
+    <Email>Tony.Thai@nidec-mce.com</Email>
+    <EngID>57</EngID>
+    <Roles>
+      <RoleName>Engineer</RoleName>
+    </Roles>
+  </User>
+  <User>
+    <UserName>Dan.Dao</UserName>
+    <Email>Dan.Dao@nidec-mce.com</Email>
+    <EngID>76</EngID>
+    <Roles>
+      <RoleName>Engineer</RoleName>
+    </Roles>
+  </User>
+  <User>
     <UserName>Dummy.Manager</UserName>
     <Email>noreply@nidec-mce.com</Email>
     <EngID>804</EngID>
     <Roles>
       <RoleName>Manager</RoleName>
+    </Roles>
+  </User>
+  <User>
+    <UserName>tester.pxp</UserName>
+    <Email>noreply@nidec-mce.com</Email>
+    <EngID>806</EngID>
+    <Roles>
+      <RoleName>WirerPXP</RoleName>
+    </Roles>
+  </User>
+  <User>
+    <UserName>Juan.Esparza</UserName>
+    <Email>Juan.Esparza@nidec-mce.com</Email>
+    <EngID>31</EngID>
+    <Roles>
+      <RoleName>Engineer</RoleName>
+    </Roles>
+  </User>
+  <User>
+    <UserName>Alondra.Estrada</UserName>
+    <Email>Alondra.Estrada@nidec-mce.com</Email>
+    <EngID>324</EngID>
+    <Roles>
+      <RoleName>Wirer</RoleName>
     </Roles>
   </User>
   <User>
@@ -183,12 +410,29 @@
     </Roles>
   </User>
   <User>
+    <UserName>Maria.Martinez</UserName>
+    <Email>Maria.Martinez@nidec-mce.com</Email>
+    <EngID>311</EngID>
+    <Roles>
+      <RoleName>Wirer</RoleName>
+    </Roles>
+  </User>
+  <User>
     <UserName>alan.aranda</UserName>
     <Email>alan.aranda@nidec-mce.com</Email>
     <EngID>97</EngID>
     <Roles>
       <RoleName>Engineer</RoleName>
       <RoleName>CrossApprover</RoleName>
+    </Roles>
+  </User>
+  <User>
+    <UserName>Ursula.Tamez</UserName>
+    <Email>Ursula.Tamez@nidec-mce.com</Email>
+    <EngID>317</EngID>
+    <Roles>
+      <RoleName>Wirer</RoleName>
+      <RoleName>WirerPXP</RoleName>
     </Roles>
   </User>
   <User>
@@ -210,6 +454,31 @@
     </Roles>
   </User>
   <User>
+    <UserName>Dora.Miranda</UserName>
+    <Email>Dora.Miranda@nidec-mce.com</Email>
+    <EngID>308</EngID>
+    <Roles>
+      <RoleName>Wirer</RoleName>
+    </Roles>
+  </User>
+  <User>
+    <UserName>tester.wirer</UserName>
+    <Email>noreply@nidec-mce.com</Email>
+    <EngID>815</EngID>
+    <Roles>
+      <RoleName>Wirer</RoleName>
+    </Roles>
+  </User>
+  <User>
+    <UserName>Aurora.Jimenez</UserName>
+    <Email>Aurora.Jimenez@nidec-mce.com</Email>
+    <EngID>306</EngID>
+    <Roles>
+      <RoleName>Wirer</RoleName>
+      <RoleName>WirerPXP</RoleName>
+    </Roles>
+  </User>
+  <User>
     <UserName>tester.tech</UserName>
     <Email>N/A</Email>
     <EngID>101</EngID>
@@ -218,11 +487,103 @@
     </Roles>
   </User>
   <User>
+    <UserName>Elizabeth.Olaya</UserName>
+    <Email>Elizabeth.Olaya@nidec-mce.com</Email>
+    <EngID>300</EngID>
+    <Roles>
+      <RoleName>Wirer</RoleName>
+      <RoleName>WirerPXP</RoleName>
+    </Roles>
+  </User>
+  <User>
+    <UserName>Anil.Khalasi</UserName>
+    <Email>Anil.Khalasi@nidec-mce.com</Email>
+    <EngID>56</EngID>
+    <Roles>
+      <RoleName>Engineer</RoleName>
+    </Roles>
+  </User>
+  <User>
     <UserName>cristian.marquez</UserName>
     <Email>cristian.marquez@nidec-mce.com</Email>
     <EngID>111</EngID>
     <Roles>
       <RoleName>Technician</RoleName>
+    </Roles>
+  </User>
+  <User>
+    <UserName>Miriam.Guerrero</UserName>
+    <Email>Miriam.Guerrero@nidec-mce.com</Email>
+    <EngID>323</EngID>
+    <Roles>
+      <RoleName>Wirer</RoleName>
+    </Roles>
+  </User>
+  <User>
+    <UserName>Elia.Olaya</UserName>
+    <Email>Elia.Olaya@nidec-mce.com</Email>
+    <EngID>307</EngID>
+    <Roles>
+      <RoleName>Wirer</RoleName>
+    </Roles>
+  </User>
+  <User>
+    <UserName>Karla.Ismerio</UserName>
+    <Email>Karla.Ismerio@nidec-mce.com</Email>
+    <EngID>818</EngID>
+    <Roles>
+      <RoleName>ProductionAdmin</RoleName>
+    </Roles>
+  </User>
+  <User>
+    <UserName>Mayra.Reyes</UserName>
+    <Email>Mayra.Reyes@nidec-mce.com</Email>
+    <EngID>302</EngID>
+    <Roles>
+      <RoleName>Wirer</RoleName>
+      <RoleName>WirerPXP</RoleName>
+    </Roles>
+  </User>
+  <User>
+    <UserName>Perla.Hinojosa</UserName>
+    <Email>Perla.Hinojosa@nidec-mce.com</Email>
+    <EngID>321</EngID>
+    <Roles>
+      <RoleName>Wirer</RoleName>
+      <RoleName>WirerPXP</RoleName>
+    </Roles>
+  </User>
+  <User>
+    <UserName>Junior.Singh</UserName>
+    <Email>Junior.Singh@nidec-mce.com</Email>
+    <EngID>55</EngID>
+    <Roles>
+      <RoleName>Engineer</RoleName>
+    </Roles>
+  </User>
+  <User>
+    <UserName>Rocio.Torres</UserName>
+    <Email>Rocio.Torres@nidec-mce.com</Email>
+    <EngID>319</EngID>
+    <Roles>
+      <RoleName>Wirer</RoleName>
+      <RoleName>WirerPXP</RoleName>
+    </Roles>
+  </User>
+  <User>
+    <UserName>Virginia.Cabrera</UserName>
+    <Email>Virginia.Cabrera@nidec-mce.com</Email>
+    <EngID>309</EngID>
+    <Roles>
+      <RoleName>Wirer</RoleName>
+    </Roles>
+  </User>
+  <User>
+    <UserName>Juana.Guerrero</UserName>
+    <Email>Juana.Guerrero@nidec-mce.com</Email>
+    <EngID>305</EngID>
+    <Roles>
+      <RoleName>Wirer</RoleName>
     </Roles>
   </User>
 </Users>

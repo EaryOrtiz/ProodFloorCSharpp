@@ -194,6 +194,14 @@ namespace ProdFloor.Controllers
 
         }
 
+        [HttpPost]
+        public IActionResult SeedXML()
+        {
+            ImportXML(HttpContext.RequestServices);
+
+            return RedirectToAction(nameof(List));
+        }
+
         private async Task<bool> GetCurrentUserRole(string role)
         {
             AppUser user = await userManager.GetUserAsync(HttpContext.User);

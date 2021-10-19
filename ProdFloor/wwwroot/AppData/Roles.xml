@@ -1,9 +1,12 @@
 ﻿<Roles>
   <Role>
-    <Name>WirerAdmin</Name>
+    <Name>ProductionAdmin</Name>
   </Role>
   <Role>
     <Name>TechAdmin</Name>
+  </Role>
+  <Role>
+    <Name>Kitting</Name>
   </Role>
   <Role>
     <Name>Engineer</Name>
@@ -19,6 +22,9 @@
   </Role>
   <Role>
     <Name>Wirer</Name>
+  </Role>
+  <Role>
+    <Name>WirerPXP</Name>
   </Role>
   <Role>
     <Name>Technician</Name>
