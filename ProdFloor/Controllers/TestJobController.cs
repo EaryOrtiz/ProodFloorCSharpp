@@ -231,7 +231,7 @@ namespace ProdFloor.Controllers
                     {
                         var _jobSearch = jobSearch.FirstOrDefault(m => m.JobID == onePO.JobID);
 
-                        if (_jobSearch != null && _jobSearch.Status != "Incomplete" )
+                        if (_jobSearch != null && _jobSearch.Status != "Incomplete")
                         {
                             TestJob testJobAu = testingRepo.TestJobs.FirstOrDefault(m => m.SinglePO == onePO.PONumb);
                             if (testJobAu != null)
@@ -243,7 +243,7 @@ namespace ProdFloor.Controllers
 
                             PlanningReportRow reportRow = itemRepository.PlanningReportRows.FirstOrDefault(m => m.PO == onePO.PONumb);
 
-                            if(reportRow != null)
+                            if (reportRow != null)
                             {
                                 JobType jobType = itemRepository.JobTypes.FirstOrDefault(m => m.Name == JobTypeName(reportRow.Material));
 
@@ -255,7 +255,7 @@ namespace ProdFloor.Controllers
                                     return View("NewTestJob", testJobSearchAux);
                                 }
                             }
-                           
+
 
                             TestJob testJob = new TestJob
                             {
@@ -271,6 +271,7 @@ namespace ProdFloor.Controllers
 
                             var currentTestJob = testingRepo.TestJobs.Last(s => s.TestJobID == testJob.TestJobID);
 
+                            CheckStatusPO(currentTestJob.TestJobID, onePO.POID);
 
                             TestJobViewModel NewtestJobView = new TestJobViewModel();
                             NewtestJobView.TestJob = currentTestJob;
@@ -389,7 +390,7 @@ namespace ProdFloor.Controllers
         [HttpPost]
         public IActionResult NextForm(TestJobViewModel nextViewModel)
         {
-            if(nextViewModel.Job.JobNumFirstDigits != null && nextViewModel.Job.JobNumLastDigits != 0)
+            if (nextViewModel.Job.JobNumFirstDigits != null && nextViewModel.Job.JobNumLastDigits != null)
             {
                 nextViewModel.Job.JobNum = getJobNumb(nextViewModel.Job.JobNumFirstDigits, nextViewModel.Job.JobNumLastDigits);
             }
@@ -398,7 +399,7 @@ namespace ProdFloor.Controllers
                 nextViewModel.Job.JobNumFirstDigits = getJobNumbDivided(nextViewModel.Job.JobNum).firstDigits;
                 nextViewModel.Job.JobNumLastDigits = getJobNumbDivided(nextViewModel.Job.JobNum).lastDigits;
             }
-           
+
 
             if (nextViewModel.TestFeature != null)
             {
@@ -408,11 +409,13 @@ namespace ProdFloor.Controllers
                 if (testJob != null)
                 {
                     Job CurrentJob = jobRepo.Jobs.FirstOrDefault(m => m.JobID == testJob.JobID);
+                    PO onePO = jobRepo.POs.FirstOrDefault(m => m.PONumb == testJob.SinglePO);
                     JobExtension jobExtension = jobRepo.JobsExtensions.FirstOrDefault(m => m.JobID == testJob.JobID);
 
                     try
                     {
-                        if (jobExtension != null && CurrentJob.Contractor == "Fake") {
+                        if (jobExtension != null && CurrentJob.Contractor == "Fake")
+                        {
 
                             if (nextViewModel.MOD == true) jobExtension.DoorOperatorID = 7;
                             else if (nextViewModel.Manual == true) jobExtension.DoorOperatorID = 2;
@@ -457,6 +460,8 @@ namespace ProdFloor.Controllers
                         testingRepo.SaveTestJob(testJob);
                         nextViewModel.TestJob = testJob;
                         nextViewModel.JobTypeName = itemRepository.JobTypes.FirstOrDefault(m => m.JobTypeID == nextViewModel.Job.JobTypeID).Name;
+
+                        CheckStatusPO(testJob.TestJobID, onePO.POID);
                         TempData["message"] = $"everything was saved";
 
                         return NewTestFeatures(nextViewModel);
@@ -944,12 +949,12 @@ namespace ProdFloor.Controllers
         [HttpPost]
         public IActionResult EditTestJob(TestJobViewModel viewModel)
         {
-           
+
 
             if (string.IsNullOrEmpty(viewModel.Job.JobNum))
             {
                 viewModel.Job.JobNum = getJobNumb(viewModel.Job.JobNumFirstDigits, viewModel.Job.JobNumLastDigits);
-            } 
+            }
 
             bool techAdmin = GetCurrentUserRole("TechAdmin").Result;
             bool Admin = GetCurrentUserRole("Admin").Result;
@@ -958,7 +963,7 @@ namespace ProdFloor.Controllers
             TestJob testJobToUpdate = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == viewModel.TestJob.TestJobID);
             TestJob StationAuxTestJob = testingRepo.TestJobs.FirstOrDefault(m => m.StationID == viewModel.TestJob.StationID && m.Status == "Working on it");
 
-            if (testJobToUpdate.TechnicianID != TechnicianID && !techAdmin && !Admin ) return RedirectToAction("Index", "Home");
+            if (testJobToUpdate.TechnicianID != TechnicianID && !techAdmin && !Admin) return RedirectToAction("Index", "Home");
             if (StationAuxTestJob != null || (!techAdmin && !Admin && TechnicianID != testJobToUpdate.TechnicianID))
             {
                 TempData["alert"] = $"alert-danger";
@@ -969,7 +974,7 @@ namespace ProdFloor.Controllers
             if (viewModel.isNotDummy == false) UpdateDummyJob(viewModel);
             testingRepo.SaveTestFeature(viewModel.TestFeature);
             UpdateTestFeatures(viewModel);
-            
+
 
             TestJob testJob = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == viewModel.TestJob.TestJobID);
             Job CurrentJob = jobRepo.Jobs.FirstOrDefault(m => m.JobID == testJob.JobID);
@@ -1006,7 +1011,7 @@ namespace ProdFloor.Controllers
                         nextViewModel.Manual = true;
 
                     //Hrydrospecific
-                    if (nextViewModel.HydroSpecific.MotorsNum == 3)  nextViewModel.TwosStarters = true;
+                    if (nextViewModel.HydroSpecific.MotorsNum == 3) nextViewModel.TwosStarters = true;
 
                     //Gneric
                     if (nextViewModel.GenericFeatures.Monitoring == "IMonitor Interface")
@@ -1338,6 +1343,9 @@ namespace ProdFloor.Controllers
             testingRepo.SaveTestJob(testJob);
 
             currentTestJob = testingRepo.TestJobs.FirstOrDefault(p => p.TestJobID == testingRepo.TestJobs.Max(x => x.TestJobID));
+            PO onePO = jobRepo.POs.FirstOrDefault(m => m.PONumb == POFake.PONumb);
+
+            CheckStatusPO(currentTestJob.TestJobID, onePO.POID);
 
 
             TestJobViewModel testJobView = new TestJobViewModel
@@ -1568,7 +1576,7 @@ namespace ProdFloor.Controllers
                 {
                     TempData["alert"] = $"alert-danger";
                     if (isNotCompleted == false) TempData["message"] = $"Error, El Testjob ya ha sido completado, intente de nuevo o contacte al Admin";
-                    else if(isNotOnShiftEnd) TempData["message"] = $"Error, El Testjob esta en shift end, pilse el boton de continuar";
+                    else if (isNotOnShiftEnd) TempData["message"] = $"Error, El Testjob esta en shift end, pilse el boton de continuar";
                     else TempData["message"] = $"Error, El Testjob a sido reasignado, intente de nuevo o contacte al Admin";
 
                     return RedirectToAction("Index", "Home");
@@ -1633,8 +1641,11 @@ namespace ProdFloor.Controllers
             if (testJob != null)
             {
                 Job CurrentJob = jobRepo.Jobs.FirstOrDefault(m => m.JobID == testJob.JobID);
+                PO onePO = jobRepo.POs.FirstOrDefault(m => m.PONumb == testJob.SinglePO);
                 TestFeature testFeature = testingRepo.TestFeatures.FirstOrDefault(m => m.TestJobID == testJob.TestJobID);
                 TestJobViewModel nextViewModel = new TestJobViewModel();
+
+                CheckStatusPO(testJob.TestJobID, onePO.POID);
 
                 AppUser currentUser = GetCurrentUser().Result;
                 bool isTechAdmin = GetCurrentUserRole("TechAdmin").Result;
@@ -1646,7 +1657,7 @@ namespace ProdFloor.Controllers
                 {
 
                     var AllStepsForJob = testingRepo.StepsForJobs.Where(m => m.TestJobID == ID && m.Obsolete == false).OrderBy(m => m.Consecutivo).ToList();
-                  
+
                     List<Stop> StopsFromTestJob = testingRepo.Stops.Where(m => m.TestJobID == ID && m.Critical == false)
                                                                    .Where(m => m.Reason1 != 980 & m.Reason1 != 981 && m.Reason2 == 0).ToList();
                     bool StopNC = false;
@@ -1660,6 +1671,8 @@ namespace ProdFloor.Controllers
                         {
                             testJob.Status = "Stopped";
                             testingRepo.SaveTestJob(testJob);
+                            
+                            CheckStatusPO(testJob.TestJobID, onePO.POID);
 
                             TempData["alert"] = $"alert-danger";
                             TempData["message"] = $"Error, tiene una parada pendiente por terminar, terminelo e intente de nuevo o contacte al Admin";
@@ -1670,6 +1683,7 @@ namespace ProdFloor.Controllers
                             testJob.Status = "Completed";
                             testJob.CompletedDate = DateTime.Now;
                             testingRepo.SaveTestJob(testJob);
+                            CheckStatusPO(testJob.TestJobID, onePO.POID);
 
                             TempData["message"] = $"El Test Job {testJob.TestJobID} se ha completado con exito!";
                             TempData["alert"] = $"alert-success";
@@ -1744,9 +1758,10 @@ namespace ProdFloor.Controllers
                     Job job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == testJob.JobID);
                     PO po = jobRepo.POs.FirstOrDefault(m => m.PONumb == testJob.SinglePO);
                     WiringPXP pxp = wiringRepo.WiringPXPs.FirstOrDefault(m => m.POID == po.POID);
+                    Wiring wiring = wiringRepo.Wirings.FirstOrDefault(m => m.POID == po.POID);
 
-                    
-                    if (pxp != null || job.Contractor != "Fake")
+
+                    if (wiring != null || pxp != null || job.Contractor != "Fake")
                     {
                         TestJob deletedItem = testingRepo.DeleteTestJob(ID);
 
@@ -1757,7 +1772,7 @@ namespace ProdFloor.Controllers
                     }
                     else
                     {
-                        Job deletedAll = jobRepo.DeleteJob(ID);
+                        Job deletedAll = jobRepo.DeleteJob(job.JobID);
 
                         if (deletedAll != null)
                         {
@@ -1765,7 +1780,7 @@ namespace ProdFloor.Controllers
                         }
                     }
 
-                  
+
                     if (isAdmin) return RedirectToAction("SearchTestJob", "TestJob");
                     return RedirectToAction("Index", "Home");
 
@@ -2227,6 +2242,7 @@ namespace ProdFloor.Controllers
                 bool isTechAdmin = GetCurrentUserRole("TechAdmin").Result;
                 bool isAdmin = GetCurrentUserRole("Admin").Result;
                 bool isNotCompleted = testJob.Status != "Completed";
+                PO onePO = jobRepo.POs.FirstOrDefault(m => m.PONumb == testJob.SinglePO);
 
                 if (isNotCompleted && (isAdmin || isTechAdmin))
                 {
@@ -2339,6 +2355,7 @@ namespace ProdFloor.Controllers
                         testJob.StationID = testJobView.NewStationID;
                         testJob.Status = "Reassignment";
                         testingRepo.SaveTestJob(testJob);
+                        CheckStatusPO(testJob.TestJobID, onePO.POID);
 
                         Stop NewtStop = new Stop
                         {
@@ -2395,6 +2412,7 @@ namespace ProdFloor.Controllers
                 bool isTechAdmin = GetCurrentUserRole("TechAdmin").Result;
                 bool isAdmin = GetCurrentUserRole("Admin").Result;
                 bool isCompleted = testJob.Status == "Completed";
+                PO onePO = jobRepo.POs.FirstOrDefault(m => m.PONumb == testJob.SinglePO);
 
                 if (isCompleted && (isAdmin || isTechAdmin))
                 {
@@ -2408,6 +2426,7 @@ namespace ProdFloor.Controllers
                     {
                         testJob.Status = "Stopped";
                         testingRepo.SaveTestJob(testJob);
+                        CheckStatusPO(testJob.TestJobID, onePO.POID);
                         Stop NewtStop = new Stop
                         {
                             TestJobID = testJob.TestJobID,
@@ -2430,6 +2449,7 @@ namespace ProdFloor.Controllers
                     }
                     testJob.Status = "Working on it";
                     testingRepo.SaveTestJob(testJob);
+                    CheckStatusPO(testJob.TestJobID, onePO.POID);
                     TempData["message"] = $"You have returned the TestJob PO# {testJob.SinglePO} to Working on it";
                     return RedirectToAction("SearchTestJob");
 
@@ -2459,6 +2479,7 @@ namespace ProdFloor.Controllers
             {
                 foreach (TestJob testjob in testJobList)
                 {
+                    PO onePO = jobRepo.POs.FirstOrDefault(m => m.PONumb == testjob.SinglePO);
                     List<Stop> stops = new List<Stop>();
                     stops = testingRepo.Stops.Where(p => testjob.TestJobID == p.TestJobID && p.Reason1 != 981 && p.Reason3 == 0 && p.Reason2 == 0).ToList();
 
@@ -2535,6 +2556,7 @@ namespace ProdFloor.Controllers
 
                     testjob.Status = "Shift End";
                     testingRepo.SaveTestJob(testjob);
+                    CheckStatusPO(testjob.TestJobID, onePO.POID);
                 }
             }
 
@@ -2550,6 +2572,7 @@ namespace ProdFloor.Controllers
                 {
                     foreach (TestJob testjob in testJobs)
                     {
+                        PO onePO = jobRepo.POs.FirstOrDefault(m => m.PONumb == testjob.SinglePO);
                         List<Stop> stops = new List<Stop>();
                         stops = testingRepo.Stops.Where(p => testjob.TestJobID == p.TestJobID && p.Reason1 != 981 && p.Reason3 == 0 && p.Reason2 == 0).ToList();
 
@@ -2627,6 +2650,8 @@ namespace ProdFloor.Controllers
 
                         testjob.Status = "Shift End";
                         testingRepo.SaveTestJob(testjob);
+                        CheckStatusPO(testjob.TestJobID, onePO.POID);
+
                     }
                 }
 
@@ -2640,7 +2665,7 @@ namespace ProdFloor.Controllers
                 TempData["message"] = $"Los trabajos ya estan en Shift end";
                 return RedirectToAction("Index", "Home");
             }
-           
+
 
         }
 
@@ -2656,6 +2681,8 @@ namespace ProdFloor.Controllers
             {
                 foreach (TestJob testJob in filteredList)
                 {
+                    PO onePO = jobRepo.POs.FirstOrDefault(m => m.PONumb == testJob.SinglePO);
+
                     List<Stop> stops = new List<Stop>();
 
                     Stop ShiftEndStop = testingRepo.Stops.LastOrDefault(p => p.TestJobID == testJob.TestJobID && p.Reason1 == 981 && p.Reason2 == 0 && p.Reason3 == 0);
@@ -2708,6 +2735,7 @@ namespace ProdFloor.Controllers
 
 
                     testingRepo.SaveTestJob(testJob);
+                    CheckStatusPO(testJob.TestJobID, onePO.POID);
                 }
             }
 
@@ -2716,13 +2744,14 @@ namespace ProdFloor.Controllers
         public bool CheckShiftEnd(int testJobID)
         {
             TestJob testJob = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == testJobID);
+            PO onePO = jobRepo.POs.FirstOrDefault(m => m.PONumb == testJob.SinglePO);
 
             Stop ShiftEndStop = new Stop();
             try
             {
                 ShiftEndStop = testingRepo.Stops.LastOrDefault(p => p.TestJobID == testJob.TestJobID && p.Reason1 == 981 && p.Reason2 == 0 && p.Reason3 == 0);
 
-                if(ShiftEndStop != null)
+                if (ShiftEndStop != null)
                 {
                     List<Stop> stops = new List<Stop>();
 
@@ -2765,6 +2794,7 @@ namespace ProdFloor.Controllers
 
 
                     testingRepo.SaveTestJob(testJob);
+                    CheckStatusPO(testJob.TestJobID, onePO.POID);
                     return true;
                 }
                 else
@@ -2773,7 +2803,8 @@ namespace ProdFloor.Controllers
 
                 }
             }
-            catch {
+            catch
+            {
                 return false;
             }
 
@@ -2783,6 +2814,7 @@ namespace ProdFloor.Controllers
         public IActionResult RestarShiftEndOnDash(int ID)
         {
             TestJob testJob = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == ID);
+            PO onePO = jobRepo.POs.FirstOrDefault(m => m.PONumb == testJob.SinglePO);
 
             Stop ShiftEndStop = new Stop();
             try
@@ -2821,7 +2853,7 @@ namespace ProdFloor.Controllers
                     }
                 }
 
-               
+
 
                 if (stops.Any(m => m.Reason1 == 980))
                 {
@@ -2834,11 +2866,14 @@ namespace ProdFloor.Controllers
                 else
                 {
                     testJob.Status = "Working on it";
+                    testingRepo.SaveTestJob(testJob);
+                    CheckStatusPO(testJob.TestJobID, onePO.POID);
                     return ContinueStep(testJob.TestJobID);
                 }
 
 
                 testingRepo.SaveTestJob(testJob);
+                CheckStatusPO(testJob.TestJobID, onePO.POID);
 
                 TempData["message"] = $"Tiene una parada pendiente, pulse el boton de nuevo";
                 TempData["alert"] = $"alert-danger";
@@ -2898,10 +2933,11 @@ namespace ProdFloor.Controllers
         {
 
             TestJob testJob = testingRepo.TestJobs.FirstOrDefault(m => m.TestJobID == jobCompletion.TestJob.TestJobID);
+            PO onePO = jobRepo.POs.FirstOrDefault(m => m.PONumb == testJob.SinglePO);
             List<Stop> otherStops = testingRepo.Stops.Where(p => testJob.TestJobID == p.TestJobID && (p.Reason1 == 980 || p.Reason1 == 981))
-                                                     .Where(p =>  p.Reason2 == 0 && p.Reason3 == 0).ToList();
+                                                     .Where(p => p.Reason2 == 0 && p.Reason3 == 0).ToList();
 
-            if(otherStops.Count > 0)
+            if (otherStops.Count > 0)
             {
                 foreach (Stop otherStop in otherStops)
                 {
@@ -2918,7 +2954,7 @@ namespace ProdFloor.Controllers
 
                 }
             }
-            
+
             List<StepsForJob> IncompleteStepsForJob = testingRepo.StepsForJobs.Where(m => m.TestJobID == testJob.TestJobID && m.Obsolete == false && m.Complete == false).OrderBy(m => m.Consecutivo).ToList();
             List<Step> IncompleteStepsForJobInfo = testingRepo.Steps.Where(m => IncompleteStepsForJob.Any(s => s.StepID == m.StepID)).ToList();
             double ExpectecTimeSUM = 0;
@@ -2949,6 +2985,7 @@ namespace ProdFloor.Controllers
             testJob.CompletedDate = DateTime.Now;
             testJob.Status = "Completed";
             testingRepo.SaveTestJob(testJob);
+            CheckStatusPO(testJob.TestJobID, onePO.POID);
             TempData["message"] = $"You have completed the TestJob PO# {testJob.SinglePO}";
             return RedirectToAction("SearchTestJob");
 
@@ -3273,7 +3310,7 @@ namespace ProdFloor.Controllers
             return View(searchViewModel);
         }
 
-        public String getJobNumb(string firstDigits, int lastDigits)
+        public String getJobNumb(string firstDigits, string lastDigits)
         {
             string JobNumb = firstDigits + lastDigits.ToString();
 
@@ -3285,7 +3322,7 @@ namespace ProdFloor.Controllers
             JobNumber jobNum = new JobNumber();
 
             jobNum.firstDigits = JobNumber.Remove(5, 5);
-            jobNum.lastDigits = int.Parse(JobNumber.Remove(0, 5));
+            jobNum.lastDigits = JobNumber.Remove(0, 5);
 
             return jobNum;
         }
@@ -3310,7 +3347,7 @@ namespace ProdFloor.Controllers
             {
                 viewModel.StationsList = stations.Where(m => m.JobTypeID == JobTypeID).OrderBy(n => n.Label).ToList();
                 viewModel.StationsList.AddRange(stations.Where(m => m.JobTypeID == 1).OrderBy(n => n.Label));
-                
+
             }
             else
             {
@@ -3461,7 +3498,7 @@ namespace ProdFloor.Controllers
                     Category = "1";
                 }
 
-                
+
 
                 TestStats testStats = new TestStats()
                 {
@@ -3502,7 +3539,7 @@ namespace ProdFloor.Controllers
                                       .Include(w => w._Stops)
                                       .FirstOrDefault(m => m.TestJobID == Id);
 
-                if(testJob == null)
+                if (testJob == null)
                 {
                     TempData["alert"] = $"alert-danger";
                     TempData["message"] = $"El trabajo no existe";
@@ -3514,7 +3551,7 @@ namespace ProdFloor.Controllers
                 List<Stop> stopsReassigned = testJob._Stops.Where(m => m.Reason5ID == 980).ToList();
                 List<int> techsId = stopsReassigned.Where(n => n.AuxTechnicianID != testJob.TechnicianID).Select(m => m.AuxTechnicianID).Distinct().ToList();
                 List<int> stationsId = stopsReassigned.Where(n => n.AuxStationID != testJob.StationID).Select(m => m.AuxStationID).Distinct().ToList();
-                List<Stop> stopsCompleted = testJob._Stops.Where(m => m.Reason5ID !=0)
+                List<Stop> stopsCompleted = testJob._Stops.Where(m => m.Reason5ID != 0)
                                                           .Where(m => m.Reason5ID != 980 && m.Reason5ID != 981 && m.Reason5ID != 982)
                                                           .ToList();
 
@@ -3538,7 +3575,7 @@ namespace ProdFloor.Controllers
                     }
                 }
 
-                
+
 
                 foreach (StepsForJob step in stepsCompleted)
                 {
@@ -3864,6 +3901,55 @@ namespace ProdFloor.Controllers
 
             return JobType;
         }
+
+
+        public void CheckStatusPO(int TestJobID, int POID)
+        {
+            TestJob testJob = testingRepo.TestJobs
+                                        .FirstOrDefault(s => s.TestJobID == TestJobID);
+
+            StatusPO statusPO = jobRepo.StatusPOs
+                                .FirstOrDefault(s => s.POID == POID);
+
+            if (statusPO == null)
+            {
+                statusPO = new StatusPO();
+                statusPO.POID = POID;
+            }
+
+            if (testJob.Status == "Incomplete")
+            {
+                statusPO.Status = "Test: Filling Job Info";
+            }
+            else if (testJob.Status == "Working on it")
+            {
+                statusPO.Status = "Test: Working on it";
+            }
+            else if (testJob.Status == "Reassignment")
+            {
+                statusPO.Status = "Test: Reassignment";
+            }
+            else if (testJob.Status == "Stopped")
+            {
+                statusPO.Status = "Test: Stopped";
+            }
+            else if (testJob.Status == "Shift End")
+            {
+                statusPO.Status = "Test: Shift End";
+            }
+            else if (testJob.Status == "Completed")
+            {
+                statusPO.Status = "Completed";
+            }
+            else
+            {
+                statusPO.Status = "Production";
+            }
+
+            jobRepo.SaveStatusPO(statusPO);
+
+        }
+
 
     }
 }

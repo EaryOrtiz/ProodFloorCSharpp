@@ -68,7 +68,16 @@
                 string JobTypeName = Model.JobTypes.FirstOrDefault(m => m.JobTypeID == j.JobTypeID).Name;
 
                 <tr>
-                    <th scope="row">@j.JobNum</th>
+                    <th scope="row">
+                        @if (j.Status != "Incomplete")
+                        {
+                            <a asp-controller="Job" asp-action="Edit" asp-route-Id="@j.JobID">@j.JobNum</a>
+                        }
+                        else
+                        {
+                            @j.JobNum
+                        }
+                    </th>
                     <td>@j.Name</td>
                     <td>E@(j.EngID)</td>
                     <td>E@(j.CrossAppEngID)</td>

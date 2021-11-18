@@ -64,7 +64,16 @@
             {
                 JobAdditional jobAdditional = Model.PendingJobAdditionals.FirstOrDefault(m => m.JobID == j.JobID);
                 <tr>
-                    <th scope="row">@j.JobNum</th>
+                    <th scope="row">
+                        @if (j.Status != "Incomplete")
+                        {
+                            <a asp-controller="Job" asp-action="Edit" asp-route-Id="@j.JobID">@j.JobNum</a>
+                        }
+                        else
+                        {
+                            @j.JobNum
+                        }
+                    </th>
                     <td>@j.Name</td>
                     <td>@j.Status</td>
                     <td>

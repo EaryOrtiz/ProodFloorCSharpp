@@ -415,6 +415,7 @@ namespace ProdFloor.Controllers
             {
                 foreach (TestJob testjob in testJobList)
                 {
+                    PO onePO = jobRepo.POs.FirstOrDefault(m => m.PONumb == testjob.SinglePO);
                     List<Stop> stops = new List<Stop>();
                     stops = testingRepo.Stops.Where(p => testjob.TestJobID == p.TestJobID && p.Reason1 != 981 && p.Reason3 == 0 && p.Reason2 == 0).ToList();
 
@@ -493,6 +494,7 @@ namespace ProdFloor.Controllers
 
                     testjob.Status = "Shift End";
                     testingRepo.SaveTestJob(testjob);
+                    CheckStatusPO(testjob.TestJobID, onePO.POID);
                 }
             }
 
@@ -510,6 +512,7 @@ namespace ProdFloor.Controllers
             {
                 foreach (TestJob testJob in filteredList)
                 {
+                    PO onePO = jobRepo.POs.FirstOrDefault(m => m.PONumb == testJob.SinglePO);
                     List<Stop> stops = new List<Stop>();
 
                     Stop ShiftEndStop = testingRepo.Stops.LastOrDefault(p => p.TestJobID == testJob.TestJobID && p.Reason1 == 981 && p.Reason2 == 0 && p.Reason3 == 0);
@@ -563,6 +566,7 @@ namespace ProdFloor.Controllers
 
 
                     testingRepo.SaveTestJob(testJob);
+                    CheckStatusPO(testJob.TestJobID, onePO.POID);
                 }
             }
 
@@ -853,6 +857,53 @@ namespace ProdFloor.Controllers
             {
                 Console.WriteLine(Ex.ToString());
             }
-        } 
+        }
+
+        public void CheckStatusPO(int TestJobID, int POID)
+        {
+            TestJob testJob = testingRepo.TestJobs
+                                        .FirstOrDefault(s => s.TestJobID == TestJobID);
+
+            StatusPO statusPO = jobRepo.StatusPOs
+                                .FirstOrDefault(s => s.POID == POID);
+
+            if (statusPO == null)
+            {
+                statusPO = new StatusPO();
+                statusPO.POID = POID;
+            }
+
+            if (testJob.Status == "Incomplete")
+            {
+                statusPO.Status = "Test: Filling Job Info";
+            }
+            else if (testJob.Status == "Working on it")
+            {
+                statusPO.Status = "Test: Working on it";
+            }
+            else if (testJob.Status == "Reassignment")
+            {
+                statusPO.Status = "Test: Reassignment";
+            }
+            else if (testJob.Status == "Stopped")
+            {
+                statusPO.Status = "Test: Stopped";
+            }
+            else if (testJob.Status == "Shift End")
+            {
+                statusPO.Status = "Test: Shift End";
+            }
+            else if (testJob.Status == "Completed")
+            {
+                statusPO.Status = "Completed";
+            }
+            else
+            {
+                statusPO.Status = "Production";
+            }
+
+            jobRepo.SaveStatusPO(statusPO);
+
+        }
     }
 }

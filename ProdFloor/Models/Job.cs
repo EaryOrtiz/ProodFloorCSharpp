@@ -40,8 +40,8 @@ namespace ProdFloor.Models
 
         [NotMapped]
         [Required(ErrorMessage = "Please enter the last digits")]
-        [Range(10000, 99999, ErrorMessage = "Last digits is out of range")]
-        public int JobNumLastDigits { get; set; }
+        [StringLength(5, MinimumLength = 5, ErrorMessage = "Last digits is out of range")]
+        public string JobNumLastDigits { get; set; }
 
 
 
@@ -109,7 +109,7 @@ namespace ProdFloor.Models
     {
         public string firstDigits { get; set; }
 
-        public int lastDigits { get; set; }
+        public string lastDigits { get; set; }
     }
 
     public class PO
