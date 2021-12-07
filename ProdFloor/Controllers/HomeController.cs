@@ -19,7 +19,7 @@ using ProdFloor.Models.ViewModels.Wiring;
 namespace ProdFloor.Controllers
 {
 
-    [Authorize(Roles = "Admin,TechAdmin,Engineer,Technician,EngAdmin,CrossApprover,Manager,Kitting, ProductionAdmin, WirerPXP")]
+    [Authorize(Roles = "Admin,TechAdmin,Engineer,Technician,EngAdmin,CrossApprover,Manager,Kitting, ProductionAdmin, Wirer,WirerPXP")]
     public class HomeController : Controller
     {
         private IJobRepository repository;
