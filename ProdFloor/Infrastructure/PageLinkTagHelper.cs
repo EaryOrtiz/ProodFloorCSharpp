@@ -3311,7 +3311,7 @@ namespace ProdFloor.Infrastructure
                 case "JobNumber":
                     int YearPast = YearNow - 1;
     
-                    string YearPastCanada =  YearPast.ToString().Remove(0, 2) + "00";
+                    string YearPastCanada = "C" + YearPast.ToString().Remove(0, 2) + "00";
 
                     return new List<string> { YearAfter.ToString() + "1", YearNow.ToString() + "1", YearNow.ToString() + "0", YearNowCanada,
                         YearPast.ToString() + "0", YearPastCanada }.AsQueryable();
