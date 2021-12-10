@@ -20,7 +20,10 @@ namespace ProdFloor.Controllers
         private UserManager<AppUser> userManager;
         private SignInManager<AppUser> signInManager;
         private ITestingRepository testingRepo;
+        private IWiringRepository wiringRepo;
+        private IJobRepository jobRepo;
         private RoleManager<IdentityRole> roleManager;
+        private WiringController wiringController;
         private IHostingEnvironment _env;
         public int PageSize = 7;
 
@@ -36,14 +39,20 @@ namespace ProdFloor.Controllers
         IPasswordHasher<AppUser> passwordHash,
         RoleManager<IdentityRole> roleMgr,
         SignInManager<AppUser> signInMgr,
+        WiringController wiring,
         IHostingEnvironment env,
-        ITestingRepository repo)
+        ITestingRepository repo,
+        IWiringRepository repo2,
+        IJobRepository repo3)
         {
             userManager = usrMgr;
             userValidator = userValid;
             passwordValidator = passValid;
             passwordHasher = passwordHash;
+            wiringController = wiring;
             testingRepo = repo;
+            wiringRepo = repo2;
+            jobRepo = repo3;
             roleManager = roleMgr;
 
             signInManager = signInMgr;
@@ -75,7 +84,13 @@ namespace ProdFloor.Controllers
                     if ((await signInManager.PasswordSignInAsync(user,
                     loginModel.Password, false, false)).Succeeded)
                     {
-                        if (user.EngID >= 100 && user.EngID < 300) RestartShiftEnd(user.EngID);
+                        bool tech = GetCurrentUserRole(user,"Technician").Result;
+                        bool wirer = GetCurrentUserRole(user,"Wirer").Result;
+                        if (tech) 
+                            RestartShiftEnd(user.EngID);
+
+                        if (wirer)
+                            WRRestartShiftEnd(user.EngID);
 
                         TempData["message"] = $"Welcome {user.FullName}!!";
                         return Redirect("/Home/Index");
@@ -91,8 +106,12 @@ namespace ProdFloor.Controllers
         {
             AppUser user = await userManager.GetUserAsync(HttpContext.User);
             bool tech = GetCurrentUserRole("Technician").Result;
-            if (tech) ShiftEnd(user.EngID);
+            bool wirer = GetCurrentUserRole("Wirer").Result;
+            if (tech) 
+                ShiftEnd(user.EngID);
 
+            if (wirer)
+                wiringController.ShiftEnd(user.EngID);
 
             await signInManager.SignOutAsync();
             TempData["message"] = $"You properly logged out.";
@@ -396,6 +415,7 @@ namespace ProdFloor.Controllers
             {
                 foreach (TestJob testjob in testJobList)
                 {
+                    PO onePO = jobRepo.POs.FirstOrDefault(m => m.PONumb == testjob.SinglePO);
                     List<Stop> stops = new List<Stop>();
                     stops = testingRepo.Stops.Where(p => testjob.TestJobID == p.TestJobID && p.Reason1 != 981 && p.Reason3 == 0 && p.Reason2 == 0).ToList();
 
@@ -474,6 +494,7 @@ namespace ProdFloor.Controllers
 
                     testjob.Status = "Shift End";
                     testingRepo.SaveTestJob(testjob);
+                    CheckStatusPO(testjob.TestJobID, onePO.POID);
                 }
             }
 
@@ -491,6 +512,7 @@ namespace ProdFloor.Controllers
             {
                 foreach (TestJob testJob in filteredList)
                 {
+                    PO onePO = jobRepo.POs.FirstOrDefault(m => m.PONumb == testJob.SinglePO);
                     List<Stop> stops = new List<Stop>();
 
                     Stop ShiftEndStop = testingRepo.Stops.LastOrDefault(p => p.TestJobID == testJob.TestJobID && p.Reason1 == 981 && p.Reason2 == 0 && p.Reason3 == 0);
@@ -544,6 +566,83 @@ namespace ProdFloor.Controllers
 
 
                     testingRepo.SaveTestJob(testJob);
+                    CheckStatusPO(testJob.TestJobID, onePO.POID);
+                }
+            }
+
+        }
+
+
+        public void WRRestartShiftEnd(int WirerID)
+        {
+            List<Wiring> filteredList = new List<Wiring>();
+            IQueryable<Wiring> wiringList = wiringRepo.Wirings.Where(m => m.WirerID == WirerID);
+            IQueryable<WiringStop> stopsShiftEnd = wiringRepo.WiringStops.Where(m => wiringList.Any(n => n.WiringID == m.WiringID) && m.Reason1 == 981 && m.Reason2 == 0 && m.Reason3 == 0);
+
+            filteredList = wiringList.Where(m => stopsShiftEnd.Any(n => n.WiringID == m.WiringID)).ToList();
+
+            if (filteredList.Count > 0)
+            {
+                foreach (Wiring wiring in filteredList)
+                {
+                    StatusPO statusPO = jobRepo.StatusPOs.FirstOrDefault(m => m.POID == wiring.POID);
+                    PO po = jobRepo.POs.FirstOrDefault(m => m.POID == wiring.POID);
+                    List<WiringStop> stops = new List<WiringStop>();
+
+                    try {
+
+                        WiringStop ShiftEndStop = wiringRepo.WiringStops.LastOrDefault(p => p.WiringID == wiring.WiringID && p.Reason1 == 981 && p.Reason5ID == 0);
+                        WiringStop ReassignmentStop = wiringRepo.WiringStops.LastOrDefault(p => p.WiringID == wiring.WiringID && p.Reason1 == 980 && p.Reason5ID == 0);
+                        stops = wiringRepo.WiringStops.Where(p => wiring.WiringID == p.WiringID && p.Reason1 != 980 && p.Reason1 != 981 && p.Reason5ID == 0).ToList();
+
+                        TimeSpan auxTime = (DateTime.Now - ShiftEndStop.StartDate);
+                        ShiftEndStop.Elapsed += auxTime;
+                        ShiftEndStop.StopDate = DateTime.Now;
+                        ShiftEndStop.Reason2 = 981;
+                        ShiftEndStop.Reason3 = 981;
+                        ShiftEndStop.Reason4 = 981;
+                        ShiftEndStop.Reason5ID = 981;
+                        wiringRepo.SaveWiringStop(ShiftEndStop);
+
+                        wiringController.RestarTimeStep(wiring.WiringID);
+
+                        if (stops.Count > 0)
+                        {
+                            foreach (WiringStop stop in stops)
+                            {
+                                stop.StartDate = DateTime.Now;
+                                stop.StopDate = DateTime.Now;
+                                wiringRepo.SaveWiringStop(stop);
+                            }
+
+                        }
+
+                        if (ReassignmentStop != null)
+                        {
+                            ReassignmentStop.StartDate = DateTime.Now;
+                            ReassignmentStop.StopDate = DateTime.Now;
+                            wiringRepo.SaveWiringStop(ReassignmentStop);
+
+                            statusPO.Status = "WR: Reassignment";
+                        }
+                        else if (stops.Any(m => m.Critical == true))
+                        {
+                            statusPO.Status = "WR: Stopped";
+                        }
+                        else
+                        {
+                            statusPO.Status = "Wiring on progress";
+                        }
+
+                        jobRepo.SaveStatusPO(statusPO);
+                    }
+                    catch(Exception e)
+                    {
+                        TempData["message"] = $"Algo salio mal al tratar de cerrar el Shift end, contacte al admin, Error:{e.Message}, PO: {po.PONumb}";
+                        TempData["alert"] = $"alert-danger";
+                    }
+
+
                 }
             }
 
@@ -758,6 +857,53 @@ namespace ProdFloor.Controllers
             {
                 Console.WriteLine(Ex.ToString());
             }
-        } 
+        }
+
+        public void CheckStatusPO(int TestJobID, int POID)
+        {
+            TestJob testJob = testingRepo.TestJobs
+                                        .FirstOrDefault(s => s.TestJobID == TestJobID);
+
+            StatusPO statusPO = jobRepo.StatusPOs
+                                .FirstOrDefault(s => s.POID == POID);
+
+            if (statusPO == null)
+            {
+                statusPO = new StatusPO();
+                statusPO.POID = POID;
+            }
+
+            if (testJob.Status == "Incomplete")
+            {
+                statusPO.Status = "Test: Filling Job Info";
+            }
+            else if (testJob.Status == "Working on it")
+            {
+                statusPO.Status = "Test: Working on it";
+            }
+            else if (testJob.Status == "Reassignment")
+            {
+                statusPO.Status = "Test: Reassignment";
+            }
+            else if (testJob.Status == "Stopped")
+            {
+                statusPO.Status = "Test: Stopped";
+            }
+            else if (testJob.Status == "Shift End")
+            {
+                statusPO.Status = "Test: Shift End";
+            }
+            else if (testJob.Status == "Completed")
+            {
+                statusPO.Status = "Completed";
+            }
+            else
+            {
+                statusPO.Status = "Production";
+            }
+
+            jobRepo.SaveStatusPO(statusPO);
+
+        }
     }
 }

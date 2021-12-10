@@ -1,0 +1,78 @@
+﻿<PXPReasons>
+  <PXPReason>
+    <PXPReasonID>1</PXPReasonID>
+    <Description>Hilos despeinados</Description>
+  </PXPReason>
+  <PXPReason>
+    <PXPReasonID>2</PXPReasonID>
+    <Description>Cables invertidos</Description>
+  </PXPReason>
+  <PXPReason>
+    <PXPReasonID>3</PXPReasonID>
+    <Description>Cable ausente-desconectado</Description>
+  </PXPReason>
+  <PXPReason>
+    <PXPReasonID>4</PXPReasonID>
+    <Description>Cable flojo</Description>
+  </PXPReason>
+  <PXPReason>
+    <PXPReasonID>5</PXPReasonID>
+    <Description>Terminal mal crimpeada</Description>
+  </PXPReason>
+  <PXPReason>
+    <PXPReasonID>6</PXPReasonID>
+    <Description>Cable recorrido</Description>
+  </PXPReason>
+  <PXPReason>
+    <PXPReasonID>7</PXPReasonID>
+    <Description>Puentes metalicos ausentes</Description>
+  </PXPReason>
+  <PXPReason>
+    <PXPReasonID>8</PXPReasonID>
+    <Description>Puente de transformador ausente</Description>
+  </PXPReason>
+  <PXPReason>
+    <PXPReasonID>9</PXPReasonID>
+    <Description>Soldadura no aceptable</Description>
+  </PXPReason>
+  <PXPReason>
+    <PXPReasonID>10</PXPReasonID>
+    <Description>Mal ruteado</Description>
+  </PXPReason>
+  <PXPReason>
+    <PXPReasonID>11</PXPReasonID>
+    <Description>Calibre equivocado</Description>
+  </PXPReason>
+  <PXPReason>
+    <PXPReasonID>12</PXPReasonID>
+    <Description>Cable mordiendo aislante</Description>
+  </PXPReason>
+  <PXPReason>
+    <PXPReasonID>13</PXPReasonID>
+    <Description>Etiqueta equivocada o ausente</Description>
+  </PXPReason>
+  <PXPReason>
+    <PXPReasonID>14</PXPReasonID>
+    <Description>Cable largos/corto</Description>
+  </PXPReason>
+  <PXPReason>
+    <PXPReasonID>15</PXPReasonID>
+    <Description>Tubi ausente</Description>
+  </PXPReason>
+  <PXPReason>
+    <PXPReasonID>16</PXPReasonID>
+    <Description>Capacitor sin silicon</Description>
+  </PXPReason>
+  <PXPReason>
+    <PXPReasonID>17</PXPReasonID>
+    <Description>Cable de mas</Description>
+  </PXPReason>
+  <PXPReason>
+    <PXPReasonID>18</PXPReasonID>
+    <Description>Identificacion de tierra (cinta)</Description>
+  </PXPReason>
+  <PXPReason>
+    <PXPReasonID>19</PXPReasonID>
+    <Description>Diagrama sin  marcar</Description>
+  </PXPReason>
+</PXPReasons>

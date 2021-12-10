@@ -205,7 +205,7 @@ namespace ProdFloor.Controllers
                     TotalItems = DummyPendingToCrossJobList.Count(),
                     sort = "deafult"
                 },
-            }); ;
+            }); 
         }
 
         public IActionResult NewWiringPXP(int PONumb)

@@ -1,0 +1,70 @@
+﻿@model ProdFloor.Models.ViewModels.Wiring.WiringViewModel
+@{
+    <script>$(document).ready(function () { $('[data-tooltip="tooltip"]').tooltip(); });</script>
+}
+<div class="col-12 justify-content-md-center">
+    <div class="table-responsive">
+        <table class="table form-control text-center">
+            <thead>
+                <tr>
+                    <td style="text-align:center;font-size: 22px">Caracteristicas</td>
+                </tr>
+            </thead>
+            <tbody style="text-align:center">
+                @for (int i = 0; i < Model.FeatureList.Count; i++)
+                {
+                    <tr>
+                        <td>
+                            <div class="form-inline row" style="margin-bottom:0em;">
+                                <label class="col-4 col-form-label">Caracteristica:</label>
+                                <div class="col-7">
+                                    <wiring-opcion-input item-id="Model.FeatureList[i].WiringOptionID" asp-for="@Model.FeatureList[i].WiringOptionID" disabled></wiring-opcion-input>
+                                </div>
+                            </div>
+                        </td>
+                        <td style="text-align:center;">
+                            <!-- Delete Button trigger modal -->
+                            <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#delete @Model.FeatureList[i].WiringFeaturesID"
+                                    data-tooltip="tooltip" data-placement="top" title="Eliminar caracteristica">
+                                <i class="fa fa-minus-circle"></i>
+                            </button>
+                            <!-- Modal -->
+                            <form asp-action="DeleteFeature" method="post">
+                                <input type="hidden" name="ID" value="@Model.FeatureList[i].WiringFeaturesID" />
+                                <input type="hidden" name="Edit" value="\WiringPXP\EditPXPError\@Model.FeatureList[i].WiringFeaturesID" />
+                                <div class="modal fade" id="delete @Model.FeatureList[i].WiringFeaturesID" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLongTitle"><i class="fas fa-exclamation-triangle"></i>&nbsp;Warning</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                               Seguro que deseas eliminar la caracteristica?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
+                                                <button type="submit" asp-action="DeleteFeature" class="btn btn-danger btn-sm">
+                                                    Eliminar
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </td>
+
+
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+
+    </div>
+</div>
+
+
+

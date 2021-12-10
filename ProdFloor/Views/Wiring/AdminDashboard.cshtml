@@ -1,0 +1,111 @@
+﻿@model ProdFloor.Models.ViewModels.Wiring.WiringViewModel
+@{
+    ViewBag.Title = "Search Job";
+    <script>
+        $(document).ready(function () {
+            $('#JobNum').autocomplete({
+                source: '/Wiring/SearchJobNum'
+            });
+        });
+    </script>
+}
+@*Html.Partial("TestArea", Model.ReportsViewModel)*@
+<form asp-action="SeedXML" asp-controller="Wirings" method="post">
+    @if (Model.isAnyWiring == false && User.IsInRole("Admin"))
+    {
+        <button type="submit" name="buttonImportXML" value="All" class="btn btn-danger btn-sm">Import All Jobs from XML <i class="fas fa-file-alt"></i></button>
+    }
+</form>
+<form asp-controller="Wiring" asp-action="AdminDashboard" method="get">
+    <div class="input-group" style="padding-top:2rem">
+
+        <input type="text" class="form-control form-control-sm col-5" name="jobNumber" id="JobNum" value="@Model.PagingInfoWorkingOnIt.JobNumb" placeholder=" Please enter a Job Number">
+        <div class="input-group-append">
+            <div class="btn-group">
+                <button class="btn btn-dark" type="submit" value="Search" data-tooltip="tooltip" data-placement="top" title="Search">
+                    <i class="fa fa-search" aria-hidden="true"></i>
+                </button>
+                <button class="btn btn-dark" type="submit" name="Clean" value="true" data-tooltip="tooltip" data-placement="top" title="Search">
+                    <i class="fas fa-undo" aria-hidden="true"></i>
+                </button>
+                <a class="btn btn-secondary" asp-action="AutomaticShiftEnd" asp-controller="Wiring">
+                    Shift End
+                </a>
+            </div>
+        </div>
+
+    </div>
+</form>
+<div>
+    <span asp-validation-for="JobNum" class="text-danger"></span><br />
+</div>
+<!--incomplete, working on it and stops-->
+<div id="accordion3" style="padding-top:5px;">
+    <div class="card">
+        <div class="card-header bg-dark text-center" style="height: 3rem;">
+            <div class="btn-group">
+                <!--Header Info-->
+                <button type="button" id="headingJobInfo" class="btn btn-sm btn-dark" style="border-color:transparent" data-toggle="collapse" data-target="#collapseTechAdminDashBoard3" aria-expanded="true" aria-controls="collapseTechAdminDashBoard3">
+                    <h6 class="mb-0 text-center">Working on it</h6>
+                </button>
+            </div>
+        </div>
+
+        <!--Body Job Info-->
+        <div id="collapseTechAdminDashBoard3" class="collapse" aria-labelledby="headingTechAdminDashBoard3" data-parent="#accordion3">
+
+            @Html.Partial("WiringsOnProgress", Model)
+        </div>
+    </div>
+
+</div>
+
+<br />
+<!--Completed-->
+<div id="accordion2" style="padding-top:5px;">
+    <div class="card">
+        <div class="card-header bg-dark text-center" style="height: 3rem;">
+            <div class="btn-group">
+                <!--Header Info-->
+                <button type="button" id="headingJobInfo" class="btn btn-sm btn-dark" style="border-color:transparent" data-toggle="collapse" data-target="#collapseTechAdminDashBoard2" aria-expanded="true" aria-controls="collapseTechAdminDashBoard2">
+                    <h6 class="mb-0 text-center">Complete WiringJob(s)</h6>
+                </button>
+            </div>
+        </div>
+
+        <!--Body Job Info-->
+        <div id="collapseTechAdminDashBoard2" class="collapse" aria-labelledby="headingTechAdminDashBoard3" data-parent="#accordion2">
+
+            @Html.Partial("WiringsCompleted", Model)
+        </div>
+    </div>
+
+</div>
+<br />
+<div id="accordion" style="padding-top:5px;">
+    <div class="card">
+        <div class="card-header bg-dark text-center" style="height: 3rem;">
+            <div class="btn-group">
+                <!--Header Info-->
+                <button type="button" id="headingJobInfo" class="btn btn-sm btn-dark" style="border-color:transparent" data-toggle="collapse" data-target="#collapseTechAdminDashBoard" aria-expanded="true" aria-controls="collapseTechAdminDashBoard">
+                    <h6 class="mb-0 text-center">Incomplete WiringJob(s)</h6>
+                </button>
+            </div>
+        </div>
+
+        <!--Body Job Info-->
+        <div id="collapseTechAdminDashBoard" class="collapse" aria-labelledby="headingTechAdminDashBoard" data-parent="#accordion">
+            @Html.Partial("WiringsToBeStart", Model)
+        </div>
+    </div>
+
+</div>
+<br />
+<div>
+    <form asp-controller="Wiring" asp-action="ExportToXML" method="post">
+        <button class="btn btn-sm " name="buttonXML" style="background-color:steelblue;color:white;margin-bottom:30px">Export wirings to an XML File</button>
+    </form>
+</div>
+
+
+

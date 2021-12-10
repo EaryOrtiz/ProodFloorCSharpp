@@ -83,6 +83,22 @@ namespace ProdFloor.Models
         public DbSet<PXPReason> PXPReasons { get; set; }
         public DbSet<WirersPXPInvolved> WirersPXPInvolveds { get; set; }
 
+        //Wiring
+
+        public DbSet<Wiring> Wirings { get; set; }
+        public DbSet<WirersInvolved> WirersInvolveds { get; set; }
+        public DbSet<WiringStop> WiringStops { get; set; }
+        public DbSet<WiringStep> WiringSteps { get; set; }
+        public DbSet<WiringStepForJob> WiringStepsForJobs { get; set; }
+        public DbSet<WiringReason1> WiringReasons1 { get; set; }
+        public DbSet<WiringReason2> WiringReasons2 { get; set; }
+        public DbSet<WiringReason3> WiringReasons3 { get; set; }
+        public DbSet<WiringReason4> WiringReasons4 { get; set; }
+        public DbSet<WiringReason5> WiringReasons5 { get; set; }
+        public DbSet<WiringOption> WiringOptions { get; set; }
+        public DbSet<WiringFeatures> WiringFeatures { get; set; }
+        public DbSet<WiringTriggeringFeature> WiringTriggeringFeatures { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

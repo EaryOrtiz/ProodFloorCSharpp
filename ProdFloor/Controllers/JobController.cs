@@ -5056,7 +5056,7 @@ namespace ProdFloor.Controllers
             return specialFeaturesTable;
         }
 
-        public String getJobNumb(string firstDigits, int lastDigits)
+        public String getJobNumb(string firstDigits, string lastDigits)
         {
             string JobNumb = firstDigits + lastDigits.ToString();
 
@@ -5068,7 +5068,7 @@ namespace ProdFloor.Controllers
             JobNumber jobNum = new JobNumber();
 
             jobNum.firstDigits = JobNumber.Remove(5, 5);
-            jobNum.lastDigits = int.Parse(JobNumber.Remove(0,5));
+            jobNum.lastDigits =  JobNumber.Remove(0,5);
 
             return jobNum;
         }

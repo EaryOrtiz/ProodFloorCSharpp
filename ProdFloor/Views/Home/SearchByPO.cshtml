@@ -5,6 +5,7 @@
 }
 <br />
 <form asp-controller="Home" id="Printableform" asp-action="SearchByPO" method="post">
+    <input type="hidden" asp-for="@Model.Side"/>
     <label class="col-form-label">Por favor introduzca un PO:</label>
     <div class="input-group">
         <input type="number" class="form-control form-control-sm col-3" id="POSearch" asp-for="POJobSearch">

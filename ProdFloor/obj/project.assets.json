@@ -13029,7 +13029,7 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\sys-local-admin\\.nuget\\packages\\": {},
+    "C:\\Users\\temp\\.nuget\\packages\\": {},
     "C:\\Microsoft\\Xamarin\\NuGet\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
@@ -13039,7 +13039,7 @@
       "projectUniqueName": "C:\\Users\\eary.ortiz\\Documents\\GitHub\\ProodFloorCSharpp\\ProdFloor\\ProdFloor.csproj",
       "projectName": "ProdFloor",
       "projectPath": "C:\\Users\\eary.ortiz\\Documents\\GitHub\\ProodFloorCSharpp\\ProdFloor\\ProdFloor.csproj",
-      "packagesPath": "C:\\Users\\sys-local-admin\\.nuget\\packages\\",
+      "packagesPath": "C:\\Users\\temp\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\eary.ortiz\\Documents\\GitHub\\ProodFloorCSharpp\\ProdFloor\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
@@ -13047,7 +13047,7 @@
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\sys-local-admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\temp\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
       ],

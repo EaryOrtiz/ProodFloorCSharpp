@@ -1,0 +1,224 @@
+﻿@model ProdFloor.Models.ViewModels.Wiring.WiringViewModel
+<table class="table table-striped  text-center table-sm" style="text-align:center">
+    <thead style="background-color:#343a40!important;color:#fff;">
+        <tr>
+            <th scope="col">
+                Job#
+            </th>
+            <th scope="col">
+                PO#
+            </th>
+            <th scope="col">
+                JobType
+            </th>
+            <th scope="col">
+                Wirer
+            </th>
+            <th scope="col">
+                Status
+            </th>
+            <th scope="col">
+                Station
+            </th>
+            <th width="22%">
+                Options
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.WiringJobWorkingOnItList.Count() == 0)
+        {
+            <tr>
+                <td>No Wiring Jobs!</td>
+            </tr>
+        }
+        else
+        {
+            @foreach (var j in Model.WiringJobWorkingOnItList)
+            {
+                AppUser CurrentUser = UserManager.Users.FirstOrDefault(m => m.EngID == j.WirerID);
+                PO po = Model.POList.FirstOrDefault(m => m.POID == j.POID);
+                StatusPO statusPO = Model.StatusPOList.FirstOrDefault(m => m.POID == j.POID);
+                Job MyJob = Model.JobList.FirstOrDefault(m => m.JobID == po.JobID);
+                WiringStepForJob stepIncomplete = Model.StepsForJobList.FirstOrDefault(m => m.WiringID == j.WiringID && m.Complete == false);
+
+                <tr>
+                    <th scope="row">
+                        <a asp-action="EditFeatures"
+                           asp-route-WiringID="@j.WiringID">
+                            @MyJob.JobNum
+                        </a>
+                    </th>
+                    <td>@po.PONumb</td>
+                    <td>@Model.JobTypeList.FirstOrDefault(m => m.JobTypeID == MyJob.JobTypeID).Name</td>
+                    <td>@CurrentUser.FullName</td>
+                    <td>
+                        @if (stepIncomplete != null)
+                        {
+
+                            string StageName = Model.StepList.FirstOrDefault(m => m.WiringStepID == stepIncomplete.WiringStepID).Stage;
+                            @statusPO.Status <span>| Stage: @StageName</span>
+                        }
+
+                    </td>
+                    <td>
+                        @Model.StationsList.FirstOrDefault(m => m.StationID == j.StationID).Label
+                    </td>
+                    <td>
+
+                        <form asp-action="EditFeatures" asp-controller="Wiring" method="get">
+                            <button type="submit" value="@j.WiringID" name="WiringID" class="btn btn-light" data-tooltip="tooltip" data-placement="top" title="Edit"
+                                    style="float:left;background-color:transparent">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                        </form>
+
+                        <!-- Button trigger to  reassign-->
+                        <button type="button" class="btn btn-light" data-toggle="modal" data-target="#exampleModalreassign @j.WiringID" style="float:left;background-color:transparent" data-tooltip="tooltip" data-placement="top" title="Reassign wiringjob">
+                            <i class="fas fa-user-edit"></i>
+                        </button>
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModalreassign @j.WiringID" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLongTitle">Are you sure you want to reassign the wiringjob  cwith PO #@po.PONumb?</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <form asp-action="Reassignment" asp-controller="Wiring" method="post">
+                                        <div class="modal-body">
+                                            <table class="table text-center align-content-center">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Current Wirer</th>
+                                                        <th>Current Station</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td><user-select selected-value="@j.WirerID" class="form-control form-control-sm" asp-for="@Model.NewWirerID" roles="Wirer"></user-select></td>
+                                                        <td><station-select job-type="Wiring"  selected-value="@j.StationID" class="form-control form-control-sm" asp-for="@Model.NewStationID"></station-select></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
+                                            <input type="hidden" asp-for="@Model.Wiring.WiringID" value="@j.WiringID" />
+                                            <button type="submit" value="Completed" name="buttonAction" class="btn btn-warning btn-sm">
+                                                Reassign it!
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <form asp-action="StepsByWiring" asp-controller="Wiring" method="get">
+                            <button type="submit" value="@j.WiringID" name="ID" class="btn btn-light" data-tooltip="tooltip" data-placement="top" title="Steps from wiringjob"
+                                    style="float:left;background-color:transparent">
+                                <i class="fas fa-shoe-prints"></i>
+                            </button>
+                        </form>
+                        <form asp-action="StopsByWiring" asp-controller="Wiring" method="get">
+                            <button type="submit" value="@j.WiringID" name="ID" class="btn btn-light" data-tooltip="tooltip" data-placement="top" title="Stops from wiringjob"
+                                    style="float:left;background-color:transparent">
+                                <i class="fas fa-hourglass-half"></i>
+                            </button>
+                        </form>
+
+
+
+                        <!-- Button trigger to complete-->
+                        <button type="button" class="btn btn-light" data-toggle="modal" data-target="#exampleModalReturn @j.WiringID" style="float:left;background-color:transparent" data-tooltip="tooltip" data-placement="top" title="Send To Completed">
+                            <i class="fas fa-forward"></i>
+                        </button>
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModalReturn @j.WiringID" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLongTitle">Are you sure you want to complete the Test Job with PO #@po.PONumb?</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    @if (Model.StopList.Where(m => m.WiringID == j.WiringID).Count() > 0)
+                                    {
+                                        <div class="modal-body text-center">
+                                            <h5><i class="fas fa-exclamation-triangle"></i>&nbsp; This wiringjob have pending stops &nbsp;<i class="fas fa-exclamation-triangle"></i></h5>
+                                        </div>
+                                        <form asp-action="FinishPendingStops" asp-controller="WiringStop" method="get">
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
+                                                <input type="hidden" id="WiringID" name="WiringID" value="@j.WiringID" />
+                                                <button type="submit" value="Completed" name="buttonAction" class="btn btn-danger btn-sm">
+                                                    Finish the stops first!
+                                                </button>
+                                            </div>
+                                        </form>
+                                    }
+                                    else
+                                    {
+                                        <form asp-action="JobCompletion" asp-controller="Wiring" method="get">
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
+                                                <input type="hidden" id="WiringID" name="WiringID" asp-for="@Model.Wiring.WiringID" value="@j.WiringID" />
+                                                <button type="submit" value="Completed" name="buttonAction" class="btn btn-danger btn-sm">
+                                                    To complete!
+                                                </button>
+                                            </div>
+                                        </form>
+                                    }
+
+                                </div>
+                            </div>
+                        </div>
+
+  
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn btn-light" style="float:left;background-color:transparent" data-toggle="modal" data-target="#delete @j.WiringID" data-tooltip="tooltip" data-placement="top" title="Delete wiringjob">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                            <!-- Modal -->
+                            <form asp-action="Delete" asp-controller="Wiring" method="post" asp-route-WiringId="@j.WiringID">
+                                <div class="modal fade" id="delete @j.WiringID" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLongTitle"><i class="fas fa-exclamation-triangle"></i>&nbsp;Warning</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                Are you sure want to delete permanently this wiringjob with PO #@po.PONumb?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
+                                                <button type="submit" class="btn btn-danger btn-sm">
+                                                    Delete
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+  
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+@if (Model.WiringJobWorkingOnItList.Count() > 0)
+{
+    <cool-pagination-dash-board-job-num current-model="OncrossJobs" my-jobs-page-model="@Model.PagingInfoCompleted" page-action="AdminDashboard" page-classes-enabled="true"
+                                        page-class="btn" page-class-normal="btn-secondary" on-cross-page-model="@Model.PagingInfoWorkingOnIt" pending-to-cross-page-model="@Model.PagingInfoIncompleted"
+                                        page-class-selected="btn-dark" my-jobs-url-value="MyJobsPage" on-cross-url-value="OnCrossJobPage"
+                                        pending-to-cross-url-value="PendingToCrossJobPage" job-numb="JobNumb"
+                                        class="btn-group pull-right m-1">
+    </cool-pagination-dash-board-job-num>
+}

@@ -19,7 +19,7 @@ using ProdFloor.Models.ViewModels.Wiring;
 namespace ProdFloor.Controllers
 {
 
-    [Authorize(Roles = "Admin,TechAdmin,Engineer,Technician,EngAdmin,CrossApprover,Manager,Kitting, ProductionAdmin, WirerPXP")]
+    [Authorize(Roles = "Admin,TechAdmin,Engineer,Technician,EngAdmin,CrossApprover,Manager,Kitting, ProductionAdmin, Wirer,WirerPXP")]
     public class HomeController : Controller
     {
         private IJobRepository repository;
@@ -217,11 +217,9 @@ namespace ProdFloor.Controllers
 
             if (kitting) return RedirectToAction("NewPrintable", "PlanningReport");
 
-            if (ProdctionAdmin) return RedirectToAction("PXPProductionDashboard", "WiringPXP");
+            if (ProdctionAdmin) return RedirectToAction("AdminDashboard", "Wiring");
 
-            if (wirerPXP) return RedirectToAction("PXPDashboard", "WiringPXP");
-
-            if (wirer) return RedirectToAction("ProductionAdminDash", "Wiring");
+            if (wirer || wirerPXP) return RedirectToAction("List", "Wiring");
 
             
 
@@ -983,9 +981,9 @@ namespace ProdFloor.Controllers
             return JobType;
         }
 
-        public ViewResult SearchByPO()
+        public ViewResult SearchByPO(string side = "1")
         {
-            return View(new DashboardIndexViewModel());
+            return View(new DashboardIndexViewModel {Side = side });
         }
 
         [HttpPost]
@@ -996,6 +994,7 @@ namespace ProdFloor.Controllers
             bool tech = GetCurrentUserRole("Technician").Result;
             bool kitting = GetCurrentUserRole("Kitting").Result;
             bool wirerPXP = GetCurrentUserRole("WirerPXP").Result;
+            bool wirer = GetCurrentUserRole("Wirer").Result;
 
             if (!(viewModel.POJobSearch >= 3000000 && viewModel.POJobSearch <= 4900000))
             {
@@ -1018,6 +1017,42 @@ namespace ProdFloor.Controllers
 
                 viewModel.PO = onePO;
 
+                StatusPO statusPO = repository.StatusPOs
+                                           .FirstOrDefault(s => s.POID == onePO.POID);
+
+                if (statusPO == null)
+                {
+                    statusPO = new StatusPO();
+                    statusPO.POID = onePO.POID;
+
+                    if (job.Status.Contains("Cross Approval") || job.Status == "Incomplete"
+                        || job.Status == "Working on it")
+                    {
+                        statusPO.Status = "Engineering";
+                    }
+                    else if (job.Status == "Waiting for test")
+                    {
+                        statusPO.Status = "Waiting for test";
+                    }
+                    else if (job.Status == "PXP on progress")
+                    {
+                        statusPO.Status = "PXP on progress";
+                    }
+                    else if (job.Status == "Completed")
+                    {
+                        statusPO.Status = "Completed";
+                    }
+                    else
+                    {
+                        statusPO.Status = "Production";
+                    }
+
+                    repository.SaveStatusPO(statusPO);
+
+                    statusPO = repository.StatusPOs
+                                        .FirstOrDefault(s => s.POID == onePO.POID);
+                }
+
                 if (tech)
                 {
                     TestJob CurrentTestJob = testingRepo.TestJobs.FirstOrDefault(m => m.TechnicianID == currentUser.EngID && m.Status == "Working on it");
@@ -1039,47 +1074,10 @@ namespace ProdFloor.Controllers
 
                     return RedirectToAction("NewTestJob", "TestJob", onePO.PONumb);
                 }
-                else if (wirerPXP)
+                else if (wirerPXP && viewModel.Side == "1")
                 {
-                    StatusPO statusPO = repository.StatusPOs
-                                            .FirstOrDefault(s => s.POID == onePO.POID);
-
-                    if(statusPO == null)
-                    {
-                        statusPO = new StatusPO();
-                        statusPO.POID = onePO.POID;
-
-                        if (job.Status.Contains("Cross Approval") || job.Status == "Incomplete"
-                            || job.Status == "Working on it")
-                        {
-                            statusPO.Status = "Engineering";
-                        }
-                        else if (job.Status == "Waiting for test")
-                        {
-                            statusPO.Status = "Waiting for test";
-                        }
-                        else if (job.Status == "PXP on progress")
-                        {
-                            statusPO.Status = "PXP on progress";
-                        }
-                        else if (job.Status == "Completed")
-                        {
-                            statusPO.Status = "Completed";
-                        }
-                        else
-                        {
-                            statusPO.Status = "Production";
-                        }
-
-                        repository.SaveStatusPO(statusPO);
-
-                        statusPO = repository.StatusPOs
-                                            .FirstOrDefault(s => s.POID == onePO.POID);
-                    }
-
-
-
-                    WiringPXP WiringPXPWithSamePO = wiringRepo.WiringPXPs.FirstOrDefault(m => m.SinglePO == onePO.PONumb);
+                   
+                    WiringPXP WiringPXPWithSamePO = wiringRepo.WiringPXPs.FirstOrDefault(m => m.SinglePO == onePO.POID);
                     if (WiringPXPWithSamePO != null)
                     {
                         TempData["alert"] = $"alert-danger";
@@ -1096,6 +1094,28 @@ namespace ProdFloor.Controllers
 
 
                     return RedirectToAction("NewWiringPXP", "WiringPXP", new { PONumb = viewModel.POJobSearch });
+
+                }
+                else if (wirer && viewModel.Side == "2")
+                {
+
+                    Wiring WiringWithSamePO = wiringRepo.Wirings.FirstOrDefault(m => m.POID == onePO.POID);
+                    if (WiringWithSamePO != null)
+                    {
+                        TempData["alert"] = $"alert-danger";
+                        TempData["message"] = $"Error, Ya existe un PXP con ese PO, intente de nuevo o contacte al Admin";
+                        return RedirectToAction("SearchByPO", viewModel);
+                    }
+
+                    if (statusPO.Status != "Production")
+                    {
+                        TempData["alert"] = $"alert-danger";
+                        TempData["message"] = $"Error, El Job aun no esta en produccion o ha sido completado, intente de nuevo o contacte al Admin";
+                        return RedirectToAction("SearchByPO", viewModel);
+                    }
+
+
+                    return RedirectToAction("NewWiringJob", "Wiring", new { PONumb = viewModel.POJobSearch });
 
                 }
                 else
@@ -1122,13 +1142,29 @@ namespace ProdFloor.Controllers
             if (tech)
                 return RedirectToAction("NewTestJob", "TestJob", viewModel.POJobSearch);
             else if (wirerPXP)
-                return RedirectToAction("NewWiringPXP", "WiringPXP", new { PONumb = viewModel.POJobSearch } );
+                return RedirectToAction("NewWiringPXP", "WiringPXP", new { PONumb = viewModel.POJobSearch });
+            else if (wirer)
+            {
+                JobType jobType = itemRepo.JobTypes.FirstOrDefault(m => m.Name == JobTypeName(reportRow.Material));
+
+                if (jobType.Name != "M2000" && jobType.Name != "ElmHydro" &&
+                    jobType.Name != "M4000" && jobType.Name != "ElmTract")
+                {
+                    TempData["alert"] = $"alert-danger";
+                    TempData["message"] = $"Error, El PO corresponde aun " + reportRow.Material.ToLower();
+                    return RedirectToAction("SearchByPO", viewModel);
+                }
+
+                return RedirectToAction("NewWiringJob", "Wiring", new { PONumb = viewModel.POJobSearch });
+            }
+                
 
 
             TempData["alert"] = $"alert-danger";
             TempData["message"] = $"Algo salio mal xD";
             return RedirectToAction("SearchByPO", viewModel);
         }
+
 
         public int CreateDummyByPlanning(PlanningReportRow reportRow)
         {

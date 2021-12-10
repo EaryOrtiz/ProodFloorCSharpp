@@ -15,6 +15,8 @@ namespace ProdFloor.Models.ViewModels
         public PagingInfo ActiveJobsPagingInfo { get; set; }
         public List<JobType> JobTypesList { get; set; }
 
+        public string Side { get; set; }
+
         public List<AppUser> users { get; set; }
 
 
@@ -29,6 +31,7 @@ namespace ProdFloor.Models.ViewModels
         public string buttonAction { get; set; }
         public List<JobType> JobTypes { get; set; }
         public List<PO> POs { get; set; }
+        public List<StatusPO> StatusPOs { get; set; }
         public List<JobAdditional> MyJobAdditionals { get; set; }
         public List<JobAdditional> ActiveJobAdditionals { get; set; }
         public List<JobAdditional> OnCrossJobAdditionals { get; set; }
@@ -82,6 +85,17 @@ namespace ProdFloor.Models.ViewModels
         public WiringPXP WiringPXP { get; set; }
 
         public int StatusPOCount { get; set; }
+
+        //for Wiring
+        public IEnumerable<Models.Wiring> MyWirings { get; set; }
+        public PagingInfo MyWiringsPagingInfo { get; set; }
+        public IEnumerable<Models.Wiring> OnCrossWirings { get; set; }
+        public PagingInfo OnCrossWiringsPagingInfo { get; set; }
+        public IEnumerable<Models.Wiring> PendingToCrossWirings { get; set; }
+        public PagingInfo PendingToCrossWiringsPagingInfo { get; set; }
+
+
+        public Models.Wiring Wiring { get; set; }
 
 
 

@@ -3244,7 +3244,9 @@ namespace ProdFloor.Infrastructure
         private IQueryable<string> CaseFor(string value)
         {
             int YearNow = DateTime.Now.Year;
+            int YearAfter = YearNow + 1;
             string YearNowCanada = "C" + YearNow.ToString().Remove(0, 2) + "00";
+
             JobType PXPJobtype = itemsrepository.JobTypes.FirstOrDefault(m => m.Name == "PXP");
             int PXPJobtypeID = PXPJobtype != null ? PXPJobtype.JobTypeID : 1;
             switch (value)
@@ -3308,10 +3310,11 @@ namespace ProdFloor.Infrastructure
                     return BatteryList.Distinct().AsQueryable();
                 case "JobNumber":
                     int YearPast = YearNow - 1;
-
+    
                     string YearPastCanada = "C" + YearPast.ToString().Remove(0, 2) + "00";
 
-                    return new List<string> { YearNowCanada, YearPast.ToString() + "0", YearPastCanada }.AsQueryable();
+                    return new List<string> { YearAfter.ToString() + "1", YearNow.ToString() + "1", YearNow.ToString() + "0", YearNowCanada,
+                        YearPast.ToString() + "0", YearPastCanada }.AsQueryable();
                 case "JobNumberTest":
                     int YearPast1 = YearNow - 1;
                     int YearPast2 = YearNow - 2;
@@ -3323,7 +3326,7 @@ namespace ProdFloor.Infrastructure
                     string YearPast3Canada = "C" + YearPast3.ToString().Remove(0, 2) + "00";
                     string YearPast4Canada = "C" + YearPast4.ToString().Remove(0, 2) + "00";
 
-                    return new List<string> { YearNowCanada, YearPast1.ToString() + "0", YearPast1Canada,
+                    return new List<string> { YearAfter.ToString() + "1", YearNow.ToString() + "1",YearNow.ToString() + "0", YearNowCanada, YearPast1.ToString() + "0", YearPast1Canada,
                             YearPast2.ToString() + "0", YearPast2Canada , YearPast3.ToString() + "0", 
                             YearPast3Canada , YearPast4.ToString() + "0" , YearPast4Canada}.AsQueryable();
                 default:
@@ -3359,11 +3362,6 @@ namespace ProdFloor.Infrastructure
             {
                 m_tag.Attributes["value"] = "";
                 m_tag.InnerHtml.Append("N/C");
-            }
-            else if (SelectFor == "JobNumber" || SelectFor == "JobNumberTest")
-            {
-                m_tag.Attributes["value"] = (DateTime.Now.Year.ToString() + "0");
-                m_tag.InnerHtml.Append((DateTime.Now.Year.ToString() + "0"));
             }
             else if(SelectFor == "boolSearch")
             {
@@ -4682,15 +4680,18 @@ namespace ProdFloor.Infrastructure
     public class Reasons1SelectTagHelper : TagHelper
     {
         private ITestingRepository repository;
+        private IWiringRepository wiringRepo;
 
         private IUrlHelperFactory urlHelperFactory;
 
         public ModelExpression AspFor { get; set; }
 
-        public Reasons1SelectTagHelper(IUrlHelperFactory helperFactory, ITestingRepository repo)
+        public Reasons1SelectTagHelper(IUrlHelperFactory helperFactory, ITestingRepository repo,
+            IWiringRepository wiringRepository)
         {
             urlHelperFactory = helperFactory;
             repository = repo;
+            wiringRepo = wiringRepository;
         }
 
         [ViewContext]
@@ -4701,6 +4702,7 @@ namespace ProdFloor.Infrastructure
         public int SelectedInR2Value { get; set; }
         public int SelectedInR4Value { get; set; }
         public int SelectedInR5Value { get; set; }
+        public string Area { get; set; }
 
 
         [HtmlAttributeName("asp-is-disabled")]
@@ -4722,53 +4724,109 @@ namespace ProdFloor.Infrastructure
             m_tag.Attributes["value"] = "default";
             m_tag.InnerHtml.Append("Select a Reason 1");
             result.InnerHtml.AppendHtml(m_tag);
-            int reason1ID = 0;
-            if (SelectedInR5Value != 0)
+
+            if(Area == "Wiring")
             {
-                Reason5 selectedR5 = repository.Reasons5.FirstOrDefault(c => c.Reason5ID == SelectedInR5Value);
-                Reason4 selectedR4 = repository.Reasons4.FirstOrDefault(c => c.Reason4ID == selectedR5.Reason4ID);
-                Reason3 selectedR3 = repository.Reasons3.FirstOrDefault(c => c.Reason3ID == selectedR4.Reason3ID);
-                Reason2 selectedR2 = repository.Reasons2.FirstOrDefault(c => c.Reason2ID == selectedR3.Reason2ID);
-                Reason1 selectedR1 = repository.Reasons1.FirstOrDefault(c => c.Reason1ID == selectedR2.Reason1ID);
-                reason1ID = selectedR1.Reason1ID;
-            }
-            else if (SelectedInR4Value != 0)
-            {
-                Reason4 selectedR4 = repository.Reasons4.FirstOrDefault(c => c.Reason4ID == SelectedInR4Value);
-                Reason3 selectedR3 = repository.Reasons3.FirstOrDefault(c => c.Reason3ID == selectedR4.Reason3ID);
-                Reason2 selectedR2 = repository.Reasons2.FirstOrDefault(c => c.Reason2ID == selectedR3.Reason2ID);
-                Reason1 selectedR1 = repository.Reasons1.FirstOrDefault(c => c.Reason1ID == selectedR2.Reason1ID);
-                reason1ID = selectedR1.Reason1ID;
-            }
-            else if (SelectedInR3Value != 0)
-            {
-                Reason3 selectedR3 = repository.Reasons3.FirstOrDefault(c => c.Reason3ID == SelectedInR3Value);
-                Reason2 selectedR2 = repository.Reasons2.FirstOrDefault(c => c.Reason2ID == selectedR3.Reason2ID);
-                Reason1 selectedR1 = repository.Reasons1.FirstOrDefault(c => c.Reason1ID == selectedR2.Reason1ID);
-                reason1ID = selectedR1.Reason1ID;
-            }
-            else if (SelectedInR2Value != 0)
-            {
-                Reason2 selectedR2 = repository.Reasons2.FirstOrDefault(c => c.Reason2ID == SelectedInR2Value);
-                Reason1 selectedR1 = repository.Reasons1.FirstOrDefault(c => c.Reason1ID == selectedR2.Reason1ID);
-                reason1ID = selectedR1.Reason1ID;
+                int reason1ID = 0;
+                if (SelectedInR5Value != 0)
+                {
+                    WiringReason5 selectedR5 = wiringRepo.WiringReasons5.FirstOrDefault(c => c.WiringReason5ID == SelectedInR5Value);
+                    WiringReason4 selectedR4 = wiringRepo.WiringReasons4.FirstOrDefault(c => c.WiringReason4ID == selectedR5.WiringReason4ID);
+                    WiringReason3 selectedR3 = wiringRepo.WiringReasons3.FirstOrDefault(c => c.WiringReason3ID == selectedR4.WiringReason3ID);
+                    WiringReason2 selectedR2 = wiringRepo.WiringReasons2.FirstOrDefault(c => c.WiringReason2ID == selectedR3.WiringReason2ID);
+                    WiringReason1 selectedR1 = wiringRepo.WiringReasons1.FirstOrDefault(c => c.WiringReason1ID == selectedR2.WiringReason1ID);
+                    reason1ID = selectedR1.WiringReason1ID;
+                }
+                else if (SelectedInR4Value != 0)
+                {
+                    WiringReason4 selectedR4 = wiringRepo.WiringReasons4.FirstOrDefault(c => c.WiringReason4ID == SelectedInR4Value);
+                    WiringReason3 selectedR3 = wiringRepo.WiringReasons3.FirstOrDefault(c => c.WiringReason3ID == selectedR4.WiringReason3ID);
+                    WiringReason2 selectedR2 = wiringRepo.WiringReasons2.FirstOrDefault(c => c.WiringReason2ID == selectedR3.WiringReason2ID);
+                    WiringReason1 selectedR1 = wiringRepo.WiringReasons1.FirstOrDefault(c => c.WiringReason1ID == selectedR2.WiringReason1ID);
+                    reason1ID = selectedR1.WiringReason1ID;
+                }
+                else if (SelectedInR3Value != 0)
+                {
+                    WiringReason3 selectedR3 = wiringRepo.WiringReasons3.FirstOrDefault(c => c.WiringReason3ID == SelectedInR3Value);
+                    WiringReason2 selectedR2 = wiringRepo.WiringReasons2.FirstOrDefault(c => c.WiringReason2ID == selectedR3.WiringReason2ID);
+                    WiringReason1 selectedR1 = wiringRepo.WiringReasons1.FirstOrDefault(c => c.WiringReason1ID == selectedR2.WiringReason1ID);
+                    reason1ID = selectedR1.WiringReason1ID;
+                }
+                else if (SelectedInR2Value != 0)
+                {
+                    WiringReason2 selectedR2 = wiringRepo.WiringReasons2.FirstOrDefault(c => c.WiringReason2ID == SelectedInR2Value);
+                    WiringReason1 selectedR1 = wiringRepo.WiringReasons1.FirstOrDefault(c => c.WiringReason1ID == selectedR2.WiringReason1ID);
+                    reason1ID = selectedR1.WiringReason1ID;
+                }
+                else
+                {
+                    reason1ID = SelectedValue;
+                }
+                IQueryable<WiringReason1> reason1s = wiringRepo.WiringReasons1.Where(m => m.Description != "-").OrderBy(s => s.Description).AsQueryable();
+                foreach (WiringReason1 item in reason1s)
+                {
+                    TagBuilder tag = new TagBuilder("option");
+                    tag.Attributes["value"] = item.WiringReason1ID.ToString();
+                    if (item.WiringReason1ID == reason1ID)
+                    {
+                        tag.Attributes["selected"] = "selected";
+                    }
+                    tag.InnerHtml.Append(item.Description.ToString());
+                    result.InnerHtml.AppendHtml(tag);
+                }
             }
             else
             {
-                reason1ID = SelectedValue;
-            }
-            IQueryable<Reason1> reason1s = repository.Reasons1.Where(m => m.Description != "-").OrderBy(s => s.Description).AsQueryable();
-            foreach (Reason1 item in reason1s)
-            {
-                TagBuilder tag = new TagBuilder("option");
-                tag.Attributes["value"] = item.Reason1ID.ToString();
-                if (item.Reason1ID == reason1ID)
+                int reason1ID = 0;
+                if (SelectedInR5Value != 0)
                 {
-                    tag.Attributes["selected"] = "selected";
+                    Reason5 selectedR5 = repository.Reasons5.FirstOrDefault(c => c.Reason5ID == SelectedInR5Value);
+                    Reason4 selectedR4 = repository.Reasons4.FirstOrDefault(c => c.Reason4ID == selectedR5.Reason4ID);
+                    Reason3 selectedR3 = repository.Reasons3.FirstOrDefault(c => c.Reason3ID == selectedR4.Reason3ID);
+                    Reason2 selectedR2 = repository.Reasons2.FirstOrDefault(c => c.Reason2ID == selectedR3.Reason2ID);
+                    Reason1 selectedR1 = repository.Reasons1.FirstOrDefault(c => c.Reason1ID == selectedR2.Reason1ID);
+                    reason1ID = selectedR1.Reason1ID;
                 }
-                tag.InnerHtml.Append(item.Description.ToString());
-                result.InnerHtml.AppendHtml(tag);
+                else if (SelectedInR4Value != 0)
+                {
+                    Reason4 selectedR4 = repository.Reasons4.FirstOrDefault(c => c.Reason4ID == SelectedInR4Value);
+                    Reason3 selectedR3 = repository.Reasons3.FirstOrDefault(c => c.Reason3ID == selectedR4.Reason3ID);
+                    Reason2 selectedR2 = repository.Reasons2.FirstOrDefault(c => c.Reason2ID == selectedR3.Reason2ID);
+                    Reason1 selectedR1 = repository.Reasons1.FirstOrDefault(c => c.Reason1ID == selectedR2.Reason1ID);
+                    reason1ID = selectedR1.Reason1ID;
+                }
+                else if (SelectedInR3Value != 0)
+                {
+                    Reason3 selectedR3 = repository.Reasons3.FirstOrDefault(c => c.Reason3ID == SelectedInR3Value);
+                    Reason2 selectedR2 = repository.Reasons2.FirstOrDefault(c => c.Reason2ID == selectedR3.Reason2ID);
+                    Reason1 selectedR1 = repository.Reasons1.FirstOrDefault(c => c.Reason1ID == selectedR2.Reason1ID);
+                    reason1ID = selectedR1.Reason1ID;
+                }
+                else if (SelectedInR2Value != 0)
+                {
+                    Reason2 selectedR2 = repository.Reasons2.FirstOrDefault(c => c.Reason2ID == SelectedInR2Value);
+                    Reason1 selectedR1 = repository.Reasons1.FirstOrDefault(c => c.Reason1ID == selectedR2.Reason1ID);
+                    reason1ID = selectedR1.Reason1ID;
+                }
+                else
+                {
+                    reason1ID = SelectedValue;
+                }
+                IQueryable<Reason1> reason1s = repository.Reasons1.Where(m => m.Description != "-").OrderBy(s => s.Description).AsQueryable();
+                foreach (Reason1 item in reason1s)
+                {
+                    TagBuilder tag = new TagBuilder("option");
+                    tag.Attributes["value"] = item.Reason1ID.ToString();
+                    if (item.Reason1ID == reason1ID)
+                    {
+                        tag.Attributes["selected"] = "selected";
+                    }
+                    tag.InnerHtml.Append(item.Description.ToString());
+                    result.InnerHtml.AppendHtml(tag);
+                }
             }
+
+            
             output.Content.AppendHtml(result.InnerHtml);
             if (IsDisabled)
             {
@@ -4782,15 +4840,18 @@ namespace ProdFloor.Infrastructure
     public class Reasons2SelectTagHelper : TagHelper
     {
         private ITestingRepository repository;
+        private IWiringRepository wiringRepo;
 
         private IUrlHelperFactory urlHelperFactory;
 
         public ModelExpression AspFor { get; set; }
 
-        public Reasons2SelectTagHelper(IUrlHelperFactory helperFactory, ITestingRepository repo)
+        public Reasons2SelectTagHelper(IUrlHelperFactory helperFactory, ITestingRepository repo,
+            IWiringRepository wiringRepository)
         {
             urlHelperFactory = helperFactory;
             repository = repo;
+            wiringRepo = wiringRepository;
         }
 
         [ViewContext]
@@ -4802,6 +4863,8 @@ namespace ProdFloor.Infrastructure
         public int SelectedInR3Value { get; set; }
 
         public int SelectedValue { get; set; }
+
+        public string Area { get; set; }
 
         [HtmlAttributeName("asp-is-disabled")]
         public bool IsDisabled { set; get; }
@@ -4823,43 +4886,93 @@ namespace ProdFloor.Infrastructure
             m_tag.InnerHtml.Append("Select a Reason 2");
             result.InnerHtml.AppendHtml(m_tag);
             int reason2ID = 0;
-            if (SelectedInR5Value != 0)
+
+            if (Area == "Wiring")
             {
-                Reason5 selectedR5 = repository.Reasons5.FirstOrDefault(c => c.Reason5ID == SelectedInR5Value);
-                Reason4 selectedR4 = repository.Reasons4.FirstOrDefault(c => c.Reason4ID == selectedR5.Reason4ID);
-                Reason3 selectedR3 = repository.Reasons3.FirstOrDefault(c => c.Reason3ID == selectedR4.Reason3ID);
-                Reason2 selectedR2 = repository.Reasons2.FirstOrDefault(c => c.Reason2ID == selectedR3.Reason2ID);
-                reason2ID = selectedR2.Reason2ID;
-            }
-            if (SelectedInR4Value != 0)
-            {
-                Reason4 selectedR4 = repository.Reasons4.FirstOrDefault(c => c.Reason4ID == SelectedInR4Value);
-                Reason3 selectedR3 = repository.Reasons3.FirstOrDefault(c => c.Reason3ID == selectedR4.Reason3ID);
-                Reason2 selectedR2 = repository.Reasons2.FirstOrDefault(c => c.Reason2ID == selectedR3.Reason2ID);
-                reason2ID = selectedR2.Reason2ID;
-            }
-            if (SelectedInR3Value != 0)
-            {
-                Reason3 selectedR3 = repository.Reasons3.FirstOrDefault(c => c.Reason3ID == SelectedInR3Value);
-                Reason2 selectedR2 = repository.Reasons2.FirstOrDefault(c => c.Reason2ID == selectedR3.Reason2ID);
-                reason2ID = selectedR2.Reason2ID;
-            }
-            if (SelectedValue != 0)
-            {
-                reason2ID = SelectedValue;
-            }
-            IQueryable<Reason2> reason2s = repository.Reasons2.Where(m => m.Description != "-").OrderBy(s => s.Description).AsQueryable();
-            foreach (Reason2 item in reason2s)
-            {
-                TagBuilder tag = new TagBuilder("option");
-                tag.Attributes["value"] = item.Reason2ID.ToString();
-                if (item.Reason2ID == reason2ID)
+                if (SelectedInR5Value != 0)
                 {
-                    tag.Attributes["selected"] = "selected";
+                    WiringReason5 selectedR5 = wiringRepo.WiringReasons5.FirstOrDefault(c => c.WiringReason5ID == SelectedInR5Value);
+                    WiringReason4 selectedR4 = wiringRepo.WiringReasons4.FirstOrDefault(c => c.WiringReason4ID == selectedR5.WiringReason4ID);
+                    WiringReason3 selectedR3 = wiringRepo.WiringReasons3.FirstOrDefault(c => c.WiringReason3ID == selectedR4.WiringReason3ID);
+                    WiringReason2 selectedR2 = wiringRepo.WiringReasons2.FirstOrDefault(c => c.WiringReason2ID == selectedR3.WiringReason2ID);
+                    reason2ID = selectedR2.WiringReason2ID;
                 }
-                tag.InnerHtml.Append(item.Description.ToString());
-                result.InnerHtml.AppendHtml(tag);
+                if (SelectedInR4Value != 0)
+                {
+                    WiringReason4 selectedR4 = wiringRepo.WiringReasons4.FirstOrDefault(c => c.WiringReason4ID == SelectedInR4Value);
+                    WiringReason3 selectedR3 = wiringRepo.WiringReasons3.FirstOrDefault(c => c.WiringReason3ID == selectedR4.WiringReason3ID);
+                    WiringReason2 selectedR2 = wiringRepo.WiringReasons2.FirstOrDefault(c => c.WiringReason2ID == selectedR3.WiringReason2ID);
+                    reason2ID = selectedR2.WiringReason2ID;
+                }
+                if (SelectedInR3Value != 0)
+                {
+                    WiringReason3 selectedR3 = wiringRepo.WiringReasons3.FirstOrDefault(c => c.WiringReason3ID == SelectedInR3Value);
+                    WiringReason2 selectedR2 = wiringRepo.WiringReasons2.FirstOrDefault(c => c.WiringReason2ID == selectedR3.WiringReason2ID);
+                    reason2ID = selectedR2.WiringReason2ID;
+                }
+                if (SelectedValue != 0)
+                {
+                    reason2ID = SelectedValue;
+                }
+                IQueryable<WiringReason2> reason2s = wiringRepo.WiringReasons2.Where(m => m.Description != "-").OrderBy(s => s.Description).AsQueryable();
+                foreach (WiringReason2 item in reason2s)
+                {
+                    TagBuilder tag = new TagBuilder("option");
+                    tag.Attributes["value"] = item.WiringReason2ID.ToString();
+                    if (item.WiringReason2ID == reason2ID)
+                    {
+                        tag.Attributes["selected"] = "selected";
+                    }
+                    tag.InnerHtml.Append(item.Description.ToString());
+                    result.InnerHtml.AppendHtml(tag);
+                }
             }
+            else
+            {
+
+                if (SelectedInR5Value != 0)
+                {
+                    Reason5 selectedR5 = repository.Reasons5.FirstOrDefault(c => c.Reason5ID == SelectedInR5Value);
+                    Reason4 selectedR4 = repository.Reasons4.FirstOrDefault(c => c.Reason4ID == selectedR5.Reason4ID);
+                    Reason3 selectedR3 = repository.Reasons3.FirstOrDefault(c => c.Reason3ID == selectedR4.Reason3ID);
+                    Reason2 selectedR2 = repository.Reasons2.FirstOrDefault(c => c.Reason2ID == selectedR3.Reason2ID);
+                    reason2ID = selectedR2.Reason2ID;
+                }
+                if (SelectedInR4Value != 0)
+                {
+                    Reason4 selectedR4 = repository.Reasons4.FirstOrDefault(c => c.Reason4ID == SelectedInR4Value);
+                    Reason3 selectedR3 = repository.Reasons3.FirstOrDefault(c => c.Reason3ID == selectedR4.Reason3ID);
+                    Reason2 selectedR2 = repository.Reasons2.FirstOrDefault(c => c.Reason2ID == selectedR3.Reason2ID);
+                    reason2ID = selectedR2.Reason2ID;
+                }
+                if (SelectedInR3Value != 0)
+                {
+                    Reason3 selectedR3 = repository.Reasons3.FirstOrDefault(c => c.Reason3ID == SelectedInR3Value);
+                    Reason2 selectedR2 = repository.Reasons2.FirstOrDefault(c => c.Reason2ID == selectedR3.Reason2ID);
+                    reason2ID = selectedR2.Reason2ID;
+                }
+                if (SelectedValue != 0)
+                {
+                    reason2ID = SelectedValue;
+                }
+                IQueryable<Reason2> reason2s = repository.Reasons2.Where(m => m.Description != "-").OrderBy(s => s.Description).AsQueryable();
+                foreach (Reason2 item in reason2s)
+                {
+                    TagBuilder tag = new TagBuilder("option");
+                    tag.Attributes["value"] = item.Reason2ID.ToString();
+                    if (item.Reason2ID == reason2ID)
+                    {
+                        tag.Attributes["selected"] = "selected";
+                    }
+                    tag.InnerHtml.Append(item.Description.ToString());
+                    result.InnerHtml.AppendHtml(tag);
+                }
+            }
+
+
+
+
+
             output.Content.AppendHtml(result.InnerHtml);
             if (IsDisabled)
             {
@@ -4872,16 +4985,19 @@ namespace ProdFloor.Infrastructure
 
     public class Reasons3SelectTagHelper : TagHelper
     {
+        private IWiringRepository wiringRepo;
         private ITestingRepository repository;
 
         private IUrlHelperFactory urlHelperFactory;
 
         public ModelExpression AspFor { get; set; }
 
-        public Reasons3SelectTagHelper(IUrlHelperFactory helperFactory, ITestingRepository repo)
+        public Reasons3SelectTagHelper(IUrlHelperFactory helperFactory, ITestingRepository repo,
+            IWiringRepository wiringRepository)
         {
             urlHelperFactory = helperFactory;
             repository = repo;
+            wiringRepo = wiringRepository;
         }
 
         [ViewContext]
@@ -4891,6 +5007,7 @@ namespace ProdFloor.Infrastructure
         public int SelectedInR4Value { get; set; }
         public int SelectedInR5Value { get; set; }
 
+        public string Area { get; set; }
         public int SelectedValue { get; set; }
 
         [HtmlAttributeName("asp-is-disabled")]
@@ -4913,35 +5030,73 @@ namespace ProdFloor.Infrastructure
             m_tag.InnerHtml.Append("Select a Reason 3");
             result.InnerHtml.AppendHtml(m_tag);
             int reason3ID = 0;
-            if (SelectedInR5Value != 0)
+
+            if(Area == "Wiring")
             {
-                Reason5 selectedR5 = repository.Reasons5.FirstOrDefault(c => c.Reason5ID == SelectedInR5Value);
-                Reason4 selectedR4 = repository.Reasons4.FirstOrDefault(c => c.Reason4ID == selectedR5.Reason4ID);
-                Reason3 selectedR3 = repository.Reasons3.FirstOrDefault(c => c.Reason3ID == selectedR4.Reason3ID);
-                reason3ID = selectedR3.Reason3ID;
-            }
-            if (SelectedInR4Value != 0)
-            {
-                Reason4 selectedR4 = repository.Reasons4.FirstOrDefault(c => c.Reason4ID == SelectedInR4Value);
-                Reason3 selectedR3 = repository.Reasons3.FirstOrDefault(c => c.Reason3ID == selectedR4.Reason3ID);
-                reason3ID = selectedR3.Reason3ID;
-            }
-            if (SelectedValue != 0)
-            {
-                reason3ID = SelectedValue;
-            }
-            IQueryable<Reason3> reason3s = repository.Reasons3.Where(m => m.Description != "-").OrderBy(s => s.Description).AsQueryable();
-            foreach (Reason3 item in reason3s)
-            {
-                TagBuilder tag = new TagBuilder("option");
-                tag.Attributes["value"] = item.Reason3ID.ToString();
-                if (item.Reason3ID == reason3ID)
+                if (SelectedInR5Value != 0)
                 {
-                    tag.Attributes["selected"] = "selected";
+                    WiringReason5 selectedR5 = wiringRepo.WiringReasons5.FirstOrDefault(c => c.WiringReason5ID == SelectedInR5Value);
+                    WiringReason4 selectedR4 = wiringRepo.WiringReasons4.FirstOrDefault(c => c.WiringReason4ID == selectedR5.WiringReason4ID);
+                    WiringReason3 selectedR3 = wiringRepo.WiringReasons3.FirstOrDefault(c => c.WiringReason3ID == selectedR4.WiringReason3ID);
+                    reason3ID = selectedR3.WiringReason3ID;
                 }
-                tag.InnerHtml.Append(item.Description.ToString());
-                result.InnerHtml.AppendHtml(tag);
+                if (SelectedInR4Value != 0)
+                {
+                    WiringReason4 selectedR4 = wiringRepo.WiringReasons4.FirstOrDefault(c => c.WiringReason4ID == SelectedInR4Value);
+                    WiringReason3 selectedR3 = wiringRepo.WiringReasons3.FirstOrDefault(c => c.WiringReason3ID == selectedR4.WiringReason3ID);
+                    reason3ID = selectedR3.WiringReason3ID;
+                }
+                if (SelectedValue != 0)
+                {
+                    reason3ID = SelectedValue;
+                }
+                IQueryable<WiringReason3> reason3s = wiringRepo.WiringReasons3.Where(m => m.Description != "-").OrderBy(s => s.Description).AsQueryable();
+                foreach (WiringReason3 item in reason3s)
+                {
+                    TagBuilder tag = new TagBuilder("option");
+                    tag.Attributes["value"] = item.WiringReason3ID.ToString();
+                    if (item.WiringReason3ID == reason3ID)
+                    {
+                        tag.Attributes["selected"] = "selected";
+                    }
+                    tag.InnerHtml.Append(item.Description.ToString());
+                    result.InnerHtml.AppendHtml(tag);
+                }
             }
+            else
+            {
+                if (SelectedInR5Value != 0)
+                {
+                    Reason5 selectedR5 = repository.Reasons5.FirstOrDefault(c => c.Reason5ID == SelectedInR5Value);
+                    Reason4 selectedR4 = repository.Reasons4.FirstOrDefault(c => c.Reason4ID == selectedR5.Reason4ID);
+                    Reason3 selectedR3 = repository.Reasons3.FirstOrDefault(c => c.Reason3ID == selectedR4.Reason3ID);
+                    reason3ID = selectedR3.Reason3ID;
+                }
+                if (SelectedInR4Value != 0)
+                {
+                    Reason4 selectedR4 = repository.Reasons4.FirstOrDefault(c => c.Reason4ID == SelectedInR4Value);
+                    Reason3 selectedR3 = repository.Reasons3.FirstOrDefault(c => c.Reason3ID == selectedR4.Reason3ID);
+                    reason3ID = selectedR3.Reason3ID;
+                }
+                if (SelectedValue != 0)
+                {
+                    reason3ID = SelectedValue;
+                }
+                IQueryable<Reason3> reason3s = repository.Reasons3.Where(m => m.Description != "-").OrderBy(s => s.Description).AsQueryable();
+                foreach (Reason3 item in reason3s)
+                {
+                    TagBuilder tag = new TagBuilder("option");
+                    tag.Attributes["value"] = item.Reason3ID.ToString();
+                    if (item.Reason3ID == reason3ID)
+                    {
+                        tag.Attributes["selected"] = "selected";
+                    }
+                    tag.InnerHtml.Append(item.Description.ToString());
+                    result.InnerHtml.AppendHtml(tag);
+                }
+            }
+
+            
             output.Content.AppendHtml(result.InnerHtml);
             if (IsDisabled)
             {
@@ -4954,16 +5109,19 @@ namespace ProdFloor.Infrastructure
 
     public class Reasons4SelectTagHelper : TagHelper
     {
+        private IWiringRepository wiringRepo;
         private ITestingRepository repository;
 
         private IUrlHelperFactory urlHelperFactory;
 
         public ModelExpression AspFor { get; set; }
 
-        public Reasons4SelectTagHelper(IUrlHelperFactory helperFactory, ITestingRepository repo)
+        public Reasons4SelectTagHelper(IUrlHelperFactory helperFactory, ITestingRepository repo,
+            IWiringRepository wiringRepository)
         {
             urlHelperFactory = helperFactory;
             repository = repo;
+            wiringRepo = wiringRepository;
         }
 
         [ViewContext]
@@ -4972,6 +5130,7 @@ namespace ProdFloor.Infrastructure
 
         public int SelectedInR5Value { get; set; }
 
+        public string Area { get; set; }
         public int SelectedValue { get; set; }
 
         [HtmlAttributeName("asp-is-disabled")]
@@ -4994,28 +5153,57 @@ namespace ProdFloor.Infrastructure
             m_tag.InnerHtml.Append("Select a Reason 4");
             result.InnerHtml.AppendHtml(m_tag);
             int reason4ID = 0;
-            if (SelectedInR5Value != 0)
+
+            if(Area == "Wiring")
             {
-                Reason5 selectedR5 = repository.Reasons5.FirstOrDefault(c => c.Reason5ID == SelectedInR5Value);
-                Reason4 selectedR4 = repository.Reasons4.FirstOrDefault(c => c.Reason4ID == selectedR5.Reason4ID);
-                reason4ID = selectedR4.Reason4ID;
-            }
-            if (SelectedInR5Value != 0)
-            {
-                reason4ID = SelectedValue;
-            }
-            IQueryable<Reason4> reason4s = repository.Reasons4.Where(m => m.Description != "-").OrderBy(s => s.Description).AsQueryable();
-            foreach (Reason4 item in reason4s)
-            {
-                TagBuilder tag = new TagBuilder("option");
-                tag.Attributes["value"] = item.Reason4ID.ToString();
-                if (item.Reason4ID == reason4ID)
+                if (SelectedInR5Value != 0)
                 {
-                    tag.Attributes["selected"] = "selected";
+                    WiringReason5 selectedR5 = wiringRepo.WiringReasons5.FirstOrDefault(c => c.WiringReason5ID == SelectedInR5Value);
+                    WiringReason4 selectedR4 = wiringRepo.WiringReasons4.FirstOrDefault(c => c.WiringReason4ID == selectedR5.WiringReason4ID);
+                    reason4ID = selectedR4.WiringReason4ID;
                 }
-                tag.InnerHtml.Append(item.Description.ToString());
-                result.InnerHtml.AppendHtml(tag);
+                IQueryable<WiringReason4> reason4s = wiringRepo.WiringReasons4.Where(m => m.Description != "-").OrderBy(s => s.Description).AsQueryable();
+                foreach (WiringReason4 item in reason4s)
+                {
+                    TagBuilder tag = new TagBuilder("option");
+                    tag.Attributes["value"] = item.WiringReason4ID.ToString();
+                    if (item.WiringReason4ID == reason4ID)
+                    {
+                        tag.Attributes["selected"] = "selected";
+                    }
+                    tag.InnerHtml.Append(item.Description.ToString());
+                    result.InnerHtml.AppendHtml(tag);
+                }
             }
+            else
+            {
+                if (SelectedInR5Value != 0)
+                {
+                    Reason5 selectedR5 = repository.Reasons5.FirstOrDefault(c => c.Reason5ID == SelectedInR5Value);
+                    Reason4 selectedR4 = repository.Reasons4.FirstOrDefault(c => c.Reason4ID == selectedR5.Reason4ID);
+                    reason4ID = selectedR4.Reason4ID;
+                }
+                if (SelectedInR5Value != 0)
+                {
+                    reason4ID = SelectedValue;
+                }
+                IQueryable<Reason4> reason4s = repository.Reasons4.Where(m => m.Description != "-").OrderBy(s => s.Description).AsQueryable();
+                foreach (Reason4 item in reason4s)
+                {
+                    TagBuilder tag = new TagBuilder("option");
+                    tag.Attributes["value"] = item.Reason4ID.ToString();
+                    if (item.Reason4ID == reason4ID)
+                    {
+                        tag.Attributes["selected"] = "selected";
+                    }
+                    tag.InnerHtml.Append(item.Description.ToString());
+                    result.InnerHtml.AppendHtml(tag);
+                }
+            }
+
+       
+
+
             output.Content.AppendHtml(result.InnerHtml);
             if (IsDisabled)
             {
@@ -5028,22 +5216,26 @@ namespace ProdFloor.Infrastructure
 
     public class Reasons5SelectTagHelper : TagHelper
     {
+        private IWiringRepository wiringRepo;
         private ITestingRepository repository;
 
         private IUrlHelperFactory urlHelperFactory;
 
         public ModelExpression AspFor { get; set; }
 
-        public Reasons5SelectTagHelper(IUrlHelperFactory helperFactory, ITestingRepository repo)
+        public Reasons5SelectTagHelper(IUrlHelperFactory helperFactory, ITestingRepository repo,
+            IWiringRepository wiringRepository)
         {
             urlHelperFactory = helperFactory;
             repository = repo;
+            wiringRepo = wiringRepository;
         }
 
         [ViewContext]
         [HtmlAttributeNotBound]
         public ViewContext ViewContext { get; set; }
 
+        public string Area { get; set; }
         public int SelectedValue { get; set; }
 
         [HtmlAttributeName("asp-is-disabled")]
@@ -5066,23 +5258,51 @@ namespace ProdFloor.Infrastructure
             m_tag.InnerHtml.Append("Select a Reason 5");
             result.InnerHtml.AppendHtml(m_tag);
             int reason5ID = 0;
-            if (SelectedValue != 0)
+
+            if(Area == "Wiring")
             {
-                Reason5 selectedR5 = repository.Reasons5.FirstOrDefault(c => c.Reason5ID == SelectedValue);
-                reason5ID = selectedR5.Reason5ID;
-            }
-            IQueryable<Reason5> reason5s = repository.Reasons5.Where(m => m.Description != "-").OrderBy(s => s.Description).AsQueryable();
-            foreach (Reason5 item in reason5s)
-            {
-                TagBuilder tag = new TagBuilder("option");
-                tag.Attributes["value"] = item.Reason5ID.ToString();
-                if (item.Reason5ID == reason5ID)
+                if (SelectedValue != 0)
                 {
-                    tag.Attributes["selected"] = "selected";
+                    WiringReason5 selectedR5 = wiringRepo.WiringReasons5.FirstOrDefault(c => c.WiringReason5ID == SelectedValue);
+                    reason5ID = selectedR5.WiringReason5ID; 
                 }
-                tag.InnerHtml.Append(item.Description.ToString());
-                result.InnerHtml.AppendHtml(tag);
+                IQueryable<WiringReason5> reason5s = wiringRepo.WiringReasons5.Where(m => m.Description != "-").OrderBy(s => s.Description).AsQueryable();
+                foreach (WiringReason5 item in reason5s)
+                {
+                    TagBuilder tag = new TagBuilder("option");
+                    tag.Attributes["value"] = item.WiringReason5ID.ToString();
+                    if (item.WiringReason5ID == reason5ID)
+                    {
+                        tag.Attributes["selected"] = "selected";
+                    }
+                    tag.InnerHtml.Append(item.Description.ToString());
+                    result.InnerHtml.AppendHtml(tag);
+                }
             }
+            else
+            {
+                if (SelectedValue != 0)
+                {
+                    Reason5 selectedR5 = repository.Reasons5.FirstOrDefault(c => c.Reason5ID == SelectedValue);
+                    reason5ID = selectedR5.Reason5ID;
+                }
+                IQueryable<Reason5> reason5s = repository.Reasons5.Where(m => m.Description != "-").OrderBy(s => s.Description).AsQueryable();
+                foreach (Reason5 item in reason5s)
+                {
+                    TagBuilder tag = new TagBuilder("option");
+                    tag.Attributes["value"] = item.Reason5ID.ToString();
+                    if (item.Reason5ID == reason5ID)
+                    {
+                        tag.Attributes["selected"] = "selected";
+                    }
+                    tag.InnerHtml.Append(item.Description.ToString());
+                    result.InnerHtml.AppendHtml(tag);
+                }
+            }
+
+            
+
+
             output.Content.AppendHtml(result.InnerHtml);
             if (IsDisabled)
             {
@@ -5288,7 +5508,7 @@ namespace ProdFloor.Infrastructure
                         foreach (AppUser user in users)
                         {
                             bool IsInRole = GetCurrentUserRole(user, "Wirer").Result;
-                            if (IsInRole && !user.FullName.Contains("Tester")) usersAux.Add(user);
+                            if (IsInRole) usersAux.Add(user);
                         }
                         users = usersAux.AsQueryable();
                         break;
@@ -5392,6 +5612,49 @@ namespace ProdFloor.Infrastructure
         }
     }
 
+    public class UserInputTagHelper : TagHelper
+    {
+        private IWiringRepository repository;
+
+        private IUrlHelperFactory urlHelperFactory;
+
+        private UserManager<AppUser> userManager;
+
+
+        public ModelExpression AspFor { get; set; }
+
+        public UserInputTagHelper(IUrlHelperFactory helperFactory, UserManager<AppUser> userMrg)
+        {
+            urlHelperFactory = helperFactory;
+            userManager = userMrg;
+        }
+
+        [ViewContext]
+        [HtmlAttributeNotBound]
+        public ViewContext ViewContext { get; set; }
+        public int UserID { get; set; }
+
+        public override void Process(TagHelperContext context, TagHelperOutput output)
+        {
+
+            IUrlHelper urlHelper = urlHelperFactory.GetUrlHelper(ViewContext);
+            string name = this.AspFor.Name;
+
+            AppUser user = userManager.Users.FirstOrDefault(m => m.EngID == UserID);
+
+            TagBuilder tag = new TagBuilder("input");
+            tag.Attributes.Add("name", "UserName");
+            tag.Attributes.Add("type", "text");
+            tag.Attributes.Add("disabled", "true");
+            tag.Attributes.Add("class", "form-control");
+            tag.Attributes.Add("value", user == null ? "Error" : user.FullName);
+
+            output.Content.AppendHtml(tag);
+            base.Process(context, output);
+        }
+    }
+
+    //Wiring
     public class PXPReasonsSelectTagHelper : TagHelper
     {
         private IWiringRepository repository;
@@ -5458,48 +5721,6 @@ namespace ProdFloor.Infrastructure
         }
     }
 
-    public class UserInputTagHelper : TagHelper
-    {
-        private IWiringRepository repository;
-
-        private IUrlHelperFactory urlHelperFactory;
-
-        private UserManager<AppUser> userManager;
-
-
-        public ModelExpression AspFor { get; set; }
-
-        public UserInputTagHelper(IUrlHelperFactory helperFactory, UserManager<AppUser> userMrg)
-        {
-            urlHelperFactory = helperFactory;
-            userManager = userMrg;
-        }
-
-        [ViewContext]
-        [HtmlAttributeNotBound]
-        public ViewContext ViewContext { get; set; }
-        public int UserID { get; set; }
-
-        public override void Process(TagHelperContext context, TagHelperOutput output)
-        {
-
-            IUrlHelper urlHelper = urlHelperFactory.GetUrlHelper(ViewContext);
-            string name = this.AspFor.Name;
-
-            AppUser user = userManager.Users.FirstOrDefault(m => m.EngID == UserID);
-
-            TagBuilder tag = new TagBuilder("input");
-            tag.Attributes.Add("name", "UserName");
-            tag.Attributes.Add("type", "text");
-            tag.Attributes.Add("disabled", "true");
-            tag.Attributes.Add("class", "form-control");
-            tag.Attributes.Add("value", user == null ? "Error" : user.FullName);
-
-            output.Content.AppendHtml(tag);
-            base.Process(context, output);
-        }
-    }
-
     public class PXPReasonInputTagHelper : TagHelper
     {
         private IWiringRepository repository;
@@ -5515,7 +5736,7 @@ namespace ProdFloor.Infrastructure
             urlHelperFactory = helperFactory;
             repository = repo;
         }
-        
+
         [ViewContext]
         [HtmlAttributeNotBound]
         public ViewContext ViewContext { get; set; }
@@ -5535,6 +5756,156 @@ namespace ProdFloor.Infrastructure
             tag.Attributes.Add("disabled", "true");
             tag.Attributes.Add("class", "form-control");
             tag.Attributes.Add("value", reason == null ? "Error" : reason.Description);
+
+
+            output.Content.AppendHtml(tag);
+            base.Process(context, output);
+        }
+    }
+
+    public class JobTypeInputTagHelper : TagHelper
+    {
+        private IItemRepository repository;
+
+        private IUrlHelperFactory urlHelperFactory;
+
+        public ModelExpression AspFor { get; set; }
+
+        public JobTypeInputTagHelper(IUrlHelperFactory helperFactory, IItemRepository repo)
+        {
+            urlHelperFactory = helperFactory;
+            repository = repo;
+        }
+
+        [ViewContext]
+        [HtmlAttributeNotBound]
+        public ViewContext ViewContext { get; set; }
+        public int JobTypeID { get; set; }
+
+        public override void Process(TagHelperContext context, TagHelperOutput output)
+        {
+
+            IUrlHelper urlHelper = urlHelperFactory.GetUrlHelper(ViewContext);
+            string name = this.AspFor.Name;
+
+            JobType jobtype = repository.JobTypes.FirstOrDefault(m => m.JobTypeID == JobTypeID);
+
+            TagBuilder tag = new TagBuilder("input");
+            tag.Attributes.Add("name", "JobType");
+            tag.Attributes.Add("type", "text");
+            tag.Attributes.Add("disabled", "true");
+            tag.Attributes.Add("class", "form-control");
+            tag.Attributes.Add("value", jobtype == null ? "Error" : jobtype.Name);
+
+
+            output.Content.AppendHtml(tag);
+            base.Process(context, output);
+        }
+    }
+
+    public class WiringOpcionSelectTagHelper : TagHelper
+    {
+        private IWiringRepository wiringRepo;
+
+        private IUrlHelperFactory urlHelperFactory;
+
+        public ModelExpression AspFor { get; set; }
+
+        public WiringOpcionSelectTagHelper(IUrlHelperFactory helperFactory,
+            IWiringRepository wiringRepository)
+        {
+            urlHelperFactory = helperFactory;
+            wiringRepo = wiringRepository;
+        }
+
+        [ViewContext]
+        [HtmlAttributeNotBound]
+        public ViewContext ViewContext { get; set; }
+
+        public string Area { get; set; }
+        public int SelectedValue { get; set; }
+
+        [HtmlAttributeName("asp-is-disabled")]
+        public bool IsDisabled { set; get; }
+
+        public override void Process(TagHelperContext context, TagHelperOutput output)
+        {
+
+            IUrlHelper urlHelper = urlHelperFactory.GetUrlHelper(ViewContext);
+            output.TagName = "select";
+            TagBuilder result = new TagBuilder("Select a feature");
+            string name = this.AspFor.Name;
+            if (!String.IsNullOrEmpty(name))
+            {
+                output.Attributes.Add("id", name);
+                output.Attributes.Add("name", name);
+            }
+            int ItemID = 0;
+
+            if (SelectedValue != 0)
+            {
+                WiringOption selectedItem = wiringRepo.WiringOptions.FirstOrDefault(c => c.WiringOptionID == SelectedValue);
+                ItemID = selectedItem.WiringOptionID;
+            }
+
+            IQueryable<WiringOption> items = wiringRepo.WiringOptions.Where(m => m.isDeleted == false).OrderBy(s => s.Description).AsQueryable();
+            foreach (WiringOption item in items)
+            {
+                TagBuilder tag = new TagBuilder("option");
+                tag.Attributes["value"] = item.WiringOptionID.ToString();
+                if (item.WiringOptionID == ItemID) 
+                {
+                    tag.Attributes["selected"] = "selected";
+                }
+                tag.InnerHtml.Append(item.Description.ToString());
+                result.InnerHtml.AppendHtml(tag);
+            }
+
+            output.Content.AppendHtml(result.InnerHtml);
+            if (IsDisabled)
+            {
+                var d = new TagHelperAttribute("disabled", "disabled");
+                output.Attributes.Add(d);
+            }
+            base.Process(context, output);
+        }
+    }
+
+    public class WiringOpcionInputTagHelper : TagHelper
+    {
+        private IWiringRepository repository;
+
+        private IUrlHelperFactory urlHelperFactory;
+
+
+
+        public ModelExpression AspFor { get; set; }
+
+        public WiringOpcionInputTagHelper(IUrlHelperFactory helperFactory, IWiringRepository repo)
+        {
+            urlHelperFactory = helperFactory;
+            repository = repo;
+        }
+
+        [ViewContext]
+        [HtmlAttributeNotBound]
+        public ViewContext ViewContext { get; set; }
+        public int ItemID { get; set; }
+
+        public override void Process(TagHelperContext context, TagHelperOutput output)
+        {
+
+            IUrlHelper urlHelper = urlHelperFactory.GetUrlHelper(ViewContext);
+            string name = this.AspFor.Name;
+
+            WiringOption item = repository.WiringOptions.FirstOrDefault(m => m.WiringOptionID == ItemID);
+
+            TagBuilder tag = new TagBuilder("input");
+            tag.Attributes.Add("name", "UserName");
+            tag.Attributes.Add("type", "text");
+            tag.Attributes.Add("disabled", "true");
+            tag.Attributes.Add("class", "form-control");
+            tag.Attributes.Add("value", item == null ? "Error" : item.Description);
 
 
             output.Content.AppendHtml(tag);

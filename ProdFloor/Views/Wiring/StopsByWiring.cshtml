@@ -1,0 +1,135 @@
+﻿@model ProdFloor.Models.ViewModels.Wiring.WiringViewModel
+@{
+    ViewBag.Title = "Stops";
+}
+<div class="row" style="padding-right:20px">
+    <br /><br />
+          <h4 class="col-sm-10">
+              Stops of Job #@Model.Job.JobNum and PO #@Model.PO.PONumb
+          </h4>
+</div>
+<br />
+<div>
+    <table class="table table-striped border table-sm" style="text-align:center">
+        <thead style="background-color:#343a40!important;color:#fff;">
+            <tr>
+                <th>
+                    <label>Start </label>
+                </th>
+                <th>
+                    <label>End </label>
+                </th>
+                <th>
+                    <label>Elapsed </label>
+                </th>
+                <th>
+                    <label>Reason 1 </label>
+                </th>
+                <th>
+                    <label>Reason 2 </label>
+                </th>
+                <th>
+                    <label>Reason 3 </label>
+                </th>
+                <th>
+                    <label>Reason 4 </label>
+                </th>
+                <th>
+                    <label>Reason 5 </label>
+                </th>
+                <th>
+                    <label>Description </label>
+                </th>
+            </tr>
+        </thead>
+        @foreach (var item in Model.StopList)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(m => item.StartDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(m => item.StopDate)
+                </td>
+                <td>
+                    @((item.Elapsed.Day - 1).ToString()):@(item.Elapsed.Hour.ToString()):@(item.Elapsed.Minute.ToString()):@(item.Elapsed.Second.ToString())
+                </td>
+                <td>
+                    @if (item.Reason1 == 980 || item.Reason1 == 981 || item.Reason1 == 982)
+                    {
+                        <span>N/A</span>
+                    }
+                    else
+                    {
+                        @Html.DisplayFor(m => Model.Reasons1List.FirstOrDefault(n => n.WiringReason1ID == item.Reason1).Description)
+                    }
+
+                </td>
+                <td>
+                    @if (item.Reason2 == 980 || item.Reason2 == 981 || item.Reason2 == 982)
+                    {
+                        <span>N/A</span>
+                    }
+                    else
+                    {
+                        @Html.DisplayFor(m => Model.Reasons2List.FirstOrDefault(n => n.WiringReason2ID == item.Reason2).Description)
+                    }
+
+                </td>
+                <td>
+                    @if (item.Reason3 == 980 || item.Reason3 == 981 || item.Reason3 == 982)
+                    {
+                        <span>N/A</span>
+                    }
+                    else
+                    {
+                        @Html.DisplayFor(m => Model.Reasons3List.FirstOrDefault(n => n.WiringReason3ID == item.Reason3).Description)
+                    }
+
+                </td>
+                <td>
+                    @if (item.Reason4 == 980 || item.Reason4 == 981 || item.Reason4 == 982)
+                    {
+                        <span>N/A</span>
+                    }
+                    else
+                    {
+                        @Html.DisplayFor(m => Model.Reasons4List.FirstOrDefault(n => n.WiringReason4ID == item.Reason4).Description)
+                    }
+
+                </td>
+                <td>
+                    @if (item.Reason5ID == 980 || item.Reason5ID == 981 || item.Reason5ID == 982)
+                    {
+                        <span>N/A</span>
+                    }
+                    else
+                    {
+                        @Html.DisplayFor(m => Model.Reasons5List.FirstOrDefault(n => n.WiringReason5ID == item.Reason5ID).Description)
+                    }
+
+                </td>
+                <td>
+                    @Html.DisplayFor(m => item.Description)
+                </td>
+            </tr>
+
+        }
+    </table>
+</div>
+@if (Model.StopList.Count > 0)
+{
+    <coool-pagination-test page-model="@Model.PagingInfo" page-action="StopsByWiring" page-classes-enabled="true"
+                           page-class="btn" page-class-normal="btn-secondary" page-id="@Model.StopList[0].WiringID"
+                           page-class-selected="btn-dark"
+                           class="btn-group pull-right m-1">
+    </coool-pagination-test>
+}
+else
+{
+    <p>No stops availables</p>
+}
+<br />
+
+
+

@@ -448,7 +448,17 @@ namespace ProdFloor.Controllers
                     planningRow.LineNumber = int.Parse(rowList.ElementAt(LineNumber));
                     planningRow.Material = rowList.ElementAt(Material);
                     planningRow.MRP = rowList.ElementAt(MRP);
-                    planningRow.PO = int.Parse(rowList.ElementAt(PO));
+
+                    try
+                    {
+                        planningRow.PO = int.Parse(rowList.ElementAt(PO));
+                    }
+                    catch(Exception e)
+                    {
+                        rowList.Clear();
+                        continue;
+                    }
+                    
                     planningRow.SoldTo = rowList.ElementAt(SoldTo);
                     planningRow.JobName = rowList.ElementAt(JobName);
                     planningRow.WorkCenter = rowList.ElementAt(WorkCenter);

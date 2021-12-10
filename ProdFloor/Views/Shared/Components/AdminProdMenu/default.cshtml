@@ -1,5 +1,8 @@
 ﻿<ul class="nav nav-pills flex-column" id="accordion" role="tablist">
     <li class="nav-item">
+        <a class="nav-link text-light" asp-controller="Wiring" asp-action="AdminDashboard"><i class="fas fa-plug"></i>&nbsp; Wiring</a>
+    </li>
+    <li class="nav-item">
         <a class="nav-link text-light" asp-controller="WiringPXP" asp-action="PXPProductionDashboard"><i class="fas fa-search-location"></i>&nbsp; PXP</a>
     </li>
     <li class="nav-item">
@@ -7,6 +10,41 @@
     </li>
     <li class="nav-item">
         <a class="nav-link text-light" asp-action="List" asp-controller="Station" asp-route-Page="1"><i class="fas fa-map-marked-alt"></i>&nbsp; Stations</a>
+    </li>
+    <li class="nav-item" role="tab" id="Reasons">
+        <a data-toggle="collapse" href="#collapseReasons" role="button" aria-expanded="false" aria-controls="collapseReasons"
+           class="nav-link text-light"><i class="fas fa-clipboard-list"></i>&nbsp; Reasons</a>
+        <form asp-controller="WiringReasons" asp-action="List" asp-route-Page="1" method="get">
+            <ul id="collapseReasons" class="collapse" role="tabpanel" aria-labelledby="collapseReasons" data-parent="#accordion">
+                <li class="nav-link"
+                    style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue; width: 90%">
+                    <button class="btn btn-sm btn-link" style="color:white" asp-action="Reason1List" asp-controller="WiringReasons" asp-route-Page="1" asp-route-ReasonNumber="1">Reasons 1</button>
+                </li>
+                <li class="nav-link"
+                    style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue; width: 90%">
+                    <button class="btn btn-sm btn-link" style="color:white" asp-action="Reason2List" asp-controller="WiringReasons" asp-route-Page="1" asp-route-ReasonNumber="2">Reasons 2</button>
+                </li>
+                <li class="nav-link"
+                    style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue; width: 90%">
+                    <button class="btn btn-sm btn-link" style="color:white" asp-action="Reason3List" asp-controller="WiringReasons" asp-route-Page="1" asp-route-ReasonNumber="3">Reasons 3</button>
+                </li>
+                <li class="nav-link"
+                    style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue; width: 90%">
+                    <button class="btn btn-sm btn-link" style="color:white" asp-action="Reason4List" asp-controller="WiringReasons" asp-route-Page="1" asp-route-ReasonNumber="4">Reasons 4</button>
+                </li>
+                <li class="nav-link"
+                    style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue; width: 90%">
+                    <button class="btn btn-sm btn-link" style="color:white" asp-action="Reason5List" asp-controller="WiringReasons" asp-route-Page="1" asp-route-ReasonNumber="5">Reasons 5</button>
+                </li>
+            </ul>
+        </form>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-light" asp-action="List" asp-controller="WiringOptions" asp-route-Page="1"><i class="fas fa-list-ol"></i>&nbsp; Features</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-light" asp-action="List" asp-route-ElmHydroPage="1" asp-route-M2000Page="1" asp-route-ElmTractionPage="1" asp-route-M4000Page="1"
+           asp-controller="WiringStep" asp-route-JobTypeName="Traction"><i class="fas fa-shoe-prints"></i>&nbsp; Steps</a>
     </li>
     <li class="nav-item">
         <a class="nav-link text-light" asp-controller="Account" asp-action="Index"><i class="fas fa-user-tie"></i>&nbsp; Wirers</a>
