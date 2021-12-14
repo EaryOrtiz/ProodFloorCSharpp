@@ -3576,7 +3576,7 @@ namespace ProdFloor.Controllers
                             }
                             else if (JobTypeName(job.JobTypeID) == "ElmHydro" || JobTypeName(job.JobTypeID) == "ElmTract")
                             {
-                                Element element = repository.Elements.First(m => m.JobID == job.JobID);
+                                Element element = repository.Elements.FirstOrDefault(m => m.JobID == job.JobID);
                                 if (element != null)
                                 {
                                     string aux;
