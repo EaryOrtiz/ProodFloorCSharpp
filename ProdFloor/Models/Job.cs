@@ -868,4 +868,120 @@ namespace ProdFloor.Models
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}")]
         public DateTime ERDate { get; set; }
     }
+
+    //M3000
+
+    public class M3000
+    {
+        public int M3000ID { get; set; }
+        public int JobID { get; set; }
+
+
+        [Display(Name = "Input Voltage")]
+        [Range(114, 600, ErrorMessage = "Voltage out of range")]
+        [Required(ErrorMessage = "Please enter the input voltage")]
+        public int InputVoltage { get; set; }
+
+        [Range(1, 3, ErrorMessage = "Phase out of range")]
+        [Display(Name = "Input Phase")]
+        [Required(ErrorMessage = "Please enter the input phase")]
+        public int InputPhase { get; set; }
+
+        [Range(50, 61, ErrorMessage = "Frequency out of range")]
+        [Display(Name = "Input Frequency")]
+        [Required(ErrorMessage = "Please enter the input frequency")]
+        public int InputFrecuency { get; set; }
+
+        [Display(Name = "Speed")]
+        [Required(ErrorMessage = "Please enter the speed")]
+        public int Speed { get; set; }
+
+        [Display(Name = "Length")]
+        [Required(ErrorMessage = "Please enter the length")]
+        public int Length { get; set; }
+
+        [Display(Name = "EC-RCT")]
+        public bool ECRCT { get; set; }
+
+        [Display(Name = "Control Type")]
+        [Required(ErrorMessage = "Please enter Control Type")]
+        public string ControlType { get; set; }
+
+        [Display(Name = "NEMA")]
+        [Required(ErrorMessage = "Please enter NEMA")]
+        public string NEMA { get; set; }
+
+        [Display(Name = "Control Panel")]
+        [Required(ErrorMessage = "Please enter Control Panel")]
+        public string ControlPanel { get; set; }
+    }
+
+    public class MotorInfo
+    {
+        public int MotorInfoID { get; set; }
+        public int JobID { get; set; }
+
+        [Required(ErrorMessage = "Voltage")]
+        public int  Voltage { get; set; }
+
+        [Required(ErrorMessage = "Please enter HP")]
+        public int HP { get; set; }
+
+        [Required(ErrorMessage = "Please enter the FLA")]
+        public float FLA { get; set; }
+
+        [Display(Name = "Contactor")]
+        public string Contactor { get; set; }
+
+        [Display(Name = "Main brake")]
+        public bool MainBrake { get; set; }
+
+        [Display(Name = "Brake Type")]
+        public string MainBrakeType { get; set; }
+
+        [Display(Name = "Brake Contact")]
+        public string MainBrakeContact { get; set; }
+
+        [Display(Name = "Secondary Brake")]
+        public bool SecondaryBrake { get; set; }
+
+        [Display(Name = "Secondary Brake Type")]
+        public string SecondaryBrakeType { get; set; }
+
+        [Display(Name = "Secondary Brake Contact")]
+        public string SecondaryBrakeContact { get; set; }
+    }
+
+    public class OperatingFeatures
+    {
+        public int OperatingFeaturesID { get; set; }
+        public int JobID { get; set; }
+
+
+        [Display(Name = "Tandem Operation")]
+        public bool TandemOperation { get; set; }
+
+        [Display(Name = "Auto Chain Lubrication")]
+        public bool AutoChainLubrication { get; set; }
+
+        [Display(Name = "Auto Chain Lubrication Voltage")]
+        public int AutoChainLubriVoltage { get; set; }
+
+        [Display(Name = "Display Module")]
+        [Required(ErrorMessage = "Please enter Display Module")]
+        public string DisplayModule { get; set; }
+
+        [Display(Name = "Smoke Detector")]
+        public bool SmokeDetector { get; set; }
+
+        [Display(Name = "Remote Monitoring")]
+        public bool RemoteMonitoring { get; set; }
+
+        [Display(Name = "Remote Monitoring Type")]
+        public string RemoteMonitoringType { get; set; }
+
+
+        [Display(Name = "Thermistor")]
+        public bool Thermistor { get; set; }
+    }
 }
