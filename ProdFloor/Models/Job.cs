@@ -930,6 +930,7 @@ namespace ProdFloor.Models
         [Required(ErrorMessage = "Please enter the FLA")]
         public float FLA { get; set; }
 
+        [Required(ErrorMessage = "Please enter Display Module")]
         [Display(Name = "Contactor")]
         public string Contactor { get; set; }
 
@@ -942,14 +943,14 @@ namespace ProdFloor.Models
         [Display(Name = "Brake Contact")]
         public string MainBrakeContact { get; set; }
 
-        [Display(Name = "Secondary Brake")]
-        public bool SecondaryBrake { get; set; }
+        [Display(Name = "Aux Brake")]
+        public bool AuxBrake { get; set; }
 
-        [Display(Name = "Secondary Brake Type")]
-        public string SecondaryBrakeType { get; set; }
+        [Display(Name = "Aux Brake Type")]
+        public string AuxBrakeType { get; set; }
 
-        [Display(Name = "Secondary Brake Contact")]
-        public string SecondaryBrakeContact { get; set; }
+        [Display(Name = "Aux Brake Contact")]
+        public string AuxBrakeContact { get; set; }
     }
 
     public class OperatingFeatures
@@ -979,7 +980,6 @@ namespace ProdFloor.Models
 
         [Display(Name = "Remote Monitoring Type")]
         public string RemoteMonitoringType { get; set; }
-
 
         [Display(Name = "Thermistor")]
         public bool Thermistor { get; set; }
