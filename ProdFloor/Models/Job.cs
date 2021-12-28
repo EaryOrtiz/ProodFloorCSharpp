@@ -94,6 +94,12 @@ namespace ProdFloor.Models
         public List<ElementHydro> _ElementHydros { get; set; }
         public List<ElementTraction> _EmentTractions { get; set; }
 
+        //M3000
+        public M3000 _M3000 { get; set; }
+        public MotorInfo _MotorInfo { get; set; }
+        public OperatingFeatures _OperatingFeatures { get; set; }
+
+
         public List<PO> _PO { get; set; }
         public List<TestJob> _TestJobs { get; set; }
         [Display(Name = "Job Type")]
@@ -870,7 +876,6 @@ namespace ProdFloor.Models
     }
 
     //M3000
-
     public class M3000
     {
         public int M3000ID { get; set; }
