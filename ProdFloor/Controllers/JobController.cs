@@ -656,6 +656,15 @@ namespace ProdFloor.Controllers
                     };
                     return View(viewModel3);
 
+                case "M3000":
+                    JobViewModel viewModel4 = new JobViewModel
+                    {
+                        CurrentJob = new Job { ShipDate = DateTime.Now, LatestFinishDate = DateTime.Now, JobTypeID = JobtypeID },
+                        POList = new List<PO> { new PO { JobID = 0 } },
+                        JobTypeName = JobType
+                    };
+                    return View(viewModel4);
+
                 default: return View(NotFound());
             }
 
