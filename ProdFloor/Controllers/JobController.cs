@@ -716,9 +716,17 @@ namespace ProdFloor.Controllers
                         repository.SavePO(items);
                     }
                     List<PO> POsList = repository.POs.Where(j => j.JobID == currentJob.JobID).ToList();
+
+                    foreach (PO item in POsList)
+                    {
+                        CheckStatusPO(item.POID);
+                    }
+
                     List<PO> POlistAUX = new List<PO>();
                     if (POsList != null) POlistAUX = POsList;
                     else POlistAUX = new List<PO> { new PO() };
+
+
 
                     if (JobTypeName(currentJob.JobTypeID) == "ElmHydro")
                     {
@@ -752,6 +760,23 @@ namespace ProdFloor.Controllers
                         TempData["message"] = $"Job# {jobElementTraction.CurrentJob.JobNum} has been saved...{jobElementTraction.CurrentJob.JobID}...";
                         return View("NextFormTraction", jobElementTraction);
                     }
+                    else if (JobTypeName(currentJob.JobTypeID) == "M3000")
+                    {
+                        JobM3000ViewModel viewModel = new JobM3000ViewModel
+                        {
+                            CurrentUserID = currentUser.EngID,
+                            CurrentJob = currentJob,
+                            M3000 = new M3000 { JobID = newJob.CurrentJob.JobID },
+                            MotorInfo = new MotorInfo(),
+                            OperatingFeatures = new OperatingFeatures(),
+                            SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures() },
+                            POList = POlistAUX,
+                            SpecialFeaturesTable = getSpecialFeaturesEX(),
+                            CurrentTab = "Element"
+                        };
+                        TempData["message"] = $"Job# {viewModel.CurrentJob.JobNum} has been saved...{viewModel.CurrentJob.JobID}...";
+                        return View("NextFormM3000", viewModel);
+                    }
                     else
                     {
                         JobViewModel newJobViewModel = new JobViewModel
@@ -766,7 +791,7 @@ namespace ProdFloor.Controllers
                             SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures() },
                             POList = POlistAUX,
                             SpecialFeaturesTable = getSpecialFeaturesEX(),
-                            CurrentTab = "Extension"
+                            CurrentTab = "M"
                         };
                         TempData["message"] = $"Job# {newJobViewModel.CurrentJob.JobNum} has been saved...{newJobViewModel.CurrentJob.JobID}...";
                         return View("NextForm", newJobViewModel);
@@ -2542,6 +2567,152 @@ namespace ProdFloor.Controllers
             }
 
 
+            return View(nextViewModel);
+        }
+
+        [HttpPost]
+        public IActionResult NextM3000(JobM3000ViewModel nextViewModel)
+        {
+            AppUser currentUser = GetCurrentUser().Result;
+            nextViewModel.CurrentUserID = currentUser.EngID;
+            nextViewModel.SpecialFeaturesTable = getSpecialFeaturesEX();
+
+            List<PO> POsList = repository.POs.Where(j => j.JobID == nextViewModel.CurrentJob.JobID).ToList();
+            nextViewModel.CurrentJob.JobNum = getJobNumb(nextViewModel.CurrentJob.JobNumFirstDigits, nextViewModel.CurrentJob.JobNumLastDigits);
+            List<PO> PoAux = new List<PO>();
+            foreach (PO itemes in nextViewModel.POList)
+            {
+                try
+                {
+                    if (!POsList.Any(m => m.PONumb == itemes.PONumb) || nextViewModel.POList[0].POID == 0)
+                    {
+                        PO poUniqueAUx = repository.POs.FirstOrDefault(m => m.PONumb == itemes.PONumb);
+                        PoAux.Add(poUniqueAUx);
+                    }
+                }
+                catch (Exception)
+                {
+                    continue;
+                }
+            }
+            if (PoAux.Count > 0 && PoAux.Any(m => m != null))
+            {
+                nextViewModel.CurrentJob = (nextViewModel.CurrentJob ?? new Job());
+                nextViewModel.POList = (nextViewModel.POList ?? new List<PO> { new PO() });
+                nextViewModel.M3000 = (nextViewModel.M3000 ?? new M3000());
+                nextViewModel.MotorInfo = (nextViewModel.MotorInfo ?? new MotorInfo());
+                nextViewModel.OperatingFeatures = (nextViewModel.OperatingFeatures ?? new OperatingFeatures());
+                nextViewModel.SpecialFeatureslist = (nextViewModel.SpecialFeatureslist ?? new List<SpecialFeatures> { new SpecialFeatures() });
+                TempData["message"] = $"One of the POs already exists. Please validate.";
+                TempData["alert"] = $"alert-danger";
+                return View(nextViewModel);
+            }
+            else
+            {
+
+                if (nextViewModel.CurrentJob.JobID == 0 && nextViewModel.CurrentJob.Status == "Incomplete") nextViewModel.CurrentJob.JobID = nextViewModel.M3000.JobID;
+                if (nextViewModel.buttonAction == "AddSF")
+                {
+                    if (!string.IsNullOrWhiteSpace(nextViewModel.SpecialFeatureslist.Last().Description))
+                    {
+                        nextViewModel.SpecialFeatureslist.Add(new SpecialFeatures { JobID = nextViewModel.CurrentJob.JobID, SpecialFeaturesID = 0 });
+                        nextViewModel.CurrentTab = "SpecialFeatures";
+                    }
+                    else
+                    {
+                        nextViewModel.CurrentTab = "SpecialFeatures";
+                        TempData["alert"] = $"alert-danger";
+                        TempData["message"] = $"Fill the previus field on Special Features";
+                        return View(nextViewModel);
+                    }
+                }
+                else
+                {
+                    if (ModelState.IsValid)
+                    {
+                        if (nextViewModel.M3000 != null && nextViewModel.M3000.JobID != 0)
+                        {
+
+                            if (nextViewModel.MotorInfo != null && nextViewModel.MotorInfo.JobID != 0)
+                            {
+                                if (nextViewModel.M3000.M3000ID == 0 && nextViewModel.CurrentJob.Status == "Incomplete") nextViewModel.M3000.M3000ID = repository.M3000s.FirstOrDefault(m => m.JobID == nextViewModel.CurrentJob.JobID).M3000ID;
+
+                                if (nextViewModel.OperatingFeatures != null && nextViewModel.OperatingFeatures.JobID != 0)
+                                {
+
+                                    if (nextViewModel.SpecialFeatureslist != null)
+                                    {
+                                        Job jobForStatus = repository.Jobs.FirstOrDefault(m => m.JobID == nextViewModel.CurrentJob.JobID);
+                                        if (jobForStatus.Status == "Incomplete") nextViewModel.CurrentJob.Status = "Cross Approval Complete";
+
+                                        repository.SaveEngM3000JobView(nextViewModel);
+                                        nextViewModel.CurrentTab = "Main";
+                                        TempData["message"] = $"everything was saved";
+                                        // Here the Job Filling Status should be changed the Working on it
+                                        // Redirect to Hub??
+                                        List<SpecialFeatures> NewspecialFeaturesList = repository.SpecialFeatures.Where(j => j.JobID == nextViewModel.CurrentJob.JobID).ToList();
+                                        nextViewModel.SpecialFeatureslist = NewspecialFeaturesList;
+                                        TempData["message"] = $"everything was saved";
+                                        return View(nextViewModel);
+                                    }
+                                    else
+                                    {
+                                        repository.SaveEngM3000JobView(nextViewModel);
+                                        nextViewModel.CurrentTab = "SpecialFeatures";
+                                        TempData["message"] = $"OperatingFeatures info was saved";
+                                        nextViewModel.SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures { JobID = nextViewModel.CurrentJob.JobID } };
+                                        return View(nextViewModel);
+                                    }
+
+                                }
+                                else
+                                {
+                                    repository.SaveEngM3000JobView(nextViewModel);
+                                    nextViewModel.OperatingFeatures = new OperatingFeatures { JobID = nextViewModel.CurrentJob.JobID };
+                                    nextViewModel.SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures() };
+                                    nextViewModel.CurrentTab = "OperatingFeatures";
+                                    TempData["message"] = $"MotorInfo info was saved";
+                                    return View(nextViewModel);
+                                }
+                            }
+                            else
+                            {
+                                repository.SaveEngM3000JobView(nextViewModel);
+
+                                nextViewModel.MotorInfo = new MotorInfo { JobID = nextViewModel.CurrentJob.JobID };
+                                nextViewModel.OperatingFeatures = new OperatingFeatures();
+                                nextViewModel.SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures() };
+                                nextViewModel.CurrentTab = "MotorInfo";
+                                TempData["message"] = $"M3000 was saved";
+                                return View(nextViewModel);
+                            }
+                          
+                        }
+                        else
+                        {
+                            repository.SaveEngM3000JobView(nextViewModel);
+                            M3000 m3000 = repository.M3000s.FirstOrDefault(j => j.JobID == nextViewModel.CurrentJob.JobID);
+                            nextViewModel.M3000 = (m3000 ?? new M3000 { JobID = nextViewModel.CurrentJob.JobID });
+                            nextViewModel.MotorInfo = new MotorInfo();
+                            nextViewModel.OperatingFeatures = new OperatingFeatures();
+                            nextViewModel.SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures() };
+                            nextViewModel.CurrentTab = "M3000";
+                            TempData["message"] = $"job was saved";
+                            return View(nextViewModel);
+                        }
+
+                    }
+                    repository.SaveEngM3000JobView(nextViewModel);
+                    nextViewModel.CurrentJob = (nextViewModel.CurrentJob ?? new Job());
+                    nextViewModel.POList = (nextViewModel.POList ?? new List<PO> { new PO() });
+                    nextViewModel.M3000 = (nextViewModel.M3000 ?? new M3000());
+                    nextViewModel.MotorInfo = (nextViewModel.MotorInfo ?? new MotorInfo());
+                    nextViewModel.OperatingFeatures = (nextViewModel.OperatingFeatures ?? new OperatingFeatures());
+                    nextViewModel.SpecialFeatureslist = (nextViewModel.SpecialFeatureslist ?? new List<SpecialFeatures> { new SpecialFeatures() });
+                    TempData["message"] = $"nothing was saved";
+                    return View(nextViewModel);
+                }
+            }
             return View(nextViewModel);
         }
 
@@ -5128,7 +5299,7 @@ namespace ProdFloor.Controllers
             foreach (XmlElement XMLob in XMLobs)
             {
                 var statusPOID = XMLob.SelectSingleNode(".//StatusPOID").InnerText;
-                var pXPReasonID = XMLob.SelectSingleNode(".//PXPReasonID").InnerText;
+                var pXPReasonID = XMLob.SelectSingleNode(".//POID").InnerText;
                 var status = XMLob.SelectSingleNode(".//Status").InnerText;
 
                 context.StatusPOs.Add(new StatusPO
@@ -5157,6 +5328,52 @@ namespace ProdFloor.Controllers
         {
             ImportStatusPOXML(HttpContext.RequestServices);
             return RedirectToAction(nameof(List));
+        }
+
+        public void CheckStatusPO(int poID)
+        {
+            PO onePO = repository.POs.FirstOrDefault(m => m.POID == poID);
+            if (onePO != null)
+            {
+                Job job = repository.Jobs.FirstOrDefault(m => m.JobID == onePO.JobID);
+
+                StatusPO statusPO = repository.StatusPOs
+                                           .FirstOrDefault(s => s.POID == onePO.POID);
+
+                if (statusPO == null)
+                {
+                    statusPO = new StatusPO();
+                    statusPO.POID = onePO.POID;
+
+                    if (job.Status.Contains("Cross Approval") || job.Status == "Incomplete"
+                        || job.Status == "Working on it")
+                    {
+                        statusPO.Status = "Engineering";
+                    }
+                    else if (job.Status == "Waiting for test")
+                    {
+                        statusPO.Status = "Waiting for test";
+                    }
+                    else if (job.Status == "PXP on progress")
+                    {
+                        statusPO.Status = "PXP on progress";
+                    }
+                    else if (job.Status == "Completed")
+                    {
+                        statusPO.Status = "Completed";
+                    }
+                    else
+                    {
+                        statusPO.Status = "Production";
+                    }
+
+                    repository.SaveStatusPO(statusPO);
+
+                    statusPO = repository.StatusPOs
+                                        .FirstOrDefault(s => s.POID == onePO.POID);
+                }
+            }
+            return;
         }
 
 
