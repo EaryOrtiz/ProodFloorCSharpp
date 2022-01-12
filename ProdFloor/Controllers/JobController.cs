@@ -1035,6 +1035,46 @@ namespace ProdFloor.Controllers
             }
         }
 
+        public IActionResult CopyM3000(int ID)
+        {
+            AppUser currentUser = GetCurrentUser().Result;
+            Job jobToCopy = repository.Jobs.FirstOrDefault(j => j.JobID == ID);
+            if (jobToCopy == null)
+            {
+                TempData["message"] = $"The requested Job doesn't exist.";
+                return RedirectToAction("List");
+            }
+            else
+            {
+                //Get the job
+                List<SpecialFeatures> SfList = repository.SpecialFeatures.Where(j => j.JobID == ID).ToList();
+                JobM3000ViewModel viewModel = new JobM3000ViewModel();
+                viewModel.CurrentJob = jobToCopy;
+                viewModel.M3000 = repository.M3000s.FirstOrDefault(j => j.JobID == ID);
+                viewModel.MotorInfo = repository.MotorInfos.FirstOrDefault(j => j.JobID == ID);
+                viewModel.OperatingFeatures = repository.OperatingFeatures.FirstOrDefault(j => j.JobID == ID);
+                viewModel.SpecialFeatureslist = SfList;
+                string jobNumAux = viewModel.CurrentJob.JobNum;
+
+                viewModel.CurrentJob.JobNumFirstDigits = getJobNumbDivided(viewModel.CurrentJob.JobNum).firstDigits;
+                viewModel.CurrentJob.JobNumLastDigits = getJobNumbDivided(viewModel.CurrentJob.JobNum).lastDigits;
+                viewModel.SpecialFeaturesTable = getSpecialFeaturesEX();
+
+                viewModel.CurrentJob.JobNum = "";
+                viewModel.JobTypeName = JobTypeName(jobToCopy.JobTypeID);
+                viewModel.SpecialFeaturesTable = getSpecialFeaturesEX();
+                viewModel.CurrentUserID = currentUser.EngID;
+                viewModel.CurrentJob.CrossAppEngID = 0;
+                viewModel.CurrentJob.Status = "Copied";
+                viewModel.POList = new List<PO> { new PO { JobID = viewModel.CurrentJob.JobID } };
+                viewModel.CurrentJob.EngID = currentUser.EngID;
+
+
+                TempData["message"] = $"You have copied the job #{jobNumAux} succesfully, please change the name, Job number & PO";
+                return View("EditM3000", viewModel);
+            }
+        }
+
 
         /* Post de Edit; recibe un JobViewModel, si todo esta bien procede a salvar cada objeto en el repositorio y en caso de que el status
          * este en blanco o no este configurado procede a cambiarlo a "Working on it"; Si el modelo recibido contiene algun error regresa el
@@ -1492,6 +1532,153 @@ namespace ProdFloor.Controllers
         }
 
         [HttpPost]
+        public IActionResult EditM3000(JobM3000ViewModel multiEditViewModel)
+        {
+            AppUser currentUser = GetCurrentUser().Result;
+            multiEditViewModel.SpecialFeaturesTable = getSpecialFeaturesEX();
+            List<PO> POsList = repository.POs.Where(j => j.JobID == multiEditViewModel.CurrentJob.JobID).ToList();
+            List<PO> PoAux = new List<PO>();
+            multiEditViewModel.CurrentUserID = currentUser.EngID;
+            multiEditViewModel.CurrentJob.JobNum = getJobNumb(multiEditViewModel.CurrentJob.JobNumFirstDigits, multiEditViewModel.CurrentJob.JobNumLastDigits);
+
+            bool Admin = GetCurrentUserRole("Admin").Result;
+            Job job = repository.Jobs.FirstOrDefault(m => m.JobID == multiEditViewModel.CurrentJob.JobID);
+            if (currentUser.EngID == job.EngID || Admin || multiEditViewModel.CurrentJob.Status == "Copied")
+            {
+                string StatusAux = "Cross Approval Complete";
+                if (multiEditViewModel.CurrentJob.Status == "Copied") StatusAux = "Copied";
+                if (ModelState.IsValid)
+                {
+                    if (multiEditViewModel.CurrentJob.Status == "Copied")
+                    {
+                        multiEditViewModel.CurrentJob.EngID = currentUser.EngID;
+                        foreach (PO itemes in multiEditViewModel.POList)
+                        {
+                            try
+                            {
+                                if (!POsList.Any(m => m.PONumb == itemes.PONumb) || multiEditViewModel.POList[0].POID == 0)
+                                {
+                                    PO poUniqueAUx = repository.POs.FirstOrDefault(m => m.PONumb == itemes.PONumb);
+                                    PoAux.Add(poUniqueAUx);
+                                }
+                            }
+                            catch (Exception)
+                            {
+                                continue;
+                            }
+                        }
+                        try
+                        {
+                            if (PoAux.Count > 0 && PoAux.Any(m => m != null))
+                            {
+
+                                TempData["message"] = $"That PO already exists. Please validate.";
+                                TempData["alert"] = $"alert-danger";
+                                multiEditViewModel.CurrentTab = "Main";
+                                return View(multiEditViewModel);
+                            }
+                        }
+                        catch (ArgumentOutOfRangeException) { }
+                        multiEditViewModel.CurrentJob.JobID = 0;
+                        multiEditViewModel.CurrentJob.Status = "Cross Approval Complete";
+                        repository.SaveJob(multiEditViewModel.CurrentJob);
+                        multiEditViewModel.CurrentJob = repository.Jobs.LastOrDefault();
+                        JobAdditional jobAdditional = new JobAdditional
+                        {
+                            JobID = multiEditViewModel.CurrentJob.JobID,
+                            Status = "",
+                            Action = "",
+                            Priority = 0,
+                            ERDate = multiEditViewModel.CurrentJob.LatestFinishDate
+                        };
+                        repository.SaveJobAdditional(jobAdditional);
+                        multiEditViewModel.M3000.JobID = multiEditViewModel.CurrentJob.JobID;
+                        multiEditViewModel.MotorInfo.JobID = multiEditViewModel.CurrentJob.JobID;
+                        multiEditViewModel.OperatingFeatures.JobID = multiEditViewModel.CurrentJob.JobID;
+                        multiEditViewModel.M3000.M3000ID = 0;
+                        multiEditViewModel.MotorInfo.MotorInfoID = 0;
+                        multiEditViewModel.OperatingFeatures.OperatingFeaturesID = 0;
+                        foreach (PO singlPO in multiEditViewModel.POList)
+                        {
+                            singlPO.POID = 0;
+                            singlPO.JobID = multiEditViewModel.CurrentJob.JobID;
+                        }
+                        foreach (SpecialFeatures special in multiEditViewModel.SpecialFeatureslist)
+                        {
+                            special.SpecialFeaturesID = 0;
+                            special.JobID = multiEditViewModel.CurrentJob.JobID;
+                        }
+                        multiEditViewModel.SpecialFeatureslist = multiEditViewModel.SpecialFeatureslist;
+                    }
+
+                    foreach (PO itemes in multiEditViewModel.POList)
+                    {
+                        try
+                        {
+                            if (!POsList.Any(m => m.PONumb == itemes.PONumb) || multiEditViewModel.POList[0].POID == 0)
+                            {
+                                PO poUniqueAUx = repository.POs.FirstOrDefault(m => m.PONumb == itemes.PONumb);
+                                PoAux.Add(poUniqueAUx);
+                            }
+                        }
+                        catch (Exception)
+                        {
+                            continue;
+                        }
+                    }
+                    try
+                    {
+                        if (PoAux.Count > 0 && PoAux.Any(m => m != null))
+                        {
+
+                            TempData["message"] = $"That PO already exists. Please validate.";
+                            TempData["alert"] = $"alert-danger";
+                            multiEditViewModel.CurrentTab = "Main";
+                            return View(multiEditViewModel);
+                        }
+                        else repository.SaveEngM3000JobView(multiEditViewModel);
+                    }
+                    catch (ArgumentOutOfRangeException) { }
+                    JobM3000ViewModel CopyJobViewModel = new JobM3000ViewModel();
+                    if (StatusAux == "Copied")
+                    {
+
+                        List<SpecialFeatures> SfList = repository.SpecialFeatures.Where(j => j.JobID == multiEditViewModel.CurrentJob.JobID).ToList();
+                        List<PO> PoList = repository.POs.Where(j => j.JobID == multiEditViewModel.CurrentJob.JobID).ToList();
+                        CopyJobViewModel.CurrentJob = multiEditViewModel.CurrentJob;
+                        CopyJobViewModel.M3000 = repository.M3000s.FirstOrDefault(j => j.JobID == multiEditViewModel.CurrentJob.JobID);
+                        CopyJobViewModel.MotorInfo = repository.MotorInfos.FirstOrDefault(j => j.JobID == multiEditViewModel.CurrentJob.JobID);
+                        CopyJobViewModel.OperatingFeatures = repository.OperatingFeatures.FirstOrDefault(j => j.JobID == multiEditViewModel.CurrentJob.JobID);
+                        CopyJobViewModel.SpecialFeatureslist = SfList;
+                        CopyJobViewModel.POList = PoList;
+                        CopyJobViewModel.CurrentTab = "Main";
+                        TempData["message"] = $"{CopyJobViewModel.CurrentJob.JobNum} ID has been saved...{CopyJobViewModel.CurrentJob.JobID}";
+                        return RedirectToAction("Edit", new { id = multiEditViewModel.CurrentJob.JobID, buttonAction = "M3000" });
+                    }
+
+
+                    multiEditViewModel.CurrentTab = "Main";
+                    TempData["message"] = $"{multiEditViewModel.CurrentJob.JobNum} ID has been saved...{multiEditViewModel.CurrentJob.JobID}";
+                    return View(multiEditViewModel);
+                }
+                else
+                {
+                    // there is something wrong with the data values
+                    TempData["message"] = $"There seems to be errors in the form. Please validate.";
+                    TempData["alert"] = $"alert-danger";
+                    return View(multiEditViewModel);
+                }
+            }
+            else
+            {
+                TempData["message"] = $"You are not assigned to this job.";
+                TempData["alert"] = $"alert-danger";
+                return RedirectToAction("Edit", new { ID = multiEditViewModel.CurrentJob.JobID, buttonAction = "" });
+            }
+
+        }
+
+        [HttpPost]
         public IActionResult AddPo(JobViewModel jobView)
         {
             AppUser currentUser = GetCurrentUser().Result;
@@ -1616,6 +1803,43 @@ namespace ProdFloor.Controllers
                     jobView.fieldID = 0;
                 }
                 return View("EditTraction", jobView);
+            }
+        }
+
+        public IActionResult AddPoM3000(JobM3000ViewModel jobView)
+        {
+            AppUser currentUser = GetCurrentUser().Result;
+            jobView.SpecialFeaturesTable = getSpecialFeaturesEX();
+            jobView.CurrentJob.JobNum = getJobNumb(jobView.CurrentJob.JobNumFirstDigits, jobView.CurrentJob.JobNumLastDigits);
+            if (jobView.CurrentJob.Status == "Incomplete")
+            {
+                jobView.CurrentUserID = currentUser.EngID;
+                if (jobView.buttonAction == "AddPO")
+                {
+                    jobView.POList.Add(new PO { JobID = jobView.CurrentJob.JobID, POID = 0 });
+                    jobView.M3000 = jobView.M3000 ?? new M3000();
+                    jobView.MotorInfo = jobView.MotorInfo ?? new MotorInfo();
+                    jobView.OperatingFeatures = jobView.OperatingFeatures ?? new OperatingFeatures();
+                    if (jobView.SpecialFeatureslist == null) jobView.SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures() };
+                    else
+                    {
+                        return View("NextFormM3000", jobView);
+                    }
+                    jobView.fieldID = 0;
+                }
+                jobView.CurrentTab = "Main";
+                return View("NextFormM3000", jobView);
+            }
+            else
+            {
+                jobView.CurrentUserID = currentUser.EngID;
+                if (jobView.buttonAction == "AddPO")
+                {
+                    jobView.POList.Add(new PO { JobID = jobView.CurrentJob.JobID, POID = 0 });
+                    jobView.CurrentTab = "Main";
+                    jobView.fieldID = 0;
+                }
+                return View("EditM3000", jobView);
             }
         }
 
@@ -1864,6 +2088,76 @@ namespace ProdFloor.Controllers
         }
 
         [HttpPost]
+        public IActionResult DeleteSFM3000(int fieldID, JobM3000ViewModel viewModel)
+        {
+            AppUser currentUser = GetCurrentUser().Result;
+            Job job = repository.Jobs.FirstOrDefault(j => j.JobID == viewModel.CurrentJob.JobID);
+            M3000 m3000 = (repository.M3000s.FirstOrDefault(j => j.JobID == job.JobID) ?? new M3000());
+            MotorInfo motorInfo = (repository.MotorInfos.FirstOrDefault(j => j.JobID == job.JobID) ?? new MotorInfo());
+            OperatingFeatures features = (repository.OperatingFeatures.FirstOrDefault(j => j.JobID == job.JobID) ?? new OperatingFeatures());
+            List<PO> pOList = repository.POs.Where(m => m.JobID == job.JobID).ToList();
+            JobM3000ViewModel EditViewModel = new JobM3000ViewModel
+            {
+                CurrentJob = job,
+                M3000 = m3000,
+                MotorInfo = motorInfo,
+                OperatingFeatures = features,
+                POList = pOList,
+                CurrentTab = "SpecialFeatures",
+                CurrentUserID = currentUser.EngID
+            };
+
+            EditViewModel.CurrentJob.JobNumFirstDigits = getJobNumbDivided(job.JobNum).firstDigits;
+            EditViewModel.CurrentJob.JobNumLastDigits = getJobNumbDivided(job.JobNum).lastDigits;
+
+            EditViewModel.SpecialFeaturesTable = getSpecialFeaturesEX();
+            List<SpecialFeatures> specialFeaturesList = repository.SpecialFeatures.Where(j => j.JobID == job.JobID).ToList();
+            if (specialFeaturesList.Count <= 1)
+            {
+                SpecialFeatures NewSpecial = new SpecialFeatures
+                {
+                    JobID = job.JobID,
+                    Description = ""
+                };
+                repository.SaveSpecialFeatures(NewSpecial);
+            }
+
+            SpecialFeatures deletedField = repository.DeleteSpecialFeatures(fieldID);
+            if (deletedField != null)
+            {
+                TempData["message"] = $"{deletedField.SpecialFeaturesID} was deleted";
+                if (job.Status == "Incomplete")
+                {
+                    EditViewModel.SpecialFeatureslist = specialFeaturesList.Where(d => d.Description != null).ToList();
+                    return View("Continue", EditViewModel);
+                }
+                else
+                {
+                    List<SpecialFeatures> NewspecialFeaturesList = repository.SpecialFeatures.Where(j => j.JobID == job.JobID).ToList();
+                    EditViewModel.SpecialFeatureslist = NewspecialFeaturesList;
+                    return View("EditTraction", EditViewModel);
+                }
+            }
+            else
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"There was an error with your request";
+
+                if (job.Status == "Incomplete")
+                {
+                    EditViewModel.SpecialFeatureslist = specialFeaturesList.Where(d => d.Description != null).ToList();
+                    return View("Continue", EditViewModel);
+                }
+                else
+                {
+                    List<SpecialFeatures> NewspecialFeaturesList = repository.SpecialFeatures.Where(j => j.JobID == job.JobID).ToList();
+                    EditViewModel.SpecialFeatureslist = NewspecialFeaturesList;
+                    return View("EditTraction", EditViewModel);
+                }
+            }
+        }
+
+        [HttpPost]
         public IActionResult DeletePOs(JobViewModel viewModel)
         {
             viewModel.SpecialFeaturesTable = getSpecialFeaturesEX();
@@ -1976,6 +2270,33 @@ namespace ProdFloor.Controllers
                     continueJobViewModel.CurrentJob.JobNumLastDigits = getJobNumbDivided(Job.JobNum).lastDigits;
 
                     return View("NextFormTraction", continueJobViewModel);
+                }
+                else if (JobTypeName(Job.JobTypeID) == "M3000")
+                {
+                    List<SpecialFeatures> SfList = repository.SpecialFeatures.Where(j => j.JobID == ID).ToList();
+                    List<PO> POsList = repository.POs.Where(j => j.JobID == ID).ToList();
+                    JobM3000ViewModel continueJobViewModel = new JobM3000ViewModel();
+                    AppUser currentUser = GetCurrentUser().Result;
+                    continueJobViewModel.CurrentUserID = currentUser.EngID;
+                    continueJobViewModel.CurrentTab = "Main";
+                    continueJobViewModel.CurrentJob = repository.Jobs.FirstOrDefault(j => j.JobID == ID);
+                    string LastFive = continueJobViewModel.CurrentJob.JobNum.ToString().Substring(5);
+                    string FirstTwo = LastFive.Substring(0, 2);
+                    continueJobViewModel.JobFolder = @"L:\" + FirstTwo + "000\\" + LastFive;
+                    if (POsList != null) continueJobViewModel.POList = POsList;
+                    else continueJobViewModel.POList = new List<PO> { new PO() };
+                    continueJobViewModel.M3000 = (repository.M3000s.FirstOrDefault(j => j.JobID == ID) ?? new M3000());
+                    continueJobViewModel.MotorInfo = (repository.MotorInfos.FirstOrDefault(j => j.JobID == ID) ?? new MotorInfo());
+                    continueJobViewModel.OperatingFeatures = (repository.OperatingFeatures.FirstOrDefault(j => j.JobID == ID) ?? new OperatingFeatures());
+                    if (SfList.Count > 1) continueJobViewModel.SpecialFeatureslist = SfList;
+                    else continueJobViewModel.SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures() };
+                    continueJobViewModel.JobTypeName = JobTypeName(Job.JobTypeID);
+                    continueJobViewModel.SpecialFeaturesTable = getSpecialFeaturesEX();
+
+                    continueJobViewModel.CurrentJob.JobNumFirstDigits = getJobNumbDivided(Job.JobNum).firstDigits;
+                    continueJobViewModel.CurrentJob.JobNumLastDigits = getJobNumbDivided(Job.JobNum).lastDigits;
+
+                    return View("NextM3000", continueJobViewModel);
                 }
                 else
                 {
