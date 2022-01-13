@@ -83,8 +83,9 @@ namespace ProdFloor.Models.ViewModels.Job
         [Display(Name = "Length")]
         public int Length { get; set; }
 
+        //bool
         [Display(Name = "EC-RCT")]
-        public bool ECRCT { get; set; }
+        public string ECRCT { get; set; }
 
         [Display(Name = "Control Type")]
         public string ControlType { get; set; }
@@ -94,6 +95,7 @@ namespace ProdFloor.Models.ViewModels.Job
 
         [Display(Name = "Control Panel")]
         public string ControlPanel { get; set; }
+
 
         //MotorInfo
         public int Voltage { get; set; }
@@ -105,17 +107,18 @@ namespace ProdFloor.Models.ViewModels.Job
         [Display(Name = "Contactor")]
         public string Contactor { get; set; }
 
+        //bool 4152 3135 7582 5174
         [Display(Name = "Main brake")]
-        public bool MainBrake { get; set; }
+        public string MainBrake { get; set; }
 
         [Display(Name = "Brake Type")]
         public string MainBrakeType { get; set; }
 
         [Display(Name = "Brake Contact")]
         public string MainBrakeContact { get; set; }
-
+        //bool
         [Display(Name = "Aux Brake")]
-        public bool AuxBrake { get; set; }
+        public string AuxBrake { get; set; }
 
         [Display(Name = "Aux Brake Type")]
         public string AuxBrakeType { get; set; }
@@ -123,30 +126,33 @@ namespace ProdFloor.Models.ViewModels.Job
         [Display(Name = "Aux Brake Contact")]
         public string AuxBrakeContact { get; set; }
 
-        //OpratingFeatures
-        [Display(Name = "Tandem Operation")]
-        public bool TandemOperation { get; set; }
 
+
+        //OpratingFeatures
+        //bool
+        [Display(Name = "Tandem Operation")]
+        public string TandemOperation { get; set; }
+        //bool
         [Display(Name = "Auto Chain Lubrication")]
-        public bool AutoChainLubrication { get; set; }
+        public string AutoChainLubrication { get; set; }
 
         [Display(Name = "Auto Chain Lubrication Voltage")]
         public int AutoChainLubriVoltage { get; set; }
 
         [Display(Name = "Display Module")]
         public string DisplayModule { get; set; }
-
+        //bool
         [Display(Name = "Smoke Detector")]
-        public bool SmokeDetector { get; set; }
-
+        public string SmokeDetector { get; set; }
+        //bool
         [Display(Name = "Remote Monitoring")]
-        public bool RemoteMonitoring { get; set; }
+        public string RemoteMonitoring { get; set; }
 
         [Display(Name = "Remote Monitoring Type")]
         public string RemoteMonitoringType { get; set; }
-
+        //bool
         [Display(Name = "Thermistor")]
-        public bool Thermistor { get; set; }
+        public string Thermistor { get; set; }
 
 
         //Atributos de Special Features
