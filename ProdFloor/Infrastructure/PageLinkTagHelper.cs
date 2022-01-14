@@ -3257,6 +3257,22 @@ namespace ProdFloor.Infrastructure
                     return itemsrepository.DoorOperators.OrderBy(s => s.Name).Select(d => d.Style).Distinct();
                 case "StationPXP":
                     return testingRepo.Stations.Where(m => m.JobTypeID == PXPJobtypeID).OrderBy(s => s.Label).Select(d => d.Label).Distinct();
+                case "ControlTypeM3":
+                    return new List<string> { "ATL", "YD", "VVVF Drive" }.AsQueryable();
+                case "NEMA":
+                    return new List<string> { "1", "4", "4X", "12" }.AsQueryable();
+                case "ControlPanelM3":
+                    return new List<string> { "LCD", "LED" }.AsQueryable();
+                case "ContactorM3":
+                    return new List<string> { "C23", "C43", "C85" }.AsQueryable();
+                case "BrakeType":
+                    return new List<string> { "DC", "AC", "mBrake", "AC 3 Phase" }.AsQueryable();
+                case "BrakeContact":
+                    return new List<string> { "Normally Open", "Normally Closed", }.AsQueryable();
+                case "DisplayModule":
+                    return new List<string> { "Top and bottom", "Top only", "Top only", "None" }.AsQueryable();
+                case "MonitoringType":
+                    return new List<string> { "iMonitor", "SCADA" }.AsQueryable();
                 case "SwitchStyle":
                     return new List<string> { "2-Position", "3-Position" }.AsQueryable();
                 case "Stage":
