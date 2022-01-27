@@ -1,0 +1,79 @@
+﻿@model ProdFloor.Models.ViewModels.Job.JobM3000ViewModel
+<input type="hidden" asp-for="M3000.JobID" />
+<input type="hidden" asp-for="M3000.M3000ID" />
+<input type="hidden" asp-for="CurrentJob.JobID" />
+<input type="hidden" asp-for="CurrentJob.Status" />
+<input type="hidden" asp-for="CurrentJob.EngID" />
+<div class="form-group row col-sm-12" style="padding-bottom:15px">
+    <div class="col-md-4 border-right">
+        <div class="form-group row">
+            <label asp-for="M3000.InputVoltage" class="col-sm-2 col-form-label"></label>
+            <div>
+                <input asp-for="M3000.InputVoltage" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole(" Admin") ? false : true)" class="form-control" />
+                <span asp-validation-for="M3000.InputVoltage" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="M3000.InputFrecuency" class="col-sm-2 col-form-label"></label>
+            <div>
+                <input asp-for="M3000.InputFrecuency" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole(" Admin") ? false : true)" class="form-control" />
+                <span asp-validation-for="M3000.InputFrecuency" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="M3000.InputPhase" class="col-sm-2 col-form-label"></label>
+            <div>
+                <input asp-for="M3000.InputPhase" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole(" Admin") ? false : true)" class="form-control" />
+                <span asp-validation-for="M3000.InputPhase" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="M3000.Speed" class="col-sm-2 col-form-label"></label>
+            <div>
+                <input asp-for="M3000.Speed" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole(" Admin") ? false : true)" class="form-control" />
+                <span asp-validation-for="M3000.Speed" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="M3000.Length" class="col-sm-2 col-form-label"></label>
+            <div>
+                <input asp-for="M3000.Length" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole(" Admin") ? false : true)" class="form-control" />
+                <span asp-validation-for="M3000.Length" class="text-danger"></span>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-md-6">
+        <div class="form-group row" style="padding-left:15px;">
+            <label asp-for="M3000.ControlType" class="col-form-label"></label>
+            <div>
+                <custom-select select-for="ControlTypeM3" style="margin-left:15px;" selected-value="@Model.M3000.ControlType"
+                               asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole(" Admin") ? false : true)" class="form-control form-control-sm" asp-for="M3000.ControlType"></custom-select>
+                <span asp-validation-for="M3000.ControlType" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row" style="padding-left:15px;">
+            <label asp-for="M3000.NEMA" class="col-form-label"></label>
+            <div>
+                <custom-select select-for="NEMA" style="margin-left:15px;" selected-value="@Model.M3000.NEMA"
+                               asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole(" Admin") ? false : true)" class="form-control form-control-sm" asp-for="M3000.NEMA"></custom-select>
+                <span asp-validation-for="M3000.NEMA" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row" style="padding-left:15px;">
+            <label asp-for="M3000.ControlPanel" class="col-form-label"></label>
+            <div>
+                <custom-select select-for="ContactorM3" style="margin-left:15px;" selected-value="@Model.M3000.ControlPanel"
+                               asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole(" Admin") ? false : true)" class="form-control form-control-sm" asp-for="M3000.ControlPanel"></custom-select>
+                <span asp-validation-for="M3000.ControlPanel" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="custom-control custom-checkbox">
+                <input type="checkbox" asp-for="M3000.ECRCT" class="custom-control-input" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)">
+                <div><span asp-validation-for="M3000.ECRCT" class="text-danger" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></span></div>
+                <label class="custom-control-label" asp-for="M3000.ECRCT" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin")? false : true)"></label>
+            </div>
+        </div>
+    </div>
+</div>

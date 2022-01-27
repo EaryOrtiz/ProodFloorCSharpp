@@ -1,0 +1,114 @@
+﻿@model ProdFloor.Models.ViewModels.Job.JobM3000ViewModel
+<input type="hidden" asp-for="MotorInfo.JobID" />
+<input type="hidden" asp-for="MotorInfo.MotorInfoID" />
+<input type="hidden" asp-for="CurrentJob.JobID" />
+<input type="hidden" asp-for="CurrentJob.Status" />
+<input type="hidden" asp-for="CurrentJob.EngID" />
+<div class="form-group row col-sm-12" style="padding-bottom:15px">
+    <div class="col-md-4 border-right">
+        <div class="form-group row">
+            <div class="form-inline">
+                <input id="MainBrakeBool" asp-for="MotorInfo.MainBrake" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole(" Admin") ? false : true)" class="form-check-input" />
+                <div><span asp-validation-for="MotorInfo.MainBrake" class="text-danger" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole(" Admin")? false : true)"></span></div>
+                <label asp-for="MotorInfo.MainBrake" class="col-form-label" style="margin-left:15px;"></label>
+            </div>
+        </div>
+        <div id="MainBrake">
+            <div class="form-group row" style="padding-left:15px;">
+                <label asp-for="MotorInfo.MainBrakeType" class="col-form-label"></label>
+                <div>
+                    <custom-select select-for="BrakeType" style="margin-left:15px;" selected-value="@Model.MotorInfo.MainBrakeType"
+                                   asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole(" Admin") ? false : true)" class="form-control form-control-sm" asp-for="MotorInfo.MainBrakeType"></custom-select>
+                    <span asp-validation-for="MotorInfo.MainBrakeType" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row" style="padding-left:15px;">
+                <label asp-for="MotorInfo.MainBrakeContact" class="col-form-label"></label>
+                <div>
+                    <custom-select select-for="BrakeContact" style="margin-left:15px;" selected-value="@Model.MotorInfo.MainBrakeContact"
+                                   asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole(" Admin") ? false : true)" class="form-control form-control-sm" asp-for="MotorInfo.MainBrakeContact"></custom-select>
+                    <span asp-validation-for="MotorInfo.MainBrakeContact" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="form-inline">
+                <input id="AuxBrakeBool" asp-for="MotorInfo.AuxBrake" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole(" Admin") ? false : true)" class="form-check-input" />
+                <div><span asp-validation-for="MotorInfo.AuxBrake" class="text-danger" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole(" Admin")? false : true)"></span></div>
+                <label asp-for="MotorInfo.AuxBrake" class="col-form-label" style="margin-left:15px;"></label>
+            </div>
+        </div>
+        <div id="AuxBrake">
+            <div class="form-group row" style="padding-left:15px;">
+                <label asp-for="MotorInfo.AuxBrakeType" class="col-form-label"></label>
+                <div>
+                    <custom-select select-for="BrakeType" style="margin-left:15px;" selected-value="@Model.MotorInfo.MainBrakeType"
+                                   asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole(" Admin") ? false : true)" class="form-control form-control-sm" asp-for="MotorInfo.MainBrakeType"></custom-select>
+                    <span asp-validation-for="MotorInfo.AuxBrakeType" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row" style="padding-left:15px;">
+                <label asp-for="MotorInfo.AuxBrakeContact" class="col-form-label"></label>
+                <div>
+                    <custom-select select-for="BrakeContact" style="margin-left:15px;" selected-value="@Model.MotorInfo.AuxBrakeContact"
+                                   asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole(" Admin") ? false : true)" class="form-control form-control-sm" asp-for="MotorInfo.AuxBrakeContact"></custom-select>
+                    <span asp-validation-for="MotorInfo.AuxBrakeContact" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-md-6">
+
+        <div class="form-group row">
+            <label asp-for="MotorInfo.Voltage" class="col-sm-2 col-form-label"></label>
+            <div>
+                <input asp-for="MotorInfo.Voltage" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control" />
+                <span asp-validation-for="MotorInfo.Voltage" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="MotorInfo.HP" class="col-sm-2 col-form-label"></label>
+            <div>
+                <input asp-for="MotorInfo.HP" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control " />
+                <span asp-validation-for="MotorInfo.HP" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="MotorInfo.FLA" class="col-sm-2 col-form-label"></label>
+            <div>
+                <input asp-for="MotorInfo.FLA" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control" />
+                <span asp-validation-for="MotorInfo.FLA" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="MotorInfo.Contactor" class="col-sm-2 col-form-label"></label>
+            <div>
+                <input asp-for="MotorInfo.Contactor" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control " />
+                <span asp-validation-for="MotorInfo.Contactor" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+</div>
+@if (Model.MotorInfo.MainBrake == false)
+{
+    <script type="text/javascript">
+        $("#MainBrakeBool").ready(function () {
+            $("#MainBrake").hide();
+        });
+        $("#MainBrakeBool").click(function () {
+            $("#MainBrake")[this.checked ? "show" : "hide"]();
+        });
+    </script>
+}
+@if (Model.MotorInfo.AuxBrake == false)
+{
+    <script type="text/javascript">
+        $("#AuxBrakeBool").ready(function () {
+            $("#AuxBrake").hide();
+        });
+        $("#AuxBrakeBool").click(function () {
+            $("#AuxBrake")[this.checked ? "show" : "hide"]();
+        });
+    </script>
+}

@@ -59,7 +59,7 @@
         <div class="tab-pane @(Model.CurrentTab == "SpecialFeatures" ? "active" : " ")" id="specialfeatures" role="tabpanel">
             @if (Model.SpecialFeatureslist[0].JobID != 0)
             {
-                @Html.Partial("SpecialFeaturesTractionForm", Model)
+                @Html.Partial("SpecialFeaturesM3000Form", Model)
             }
         </div>
         <div class="text-center">
@@ -70,22 +70,8 @@
             }
             else
             {
-                <a asp-action="ElementList" asp-route-JobTypeName="ElmTract" class="btn btn-success" style="float:left">Back</a>
+                <a asp-action="M3000List" asp-route-JobTypeName="M3000" class="btn btn-success" style="float:left">Back</a>
             }
         </div>
     </div>
 </form>
-<script type="text/javascript">
-
-
-    function myFunction() {
-        /* Get the text field */
-        var copyText = document.getElementById("copy");
-
-        /* Select the text field */
-        copyText.select();
-
-        /* Copy the text inside the text field */
-        document.execCommand("copy");
-    }
-</script>
