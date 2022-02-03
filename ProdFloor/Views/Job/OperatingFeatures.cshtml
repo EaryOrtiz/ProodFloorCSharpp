@@ -1,0 +1,93 @@
+﻿@model ProdFloor.Models.ViewModels.Job.JobM3000ViewModel
+<input type="hidden" asp-for="OperatingFeatures.JobID" />
+<input type="hidden" asp-for="OperatingFeatures.OperatingFeaturesID" />
+<input type="hidden" asp-for="CurrentJob.JobID" />
+<input type="hidden" asp-for="CurrentJob.Status" />
+<input type="hidden" asp-for="CurrentJob.EngID" />
+<div class="form-group row col-sm-12" style="padding-bottom:15px">
+    <div class="col-md-4 border-right">
+        <div class="form-group row" style="padding-left:15px;">
+            <label asp-for="OperatingFeatures.DisplayModule" class="col-form-label"></label>
+            <div>
+                <custom-select select-for="DisplayModule" style="margin-left:15px;" selected-value="@Model.OperatingFeatures.DisplayModule"
+                               asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole(" Admin") ? false : true)" class="form-control form-control-sm" asp-for="OperatingFeatures.DisplayModule"></custom-select>
+                <span asp-validation-for="OperatingFeatures.DisplayModule" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="custom-control custom-checkbox">
+                <input type="checkbox" asp-for="OperatingFeatures.TandemOperation" class="custom-control-input" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole(" Admin")? false : true)">
+                <div><span asp-validation-for="OperatingFeatures.TandemOperation" class="text-danger" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole(" Admin")? false : true)"></span></div>
+                <label class="custom-control-label" asp-for="OperatingFeatures.TandemOperation" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole(" Admin")? false : true)"></label>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="custom-control custom-checkbox">
+                <input type="checkbox" asp-for="OperatingFeatures.SmokeDetector" class="custom-control-input" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole(" Admin")? false : true)">
+                <div><span asp-validation-for="OperatingFeatures.SmokeDetector" class="text-danger" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole(" Admin")? false : true)"></span></div>
+                <label class="custom-control-label" asp-for="OperatingFeatures.SmokeDetector" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole(" Admin")? false : true)"></label>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="custom-control custom-checkbox">
+                <input type="checkbox" asp-for="OperatingFeatures.Thermistor" class="custom-control-input" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole(" Admin")? false : true)">
+                <div><span asp-validation-for="OperatingFeatures.Thermistor" class="text-danger" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole(" Admin")? false : true)"></span></div>
+                <label class="custom-control-label" asp-for="OperatingFeatures.Thermistor" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole(" Admin")? false : true)"></label>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group row">
+            <div class="form-inline">
+                <input id="AutoChainBool" asp-for="OperatingFeatures.AutoChainLubrication" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole(" Admin") ? false : true)" class="form-check-input" />
+                <div><span asp-validation-for="OperatingFeatures.AutoChainLubrication" class="text-danger" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole(" Admin")? false : true)"></span></div>
+                <label asp-for="OperatingFeatures.AutoChainLubrication" class="col-form-label" style="margin-left:15px;"></label>
+            </div>
+        </div>
+        <div class="form-group row"  id="AutoChain">
+            <div class="form-inline">
+                <input  asp-for="OperatingFeatures.AutoChainLubriVoltage" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole(" Admin") ? false : true)" class="form-check-input" />
+                <div><span asp-validation-for="OperatingFeatures.AutoChainLubriVoltage" class="text-danger" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole(" Admin")? false : true)"></span></div>
+                <label asp-for="OperatingFeatures.AutoChainLubriVoltage" class="col-form-label" style="margin-left:15px;"></label>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="form-inline">
+                <input id="RemoteMonitoringBool" asp-for="OperatingFeatures.RemoteMonitoring" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole(" Admin") ? false : true)" class="form-check-input" />
+                <div><span asp-validation-for="OperatingFeatures.RemoteMonitoring" class="text-danger" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole(" Admin")? false : true)"></span></div>
+                <label asp-for="OperatingFeatures.RemoteMonitoring" class="col-form-label" style="margin-left:15px;"></label>
+            </div>
+        </div>
+        <div id="RemoteMonitoring" class="form-group row" style="padding-left:15px;">
+            <label asp-for="OperatingFeatures.RemoteMonitoringType" class="col-form-label"></label>
+            <div>
+                <custom-select select-for="MonitoringType" style="margin-left:15px;" selected-value="@Model.OperatingFeatures.RemoteMonitoringType"
+                               asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole(" Admin") ? false : true)" class="form-control form-control-sm" asp-for="OperatingFeatures.RemoteMonitoringType"></custom-select>
+                <span asp-validation-for="OperatingFeatures.RemoteMonitoringType" class="text-danger"></span>
+            </div>
+        </div>
+
+    </div>
+</div>
+@if (Model.OperatingFeatures.AutoChainLubrication == false)
+{
+    <script type="text/javascript">
+        $("#AutoChainBool").ready(function () {
+            $("#AutoChain").hide();
+        });
+        $("#AutoChainBool").click(function () {
+            $("#AutoChain")[this.checked ? "show" : "hide"]();
+        });
+    </script>
+}
+@if (Model.OperatingFeatures.RemoteMonitoring == false)
+{
+    <script type="text/javascript">
+        $("#RemoteMonitoringBool").ready(function () {
+            $("#RemoteMonitoring").hide();
+        });
+        $("#RemoteMonitoringBool").click(function () {
+            $("#RemoteMonitoring")[this.checked ? "show" : "hide"]();
+        });
+    </script>
+}
