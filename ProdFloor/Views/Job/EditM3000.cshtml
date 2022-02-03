@@ -23,7 +23,7 @@
             <i class="fas fa-ellipsis-v"></i>
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <a asp-action="CopyTractionJob" asp-controller="Job" asp-route-id="@Model.CurrentJob.JobID" class="dropdown-item">Copy Job </a>
+            <a asp-action="CopyM3000" asp-controller="Job" asp-route-id="@Model.CurrentJob.JobID" class="dropdown-item">Copy Job </a>
             <form asp-action="SearchAux" asp-controller="Item" method="get">
                 <button asp-action="SearchAux" asp-controller="Item" type="submit" value="@Model.CurrentJob.JobID" name="JobID" class="btn dropdown-item">WorkSheet</button>
             </form>
@@ -33,7 +33,7 @@
     </li>
 </ul>
 <!-- Tab panes -->
-<form asp-action="EditTraction" method="post">
+<form asp-action="EditM3000" method="post">
     <div class="tab-content" style="padding:20px">
         <div class="tab-pane @(Model.CurrentTab == "Main" || Model.CurrentTab == "" || Model.CurrentTab == null ? "active" : " ")" id="home" role="tabpanel">
             @Html.Partial("JobFormM3000", Model)

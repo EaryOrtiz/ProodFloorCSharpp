@@ -1073,6 +1073,32 @@ namespace ProdFloor.Controllers
 
                     return View("EditTraction", jobElementTractionView);
                 }
+                else if (JobTypeName(job.JobTypeID) == "M3000")
+                {
+                    List<PO> POsList = repository.POs.Where(j => j.JobID == ID).ToList();
+                    List<SpecialFeatures> SfList = repository.SpecialFeatures.Where(j => j.JobID == ID).ToList();
+                    JobM3000ViewModel jobElementTractionView = new JobM3000ViewModel();
+                    string LastFive = job.JobNum.ToString().Substring(5);
+                    string FirstTwo = LastFive.Substring(0, 2);
+                    jobElementTractionView.JobFolder = @"L:\" + FirstTwo + "000\\" + LastFive;
+                    jobElementTractionView.CurrentJob = job;
+                    jobElementTractionView.M3000 = repository.M3000s.FirstOrDefault(j => j.JobID == ID);
+                    jobElementTractionView.MotorInfo = repository.MotorInfos.FirstOrDefault(j => j.JobID == ID);
+                    jobElementTractionView.OperatingFeatures = repository.OperatingFeatures.FirstOrDefault(j => j.JobID == ID);
+                    if (SfList != null) jobElementTractionView.SpecialFeatureslist = SfList;
+                    else jobElementTractionView.SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures() };
+                    if (POsList != null) jobElementTractionView.POList = POsList;
+                    else jobElementTractionView.POList = new List<PO> { new PO() };
+                    jobElementTractionView.CurrentUserID = currentUser.EngID;
+                    jobElementTractionView.CurrentTab = "Main";
+                    jobElementTractionView.JobTypeName = JobTypeName(job.JobTypeID);
+                    jobElementTractionView.SpecialFeaturesTable = getSpecialFeaturesEX();
+
+                    jobElementTractionView.CurrentJob.JobNumFirstDigits = getJobNumbDivided(job.JobNum).firstDigits;
+                    jobElementTractionView.CurrentJob.JobNumLastDigits = getJobNumbDivided(job.JobNum).lastDigits;
+
+                    return View("EditM3000", jobElementTractionView);
+                }
                 else
                 {
                     List<PO> POsList = repository.POs.Where(j => j.JobID == ID).ToList();
@@ -3088,7 +3114,7 @@ namespace ProdFloor.Controllers
         }
 
         [HttpPost]
-        public IActionResult NextM3000(JobM3000ViewModel nextViewModel)
+        public IActionResult NextFormM3000(JobM3000ViewModel nextViewModel)
         {
             AppUser currentUser = GetCurrentUser().Result;
             nextViewModel.CurrentUserID = currentUser.EngID;
