@@ -7,13 +7,13 @@
         <a class="nav-link @(Model.CurrentTab == "Main" || Model.CurrentTab == "" || Model.CurrentTab == null ? "active" : " ")" data-toggle="tab" href="#home" role="tab">Job</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link @(Model.CurrentTab == "M3000" ? "active" : " ")  @(Model.M3000.JobID == 0 ? "disabled" : " ")" data-toggle="tab" href="#element" role="tab">M3000 Info</a>
+        <a class="nav-link @(Model.CurrentTab == "M3000" ? "active" : " ")  @(Model.M3000.JobID == 0 ? "disabled" : " ")" data-toggle="tab" href="#M3000" role="tab">M3000 Info</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link @(Model.CurrentTab == "MotorInfo" ? "active" : " ")  @(Model.MotorInfo.JobID == 0 ? "disabled" : " ")" data-toggle="tab" href="#elementTraction" role="tab">Motor Info</a>
+        <a class="nav-link @(Model.CurrentTab == "MotorInfo" ? "active" : " ")  @(Model.MotorInfo.JobID == 0 ? "disabled" : " ")" data-toggle="tab" href="#Motor" role="tab">Motor Info</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link @(Model.CurrentTab == "OperatingFeatures" ? "active" : " " ) @(Model.OperatingFeatures.JobID == 0 ? "disabled" : " " )" data-toggle="tab" href="#elementTraction" role="tab">Operating Features</a>
+        <a class="nav-link @(Model.CurrentTab == "OperatingFeatures" ? "active" : " " ) @(Model.OperatingFeatures.JobID == 0 ? "disabled" : " " )" data-toggle="tab" href="#Features" role="tab">Operating Features</a>
     </li>
     <li class="nav-item">
         <a class="nav-link @(Model.CurrentTab == "SpecialFeatures" ? "active" : " ")  @(Model.SpecialFeatureslist[0].JobID == 0 ? "disabled" : " ")" data-toggle="tab" href="#specialfeatures" role="tab">Special Features</a>
@@ -38,19 +38,19 @@
         <div class="tab-pane @(Model.CurrentTab == "Main" || Model.CurrentTab == "" || Model.CurrentTab == null ? "active" : " ")" id="home" role="tabpanel">
             @Html.Partial("JobFormM3000", Model)
         </div>
-        <div class="tab-pane @(Model.CurrentTab == "M3000" ? "active" : " ")" id="element" role="tabpanel">
+        <div class="tab-pane @(Model.CurrentTab == "M3000" ? "active" : " ")" id="M3000" role="tabpanel">
             @if (Model.M3000.JobID != 0)
             {
                 @Html.Partial("M3000", Model)
             }
         </div>
-        <div class="tab-pane @(Model.CurrentTab == "MotorInfo" ? "active" : " ")" id="elementTraction" role="tabpanel">
+        <div class="tab-pane @(Model.CurrentTab == "MotorInfo" ? "active" : " ")" id="Motor" role="tabpanel">
             @if (Model.MotorInfo.JobID != 0)
             {
                 @Html.Partial("MotorInfo", Model)
             }
         </div>
-        <div class="tab-pane @(Model.CurrentTab == "OperatingFeatures" ? "active" : " ")" id="elementTraction" role="tabpanel">
+        <div class="tab-pane @(Model.CurrentTab == "OperatingFeatures" ? "active" : " ")" id="Features" role="tabpanel">
             @if (Model.OperatingFeatures.JobID != 0)
             {
                 @Html.Partial("OperatingFeatures", Model)

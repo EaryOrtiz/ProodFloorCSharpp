@@ -2518,7 +2518,7 @@ namespace ProdFloor.Controllers
                     continueJobViewModel.CurrentJob.JobNumFirstDigits = getJobNumbDivided(Job.JobNum).firstDigits;
                     continueJobViewModel.CurrentJob.JobNumLastDigits = getJobNumbDivided(Job.JobNum).lastDigits;
 
-                    return View("NextM3000", continueJobViewModel);
+                    return View("NextFormM3000", continueJobViewModel);
                 }
                 else
                 {
