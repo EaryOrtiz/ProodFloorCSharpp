@@ -6,7 +6,7 @@
 <input type="hidden" asp-for="CurrentJob.EngID" />
 <div class="form-group row col-sm-12" style="padding-bottom:15px">
     <div class="col-md-4 border-right">
-        <div class="form-group row" style="padding-left:15px;">
+        <div class="form-group row">
             <label asp-for="OperatingFeatures.DisplayModule" class="col-form-label"></label>
             <div>
                 <custom-select select-for="DisplayModule" style="margin-left:15px;" selected-value="@Model.OperatingFeatures.DisplayModule"
@@ -38,21 +38,21 @@
     </div>
     <div class="col-md-6">
         <div class="form-group row">
-            <div class="form-inline">
+            <div class="form-inline" style="padding-left:15px;">
                 <input id="AutoChainBool" asp-for="OperatingFeatures.AutoChainLubrication" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole(" Admin") ? false : true)" class="form-check-input" />
                 <div><span asp-validation-for="OperatingFeatures.AutoChainLubrication" class="text-danger" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole(" Admin")? false : true)"></span></div>
                 <label asp-for="OperatingFeatures.AutoChainLubrication" class="col-form-label" style="margin-left:15px;"></label>
             </div>
         </div>
-        <div class="form-group row"  id="AutoChain">
-            <div class="form-inline">
-                <input  asp-for="OperatingFeatures.AutoChainLubriVoltage" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole(" Admin") ? false : true)" class="form-check-input" />
-                <div><span asp-validation-for="OperatingFeatures.AutoChainLubriVoltage" class="text-danger" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole(" Admin")? false : true)"></span></div>
-                <label asp-for="OperatingFeatures.AutoChainLubriVoltage" class="col-form-label" style="margin-left:15px;"></label>
+        <div class="form-group row" id="AutoChainBool">
+            <label asp-for="OperatingFeatures.AutoChainLubriVoltage" class="col-sm-5 col-form-label"></label>
+            <div>
+                <input asp-for="OperatingFeatures.AutoChainLubriVoltage" readonly="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole("Admin") ? false : true)" class="form-control" />
+                <span asp-validation-for="OperatingFeatures.AutoChainLubriVoltage" class="text-danger"></span>
             </div>
         </div>
         <div class="form-group row">
-            <div class="form-inline">
+            <div class="form-inline" style="padding-left:15px;">
                 <input id="RemoteMonitoringBool" asp-for="OperatingFeatures.RemoteMonitoring" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole(" Admin") ? false : true)" class="form-check-input" />
                 <div><span asp-validation-for="OperatingFeatures.RemoteMonitoring" class="text-danger" disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole(" Admin")? false : true)"></span></div>
                 <label asp-for="OperatingFeatures.RemoteMonitoring" class="col-form-label" style="margin-left:15px;"></label>

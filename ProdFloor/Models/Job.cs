@@ -926,6 +926,7 @@ namespace ProdFloor.Models
         public int MotorInfoID { get; set; }
         public int JobID { get; set; }
 
+        [Range(114, 600, ErrorMessage = "Voltage out of range")]
         [Required(ErrorMessage = "Voltage")]
         public int  Voltage { get; set; }
 

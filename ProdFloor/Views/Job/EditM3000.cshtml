@@ -25,7 +25,7 @@
         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
             <a asp-action="CopyM3000" asp-controller="Job" asp-route-id="@Model.CurrentJob.JobID" class="dropdown-item">Copy Job </a>
             <form asp-action="SearchAux" asp-controller="Item" method="get">
-                <button asp-action="SearchAux" asp-controller="Item" type="submit" value="@Model.CurrentJob.JobID" name="JobID" class="btn dropdown-item">WorkSheet</button>
+                <button asp/-action="SearchAux" asp-controller="Item" type="submit" value="@Model.CurrentJob.JobID" name="JobID" class="btn dropdown-item">WorkSheet</button>
             </form>
             <input class="btn dropdown-item" value="Copy Location " onclick="myFunction()" />
             <input class="form-control form-control-sm col-sm-10 dropdown-item" style="margin-right:15px" type="text" id="copy" value="@Model.JobFolder" />

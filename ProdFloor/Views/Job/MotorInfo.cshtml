@@ -15,7 +15,7 @@
         </div>
         <div id="MainBrake">
             <div class="form-group row" style="padding-left:15px;">
-                <label asp-for="MotorInfo.MainBrakeType" class="col-form-label"></label>
+                <label asp-for="MotorInfo.MainBrakeType" class="col-sm-4 col-form-label"></label>
                 <div>
                     <custom-select select-for="BrakeType" style="margin-left:15px;" selected-value="@Model.MotorInfo.MainBrakeType"
                                    asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole(" Admin") ? false : true)" class="form-control form-control-sm" asp-for="MotorInfo.MainBrakeType"></custom-select>
@@ -23,7 +23,7 @@
                 </div>
             </div>
             <div class="form-group row" style="padding-left:15px;">
-                <label asp-for="MotorInfo.MainBrakeContact" class="col-form-label"></label>
+                <label asp-for="MotorInfo.MainBrakeContact" class="col-sm-4 col-form-label"></label>
                 <div>
                     <custom-select select-for="BrakeContact" style="margin-left:15px;" selected-value="@Model.MotorInfo.MainBrakeContact"
                                    asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole(" Admin") ? false : true)" class="form-control form-control-sm" asp-for="MotorInfo.MainBrakeContact"></custom-select>
@@ -40,7 +40,7 @@
         </div>
         <div id="AuxBrake">
             <div class="form-group row" style="padding-left:15px;">
-                <label asp-for="MotorInfo.AuxBrakeType" class="col-form-label"></label>
+                <label asp-for="MotorInfo.AuxBrakeType" class="col-sm-4 col-form-label"></label>
                 <div>
                     <custom-select select-for="BrakeType" style="margin-left:15px;" selected-value="@Model.MotorInfo.MainBrakeType"
                                    asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole(" Admin") ? false : true)" class="form-control form-control-sm" asp-for="MotorInfo.MainBrakeType"></custom-select>
@@ -48,7 +48,7 @@
                 </div>
             </div>
             <div class="form-group row" style="padding-left:15px;">
-                <label asp-for="MotorInfo.AuxBrakeContact" class="col-form-label"></label>
+                <label asp-for="MotorInfo.AuxBrakeContact" class="col-sm-4 col-form-label"></label>
                 <div>
                     <custom-select select-for="BrakeContact" style="margin-left:15px;" selected-value="@Model.MotorInfo.AuxBrakeContact"
                                    asp-is-disabled="@(Model.CurrentUserID == Model.CurrentJob.EngID || User.IsInRole(" Admin") ? false : true)" class="form-control form-control-sm" asp-for="MotorInfo.AuxBrakeContact"></custom-select>

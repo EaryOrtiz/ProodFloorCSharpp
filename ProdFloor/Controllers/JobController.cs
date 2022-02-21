@@ -968,7 +968,7 @@ namespace ProdFloor.Controllers
                             SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures() },
                             POList = POlistAUX,
                             SpecialFeaturesTable = getSpecialFeaturesEX(),
-                            CurrentTab = "Element"
+                            CurrentTab = "M3000"
                         };
                         TempData["message"] = $"Job# {viewModel.CurrentJob.JobNum} has been saved...{viewModel.CurrentJob.JobID}...";
                         return View("NextFormM3000", viewModel);
@@ -3245,7 +3245,7 @@ namespace ProdFloor.Controllers
                         }
 
                     }
-                    repository.SaveEngM3000JobView(nextViewModel);
+
                     nextViewModel.CurrentJob = (nextViewModel.CurrentJob ?? new Job());
                     nextViewModel.POList = (nextViewModel.POList ?? new List<PO> { new PO() });
                     nextViewModel.M3000 = (nextViewModel.M3000 ?? new M3000());
