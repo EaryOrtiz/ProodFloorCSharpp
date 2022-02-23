@@ -595,10 +595,10 @@ namespace ProdFloor.Controllers
             //Opciones de bsuqueda para el modelo de GenericFeatures
 
             if (searchViewModel.InputFrecuency > 0) jobSearchRepo = jobSearchRepo.Where(s => s._M3000.InputFrecuency == searchViewModel.InputFrecuency);
-            if (searchViewModel.InputPhase > 0) jobSearchRepo = jobSearchRepo.Where(s => s._M3000.InputFrecuency == searchViewModel.InputPhase);
-            if (searchViewModel.InputVoltage > 0) jobSearchRepo = jobSearchRepo.Where(s => s._M3000.InputFrecuency == searchViewModel.InputVoltage);
-            if (searchViewModel.Speed > 0) jobSearchRepo = jobSearchRepo.Where(s => s._M3000.InputFrecuency == searchViewModel.InputVoltage);
-            if (searchViewModel.Length > 0) jobSearchRepo = jobSearchRepo.Where(s => s._M3000.InputFrecuency == searchViewModel.InputVoltage);
+            if (searchViewModel.InputPhase > 0) jobSearchRepo = jobSearchRepo.Where(s => s._M3000.InputPhase == searchViewModel.InputPhase);
+            if (searchViewModel.InputVoltage > 0) jobSearchRepo = jobSearchRepo.Where(s => s._M3000.InputVoltage == searchViewModel.InputVoltage);
+            if (searchViewModel.Speed > 0) jobSearchRepo = jobSearchRepo.Where(s => s._M3000.Speed == searchViewModel.Speed);
+            if (searchViewModel.Length > 0) jobSearchRepo = jobSearchRepo.Where(s => s._M3000.Length == searchViewModel.Length);
 
 
             if (!string.IsNullOrEmpty(searchViewModel.ControlType)) jobSearchRepo = jobSearchRepo.Where(s => s._M3000.ControlType.Contains(searchViewModel.ControlType));
@@ -625,8 +625,8 @@ namespace ProdFloor.Controllers
                 {
                     jobSearchRepo = jobSearchRepo.Where(s => s._MotorInfo.MainBrake == true);
 
-                    if (!string.IsNullOrEmpty(searchViewModel.MainBrakeType)) jobSearchRepo = jobSearchRepo.Where(s => s._MotorInfo.Contactor.Contains(searchViewModel.MainBrakeType));
-                    if (!string.IsNullOrEmpty(searchViewModel.MainBrakeType)) jobSearchRepo = jobSearchRepo.Where(s => s._MotorInfo.Contactor.Contains(searchViewModel.MainBrakeType));
+                    if (!string.IsNullOrEmpty(searchViewModel.MainBrakeType)) jobSearchRepo = jobSearchRepo.Where(s => s._MotorInfo.MainBrakeType.Equals(searchViewModel.MainBrakeType));
+                    if (!string.IsNullOrEmpty(searchViewModel.MainBrakeContact)) jobSearchRepo = jobSearchRepo.Where(s => s._MotorInfo.MainBrakeContact.Equals(searchViewModel.MainBrakeContact));
 
                 }
                 else
@@ -640,8 +640,8 @@ namespace ProdFloor.Controllers
                 {
                     jobSearchRepo = jobSearchRepo.Where(s => s._MotorInfo.AuxBrake == true);
 
-                    if (!string.IsNullOrEmpty(searchViewModel.AuxBrakeType)) jobSearchRepo = jobSearchRepo.Where(s => s._MotorInfo.Contactor.Contains(searchViewModel.AuxBrakeType));
-                    if (!string.IsNullOrEmpty(searchViewModel.AuxBrakeType)) jobSearchRepo = jobSearchRepo.Where(s => s._MotorInfo.Contactor.Contains(searchViewModel.AuxBrakeType));
+                    if (!string.IsNullOrEmpty(searchViewModel.AuxBrakeType)) jobSearchRepo = jobSearchRepo.Where(s => s._MotorInfo.AuxBrakeType.Equals(searchViewModel.AuxBrakeType));
+                    if (!string.IsNullOrEmpty(searchViewModel.AuxBrakeContact)) jobSearchRepo = jobSearchRepo.Where(s => s._MotorInfo.AuxBrakeContact.Equals(searchViewModel.AuxBrakeContact));
 
                 }
                 else
@@ -706,6 +706,7 @@ namespace ProdFloor.Controllers
             searchViewModel.Citylist = itemsrepository.Cities.ToList();
             searchViewModel.Statelist = itemsrepository.States.ToList();
             searchViewModel.Landinglist = itemsrepository.LandingSystems.ToList();
+            searchViewModel.M3000List = repository.M3000s.ToList();
             searchViewModel.SpecialFeaturesTable = getSpecialFeaturesEX();
 
             searchViewModel.JobsSearchList = jobSearchRepo.OrderBy(p => p.JobID).Skip((page - 1) * 5).Take(5).ToList();

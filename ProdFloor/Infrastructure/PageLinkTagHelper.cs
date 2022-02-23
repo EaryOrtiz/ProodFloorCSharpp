@@ -3270,7 +3270,7 @@ namespace ProdFloor.Infrastructure
                 case "BrakeContact":
                     return new List<string> { "Normally Open", "Normally Closed", }.AsQueryable();
                 case "DisplayModule":
-                    return new List<string> { "Top and bottom", "Top only", "Top only", "None" }.AsQueryable();
+                    return new List<string> { "Top and bottom", "Top only", "Bottom only", "None" }.AsQueryable();
                 case "MonitoringType":
                     return new List<string> { "iMonitor", "SCADA" }.AsQueryable();
                 case "SwitchStyle":
