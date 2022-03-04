@@ -3121,7 +3121,8 @@ namespace ProdFloor.Controllers
             nextViewModel.CurrentUserID = currentUser.EngID;
             nextViewModel.SpecialFeaturesTable = getSpecialFeaturesEX();
 
-            List<PO> POsList = repository.POs.Where(j => j.JobID == nextViewModel.CurrentJob.JobID).ToList();
+            List<PO> POsList = repository.POs.Where(j => j.JobID == nextViewModel.M3000.JobID).ToList();
+
             nextViewModel.CurrentJob.JobNum = getJobNumb(nextViewModel.CurrentJob.JobNumFirstDigits, nextViewModel.CurrentJob.JobNumLastDigits);
             List<PO> PoAux = new List<PO>();
             foreach (PO itemes in nextViewModel.POList)
@@ -3139,7 +3140,7 @@ namespace ProdFloor.Controllers
                     continue;
                 }
             }
-            if (PoAux.Count > 0 && PoAux.Any(m => m != null))
+            if (PoAux.Count > 0)
             {
                 nextViewModel.CurrentJob = (nextViewModel.CurrentJob ?? new Job());
                 nextViewModel.POList = (nextViewModel.POList ?? new List<PO> { new PO() });
