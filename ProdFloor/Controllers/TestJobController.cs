@@ -155,6 +155,20 @@ namespace ProdFloor.Controllers
                     && (m.CompletedDate.AddDays(2) > (DateTime.Now))).OrderBy(s => s.CompletedDate).ToList();
             }
 
+            List<StatusPO> statusPOs = jobRepo.StatusPOs.Where(m => m.Status == "Waiting for test").ToList();
+            foreach(StatusPO statusPO in statusPOs)
+            {
+                PO po = jobRepo.POs.FirstOrDefault(m => m.POID == statusPO.POID);
+                TestJob testJob = new TestJob
+                {
+                    SinglePO = po.PONumb,
+                    Status = "Unassigned",
+                };
+
+                testJobsInCompleted.Add(testJob);
+            }
+
+
             TestJobViewModel testJobView = new TestJobViewModel
             {
                 TestJobIncompletedList = testJobsInCompleted
