@@ -3006,6 +3006,42 @@ namespace ProdFloor.Controllers
 
         }
 
+        public IActionResult Assign(int POJobSearch, int NewTechnicianID)
+        {
+            if(testingRepo.TestJobs.Any(m => m.SinglePO == POJobSearch && m.TechnicianID != 0))
+            {
+                TempData["message"] = $"Testjob with #PO {POJobSearch} was assigned previusly";
+                TempData["alert"] = $"alert-danger";
+                return RedirectToAction("SearchTestJob");
+            }
+
+            try
+            {
+                PO po = jobRepo.POs.FirstOrDefault(m => m.PONumb == POJobSearch);
+                Job job = jobRepo.Jobs.FirstOrDefault(m => m.JobID == po.JobID);
+
+                TestJob testJob = new TestJob
+                {
+                    JobID = job.JobID,
+                    TechnicianID = NewTechnicianID,
+                    SinglePO = po.PONumb,
+                    Status = "Incomplete",
+                    StartDate = DateTime.Now,
+                    CompletedDate = DateTime.Now,
+                    StationID = 0
+                };
+                testingRepo.SaveTestJob(testJob);
+            }
+            catch (Exception ex)
+            {
+                TempData["message"] = $"Job with #PO {POJobSearch} doesnt exist";
+                TempData["alert"] = $"alert-danger";
+                return RedirectToAction("SearchTestJob");
+            }
+
+            return RedirectToAction("SearchTestJob");
+        }
+
         //===================================
 
         private async Task<AppUser> GetCurrentUser()

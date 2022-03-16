@@ -61,8 +61,8 @@
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
                                         </div>
-                                        <form asp-action="Assignment" asp-controller="TestJob" method="get">
-                                            <input type="hidden" id="PONumber" name=" PONumber" value="@j.SinglePO"/>
+                                        <form asp-action="Assign" asp-controller="TestJob" method="post">
+                                            <input type="hidden" asp-for="POJobSearch" value="@j.SinglePO"/>
                                             <div class="modal-body">
                                                 <table class="table text-center align-content-center">
                                                     <thead>
