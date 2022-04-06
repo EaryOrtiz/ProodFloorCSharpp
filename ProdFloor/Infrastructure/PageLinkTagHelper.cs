@@ -3310,11 +3310,11 @@ namespace ProdFloor.Infrastructure
                     return BatteryList.Distinct().AsQueryable();
                 case "JobNumber":
                     int YearPast = YearNow - 1;
-    
+
                     string YearPastCanada = "C" + YearPast.ToString().Remove(0, 2) + "00";
 
-                    return new List<string> { YearAfter.ToString() + "1", YearNow.ToString() + "1", YearNow.ToString() + "0", YearNowCanada,
-                        YearPast.ToString() + "0", YearPastCanada }.AsQueryable();
+                    return new List<string> { YearNow.ToString() + "1", YearNowCanada,
+                        YearPast.ToString() + "1", YearPast.ToString() + "0", YearPastCanada, YearAfter.ToString() + "1" }.AsQueryable();
                 case "JobNumberTest":
                     int YearPast1 = YearNow - 1;
                     int YearPast2 = YearNow - 2;
@@ -3326,8 +3326,8 @@ namespace ProdFloor.Infrastructure
                     string YearPast3Canada = "C" + YearPast3.ToString().Remove(0, 2) + "00";
                     string YearPast4Canada = "C" + YearPast4.ToString().Remove(0, 2) + "00";
 
-                    return new List<string> { YearAfter.ToString() + "1", YearNow.ToString() + "1",YearNow.ToString() + "0", YearNowCanada, YearPast1.ToString() + "0", YearPast1Canada,
-                            YearPast2.ToString() + "0", YearPast2Canada , YearPast3.ToString() + "0", 
+                    return new List<string> {  YearNow.ToString() + "1", YearNowCanada, YearAfter.ToString() + "1", YearPast1.ToString() + "1",YearPast1.ToString() + "0", YearPast1Canada,
+                            YearPast2.ToString() + "0", YearPast2Canada , YearPast3.ToString() + "0",
                             YearPast3Canada , YearPast4.ToString() + "0" , YearPast4Canada}.AsQueryable();
                 default:
                     return new List<string> { "Beginning", "Program", "Logic", "Ending", "Complete" }.AsQueryable();
