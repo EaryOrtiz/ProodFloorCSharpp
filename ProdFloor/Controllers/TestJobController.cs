@@ -1,15 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Xml;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,6 +9,12 @@ using ProdFloor.Models;
 using ProdFloor.Models.ViewModels;
 using ProdFloor.Models.ViewModels.Report;
 using ProdFloor.Models.ViewModels.TestJob;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Xml;
 
 namespace ProdFloor.Controllers
 {
@@ -156,7 +154,7 @@ namespace ProdFloor.Controllers
             }
 
             List<StatusPO> statusPOs = jobRepo.StatusPOs.Where(m => m.Status == "Waiting for test").ToList();
-            foreach(StatusPO statusPO in statusPOs)
+            foreach (StatusPO statusPO in statusPOs)
             {
                 PO po = jobRepo.POs.FirstOrDefault(m => m.POID == statusPO.POID);
                 TestJob testJob = new TestJob
@@ -1686,7 +1684,7 @@ namespace ProdFloor.Controllers
                         {
                             testJob.Status = "Stopped";
                             testingRepo.SaveTestJob(testJob);
-                            
+
                             CheckStatusPO(testJob.TestJobID, onePO.POID);
 
                             TempData["alert"] = $"alert-danger";
@@ -3008,7 +3006,7 @@ namespace ProdFloor.Controllers
 
         public IActionResult Assign(int POJobSearch, int NewTechnicianID)
         {
-            if(testingRepo.TestJobs.Any(m => m.SinglePO == POJobSearch && m.TechnicianID != 0))
+            if (testingRepo.TestJobs.Any(m => m.SinglePO == POJobSearch && m.TechnicianID != 0))
             {
                 TempData["message"] = $"Testjob with #PO {POJobSearch} was assigned previusly";
                 TempData["alert"] = $"alert-danger";
