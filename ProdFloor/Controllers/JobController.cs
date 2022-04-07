@@ -5150,6 +5150,52 @@ namespace ProdFloor.Controllers
             return RedirectToAction(nameof(List));
         }
 
+        public void CheckStatusPO(int poID)
+        {
+            PO onePO = repository.POs.FirstOrDefault(m => m.POID == poID);
+            if (onePO != null)
+            {
+                Job job = repository.Jobs.FirstOrDefault(m => m.JobID == onePO.JobID);
+
+                StatusPO statusPO = repository.StatusPOs
+                                           .FirstOrDefault(s => s.POID == onePO.POID);
+
+                if (statusPO == null)
+                {
+                    statusPO = new StatusPO();
+                    statusPO.POID = onePO.POID;
+
+                    if (job.Status.Contains("Cross Approval") || job.Status == "Incomplete"
+                        || job.Status == "Working on it")
+                    {
+                        statusPO.Status = "Engineering";
+                    }
+                    else if (job.Status == "Waiting for test")
+                    {
+                        statusPO.Status = "Waiting for test";
+                    }
+                    else if (job.Status == "PXP on progress")
+                    {
+                        statusPO.Status = "PXP on progress";
+                    }
+                    else if (job.Status == "Completed")
+                    {
+                        statusPO.Status = "Completed";
+                    }
+                    else
+                    {
+                        statusPO.Status = "Production";
+                    }
+
+                    repository.SaveStatusPO(statusPO);
+
+                    statusPO = repository.StatusPOs
+                                        .FirstOrDefault(s => s.POID == onePO.POID);
+                }
+            }
+            return;
+        }
+
 
         /*
          NewtestJobView.Job.JobNumFirstDigits = getJobNumbDivided(_jobSearch.JobNum).firstDigits;

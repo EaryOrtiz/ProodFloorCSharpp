@@ -26,6 +26,7 @@ namespace ProdFloor.Controllers
         private ITestingRepository testingRepo;
         private IItemRepository itemRepo;
         private IWiringRepository wiringRepo;
+        private JobController jobController;
         public int PageSize = 3;
         private UserManager<AppUser> userManager;
 
@@ -33,13 +34,15 @@ namespace ProdFloor.Controllers
             IItemRepository item,
             ITestingRepository testRepo,
             IWiringRepository wirerRepo,
-            UserManager<AppUser> userMrg)
+            UserManager<AppUser> userMrg,
+            JobController jobCtrl)
         {
             repository = repo;
             testingRepo = testRepo;
             itemRepo = item;
             wiringRepo = wirerRepo;
             userManager = userMrg;
+            jobController = jobCtrl;
         }
 
         private async Task<bool> GetCurrentUserRole(string role)
@@ -442,10 +445,9 @@ namespace ProdFloor.Controllers
                 List<PO> POsList = repository.POs.ToList();
 
                 List<Job> MyjobsList = repository.Jobs
-                    .Where(s => s.Status == "Incomplete")
-                    .Where(s => s.Status == "Cross Approval Complete")
-                    .Where(m => m.Status == "On Cross Approval" && m.Status == "Cross Approval Pending" && m.Status == "Working on it")
-                    .OrderByDescending(m => m._JobAdditional.Priority).ThenBy(n => n.LatestFinishDate).ToList();
+                   .Where(m => m.Status == "On Cross Approval" || m.Status == "Cross Approval Pending" ||
+                            m.Status == "Working on it" || m.Status == "Cross Approval Complete" || m.Status == "Incomplete")
+                           .OrderByDescending(m => m._JobAdditional.Priority).ThenBy(n => n.LatestFinishDate).ToList();
 
                 List<Job> OnCrossJobsList = repository.Jobs
                     .Where(s => s.Status != "Pending")
@@ -749,6 +751,7 @@ namespace ProdFloor.Controllers
                 job.Status = viewModel.CurrentStatus;
                 if (viewModel.CurrentStatus == "Cross Approval Pending" || viewModel.CurrentStatus == "Working on it") job.CrossAppEngID = 0;
                 repository.SaveJob(job);
+                jobController.CheckStatusPO(job.JobID);
 
                 TempData["message"] = $"You have change the status of  the Job #{job.JobNum} to {viewModel.CurrentStatus}";
                 return RedirectToAction("EngineerAdminDashBoard");
@@ -781,6 +784,7 @@ namespace ProdFloor.Controllers
                 job.Status = viewModel.CurrentStatus;
                 if (viewModel.CurrentStatus == "Cross Approval Pending" || viewModel.CurrentStatus == "Working on it") job.CrossAppEngID = 0;
                 repository.SaveJob(job);
+                jobController.CheckStatusPO(job.JobID);
 
                 TempData["message"] = $"You have change the status of  the Job #{job.JobNum} to {viewModel.CurrentStatus}";
                 return RedirectToAction("SuperUserDashBoard");
