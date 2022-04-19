@@ -1,0 +1,82 @@
+﻿@model ProdFloor.Models.ViewModels.Job.M3000SearchViewModel
+@inject SignInManager<AppUser> SignInManager ;
+@inject UserManager<AppUser> UserManager ;
+
+@foreach (var j in Model.JobsSearchList)
+{
+    M3000 m3000 = Model.M3000List.FirstOrDefault(m => m.JobID == j.JobID);
+    City cityAux = Model.Citylist.FirstOrDefault(m => m.CityID == j.CityID);
+    State StateAux = Model.Statelist.FirstOrDefault(m => m.StateID == cityAux.StateID);
+    <div class="card card-outline-primary m-1 p-1">
+        <div class="bg-faded p-1">
+            <h4>
+                Job #@j.JobNum
+                @if (j.Status != "Incomplete")
+                {
+                    <span class="badge badge-pill badge-primary" style="float:right">
+                        <small>@m3000.ControlType</small>
+                    </span>
+                    <span class="badge badge-pill badge-primary" style="float:right">
+                        <small>@StateAux.Name - @cityAux.Name</small>
+                    </span>
+                }
+            </h4>
+        </div>
+        <div class="card-text p-1">
+            <form asp-action="Delete" method="post" asp-route-Id="@j.JobID">
+
+                @if (j.Status != "Incomplete" && (UserManager.GetUserAsync(User).Result.EngID == j.EngID || User.IsInRole("Admin")))
+
+                {
+                    <a asp-action="Edit" class="btn btn-sm btn-warning"
+                       asp-route-Id="@j.JobID">
+                        Edit
+                    </a>
+                }
+                else if (j.Status != "Incomplete")
+                {
+                    <a asp-action="Edit" class="btn btn-sm btn-info"
+                       asp-route-Id="@j.JobID">
+                        Details
+                    </a>
+                }
+
+                else if (UserManager.GetUserAsync(User).Result.EngID == j.EngID || User.IsInRole("Admin"))
+                {
+                    <a asp-action="Continue" class="btn btn-sm btn-warning"
+                       asp-route-Id="@j.JobID">
+                        Continue
+                    </a>
+                }
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-danger btn-sm" disabled="@(UserManager.GetUserAsync(User).Result.EngID == j.EngID|| User.IsInRole("Admin") ? false : true)" data-toggle="modal" data-target="#exampleModalCenter @j.JobID">
+
+                    Delete
+                </button>
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModalCenter @j.JobID" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLongTitle"><i class="fas fa-exclamation-triangle"></i>&nbsp;Warning</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                Are you sure want to delete this job #@j.JobNum?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
+                                <button type="submit" class="btn btn-danger btn-sm">
+                                    Delete
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+}
+

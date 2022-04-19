@@ -445,9 +445,10 @@ namespace ProdFloor.Controllers
                 List<PO> POsList = repository.POs.ToList();
 
                 List<Job> MyjobsList = repository.Jobs
-                   .Where(m => m.Status == "On Cross Approval" || m.Status == "Cross Approval Pending" ||
-                            m.Status == "Working on it" || m.Status == "Cross Approval Complete" || m.Status == "Incomplete")
-                           .OrderByDescending(m => m._JobAdditional.Priority).ThenBy(n => n.LatestFinishDate).ToList();
+                    .Where(m => m.Status == "On Cross Approval" || m.Status == "Cross Approval Pending" || 
+                             m.Status == "Working on it" || m.Status == "Cross Approval Complete" || m.Status == "Incomplete")
+                            .OrderByDescending(m => m._JobAdditional.Priority).ThenBy(n => n.LatestFinishDate).ToList();
+
 
                 List<Job> OnCrossJobsList = repository.Jobs
                     .Where(s => s.Status != "Pending")

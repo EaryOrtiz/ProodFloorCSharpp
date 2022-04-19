@@ -58,7 +58,7 @@ namespace ProdFloor.Models
         public DbSet<Stop> Stops { get; set; }
         public DbSet<Station> Stations { get; set; }
 
-        //Nuevos Modelos
+        //Elements
         public DbSet<Element> Elements { get; set; }
         public DbSet<ElementHydro> ElementHydros { get; set; }
         public DbSet<ElementTraction> ElementTractions { get; set; }
@@ -84,7 +84,6 @@ namespace ProdFloor.Models
         public DbSet<WirersPXPInvolved> WirersPXPInvolveds { get; set; }
 
         //Wiring
-
         public DbSet<Wiring> Wirings { get; set; }
         public DbSet<WirersInvolved> WirersInvolveds { get; set; }
         public DbSet<WiringStop> WiringStops { get; set; }
@@ -98,6 +97,11 @@ namespace ProdFloor.Models
         public DbSet<WiringOption> WiringOptions { get; set; }
         public DbSet<WiringFeatures> WiringFeatures { get; set; }
         public DbSet<WiringTriggeringFeature> WiringTriggeringFeatures { get; set; }
+
+        //M3000
+        public DbSet<M3000> M3000s { get; set; }
+        public DbSet<MotorInfo> MotorInfos { get; set; }
+        public DbSet<OperatingFeatures> OperatingFeatures { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder builder)

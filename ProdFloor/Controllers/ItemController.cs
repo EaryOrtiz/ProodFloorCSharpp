@@ -841,6 +841,97 @@ namespace ProdFloor.Controllers
 
         }
 
+        public async Task<IActionResult> ReferencesSearchM3000(ReferencesSearchvViewModel ViewModel)
+        {
+            var jobSearch = jobrepo.Jobs.Include(j => j._M3000).Include(h => h._MotorInfo).Include(ex => ex._OperatingFeatures).AsQueryable();
+            ViewModel.status = null;
+
+            ReferencesSearchvViewModel referSearchAux = new ReferencesSearchvViewModel
+            {
+                RefernceData = false,
+            };
+
+            if (ViewModel.JobID != 0)
+            {
+                var JobSearch = jobSearch.FirstOrDefault(m => m.JobID == ViewModel.JobID);
+
+                if (JobSearch != null)
+                {
+                    if (JobSearch.Status != "Incomplete")
+                    {
+                        #region JobData
+                        var FireCodeOne = repository.FireCodes.FirstOrDefault(m => m.FireCodeID == JobSearch.FireCodeID);
+
+                        ViewModel.FLA = JobSearch._MotorInfo.FLA;
+                        ViewModel.NumJobSearch = JobSearch.JobNum;
+                        ViewModel.JobName = JobSearch.Name;
+                        ViewModel.JobName2 = JobSearch.Name2;
+                        ViewModel.Cust = JobSearch.Cust;
+                        ViewModel.Contractor = JobSearch.Contractor;
+                        ViewModel.HP = JobSearch._MotorInfo.HP;
+                        ViewModel.FireCodeName = FireCodeOne.Name;
+                        ViewModel.NumJobSearch = JobSearch.JobNum;
+                        ViewModel.POList = jobrepo.POs.Where(m => m.JobID == JobSearch.JobID).ToList();
+                        ViewModel.InputVoltage = JobSearch._M3000.InputVoltage;
+
+                        #endregion
+
+                        #region ReferSearchVM
+                        try
+                        {
+                            string auxName2 = "---------------------------------------";
+                            if (ViewModel.JobName2 == null) ViewModel.JobName2 = auxName2;
+                        }
+                        catch (Exception e)
+                        {
+                            ViewModel.JobName2 = "-----------------------------------------";
+                        }
+                        ReferencesSearchvViewModel referSearch = new ReferencesSearchvViewModel
+                        {
+                            RefernceData = true,
+
+                            //JobData
+                            FLA = ViewModel.FLA,
+                            JobName = ViewModel.JobName.ToUpper(),
+                            JobName2 = ViewModel.JobName2.ToUpper(),
+                            Cust = ViewModel.Cust.ToUpper(),
+                            Contractor = ViewModel.Contractor.ToUpper(),
+                            InputVoltage = ViewModel.InputVoltage,
+                            HP = ViewModel.HP,
+                            FireCodeName = ViewModel.FireCodeName.ToUpper(),
+                            NumJobSearch = ViewModel.NumJobSearch,
+
+                            //POList
+                            POList = ViewModel.POList
+
+                        };
+
+                        return View("ReferencesSrchM3000", referSearch);
+
+                        #endregion
+
+                    }
+
+                    TempData["alert"] = $"alert-danger";
+                    TempData["message"] = $"That job isn't completed, please finish it and try again";
+
+                    return RedirectToAction("ReferencesSearchM3000", referSearchAux);
+                }
+
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"That job doesn't exist, please enter a new one";
+
+                return RedirectToAction("ReferencesSearchM3000", referSearchAux);
+
+            }
+            else
+            {
+
+                return View(referSearchAux);
+            }
+
+        }
+
         public async Task<IActionResult> ReferencesSearchElement(ReferencesSrchElementViewModel ViewModel)
         {
             var jobSearch = jobrepo.Jobs.Include(j => j._Elements).Include(h => h._Elements).Include(ex => ex._EmentTractions).AsQueryable();
@@ -1045,6 +1136,15 @@ namespace ProdFloor.Controllers
                     RefernceData = false
                 };
                 return RedirectToAction("ReferencesSearch", viewModel);
+            }
+            else if (JobTypeName(job.JobTypeID) == "M3000")
+            {
+                ReferencesSearchvViewModel viewModel = new ReferencesSearchvViewModel
+                {
+                    JobID = JobID,
+                    RefernceData = false
+                };
+                return RedirectToAction("ReferencesSearchM3000", viewModel);
             }
             else
             {
