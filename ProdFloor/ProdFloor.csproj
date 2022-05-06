@@ -15,6 +15,7 @@
     <PackageReference Include="FreeSpire.Doc" Version="7.11.0" />
     <PackageReference Include="HtmlAgilityPack" Version="1.9.2" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.jQuery.Unobtrusive.Ajax" Version="3.2.6" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.10" PrivateAssets="All" />
     <PackageReference Include="TextCopy" Version="1.5.2" />
   </ItemGroup>
