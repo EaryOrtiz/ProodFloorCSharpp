@@ -1,0 +1,136 @@
+﻿@model ProdFloor.Models.ViewModels.PlanningReportListViewModel
+@{
+    ViewBag.Title = "Customs Ready";
+}
+<div class="container-fluid" id="content">
+    <div style="overflow-y:scroll;height:70vh;">
+        <table class="table table-striped  text-center table-sm" style="text-align:center">
+            <thead style="background-color:#343a40!important;color:#fff;">
+                @if (Model.planningReportRows.Count() > 0)
+                {
+                    <tr>
+                        <th class="text-center" colspan="6">
+
+                            <h5>Morning Custom Job’s</h5>
+                        </th>
+                        <th colspan="1">
+                            <div class="btn-group float-right">
+                                <button type="button" class="btn btn-sm btn-dark dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-filter"></i>
+                                </button>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" asp-controller="PlanningReport" asp-action="CustomsReady" asp-route-ReadyOnly="true"
+                                       data-ajax="true"
+                                       data-ajax-method="POST"
+                                       data-ajax-mode="replace"
+                                       data-ajax-update="#content">Customs Ready</a>
+                                    <a class="dropdown-item" asp-controller="PlanningReport" asp-action="CustomsReady" asp-route-ReadyOnly="false"
+                                       data-ajax="true"
+                                       data-ajax-method="POST"
+                                       data-ajax-mode="replace"
+                                       data-ajax-update="#content">Customs not ready</a>
+                                    <a class="dropdown-item" asp-controller="PlanningReport" asp-action="CustomsByPlanning">All</a>
+                                </div>
+                            </div>
+                            <div class="row float-right" style="padding-right:20px">
+                                <div class="text-center">
+                                    <div class="btn-group text-center">
+                                        <button class="btn btn-sm " style="background-color:seagreen;color:white" value="Save" type="submit">Update</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </th>
+                    </tr>
+                }
+                else
+                {
+                    <tr>
+                        <th class="text-center" colspan="6">
+                            <h5>Morning Custom Job’s</h5>
+                        </th>
+                        <th colspan="1">
+                            <div class="btn-group float-right">
+                                <button type="button" class="btn btn-sm btn-dark dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-filter"></i>
+                                </button>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" asp-controller="PlanningReport" asp-action="CustomsReady" asp-route-ReadyOnly="true"
+                                       data-ajax="true"
+                                       data-ajax-method="POST"
+                                       data-ajax-mode="replace"
+                                       data-ajax-update="#content">Yes</a>
+                                    <a class="dropdown-item" asp-controller="PlanningReport" asp-action="CustomsReady" asp-route-ReadyOnly="false"
+                                       data-ajax="true"
+                                       data-ajax-method="POST"
+                                       data-ajax-mode="replace"
+                                       data-ajax-update="#content">No</a>
+                                    <a class="dropdown-item" asp-controller="PlanningReport" asp-action="CustomsByPlanning">All</a>
+                                </div>
+                            </div>
+                        </th>
+                    </tr>
+                }
+                <tr>
+                    <th scope="col">
+                        Job#
+                    </th>
+                    <th scope="col">
+                        PO
+                    </th>
+                    <th scope="col">
+                        Name
+                    </th>
+                    <th scope="col">
+                        JobType
+                    </th>
+                    <th scope="col">
+                        Custom
+                    </th>
+                    <th scope="col">
+                        Custom Ready
+                    </th>
+                    <th scope="col">
+                        Notas
+                    </th>
+                </tr>
+            </thead>
+            <tbody class="align-content-center text-center">
+                @if (Model.planningReportRows.Count() == 0)
+                {
+                    <tr>
+                        <td>No Jobs with customs!</td>
+                    </tr>
+                }
+                else
+                {
+
+                    @for (int i = 0; i < Model.planningReportRows.Count; i++)
+                    {
+
+
+                        <tr>
+                            <th scope="row">@Model.planningReportRows[i].JobNumber</th>
+                            <td>@Model.planningReportRows[i].PO</td>
+                            <td>@Model.planningReportRows[i].JobName</td>
+                            <td>@Model.planningReportRows[i].Material</td>
+                            <td>
+                                <input type="hidden" asp-for="@Model.planningReportRows[i].PlanningReportRowID" value="@Model.planningReportRows[i].PlanningReportRowID" />
+
+                                <input asp-for="@Model.planningReportRows[i].Custom" class="form-control fom form-control-sm" />
+                            </td>
+                            <td>
+                                <input asp-for="@Model.planningReportRows[i].CustomReady" class="form-control fom form-control-sm" />
+                            </td>
+                            <td>
+                                <textarea asp-for="@Model.planningReportRows[i].Notes" class="form-control fom form-control-sm" rows="2" value="@Model.planningReportRows[i].Notes"></textarea>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+      
+    </div>
+
+

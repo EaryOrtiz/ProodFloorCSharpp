@@ -897,6 +897,7 @@ namespace ProdFloor.Infrastructure
             TagBuilder tag5 = new TagBuilder("a");
             /*************************************************************************/
             PageUrlValues["page"] = 1;
+            PageUrlValues["ReadyOnly"] = PageModel.ReadyOnly;
             PageUrlValues["totalitemsfromlastsearch"] = PageModel.TotalItemsFromLastSearch;
             if (requestQuery.Count > 0)
             {
@@ -917,6 +918,7 @@ namespace ProdFloor.Infrastructure
             /*************************************************************************/
             PageUrlValues["page"] = (PageModel.CurrentPage - 1) != 0 ? (PageModel.CurrentPage - 1) : 1;
             PageUrlValues["totalitemsfromlastsearch"] = PageModel.TotalItemsFromLastSearch;
+            PageUrlValues["ReadyOnly"] = PageModel.ReadyOnly;
             if (requestQuery.Count > 0)
             {
                 foreach (var request in requestQuery)
@@ -948,6 +950,7 @@ namespace ProdFloor.Infrastructure
                 TagBuilder tag2 = new TagBuilder("a");
                 PageUrlValues["page"] = i;
                 PageUrlValues["totalitemsfromlastsearch"] = PageModel.TotalItemsFromLastSearch;
+                PageUrlValues["ReadyOnly"] = PageModel.ReadyOnly;
                 if (requestQuery.Count > 0)
                 {
                     foreach (var request in requestQuery)
@@ -972,6 +975,7 @@ namespace ProdFloor.Infrastructure
                 TagBuilder tag3 = new TagBuilder("a");
                 PageUrlValues["page"] = i;
                 PageUrlValues["totalitemsfromlastsearch"] = PageModel.TotalItemsFromLastSearch;
+                PageUrlValues["ReadyOnly"] = PageModel.ReadyOnly;
                 if (requestQuery.Count > 0)
                 {
                     foreach (var request in requestQuery)
@@ -993,6 +997,7 @@ namespace ProdFloor.Infrastructure
             /*************************************************************************/
             PageUrlValues["page"] = (PageModel.CurrentPage + 1) <= PageModel.TotalPages ? (PageModel.CurrentPage + 1) : PageModel.TotalPages;
             PageUrlValues["totalitemsfromlastsearch"] = PageModel.TotalItemsFromLastSearch;
+            PageUrlValues["ReadyOnly"] = PageModel.ReadyOnly;
             if (requestQuery.Count > 0)
             {
                 foreach (var request in requestQuery)
@@ -1012,6 +1017,7 @@ namespace ProdFloor.Infrastructure
             /*************************************************************************/
             PageUrlValues["page"] = PageModel.TotalPages;
             PageUrlValues["totalitemsfromlastsearch"] = PageModel.TotalItemsFromLastSearch;
+            PageUrlValues["ReadyOnly"] = PageModel.ReadyOnly;
             if (requestQuery.Count > 0)
             {
                 foreach (var request in requestQuery)

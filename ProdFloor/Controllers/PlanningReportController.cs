@@ -646,22 +646,28 @@ namespace ProdFloor.Controllers
 
             PlanningReportListViewModel viewModel = new PlanningReportListViewModel
             {
-                planningReportRows = planningReportRows.Skip((page - 1) * PageSize)
-                                       .Take(PageSize).ToList(),
+                planningReportRows = planningReportRows,
                 ReportRow = new PlanningReportRow(),
                 TotalItems = planningReportRows.Count(),
-                PagingInfo = new PagingInfo
-                {
-                    CurrentPage = page,
-                    sort = Sort != "default" ? Sort : "default",
-                    TotalItemsFromLastSearch = totalitemsfromlastsearch,
-                    ItemsPerPage = PageSize,
-
-                    TotalItems = planningReportRows.Count()
-                }
             };
 
             return View(viewModel);
+        }
+
+
+        public IActionResult CustomsReady(bool ReadyOnly, string filtrado, string Sort = "default", int page = 1, int totalitemsfromlastsearch = 0)
+        {
+
+            List<PlanningReportRow> planningReportRows = itemRepository.PlanningReportRows.Where(m => m.Custom == true && m.CustomReady == ReadyOnly).ToList();
+
+            PlanningReportListViewModel viewModel = new PlanningReportListViewModel
+            {
+                planningReportRows = planningReportRows,
+                ReportRow = new PlanningReportRow(),
+                TotalItems = planningReportRows.Count(),
+            };
+
+            return PartialView(viewModel);
         }
 
         [HttpPost]
@@ -725,6 +731,9 @@ namespace ProdFloor.Controllers
             {
                 foreach (PlanningReportRow row in viewModel.planningReportRows)
                 {
+                    if (row.PlanningReportRowID == 0)
+                        continue;
+
                     PlanningReportRow rowFromDB = itemRepository.PlanningReportRows.FirstOrDefault(m => m.PlanningReportRowID == row.PlanningReportRowID);
                     rowFromDB.Notes = row.Notes;
                     rowFromDB.Custom = row.Custom;
