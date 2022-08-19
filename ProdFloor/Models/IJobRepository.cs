@@ -21,6 +21,10 @@ namespace ProdFloor.Models
         IQueryable<ElementHydro> ElementHydros { get; }
         IQueryable<ElementTraction> ElementTractions { get; }
         IQueryable<JobAdditional> JobAdditionals { get;}
+        IQueryable<StatusPO> StatusPOs { get;}
+        IQueryable<M3000> M3000s { get;}
+        IQueryable<MotorInfo> MotorInfos { get;}
+        IQueryable<OperatingFeatures> OperatingFeatures { get;}
 
         void SaveJob(Job job);
         void SaveJobExtension(JobExtension jobExtension);
@@ -30,6 +34,7 @@ namespace ProdFloor.Models
         void SaveHoistWayData(HoistWayData hoistWayData);
         void SaveSpecialFeatures(SpecialFeatures specialFeatures);
         void SavePO(PO po);
+        void SaveStatusPO(StatusPO statusPO);
         void SaveJobAdditional(JobAdditional jobAdditional);
         void SaveEngJobView(JobViewModel viewModelToSave);
         void SaveCustomSoftware(CustomSoftware customSoftware);
@@ -41,11 +46,17 @@ namespace ProdFloor.Models
         void SaveElementTraction(ElementTraction elementTraction);
         void SaveEngElementHydroJobView(JobElementHydroViewModel viewModelToSave);
         void SaveEngElementTractionJobView(JobElementTractionViewModel viewModelToSave);
+        void SaveEngM3000JobView(JobM3000ViewModel viewModelToSave);
+        void SaveM3000(M3000 m3000);
+        void SaveMotorInfo(MotorInfo motor);
+        void SaveOperatingFeatures(OperatingFeatures feature);
+
 
         Job DeleteJob(int jobID);
         Job DeleteEngJob(int JobID);
         Job DeleteEngElementHydroJob(int JobID);
         Job DeleteEngElementTractionJob(int JobID);
+        Job DeleteEngM3000Job(int JobID);
         JobExtension DeleteJobExtension(int jobExtensionID);
         HydroSpecific DeleteHydroSpecific(int hydroSpecificID);
         GenericFeatures DeleteGenericFeatures(int genericFeaturesID);
@@ -53,6 +64,7 @@ namespace ProdFloor.Models
         HoistWayData DeleteHoistWayData(int hoistWatDataID);
         SpecialFeatures DeleteSpecialFeatures(int specialFeaturesID);
         PO DeletePO(int POID);
+        StatusPO DeleteStatusPO(int StatusPOID);
         JobAdditional DeleteJobAdditional(int JobAdditionalID);
         CustomSoftware DeleteCustomSoftware(int CustomSoftwareID);
         TriggeringCustSoft DeleteTriggeringCustSoft(int TriggeringCustSoftID);
@@ -61,5 +73,8 @@ namespace ProdFloor.Models
         Element DeleteElement(int ElementID);
         ElementHydro DeleteElementHydro(int ElementHydroID);
         ElementTraction DeleteElementTraction(int ElementTractionID);
+        M3000 DeleteM3000(int M3000ID);
+        MotorInfo DeleteMotorInfo(int MotorInfoID);
+        OperatingFeatures DeleteOperatingFeatures(int OperatingFeaturesID);
     }
 }

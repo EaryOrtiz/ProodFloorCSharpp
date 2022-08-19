@@ -22,103 +22,115 @@
         <span asp-validation-for="POSearch" class="text-danger"></span><br />
     </div>
 </form>
-@if (Model.ReportRow != null)
-{
-    <div class="row col-12">
-        <div class="col-6">
-            <div class="form-group row" style="margin-bottom:0em;">
-                <label class="col-4 col-form-label">Job Number:</label>
-                <div class="col-5">
-                    <input type="text" value="@Model.ReportRow.JobNumber" class="form-control form-control-sm col-12" disabled asp-for="ReportRow.JobNumber">
-                </div>
-            </div>
-            <div class="form-group row" style="margin-bottom:0em;">
-                <label class="col-4 col-form-label">Material:</label>
-                <div class="col-5">
-                    <input type="text" value="@Model.ReportRow.Material" class="form-control form-control-sm col-12" disabled asp-for="ReportRow.Material">
-                </div>
-            </div>
-            <div class="form-group row" style="margin-bottom:0em;">
-                <label class="col-4 col-form-label">MRP: &nbsp;</label>
-                <div class="col-5">
-                    <input type="text" value="@Model.ReportRow.MRP" class="form-control form-control-sm col-sm-12" disabled asp-for="ReportRow.MRP">
-                </div>
-            </div>
-            <div class="form-group row" style="margin-bottom:0em;">
-                <label class="col-4 col-form-label">PO: &nbsp;</label>
-                <div class="col-5">
-                    <input type="text" value="@Model.ReportRow.PO" class="form-control form-control-sm col-sm-12" disabled asp-for="ReportRow.PO">
-                </div>
-            </div>
-            <div class="form-group row" style="margin-bottom:0em;">
-                <label class="col-4 col-form-label">Sold-To pt: &nbsp;</label>
-                <div class="col-5">
-                    <input type="text" value="@Model.ReportRow.SoldTo" class="form-control form-control-sm col-sm-12" disabled asp-for="ReportRow.SoldTo">
-                </div>
-            </div>
-            <div class="form-group row" style="margin-bottom:0em;">
-                <label class="col-4 col-form-label">C: &nbsp;</label>
-                <div class="col-5">
-                    <input type="text" value="@Model.ReportRow.Consecutive" class="form-control form-control-sm col-sm-12" disabled asp-for="ReportRow.Consecutive">
-                </div>
-            </div>
-        </div>
-        <div class="col-6">
-            <div class="form-group row" style="margin-bottom:0em;">
-                <label class="col-4 col-form-label">Job Name: &nbsp;</label>
-                <div class="col-5">
-                    <input type="text" value="@Model.ReportRow.JobName" class="form-control form-control-sm col-sm-12" disabled asp-for="ReportRow.JobName">
-                </div>
-            </div>
-            <div class="form-group row" style="margin-bottom:0em;">
-                <label class="col-4 col-form-label">Previous WorkCenter: &nbsp;</label>
-                <div class="col-5">
-                    <input type="text" value="@Model.ReportRow.PreviousWorkCenter" class="form-control form-control-sm col-sm-12" disabled asp-for="ReportRow.PreviousWorkCenter">
-                </div>
-            </div>
-            <div class="form-group row" style="margin-bottom:0em;">
-                <label class="col-4 col-form-label">WorkCenter: &nbsp;</label>
-                <div class="col-5">
-                    <input type="text" value="@Model.ReportRow.WorkCenter" class="form-control form-control-sm col-sm-12" disabled asp-for="ReportRow.WorkCenter">
-                </div>
-            </div>
-            <div class="form-group row" style="margin-bottom:0em;">
-                <label class="col-4 col-form-label">Notes: &nbsp;</label>
-                <div class="col-5">
-                    <input type="text" value="@Model.ReportRow.Notes" class="form-control form-control-sm col-sm-12" disabled asp-for="ReportRow.Notes">
-                </div>
-            </div>
-            <div class="form-group row" style="margin-bottom:0em;">
-                <label class="col-4 col-form-label">Priority: &nbsp;</label>
-                <div class="col-5">
-                    <input type="text" value="@Model.ReportRow.Priority" class="form-control form-control-sm col-sm-12" disabled asp-for="ReportRow.Priority">
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row col-12 text-center">
-        <div class="col text-center">
-            <button class="btn  btn-secondary" data-toggle="modal" data-target="#PrintablesModal" data-tooltip="tooltip" data-placement="top" title="Print Docs">
-                Printables
-            </button>
-        </div>
-    </div>
 
-    <!--Printables report Modal -->
-    <div class="modal fade" id="PrintablesModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header bg-dark">
-                    <div class="col text-center">
-                        <h5 class="modal-title text-light" id="exampleModalLongTitle">Printables for: #@Model.ReportRow.PO</h5>
+@if (Model.ReportRow != null)
+{<form asp-controller="PlanningReport" asp-action="Printables" method="post">
+        <div class="row col-12">
+            <div class="col-6">
+                <div class="form-group row" style="margin-bottom:0em;">
+                    <label class="col-4 col-form-label">Job Number:</label>
+                    <div class="col-5">
+                        <input type="text" value="@Model.ReportRow.JobNumber" class="form-control form-control-sm col-12" asp-for="ReportRow.JobNumber">
                     </div>
-                   
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
                 </div>
-                <form asp-controller="PlanningReport" asp-action="Printables" method="post">
-                    <input type="hidden"  asp-for="POSearch"/>
+                <div class="form-group row" style="margin-bottom:0em;">
+                    <label class="col-4 col-form-label">Material:</label>
+                    <div class="col-5">
+                        <input type="text" value="@Model.ReportRow.Material" class="form-control form-control-sm col-12" asp-for="ReportRow.Material">
+                    </div>
+                </div>
+                <div class="form-group row" style="margin-bottom:0em;">
+                    <label class="col-4 col-form-label">MRP: &nbsp;</label>
+                    <div class="col-5">
+                        <user-select selected-value="@Model.EngID" class="form-control form-control-sm" asp-for="@Model.EngID" roles="Engineer"></user-select>
+                    </div>
+                </div>
+                <div class="form-group row" style="margin-bottom:0em;">
+                    <label class="col-4 col-form-label">PO: &nbsp;</label>
+                    <div class="col-5">
+                        <input type="text" value="@Model.ReportRow.PO" class="form-control form-control-sm col-sm-12" disabled asp-for="ReportRow.PO">
+                    </div>
+                </div>
+                <div class="form-group row" style="margin-bottom:0em;">
+                    <label class="col-4 col-form-label">Sold-To pt: &nbsp;</label>
+                    <div class="col-5">
+                        <input type="text" value="@Model.ReportRow.SoldTo" class="form-control form-control-sm col-sm-12" asp-for="ReportRow.SoldTo">
+                    </div>
+                </div>
+                <div class="form-group row" style="margin-bottom:0em;">
+                    <label class="col-4 col-form-label">C: &nbsp;</label>
+                    <div class="col-5">
+                        <input type="text" value="@Model.ReportRow.Consecutive" class="form-control form-control-sm col-sm-12" asp-for="ReportRow.Consecutive">
+                    </div>
+                </div>
+                <div class="form-group row" style="margin-bottom:0em;">
+                    <label class="col-4 col-form-label">ShippingDate: &nbsp;</label>
+                    <div class="col-5">
+                        <input type="text" value="@Model.ReportRow.ShippingDate" class="form-control form-control-sm col-sm-12" asp-for="ReportRow.ShippingDate">
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="form-group row" style="margin-bottom:0em;">
+                    <label class="col-4 col-form-label">Job Name: &nbsp;</label>
+                    <div class="col-5">
+                        <input type="text" value="@Model.ReportRow.JobName" class="form-control form-control-sm col-sm-12" asp-for="ReportRow.JobName">
+                    </div>
+                </div>
+                <div class="form-group row" style="margin-bottom:0em;">
+                    <label class="col-4 col-form-label">Previous WorkCenter: &nbsp;</label>
+                    <div class="col-5">
+                        <input type="text" value="@Model.ReportRow.PreviousWorkCenter" class="form-control form-control-sm col-sm-12" asp-for="ReportRow.PreviousWorkCenter">
+                    </div>
+                </div>
+                <div class="form-group row" style="margin-bottom:0em;">
+                    <label class="col-4 col-form-label">WorkCenter: &nbsp;</label>
+                    <div class="col-5">
+                        <input type="text" value="@Model.ReportRow.WorkCenter" class="form-control form-control-sm col-sm-12" asp-for="ReportRow.WorkCenter">
+                    </div>
+                </div>
+                <div class="form-group row" style="margin-bottom:0em;">
+                    <label class="col-4 col-form-label">Notes: &nbsp;</label>
+                    <div class="col-5">
+                        <input type="text" value="@Model.ReportRow.Notes" class="form-control form-control-sm col-sm-12" asp-for="ReportRow.Notes">
+                    </div>
+                </div>
+                <div class="form-group row" style="margin-bottom:0em;">
+                    <label class="col-4 col-form-label">Priority: &nbsp;</label>
+                    <div class="col-5">
+                        <input type="text" value="@Model.ReportRow.Priority" class="form-control form-control-sm col-sm-12" asp-for="ReportRow.Priority">
+                    </div>
+                </div>
+                <div class="form-group row" style="margin-bottom:0em;">
+                    <label class="col-4 col-form-label">Item: &nbsp;</label>
+                    <div class="col-5">
+                        <input type="text" value="@Model.ReportRow.LineNumber" class="form-control form-control-sm col-sm-12" asp-for="ReportRow.LineNumber">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row col-12 text-center">
+            <div class="col text-center">
+                <button type="button" class="btn  btn-secondary" data-toggle="modal" data-target="#PrintablesModal" data-tooltip="tooltip" data-placement="top" title="Print Docs">
+                    Printables
+                </button>
+            </div>
+        </div>
+
+        <!--Printables report Modal -->
+        <div class="modal fade" id="PrintablesModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header bg-dark">
+                        <div class="col text-center">
+                            <h5 class="modal-title text-light" id="exampleModalLongTitle">Printables for: #@Model.ReportRow.PO</h5>
+                        </div>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <input type="hidden" asp-for="POSearch" />
                     <div class="container mb-2 mt-2 text-left">
                         <div class="form-inline mb-3">
                             <label class="col-4 font-weight-bold ">Custom: </label>
@@ -146,8 +158,10 @@
                         <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
                         <button class="btn btn-warning btn-sm" type="submit">Go</button>
                     </div>
-                </form>
+
+                </div>
             </div>
         </div>
-    </div>
+    </form>
 }
+

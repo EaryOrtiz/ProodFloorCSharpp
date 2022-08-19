@@ -56,12 +56,14 @@ namespace ProdFloor
             services.AddTransient<IJobRepository, EFJobRepository>();
             services.AddTransient<IItemRepository, EFItemRepository>();
             services.AddTransient<ITestingRepository, EFTestingRepository>();
+            services.AddTransient<IWiringRepository, EFWiringRepository>();
             services.AddTransient<ItemController>();
             services.AddTransient<ReportController>();
             services.AddTransient<AccountController>();
             services.AddTransient<JobController>();
             //services.AddSingleton<IHostingEnvironment>(new HostingEnvironment());
             services.AddTransient<TestJobController>();
+            services.AddTransient<WiringController>();
             services.AddTransient<Microsoft.Extensions.Hosting.IHostedService, DailyJobsBackupHostedService>();
             //services.AddTransient<Microsoft.Extensions.Hosting.IHostedService, ShiftEndHostedService>();
             services.AddMvc()

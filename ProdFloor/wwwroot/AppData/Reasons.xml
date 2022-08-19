@@ -132,6 +132,18 @@
       <Reason1ID>37</Reason1ID>
       <Description>No da piso</Description>
     </Reason1>
+    <Reason1>
+      <Reason1ID>980</Reason1ID>
+      <Description>Reassignment</Description>
+    </Reason1>
+    <Reason1>
+      <Reason1ID>981</Reason1ID>
+      <Description>Shift End</Description>
+    </Reason1>
+    <Reason1>
+      <Reason1ID>982</Reason1ID>
+      <Description>Returned from complete</Description>
+    </Reason1>
   </Reasons1>
   <Reasons2>
     <Reason2>
@@ -663,6 +675,21 @@
       <Reason2ID>111</Reason2ID>
       <Reason1ID>34</Reason1ID>
       <Description>Fusibles abiertos</Description>
+    </Reason2>
+    <Reason2>
+      <Reason2ID>980</Reason2ID>
+      <Reason1ID>980</Reason1ID>
+      <Description>N/A</Description>
+    </Reason2>
+    <Reason2>
+      <Reason2ID>981</Reason2ID>
+      <Reason1ID>981</Reason1ID>
+      <Description>N/A</Description>
+    </Reason2>
+    <Reason2>
+      <Reason2ID>982</Reason2ID>
+      <Reason1ID>982</Reason1ID>
+      <Description>N/A</Description>
     </Reason2>
   </Reasons2>
   <Reasons3>
@@ -1329,6 +1356,21 @@
     <Reason3>
       <Reason3ID>147</Reason3ID>
       <Reason2ID>107</Reason2ID>
+      <Description>N/A</Description>
+    </Reason3>
+    <Reason3>
+      <Reason3ID>980</Reason3ID>
+      <Reason2ID>980</Reason2ID>
+      <Description>N/A</Description>
+    </Reason3>
+    <Reason3>
+      <Reason3ID>981</Reason3ID>
+      <Reason2ID>981</Reason2ID>
+      <Description>N/A</Description>
+    </Reason3>
+    <Reason3>
+      <Reason3ID>982</Reason3ID>
+      <Reason2ID>982</Reason2ID>
       <Description>N/A</Description>
     </Reason3>
   </Reasons3>
@@ -2013,6 +2055,21 @@
       <Reason3ID>122</Reason3ID>
       <Description>N/A</Description>
     </Reason4>
+    <Reason4>
+      <Reason4ID>980</Reason4ID>
+      <Reason3ID>980</Reason3ID>
+      <Description>N/A</Description>
+    </Reason4>
+    <Reason4>
+      <Reason4ID>981</Reason4ID>
+      <Reason3ID>981</Reason3ID>
+      <Description>N/A</Description>
+    </Reason4>
+    <Reason4>
+      <Reason4ID>982</Reason4ID>
+      <Reason3ID>982</Reason3ID>
+      <Description>N/A</Description>
+    </Reason4>
   </Reasons4>
   <Reasons5>
     <Reason5>
@@ -2673,6 +2730,21 @@
     <Reason5>
       <Reason5ID>141</Reason5ID>
       <Reason4ID>150</Reason4ID>
+      <Description>N/A</Description>
+    </Reason5>
+    <Reason5>
+      <Reason5ID>980</Reason5ID>
+      <Reason4ID>980</Reason4ID>
+      <Description>N/A</Description>
+    </Reason5>
+    <Reason5>
+      <Reason5ID>981</Reason5ID>
+      <Reason4ID>981</Reason4ID>
+      <Description>N/A</Description>
+    </Reason5>
+    <Reason5>
+      <Reason5ID>982</Reason5ID>
+      <Reason4ID>982</Reason4ID>
       <Description>N/A</Description>
     </Reason5>
   </Reasons5>

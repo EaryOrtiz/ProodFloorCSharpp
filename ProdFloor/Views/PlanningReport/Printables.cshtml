@@ -3,6 +3,11 @@
     ViewBag.Title = "Planning Report";
     Layout = "_AdminLayout_PRO";
     <script src="~/lib/jquery-PrintArea/demo/jquery.PrintArea.js"></script>
+    <style type="text/css" media="print">
+    @@page {
+        size: auto;
+    }
+    </style>
     <link rel="stylesheet" id="printCSS" href="~/lib/jquery-PrintArea/demo/PrintArea.css" type="text/css" media="print" />
     <script>
         $(document).ready(function () {
@@ -19,7 +24,7 @@
 <div class="container ml-0 mt-5 col-12">
     <div class="row col-12">
         <div class="printableArea col-12">
-            <table class="table table-bordered text-center align-content-center w-100" style="font-size: 78px;">
+            <table class="table table-bordered text-center align-content-center w-100" style="font-size: 72px;">
                 <tbody>
                     <tr>
                         <th colspan="6">
@@ -30,7 +35,7 @@
                         </th>
                     </tr>
                     <tr>
-                        <th colspan="12">
+                        <th style="font-size: 125px;" colspan="12">
                             @Model.ReportRow.JobNumber
                         </th>
                     </tr>
@@ -38,24 +43,31 @@
                         <th colspan="6">
                             @Model.ReportRow.Material
                         </th>
-                        <th colspan="6">
+                        <th colspan="6" style="font-size: 100px;" >
                             @Model.ReportRow.PO
                         </th>
                     </tr>
                     <tr>
-                        <th colspan="12">
+                        <th style="font-size: 55px;" colspan="12">
                             @Model.ReportRow.JobName
                         </th>
                     </tr>
                 </tbody>
             </table>
-            <p  style="font-size: 22px">Final____:____H:M QC____:____H:M</p>
-            <p>@Model.PrintableNotes</p>
+            <p style="font-size: 20px">Final____:____H:M QC____:____H:M</p>
+            <p class="font-weight-bold border-bottom border-top border-left border-right" style="font-size: 20px">@Model.PrintableNotes</p>
         </div>
         <div class="col text-center">
             <div class="btn-group">
                 <a class="btn btn-secondary mr-5" href="javascript:void(0);" id="printButton">Print</a>
                 <form asp-controller="PlanningReport" asp-action="GenerateJobTraveler" method="post">
+                    <input type="hidden" asp-for="ReportRow.JobName" />
+                    <input type="hidden" asp-for="ReportRow.LineNumber" />
+                    <input type="hidden" asp-for="ReportRow.JobNumber" />
+                    <input type="hidden" asp-for="ReportRow.ShippingDate" />
+                    <input type="hidden" asp-for="ReportRow.Material" />
+                    <input type="hidden" asp-for="EngID" />
+
                     <input type="hidden" asp-for="POSearch" />
                     <input type="hidden" asp-for="DueDate" />
                     <input type="hidden" asp-for="CarNumber" />
@@ -63,9 +75,9 @@
                     <button type="submit" class="btn btn-primary">Generate JobTraveler</button>
                 </form>
             </div>
-            
+
         </div>
-       
+
     </div>
 
 </div>

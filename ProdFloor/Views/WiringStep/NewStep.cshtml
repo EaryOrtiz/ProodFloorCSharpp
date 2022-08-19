@@ -1,0 +1,24 @@
+﻿@model ProdFloor.Models.ViewModels.Wiring.WiringStepViewModel
+@{
+    ViewBag.Title = "New Step";
+}
+<ul class="nav nav-tabs col-sm-10" role="tablist">
+    <li class="nav-item">
+        <a class="nav-link  active" data-toggle="tab" href="#home" role="tab">Step</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link disabled" data-toggle="tab" href="#trigger" role="tab">Triggering Features</a>
+    </li>
+</ul>
+<!-- Tab panes -->
+<form asp-action="NewStep" asp-controller="WiringStep" method="post">
+    <div class="tab-content" style="padding:20px">
+        <div class="tab-pane active" id="home" role="tabpanel">
+            @Html.Partial("StepFormBase", Model)
+        </div>
+        <div class="text-center">
+            <button class="btn btn-primary" type="submit">Save</button>
+            <a asp-action="List" class="btn btn-secondary">Cancel</a>
+        </div>
+    </div>
+</form>

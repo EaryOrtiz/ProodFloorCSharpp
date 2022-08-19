@@ -171,7 +171,7 @@
     <ID>29</ID>
     <Style>Automatic</Style>
     <Branch>Otis</Branch>
-    <Name>iMotion 1 &amp; 2</Name>
+    <Name>iMotion 1 &amp;amp; 2</Name>
   </DoorOperator>
   <DoorOperator>
     <ID>30</ID>
@@ -183,7 +183,7 @@
     <ID>31</ID>
     <Style>Automatic</Style>
     <Branch>ECI</Branch>
-    <Name>VFE2500</Name>
+    <Name>VFE2500(220V)</Name>
   </DoorOperator>
   <DoorOperator>
     <ID>32</ID>
@@ -219,7 +219,7 @@
     <ID>37</ID>
     <Style>Automatic</Style>
     <Branch>Other</Branch>
-    <Name>Schindler QKS 14 &amp; 15</Name>
+    <Name>Schindler QKS 14 &amp;amp; 15</Name>
   </DoorOperator>
   <DoorOperator>
     <ID>38</ID>
@@ -256,5 +256,59 @@
     <Style>Automatic</Style>
     <Branch>GAL</Branch>
     <Name>MOVFR II (110V)</Name>
+  </DoorOperator>
+  <DoorOperator>
+    <ID>44</ID>
+    <Style>Automatic</Style>
+    <Branch>Otis</Branch>
+    <Name>AT400</Name>
+  </DoorOperator>
+  <DoorOperator>
+    <ID>45</ID>
+    <Style>Automatic</Style>
+    <Branch>ECI</Branch>
+    <Name>VFE2500(115V)</Name>
+  </DoorOperator>
+  <DoorOperator>
+    <ID>46</ID>
+    <Style>Automatic</Style>
+    <Branch>Other</Branch>
+    <Name>IPC Universal Interface</Name>
+  </DoorOperator>
+  <DoorOperator>
+    <ID>47</ID>
+    <Style>Automatic</Style>
+    <Branch>GAL</Branch>
+    <Name>MOVFE 2500(220V)</Name>
+  </DoorOperator>
+  <DoorOperator>
+    <ID>48</ID>
+    <Style>Automatic</Style>
+    <Branch>GAL</Branch>
+    <Name>MOVFE 2500(110V)</Name>
+  </DoorOperator>
+  <DoorOperator>
+    <ID>49</ID>
+    <Style>Freight</Style>
+    <Branch>Courion</Branch>
+    <Name>iLearn</Name>
+  </DoorOperator>
+  <DoorOperator>
+    <ID>50</ID>
+    <Style>Automatic</Style>
+    <Branch>TKE_Dover</Branch>
+    <Name>LD16</Name>
+  </DoorOperator>
+  <DoorOperator>
+    <ID>51</ID>
+    <Style>Automatic</Style>
+    <Branch>MCE</Branch>
+    <Name>Profile</Name>
+  </DoorOperator>
+  <DoorOperator>
+    <ID>52</ID>
+    <Style>Automatic</Style>
+    <Branch>MCE</Branch>
+    <Name>MCE Universal</Name>
   </DoorOperator>
 </DoorOperators>

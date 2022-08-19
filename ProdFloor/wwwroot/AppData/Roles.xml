@@ -1,0 +1,35 @@
+﻿<Roles>
+  <Role>
+    <Name>ProductionAdmin</Name>
+  </Role>
+  <Role>
+    <Name>TechAdmin</Name>
+  </Role>
+  <Role>
+    <Name>Kitting</Name>
+  </Role>
+  <Role>
+    <Name>Engineer</Name>
+  </Role>
+  <Role>
+    <Name>CrossApprover</Name>
+  </Role>
+  <Role>
+    <Name>EngAdmin</Name>
+  </Role>
+  <Role>
+    <Name>Admin</Name>
+  </Role>
+  <Role>
+    <Name>Wirer</Name>
+  </Role>
+  <Role>
+    <Name>WirerPXP</Name>
+  </Role>
+  <Role>
+    <Name>Technician</Name>
+  </Role>
+  <Role>
+    <Name>Manager</Name>
+  </Role>
+</Roles>

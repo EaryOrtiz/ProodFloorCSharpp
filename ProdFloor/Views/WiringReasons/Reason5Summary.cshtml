@@ -1,0 +1,24 @@
+﻿@model WiringReason5
+<div class="card card-outline-primary m-1 p-1">
+    <div class="bg-faded p-1">
+        <h4>
+            @Model.Description
+            <span class="badge badge-pill badge-primary" style="float:right">
+                <small>@Model.WiringReason4ID</small>
+            </span>
+        </h4>
+    </div>
+    <div class="card-text p-1">
+        <form asp-action="Delete" asp-controller="WiringReasons" method="post">
+            <button asp-action="Edit" class="btn btn-sm btn-warning"
+                    asp-route-Id="@Model.WiringReason5ID">
+                Edit
+            </button>
+            <input type="hidden" name="btn" value="R5" />
+            <button type="submit" name="ID" value="@Model.WiringReason5ID" class="btn btn-danger btn-sm">
+                Delete
+            </button>
+        </form>
+    </div>
+</div>
+

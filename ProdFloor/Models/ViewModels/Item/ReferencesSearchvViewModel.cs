@@ -46,6 +46,9 @@ namespace ProdFloor.Models.ViewModels.Item
         public int UpSpeed { get; set; }
         public int TotalTravel { get; set; }
 
+        public string RMSAMPS { get; set; }
+        public string SCCRVOLTS { get; set; }
+
 
         //SlowLimit Table
 

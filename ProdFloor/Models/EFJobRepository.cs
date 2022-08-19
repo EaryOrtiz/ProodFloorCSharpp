@@ -31,6 +31,10 @@ namespace ProdFloor.Models
         public IQueryable<ElementHydro> ElementHydros => context.ElementHydros;
         public IQueryable<ElementTraction> ElementTractions => context.ElementTractions;
         public IQueryable<JobAdditional> JobAdditionals => context.JobAdditionals;
+        public IQueryable<StatusPO> StatusPOs => context.StatusPOs;
+        public IQueryable<M3000> M3000s => context.M3000s;
+        public IQueryable<MotorInfo> MotorInfos => context.MotorInfos;
+        public IQueryable<OperatingFeatures> OperatingFeatures => context.OperatingFeatures;
 
         public void SaveJob(Job job)
         {
@@ -374,7 +378,36 @@ namespace ProdFloor.Models
 
             }
 
+        } 
+        
+        public void SaveStatusPO(StatusPO statusPO)
+        {
+            if (statusPO.StatusPOID == 0)
+            {
+                context.StatusPOs.Add(statusPO);
+            }
+            else
+            {
+                StatusPO dbEntry = context.StatusPOs
+                .FirstOrDefault(p => p.StatusPOID == statusPO.StatusPOID);
+                if (dbEntry != null)
+                {
+                    dbEntry.POID = statusPO.POID;
+                    dbEntry.Status = statusPO.Status;
+
+                }
+            }
+            try
+            {
+                context.SaveChanges();
+            }
+            catch (DbUpdateException)
+            {
+
+            }
+
         }
+
         public void SaveCustomSoftware(CustomSoftware customSoftware)
         {
             if (customSoftware.CustomSoftwareID == 0)
@@ -544,6 +577,85 @@ namespace ProdFloor.Models
                     dbEntry.Current = element.Current;
                     dbEntry.Contact = element.Contact;
 
+                }
+            }
+            context.SaveChanges();
+        }
+
+        public void SaveM3000(M3000 m3000)
+        {
+            if (m3000.M3000ID == 0)
+            {
+                context.M3000s.Add(m3000);
+            }
+            else
+            {
+                 M3000 dbEntry = context.M3000s
+                .FirstOrDefault(p => p.M3000ID == m3000.M3000ID);
+                if (dbEntry != null)
+                {
+                    dbEntry.JobID = m3000.JobID;
+                    dbEntry.InputVoltage = m3000.InputVoltage;
+                    dbEntry.InputPhase = m3000.InputPhase;
+                    dbEntry.InputFrecuency = m3000.InputFrecuency;
+                    dbEntry.Speed = m3000.Speed;
+                    dbEntry.Length = m3000.Length;
+                    dbEntry.ECRCT = m3000.ECRCT;
+                    dbEntry.ControlType = m3000.ControlType;
+                    dbEntry.NEMA = m3000.NEMA;
+                    dbEntry.ControlPanel = m3000 .ControlPanel;
+                }
+            }
+            context.SaveChanges();
+        }
+        public void SaveMotorInfo(MotorInfo motor)
+        {
+            if (motor.MotorInfoID == 0)
+            {
+                context.MotorInfos.Add(motor);
+            }
+            else
+            {
+                MotorInfo dbEntry = context.MotorInfos
+               .FirstOrDefault(p => p.MotorInfoID == motor.MotorInfoID);
+                if (dbEntry != null)
+                {
+                    dbEntry.JobID = motor.JobID;
+                    dbEntry.Voltage = motor.Voltage;
+                    dbEntry.HP = motor.HP;
+                    dbEntry.FLA = motor.FLA;
+                    dbEntry.Contactor = motor.Contactor;
+                    dbEntry.MainBrake = motor.MainBrake;
+                    dbEntry.MainBrakeContact = motor.MainBrakeContact;
+                    dbEntry.MainBrakeType = motor.MainBrakeType;
+                    dbEntry.AuxBrake = motor.AuxBrake;
+                    dbEntry.AuxBrakeContact = motor.AuxBrakeContact;
+                    dbEntry.AuxBrakeType = motor.AuxBrakeType;
+                }
+            }
+            context.SaveChanges();
+        }
+        public void SaveOperatingFeatures(OperatingFeatures feature)
+        {
+            if (feature.OperatingFeaturesID == 0)
+            {
+                context.OperatingFeatures.Add(feature);
+            }
+            else
+            {
+                OperatingFeatures dbEntry = context.OperatingFeatures
+               .FirstOrDefault(p => p.OperatingFeaturesID == feature.OperatingFeaturesID);
+                if (dbEntry != null)
+                {
+                    dbEntry.JobID = feature.JobID;
+                    dbEntry.TandemOperation = feature.TandemOperation;
+                    dbEntry.AutoChainLubrication = feature.AutoChainLubrication;
+                    dbEntry.AutoChainLubriVoltage = feature.AutoChainLubriVoltage;
+                    dbEntry.DisplayModule = feature.DisplayModule;
+                    dbEntry.SmokeDetector = feature.SmokeDetector;
+                    dbEntry.RemoteMonitoring = feature.RemoteMonitoring;
+                    dbEntry.RemoteMonitoringType = feature.RemoteMonitoringType;
+                    dbEntry.Thermistor = feature.Thermistor;
                 }
             }
             context.SaveChanges();
@@ -739,7 +851,39 @@ namespace ProdFloor.Models
             return dbEntry;
         }
 
-
+        public M3000 DeleteM3000(int M3000ID)
+        {
+            M3000 dbEntry = context.M3000s
+                .FirstOrDefault(p => p.M3000ID == M3000ID);
+            if (dbEntry != null)
+            {
+                context.M3000s.Remove(dbEntry);
+                context.SaveChanges();
+            }
+            return dbEntry;
+        }
+        public MotorInfo DeleteMotorInfo(int MotorInfoID)
+        {
+            MotorInfo dbEntry = context.MotorInfos
+                .FirstOrDefault(p => p.MotorInfoID == MotorInfoID);
+            if (dbEntry != null)
+            {
+                context.MotorInfos.Remove(dbEntry);
+                context.SaveChanges();
+            }
+            return dbEntry;
+        }
+        public OperatingFeatures DeleteOperatingFeatures(int OperatingFeaturesID)
+        {
+            OperatingFeatures dbEntry = context.OperatingFeatures
+                .FirstOrDefault(p => p.OperatingFeaturesID == OperatingFeaturesID);
+            if (dbEntry != null)
+            {
+                context.OperatingFeatures.Remove(dbEntry);
+                context.SaveChanges();
+            }
+            return dbEntry;
+        }
 
         public SpecialFeatures DeleteSpecialFeatures(int specialFeaturesID)
         {
@@ -763,6 +907,19 @@ namespace ProdFloor.Models
             }
             return dbEntry;
         }
+
+        public StatusPO DeleteStatusPO(int statusPOID)
+        {
+            StatusPO dbEntry = context.StatusPOs
+                .FirstOrDefault(p => p.StatusPOID == statusPOID);
+            if (dbEntry != null)
+            {
+                context.StatusPOs.Remove(dbEntry);
+                context.SaveChanges();
+            }
+            return dbEntry;
+        }
+
         public CustomSoftware DeleteCustomSoftware(int CustomSoftwareID)
         {
             CustomSoftware dbEntry = context.CustomSoftwares
@@ -1132,6 +1289,98 @@ namespace ProdFloor.Models
             }
 
         }
+        public void SaveEngM3000JobView(JobM3000ViewModel viewModelToSave)
+        {
+            SaveJob(viewModelToSave.CurrentJob);
+            if (viewModelToSave.M3000 != null)
+            {
+                if (viewModelToSave.M3000.JobID != 0)
+                {
+                    M3000 m3000 = M3000s.FirstOrDefault(j => j.JobID == viewModelToSave.M3000.M3000ID);
+                    if (m3000 == null)
+                    {
+                        SaveM3000(viewModelToSave.M3000);
+                    }
+                    else
+                    {
+                        viewModelToSave.M3000.M3000ID = m3000.M3000ID;
+                        SaveM3000(viewModelToSave.M3000);
+                    }
+                }
+            }
+            if (viewModelToSave.MotorInfo != null)
+            {
+                if (viewModelToSave.MotorInfo.JobID != 0)
+                {
+                    MotorInfo motor = MotorInfos.FirstOrDefault(j => j.JobID == viewModelToSave.MotorInfo.JobID);
+                    if (motor == null)
+                    {
+                        SaveMotorInfo(viewModelToSave.MotorInfo);
+                    }
+                    else
+                    {
+                        viewModelToSave.MotorInfo.MotorInfoID = motor.MotorInfoID;
+                        SaveMotorInfo(viewModelToSave.MotorInfo);
+                    }
+                }
+            }
+
+            if (viewModelToSave.OperatingFeatures != null)
+            {
+                if (viewModelToSave.OperatingFeatures.JobID != 0)
+                {
+                    OperatingFeatures feature = OperatingFeatures.FirstOrDefault(j => j.JobID == viewModelToSave.OperatingFeatures.JobID);
+                    if (feature == null)
+                    {
+                        SaveOperatingFeatures(viewModelToSave.OperatingFeatures);
+                    }
+                    else
+                    {
+                        viewModelToSave.OperatingFeatures.OperatingFeaturesID = feature.OperatingFeaturesID;
+                        SaveOperatingFeatures(viewModelToSave.OperatingFeatures);
+                    }
+                }
+            }
+
+            if (viewModelToSave.SpecialFeatureslist != null)
+            {
+                for (int i = 0; i < viewModelToSave.SpecialFeatureslist.Count; i++)
+                {
+                    if (viewModelToSave.SpecialFeatureslist[i].JobID != 0)
+                    {
+                        if (viewModelToSave.SpecialFeatureslist == null)
+                        {
+                            SaveSpecialFeatures(viewModelToSave.SpecialFeatureslist[i]);
+                        }
+                        else
+                        {
+                            viewModelToSave.SpecialFeatureslist[i].SpecialFeaturesID = viewModelToSave.SpecialFeatureslist[i].SpecialFeaturesID;
+                            SaveSpecialFeatures(viewModelToSave.SpecialFeatureslist[i]);
+                        }
+                    }
+                }
+            }
+
+            if (viewModelToSave.POList != null)
+            {
+                for (int i = 0; i < viewModelToSave.POList.Count; i++)
+                {
+                    if (viewModelToSave.POList[i].JobID != 0)
+                    {
+                        if (viewModelToSave.POList == null)
+                        {
+                            SavePO(viewModelToSave.POList[i]);
+                        }
+                        else
+                        {
+                            viewModelToSave.POList[i].POID = viewModelToSave.POList[i].POID;
+                            SavePO(viewModelToSave.POList[i]);
+                        }
+                    }
+                }
+            }
+
+        }
 
 
         public Job DeleteEngElementHydroJob(int JobID)
@@ -1213,6 +1462,63 @@ namespace ProdFloor.Models
                 if (traction != null)
                 {
                     context.ElementTractions.Remove(traction);
+                    context.SaveChanges();
+                }
+                if (specialFeatures != null)
+                {
+                    context.SpecialFeatures.Remove(specialFeatures);
+                    context.SaveChanges();
+                }
+                if (pos != null)
+                {
+                    context.POs.Remove(pos);
+                    context.SaveChanges();
+                }
+
+            }
+            catch (Exception e)
+            {
+
+            }
+
+            return dbEntry;
+        }
+        public Job DeleteEngM3000Job(int JobID)
+        {
+            Job dbEntry = context.Jobs
+                .FirstOrDefault(p => p.JobID == JobID);
+            M3000 m3000 = context.M3000s
+                .FirstOrDefault(p => p.JobID == JobID);
+            MotorInfo motor = context.MotorInfos
+                .FirstOrDefault(p => p.JobID == JobID);
+            OperatingFeatures features = context.OperatingFeatures
+               .FirstOrDefault(p => p.JobID == JobID);
+            SpecialFeatures specialFeatures = context.SpecialFeatures
+                .FirstOrDefault(p => p.JobID == JobID);
+            PO pos = context.POs
+                .FirstOrDefault(p => p.JobID == JobID);
+
+            try
+            {
+
+                if (dbEntry != null)
+                {
+                    context.Jobs.Remove(dbEntry);
+                    context.SaveChanges();
+                }
+                if (m3000 != null)
+                {
+                    context.M3000s.Remove(m3000);
+                    context.SaveChanges();
+                }
+                if (motor != null)
+                {
+                    context.MotorInfos.Remove(motor);
+                    context.SaveChanges();
+                }
+                if (features != null)
+                {
+                    context.OperatingFeatures.Remove(features);
                     context.SaveChanges();
                 }
                 if (specialFeatures != null)

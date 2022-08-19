@@ -6,7 +6,7 @@
         <label asp-for="Name"></label>
         <input asp-for="Name" class="form-control" />
     </div>
-    @if (!User.IsInRole("TechAdmin"))
+    @if (!User.IsInRole("TechAdmin") && !User.IsInRole("ProductionAdmin"))
     {
         <div class="form-group">
             <label asp-for="EngineerID"></label>

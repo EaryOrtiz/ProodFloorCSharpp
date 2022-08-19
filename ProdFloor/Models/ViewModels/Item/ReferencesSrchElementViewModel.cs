@@ -51,5 +51,9 @@ namespace ProdFloor.Models.ViewModels.Item
         public int MaxVIn { get; set; }
         public string BrakeResistor { get; set; }
 
+
+        public string RMSAMPS { get; set; }
+        public string SCCRVOLTS { get; set; }
+
     }
 }

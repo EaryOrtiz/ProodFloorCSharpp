@@ -418,6 +418,8 @@ namespace ProdFloor.Controllers
                         #region JobData
                         var LandingOne = LandingList.FirstOrDefault(m => m.LandingSystemID == JobSearch._HoistWayData.LandingSystemID);
                         var FireCodeOne = FireCodeList.FirstOrDefault(m => m.FireCodeID == JobSearch.FireCodeID);
+                        ViewModel.RMSAMPS = "18,000A";
+                        ViewModel.SCCRVOLTS = "600V";
                         ViewModel.SPH = JobSearch._HydroSpecific.SPH;
                         ViewModel.FLA = JobSearch._HydroSpecific.FLA;
                         ViewModel.NumJobSearch = JobSearch.JobNum;
@@ -449,6 +451,17 @@ namespace ProdFloor.Controllers
                         if (volts > 480 && volts <= 600 && (ViewModel.StarterType == "ATL" || ViewModel.StarterType == "YD" || ViewModel.StarterType == "Sprecher SS : 6/12" || ViewModel.StarterType == "Sprecher SS : 3/9" || ViewModel.StarterType == "Siemens SS : 6/12" || ViewModel.StarterType == "Siemens SS : 3/9")) ViewModel.Volts = "575";
                         if (volts > 430 && volts <= 480 && (ViewModel.StarterType == "Siemens SS : 6/12" || ViewModel.StarterType == "Siemens SS : 3/9")) ViewModel.Volts = "460";
                         if (volts >= 300 && volts <= 430 && (ViewModel.StarterType == "Siemens SS : 6/12" || ViewModel.StarterType == "Siemens SS : 3/9")) ViewModel.Volts = "380/415";
+
+                        if (ViewModel.HP <= 50)
+                                ViewModel.RMSAMPS = "5,000A";
+                        else if (ViewModel.HP <= 200)
+                                ViewModel.RMSAMPS = "10,000A";
+
+                        if (volts <= 240)
+                            ViewModel.SCCRVOLTS = "240V";
+                        else if (volts <= 480)
+                            ViewModel.SCCRVOLTS = "480V";
+
 
                         #endregion
 
@@ -758,6 +771,8 @@ namespace ProdFloor.Controllers
                             FireCodeName = ViewModel.FireCodeName.ToUpper(),
                             LandingName = ViewModel.LandingName.ToUpper(),
                             NumJobSearch = ViewModel.NumJobSearch,
+                            RMSAMPS = ViewModel.RMSAMPS,
+                            SCCRVOLTS =  ViewModel.SCCRVOLTS,
                             //****Slow Table
 
                             //For Down Speed
@@ -816,6 +831,97 @@ namespace ProdFloor.Controllers
                 TempData["message"] = $"That job doesn't exist, please enter a new one";
 
                 return RedirectToAction("ReferencesSearch", referSearchAux);
+
+            }
+            else
+            {
+
+                return View(referSearchAux);
+            }
+
+        }
+
+        public async Task<IActionResult> ReferencesSearchM3000(ReferencesSearchvViewModel ViewModel)
+        {
+            var jobSearch = jobrepo.Jobs.Include(j => j._M3000).Include(h => h._MotorInfo).Include(ex => ex._OperatingFeatures).AsQueryable();
+            ViewModel.status = null;
+
+            ReferencesSearchvViewModel referSearchAux = new ReferencesSearchvViewModel
+            {
+                RefernceData = false,
+            };
+
+            if (ViewModel.JobID != 0)
+            {
+                var JobSearch = jobSearch.FirstOrDefault(m => m.JobID == ViewModel.JobID);
+
+                if (JobSearch != null)
+                {
+                    if (JobSearch.Status != "Incomplete")
+                    {
+                        #region JobData
+                        var FireCodeOne = repository.FireCodes.FirstOrDefault(m => m.FireCodeID == JobSearch.FireCodeID);
+
+                        ViewModel.FLA = JobSearch._MotorInfo.FLA;
+                        ViewModel.NumJobSearch = JobSearch.JobNum;
+                        ViewModel.JobName = JobSearch.Name;
+                        ViewModel.JobName2 = JobSearch.Name2;
+                        ViewModel.Cust = JobSearch.Cust;
+                        ViewModel.Contractor = JobSearch.Contractor;
+                        ViewModel.HP = JobSearch._MotorInfo.HP;
+                        ViewModel.FireCodeName = FireCodeOne.Name;
+                        ViewModel.NumJobSearch = JobSearch.JobNum;
+                        ViewModel.POList = jobrepo.POs.Where(m => m.JobID == JobSearch.JobID).ToList();
+                        ViewModel.InputVoltage = JobSearch._M3000.InputVoltage;
+
+                        #endregion
+
+                        #region ReferSearchVM
+                        try
+                        {
+                            string auxName2 = "---------------------------------------";
+                            if (ViewModel.JobName2 == null) ViewModel.JobName2 = auxName2;
+                        }
+                        catch (Exception e)
+                        {
+                            ViewModel.JobName2 = "-----------------------------------------";
+                        }
+                        ReferencesSearchvViewModel referSearch = new ReferencesSearchvViewModel
+                        {
+                            RefernceData = true,
+
+                            //JobData
+                            FLA = ViewModel.FLA,
+                            JobName = ViewModel.JobName.ToUpper(),
+                            JobName2 = ViewModel.JobName2.ToUpper(),
+                            Cust = ViewModel.Cust.ToUpper(),
+                            Contractor = ViewModel.Contractor.ToUpper(),
+                            InputVoltage = ViewModel.InputVoltage,
+                            HP = ViewModel.HP,
+                            FireCodeName = ViewModel.FireCodeName.ToUpper(),
+                            NumJobSearch = ViewModel.NumJobSearch,
+
+                            //POList
+                            POList = ViewModel.POList
+
+                        };
+
+                        return View("ReferencesSrchM3000", referSearch);
+
+                        #endregion
+
+                    }
+
+                    TempData["alert"] = $"alert-danger";
+                    TempData["message"] = $"That job isn't completed, please finish it and try again";
+
+                    return RedirectToAction("ReferencesSearchM3000", referSearchAux);
+                }
+
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"That job doesn't exist, please enter a new one";
+
+                return RedirectToAction("ReferencesSearchM3000", referSearchAux);
 
             }
             else
@@ -947,6 +1053,9 @@ namespace ProdFloor.Controllers
                             ViewModel.HP = elementTraction.HP;
                             ViewModel.Speed = element.Speed;
                             ViewModel.Capacity = element.Capacity;
+                            ViewModel.RMSAMPS = "18,000A";
+                            ViewModel.SCCRVOLTS = "600V";
+                            var volts = element.Voltage;
 
                             ViewModel.IdealVIn = (int)(((elementTraction.PickVoltage) * (1.1)) / (0.85));
                             ViewModel.MinVIn = (int)((elementTraction.PickVoltage) / (0.85));
@@ -954,6 +1063,16 @@ namespace ProdFloor.Controllers
 
                             if (elementTraction.Resistance > 101) ViewModel.BrakeResistor = "1500R 100W";
                             else ViewModel.BrakeResistor = "500R 225W";
+
+                            if (ViewModel.HP <= 50)
+                                ViewModel.RMSAMPS = "5,000A";
+                            else if (ViewModel.HP <= 200)
+                                ViewModel.RMSAMPS = "10,000A";
+
+                            if (volts <= 240)
+                                ViewModel.SCCRVOLTS = "240V";
+                            else if (volts <= 480)
+                                ViewModel.SCCRVOLTS = "480V";
 
                             #region ReferSearchVM
                             ReferencesSrchElementViewModel referSearch = new ReferencesSrchElementViewModel
@@ -966,6 +1085,8 @@ namespace ProdFloor.Controllers
                                 Speed = ViewModel.Speed,
                                 HP = ViewModel.HP,
                                 Capacity = ViewModel.Capacity,
+                                SCCRVOLTS = ViewModel.SCCRVOLTS,
+                                RMSAMPS = ViewModel.RMSAMPS,
 
                                 //Brake
                                 IdealVIn = ViewModel.IdealVIn,
@@ -1015,6 +1136,15 @@ namespace ProdFloor.Controllers
                     RefernceData = false
                 };
                 return RedirectToAction("ReferencesSearch", viewModel);
+            }
+            else if (JobTypeName(job.JobTypeID) == "M3000")
+            {
+                ReferencesSearchvViewModel viewModel = new ReferencesSearchvViewModel
+                {
+                    JobID = JobID,
+                    RefernceData = false
+                };
+                return RedirectToAction("ReferencesSearchM3000", viewModel);
             }
             else
             {

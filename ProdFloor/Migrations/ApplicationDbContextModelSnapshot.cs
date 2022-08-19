@@ -938,6 +938,113 @@ namespace ProdFloor.Migrations
                     b.ToTable("LandingSystem_Audits");
                 });
 
+            modelBuilder.Entity("ProdFloor.Models.M3000", b =>
+                {
+                    b.Property<int>("M3000ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ControlPanel")
+                        .IsRequired();
+
+                    b.Property<string>("ControlType")
+                        .IsRequired();
+
+                    b.Property<bool>("ECRCT");
+
+                    b.Property<int>("InputFrecuency");
+
+                    b.Property<int>("InputPhase");
+
+                    b.Property<int>("InputVoltage");
+
+                    b.Property<int>("JobID");
+
+                    b.Property<int>("Length");
+
+                    b.Property<string>("NEMA")
+                        .IsRequired();
+
+                    b.Property<int>("Speed");
+
+                    b.HasKey("M3000ID");
+
+                    b.HasIndex("JobID")
+                        .IsUnique();
+
+                    b.ToTable("M3000s");
+                });
+
+            modelBuilder.Entity("ProdFloor.Models.MotorInfo", b =>
+                {
+                    b.Property<int>("MotorInfoID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("AuxBrake");
+
+                    b.Property<string>("AuxBrakeContact");
+
+                    b.Property<string>("AuxBrakeType");
+
+                    b.Property<string>("Contactor")
+                        .IsRequired();
+
+                    b.Property<float>("FLA");
+
+                    b.Property<int>("HP");
+
+                    b.Property<int>("JobID");
+
+                    b.Property<bool>("MainBrake");
+
+                    b.Property<string>("MainBrakeContact");
+
+                    b.Property<string>("MainBrakeType");
+
+                    b.Property<int>("Voltage");
+
+                    b.HasKey("MotorInfoID");
+
+                    b.HasIndex("JobID")
+                        .IsUnique();
+
+                    b.ToTable("MotorInfos");
+                });
+
+            modelBuilder.Entity("ProdFloor.Models.OperatingFeatures", b =>
+                {
+                    b.Property<int>("OperatingFeaturesID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("AutoChainLubriVoltage");
+
+                    b.Property<bool>("AutoChainLubrication");
+
+                    b.Property<string>("DisplayModule")
+                        .IsRequired();
+
+                    b.Property<int>("JobID");
+
+                    b.Property<bool>("RemoteMonitoring");
+
+                    b.Property<string>("RemoteMonitoringType");
+
+                    b.Property<bool>("SmokeDetector");
+
+                    b.Property<bool>("TandemOperation");
+
+                    b.Property<bool>("Thermistor");
+
+                    b.HasKey("OperatingFeaturesID");
+
+                    b.HasIndex("JobID")
+                        .IsUnique();
+
+                    b.ToTable("OperatingFeatures");
+                });
+
             modelBuilder.Entity("ProdFloor.Models.Overload", b =>
                 {
                     b.Property<int>("OverloadID")
@@ -1005,6 +1112,8 @@ namespace ProdFloor.Migrations
 
                     b.Property<bool>("Custom");
 
+                    b.Property<bool>("CustomReady");
+
                     b.Property<string>("JobName");
 
                     b.Property<string>("JobNumber");
@@ -1056,6 +1165,38 @@ namespace ProdFloor.Migrations
                         .IsUnique();
 
                     b.ToTable("POs");
+                });
+
+            modelBuilder.Entity("ProdFloor.Models.PXPError", b =>
+                {
+                    b.Property<int>("PXPErrorID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("GuiltyWirerID");
+
+                    b.Property<int>("PXPReasonID");
+
+                    b.Property<int>("WiringPXPID");
+
+                    b.HasKey("PXPErrorID");
+
+                    b.HasIndex("WiringPXPID");
+
+                    b.ToTable("PXPErrors");
+                });
+
+            modelBuilder.Entity("ProdFloor.Models.PXPReason", b =>
+                {
+                    b.Property<int>("PXPReasonID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Description");
+
+                    b.HasKey("PXPReasonID");
+
+                    b.ToTable("PXPReasons");
                 });
 
             modelBuilder.Entity("ProdFloor.Models.Reason1", b =>
@@ -1302,6 +1443,24 @@ namespace ProdFloor.Migrations
                     b.ToTable("Stations");
                 });
 
+            modelBuilder.Entity("ProdFloor.Models.StatusPO", b =>
+                {
+                    b.Property<int>("StatusPOID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("POID");
+
+                    b.Property<string>("Status");
+
+                    b.HasKey("StatusPOID");
+
+                    b.HasIndex("POID")
+                        .IsUnique();
+
+                    b.ToTable("StatusPOs");
+                });
+
             modelBuilder.Entity("ProdFloor.Models.Step", b =>
                 {
                     b.Property<int>("StepID")
@@ -1517,6 +1676,38 @@ namespace ProdFloor.Migrations
                     b.ToTable("TriggeringFeatures");
                 });
 
+            modelBuilder.Entity("ProdFloor.Models.WirersInvolved", b =>
+                {
+                    b.Property<int>("WirersInvolvedID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("WirerID");
+
+                    b.Property<int>("WiringID");
+
+                    b.HasKey("WirersInvolvedID");
+
+                    b.HasIndex("WiringID");
+
+                    b.ToTable("WirersInvolveds");
+                });
+
+            modelBuilder.Entity("ProdFloor.Models.WirersPXPInvolved", b =>
+                {
+                    b.Property<int>("WirersPXPInvolvedID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("WirerPXPID");
+
+                    b.Property<int>("WiringPXPID");
+
+                    b.HasKey("WirersPXPInvolvedID");
+
+                    b.ToTable("WirersPXPInvolveds");
+                });
+
             modelBuilder.Entity("ProdFloor.Models.WireTypeSize_audit", b =>
                 {
                     b.Property<int>("ID")
@@ -1551,6 +1742,297 @@ namespace ProdFloor.Migrations
                     b.HasKey("WireTypesSizeID");
 
                     b.ToTable("WireTypesSizes");
+                });
+
+            modelBuilder.Entity("ProdFloor.Models.Wiring", b =>
+                {
+                    b.Property<int>("WiringID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CompletedDate");
+
+                    b.Property<int>("POID");
+
+                    b.Property<DateTime>("StartDate");
+
+                    b.Property<int>("StationID");
+
+                    b.Property<int>("WirerID");
+
+                    b.HasKey("WiringID");
+
+                    b.ToTable("Wirings");
+                });
+
+            modelBuilder.Entity("ProdFloor.Models.WiringFeatures", b =>
+                {
+                    b.Property<int>("WiringFeaturesID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("Quantity");
+
+                    b.Property<int>("WiringID");
+
+                    b.Property<int>("WiringOptionID");
+
+                    b.HasKey("WiringFeaturesID");
+
+                    b.HasIndex("WiringID");
+
+                    b.ToTable("WiringFeatures");
+                });
+
+            modelBuilder.Entity("ProdFloor.Models.WiringOption", b =>
+                {
+                    b.Property<int>("WiringOptionID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Description");
+
+                    b.Property<bool>("isDeleted");
+
+                    b.HasKey("WiringOptionID");
+
+                    b.ToTable("WiringOptions");
+                });
+
+            modelBuilder.Entity("ProdFloor.Models.WiringPXP", b =>
+                {
+                    b.Property<int>("WiringPXPID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("EndDate");
+
+                    b.Property<int>("POID");
+
+                    b.Property<int>("SinglePO");
+
+                    b.Property<DateTime>("StartDate");
+
+                    b.Property<int>("StationID");
+
+                    b.Property<int>("WirerPXPID");
+
+                    b.HasKey("WiringPXPID");
+
+                    b.HasIndex("POID")
+                        .IsUnique();
+
+                    b.ToTable("WiringPXPs");
+                });
+
+            modelBuilder.Entity("ProdFloor.Models.WiringReason1", b =>
+                {
+                    b.Property<int>("WiringReason1ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Description")
+                        .IsRequired();
+
+                    b.HasKey("WiringReason1ID");
+
+                    b.ToTable("WiringReasons1");
+                });
+
+            modelBuilder.Entity("ProdFloor.Models.WiringReason2", b =>
+                {
+                    b.Property<int>("WiringReason2ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Description")
+                        .IsRequired();
+
+                    b.Property<int>("WiringReason1ID");
+
+                    b.HasKey("WiringReason2ID");
+
+                    b.HasIndex("WiringReason1ID");
+
+                    b.ToTable("WiringReasons2");
+                });
+
+            modelBuilder.Entity("ProdFloor.Models.WiringReason3", b =>
+                {
+                    b.Property<int>("WiringReason3ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Description")
+                        .IsRequired();
+
+                    b.Property<int>("WiringReason2ID");
+
+                    b.HasKey("WiringReason3ID");
+
+                    b.HasIndex("WiringReason2ID");
+
+                    b.ToTable("WiringReasons3");
+                });
+
+            modelBuilder.Entity("ProdFloor.Models.WiringReason4", b =>
+                {
+                    b.Property<int>("WiringReason4ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Description")
+                        .IsRequired();
+
+                    b.Property<int>("WiringReason3ID");
+
+                    b.HasKey("WiringReason4ID");
+
+                    b.HasIndex("WiringReason3ID");
+
+                    b.ToTable("WiringReasons4");
+                });
+
+            modelBuilder.Entity("ProdFloor.Models.WiringReason5", b =>
+                {
+                    b.Property<int>("WiringReason5ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Description")
+                        .IsRequired();
+
+                    b.Property<int>("WiringReason4ID");
+
+                    b.HasKey("WiringReason5ID");
+
+                    b.HasIndex("WiringReason4ID");
+
+                    b.ToTable("WiringReasons5");
+                });
+
+            modelBuilder.Entity("ProdFloor.Models.WiringStep", b =>
+                {
+                    b.Property<int>("WiringStepID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Description")
+                        .IsRequired();
+
+                    b.Property<DateTime>("ExpectedTime");
+
+                    b.Property<int>("JobTypeID");
+
+                    b.Property<int>("Order");
+
+                    b.Property<string>("Stage")
+                        .IsRequired();
+
+                    b.HasKey("WiringStepID");
+
+                    b.ToTable("WiringSteps");
+                });
+
+            modelBuilder.Entity("ProdFloor.Models.WiringStepForJob", b =>
+                {
+                    b.Property<int>("WiringStepForJobID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("AuxStationID");
+
+                    b.Property<int>("AuxWirerID");
+
+                    b.Property<bool>("Complete");
+
+                    b.Property<int>("Consecutivo");
+
+                    b.Property<DateTime>("Elapsed");
+
+                    b.Property<bool>("Obsolete");
+
+                    b.Property<DateTime>("Start");
+
+                    b.Property<DateTime>("Stop");
+
+                    b.Property<int>("WiringID");
+
+                    b.Property<int>("WiringStepID");
+
+                    b.HasKey("WiringStepForJobID");
+
+                    b.HasIndex("WiringID");
+
+                    b.HasIndex("WiringStepID");
+
+                    b.ToTable("WiringStepsForJobs");
+                });
+
+            modelBuilder.Entity("ProdFloor.Models.WiringStop", b =>
+                {
+                    b.Property<int>("WiringStopID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("AuxStationID");
+
+                    b.Property<int>("AuxWirerID");
+
+                    b.Property<bool>("Critical");
+
+                    b.Property<string>("Description");
+
+                    b.Property<DateTime>("Elapsed");
+
+                    b.Property<int>("Reason1");
+
+                    b.Property<int>("Reason2");
+
+                    b.Property<int>("Reason3");
+
+                    b.Property<int>("Reason4");
+
+                    b.Property<int>("Reason5ID");
+
+                    b.Property<DateTime>("StartDate");
+
+                    b.Property<DateTime>("StopDate");
+
+                    b.Property<int>("WiringID");
+
+                    b.Property<int?>("WiringReason5ID");
+
+                    b.HasKey("WiringStopID");
+
+                    b.HasIndex("WiringID");
+
+                    b.HasIndex("WiringReason5ID");
+
+                    b.ToTable("WiringStops");
+                });
+
+            modelBuilder.Entity("ProdFloor.Models.WiringTriggeringFeature", b =>
+                {
+                    b.Property<int>("WiringTriggeringFeatureID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Equality");
+
+                    b.Property<bool>("IsSelected");
+
+                    b.Property<int>("Quantity");
+
+                    b.Property<int>("WiringOptionID");
+
+                    b.Property<int>("WiringStepID");
+
+                    b.HasKey("WiringTriggeringFeatureID");
+
+                    b.HasIndex("WiringStepID");
+
+                    b.ToTable("WiringTriggeringFeatures");
                 });
 
             modelBuilder.Entity("ProdFloor.Models.City", b =>
@@ -1689,6 +2171,30 @@ namespace ProdFloor.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("ProdFloor.Models.M3000", b =>
+                {
+                    b.HasOne("ProdFloor.Models.Job")
+                        .WithOne("_M3000")
+                        .HasForeignKey("ProdFloor.Models.M3000", "JobID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("ProdFloor.Models.MotorInfo", b =>
+                {
+                    b.HasOne("ProdFloor.Models.Job")
+                        .WithOne("_MotorInfo")
+                        .HasForeignKey("ProdFloor.Models.MotorInfo", "JobID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("ProdFloor.Models.OperatingFeatures", b =>
+                {
+                    b.HasOne("ProdFloor.Models.Job")
+                        .WithOne("_OperatingFeatures")
+                        .HasForeignKey("ProdFloor.Models.OperatingFeatures", "JobID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("ProdFloor.Models.PlanningReportRow", b =>
                 {
                     b.HasOne("ProdFloor.Models.PlanningReport")
@@ -1702,6 +2208,14 @@ namespace ProdFloor.Migrations
                     b.HasOne("ProdFloor.Models.Job")
                         .WithMany("_PO")
                         .HasForeignKey("JobID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("ProdFloor.Models.PXPError", b =>
+                {
+                    b.HasOne("ProdFloor.Models.WiringPXP")
+                        .WithMany("_PXPErrors")
+                        .HasForeignKey("WiringPXPID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -1758,6 +2272,14 @@ namespace ProdFloor.Migrations
                     b.HasOne("ProdFloor.Models.JobType")
                         .WithMany("_Stations")
                         .HasForeignKey("JobTypeID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("ProdFloor.Models.StatusPO", b =>
+                {
+                    b.HasOne("ProdFloor.Models.PO")
+                        .WithOne("_StatusPO")
+                        .HasForeignKey("ProdFloor.Models.StatusPO", "POID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -1824,6 +2346,95 @@ namespace ProdFloor.Migrations
                     b.HasOne("ProdFloor.Models.Step")
                         .WithMany("_TriggeringFeatures")
                         .HasForeignKey("StepID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("ProdFloor.Models.WirersInvolved", b =>
+                {
+                    b.HasOne("ProdFloor.Models.Wiring")
+                        .WithMany("_WirersInvolved")
+                        .HasForeignKey("WiringID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("ProdFloor.Models.WiringFeatures", b =>
+                {
+                    b.HasOne("ProdFloor.Models.Wiring")
+                        .WithMany("_WiringFeatures")
+                        .HasForeignKey("WiringID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("ProdFloor.Models.WiringPXP", b =>
+                {
+                    b.HasOne("ProdFloor.Models.PO")
+                        .WithOne("_WiringPXP")
+                        .HasForeignKey("ProdFloor.Models.WiringPXP", "POID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("ProdFloor.Models.WiringReason2", b =>
+                {
+                    b.HasOne("ProdFloor.Models.WiringReason1")
+                        .WithMany("_WiringReason2s")
+                        .HasForeignKey("WiringReason1ID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("ProdFloor.Models.WiringReason3", b =>
+                {
+                    b.HasOne("ProdFloor.Models.WiringReason2")
+                        .WithMany("_WiringReason3s")
+                        .HasForeignKey("WiringReason2ID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("ProdFloor.Models.WiringReason4", b =>
+                {
+                    b.HasOne("ProdFloor.Models.WiringReason3")
+                        .WithMany("_WiringReason4s")
+                        .HasForeignKey("WiringReason3ID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("ProdFloor.Models.WiringReason5", b =>
+                {
+                    b.HasOne("ProdFloor.Models.WiringReason4")
+                        .WithMany("_WiringReason5s")
+                        .HasForeignKey("WiringReason4ID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("ProdFloor.Models.WiringStepForJob", b =>
+                {
+                    b.HasOne("ProdFloor.Models.Wiring")
+                        .WithMany("_WiringStepsForJobs")
+                        .HasForeignKey("WiringID")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("ProdFloor.Models.WiringStep")
+                        .WithMany("_WiringStepsForJob")
+                        .HasForeignKey("WiringStepID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("ProdFloor.Models.WiringStop", b =>
+                {
+                    b.HasOne("ProdFloor.Models.Wiring")
+                        .WithMany("_WiringStops")
+                        .HasForeignKey("WiringID")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("ProdFloor.Models.WiringReason5")
+                        .WithMany("_WiringStops")
+                        .HasForeignKey("WiringReason5ID");
+                });
+
+            modelBuilder.Entity("ProdFloor.Models.WiringTriggeringFeature", b =>
+                {
+                    b.HasOne("ProdFloor.Models.WiringStep")
+                        .WithMany("_WiringTriggeringFeatures")
+                        .HasForeignKey("WiringStepID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

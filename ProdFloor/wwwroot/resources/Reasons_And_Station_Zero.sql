@@ -84,3 +84,7 @@ SET IDENTITY_INSERT Reasons5 OFF;
 SET IDENTITY_INSERT Stations ON;
 INSERT INTO Stations(StationID,JobTypeID,Label) VALUES (0,1,'-');
 SET IDENTITY_INSERT Stations OFF;
+/*-------------------------------------WiringOption 0-----------------------------*/
+SET IDENTITY_INSERT WiringOptions ON;
+INSERT INTO WiringOptions (WiringOptionID,Description,isDeleted) VALUES (0,'Select a Option', 0);
+SET IDENTITY_INSERT WiringOptions OFF;

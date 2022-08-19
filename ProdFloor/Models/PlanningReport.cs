@@ -61,6 +61,7 @@ namespace ProdFloor.Models
         public string ShippingDate { get; set; }
 
         public bool Custom { get; set; }
+        public bool CustomReady { get; set; }
 
         /*
 

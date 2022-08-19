@@ -1,0 +1,22 @@
+﻿@model ProdFloor.Models.ViewModels.Wiring.WiringStopViewModel
+@{
+    ViewBag.Title = "Waiting for restart";
+}
+<div class="container justify-content-md-center">
+    <div class="row justify-content-md-center"><h2>Job #@Model.JobNum</h2></div>
+    <br />
+    <div class="row justify-content-md-center"><h3>Motivo del Paro</h3></div>
+    <br />
+    <div class="row justify-content-md-center"><h4>@Model.Reason1Name</h4></div>
+    <br />
+</div>
+<br />
+<div class="justify-content-md-center text-center">
+    <div class="row justify-content-md-center text-center">
+        <div class="btn-group">
+            <a class="btn btn-danger btn" asp-controller="WiringStop" asp-action="RestartWiringJob" asp-route-id="@Model.Stop.WiringStopID">Reiniciar</a>
+            <a class="btn btn-warning btn" asp-controller="WiringStop" asp-action="RestartWiringJob" asp-route-Critical="@false" 
+               asp-route-id="@Model.Stop.WiringStopID">Continuar sin terminar el paro</a>
+        </div>
+    </div>
+</div>

@@ -1116,7 +1116,7 @@
       <StepID>146</StepID>
       <JobTypeID>4</JobTypeID>
       <Stage>Program</Stage>
-      <ExpectedTime>9/27/2019 12:10:00 AM</ExpectedTime>
+      <ExpectedTime>1/1/0001 12:10:00 AM</ExpectedTime>
       <Description>Calibracion de EMbrake Coil Discreto Preliminar</Description>
       <Order>18</Order>
     </Step>
@@ -1124,7 +1124,7 @@
       <StepID>147</StepID>
       <JobTypeID>4</JobTypeID>
       <Stage>Program</Stage>
-      <ExpectedTime>9/27/2019 12:10:00 AM</ExpectedTime>
+      <ExpectedTime>1/1/0001 12:10:00 AM</ExpectedTime>
       <Description>Calibracion de MBrake Coil Discreto Final</Description>
       <Order>18</Order>
     </Step>
@@ -2415,7 +2415,7 @@
     <TriggerFeature>
       <ID>154</ID>
       <StepID>146</StepID>
-      <Name>Nulo</Name>
+      <Name>Brake Coil Voltage &gt; 10</Name>
       <IsSelected>False</IsSelected>
     </TriggerFeature>
     <TriggerFeature>
@@ -2427,7 +2427,7 @@
     <TriggerFeature>
       <ID>156</ID>
       <StepID>147</StepID>
-      <Name>Nulo</Name>
+      <Name>Brake Coil Voltage &gt; 10</Name>
       <IsSelected>True</IsSelected>
     </TriggerFeature>
     <TriggerFeature>

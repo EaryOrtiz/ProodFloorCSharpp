@@ -1,0 +1,137 @@
+﻿@model ProdFloor.Models.ViewModels.Wiring.WiringStopViewModel
+@{
+    ViewBag.Title = "Stops";
+}
+<form asp-action="SeedXML" asp-controller="WiringStop" method="post">
+    @if (Model.StopList.Count() == 0)
+    {
+        <button type="submit" name="buttonImportXML" value="All" class="btn btn-danger btn-sm">Import All Jobs from XML <i class="fas fa-file-alt"></i></button>
+    }
+</form>
+<div class="container-fluid">
+    <form asp-controller="WiringStop" asp-action="List" method="get">
+
+        @Html.Partial("StopSearchForm", Model)
+
+    </form>
+    <table class="table table-striped  text-center table-sm" style="text-align:center">
+        <thead style="background-color:#343a40!important;color:#fff;">
+            <tr>
+                <th>
+                    <label>Job#</label>
+                </th>
+                <th>
+                    <label>PO#</label>
+                </th>
+                <th>
+                    <label>Start </label>
+                </th>
+                <th>
+                    <label>End </label>
+                </th>
+                <th>
+                    <label>Elapsed </label>
+                </th>
+                <th>
+                    <label>Reason 1 </label>
+                </th>
+                <th>
+                    <label>Reason 2 </label>
+                </th>
+                <th>
+                    <label>Reason 3 </label>
+                </th>
+                <th>
+                    <label>Reason 4 </label>
+                </th>
+                <th>
+                    <label>Reason 5 </label>
+                </th>
+                <th>
+                    <label>Description </label>
+                </th>
+                @if (User.IsInRole("Admin"))
+                {
+                    <th></th>
+                }
+            </tr>
+        </thead>
+
+        @foreach (var item in Model.StopList)
+        {
+            var wiring = Model.WiringList.FirstOrDefault(m => m.WiringID == item.WiringID);
+            var po = Model.POList.FirstOrDefault(m => m.POID == wiring.POID);
+            <tr>
+                <td>
+                    @Html.DisplayFor(m => po.PONumb)
+                </td>
+                <td>
+                    @Html.DisplayFor(m => item.StartDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(m => item.StopDate)
+                </td>
+                <td>
+                    @((item.Elapsed.Day - 1).ToString()):@(item.Elapsed.Hour.ToString()):@(item.Elapsed.Minute.ToString()):@(item.Elapsed.Second.ToString())
+                </td>
+                <td>
+                    @Html.DisplayFor(m => Model.Reasons1List.FirstOrDefault(n => n.WiringReason1ID == item.Reason1).Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(m => Model.Reasons2List.FirstOrDefault(n => n.WiringReason2ID == item.Reason2).Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(m => Model.Reasons3List.FirstOrDefault(n => n.WiringReason3ID == item.Reason3).Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(m => Model.Reasons4List.FirstOrDefault(n => n.WiringReason4ID == item.Reason4).Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(m => Model.Reasons5List.FirstOrDefault(n => n.WiringReason5ID == item.Reason5ID).Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(m => item.Description)
+                </td>
+                @if (User.IsInRole("Admin"))
+                {
+                    <td style="width:100px">
+                        <form asp-action="Delete" asp-route-id="@item.WiringStopID" method="post">
+                            <button type="submit" class="btn btn-danger btn-sm">
+                                <i class="far fa-trash-alt"></i>
+                            </button>
+                            <a asp-action="Edit" class="btn btn-sm btn-warning"
+                               asp-route-Id="@item.WiringStopID">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                        </form>
+                    </td>
+                }
+            </tr>
+
+        }
+    </table>
+
+    @if (Model.StopList.Count > 0)
+    {
+        <coool-pagination-all page-model="@Model.PagingInfo" page-action="List" page-classes-enabled="true"
+                              page-class="btn" page-class-normal="btn-secondary"
+                              page-class-selected="btn-dark"
+                              class="btn-group pull-right m-1">
+        </coool-pagination-all>
+
+        <div>
+            <form asp-controller="WiringStop" asp-action="ExportToXML" method="post">
+                <button class="btn btn-sm " name="buttonXML" style="background-color:steelblue;color:white;margin-bottom:30px">Export Table to an XML File</button>
+            </form>
+        </div>
+    }
+    else
+    {
+        <p>No stops availables</p>
+    }
+</div>
+
+<br />
+<br />
+<br />
+

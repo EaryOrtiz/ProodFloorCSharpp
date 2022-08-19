@@ -33,6 +33,7 @@ namespace ProdFloor.Models
         //Enginner Refernces Tables
 
         public DbSet<PO> POs { get; set; }
+        public DbSet<StatusPO> StatusPOs { get; set; }
         public DbSet<JobAdditional> JobAdditionals { get; set; }
         public DbSet<CustomSoftware> CustomSoftwares { get; set; }
         public DbSet<TriggeringCustSoft> TriggeringCustSofts { get; set; }
@@ -57,7 +58,7 @@ namespace ProdFloor.Models
         public DbSet<Stop> Stops { get; set; }
         public DbSet<Station> Stations { get; set; }
 
-        //Nuevos Modelos
+        //Elements
         public DbSet<Element> Elements { get; set; }
         public DbSet<ElementHydro> ElementHydros { get; set; }
         public DbSet<ElementTraction> ElementTractions { get; set; }
@@ -75,6 +76,32 @@ namespace ProdFloor.Models
         public DbSet<Slowdown_audit> Slowdown__Audits { get; set; }
         public DbSet<Overload_audit> Overload_Audits { get; set; }
         public DbSet<WireTypeSize_audit> WireTypeSize_Audits { get; set; }
+
+        //WirerPXP
+        public DbSet<WiringPXP> WiringPXPs { get; set; }
+        public DbSet<PXPError> PXPErrors { get; set; }
+        public DbSet<PXPReason> PXPReasons { get; set; }
+        public DbSet<WirersPXPInvolved> WirersPXPInvolveds { get; set; }
+
+        //Wiring
+        public DbSet<Wiring> Wirings { get; set; }
+        public DbSet<WirersInvolved> WirersInvolveds { get; set; }
+        public DbSet<WiringStop> WiringStops { get; set; }
+        public DbSet<WiringStep> WiringSteps { get; set; }
+        public DbSet<WiringStepForJob> WiringStepsForJobs { get; set; }
+        public DbSet<WiringReason1> WiringReasons1 { get; set; }
+        public DbSet<WiringReason2> WiringReasons2 { get; set; }
+        public DbSet<WiringReason3> WiringReasons3 { get; set; }
+        public DbSet<WiringReason4> WiringReasons4 { get; set; }
+        public DbSet<WiringReason5> WiringReasons5 { get; set; }
+        public DbSet<WiringOption> WiringOptions { get; set; }
+        public DbSet<WiringFeatures> WiringFeatures { get; set; }
+        public DbSet<WiringTriggeringFeature> WiringTriggeringFeatures { get; set; }
+
+        //M3000
+        public DbSet<M3000> M3000s { get; set; }
+        public DbSet<MotorInfo> MotorInfos { get; set; }
+        public DbSet<OperatingFeatures> OperatingFeatures { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder builder)

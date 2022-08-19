@@ -38,7 +38,7 @@
                      popY       : 200,
                      popTitle   : '',
                      popClose   : false,
-                     extraCss   : '',
+                     extraCss: '@page {size: auto;margin: 0;padding: 0;}',
                      extraHead  : '',
                      retainAttr : ["id","class","style"] };
 

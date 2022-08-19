@@ -19,6 +19,10 @@
                 style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue; width: 90%">
                 <a style="color:white" asp-controller="Job" asp-action="ElementList" asp-route-JobTypeName="ElmHydro">Element Hydro</a>
             </li>
+            <li class="nav-link"
+                style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue; width: 90%">
+                <a style="color:white" asp-controller="Job" asp-action="M3000List" asp-route-JobTypeName="M3000">M3000</a>
+            </li>
         </ul>
     </li>
     <li class="nav-item" role="tab" id="dooroperators">
@@ -76,10 +80,31 @@
             </li>
         </ul>
     </li>
-    <li class="nav-item" role="tab" id="Steps">
-        <a data-toggle="collapse" href="#collapseSteps" role="button" aria-expanded="false" aria-controls="collapseSteps"
+    <li class="nav-item" role="tab" id="custom">
+        <a asp-action="List" asp-controller="Station" asp-route-Page="1" class="nav-link text-light"><i class="fas fa-map-marked-alt"></i>&nbsp; Stations</a>
+    </li>
+    <li class="nav-item" role="tab" id="Wiring">
+        <a data-toggle="collapse" href="#collapseWiring" role="button" aria-expanded="false" aria-controls="collapseWiring"
+           class="nav-link text-light"><i class="fas fa-plug"></i>&nbsp; Wiring</a>
+        <ul id="collapseWiring" class="collapse" role="tabpanel" aria-labelledby="collapseWiring" data-parent="#accordion">
+            <li class="nav-link"
+                style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue; width: 90%">
+                <a style="color:white" asp-controller="WiringPXP" asp-action="PXPProductionDashboard">
+                    PXP
+                </a>
+            </li>
+            <li class="nav-link"
+                style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue; width: 90%">
+                <a style="color:white" asp-controller="PXPReason" asp-action="List">
+                    PXP Reason
+                </a>
+            </li>
+        </ul>
+    </li>
+    <li class="nav-item" role="tab" id="TestJob">
+        <a data-toggle="collapse" href="#collapseTestJob" role="button" aria-expanded="false" aria-controls="collapseTestJob"
            class="nav-link text-light"><i class="fas fa-charging-station"></i>&nbsp; Testing</a>
-        <ul id="collapseSteps" class="collapse" role="tabpanel" aria-labelledby="collapseSteps" data-parent="#accordion">
+        <ul id="collapseTestJob" class="collapse" role="tabpanel" aria-labelledby="collapseTestJob" data-parent="#accordion">
             <li class="nav-link"
                 style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue; width: 90%">
                 <a style="color:white" asp-action="SearchTestJob"
@@ -97,12 +122,6 @@
             </li>
             <li class="nav-link"
                 style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue; width: 90%">
-                <a style="color:white" asp-action="List"
-                   asp-controller="Station"
-                   asp-route-Page="1">Stations</a>
-            </li>
-            <li class="nav-link"
-                style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue; width: 90%">
                 <a style="color:white"
                    asp-controller="Stop"
                    asp-route-stop=""
@@ -112,7 +131,7 @@
     </li>
     <li class="nav-item" role="tab" id="Reasons">
         <a data-toggle="collapse" href="#collapseReasons" role="button" aria-expanded="false" aria-controls="collapseReasons"
-           class="nav-link text-light"><i class="fas fa-clipboard-list"></i>&nbsp; Reasons</a>
+           class="nav-link text-light"><i class="fas fa-clipboard-list"></i>&nbsp; Test Reasons</a>
         <form asp-controller="Reasons" asp-action="List" asp-route-Page="1" method="get">
             <ul id="collapseReasons" class="collapse" role="tabpanel" aria-labelledby="collapseReasons" data-parent="#accordion">
                 <li class="nav-link"

@@ -12,7 +12,7 @@
     <AMPMin>6</AMPMin>
     <AMPMax>25</AMPMax>
     <OverTableNum>1</OverTableNum>
-    <MCEPart>35-13-0206</MCEPart>
+    <MCEPart>35-13-0215-SIE</MCEPart>
     <SiemensPart>3RB2026-1QB0</SiemensPart>
   </Overload>
   <Overload>
@@ -28,24 +28,24 @@
     <AMPMin>12.5</AMPMin>
     <AMPMax>52</AMPMax>
     <OverTableNum>2</OverTableNum>
-    <MCEPart>35-13-0202</MCEPart>
-    <SiemensPart>3RB2036-1UB0</SiemensPart>
+    <MCEPart>35-13-0214-SIE</MCEPart>
+    <SiemensPart>3RB3036-1UB0</SiemensPart>
   </Overload>
   <Overload>
     <ID>36</ID>
     <AMPMin>12.5</AMPMin>
     <AMPMax>50</AMPMax>
     <OverTableNum>3</OverTableNum>
-    <MCEPart>35-13-0208</MCEPart>
-    <SiemensPart>3RB2046-1UB0</SiemensPart>
+    <MCEPart>35-13-0217-SIE</MCEPart>
+    <SiemensPart>3RB3046-1UB0</SiemensPart>
   </Overload>
   <Overload>
     <ID>37</ID>
-    <AMPMin>25</AMPMin>
-    <AMPMax>100</AMPMax>
+    <AMPMin>32</AMPMin>
+    <AMPMax>115</AMPMax>
     <OverTableNum>3</OverTableNum>
-    <MCEPart>35-13-0209</MCEPart>
-    <SiemensPart>3RB2046-1EB0</SiemensPart>
+    <MCEPart>35-13-0218-SIE</MCEPart>
+    <SiemensPart>3RB3046-1XB0</SiemensPart>
   </Overload>
   <Overload>
     <ID>38</ID>

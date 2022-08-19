@@ -10,6 +10,9 @@
     <li class="nav-item nav">
         <a class="nav-link  text-light" asp-controller="Home" asp-action="MorningDashBoard"><i class="fas fa-mug-hot"></i>&nbsp; Morning</a>
     </li>
+    <li class="nav-item nav">
+        <a class="nav-link  text-light" asp-controller="PlanningReport" asp-action="CustomsByPlanning"><i style="font-size: 1.3em" class="fab fa-java"></i>&nbsp;Morning Customs</a>
+    </li>
     @if (User.IsInRole("EngAdmin"))
     {
         <li class="nav-item nav">
@@ -31,6 +34,10 @@
             <li class="nav-link"
                 style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue;width: 90%">
                 <a style="color:white" asp-controller="Job" asp-action="ElementList" asp-route-JobTypeName="ElmHydro">Element Hydro</a>
+            </li>
+            <li class="nav-link"
+                style="padding:4px;text-align:center;margin-bottom:5px;background-color:steelblue; width: 90%">
+                <a style="color:white" asp-controller="Job" asp-action="M3000List" asp-route-JobTypeName="M3000">M3000</a>
             </li>
         </ul>
     </li>

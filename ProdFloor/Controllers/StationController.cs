@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ProdFloor.Models;
 using ProdFloor.Models.ViewModels;
@@ -10,21 +11,24 @@ using ProdFloor.Models.ViewModels.Stations;
 
 namespace ProdFloor.Controllers
 {
-    [Authorize(Roles = "Admin,TechAdmin")]
+    [Authorize(Roles = "Admin,TechAdmin,ProductionAdmin")]
     public class StationController : Controller
     {
         private IItemRepository itemprepo;
         private ITestingRepository testingrepo;
         private ItemController itemController;
+        private UserManager<AppUser> userManager;
         public int PageSize = 7;
 
         public StationController(ITestingRepository repo, 
             IItemRepository repo2,
-            ItemController item)
+            ItemController item,
+            UserManager<AppUser> userMrg)
         {
             testingrepo = repo;
             itemprepo = repo2;
             itemController = item;
+            userManager = userMrg;
         }
 
         public ViewResult Add()
@@ -87,6 +91,16 @@ namespace ProdFloor.Controllers
         [HttpPost]
         public IActionResult Delete(int ID)
         {
+            bool admin = GetCurrentUserRole("Admin").Result;
+
+            if (!admin)
+            {
+                TempData["alert"] = $"alert-danger";
+                TempData["message"] = $"You don't have permissions, contact to your admin";
+
+                return RedirectToAction("List");
+            }
+
             Station deletedStation = testingrepo.DeleteStation(ID);
 
             if (deletedStation != null)
@@ -102,6 +116,15 @@ namespace ProdFloor.Controllers
             string resp = buttonImportXML;
             itemController.ImportXML(HttpContext.RequestServices, resp);
             return RedirectToAction(nameof(List));
+        }
+
+        private async Task<bool> GetCurrentUserRole(string role)
+        {
+            AppUser user = await userManager.GetUserAsync(HttpContext.User);
+
+            bool isInRole = await userManager.IsInRoleAsync(user, role);
+
+            return isInRole;
         }
     }
 }

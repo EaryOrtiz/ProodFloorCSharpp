@@ -1,0 +1,123 @@
+﻿@model ProdFloor.Models.ViewModels.Wiring.WiringStepViewModel
+@{
+    ViewBag.Title = "Steps";
+    <script>
+        $(document).ready(function () {
+            $('[data-tooltip="tooltip"]').tooltip();
+        });
+    </script>
+}
+
+<br />
+<form asp-action="SeedXML" asp-controller="WiringStep" method="post">
+    @if (Model.WiringStepList.Count() == 0)
+    {
+        <button type="submit" name="buttonImportXML" value="All" class="btn btn-danger btn-sm">Import All Jobs from XML <i class="fas fa-file-alt"></i></button>
+    }
+</form>
+<form asp-controller="WiringStep" asp-action="List" method="get">
+    <div class="btn-group" role="group">
+        <button class="btn btn-dark" type="submit" name="filtrado" value="Traction" data-tooltip="tooltip" data-placement="top" title="Filter by Traction">Element Traction</button>
+        <button class="btn btn-dark" type="submit" name="filtrado" value="Hydro" data-tooltip="tooltip" data-placement="top" title="Filter by Hydro">Element Hydro</button>
+        <button class="btn btn-dark" type="submit" name="filtrado" value="M2000" data-tooltip="tooltip" data-placement="top" title="Filter by M2000">M2000</button>
+        <button class="btn btn-dark" type="submit" name="filtrado" value="M4000" data-tooltip="tooltip" data-placement="top" title="Filter by M4000">M4000</button>
+        <a class="btn btn" style="background-color:seagreen;color:white" data-tooltip="tooltip" data-placement="top" title="Add New Step" asp-action="NewStep" asp-controller="WiringStep">
+            <i class="fa fa-plus"></i>
+        </a>
+    </div>
+</form>
+<div>
+    <table class="table table-striped  text-center table-sm" style="text-align:center">
+        <thead style="background-color:#343a40!important;color:#fff;">
+            <tr>
+                <th>
+                    <label>Job Type</label>
+                </th>
+                <th>
+                    <label>Stage</label>
+                </th>
+                <th>
+                    <label>Expected Time</label>
+                </th>
+                <th>
+                    <label>Description</label>
+                </th>
+                <th>
+                    <label>Order</label>
+                </th>
+                <th>
+                    <label>Trigger Features</label>
+                </th>
+                <th></th>
+            </tr>
+            </thead>
+            @foreach (var item in Model.WiringStepList)
+            {
+                var jobType = Model.JobTypesList.FirstOrDefault(m => m.JobTypeID == item.JobTypeID);
+                <tr>
+                    <td>
+                        @Html.DisplayFor(m => jobType.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => item.Stage)
+                    </td>
+                    <td>
+                        @item.ExpectedTime.TimeOfDay
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => item.Order)
+                    </td>
+                    <td>
+                        @foreach (WiringTriggeringFeature trigger in Model.WiringTriggeringList.Where(n => n.WiringStepID == item.WiringStepID && n.WiringOptionID != 0))
+                        {
+                            <div class="form-group form-inline text-center" style="margin-bottom:0em;padding-bottom:0em;">
+                                <div class="input-group mb-3" style="margin-bottom:0em;padding-bottom:0em;">
+                                    <div class="input-group-prepend" style="margin-bottom:0em;padding-bottom:0em;">
+                                        <div class="input-group-text">
+                                            @if (trigger.IsSelected)
+                                            {
+                                                <i class="fas fa-check-circle"></i>
+                                            }
+                                            else
+                                            {
+                                                <i class="fas fa-times-circle"></i>
+                                            }
+                                        </div>
+                                    </div>
+                                    <wiring-opcion-input item-id="@trigger.WiringOptionID" asp-for="@trigger.WiringOptionID"></wiring-opcion-input>
+                                    <input class="form-control form-control-sm col-2" asp-for="@trigger.Quantity" readonly value="@trigger.Quantity" />
+                                </div>
+                            </div>
+                        }
+                    </td>
+                    <td style="width:100px">
+                        <form asp-action="Delete" asp-route-id="@item.WiringStepID" method="post">
+                            <a asp-action="Edit" class="btn btn-sm btn-warning"
+                               asp-route-Id="@item.WiringStepID">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <button type="submit" class="btn btn-danger btn-sm">
+                                <i class="far fa-trash-alt"></i>
+                            </button>
+
+                        </form>
+                    </td>
+                </tr>
+            }
+    </table>
+</div>
+<cool-pagination-steps elm-hydro-paging-info="@Model.ElmHydroPagingInfo" elm-traction-paging-info="@Model.ElmTractionPagingInfo" m2000-paging-info="@Model.M2000PagingInfo" m4000-paging-info="Model.M4000PagingInfo"
+                       page-action="List" job-type-selected="JobTypeName" page-class="btn" page-class-normal="btn-secondary" page-classes-enabled="true" current-model="@Model.JobTypeSelected"
+                       page-class-selected="btn-dark" elm-hydro-url-value="ElmHydroPage" elm-traction-url-value="ElmTractionPage" m2000-url-value="M2000Page" m4000-url-value="M4000Page"
+                       class="btn-group pull-right m-1">
+</cool-pagination-steps>
+<div>
+    <form asp-controller="WiringStep" asp-action="ExportToXML" method="post">
+        <button class="btn btn-sm " name="buttonXML" style="background-color:steelblue;color:white;margin-bottom:30px">Export Table to an XML File</button>
+    </form>
+</div>
+<br />
+<br />

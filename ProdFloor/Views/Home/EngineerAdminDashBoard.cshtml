@@ -3,6 +3,14 @@
     ViewBag.Title = "Enginneering Admin Dashboard";
 
 }
+<div class="text-right m-2">
+    <form asp-action="SeedStatusPOXML" asp-controller="Job" method="post">
+        @if (Model.StatusPOCount == 0)
+        {
+            <button type="submit" name="buttonImportXML" value="All" class="btn btn-danger btn-sm">Import All StatusPO from XML <i class="fas fa-file-alt"></i></button>
+        }
+    </form>
+</div>
 
 @if (Model.OnCrossJobs != null)
 {
@@ -22,6 +30,14 @@
 @if (Model.ActiveJobs != null)
 {
     @Html.Partial("ActiveJobsEngAdmin", Model)
+}
+@if (Model.StatusPOCount > 0)
+{
+    <div>
+        <form asp-controller="Job" asp-action="ExportStatusPOToXML" method="post">
+            <button class="btn btn-sm" name="buttonXML" value="All" style="background-color:steelblue;color:white">Export All StatusPO to an XML File</button>
+        </form>
+    </div>
 }
 <br />
 <br />

@@ -78,6 +78,35 @@
                             </button>
                         </form>
 
+                        <!-- Return Button trigger modal -->
+                        <button type="button" class="btn btn-light" style="float:left;background-color:transparent" data-toggle="modal" data-target="#ReturnFromComplete @j.TestJobID" data-tooltip="tooltip" data-placement="top" title="Delete TestJob">
+                            <i class="fas fa-undo"></i>
+                        </button>
+                        <!-- Modal -->
+                        <form asp-action="ReturnFromComplete" asp-controller="TestJob" method="post" asp-route-Id="@j.TestJobID">
+                            <div class="modal fade" id="ReturnFromComplete @j.TestJobID" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLongTitle"><i class="fas fa-exclamation-triangle"></i>&nbsp;Warning</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            Are you sure want to ReturnFromComplete this Testjob with PO #@j.SinglePO?
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
+                                            <button type="submit" class="btn btn-danger btn-sm">
+                                                Return it!
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
                         @if (j.Status != "Deleted")
                         {
 

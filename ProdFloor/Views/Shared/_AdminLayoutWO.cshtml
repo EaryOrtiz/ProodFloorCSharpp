@@ -27,7 +27,7 @@
                     <li class="nav-item active">
                         <a class="nav-link" href="\">Home</a>
                     </li>
-                    @if (!(User.IsInRole("Technician")) && !(User.IsInRole("TechAdmin")))
+                    @if ((User.IsInRole("Engineer")))
                     {
                         <li class="nav-item">
                             <a class="nav-link" asp-controller="Job" asp-action="List">All Jobs</a>

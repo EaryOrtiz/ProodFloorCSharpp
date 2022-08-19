@@ -1,6 +1,8 @@
 ﻿<Starters>
   <Starter>
     <ID>213</ID>
+    <FLA>18</FLA>
+    <Type>Siemens SS : 3/9</Type>
     <StarterType>Siemens SS : 3/9</StarterType>
     <FLA>18</FLA>
     <Volts>240</Volts>
@@ -11,6 +13,8 @@
   </Starter>
   <Starter>
     <ID>214</ID>
+    <FLA>18</FLA>
+    <Type>Siemens SS : 3/9</Type>
     <StarterType>Siemens SS : 3/9</StarterType>
     <FLA>18</FLA>
     <Volts>380/415</Volts>
@@ -21,6 +25,8 @@
   </Starter>
   <Starter>
     <ID>215</ID>
+    <FLA>18</FLA>
+    <Type>Siemens SS : 3/9</Type>
     <StarterType>Siemens SS : 3/9</StarterType>
     <FLA>18</FLA>
     <Volts>460</Volts>
@@ -31,6 +37,8 @@
   </Starter>
   <Starter>
     <ID>216</ID>
+    <FLA>18</FLA>
+    <Type>Siemens SS : 3/9</Type>
     <StarterType>Siemens SS : 3/9</StarterType>
     <FLA>18</FLA>
     <Volts>575</Volts>
@@ -41,6 +49,8 @@
   </Starter>
   <Starter>
     <ID>217</ID>
+    <FLA>22</FLA>
+    <Type>Siemens SS : 6/12</Type>
     <StarterType>Siemens SS : 6/12</StarterType>
     <FLA>22</FLA>
     <Volts>208</Volts>
@@ -51,6 +61,8 @@
   </Starter>
   <Starter>
     <ID>218</ID>
+    <FLA>22</FLA>
+    <Type>Siemens SS : 6/12</Type>
     <StarterType>Siemens SS : 6/12</StarterType>
     <FLA>22</FLA>
     <Volts>240</Volts>
@@ -61,6 +73,8 @@
   </Starter>
   <Starter>
     <ID>219</ID>
+    <FLA>22</FLA>
+    <Type>Siemens SS : 6/12</Type>
     <StarterType>Siemens SS : 6/12</StarterType>
     <FLA>22</FLA>
     <Volts>380/415</Volts>
@@ -71,6 +85,8 @@
   </Starter>
   <Starter>
     <ID>220</ID>
+    <FLA>22</FLA>
+    <Type>Siemens SS : 6/12</Type>
     <StarterType>Siemens SS : 6/12</StarterType>
     <FLA>22</FLA>
     <Volts>460</Volts>
@@ -81,6 +97,8 @@
   </Starter>
   <Starter>
     <ID>221</ID>
+    <FLA>22</FLA>
+    <Type>Siemens SS : 3/9</Type>
     <StarterType>Siemens SS : 3/9</StarterType>
     <FLA>22</FLA>
     <Volts>208</Volts>
@@ -91,6 +109,8 @@
   </Starter>
   <Starter>
     <ID>222</ID>
+    <FLA>22</FLA>
+    <Type>Siemens SS : 3/9</Type>
     <StarterType>Siemens SS : 3/9</StarterType>
     <FLA>22</FLA>
     <Volts>240</Volts>
@@ -101,6 +121,8 @@
   </Starter>
   <Starter>
     <ID>223</ID>
+    <FLA>22</FLA>
+    <Type>Siemens SS : 3/9</Type>
     <StarterType>Siemens SS : 3/9</StarterType>
     <FLA>22</FLA>
     <Volts>380/415</Volts>
@@ -111,6 +133,8 @@
   </Starter>
   <Starter>
     <ID>224</ID>
+    <FLA>22</FLA>
+    <Type>Siemens SS : 3/9</Type>
     <StarterType>Siemens SS : 3/9</StarterType>
     <FLA>22</FLA>
     <Volts>460</Volts>
@@ -121,6 +145,8 @@
   </Starter>
   <Starter>
     <ID>225</ID>
+    <FLA>22</FLA>
+    <Type>Siemens SS : 3/9</Type>
     <StarterType>Siemens SS : 3/9</StarterType>
     <FLA>22</FLA>
     <Volts>575</Volts>
@@ -131,6 +157,8 @@
   </Starter>
   <Starter>
     <ID>226</ID>
+    <FLA>28</FLA>
+    <Type>Siemens SS : 3/9</Type>
     <StarterType>Siemens SS : 3/9</StarterType>
     <FLA>28</FLA>
     <Volts>208</Volts>
@@ -141,6 +169,8 @@
   </Starter>
   <Starter>
     <ID>227</ID>
+    <FLA>28</FLA>
+    <Type>Siemens SS : 3/9</Type>
     <StarterType>Siemens SS : 3/9</StarterType>
     <FLA>28</FLA>
     <Volts>240</Volts>
@@ -151,6 +181,8 @@
   </Starter>
   <Starter>
     <ID>228</ID>
+    <FLA>28</FLA>
+    <Type>Siemens SS : 3/9</Type>
     <StarterType>Siemens SS : 3/9</StarterType>
     <FLA>28</FLA>
     <Volts>380/415</Volts>
@@ -161,6 +193,8 @@
   </Starter>
   <Starter>
     <ID>229</ID>
+    <FLA>28</FLA>
+    <Type>Siemens SS : 3/9</Type>
     <StarterType>Siemens SS : 3/9</StarterType>
     <FLA>28</FLA>
     <Volts>460</Volts>
@@ -171,6 +205,8 @@
   </Starter>
   <Starter>
     <ID>230</ID>
+    <FLA>28</FLA>
+    <Type>Siemens SS : 3/9</Type>
     <StarterType>Siemens SS : 3/9</StarterType>
     <FLA>28</FLA>
     <Volts>575</Volts>
@@ -181,6 +217,8 @@
   </Starter>
   <Starter>
     <ID>231</ID>
+    <FLA>35</FLA>
+    <Type>Siemens SS : 6/12</Type>
     <StarterType>Siemens SS : 6/12</StarterType>
     <FLA>35</FLA>
     <Volts>208</Volts>
@@ -191,6 +229,8 @@
   </Starter>
   <Starter>
     <ID>232</ID>
+    <FLA>35</FLA>
+    <Type>Siemens SS : 6/12</Type>
     <StarterType>Siemens SS : 6/12</StarterType>
     <FLA>35</FLA>
     <Volts>240</Volts>
@@ -201,6 +241,8 @@
   </Starter>
   <Starter>
     <ID>233</ID>
+    <FLA>35</FLA>
+    <Type>Siemens SS : 6/12</Type>
     <StarterType>Siemens SS : 6/12</StarterType>
     <FLA>35</FLA>
     <Volts>380/415</Volts>
@@ -211,6 +253,8 @@
   </Starter>
   <Starter>
     <ID>234</ID>
+    <FLA>35</FLA>
+    <Type>Siemens SS : 6/12</Type>
     <StarterType>Siemens SS : 6/12</StarterType>
     <FLA>35</FLA>
     <Volts>460</Volts>
@@ -221,6 +265,8 @@
   </Starter>
   <Starter>
     <ID>235</ID>
+    <FLA>35</FLA>
+    <Type>Siemens SS : 6/12</Type>
     <StarterType>Siemens SS : 6/12</StarterType>
     <FLA>35</FLA>
     <Volts>575</Volts>
@@ -231,6 +277,8 @@
   </Starter>
   <Starter>
     <ID>236</ID>
+    <FLA>35</FLA>
+    <Type>Siemens SS : 3/9</Type>
     <StarterType>Siemens SS : 3/9</StarterType>
     <FLA>35</FLA>
     <Volts>208</Volts>
@@ -241,6 +289,8 @@
   </Starter>
   <Starter>
     <ID>237</ID>
+    <FLA>35</FLA>
+    <Type>Siemens SS : 3/9</Type>
     <StarterType>Siemens SS : 3/9</StarterType>
     <FLA>35</FLA>
     <Volts>240</Volts>
@@ -251,6 +301,8 @@
   </Starter>
   <Starter>
     <ID>238</ID>
+    <FLA>35</FLA>
+    <Type>Siemens SS : 3/9</Type>
     <StarterType>Siemens SS : 3/9</StarterType>
     <FLA>35</FLA>
     <Volts>380/415</Volts>
@@ -261,6 +313,8 @@
   </Starter>
   <Starter>
     <ID>239</ID>
+    <FLA>35</FLA>
+    <Type>Siemens SS : 3/9</Type>
     <StarterType>Siemens SS : 3/9</StarterType>
     <FLA>35</FLA>
     <Volts>460</Volts>
@@ -271,6 +325,8 @@
   </Starter>
   <Starter>
     <ID>240</ID>
+    <FLA>35</FLA>
+    <Type>Siemens SS : 3/9</Type>
     <StarterType>Siemens SS : 3/9</StarterType>
     <FLA>35</FLA>
     <Volts>575</Volts>
@@ -281,6 +337,8 @@
   </Starter>
   <Starter>
     <ID>241</ID>
+    <FLA>42</FLA>
+    <Type>Siemens SS : 6/12</Type>
     <StarterType>Siemens SS : 6/12</StarterType>
     <FLA>42</FLA>
     <Volts>208</Volts>
@@ -291,6 +349,8 @@
   </Starter>
   <Starter>
     <ID>242</ID>
+    <FLA>42</FLA>
+    <Type>Siemens SS : 6/12</Type>
     <StarterType>Siemens SS : 6/12</StarterType>
     <FLA>42</FLA>
     <Volts>240</Volts>
@@ -301,6 +361,8 @@
   </Starter>
   <Starter>
     <ID>243</ID>
+    <FLA>42</FLA>
+    <Type>Siemens SS : 6/12</Type>
     <StarterType>Siemens SS : 6/12</StarterType>
     <FLA>42</FLA>
     <Volts>380/415</Volts>
@@ -311,6 +373,8 @@
   </Starter>
   <Starter>
     <ID>244</ID>
+    <FLA>42</FLA>
+    <Type>Siemens SS : 6/12</Type>
     <StarterType>Siemens SS : 6/12</StarterType>
     <FLA>42</FLA>
     <Volts>460</Volts>
@@ -321,6 +385,8 @@
   </Starter>
   <Starter>
     <ID>245</ID>
+    <FLA>42</FLA>
+    <Type>Siemens SS : 6/12</Type>
     <StarterType>Siemens SS : 6/12</StarterType>
     <FLA>42</FLA>
     <Volts>575</Volts>
@@ -331,6 +397,8 @@
   </Starter>
   <Starter>
     <ID>246</ID>
+    <FLA>42</FLA>
+    <Type>Siemens SS : 3/9</Type>
     <StarterType>Siemens SS : 3/9</StarterType>
     <FLA>42</FLA>
     <Volts>208</Volts>
@@ -341,6 +409,8 @@
   </Starter>
   <Starter>
     <ID>247</ID>
+    <FLA>42</FLA>
+    <Type>Siemens SS : 3/9</Type>
     <StarterType>Siemens SS : 3/9</StarterType>
     <FLA>42</FLA>
     <Volts>240</Volts>
@@ -351,6 +421,8 @@
   </Starter>
   <Starter>
     <ID>248</ID>
+    <FLA>42</FLA>
+    <Type>Siemens SS : 3/9</Type>
     <StarterType>Siemens SS : 3/9</StarterType>
     <FLA>42</FLA>
     <Volts>380/415</Volts>
@@ -361,6 +433,8 @@
   </Starter>
   <Starter>
     <ID>249</ID>
+    <FLA>42</FLA>
+    <Type>Siemens SS : 3/9</Type>
     <StarterType>Siemens SS : 3/9</StarterType>
     <FLA>42</FLA>
     <Volts>460</Volts>
@@ -371,6 +445,8 @@
   </Starter>
   <Starter>
     <ID>250</ID>
+    <FLA>42</FLA>
+    <Type>Siemens SS : 3/9</Type>
     <StarterType>Siemens SS : 3/9</StarterType>
     <FLA>42</FLA>
     <Volts>575</Volts>
@@ -381,6 +457,8 @@
   </Starter>
   <Starter>
     <ID>251</ID>
+    <FLA>55</FLA>
+    <Type>Siemens SS : 6/12</Type>
     <StarterType>Siemens SS : 6/12</StarterType>
     <FLA>55</FLA>
     <Volts>208</Volts>
@@ -391,6 +469,8 @@
   </Starter>
   <Starter>
     <ID>252</ID>
+    <FLA>55</FLA>
+    <Type>Siemens SS : 6/12</Type>
     <StarterType>Siemens SS : 6/12</StarterType>
     <FLA>55</FLA>
     <Volts>240</Volts>
@@ -401,6 +481,8 @@
   </Starter>
   <Starter>
     <ID>253</ID>
+    <FLA>55</FLA>
+    <Type>Siemens SS : 6/12</Type>
     <StarterType>Siemens SS : 6/12</StarterType>
     <FLA>55</FLA>
     <Volts>380/415</Volts>
@@ -411,6 +493,8 @@
   </Starter>
   <Starter>
     <ID>254</ID>
+    <FLA>55</FLA>
+    <Type>Siemens SS : 6/12</Type>
     <StarterType>Siemens SS : 6/12</StarterType>
     <FLA>55</FLA>
     <Volts>460</Volts>
@@ -421,6 +505,8 @@
   </Starter>
   <Starter>
     <ID>255</ID>
+    <FLA>55</FLA>
+    <Type>Siemens SS : 6/12</Type>
     <StarterType>Siemens SS : 6/12</StarterType>
     <FLA>55</FLA>
     <Volts>575</Volts>
@@ -431,6 +517,8 @@
   </Starter>
   <Starter>
     <ID>256</ID>
+    <FLA>55</FLA>
+    <Type>Siemens SS : 3/9</Type>
     <StarterType>Siemens SS : 3/9</StarterType>
     <FLA>55</FLA>
     <Volts>208</Volts>
@@ -441,6 +529,8 @@
   </Starter>
   <Starter>
     <ID>257</ID>
+    <FLA>55</FLA>
+    <Type>Siemens SS : 3/9</Type>
     <StarterType>Siemens SS : 3/9</StarterType>
     <FLA>55</FLA>
     <Volts>240</Volts>
@@ -451,6 +541,8 @@
   </Starter>
   <Starter>
     <ID>258</ID>
+    <FLA>55</FLA>
+    <Type>Siemens SS : 3/9</Type>
     <StarterType>Siemens SS : 3/9</StarterType>
     <FLA>55</FLA>
     <Volts>380/415</Volts>
@@ -461,6 +553,8 @@
   </Starter>
   <Starter>
     <ID>259</ID>
+    <FLA>55</FLA>
+    <Type>Siemens SS : 3/9</Type>
     <StarterType>Siemens SS : 3/9</StarterType>
     <FLA>55</FLA>
     <Volts>460</Volts>
@@ -471,6 +565,8 @@
   </Starter>
   <Starter>
     <ID>260</ID>
+    <FLA>55</FLA>
+    <Type>Siemens SS : 3/9</Type>
     <StarterType>Siemens SS : 3/9</StarterType>
     <FLA>55</FLA>
     <Volts>575</Volts>
@@ -481,6 +577,8 @@
   </Starter>
   <Starter>
     <ID>261</ID>
+    <FLA>68</FLA>
+    <Type>Siemens SS : 6/12</Type>
     <StarterType>Siemens SS : 6/12</StarterType>
     <FLA>68</FLA>
     <Volts>208</Volts>
@@ -491,6 +589,8 @@
   </Starter>
   <Starter>
     <ID>262</ID>
+    <FLA>68</FLA>
+    <Type>Siemens SS : 6/12</Type>
     <StarterType>Siemens SS : 6/12</StarterType>
     <FLA>68</FLA>
     <Volts>240</Volts>
@@ -501,6 +601,8 @@
   </Starter>
   <Starter>
     <ID>263</ID>
+    <FLA>68</FLA>
+    <Type>Siemens SS : 6/12</Type>
     <StarterType>Siemens SS : 6/12</StarterType>
     <FLA>68</FLA>
     <Volts>380/4115</Volts>
@@ -511,6 +613,8 @@
   </Starter>
   <Starter>
     <ID>264</ID>
+    <FLA>68</FLA>
+    <Type>Siemens SS : 6/12</Type>
     <StarterType>Siemens SS : 6/12</StarterType>
     <FLA>68</FLA>
     <Volts>460</Volts>
@@ -521,6 +625,8 @@
   </Starter>
   <Starter>
     <ID>265</ID>
+    <FLA>68</FLA>
+    <Type>Siemens SS : 6/12</Type>
     <StarterType>Siemens SS : 6/12</StarterType>
     <FLA>68</FLA>
     <Volts>575</Volts>
@@ -531,6 +637,8 @@
   </Starter>
   <Starter>
     <ID>266</ID>
+    <FLA>68</FLA>
+    <Type>Siemens SS : 3/9</Type>
     <StarterType>Siemens SS : 3/9</StarterType>
     <FLA>68</FLA>
     <Volts>208</Volts>
@@ -541,6 +649,8 @@
   </Starter>
   <Starter>
     <ID>267</ID>
+    <FLA>68</FLA>
+    <Type>Siemens SS : 3/9</Type>
     <StarterType>Siemens SS : 3/9</StarterType>
     <FLA>68</FLA>
     <Volts>240</Volts>
@@ -551,6 +661,8 @@
   </Starter>
   <Starter>
     <ID>268</ID>
+    <FLA>68</FLA>
+    <Type>Siemens SS : 3/9</Type>
     <StarterType>Siemens SS : 3/9</StarterType>
     <FLA>68</FLA>
     <Volts>380/415</Volts>
@@ -561,6 +673,8 @@
   </Starter>
   <Starter>
     <ID>269</ID>
+    <FLA>68</FLA>
+    <Type>Siemens SS : 3/9</Type>
     <StarterType>Siemens SS : 3/9</StarterType>
     <FLA>68</FLA>
     <Volts>460</Volts>
@@ -571,6 +685,8 @@
   </Starter>
   <Starter>
     <ID>270</ID>
+    <FLA>68</FLA>
+    <Type>Siemens SS : 3/9</Type>
     <StarterType>Siemens SS : 3/9</StarterType>
     <FLA>68</FLA>
     <Volts>575</Volts>
@@ -581,6 +697,8 @@
   </Starter>
   <Starter>
     <ID>271</ID>
+    <FLA>80</FLA>
+    <Type>Siemens SS : 6/12</Type>
     <StarterType>Siemens SS : 6/12</StarterType>
     <FLA>80</FLA>
     <Volts>208</Volts>
@@ -591,6 +709,8 @@
   </Starter>
   <Starter>
     <ID>272</ID>
+    <FLA>80</FLA>
+    <Type>Siemens SS : 6/12</Type>
     <StarterType>Siemens SS : 6/12</StarterType>
     <FLA>80</FLA>
     <Volts>240</Volts>
@@ -601,6 +721,8 @@
   </Starter>
   <Starter>
     <ID>273</ID>
+    <FLA>80</FLA>
+    <Type>Siemens SS : 6/12</Type>
     <StarterType>Siemens SS : 6/12</StarterType>
     <FLA>80</FLA>
     <Volts>380/415</Volts>
@@ -611,6 +733,8 @@
   </Starter>
   <Starter>
     <ID>274</ID>
+    <FLA>80</FLA>
+    <Type>Siemens SS : 6/12</Type>
     <StarterType>Siemens SS : 6/12</StarterType>
     <FLA>80</FLA>
     <Volts>460</Volts>
@@ -621,6 +745,8 @@
   </Starter>
   <Starter>
     <ID>275</ID>
+    <FLA>80</FLA>
+    <Type>Siemens SS : 6/12</Type>
     <StarterType>Siemens SS : 6/12</StarterType>
     <FLA>80</FLA>
     <Volts>575</Volts>
@@ -631,6 +757,8 @@
   </Starter>
   <Starter>
     <ID>276</ID>
+    <FLA>80</FLA>
+    <Type>Siemens SS : 3/9</Type>
     <StarterType>Siemens SS : 3/9</StarterType>
     <FLA>80</FLA>
     <Volts>208</Volts>
@@ -641,6 +769,8 @@
   </Starter>
   <Starter>
     <ID>277</ID>
+    <FLA>80</FLA>
+    <Type>Siemens SS : 3/9</Type>
     <StarterType>Siemens SS : 3/9</StarterType>
     <FLA>80</FLA>
     <Volts>240</Volts>
@@ -651,6 +781,8 @@
   </Starter>
   <Starter>
     <ID>278</ID>
+    <FLA>80</FLA>
+    <Type>Siemens SS : 3/9</Type>
     <StarterType>Siemens SS : 3/9</StarterType>
     <FLA>80</FLA>
     <Volts>380/415</Volts>
@@ -661,6 +793,8 @@
   </Starter>
   <Starter>
     <ID>279</ID>
+    <FLA>80</FLA>
+    <Type>Siemens SS : 3/9</Type>
     <StarterType>Siemens SS : 3/9</StarterType>
     <FLA>80</FLA>
     <Volts>460</Volts>
@@ -671,6 +805,8 @@
   </Starter>
   <Starter>
     <ID>280</ID>
+    <FLA>80</FLA>
+    <Type>Siemens SS : 3/9</Type>
     <StarterType>Siemens SS : 3/9</StarterType>
     <FLA>80</FLA>
     <Volts>575</Volts>
@@ -681,6 +817,8 @@
   </Starter>
   <Starter>
     <ID>281</ID>
+    <FLA>105</FLA>
+    <Type>Siemens SS : 6/12</Type>
     <StarterType>Siemens SS : 6/12</StarterType>
     <FLA>105</FLA>
     <Volts>208</Volts>
@@ -691,6 +829,8 @@
   </Starter>
   <Starter>
     <ID>282</ID>
+    <FLA>105</FLA>
+    <Type>Siemens SS : 6/12</Type>
     <StarterType>Siemens SS : 6/12</StarterType>
     <FLA>105</FLA>
     <Volts>240</Volts>
@@ -701,6 +841,8 @@
   </Starter>
   <Starter>
     <ID>283</ID>
+    <FLA>105</FLA>
+    <Type>Siemens SS : 6/12</Type>
     <StarterType>Siemens SS : 6/12</StarterType>
     <FLA>105</FLA>
     <Volts>380/415</Volts>
@@ -711,6 +853,8 @@
   </Starter>
   <Starter>
     <ID>284</ID>
+    <FLA>105</FLA>
+    <Type>Siemens SS : 6/12</Type>
     <StarterType>Siemens SS : 6/12</StarterType>
     <FLA>105</FLA>
     <Volts>460</Volts>
@@ -721,6 +865,8 @@
   </Starter>
   <Starter>
     <ID>285</ID>
+    <FLA>105</FLA>
+    <Type>Siemens SS : 6/12</Type>
     <StarterType>Siemens SS : 6/12</StarterType>
     <FLA>105</FLA>
     <Volts>575</Volts>
@@ -731,6 +877,8 @@
   </Starter>
   <Starter>
     <ID>286</ID>
+    <FLA>130</FLA>
+    <Type>Siemens SS : 6/12</Type>
     <StarterType>Siemens SS : 6/12</StarterType>
     <FLA>130</FLA>
     <Volts>208</Volts>
@@ -741,6 +889,8 @@
   </Starter>
   <Starter>
     <ID>287</ID>
+    <FLA>130</FLA>
+    <Type>Siemens SS : 6/12</Type>
     <StarterType>Siemens SS : 6/12</StarterType>
     <FLA>130</FLA>
     <Volts>240</Volts>
@@ -751,6 +901,8 @@
   </Starter>
   <Starter>
     <ID>288</ID>
+    <FLA>130</FLA>
+    <Type>Siemens SS : 6/12</Type>
     <StarterType>Siemens SS : 6/12</StarterType>
     <FLA>130</FLA>
     <Volts>380/415</Volts>
@@ -761,6 +913,8 @@
   </Starter>
   <Starter>
     <ID>289</ID>
+    <FLA>130</FLA>
+    <Type>Siemens SS : 6/12</Type>
     <StarterType>Siemens SS : 6/12</StarterType>
     <FLA>130</FLA>
     <Volts>460</Volts>
@@ -771,6 +925,8 @@
   </Starter>
   <Starter>
     <ID>290</ID>
+    <FLA>130</FLA>
+    <Type>Siemens SS : 6/12</Type>
     <StarterType>Siemens SS : 6/12</StarterType>
     <FLA>130</FLA>
     <Volts>575</Volts>
@@ -781,6 +937,8 @@
   </Starter>
   <Starter>
     <ID>291</ID>
+    <FLA>130</FLA>
+    <Type>Siemens SS : 3/9</Type>
     <StarterType>Siemens SS : 3/9</StarterType>
     <FLA>130</FLA>
     <Volts>208</Volts>
@@ -791,6 +949,8 @@
   </Starter>
   <Starter>
     <ID>292</ID>
+    <FLA>130</FLA>
+    <Type>Siemens SS : 3/9</Type>
     <StarterType>Siemens SS : 3/9</StarterType>
     <FLA>130</FLA>
     <Volts>240</Volts>
@@ -801,6 +961,8 @@
   </Starter>
   <Starter>
     <ID>293</ID>
+    <FLA>157</FLA>
+    <Type>Siemens SS : 6/12</Type>
     <StarterType>Siemens SS : 6/12</StarterType>
     <FLA>157</FLA>
     <Volts>208</Volts>
@@ -811,6 +973,8 @@
   </Starter>
   <Starter>
     <ID>294</ID>
+    <FLA>157</FLA>
+    <Type>Siemens SS : 6/12</Type>
     <StarterType>Siemens SS : 6/12</StarterType>
     <FLA>157</FLA>
     <Volts>240</Volts>
@@ -821,6 +985,8 @@
   </Starter>
   <Starter>
     <ID>295</ID>
+    <FLA>157</FLA>
+    <Type>Siemens SS : 6/12</Type>
     <StarterType>Siemens SS : 6/12</StarterType>
     <FLA>157</FLA>
     <Volts>380/415</Volts>
@@ -831,6 +997,8 @@
   </Starter>
   <Starter>
     <ID>296</ID>
+    <FLA>157</FLA>
+    <Type>Siemens SS : 6/12</Type>
     <StarterType>Siemens SS : 6/12</StarterType>
     <FLA>157</FLA>
     <Volts>460</Volts>
@@ -841,6 +1009,8 @@
   </Starter>
   <Starter>
     <ID>297</ID>
+    <FLA>157</FLA>
+    <Type>Siemens SS : 6/12</Type>
     <StarterType>Siemens SS : 6/12</StarterType>
     <FLA>157</FLA>
     <Volts>575</Volts>
@@ -851,6 +1021,8 @@
   </Starter>
   <Starter>
     <ID>298</ID>
+    <FLA>252</FLA>
+    <Type>Siemens SS : 6/12</Type>
     <StarterType>Siemens SS : 6/12</StarterType>
     <FLA>252</FLA>
     <Volts>208</Volts>
@@ -861,6 +1033,8 @@
   </Starter>
   <Starter>
     <ID>299</ID>
+    <FLA>252</FLA>
+    <Type>Siemens SS : 6/12</Type>
     <StarterType>Siemens SS : 6/12</StarterType>
     <FLA>252</FLA>
     <Volts>240</Volts>
@@ -871,326 +1045,392 @@
   </Starter>
   <Starter>
     <ID>300</ID>
+    <FLA>9</FLA>
+    <Type>ATL</Type>
     <StarterType>ATL</StarterType>
     <FLA>9</FLA>
     <Volts>208</Volts>
     <HP>2</HP>
-    <MCEPart>35-95-0094</MCEPart>
-    <NewManufacturerPart>3RT1024-1AK60</NewManufacturerPart>
+    <MCEPart>35-12-2024-SIE</MCEPart>
+    <NewManufacturerPart>3RT2024-1AK60</NewManufacturerPart>
     <OverloadTable>1</OverloadTable>
   </Starter>
   <Starter>
     <ID>301</ID>
+    <FLA>9</FLA>
+    <Type>ATL</Type>
     <StarterType>ATL</StarterType>
     <FLA>9</FLA>
     <Volts>240</Volts>
     <HP>3</HP>
-    <MCEPart>35-95-0094</MCEPart>
-    <NewManufacturerPart>3RT1024-1AK60</NewManufacturerPart>
+    <MCEPart>35-12-2024-SIE</MCEPart>
+    <NewManufacturerPart>3RT2024-1AK60</NewManufacturerPart>
     <OverloadTable>1</OverloadTable>
   </Starter>
   <Starter>
     <ID>302</ID>
+    <FLA>9</FLA>
+    <Type>ATL</Type>
     <StarterType>ATL</StarterType>
     <FLA>9</FLA>
     <Volts>480</Volts>
     <HP>5</HP>
-    <MCEPart>35-95-0094</MCEPart>
-    <NewManufacturerPart>3RT1024-1AK60</NewManufacturerPart>
+    <MCEPart>35-12-2024-SIE</MCEPart>
+    <NewManufacturerPart>3RT2024-1AK60</NewManufacturerPart>
     <OverloadTable>1</OverloadTable>
   </Starter>
   <Starter>
     <ID>303</ID>
+    <FLA>9</FLA>
+    <Type>ATL</Type>
     <StarterType>ATL</StarterType>
     <FLA>9</FLA>
     <Volts>575</Volts>
     <HP>7.5</HP>
-    <MCEPart>35-95-0094</MCEPart>
-    <NewManufacturerPart>3RT1024-1AK60</NewManufacturerPart>
+    <MCEPart>35-12-2024-SIE</MCEPart>
+    <NewManufacturerPart>3RT2024-1AK60</NewManufacturerPart>
     <OverloadTable>1</OverloadTable>
   </Starter>
   <Starter>
     <ID>304</ID>
+    <FLA>15</FLA>
+    <Type>ATL</Type>
     <StarterType>ATL</StarterType>
     <FLA>15</FLA>
     <Volts>208</Volts>
     <HP>3</HP>
-    <MCEPart>35-95-0145</MCEPart>
-    <NewManufacturerPart>3RT1026-1AK60</NewManufacturerPart>
+    <MCEPart>35-12-2026-SIE</MCEPart>
+    <NewManufacturerPart>3RT2026-1AK60</NewManufacturerPart>
     <OverloadTable>1</OverloadTable>
   </Starter>
   <Starter>
     <ID>305</ID>
+    <FLA>15</FLA>
+    <Type>ATL</Type>
     <StarterType>ATL</StarterType>
     <FLA>15</FLA>
     <Volts>240</Volts>
     <HP>5</HP>
-    <MCEPart>35-95-0145</MCEPart>
-    <NewManufacturerPart>3RT1026-1AK60</NewManufacturerPart>
+    <MCEPart>35-12-2026-SIE</MCEPart>
+    <NewManufacturerPart>3RT2026-1AK60</NewManufacturerPart>
     <OverloadTable>1</OverloadTable>
   </Starter>
   <Starter>
     <ID>306</ID>
+    <FLA>15</FLA>
+    <Type>ATL</Type>
     <StarterType>ATL</StarterType>
     <FLA>15</FLA>
     <Volts>480</Volts>
     <HP>10</HP>
-    <MCEPart>35-95-0145</MCEPart>
-    <NewManufacturerPart>3RT1026-1AK60</NewManufacturerPart>
+    <MCEPart>35-12-2026-SIE</MCEPart>
+    <NewManufacturerPart>3RT2026-1AK60</NewManufacturerPart>
     <OverloadTable>1</OverloadTable>
   </Starter>
   <Starter>
     <ID>307</ID>
+    <FLA>15</FLA>
+    <Type>ATL</Type>
     <StarterType>ATL</StarterType>
     <FLA>15</FLA>
     <Volts>575</Volts>
     <HP>10</HP>
-    <MCEPart>35-95-0145</MCEPart>
-    <NewManufacturerPart>3RT1026-1AK60</NewManufacturerPart>
+    <MCEPart>35-12-2026-SIE</MCEPart>
+    <NewManufacturerPart>3RT2026-1AK60</NewManufacturerPart>
     <OverloadTable>1</OverloadTable>
   </Starter>
   <Starter>
     <ID>308</ID>
+    <FLA>22</FLA>
+    <Type>ATL</Type>
     <StarterType>ATL</StarterType>
     <FLA>22</FLA>
     <Volts>208</Volts>
     <HP>5</HP>
-    <MCEPart>35-12-1033</MCEPart>
-    <NewManufacturerPart>3RT1033-1AK60</NewManufacturerPart>
-    <OverloadTable>2</OverloadTable>
+    <MCEPart>35-12-2027-SIE</MCEPart>
+    <NewManufacturerPart>3RT2027-1AK60</NewManufacturerPart>
+    <OverloadTable>1</OverloadTable>
   </Starter>
   <Starter>
     <ID>309</ID>
+    <FLA>22</FLA>
+    <Type>ATL</Type>
     <StarterType>ATL</StarterType>
     <FLA>22</FLA>
     <Volts>240</Volts>
     <HP>7.5</HP>
-    <MCEPart>35-12-1033</MCEPart>
-    <NewManufacturerPart>3RT1033-1AK60</NewManufacturerPart>
-    <OverloadTable>2</OverloadTable>
+    <MCEPart>35-12-2027-SIE</MCEPart>
+    <NewManufacturerPart>3RT2027-1AK60</NewManufacturerPart>
+    <OverloadTable>1</OverloadTable>
   </Starter>
   <Starter>
     <ID>310</ID>
+    <FLA>22</FLA>
+    <Type>ATL</Type>
     <StarterType>ATL</StarterType>
     <FLA>22</FLA>
     <Volts>480</Volts>
     <HP>15</HP>
-    <MCEPart>35-12-1033</MCEPart>
-    <NewManufacturerPart>3RT1033-1AK60</NewManufacturerPart>
-    <OverloadTable>2</OverloadTable>
+    <MCEPart>35-12-2027-SIE</MCEPart>
+    <NewManufacturerPart>3RT2027-1AK60</NewManufacturerPart>
+    <OverloadTable>1</OverloadTable>
   </Starter>
   <Starter>
     <ID>311</ID>
+    <FLA>22</FLA>
+    <Type>ATL</Type>
     <StarterType>ATL</StarterType>
     <FLA>22</FLA>
     <Volts>575</Volts>
     <HP>20</HP>
-    <MCEPart>35-12-1033</MCEPart>
-    <NewManufacturerPart>3RT1033-1AK60</NewManufacturerPart>
-    <OverloadTable>2</OverloadTable>
+    <MCEPart>35-12-2027-SIE</MCEPart>
+    <NewManufacturerPart>3RT2027-1AK60</NewManufacturerPart>
+    <OverloadTable>1</OverloadTable>
   </Starter>
   <Starter>
     <ID>312</ID>
+    <FLA>27</FLA>
+    <Type>ATL</Type>
     <StarterType>ATL</StarterType>
     <FLA>27</FLA>
     <Volts>208</Volts>
     <HP>7.5</HP>
-    <MCEPart>35-12-1035</MCEPart>
-    <NewManufacturerPart>3RT1035-1AK60</NewManufacturerPart>
+    <MCEPart>35-12-2035-SIE</MCEPart>
+    <NewManufacturerPart>3RT2035-1AK60</NewManufacturerPart>
     <OverloadTable>2</OverloadTable>
   </Starter>
   <Starter>
     <ID>313</ID>
+    <FLA>27</FLA>
+    <Type>ATL</Type>
     <StarterType>ATL</StarterType>
     <FLA>27</FLA>
     <Volts>240</Volts>
     <HP>10</HP>
-    <MCEPart>35-12-1035</MCEPart>
-    <NewManufacturerPart>3RT1035-1AK60</NewManufacturerPart>
+    <MCEPart>35-12-2035-SIE</MCEPart>
+    <NewManufacturerPart>3RT2035-1AK60</NewManufacturerPart>
     <OverloadTable>2</OverloadTable>
   </Starter>
   <Starter>
     <ID>314</ID>
+    <FLA>27</FLA>
+    <Type>ATL</Type>
     <StarterType>ATL</StarterType>
     <FLA>27</FLA>
     <Volts>480</Volts>
     <HP>20</HP>
-    <MCEPart>35-12-1035</MCEPart>
-    <NewManufacturerPart>3RT1035-1AK60</NewManufacturerPart>
+    <MCEPart>35-12-2035-SIE</MCEPart>
+    <NewManufacturerPart>3RT2035-1AK60</NewManufacturerPart>
     <OverloadTable>2</OverloadTable>
   </Starter>
   <Starter>
     <ID>315</ID>
+    <FLA>27</FLA>
+    <Type>ATL</Type>
     <StarterType>ATL</StarterType>
     <FLA>27</FLA>
     <Volts>575</Volts>
     <HP>25</HP>
-    <MCEPart>35-12-1035</MCEPart>
-    <NewManufacturerPart>3RT1035-1AK60</NewManufacturerPart>
+    <MCEPart>35-12-2035-SIE</MCEPart>
+    <NewManufacturerPart>3RT2035-1AK60</NewManufacturerPart>
     <OverloadTable>2</OverloadTable>
   </Starter>
   <Starter>
     <ID>316</ID>
+    <FLA>32</FLA>
+    <Type>ATL</Type>
     <StarterType>ATL</StarterType>
     <FLA>32</FLA>
     <Volts>208</Volts>
     <HP>10</HP>
-    <MCEPart>35-12-1036</MCEPart>
-    <NewManufacturerPart>3RT1036-1AK60</NewManufacturerPart>
+    <MCEPart>35-12-2036-SIE</MCEPart>
+    <NewManufacturerPart>3RT2036-1AK60</NewManufacturerPart>
     <OverloadTable>2</OverloadTable>
   </Starter>
   <Starter>
     <ID>317</ID>
+    <FLA>32</FLA>
+    <Type>ATL</Type>
     <StarterType>ATL</StarterType>
     <FLA>32</FLA>
     <Volts>240</Volts>
     <HP>10</HP>
-    <MCEPart>35-12-1036</MCEPart>
-    <NewManufacturerPart>3RT1036-1AK60</NewManufacturerPart>
+    <MCEPart>35-12-2036-SIE</MCEPart>
+    <NewManufacturerPart>3RT2036-1AK60</NewManufacturerPart>
     <OverloadTable>2</OverloadTable>
   </Starter>
   <Starter>
     <ID>318</ID>
+    <FLA>32</FLA>
+    <Type>ATL</Type>
     <StarterType>ATL</StarterType>
     <FLA>32</FLA>
     <Volts>480</Volts>
     <HP>25</HP>
-    <MCEPart>35-12-1036</MCEPart>
-    <NewManufacturerPart>3RT1036-1AK60</NewManufacturerPart>
+    <MCEPart>35-12-2036-SIE</MCEPart>
+    <NewManufacturerPart>3RT2036-1AK60</NewManufacturerPart>
     <OverloadTable>2</OverloadTable>
   </Starter>
   <Starter>
     <ID>319</ID>
+    <FLA>32</FLA>
+    <Type>ATL</Type>
     <StarterType>ATL</StarterType>
     <FLA>32</FLA>
     <Volts>575</Volts>
     <HP>30</HP>
-    <MCEPart>35-12-1036</MCEPart>
-    <NewManufacturerPart>3RT1036-1AK60</NewManufacturerPart>
+    <MCEPart>35-12-2036-SIE</MCEPart>
+    <NewManufacturerPart>3RT2036-1AK60</NewManufacturerPart>
     <OverloadTable>2</OverloadTable>
   </Starter>
   <Starter>
     <ID>320</ID>
+    <FLA>41</FLA>
+    <Type>ATL</Type>
     <StarterType>ATL</StarterType>
     <FLA>41</FLA>
     <Volts>208</Volts>
     <HP>10</HP>
-    <MCEPart>35-12-1044</MCEPart>
-    <NewManufacturerPart>3RT1044-1AK60</NewManufacturerPart>
-    <OverloadTable>3</OverloadTable>
+    <MCEPart>35-12-2037-SIE</MCEPart>
+    <NewManufacturerPart>3RT2037-1AK60</NewManufacturerPart>
+    <OverloadTable>2</OverloadTable>
   </Starter>
   <Starter>
     <ID>321</ID>
+    <FLA>41</FLA>
+    <Type>ATL</Type>
     <StarterType>ATL</StarterType>
     <FLA>41</FLA>
     <Volts>240</Volts>
     <HP>15</HP>
-    <MCEPart>35-12-1044</MCEPart>
-    <NewManufacturerPart>3RT1044-1AK60</NewManufacturerPart>
-    <OverloadTable>3</OverloadTable>
+    <MCEPart>35-12-2037-SIE</MCEPart>
+    <NewManufacturerPart>3RT2037-1AK60</NewManufacturerPart>
+    <OverloadTable>2</OverloadTable>
   </Starter>
   <Starter>
     <ID>322</ID>
+    <FLA>41</FLA>
+    <Type>ATL</Type>
     <StarterType>ATL</StarterType>
     <FLA>41</FLA>
     <Volts>480</Volts>
     <HP>30</HP>
-    <MCEPart>35-12-1044</MCEPart>
-    <NewManufacturerPart>3RT1044-1AK60</NewManufacturerPart>
-    <OverloadTable>3</OverloadTable>
+    <MCEPart>35-12-2037-SIE</MCEPart>
+    <NewManufacturerPart>3RT2037-1AK60</NewManufacturerPart>
+    <OverloadTable>2</OverloadTable>
   </Starter>
   <Starter>
     <ID>323</ID>
+    <FLA>41</FLA>
+    <Type>ATL</Type>
     <StarterType>ATL</StarterType>
     <FLA>41</FLA>
     <Volts>575</Volts>
     <HP>40</HP>
-    <MCEPart>35-12-1044</MCEPart>
-    <NewManufacturerPart>3RT1044-1AK60</NewManufacturerPart>
-    <OverloadTable>3</OverloadTable>
+    <MCEPart>35-12-2037-SIE</MCEPart>
+    <NewManufacturerPart>3RT2037-1AK60</NewManufacturerPart>
+    <OverloadTable>2</OverloadTable>
   </Starter>
   <Starter>
     <ID>324</ID>
+    <FLA>52</FLA>
+    <Type>ATL</Type>
     <StarterType>ATL</StarterType>
     <FLA>52</FLA>
     <Volts>208</Volts>
     <HP>15</HP>
-    <MCEPart>35-12-1045</MCEPart>
-    <NewManufacturerPart>3RT1045-1AK60</NewManufacturerPart>
-    <OverloadTable>3</OverloadTable>
+    <MCEPart>35-12-2038-SIE</MCEPart>
+    <NewManufacturerPart>3RT2038-1AK60</NewManufacturerPart>
+    <OverloadTable>2</OverloadTable>
   </Starter>
   <Starter>
     <ID>325</ID>
+    <FLA>52</FLA>
+    <Type>ATL</Type>
     <StarterType>ATL</StarterType>
     <FLA>52</FLA>
     <Volts>240</Volts>
     <HP>20</HP>
-    <MCEPart>35-12-1045</MCEPart>
-    <NewManufacturerPart>3RT1045-1AK60</NewManufacturerPart>
-    <OverloadTable>3</OverloadTable>
+    <MCEPart>35-12-2038-SIE</MCEPart>
+    <NewManufacturerPart>3RT2038-1AK60</NewManufacturerPart>
+    <OverloadTable>2</OverloadTable>
   </Starter>
   <Starter>
     <ID>326</ID>
+    <FLA>52</FLA>
+    <Type>ATL</Type>
     <StarterType>ATL</StarterType>
     <FLA>52</FLA>
     <Volts>480</Volts>
     <HP>40</HP>
-    <MCEPart>35-12-1045</MCEPart>
-    <NewManufacturerPart>3RT1045-1AK60</NewManufacturerPart>
-    <OverloadTable>3</OverloadTable>
+    <MCEPart>35-12-2038-SIE</MCEPart>
+    <NewManufacturerPart>3RT2038-1AK60</NewManufacturerPart>
+    <OverloadTable>2</OverloadTable>
   </Starter>
   <Starter>
     <ID>327</ID>
+    <FLA>52</FLA>
+    <Type>ATL</Type>
     <StarterType>ATL</StarterType>
     <FLA>52</FLA>
     <Volts>575</Volts>
     <HP>50</HP>
-    <MCEPart>35-12-1045</MCEPart>
-    <NewManufacturerPart>3RT1045-1AK60</NewManufacturerPart>
-    <OverloadTable>3</OverloadTable>
+    <MCEPart>35-12-2038-SIE</MCEPart>
+    <NewManufacturerPart>3RT2038-1AK60</NewManufacturerPart>
+    <OverloadTable>2</OverloadTable>
   </Starter>
   <Starter>
     <ID>328</ID>
+    <FLA>62</FLA>
+    <Type>ATL</Type>
     <StarterType>ATL</StarterType>
     <FLA>62</FLA>
     <Volts>208</Volts>
     <HP>20</HP>
-    <MCEPart>35-12-1046</MCEPart>
-    <NewManufacturerPart>3RT1046-1AK60</NewManufacturerPart>
+    <MCEPart>35-12-2046-SIE</MCEPart>
+    <NewManufacturerPart>3RT2046-1AK60</NewManufacturerPart>
     <OverloadTable>3</OverloadTable>
   </Starter>
   <Starter>
     <ID>329</ID>
+    <FLA>62</FLA>
+    <Type>ATL</Type>
     <StarterType>ATL</StarterType>
     <FLA>62</FLA>
     <Volts>240</Volts>
     <HP>25</HP>
-    <MCEPart>35-12-1046</MCEPart>
-    <NewManufacturerPart>3RT1046-1AK60</NewManufacturerPart>
+    <MCEPart>35-12-2046-SIE</MCEPart>
+    <NewManufacturerPart>3RT2046-1AK60</NewManufacturerPart>
     <OverloadTable>3</OverloadTable>
   </Starter>
   <Starter>
     <ID>330</ID>
+    <FLA>62</FLA>
+    <Type>ATL</Type>
     <StarterType>ATL</StarterType>
     <FLA>62</FLA>
     <Volts>480</Volts>
     <HP>50</HP>
-    <MCEPart>35-12-1046</MCEPart>
-    <NewManufacturerPart>3RT1046-1AK60</NewManufacturerPart>
+    <MCEPart>35-12-2046-SIE</MCEPart>
+    <NewManufacturerPart>3RT2046-1AK60</NewManufacturerPart>
     <OverloadTable>3</OverloadTable>
   </Starter>
   <Starter>
     <ID>331</ID>
+    <FLA>62</FLA>
+    <Type>ATL</Type>
     <StarterType>ATL</StarterType>
     <FLA>62</FLA>
     <Volts>575</Volts>
     <HP>60</HP>
-    <MCEPart>35-12-1046</MCEPart>
-    <NewManufacturerPart>3RT1046-1AK60</NewManufacturerPart>
+    <MCEPart>35-12-2046-SIE</MCEPart>
+    <NewManufacturerPart>3RT2046-1AK60</NewManufacturerPart>
     <OverloadTable>3</OverloadTable>
   </Starter>
   <Starter>
     <ID>332</ID>
+    <FLA>104</FLA>
+    <Type>ATL</Type>
     <StarterType>ATL</StarterType>
     <FLA>104</FLA>
     <Volts>208</Volts>
@@ -1201,6 +1441,8 @@
   </Starter>
   <Starter>
     <ID>333</ID>
+    <FLA>104</FLA>
+    <Type>ATL</Type>
     <StarterType>ATL</StarterType>
     <FLA>104</FLA>
     <Volts>240</Volts>
@@ -1211,6 +1453,8 @@
   </Starter>
   <Starter>
     <ID>334</ID>
+    <FLA>104</FLA>
+    <Type>ATL</Type>
     <StarterType>ATL</StarterType>
     <FLA>104</FLA>
     <Volts>480</Volts>
@@ -1221,6 +1465,8 @@
   </Starter>
   <Starter>
     <ID>335</ID>
+    <FLA>104</FLA>
+    <Type>ATL</Type>
     <StarterType>ATL</StarterType>
     <FLA>104</FLA>
     <Volts>575</Volts>
@@ -1231,6 +1477,8 @@
   </Starter>
   <Starter>
     <ID>336</ID>
+    <FLA>156</FLA>
+    <Type>ATL</Type>
     <StarterType>ATL</StarterType>
     <FLA>156</FLA>
     <Volts>208</Volts>
@@ -1241,6 +1489,8 @@
   </Starter>
   <Starter>
     <ID>337</ID>
+    <FLA>156</FLA>
+    <Type>ATL</Type>
     <StarterType>ATL</StarterType>
     <FLA>156</FLA>
     <Volts>240</Volts>
@@ -1251,6 +1501,8 @@
   </Starter>
   <Starter>
     <ID>338</ID>
+    <FLA>156</FLA>
+    <Type>ATL</Type>
     <StarterType>ATL</StarterType>
     <FLA>156</FLA>
     <Volts>480</Volts>
@@ -1261,6 +1513,8 @@
   </Starter>
   <Starter>
     <ID>339</ID>
+    <FLA>156</FLA>
+    <Type>ATL</Type>
     <StarterType>ATL</StarterType>
     <FLA>156</FLA>
     <Volts>575</Volts>
@@ -1271,6 +1525,8 @@
   </Starter>
   <Starter>
     <ID>340</ID>
+    <FLA>192</FLA>
+    <Type>ATL</Type>
     <StarterType>ATL</StarterType>
     <FLA>192</FLA>
     <Volts>208</Volts>
@@ -1281,6 +1537,8 @@
   </Starter>
   <Starter>
     <ID>341</ID>
+    <FLA>192</FLA>
+    <Type>ATL</Type>
     <StarterType>ATL</StarterType>
     <FLA>192</FLA>
     <Volts>240</Volts>
@@ -1291,6 +1549,8 @@
   </Starter>
   <Starter>
     <ID>342</ID>
+    <FLA>192</FLA>
+    <Type>ATL</Type>
     <StarterType>ATL</StarterType>
     <FLA>192</FLA>
     <Volts>480</Volts>
@@ -1301,6 +1561,8 @@
   </Starter>
   <Starter>
     <ID>343</ID>
+    <FLA>192</FLA>
+    <Type>ATL</Type>
     <StarterType>ATL</StarterType>
     <FLA>192</FLA>
     <Volts>575</Volts>
@@ -1311,6 +1573,8 @@
   </Starter>
   <Starter>
     <ID>344</ID>
+    <FLA>38</FLA>
+    <Type>YD</Type>
     <StarterType>YD</StarterType>
     <FLA>38</FLA>
     <Volts>208</Volts>
@@ -1321,6 +1585,8 @@
   </Starter>
   <Starter>
     <ID>345</ID>
+    <FLA>38</FLA>
+    <Type>YD</Type>
     <StarterType>YD</StarterType>
     <FLA>38</FLA>
     <Volts>240</Volts>
@@ -1331,6 +1597,8 @@
   </Starter>
   <Starter>
     <ID>346</ID>
+    <FLA>38</FLA>
+    <Type>YD</Type>
     <StarterType>YD</StarterType>
     <FLA>38</FLA>
     <Volts>480</Volts>
@@ -1341,6 +1609,8 @@
   </Starter>
   <Starter>
     <ID>347</ID>
+    <FLA>38</FLA>
+    <Type>YD</Type>
     <StarterType>YD</StarterType>
     <FLA>38</FLA>
     <Volts>575</Volts>
@@ -1351,6 +1621,8 @@
   </Starter>
   <Starter>
     <ID>348</ID>
+    <FLA>47</FLA>
+    <Type>YD</Type>
     <StarterType>YD</StarterType>
     <FLA>47</FLA>
     <Volts>208</Volts>
@@ -1361,6 +1633,8 @@
   </Starter>
   <Starter>
     <ID>349</ID>
+    <FLA>47</FLA>
+    <Type>YD</Type>
     <StarterType>YD</StarterType>
     <FLA>47</FLA>
     <Volts>240</Volts>
@@ -1371,6 +1645,8 @@
   </Starter>
   <Starter>
     <ID>350</ID>
+    <FLA>47</FLA>
+    <Type>YD</Type>
     <StarterType>YD</StarterType>
     <FLA>47</FLA>
     <Volts>480</Volts>
@@ -1381,6 +1657,8 @@
   </Starter>
   <Starter>
     <ID>351</ID>
+    <FLA>47</FLA>
+    <Type>YD</Type>
     <StarterType>YD</StarterType>
     <FLA>47</FLA>
     <Volts>575</Volts>
@@ -1391,6 +1669,8 @@
   </Starter>
   <Starter>
     <ID>352</ID>
+    <FLA>55</FLA>
+    <Type>YD</Type>
     <StarterType>YD</StarterType>
     <FLA>55</FLA>
     <Volts>208</Volts>
@@ -1401,6 +1681,8 @@
   </Starter>
   <Starter>
     <ID>353</ID>
+    <FLA>55</FLA>
+    <Type>YD</Type>
     <StarterType>YD</StarterType>
     <FLA>55</FLA>
     <Volts>240</Volts>
@@ -1411,6 +1693,8 @@
   </Starter>
   <Starter>
     <ID>354</ID>
+    <FLA>55</FLA>
+    <Type>YD</Type>
     <StarterType>YD</StarterType>
     <FLA>55</FLA>
     <Volts>480</Volts>
@@ -1421,6 +1705,8 @@
   </Starter>
   <Starter>
     <ID>355</ID>
+    <FLA>55</FLA>
+    <Type>YD</Type>
     <StarterType>YD</StarterType>
     <FLA>55</FLA>
     <Volts>575</Volts>
@@ -1431,6 +1717,8 @@
   </Starter>
   <Starter>
     <ID>356</ID>
+    <FLA>71</FLA>
+    <Type>YD</Type>
     <StarterType>YD</StarterType>
     <FLA>71</FLA>
     <Volts>208</Volts>
@@ -1441,6 +1729,8 @@
   </Starter>
   <Starter>
     <ID>357</ID>
+    <FLA>71</FLA>
+    <Type>YD</Type>
     <StarterType>YD</StarterType>
     <FLA>71</FLA>
     <Volts>240</Volts>
@@ -1451,6 +1741,8 @@
   </Starter>
   <Starter>
     <ID>358</ID>
+    <FLA>71</FLA>
+    <Type>YD</Type>
     <StarterType>YD</StarterType>
     <FLA>71</FLA>
     <Volts>480</Volts>
@@ -1461,6 +1753,8 @@
   </Starter>
   <Starter>
     <ID>359</ID>
+    <FLA>71</FLA>
+    <Type>YD</Type>
     <StarterType>YD</StarterType>
     <FLA>71</FLA>
     <Volts>575</Volts>
@@ -1471,6 +1765,8 @@
   </Starter>
   <Starter>
     <ID>360</ID>
+    <FLA>90</FLA>
+    <Type>YD</Type>
     <StarterType>YD</StarterType>
     <FLA>90</FLA>
     <Volts>208</Volts>
@@ -1481,6 +1777,8 @@
   </Starter>
   <Starter>
     <ID>361</ID>
+    <FLA>90</FLA>
+    <Type>YD</Type>
     <StarterType>YD</StarterType>
     <FLA>90</FLA>
     <Volts>240</Volts>
@@ -1491,6 +1789,8 @@
   </Starter>
   <Starter>
     <ID>362</ID>
+    <FLA>90</FLA>
+    <Type>YD</Type>
     <StarterType>YD</StarterType>
     <FLA>90</FLA>
     <Volts>480</Volts>
@@ -1501,6 +1801,8 @@
   </Starter>
   <Starter>
     <ID>363</ID>
+    <FLA>90</FLA>
+    <Type>YD</Type>
     <StarterType>YD</StarterType>
     <FLA>90</FLA>
     <Volts>575</Volts>
@@ -1511,6 +1813,8 @@
   </Starter>
   <Starter>
     <ID>364</ID>
+    <FLA>107</FLA>
+    <Type>YD</Type>
     <StarterType>YD</StarterType>
     <FLA>107</FLA>
     <Volts>208</Volts>
@@ -1521,6 +1825,8 @@
   </Starter>
   <Starter>
     <ID>365</ID>
+    <FLA>107</FLA>
+    <Type>YD</Type>
     <StarterType>YD</StarterType>
     <FLA>107</FLA>
     <Volts>240</Volts>
@@ -1531,6 +1837,8 @@
   </Starter>
   <Starter>
     <ID>366</ID>
+    <FLA>107</FLA>
+    <Type>YD</Type>
     <StarterType>YD</StarterType>
     <FLA>107</FLA>
     <Volts>480</Volts>
@@ -1541,6 +1849,8 @@
   </Starter>
   <Starter>
     <ID>367</ID>
+    <FLA>107</FLA>
+    <Type>YD</Type>
     <StarterType>YD</StarterType>
     <FLA>107</FLA>
     <Volts>575</Volts>
@@ -1551,6 +1861,8 @@
   </Starter>
   <Starter>
     <ID>368</ID>
+    <FLA>179</FLA>
+    <Type>YD</Type>
     <StarterType>YD</StarterType>
     <FLA>179</FLA>
     <Volts>208</Volts>
@@ -1561,6 +1873,8 @@
   </Starter>
   <Starter>
     <ID>369</ID>
+    <FLA>179</FLA>
+    <Type>YD</Type>
     <StarterType>YD</StarterType>
     <FLA>179</FLA>
     <Volts>240</Volts>
@@ -1571,6 +1885,8 @@
   </Starter>
   <Starter>
     <ID>370</ID>
+    <FLA>179</FLA>
+    <Type>YD</Type>
     <StarterType>YD</StarterType>
     <FLA>179</FLA>
     <Volts>480</Volts>
@@ -1581,6 +1897,8 @@
   </Starter>
   <Starter>
     <ID>371</ID>
+    <FLA>179</FLA>
+    <Type>YD</Type>
     <StarterType>YD</StarterType>
     <FLA>179</FLA>
     <Volts>575</Volts>
@@ -1591,6 +1909,8 @@
   </Starter>
   <Starter>
     <ID>372</ID>
+    <FLA>269</FLA>
+    <Type>YD</Type>
     <StarterType>YD</StarterType>
     <FLA>269</FLA>
     <Volts>208</Volts>
@@ -1601,6 +1921,8 @@
   </Starter>
   <Starter>
     <ID>373</ID>
+    <FLA>269</FLA>
+    <Type>YD</Type>
     <StarterType>YD</StarterType>
     <FLA>269</FLA>
     <Volts>240</Volts>
@@ -1611,6 +1933,8 @@
   </Starter>
   <Starter>
     <ID>374</ID>
+    <FLA>269</FLA>
+    <Type>YD</Type>
     <StarterType>YD</StarterType>
     <FLA>269</FLA>
     <Volts>480</Volts>
@@ -1621,6 +1945,8 @@
   </Starter>
   <Starter>
     <ID>375</ID>
+    <FLA>269</FLA>
+    <Type>YD</Type>
     <StarterType>YD</StarterType>
     <FLA>269</FLA>
     <Volts>575</Volts>
@@ -1631,6 +1957,8 @@
   </Starter>
   <Starter>
     <ID>376</ID>
+    <FLA>19</FLA>
+    <Type>Sprecher SS : 3/9</Type>
     <StarterType>Sprecher SS : 3/9</StarterType>
     <FLA>19</FLA>
     <Volts>208</Volts>
@@ -1641,6 +1969,8 @@
   </Starter>
   <Starter>
     <ID>377</ID>
+    <FLA>19</FLA>
+    <Type>Sprecher SS : 3/9</Type>
     <StarterType>Sprecher SS : 3/9</StarterType>
     <FLA>19</FLA>
     <Volts>240</Volts>
@@ -1651,6 +1981,8 @@
   </Starter>
   <Starter>
     <ID>378</ID>
+    <FLA>19</FLA>
+    <Type>Sprecher SS : 3/9</Type>
     <StarterType>Sprecher SS : 3/9</StarterType>
     <FLA>19</FLA>
     <Volts>480</Volts>
@@ -1661,6 +1993,8 @@
   </Starter>
   <Starter>
     <ID>379</ID>
+    <FLA>19</FLA>
+    <Type>Sprecher SS : 3/9</Type>
     <StarterType>Sprecher SS : 3/9</StarterType>
     <FLA>19</FLA>
     <Volts>575</Volts>
@@ -1671,6 +2005,8 @@
   </Starter>
   <Starter>
     <ID>380</ID>
+    <FLA>30</FLA>
+    <Type>Sprecher SS : 3/9</Type>
     <StarterType>Sprecher SS : 3/9</StarterType>
     <FLA>30</FLA>
     <Volts>208</Volts>
@@ -1681,6 +2017,8 @@
   </Starter>
   <Starter>
     <ID>381</ID>
+    <FLA>30</FLA>
+    <Type>Sprecher SS : 3/9</Type>
     <StarterType>Sprecher SS : 3/9</StarterType>
     <FLA>30</FLA>
     <Volts>240</Volts>
@@ -1691,6 +2029,8 @@
   </Starter>
   <Starter>
     <ID>382</ID>
+    <FLA>30</FLA>
+    <Type>Sprecher SS : 3/9</Type>
     <StarterType>Sprecher SS : 3/9</StarterType>
     <FLA>30</FLA>
     <Volts>480</Volts>
@@ -1701,6 +2041,8 @@
   </Starter>
   <Starter>
     <ID>383</ID>
+    <FLA>30</FLA>
+    <Type>Sprecher SS : 3/9</Type>
     <StarterType>Sprecher SS : 3/9</StarterType>
     <FLA>30</FLA>
     <Volts>575</Volts>
@@ -1711,6 +2053,8 @@
   </Starter>
   <Starter>
     <ID>384</ID>
+    <FLA>37</FLA>
+    <Type>Sprecher SS : 3/9</Type>
     <StarterType>Sprecher SS : 3/9</StarterType>
     <FLA>37</FLA>
     <Volts>208</Volts>
@@ -1721,6 +2065,8 @@
   </Starter>
   <Starter>
     <ID>385</ID>
+    <FLA>37</FLA>
+    <Type>Sprecher SS : 3/9</Type>
     <StarterType>Sprecher SS : 3/9</StarterType>
     <FLA>37</FLA>
     <Volts>240</Volts>
@@ -1731,6 +2077,8 @@
   </Starter>
   <Starter>
     <ID>386</ID>
+    <FLA>37</FLA>
+    <Type>Sprecher SS : 3/9</Type>
     <StarterType>Sprecher SS : 3/9</StarterType>
     <FLA>37</FLA>
     <Volts>480</Volts>
@@ -1741,6 +2089,8 @@
   </Starter>
   <Starter>
     <ID>387</ID>
+    <FLA>37</FLA>
+    <Type>Sprecher SS : 3/9</Type>
     <StarterType>Sprecher SS : 3/9</StarterType>
     <FLA>37</FLA>
     <Volts>575</Volts>
@@ -1751,6 +2101,8 @@
   </Starter>
   <Starter>
     <ID>388</ID>
+    <FLA>43</FLA>
+    <Type>Sprecher SS : 3/9</Type>
     <StarterType>Sprecher SS : 3/9</StarterType>
     <FLA>43</FLA>
     <Volts>208</Volts>
@@ -1761,6 +2113,8 @@
   </Starter>
   <Starter>
     <ID>389</ID>
+    <FLA>43</FLA>
+    <Type>Sprecher SS : 3/9</Type>
     <StarterType>Sprecher SS : 3/9</StarterType>
     <FLA>43</FLA>
     <Volts>240</Volts>
@@ -1771,6 +2125,8 @@
   </Starter>
   <Starter>
     <ID>390</ID>
+    <FLA>43</FLA>
+    <Type>Sprecher SS : 3/9</Type>
     <StarterType>Sprecher SS : 3/9</StarterType>
     <FLA>43</FLA>
     <Volts>480</Volts>
@@ -1781,6 +2137,8 @@
   </Starter>
   <Starter>
     <ID>391</ID>
+    <FLA>43</FLA>
+    <Type>Sprecher SS : 3/9</Type>
     <StarterType>Sprecher SS : 3/9</StarterType>
     <FLA>43</FLA>
     <Volts>575</Volts>
@@ -1791,6 +2149,8 @@
   </Starter>
   <Starter>
     <ID>392</ID>
+    <FLA>60</FLA>
+    <Type>Sprecher SS : 3/9</Type>
     <StarterType>Sprecher SS : 3/9</StarterType>
     <FLA>60</FLA>
     <Volts>208</Volts>
@@ -1801,6 +2161,8 @@
   </Starter>
   <Starter>
     <ID>393</ID>
+    <FLA>60</FLA>
+    <Type>Sprecher SS : 3/9</Type>
     <StarterType>Sprecher SS : 3/9</StarterType>
     <FLA>60</FLA>
     <Volts>240</Volts>
@@ -1811,6 +2173,8 @@
   </Starter>
   <Starter>
     <ID>394</ID>
+    <FLA>60</FLA>
+    <Type>Sprecher SS : 3/9</Type>
     <StarterType>Sprecher SS : 3/9</StarterType>
     <FLA>60</FLA>
     <Volts>480</Volts>
@@ -1821,6 +2185,8 @@
   </Starter>
   <Starter>
     <ID>395</ID>
+    <FLA>60</FLA>
+    <Type>Sprecher SS : 3/9</Type>
     <StarterType>Sprecher SS : 3/9</StarterType>
     <FLA>60</FLA>
     <Volts>575</Volts>
@@ -1831,6 +2197,8 @@
   </Starter>
   <Starter>
     <ID>396</ID>
+    <FLA>85</FLA>
+    <Type>Sprecher SS : 3/9</Type>
     <StarterType>Sprecher SS : 3/9</StarterType>
     <FLA>85</FLA>
     <Volts>208</Volts>
@@ -1841,6 +2209,8 @@
   </Starter>
   <Starter>
     <ID>397</ID>
+    <FLA>85</FLA>
+    <Type>Sprecher SS : 3/9</Type>
     <StarterType>Sprecher SS : 3/9</StarterType>
     <FLA>85</FLA>
     <Volts>240</Volts>
@@ -1851,6 +2221,8 @@
   </Starter>
   <Starter>
     <ID>398</ID>
+    <FLA>85</FLA>
+    <Type>Sprecher SS : 3/9</Type>
     <StarterType>Sprecher SS : 3/9</StarterType>
     <FLA>85</FLA>
     <Volts>480</Volts>
@@ -1861,6 +2233,8 @@
   </Starter>
   <Starter>
     <ID>399</ID>
+    <FLA>85</FLA>
+    <Type>Sprecher SS : 3/9</Type>
     <StarterType>Sprecher SS : 3/9</StarterType>
     <FLA>85</FLA>
     <Volts>575</Volts>
@@ -1871,6 +2245,8 @@
   </Starter>
   <Starter>
     <ID>400</ID>
+    <FLA>32</FLA>
+    <Type>Sprecher SS : 6/12</Type>
     <StarterType>Sprecher SS : 6/12</StarterType>
     <FLA>32</FLA>
     <Volts>208</Volts>
@@ -1881,6 +2257,8 @@
   </Starter>
   <Starter>
     <ID>401</ID>
+    <FLA>32</FLA>
+    <Type>Sprecher SS : 6/12</Type>
     <StarterType>Sprecher SS : 6/12</StarterType>
     <FLA>32</FLA>
     <Volts>240</Volts>
@@ -1891,16 +2269,20 @@
   </Starter>
   <Starter>
     <ID>402</ID>
+    <FLA>32</FLA>
+    <Type>Sprecher SS : 6/12</Type>
     <StarterType>Sprecher SS : 6/12</StarterType>
     <FLA>32</FLA>
     <Volts>480</Volts>
-    <HP>15</HP>
+    <HP>20</HP>
     <MCEPart>50-05-0200</MCEPart>
     <NewManufacturerPart>PCEC-032-600V-120V</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
   <Starter>
     <ID>403</ID>
+    <FLA>32</FLA>
+    <Type>Sprecher SS : 6/12</Type>
     <StarterType>Sprecher SS : 6/12</StarterType>
     <FLA>32</FLA>
     <Volts>575</Volts>
@@ -1911,6 +2293,8 @@
   </Starter>
   <Starter>
     <ID>404</ID>
+    <FLA>51</FLA>
+    <Type>Sprecher SS : 6/12</Type>
     <StarterType>Sprecher SS : 6/12</StarterType>
     <FLA>51</FLA>
     <Volts>208</Volts>
@@ -1921,6 +2305,8 @@
   </Starter>
   <Starter>
     <ID>405</ID>
+    <FLA>51</FLA>
+    <Type>Sprecher SS : 6/12</Type>
     <StarterType>Sprecher SS : 6/12</StarterType>
     <FLA>51</FLA>
     <Volts>240</Volts>
@@ -1931,6 +2317,8 @@
   </Starter>
   <Starter>
     <ID>406</ID>
+    <FLA>51</FLA>
+    <Type>Sprecher SS : 6/12</Type>
     <StarterType>Sprecher SS : 6/12</StarterType>
     <FLA>51</FLA>
     <Volts>480</Volts>
@@ -1941,6 +2329,8 @@
   </Starter>
   <Starter>
     <ID>407</ID>
+    <FLA>51</FLA>
+    <Type>Sprecher SS : 6/12</Type>
     <StarterType>Sprecher SS : 6/12</StarterType>
     <FLA>51</FLA>
     <Volts>575</Volts>
@@ -1951,6 +2341,8 @@
   </Starter>
   <Starter>
     <ID>408</ID>
+    <FLA>64</FLA>
+    <Type>Sprecher SS : 6/12</Type>
     <StarterType>Sprecher SS : 6/12</StarterType>
     <FLA>64</FLA>
     <Volts>208</Volts>
@@ -1961,6 +2353,8 @@
   </Starter>
   <Starter>
     <ID>409</ID>
+    <FLA>64</FLA>
+    <Type>Sprecher SS : 6/12</Type>
     <StarterType>Sprecher SS : 6/12</StarterType>
     <FLA>64</FLA>
     <Volts>240</Volts>
@@ -1971,16 +2365,20 @@
   </Starter>
   <Starter>
     <ID>410</ID>
+    <FLA>64</FLA>
+    <Type>Sprecher SS : 6/12</Type>
     <StarterType>Sprecher SS : 6/12</StarterType>
     <FLA>64</FLA>
     <Volts>480</Volts>
-    <HP>30</HP>
+    <HP>40</HP>
     <MCEPart>50-05-0202</MCEPart>
     <NewManufacturerPart>PCEC-064-600V-120V</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
   <Starter>
     <ID>411</ID>
+    <FLA>64</FLA>
+    <Type>Sprecher SS : 6/12</Type>
     <StarterType>Sprecher SS : 6/12</StarterType>
     <FLA>64</FLA>
     <Volts>575</Volts>
@@ -1991,6 +2389,8 @@
   </Starter>
   <Starter>
     <ID>412</ID>
+    <FLA>74</FLA>
+    <Type>Sprecher SS : 6/12</Type>
     <StarterType>Sprecher SS : 6/12</StarterType>
     <FLA>74</FLA>
     <Volts>208</Volts>
@@ -2001,6 +2401,8 @@
   </Starter>
   <Starter>
     <ID>413</ID>
+    <FLA>74</FLA>
+    <Type>Sprecher SS : 6/12</Type>
     <StarterType>Sprecher SS : 6/12</StarterType>
     <FLA>74</FLA>
     <Volts>240</Volts>
@@ -2011,16 +2413,20 @@
   </Starter>
   <Starter>
     <ID>414</ID>
+    <FLA>74</FLA>
+    <Type>Sprecher SS : 6/12</Type>
     <StarterType>Sprecher SS : 6/12</StarterType>
     <FLA>74</FLA>
     <Volts>480</Volts>
-    <HP>40</HP>
+    <HP>50</HP>
     <MCEPart>50-05-0203</MCEPart>
     <NewManufacturerPart>PCEC-074-600V-120V</NewManufacturerPart>
     <OverloadTable>N/A</OverloadTable>
   </Starter>
   <Starter>
     <ID>415</ID>
+    <FLA>74</FLA>
+    <Type>Sprecher SS : 6/12</Type>
     <StarterType>Sprecher SS : 6/12</StarterType>
     <FLA>74</FLA>
     <Volts>575</Volts>
@@ -2031,6 +2437,8 @@
   </Starter>
   <Starter>
     <ID>416</ID>
+    <FLA>104</FLA>
+    <Type>Sprecher SS : 6/12</Type>
     <StarterType>Sprecher SS : 6/12</StarterType>
     <FLA>104</FLA>
     <Volts>208</Volts>
@@ -2041,6 +2449,8 @@
   </Starter>
   <Starter>
     <ID>417</ID>
+    <FLA>104</FLA>
+    <Type>Sprecher SS : 6/12</Type>
     <StarterType>Sprecher SS : 6/12</StarterType>
     <FLA>104</FLA>
     <Volts>240</Volts>
@@ -2051,6 +2461,8 @@
   </Starter>
   <Starter>
     <ID>418</ID>
+    <FLA>104</FLA>
+    <Type>Sprecher SS : 6/12</Type>
     <StarterType>Sprecher SS : 6/12</StarterType>
     <FLA>104</FLA>
     <Volts>480</Volts>
@@ -2061,6 +2473,8 @@
   </Starter>
   <Starter>
     <ID>419</ID>
+    <FLA>104</FLA>
+    <Type>Sprecher SS : 6/12</Type>
     <StarterType>Sprecher SS : 6/12</StarterType>
     <FLA>104</FLA>
     <Volts>575</Volts>
@@ -2071,6 +2485,8 @@
   </Starter>
   <Starter>
     <ID>420</ID>
+    <FLA>147</FLA>
+    <Type>Sprecher SS : 6/12</Type>
     <StarterType>Sprecher SS : 6/12</StarterType>
     <FLA>147</FLA>
     <Volts>208</Volts>
@@ -2081,6 +2497,8 @@
   </Starter>
   <Starter>
     <ID>421</ID>
+    <FLA>147</FLA>
+    <Type>Sprecher SS : 6/12</Type>
     <StarterType>Sprecher SS : 6/12</StarterType>
     <FLA>147</FLA>
     <Volts>240</Volts>
@@ -2091,6 +2509,8 @@
   </Starter>
   <Starter>
     <ID>422</ID>
+    <FLA>147</FLA>
+    <Type>Sprecher SS : 6/12</Type>
     <StarterType>Sprecher SS : 6/12</StarterType>
     <FLA>147</FLA>
     <Volts>480</Volts>
@@ -2101,6 +2521,8 @@
   </Starter>
   <Starter>
     <ID>423</ID>
+    <FLA>147</FLA>
+    <Type>Sprecher SS : 6/12</Type>
     <StarterType>Sprecher SS : 6/12</StarterType>
     <FLA>147</FLA>
     <Volts>575</Volts>
