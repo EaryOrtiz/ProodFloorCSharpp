@@ -988,7 +988,7 @@ namespace ProdFloor.Controllers
                             SpecialFeatureslist = new List<SpecialFeatures> { new SpecialFeatures() },
                             POList = POlistAUX,
                             SpecialFeaturesTable = getSpecialFeaturesEX(),
-                            CurrentTab = "M"
+                            CurrentTab = "Extension"
                         };
                         TempData["message"] = $"Job# {newJobViewModel.CurrentJob.JobNum} has been saved...{newJobViewModel.CurrentJob.JobID}...";
                         return View("NextForm", newJobViewModel);
