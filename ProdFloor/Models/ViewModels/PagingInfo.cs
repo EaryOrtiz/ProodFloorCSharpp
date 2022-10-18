@@ -11,6 +11,8 @@ namespace ProdFloor.Models.ViewModels
         public string JobTypeName { get; set; }
         public int ItemsPerPage { get; set; }
         public int CurrentPage { get; set; }
+        public bool ReadyOnly { get; set; }
+        public string PageAction { get; set; }
         public int TotalPages =>
         (int)Math.Ceiling((decimal)TotalItems / ItemsPerPage);
     }
