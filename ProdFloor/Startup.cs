@@ -217,8 +217,8 @@ namespace ProdFloor
                     template: "{controller=Job}/{action=JobSearchList}/{id?}");
             });
             app.UseCookiePolicy();
-            //SeedData.EnsurePopulated(app);
-            //IdentitySeedData.EnsurePopulated(app);
+            SeedData.EnsurePopulated(app);
+            IdentitySeedData.EnsurePopulated(app);
         }
     }
 }
