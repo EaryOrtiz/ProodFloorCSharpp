@@ -18,11 +18,26 @@
                 }
                 @if (j.Status != "Incomplete")
                 {
+                    @if (j._SpecialFeatureslist.Any(s => s.Description != ""))
+                    {
+                        <span class="badge badge-pill badge-info" style="float:right" data-toggle="tooltip" data-placement="bottom" title="Special Features will be listed in the bottom">
+                            <small>Special Features</small>
+                        </span>
+                    }
                     @if (j._GenericFeatures.Roped)
                     {
-                        <span class="badge badge-pill badge-success" style="float:right">
-                            <small>@j._GenericFeatures.GovModel</small>
-                        </span>
+                        @if (j._GenericFeatures.GovModel != "")
+                        {
+                            <span class="badge badge-pill badge-success" style="float:right">
+                                <small>@j._GenericFeatures.GovModel</small>
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="badge badge-pill badge-success" style="float:right">
+                                <small>Roped: No Set/Reset</small>
+                            </span>
+                        }
                     }
                     else
                     {
@@ -85,11 +100,11 @@
                         <small>@StateAux.Name - @cityAux.Name</small>
                     </span>
                     @*
-                    JobType Not needed; M2000 is default
-                    <span class="badge badge-pill badge-primary" style="float:right">
-                        <small>@JobTypeName</small>
-                    </span>
-                        *@
+            JobType Not needed; M2000 is default
+            <span class="badge badge-pill badge-primary" style="float:right">
+                <small>@JobTypeName</small>
+            </span>
+                    *@
                 }
                 else
                 {
