@@ -194,19 +194,22 @@
                     <div class="col-3 ">
                         <div class="form-group row" style="margin-bottom:0px;">
                             <label asp-for="DoorGate" class="col-sm-5 col-form-label"></label>
-                            <door-operator-style-select id="Style" asp-for="@Model.DoorGate" class="form-control form-control-sm col-sm-6">
+                            @*Removing id*@
+                            @*<door-operator-style-select id="Style" asp-for="@Model.DoorGate" class="form-control form-control-sm col-sm-6">*@
+                            <door-operator-style-select asp-for="@Model.DoorGate" class="form-control form-control-sm col-sm-6">
                             </door-operator-style-select>
                         </div>
                         <div class="form-group row" style="margin-bottom:0px;">
                             <label asp-for="DoorBrand" class="col-sm-5 col-form-label"></label>
-
-                            <door-operator-brand-select id="Brand" asp-for="@Model.DoorBrand" class="form-control form-control-sm col-sm-6">
+                            @*<door-operator-brand-select id="Brand" asp-for="@Model.DoorBrand" class="form-control form-control-sm col-sm-6">*@
+                            <door-operator-brand-select asp-for="@Model.DoorBrand" class="form-control form-control-sm col-sm-6">
                             </door-operator-brand-select>
                             <br />
                         </div>
                         <div class="form-group row" style="margin-bottom:0px;">
                             <label asp-for="DoorOperatorID" class="col-sm-5 col-form-label"></label>
-                            <door-operator-select id="DoorOperatorID" asp-for="@Model.DoorOperatorID" class="form-control form-control-sm col-sm-6">
+                            @*<door-operator-select id="DoorOperatorID" asp-for="@Model.DoorOperatorID" class="form-control form-control-sm col-sm-6">*@
+                            <door-operator-select asp-for="@Model.DoorOperatorID" class="form-control form-control-sm col-sm-6">
                             </door-operator-select>
                             <br />
                         </div>
@@ -382,6 +385,10 @@
                             </div>
                         </div>
                         <hr />
+                        <div class="form-group row" style="margin-top:30px;">
+                            <label asp-for="Roped" class="col-sm-8 col-form-label"></label>
+                            <input type="text" class="form-control form-control-sm col-sm-3" asp-for="Roped">
+                        </div>
                         <div class="form-group row" style="margin-top:30px;">
                             <label asp-for="GovModel" class="col-sm-8 col-form-label"></label>
                             <input type="text" class="form-control form-control-sm col-sm-3" asp-for="GovModel">
@@ -687,7 +694,7 @@
                         </div>
                         <div class="form-group row" style="margin-bottom:0px;">
                             <label asp-for="LandingSystemID" class="col-sm-6 col-form-label"></label>
-                            <landing-sys-in-job-select selected-value="@Model.LandingSystemID" class="form-control form-control-sm col-sm-4" asp-for="LandingSystemID"></landing-sys-in-job-select>
+                            <landing-sys-in-m2000-job-select selected-value="@Model.LandingSystemID" class="form-control form-control-sm col-sm-4" asp-for="LandingSystemID"></landing-sys-in-m2000-job-select>
                         </div>
                     </div>
                     <div class="col-3 border-right" >
