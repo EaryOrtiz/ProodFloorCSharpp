@@ -18,6 +18,30 @@
                 }
                 @if (j.Status != "Incomplete")
                 {
+                    @if (j._GenericFeatures.Roped)
+                    {
+                        <span class="badge badge-pill badge-success" style="float:right">
+                            <small>@j._GenericFeatures.GovModel</small>
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="badge badge-pill badge-danger" style="float:right">
+                            <small>No Roped Hydro</small>
+                        </span>
+                    }
+                    @if (j._HydroSpecific.Battery)
+                    {
+                        <span class="badge badge-pill badge-success" style="float:right">
+                            <small>@j._HydroSpecific.BatteryBrand</small>
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="badge badge-pill badge-danger" style="float:right">
+                            <small>No Battery</small>
+                        </span>
+                    }
                     @if (hoistAux.AnyRear)
                     {
                         <span class="badge badge-pill badge-success" style="float:right">
@@ -60,9 +84,12 @@
                     <span class="badge badge-pill badge-primary" style="float:right">
                         <small>@StateAux.Name - @cityAux.Name</small>
                     </span>
+                    @*
+                    JobType Not needed; M2000 is default
                     <span class="badge badge-pill badge-primary" style="float:right">
                         <small>@JobTypeName</small>
                     </span>
+                        *@
                 }
                 else
                 {

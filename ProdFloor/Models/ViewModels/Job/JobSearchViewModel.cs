@@ -34,6 +34,7 @@ namespace ProdFloor.Models.ViewModels.Job
         public JobType jobTypeAux { get; set; }
 
         //Atributos de Job
+        #region Job Fields
         [Display(Name ="Job Name")]
         public string NameJobSearch { get; set; }
 
@@ -73,8 +74,10 @@ namespace ProdFloor.Models.ViewModels.Job
         public string StatusJobSearch { get; set; }
         [Display(Name = "Job Name #2")]
         public string Name2 { get; set; }
+        #endregion
 
         //Atributos de JobExtensions
+        #region JobExtensions Fields
         [Display(Name = "Auxiliary COP")]
         public string AuxCop { get; set; }
         [Display(Name = "Cartop Door Open/Close Buttons")]
@@ -109,8 +112,10 @@ namespace ProdFloor.Models.ViewModels.Job
         public string DoorGate { get; set; }
         [Display(Name = "Door Brand")]
         public string DoorBrand { get; set; }
+        #endregion
 
         //Atributos de HydroSpecifics
+        #region HydroSpecifics Fields
         public String Battery { get; set; }
         [Display(Name = "Battery's Brand")]
         public string BatteryBrand { get; set; }
@@ -152,8 +157,10 @@ namespace ProdFloor.Models.ViewModels.Job
         [Display(Name = "Number of motors")]
         public int MotorsNum { get; set; }
         public int SPH { get; set; }
+        #endregion
 
         //Atributos de GenericFeatureList
+        #region GenericFeature Fields
         [Display(Name = "Attendant Service")]
         public string Attendant { get; set; }
         [Display(Name = "Security")]
@@ -208,6 +215,8 @@ namespace ProdFloor.Models.ViewModels.Job
         public string EPContact { get; set; }
         [Display(Name = "Manual Select Switch")]
         public string EPSelect { get; set; }
+        [Display(Name = "Roped Hydro")]
+        public string Roped { get; set; }
         [Display(Name = "Roped Hydro Governor Model")]
         public string GovModel { get; set; }
         [Display(Name = "In-Car Inspection Buttons")]
@@ -225,9 +234,10 @@ namespace ProdFloor.Models.ViewModels.Job
 
         [Display(Name = "Car call code security")]
         public string CarCallCodeSecurity { get; set; }
-
+        #endregion
 
         //Atributos de Indicators
+        #region Indicators Fields
         public string CarLanterns { get; set; }
         public string HallLanterns { get; set; }
         public string HallPI { get; set; }
@@ -264,8 +274,10 @@ namespace ProdFloor.Models.ViewModels.Job
         public string PassingFloorEnable { get; set; } 
 
         public string HallPIAll { get; set; }
+        #endregion
 
         //Atributos de HoistWayData
+        #region HoistWayData Fields
         public string AnyRear { get; set; }
         public string IndependentRearOpenings { get; set; }
         public int TopFloor { get; set; }
@@ -282,6 +294,7 @@ namespace ProdFloor.Models.ViewModels.Job
         public int HoistWaysNumber { get; set; }
         [Display(Name = "Machine Rooms Number")]
         public int MachineRooms  { get; set; }
+        #endregion
 
         //Atributos de Special Features
         public string Description { get; set; }
