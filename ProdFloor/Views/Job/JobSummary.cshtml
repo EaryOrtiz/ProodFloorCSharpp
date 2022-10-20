@@ -18,6 +18,42 @@
                 }
                 @if (j.Status != "Incomplete")
                 {
+<<<<<<< Updated upstream
+=======
+                    @if (j._GenericFeatures.Roped)
+                    {
+                        @if (j._GenericFeatures.GovModel != "")
+                        {
+                            <span class="badge badge-pill badge-success" style="float:right">
+                                <small>@j._GenericFeatures.GovModel</small>
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="badge badge-pill badge-success" style="float:right">
+                                <small>No Gov Set/Reset</small>
+                            </span>
+                        }
+                    }
+                    else
+                    {
+                        <span class="badge badge-pill badge-danger" style="float:right">
+                            <small>No Roped Hydro</small>
+                        </span>
+                    }
+                    @if (j._HydroSpecific.Battery)
+                    {
+                        <span class="badge badge-pill badge-success" style="float:right">
+                            <small>@j._HydroSpecific.BatteryBrand</small>
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="badge badge-pill badge-danger" style="float:right">
+                            <small>No Battery</small>
+                        </span>
+                    }
+>>>>>>> Stashed changes
                     @if (hoistAux.AnyRear)
                     {
                         <span class="badge badge-pill badge-success" style="float:right">
