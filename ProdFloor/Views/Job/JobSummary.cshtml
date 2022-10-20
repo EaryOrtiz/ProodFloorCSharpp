@@ -20,7 +20,7 @@
                 {
                     @if (j._SpecialFeatureslist.Any(s => !String.IsNullOrEmpty(s.Description)))
                     {
-                        <span class="badge badge-pill badge-info" style="float:right" data-toggle="tooltip" data-placement="bottom" title="Special Features:  @foreach(var f in j._SpecialFeatureslist){<p>@f.Description</p>}">
+                        <span class="badge badge-pill badge-info" style="float:right" data-toggle="tooltip" data-placement="bottom" title="Special Features: @foreach(var f in j._SpecialFeatureslist){@f.Description<hr/>}">
                             <small>Special Features*</small>
                         </span>
                     }
