@@ -18,15 +18,15 @@
                 }
                 @if (j.Status != "Incomplete")
                 {
-                    @if (j._SpecialFeatureslist.Any(s => s.Description != ""))
+                    @if (j._SpecialFeatureslist.Any(s => s.Description != "" && s.Description.Length > 1))
                     {
-                        <span class="badge badge-pill badge-info" style="float:right" data-toggle="tooltip" data-placement="bottom" title="Special Features will be listed in the bottom">
-                            <small>Special Features</small>
+                        <span class="badge badge-pill badge-info" style="float:right" data-toggle="tooltip" data-placement="bottom" title="Special Features: \n  @foreach(var f in j._SpecialFeatureslist){@f.Description}">
+                            <small>Special Features*</small>
                         </span>
                     }
                     @if (j._GenericFeatures.Roped)
                     {
-                        @if (j._GenericFeatures.GovModel != "")
+                        @if (j._GenericFeatures.GovModel != "" && j._GenericFeatures.GovModel.Length > 1)
                         {
                             <span class="badge badge-pill badge-success" style="float:right">
                                 <small>@j._GenericFeatures.GovModel</small>
