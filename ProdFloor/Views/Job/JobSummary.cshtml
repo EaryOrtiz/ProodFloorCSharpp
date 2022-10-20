@@ -18,8 +18,6 @@
                 }
                 @if (j.Status != "Incomplete")
                 {
-<<<<<<< Updated upstream
-=======
                     @if (j._GenericFeatures.Roped)
                     {
                         @if (j._GenericFeatures.GovModel != "")
@@ -53,7 +51,6 @@
                             <small>No Battery</small>
                         </span>
                     }
->>>>>>> Stashed changes
                     @if (hoistAux.AnyRear)
                     {
                         <span class="badge badge-pill badge-success" style="float:right">
@@ -96,18 +93,12 @@
                     <span class="badge badge-pill badge-primary" style="float:right">
                         <small>@StateAux.Name - @cityAux.Name</small>
                     </span>
-<<<<<<< Updated upstream
-                    <span class="badge badge-pill badge-primary" style="float:right">
-                        <small>@JobTypeName</small>
-                    </span>
-=======
                     @*
             JobType Not needed; M2000 is default
             <span class="badge badge-pill badge-primary" style="float:right">
                 <small>@JobTypeName</small>
             </span>
                     *@
->>>>>>> Stashed changes
                 }
                 else
                 {
