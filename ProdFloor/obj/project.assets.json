@@ -13029,7 +13029,7 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\abraham.cacoulides\\.nuget\\packages\\": {}
+    "C:\\Users\\sys-pro-admin\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
@@ -13037,11 +13037,11 @@
       "projectUniqueName": "C:\\Users\\abraham.cacoulides\\Documents\\GitHub\\ProodFloorCSharpp\\ProdFloor\\ProdFloor.csproj",
       "projectName": "ProdFloor",
       "projectPath": "C:\\Users\\abraham.cacoulides\\Documents\\GitHub\\ProodFloorCSharpp\\ProdFloor\\ProdFloor.csproj",
-      "packagesPath": "C:\\Users\\abraham.cacoulides\\.nuget\\packages\\",
+      "packagesPath": "C:\\Users\\sys-pro-admin\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\abraham.cacoulides\\Documents\\GitHub\\ProodFloorCSharpp\\ProdFloor\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\abraham.cacoulides\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\sys-pro-admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
