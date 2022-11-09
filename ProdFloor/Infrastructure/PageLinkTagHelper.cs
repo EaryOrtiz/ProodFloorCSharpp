@@ -3397,6 +3397,19 @@ namespace ProdFloor.Infrastructure
             }
             result.InnerHtml.AppendHtml(m_tag);
             IQueryable<string> options2 = CaseFor(SelectFor);
+
+            if (SelectFor == "JobNumber" || SelectFor == "JobNumberTest")
+            {
+                if (!options2.Any(m => m.Equals(SelectedValue)))
+                {
+                    List<string> auxAppend = options2.ToList();
+                    auxAppend.Add(SelectedValue);
+
+                    options2 = auxAppend.AsQueryable();
+                }
+
+            }
+
             foreach (string option in options2)
             {
                 TagBuilder tag = new TagBuilder("option");
