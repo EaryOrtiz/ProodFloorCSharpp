@@ -553,6 +553,7 @@ namespace ProdFloor.Controllers
             return File(toArray, "application/msword", filename);
         }
 
+        #region commented out
         /*
         public IActionResult GenerateJobTraveler(PlanningReportListViewModel viewModel)
         {
@@ -638,6 +639,7 @@ namespace ProdFloor.Controllers
                 ref replaceAll, ref missing, ref missing, ref missing, ref missing);
         }
         */
+        #endregion
 
         public IActionResult CustomsByPlanning(string filtrado, string Sort = "default", int page = 1, int totalitemsfromlastsearch = 0)
         {
@@ -646,19 +648,9 @@ namespace ProdFloor.Controllers
 
             PlanningReportListViewModel viewModel = new PlanningReportListViewModel
             {
-                planningReportRows = planningReportRows.Skip((page - 1) * PageSize)
-                                       .Take(PageSize).ToList(),
+                planningReportRows = planningReportRows.ToList(),
                 ReportRow = new PlanningReportRow(),
-                TotalItems = planningReportRows.Count(),
-                PagingInfo = new PagingInfo
-                {
-                    CurrentPage = page,
-                    sort = Sort != "default" ? Sort : "default",
-                    TotalItemsFromLastSearch = totalitemsfromlastsearch,
-                    ItemsPerPage = PageSize,
-
-                    TotalItems = planningReportRows.Count()
-                }
+                TotalItems = planningReportRows.Count()
             };
 
             return View(viewModel);
