@@ -320,7 +320,7 @@ namespace ProdFloor.Controllers
             searchViewModel.SpecialFeaturesTable = getSpecialFeaturesEX();
             searchViewModel.JobTotalCount = repository.Jobs.Count();
             searchViewModel.JobsSearchList = new List<Job>();
-            searchViewModel.JobsSearchList = jobSearchRepo.OrderByDescending(p => p.JobNum).Skip((page - 1) * 5).Take(5).ToList();
+            searchViewModel.JobsSearchList = jobSearchRepo.OrderByDescending(p => p.JobID).Skip((page - 1) * 5).Take(5).ToList();
 
 
             if (TempData["message"] != null)
@@ -513,7 +513,7 @@ namespace ProdFloor.Controllers
             searchViewModel.Landinglist = itemsrepository.LandingSystems.ToList();
             searchViewModel.SpecialFeaturesTable = getSpecialFeaturesEX();
 
-            searchViewModel.JobsSearchList = jobSearchRepo.OrderBy(p => p.JobID).Skip((page - 1) * 5).Take(5).ToList();
+            searchViewModel.JobsSearchList = jobSearchRepo.OrderByDescending(p => p.JobID).Skip((page - 1) * 5).Take(5).ToList();
             searchViewModel.PagingInfo = new PagingInfo
             {
                 CurrentPage = page,
@@ -710,7 +710,7 @@ namespace ProdFloor.Controllers
             searchViewModel.M3000List = repository.M3000s.ToList();
             searchViewModel.SpecialFeaturesTable = getSpecialFeaturesEX();
 
-            searchViewModel.JobsSearchList = jobSearchRepo.OrderBy(p => p.JobID).Skip((page - 1) * 5).Take(5).ToList();
+            searchViewModel.JobsSearchList = jobSearchRepo.OrderByDescending(p => p.JobID).Skip((page - 1) * 5).Take(5).ToList();
             searchViewModel.PagingInfo = new PagingInfo
             {
                 CurrentPage = page,
@@ -736,7 +736,7 @@ namespace ProdFloor.Controllers
                 Jobs = repository.Jobs
                     .Where(s => s.Status != "Pending")
                     .Where(n => n.EngID == currentUser.EngID)
-                    .OrderBy(p => p.JobID)
+                    .OrderByDescending(p => p.JobID)
                     .Skip((page - 1) * PageSize)
                     .Take(PageSize),
                 PagingInfo = new PagingInfo
