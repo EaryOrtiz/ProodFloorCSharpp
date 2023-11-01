@@ -465,6 +465,22 @@ namespace ProdFloor.Controllers
 
                         #endregion
 
+                        #region RMS Calculator
+
+                        if (ViewModel.HP <= 50)
+                            ViewModel.RMSAMPS = "5,000A";
+                        else if (ViewModel.HP <= 200)
+                            ViewModel.RMSAMPS = "10,000A";
+                        else
+                            ViewModel.RMSAMPS = "18,000A";
+
+                        if (volts <= 240)
+                            ViewModel.SCCRVOLTS = "240V";
+                        else if (volts <= 480)
+                            ViewModel.SCCRVOLTS = "480V";
+
+                        #endregion
+
                         #region SlowdownAndWire
                         //Slowdown Table
 
