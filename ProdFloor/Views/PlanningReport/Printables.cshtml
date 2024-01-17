@@ -26,11 +26,11 @@
         <div class="printableArea col-12">
             <table class="table table-bordered text-center align-content-center w-100" style="font-size: 72px;">
                 <tbody>
-                    <tr>
-                        <th colspan="6">
+                    <tr">
+                        <th style="padding-bottom: 1px; padding-top: 1px;" colspan="6">
                             @Model.ReportRow.ShippingDate
                         </th>
-                        <th colspan="6">
+                        <th style="padding-bottom: 1px; padding-top: 1px;" colspan="6" colspan="6">
                             @Model.ReportRow.Priority
                         </th>
                     </tr>
@@ -40,22 +40,36 @@
                         </th>
                     </tr>
                     <tr>
-                        <th colspan="6">
+                        <th style="padding-bottom: 1px; padding-top: 1px;" colspan="6" colspan="6">
                             @Model.ReportRow.Material
                         </th>
-                        <th colspan="6" style="font-size: 100px;" >
+                        <th style="font-size: 90px;" colspan="6">
                             @Model.ReportRow.PO
                         </th>
                     </tr>
                     <tr>
-                        <th style="font-size: 55px;" colspan="12">
+                        <th style="font-size: 55px; padding-top: 1px; padding-bottom: 1px;" colspan="12">
                             @Model.ReportRow.JobName
+                        </th>
+                    </tr>
+                    <tr>
+                        <th style="padding-bottom: 1px; padding-top: 1px; padding-bottom: 1px" colspan="6">
+                            <p style="font-size: 20px">Final____:____H:M QC____:____H:M</p>
+                        </th>
+                        <th style="padding-bottom: 1px; padding-top: 1px; padding-bottom: 1px" colspan="6">
+                            @if (Model.Custom == true)
+                            {
+                                <p style="font-size: 20px">Custom Software</p>
+                            }
+                        </th>
+                    </tr>
+                    <tr>
+                        <th padding-top: 1px; padding-bottom: 1px" colspan="12">
+                                <p class="font-weight-bold border-bottom border-top border-left border-right" style="font-size: 20px">@Model.PrintableNotes</p>
                         </th>
                     </tr>
                 </tbody>
             </table>
-            <p style="font-size: 20px">Final____:____H:M QC____:____H:M</p>
-            <p class="font-weight-bold border-bottom border-top border-left border-right" style="font-size: 20px">@Model.PrintableNotes</p>
         </div>
         <div class="col text-center">
             <div class="btn-group">

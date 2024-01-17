@@ -451,18 +451,6 @@ namespace ProdFloor.Controllers
                         if (volts > 480 && volts <= 600 && (ViewModel.StarterType == "ATL" || ViewModel.StarterType == "YD" || ViewModel.StarterType == "Sprecher SS : 6/12" || ViewModel.StarterType == "Sprecher SS : 3/9" || ViewModel.StarterType == "Siemens SS : 6/12" || ViewModel.StarterType == "Siemens SS : 3/9")) ViewModel.Volts = "575";
                         if (volts > 430 && volts <= 480 && (ViewModel.StarterType == "Siemens SS : 6/12" || ViewModel.StarterType == "Siemens SS : 3/9")) ViewModel.Volts = "460";
                         if (volts >= 300 && volts <= 430 && (ViewModel.StarterType == "Siemens SS : 6/12" || ViewModel.StarterType == "Siemens SS : 3/9")) ViewModel.Volts = "380/415";
-
-                        if (ViewModel.HP <= 50)
-                                ViewModel.RMSAMPS = "5,000A";
-                        else if (ViewModel.HP <= 200)
-                                ViewModel.RMSAMPS = "10,000A";
-
-                        if (volts <= 240)
-                            ViewModel.SCCRVOLTS = "240V";
-                        else if (volts <= 480)
-                            ViewModel.SCCRVOLTS = "480V";
-
-
                         #endregion
 
                         #region RMS Calculator
